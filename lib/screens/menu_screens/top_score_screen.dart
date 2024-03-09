@@ -17,22 +17,22 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
           const SliverAppBar(
             title: Text("Top score"),
           ),
-          SliverFillRemaining(
-            fillOverscroll: true,
-            hasScrollBody: false,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 50),
-                child: Wrap(
-                  spacing: 20,
-                  runSpacing: 20,
-                  children: List.generate(
-                    10,
-                    (index) => TopScoreItem(
-                      index: index,
-                    ),
-                  ).toList(),
-                ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 50,
+              horizontal: 10,
+            ),
+            sliver: SliverToBoxAdapter(
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                runSpacing: 20,
+                spacing: 20,
+                children: List.generate(
+                  5,
+                  (index) => TopScoreItem(
+                    index: index,
+                  ),
+                ).toList(),
               ),
             ),
           ),

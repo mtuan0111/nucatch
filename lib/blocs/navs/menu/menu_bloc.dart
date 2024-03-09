@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_event.dart';
@@ -32,7 +34,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       case MenuOption.exit:
         emitter(Exit());
         SystemNavigator.pop();
-      // exit(0);
+        exit(0);
 
       default:
         emitter(Menu());

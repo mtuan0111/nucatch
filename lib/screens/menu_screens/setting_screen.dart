@@ -8,8 +8,6 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  final _formKey = GlobalKey<FormState>();
-  double _currentSliderValue = 20;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,18 +16,19 @@ class _SettingScreenState extends State<SettingScreen> {
           const SliverAppBar(
             title: Text("Setting"),
           ),
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 50),
-                child: SizedBox(
-                  width: 300,
-                  child: Form(
-                    key: _formKey,
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 50,
+              vertical: 50,
+            ),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Form(
                     child: Wrap(
-                      spacing: 20,
+                      alignment: WrapAlignment.center,
                       runSpacing: 20,
+                      spacing: 20,
                       children: [
                         TextFormField(
                           decoration: const InputDecoration(
@@ -37,50 +36,49 @@ class _SettingScreenState extends State<SettingScreen> {
                             labelText: 'Name',
                           ),
                         ),
-                        Wrap(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Font size"),
+                            const Text("Font size"),
                             Slider(
-                              max: 100,
-                              divisions: 5,
-                              onChanged: (double value) {
-                                setState(() {
-                                  _currentSliderValue = value;
-                                });
-                              },
-                              label: _currentSliderValue.round().toString(),
-                              value: _currentSliderValue,
+                              value: 0,
+                              min: 0,
+                              max: 20,
+                              onChanged: (val) {},
                             ),
                           ],
                         ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            icon: Icon(Icons.person),
-                            labelText: 'Name',
-                          ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Volume"),
+                            Slider(
+                              value: 0,
+                              min: 0,
+                              max: 20,
+                              onChanged: (val) {},
+                            ),
+                          ],
                         ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            icon: Icon(Icons.person),
-                            labelText: 'Name',
-                          ),
-                        ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            icon: Icon(Icons.person),
-                            labelText: 'Name',
-                          ),
-                        ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            icon: Icon(Icons.person),
-                            labelText: 'Name',
-                          ),
-                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Number of top turn"),
+                            Slider(
+                              value: 0,
+                              min: 0,
+                              max: 20,
+                              onChanged: (val) {},
+                            ),
+                          ],
+                        )
                       ],
                     ),
-                  ),
-                ),
+                  )
+                ],
               ),
             ),
           ),
