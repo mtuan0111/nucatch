@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
 import 'package:nucatch_with_bloc/navs/menu_nav.dart';
 
 void main() {
@@ -35,8 +37,15 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: BlocProvider<MenuBloc>(
-          create: (context) => MenuBloc(Menu()),
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<MenuBloc>(
+              create: (context) => MenuBloc(Menu()),
+            ),
+            BlocProvider(
+              create: (context) => UserBloc(LoadingUser()),
+            ),
+          ],
           child: const MenuNav(),
         ));
   }
