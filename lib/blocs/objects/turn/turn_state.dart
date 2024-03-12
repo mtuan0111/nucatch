@@ -2,6 +2,7 @@ import 'package:nucatch_with_bloc/helpers/const.dart';
 
 class TurnState {
   final int level;
+  final int timesCorrect;
   final int point;
 
   final String? expect;
@@ -10,8 +11,9 @@ class TurnState {
   final bool isShowExpect;
 
   TurnState({
-    this.level = 1,
-    this.point = 0,
+    this.level = 0,
+    this.timesCorrect = 0,
+    this.point = 1,
     this.expect,
     this.isShowExpect = false,
     this.typing = "",
@@ -19,6 +21,7 @@ class TurnState {
 
   TurnState copyWith({
     int? level,
+    int? timesCorrect,
     int? point,
     // int? currentTypingIndex,
     String? expect,
@@ -27,6 +30,7 @@ class TurnState {
   }) {
     return TurnState(
       level: level ?? this.level,
+      timesCorrect: timesCorrect ?? this.timesCorrect,
       point: point ?? this.point,
       // currentTypingIndex: currentTypingIndex ?? this.currentTypingIndex,
       expect: expect ?? this.expect,
@@ -44,5 +48,7 @@ class TurnState {
 }
 
 class InitialState extends TurnState {}
+
+class RestState extends TurnState {}
 
 class PlayingState extends TurnState {}

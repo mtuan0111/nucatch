@@ -64,7 +64,7 @@ class _MenuNavState extends State<MenuNav> {
                             MaterialPage(
                               child: BlocProvider(
                                 create: (context) => TurnBloc(InitialState()),
-                                child: HomeScreen(),
+                                child: const HomeScreen(),
                               ),
                             ),
                           if (navState is TopScore)

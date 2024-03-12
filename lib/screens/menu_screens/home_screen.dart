@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       body: BlocBuilder<TurnBloc, TurnState>(
-        builder: (context, state) {
+        builder: (context, turnState) {
           return Container(
             constraints: const BoxConstraints.expand(),
             color: Colors.green,
@@ -43,15 +43,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Level: ${state.level}"),
-                              Text("Point: ${state.point}"),
+                              Text("Level: ${turnState.level}"),
+                              Text("Point: ${turnState.point}"),
                             ],
                           ),
-                          if (state.isShowExpect && state.expect != null)
+                          if (turnState.isShowExpect &&
+                              turnState.expect != null)
                             Expanded(
                               child: Center(
                                 child: Text(
-                                  state.expect!,
+                                  turnState.expect!,
                                   style: buttonStyle,
                                 ),
                               ),
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Expanded(
                               child: Center(
                                 child: Text(
-                                  state.typing,
+                                  turnState.typing,
                                   style: buttonStyle,
                                 ),
                               ),

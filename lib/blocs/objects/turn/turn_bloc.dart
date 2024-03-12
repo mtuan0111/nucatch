@@ -32,7 +32,26 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
             typing:
                 "${state.typing}${keyboardArray[event.keyValue].toString()}"),
       );
-    } else {}
+    }
+
+    if (state.isFinishTarget) {
+      emitter(
+        state.copyWith(
+          point: state.point + 1,
+          timesCorrect: state.timesCorrect + 1,
+        ),
+      );
+
+      if (state.timesCorrect > 3) {
+        add(SetLevel(
+          level: state.level + 1,
+        ));
+      } else {
+        add(SetLevel(
+          level: state.level,
+        ));
+      }
+    }
   }
 
   Future<void> _onSetLevel(
@@ -42,14 +61,14 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     emitter(
       state.copyWith(
         level: event.level,
-        expect: Helper().generateRandomNumber(event.level + 3),
+        timesCorrect: state.level != event.level ? 0 : state.timesCorrect + 1,
+        expect: Helper().generateRandomNumber(event.level + 2),
+        typing: "",
       ),
     );
 
     add(ShowExpect(isShow: true));
-
     await Future.delayed(Duration(milliseconds: state.getTimeShowTarget));
-
     add(ShowExpect(isShow: false));
   }
 
