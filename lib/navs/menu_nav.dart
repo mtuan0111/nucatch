@@ -4,6 +4,7 @@ import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
@@ -63,7 +64,13 @@ class _MenuNavState extends State<MenuNav> {
                           if (navState is Home)
                             MaterialPage(
                               child: BlocProvider(
-                                create: (context) => TurnBloc(InitialState()),
+                                create: (context) => TurnBloc(
+                                  RestState(),
+                                )..add(
+                                    SetLevel(
+                                      level: 1,
+                                    ),
+                                  ),
                                 child: const HomeScreen(),
                               ),
                             ),

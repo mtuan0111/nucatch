@@ -44,10 +44,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Level: ${turnState.level}"),
+                              Wrap(
+                                children: List.generate(turnState.lifeRemaining,
+                                    (index) => const Text('*')),
+                              ),
                               Text("Point: ${turnState.point}"),
                             ],
                           ),
-                          if (turnState.isShowExpect &&
+                          if (turnState.status == TurnStatus.gameOver)
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                  "Game over",
+                                  style: buttonStyle,
+                                ),
+                              ),
+                            )
+                          else if ((turnState.status == TurnStatus.initial) &&
                               turnState.expect != null)
                             Expanded(
                               child: Center(
@@ -79,49 +92,55 @@ class _HomeScreenState extends State<HomeScreen> {
                           return SizedBox(
                             width: (screenWidth / 3) - buttonSpace * 2,
                             height: (screenWidth / 3) - buttonSpace * 2,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (e.key == KeyboardOption.reset) {
-                                  return await pressReset();
-                                }
+                            child: Builder(builder: (context) {
+                              if (e.key == KeyboardOption.reset) {
+                                return Opacity(
+                                  opacity: turnState.isAbleToReset ? 1 : 0.5,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      context.read<TurnBloc>().add(
+                                            ResetNewNumber(),
+                                          );
+                                    },
+                                    child: Icon(
+                                      FontAwesomeIcons.arrowsRotate,
+                                      size: buttonStyle.fontSize,
+                                      color: buttonStyle.color,
+                                    ),
+                                  ),
+                                );
+                              }
 
-                                if (e.key == KeyboardOption.mainMenu) {
-                                  return await pressMainMenu(context);
-                                }
-
-                                // setState(() {
-                                //   inputtedValue += e.value.toString();
-                                // });
-
-                                context.read<TurnBloc>().add(
-                                      Tap(keyValue: e.key),
-                                    );
-                              },
-                              child: Builder(builder: (context) {
-                                if (e.value == 10) {
-                                  return Icon(
-                                    FontAwesomeIcons.arrowsRotate,
-                                    size: buttonStyle.fontSize,
-                                    color: buttonStyle.color,
-                                  );
-                                }
-
-                                if (e.value == 11) {
-                                  return Icon(
+                              if (e.key == KeyboardOption.mainMenu) {
+                                return ElevatedButton(
+                                  onPressed: () async {
+                                    await pressMainMenu(context);
+                                  },
+                                  child: Icon(
                                     FontAwesomeIcons.bars,
                                     size: buttonStyle.fontSize,
                                     color: buttonStyle.color,
-                                  );
-                                }
-
-                                return Text(
-                                  e.value.toString(),
-                                  style: buttonStyle.copyWith(
-                                    fontWeight: FontWeight.bold,
                                   ),
                                 );
-                              }),
-                            ),
+                              }
+
+                              return Opacity(
+                                opacity: turnState.isAbleToTap ? 1 : 0.5,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    context.read<TurnBloc>().add(
+                                          Tap(keyValue: e.key),
+                                        );
+                                  },
+                                  child: Text(
+                                    e.value.toString(),
+                                    style: buttonStyle.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                           );
                         }).toList(),
                       ),

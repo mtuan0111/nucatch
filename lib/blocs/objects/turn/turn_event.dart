@@ -19,9 +19,22 @@ class SetLevel extends TurnEvent {
 }
 
 class ShowExpect extends TurnEvent {
-  final bool isShow;
-
-  ShowExpect({
-    required this.isShow,
-  });
+  ShowExpect();
 }
+
+class HideExpect extends TurnEvent {
+  HideExpect();
+}
+
+class TakeARest extends TurnEvent {
+  TakeARest();
+}
+
+class MarkCorrectTap extends TurnEvent {
+  final KeyboardOption keyValue;
+  MarkCorrectTap({required this.keyValue});
+}
+
+class MarkWrongTap extends TurnEvent {}
+
+class ResetNewNumber extends TurnEvent {}
