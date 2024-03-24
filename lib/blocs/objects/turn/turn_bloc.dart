@@ -39,7 +39,15 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     }
 
     if (!state.isAbleToTap) {
-      return false;
+      if (state.isExpectNotEmpty) {
+        emitter(
+          state.copyWith(
+            status: TurnStatus.playing,
+          ),
+        );
+      } else {
+        return false;
+      }
     }
 
     // Checking is correct tap or not.

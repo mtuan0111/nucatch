@@ -83,21 +83,98 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (turnState.isShowExpect)
                             Expanded(
                               child: Center(
-                                child: Text(
-                                  turnState.expect!,
-                                  style:
-                                      Theme.of(context).textTheme.displaySmall,
-                                ),
+                                child: Wrap(
+                                  children: List.generate(
+                                    turnState.expect!.length,
+                                    (index) {
+                                      String inputted =
+                                          turnState.expect![index];
+                                      return SizedBox(
+                                        width: (Theme.of(context)
+                                                .textTheme
+                                                .displaySmall!
+                                                .fontSize! *
+                                            0.65),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              inputted,
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displaySmall,
+                                            ),
+                                            const Text("_"),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                )
+                                // ??
+                                // Text(
+                                //   turnState.expect!,
+                                //   style: Theme.of(context)
+                                //       .textTheme
+                                //       .displaySmall,
+                                // )
+                                ,
                               ),
                             ),
                           if (turnState.isTimeForTyping)
                             Expanded(
                               child: Center(
-                                child: Text(
-                                  turnState.typing,
-                                  style:
-                                      Theme.of(context).textTheme.displaySmall,
-                                ),
+                                child: Wrap(
+                                  children: List.generate(
+                                    turnState.expect!.length,
+                                    (index) {
+                                      double hide = turnState
+                                                  .isTypingNotEmpty &&
+                                              index < turnState.typing.length
+                                          ? 1
+                                          : 0;
+
+                                      String inputted =
+                                          turnState.expect![index];
+                                      return SizedBox(
+                                        width: (Theme.of(context)
+                                                .textTheme
+                                                .displaySmall!
+                                                .fontSize! *
+                                            0.65),
+                                        child: Column(
+                                          children: [
+                                            AnimatedOpacity(
+                                              duration: const Duration(
+                                                  milliseconds: 200),
+                                              opacity: hide,
+                                              child: Text(
+                                                inputted,
+                                                textAlign: TextAlign.center,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displaySmall!,
+                                              ),
+                                            ),
+                                            AnimatedOpacity(
+                                                opacity: (hide == 0) ? 1 : 0,
+                                                duration: const Duration(
+                                                    milliseconds: 200),
+                                                child: const Text("_")),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                )
+                                // ??
+                                // Text(
+                                //   turnState.typing,
+                                //   style: Theme.of(context)
+                                //       .textTheme
+                                //       .displaySmall,
+                                // )
+                                ,
                               ),
                             ),
                         ],

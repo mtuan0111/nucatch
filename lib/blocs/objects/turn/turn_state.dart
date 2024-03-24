@@ -25,7 +25,7 @@ class TurnState {
   TurnState({
     this.level = 0,
     this.timesCorrect = 0,
-    this.point = 1,
+    this.point = 0,
     this.lifeRemaining = 3,
     this.expect,
     this.status = TurnStatus.initial,
@@ -66,13 +66,14 @@ class TurnState {
     return int.parse((1000 + level * DIFF_SHOW_LEVEL_MILISECOND).toString());
   }
 
-  bool get isShowExpect => status == TurnStatus.initial && expect != null;
-  bool get isTimeForTyping => status == TurnStatus.playing && expect != null;
+  bool get isExpectNotEmpty => (expect != null && expect!.isNotEmpty);
+  bool get isTypingNotEmpty => (typing.isNotEmpty);
+
+  bool get isShowExpect => status == TurnStatus.initial && isExpectNotEmpty;
+  bool get isTimeForTyping => status == TurnStatus.playing && isExpectNotEmpty;
   bool get isCorrectAnimate => isFinishTarget;
   bool get isAbleToTap =>
-      (status == TurnStatus.playing) &&
-      (expect != null && expect!.isNotEmpty) &&
-      !isFinishTarget;
+      (status == TurnStatus.playing) && isExpectNotEmpty && !isFinishTarget;
   bool get isAbleToReset => lifeRemaining > 1;
 }
 
