@@ -5,7 +5,7 @@ class UserServices {
   Future<UserState> getUserSession() async {
     await Future.delayed(const Duration(seconds: 1));
 
-    UserModel? attempUser = UserModel(name: "BOM", settings: null);
+    UserModel attempUser = UserModel(name: "BOM", settings: null);
 
     return AuthenticatedUser(model: attempUser);
   }

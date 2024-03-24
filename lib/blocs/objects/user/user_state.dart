@@ -1,24 +1,19 @@
 import 'package:nucatch_with_bloc/models/user_model.dart';
 
 class UserState {
-  final UserModel? model;
+  final UserModel model;
 
   UserState({
-    this.model,
+    required this.model,
   });
 
   UserState copyWith({
     UserModel? model,
-    bool? isLoading,
   }) {
     return UserState(
       model: model ?? this.model,
     );
   }
-}
-
-class LoadingUser extends UserState {
-  LoadingUser();
 }
 
 class UnAuthenticatedUser extends UserState {

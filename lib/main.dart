@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
               create: (context) => MenuBloc(Menu()),
             ),
             BlocProvider(
-              create: (context) => UserBloc(LoadingUser()),
+              create: (context) => UserBloc(UnAuthenticatedUser()),
             ),
           ],
           child: const MenuNav(),

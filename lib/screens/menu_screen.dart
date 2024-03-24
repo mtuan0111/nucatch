@@ -30,19 +30,18 @@ class _MenuScreenState extends State<MenuScreen> {
                       size: Theme.of(context).textTheme.displayLarge!.fontSize,
                     ),
                   ),
-                  if (state.model != null)
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                        ),
-                        child: Column(
-                          children: [
-                            Center(child: Text("Welcome ${state.model!.name}")),
-                          ],
-                        ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                      ),
+                      child: Column(
+                        children: [
+                          Center(child: Text("Welcome ${state.model.name}")),
+                        ],
                       ),
                     ),
+                  ),
                   SliverFillRemaining(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -32,6 +32,8 @@ class TakeARest extends TurnEvent {
   TakeARest();
 }
 
+class Restart extends TurnEvent {}
+
 class MarkCorrectTap extends TurnEvent {
   final KeyboardOption keyValue;
   MarkCorrectTap({required this.keyValue});

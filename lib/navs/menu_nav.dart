@@ -49,53 +49,49 @@ class _MenuNavState extends State<MenuNav> {
             },
             child: BlocBuilder<UserBloc, UserState>(
               builder: (context, userState) {
-                return userState is LoadingUser
-                    ? const LoadingWidget()
-                    : Navigator(
-                        onPopPage: (route, result) {
-                          context
-                              .read<MenuBloc>()
-                              .add(SelectOption(option: null));
-                          return route.didPop(result);
-                        },
-                        pages: [
-                          const MaterialPage(
-                            child: MenuScreen(),
-                          ),
-                          if (navState is Home)
-                            MaterialPage(
-                              child: MultiBlocProvider(
-                                providers: [
-                                  BlocProvider(
-                                    create: (context) => TurnBloc(
-                                      TurnState(),
-                                    )..add(
-                                        SetLevel(
-                                          level: 1,
-                                        ),
-                                      ),
+                return Navigator(
+                  onPopPage: (route, result) {
+                    context.read<MenuBloc>().add(SelectOption(option: null));
+                    return route.didPop(result);
+                  },
+                  pages: [
+                    const MaterialPage(
+                      child: MenuScreen(),
+                    ),
+                    if (navState is Home)
+                      MaterialPage(
+                        child: MultiBlocProvider(
+                          providers: [
+                            BlocProvider(
+                              create: (context) => TurnBloc(
+                                TurnState(),
+                              )..add(
+                                  SetLevel(
+                                    level: 1,
                                   ),
-                                  BlocProvider(
-                                    create: (context) => PlayerNavCubit(),
-                                  ),
-                                ],
-                                child: const PlayerNav(),
-                              ),
+                                ),
                             ),
-                          if (navState is TopScore)
-                            const MaterialPage(
-                              child: TopScoreScreen(),
+                            BlocProvider(
+                              create: (context) => PlayerNavCubit(),
                             ),
-                          if (navState is Setting)
-                            const MaterialPage(
-                              child: SettingScreen(),
-                            ),
-                          if (navState is About)
-                            const MaterialPage(
-                              child: AboutScreen(),
-                            ),
-                        ],
-                      );
+                          ],
+                          child: const PlayerNav(),
+                        ),
+                      ),
+                    if (navState is TopScore)
+                      const MaterialPage(
+                        child: TopScoreScreen(),
+                      ),
+                    if (navState is Setting)
+                      const MaterialPage(
+                        child: SettingScreen(),
+                      ),
+                    if (navState is About)
+                      const MaterialPage(
+                        child: AboutScreen(),
+                      ),
+                  ],
+                );
               },
             ),
           )),

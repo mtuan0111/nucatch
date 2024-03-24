@@ -14,6 +14,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<MarkCorrectTap>(_onMarkCorrectTap);
     on<MarkWrongTap>(_onMarkWrongTap);
     on<ResetNewNumber>(_onResetNewNumber);
+    on<Restart>(_onRestart);
   }
 
   Future<void> _onTap(
@@ -200,5 +201,13 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
 
     await _onSetLevel(SetLevel(level: state.level, addPoint: 0), emitter);
+  }
+
+  Future<void> _onRestart(Restart event, Emitter<TurnState> emitter) async {
+    emitter(
+      TurnState(),
+    );
+
+    add(SetLevel(level: 1));
   }
 }

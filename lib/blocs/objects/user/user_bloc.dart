@@ -16,7 +16,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Emitter<UserState> emitter,
   ) async {
     emitter(
-      LoadingUser(),
+      UnAuthenticatedUser(),
     );
 
     emitter(await _userServices.getUserSession());

@@ -21,9 +21,16 @@ class _PlayerNavState extends State<PlayerNav> {
       builder: (context, state) {
         return BlocListener<TurnBloc, TurnState>(
           listener: (context, state) {
-            if (state is! GameOverState &&
-                state.status == TurnStatus.gameOver) {
-              BlocProvider.of<PlayerNavCubit>(context).showGameover();
+            if (state.status == TurnStatus.gameOver) {
+              if (state is! GameOverState) {
+                BlocProvider.of<PlayerNavCubit>(context).showGameover();
+              }
+            }
+
+            if (state.status == TurnStatus.initial) {
+              if (state is! PlayingState) {
+                BlocProvider.of<PlayerNavCubit>(context).showPlay();
+              }
             }
           },
           child: Navigator(
