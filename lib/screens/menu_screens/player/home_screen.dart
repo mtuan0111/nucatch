@@ -223,14 +223,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
 
                               if (e.key == KeyboardOption.mainMenu) {
-                                return ElevatedButton(
-                                  onPressed: () async {
-                                    await pressMainMenu(context);
-                                  },
-                                  child: Icon(
-                                    FontAwesomeIcons.bars,
-                                    size: buttonStyle.fontSize,
-                                    color: buttonStyle.color,
+                                return AnimatedOpacity(
+                                  opacity: (turnState.isAbleToTap) ? 1 : 0.5,
+                                  duration: const Duration(milliseconds: 200),
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      await pressMainMenu(context);
+                                    },
+                                    child: Icon(
+                                      FontAwesomeIcons.bars,
+                                      size: buttonStyle.fontSize,
+                                      color: buttonStyle.color,
+                                    ),
                                   ),
                                 );
                               }
