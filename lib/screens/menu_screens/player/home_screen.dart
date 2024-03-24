@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:timer_count_down/timer_count_down.dart';
-
-import '../../../blocs/navs/menu/menu_event.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -261,7 +260,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> pressMainMenu(BuildContext context) async {
     // context.read<MenuBloc>().add(SelectOption(option: null));
-    BlocProvider.of<MenuBloc>(context).add(SelectOption(option: null));
+    BlocProvider.of<MenuBloc>(context).add(
+      SelectOption(
+        option: null,
+      ),
+    );
     return;
   }
 }
