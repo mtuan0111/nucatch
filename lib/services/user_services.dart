@@ -8,6 +8,5 @@ class UserServices {
     UserModel? attempUser = UserModel(name: "BOM", settings: null);
 
     return AuthenticatedUser(model: attempUser);
-    return UnAuthenticatedUser();
   }
 }

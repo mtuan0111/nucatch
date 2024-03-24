@@ -2,7 +2,9 @@ import 'package:nucatch_with_bloc/helpers/const.dart';
 
 enum TurnStatus {
   initial,
+  correct,
   playing,
+
   rest,
 
   gameOver,
@@ -58,13 +60,15 @@ class TurnState {
     return int.parse((1000 + level * DIFF_SHOW_LEVEL_MILISECOND).toString());
   }
 
-  bool get isShowExpect => status == TurnStatus.initial;
-  bool get isAbleToTap => status != TurnStatus.gameOver;
+  bool get isShowExpect => status == TurnStatus.initial && expect != null;
+  bool get isCorrectAnimate => isFinishTarget;
+  bool get isAbleToTap =>
+      (status != TurnStatus.gameOver) && (expect != null && expect!.isNotEmpty);
   bool get isAbleToReset => lifeRemaining > 1;
 }
 
-class InitialState extends TurnState {}
+// class InitialState extends TurnState {}
 
-class RestState extends TurnState {}
+// class RestState extends TurnState {}
 
-class PlayingState extends TurnState {}
+// class PlayingState extends TurnState {}

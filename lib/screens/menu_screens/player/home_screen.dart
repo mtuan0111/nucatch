@@ -7,7 +7,7 @@ import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 
-import '../../blocs/navs/menu/menu_event.dart';
+import '../../../blocs/navs/menu/menu_event.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, turnState) {
           return Container(
             constraints: const BoxConstraints.expand(),
-            color: Colors.green,
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -51,17 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Text("Point: ${turnState.point}"),
                             ],
                           ),
-                          if (turnState.status == TurnStatus.gameOver)
-                            Expanded(
-                              child: Center(
-                                child: Text(
-                                  "Game over",
-                                  style: buttonStyle,
-                                ),
-                              ),
-                            )
-                          else if ((turnState.status == TurnStatus.initial) &&
-                              turnState.expect != null)
+                          if (turnState.isShowExpect)
                             Expanded(
                               child: Center(
                                 child: Text(
@@ -94,8 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: (screenWidth / 3) - buttonSpace * 2,
                             child: Builder(builder: (context) {
                               if (e.key == KeyboardOption.reset) {
-                                return Opacity(
+                                return AnimatedOpacity(
                                   opacity: turnState.isAbleToReset ? 1 : 0.5,
+                                  duration: const Duration(milliseconds: 200),
                                   child: ElevatedButton(
                                     onPressed: () async {
                                       context.read<TurnBloc>().add(
@@ -124,8 +114,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               }
 
-                              return Opacity(
+                              return AnimatedOpacity(
                                 opacity: turnState.isAbleToTap ? 1 : 0.5,
+                                duration: const Duration(milliseconds: 200),
                                 child: ElevatedButton(
                                   onPressed: () {
                                     context.read<TurnBloc>().add(

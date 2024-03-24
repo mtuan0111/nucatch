@@ -32,7 +32,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    if (state.expect == null) {
+    if (state.expect == null || state.expect!.isEmpty) {
       return;
     }
 
@@ -40,6 +40,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    // Checking is correct tap or not.
     String keyValue = keyboardArray[event.keyValue].toString();
     if (keyValue == state.expect![state.currentTypingIndex]) {
       await _onMarkCorrectTap(
@@ -51,15 +52,20 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       }
     }
 
+    // When correct Checking is finish the turn or not
     if (state.isFinishTarget) {
       emitter(
         state.copyWith(
           point: state.point + 1,
           timesCorrect: state.timesCorrect + 1,
-          status: TurnStatus.rest,
+          // status: TurnStatus.rest,
+          // expect: "",
         ),
       );
 
+      await Future.delayed(const Duration(milliseconds: 1000));
+
+      // Checking is up level or not
       if (state.timesCorrect > 3) {
         add(SetLevel(
           level: state.level + 1,
@@ -76,15 +82,22 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     SetLevel event,
     Emitter<TurnState> emitter,
   ) async {
-    await Future.delayed(const Duration(milliseconds: 1000));
+    emitter(
+      state.copyWith(
+        status: TurnStatus.initial,
+        expect: "",
+      ),
+    );
 
     emitter(
       state.copyWith(
         level: event.level,
-        timesCorrect: state.level != event.level ? 0 : state.timesCorrect + 1,
+        timesCorrect: state.level != event.level
+            ? 0
+            : state.timesCorrect + (event.addPoint > 0 ? 1 : 0),
         lifeRemaining: state.level != event.level
             ? state.lifeRemaining
-            : state.lifeRemaining + 1,
+            : state.lifeRemaining + event.addPoint,
         expect: Helper().generateRandomNumber(event.level + 2),
         typing: "",
         status: TurnStatus.initial,
@@ -183,16 +196,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     emitter(
       state.copyWith(
         lifeRemaining: state.lifeRemaining - 1,
-        expect: Helper().generateRandomNumber(state.level + 2),
-        typing: "",
-        status: TurnStatus.initial,
       ),
     );
 
-    add(ShowExpect());
-
-    await Future.delayed(Duration(milliseconds: state.getTimeShowTarget));
-
-    add(HideExpect());
+    await _onSetLevel(SetLevel(level: state.level, addPoint: 0), emitter);
   }
 }

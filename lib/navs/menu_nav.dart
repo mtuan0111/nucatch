@@ -3,14 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
+import 'package:nucatch_with_bloc/navs/player_nav.dart';
 import 'package:nucatch_with_bloc/screens/menu_screens/about_screen.dart';
 
-import 'package:nucatch_with_bloc/screens/menu_screens/home_screen.dart';
 import 'package:nucatch_with_bloc/screens/menu_screen.dart';
 import 'package:nucatch_with_bloc/screens/menu_screens/setting_screen.dart';
 import 'package:nucatch_with_bloc/screens/menu_screens/top_score_screen.dart';
@@ -55,7 +56,7 @@ class _MenuNavState extends State<MenuNav> {
                           context
                               .read<MenuBloc>()
                               .add(SelectOption(option: null));
-                          return false;
+                          return route.didPop(result);
                         },
                         pages: [
                           const MaterialPage(
@@ -63,15 +64,22 @@ class _MenuNavState extends State<MenuNav> {
                           ),
                           if (navState is Home)
                             MaterialPage(
-                              child: BlocProvider(
-                                create: (context) => TurnBloc(
-                                  RestState(),
-                                )..add(
-                                    SetLevel(
-                                      level: 1,
-                                    ),
+                              child: MultiBlocProvider(
+                                providers: [
+                                  BlocProvider(
+                                    create: (context) => TurnBloc(
+                                      TurnState(),
+                                    )..add(
+                                        SetLevel(
+                                          level: 1,
+                                        ),
+                                      ),
                                   ),
-                                child: const HomeScreen(),
+                                  BlocProvider(
+                                    create: (context) => PlayerNavCubit(),
+                                  ),
+                                ],
+                                child: const PlayerNav(),
                               ),
                             ),
                           if (navState is TopScore)
