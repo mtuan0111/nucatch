@@ -10,7 +10,6 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<SetLevel>(_onSetLevel);
     on<ShowExpect>(_onShowExpect);
     on<HideExpect>(_onHideExpect);
-    on<TakeARest>(_onTakeARest);
     on<MarkCorrectTap>(_onMarkCorrectTap);
     on<MarkWrongTap>(_onMarkWrongTap);
     on<ResetNewNumber>(_onResetNewNumber);
@@ -45,7 +44,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     String keyValue = keyboardArray[event.keyValue].toString();
     if (keyValue == state.expect![state.currentTypingIndex]) {
       await _onMarkCorrectTap(
-          MarkCorrectTap(keyValue: event.keyValue), emitter);
+        MarkCorrectTap(keyValue: event.keyValue),
+        emitter,
+      );
     } else {
       bool isAllowToContinue = await _onMarkWrongTap(MarkWrongTap(), emitter);
       if (!isAllowToContinue) {
@@ -130,27 +131,6 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     emitter(
       state.copyWith(
         status: TurnStatus.playing,
-      ),
-    );
-  }
-
-  Future<void> _onTakeARest(
-    TakeARest event,
-    Emitter<TurnState> emitter,
-  ) async {
-    TurnStatus previousStatus = state.status;
-    await Future.delayed(const Duration(milliseconds: 50));
-    emitter(
-      state.copyWith(
-        status: TurnStatus.rest,
-      ),
-    );
-
-    await Future.delayed(const Duration(seconds: 1));
-
-    emitter(
-      state.copyWith(
-        status: previousStatus,
       ),
     );
   }

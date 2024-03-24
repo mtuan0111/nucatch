@@ -28,10 +28,6 @@ class HideExpect extends TurnEvent {
   HideExpect();
 }
 
-class TakeARest extends TurnEvent {
-  TakeARest();
-}
-
 class Restart extends TurnEvent {}
 
 class MarkCorrectTap extends TurnEvent {
