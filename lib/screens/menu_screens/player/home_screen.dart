@@ -44,8 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Text("Level: ${turnState.level}"),
                               Wrap(
-                                children: List.generate(turnState.lifeRemaining,
-                                    (index) => const Text('*')),
+                                children: List.generate(
+                                  turnState.lifeRemaining,
+                                  (index) => const Text('*'),
+                                ),
                               ),
                               Text("Point: ${turnState.point}"),
                             ],
@@ -101,7 +103,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               textAlign: TextAlign.center,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .displaySmall,
+                                                  .displaySmall!
+                                                  .copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                             ),
                                             const Text("_"),
                                           ],
@@ -152,14 +157,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 textAlign: TextAlign.center,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .displaySmall!,
+                                                    .displaySmall!
+                                                    .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
                                               ),
                                             ),
                                             AnimatedOpacity(
-                                                opacity: (hide == 0) ? 1 : 0,
-                                                duration: const Duration(
-                                                    milliseconds: 200),
-                                                child: const Text("_")),
+                                              opacity: (hide == 0) ? 1 : 0,
+                                              duration: const Duration(
+                                                  milliseconds: 200),
+                                              child: const Text("_"),
+                                            ),
                                           ],
                                         ),
                                       );
@@ -192,7 +202,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Builder(builder: (context) {
                               if (e.key == KeyboardOption.reset) {
                                 return AnimatedOpacity(
-                                  opacity: turnState.isAbleToReset ? 1 : 0.5,
+                                  opacity: (turnState.isAbleToReset &&
+                                          turnState.isAbleToTap)
+                                      ? 1
+                                      : 0.5,
                                   duration: const Duration(milliseconds: 200),
                                   child: ElevatedButton(
                                     onPressed: () async {
@@ -259,7 +272,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> pressMainMenu(BuildContext context) async {
-    // context.read<MenuBloc>().add(SelectOption(option: null));
+    // context.read<MenuBloc>().add(SelectOption(option: null),);
     BlocProvider.of<MenuBloc>(context).add(
       SelectOption(
         option: null,
