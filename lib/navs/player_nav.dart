@@ -27,7 +27,8 @@ class _PlayerNavState extends State<PlayerNav> {
               }
             }
 
-            if (state.status == TurnStatus.initial) {
+            if (state.status == TurnStatus.intro ||
+                state.status == TurnStatus.initial) {
               if (state is! PlayingState) {
                 BlocProvider.of<PlayerNavCubit>(context).showPlay();
               }

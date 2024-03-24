@@ -1,6 +1,7 @@
 import 'package:nucatch_with_bloc/helpers/const.dart';
 
 enum TurnStatus {
+  intro,
   initial,
   correct,
   playing,
@@ -14,21 +15,23 @@ class TurnState {
   final int level;
   final int timesCorrect;
   final int point;
-  final int _lifeRemaining;
+  final int lifeRemaining;
 
   final String? expect;
   final String typing;
   final TurnStatus status;
+  final int countDown;
 
   TurnState({
     this.level = 0,
     this.timesCorrect = 0,
     this.point = 1,
-    int lifeRemaining = 3,
+    this.lifeRemaining = 3,
     this.expect,
     this.status = TurnStatus.initial,
     this.typing = "",
-  }) : _lifeRemaining = lifeRemaining;
+    this.countDown = 0,
+  });
 
   TurnState copyWith({
     int? level,
@@ -39,20 +42,23 @@ class TurnState {
     String? expect,
     String? typing,
     TurnStatus? status,
+    int? countDown,
   }) {
     return TurnState(
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,
       point: point ?? this.point,
-      lifeRemaining: lifeRemaining ?? _lifeRemaining,
+      lifeRemaining: lifeRemaining != null
+          ? (lifeRemaining < 0 ? 0 : lifeRemaining)
+          : this.lifeRemaining,
       // currentTypingIndex: currentTypingIndex ?? this.currentTypingIndex,
       expect: expect ?? this.expect,
       typing: typing ?? this.typing,
       status: status ?? this.status,
+      countDown: countDown ?? this.countDown,
     );
   }
 
-  int get lifeRemaining => _lifeRemaining < 0 ? 0 : _lifeRemaining;
   int get currentTypingIndex => typing.length;
   bool get isFinishTarget => expect == typing;
   int get getTimeShowTarget {
@@ -61,9 +67,12 @@ class TurnState {
   }
 
   bool get isShowExpect => status == TurnStatus.initial && expect != null;
+  bool get isTimeForTyping => status == TurnStatus.playing && expect != null;
   bool get isCorrectAnimate => isFinishTarget;
   bool get isAbleToTap =>
-      (status != TurnStatus.gameOver) && (expect != null && expect!.isNotEmpty);
+      (status == TurnStatus.playing) &&
+      (expect != null && expect!.isNotEmpty) &&
+      !isFinishTarget;
   bool get isAbleToReset => lifeRemaining > 1;
 }
 

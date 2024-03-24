@@ -6,6 +6,7 @@ import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
+import 'package:timer_count_down/timer_count_down.dart';
 
 import '../../../blocs/navs/menu/menu_event.dart';
 
@@ -50,21 +51,52 @@ class _HomeScreenState extends State<HomeScreen> {
                               Text("Point: ${turnState.point}"),
                             ],
                           ),
+                          if (turnState.status == TurnStatus.intro)
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Ready!!",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall,
+                                  ),
+                                  Countdown(
+                                    seconds: turnState.countDown,
+                                    build:
+                                        (BuildContext context, double time) =>
+                                            Text(
+                                      time.round().toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayMedium,
+                                    ),
+                                    interval: const Duration(seconds: 1),
+                                    onFinished: () {
+                                      print('Let start!');
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
                           if (turnState.isShowExpect)
                             Expanded(
                               child: Center(
                                 child: Text(
                                   turnState.expect!,
-                                  style: buttonStyle,
+                                  style:
+                                      Theme.of(context).textTheme.displaySmall,
                                 ),
                               ),
-                            )
-                          else
+                            ),
+                          if (turnState.isTimeForTyping)
                             Expanded(
                               child: Center(
                                 child: Text(
                                   turnState.typing,
-                                  style: buttonStyle,
+                                  style:
+                                      Theme.of(context).textTheme.displaySmall,
                                 ),
                               ),
                             ),

@@ -2,6 +2,21 @@ import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 
 abstract class TurnEvent {}
 
+class CountDownIntro extends TurnEvent {
+  int seconds;
+  CountDownIntro({
+    required this.seconds,
+  });
+}
+
+class Start extends TurnEvent {
+// Marking the status transform from initial status to playing status
+  int seconds;
+  Start({
+    this.seconds = 3,
+  });
+}
+
 class Tap extends TurnEvent {
   final KeyboardOption keyValue;
 
@@ -27,8 +42,6 @@ class ShowExpect extends TurnEvent {
 class HideExpect extends TurnEvent {
   HideExpect();
 }
-
-class Restart extends TurnEvent {}
 
 class MarkCorrectTap extends TurnEvent {
   final KeyboardOption keyValue;

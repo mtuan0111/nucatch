@@ -42,7 +42,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     ElevatedButton(
                       onPressed: () {
                         BlocProvider.of<TurnBloc>(context).add(
-                          Restart(),
+                          Start(),
                         );
                       },
                       child: const Icon(

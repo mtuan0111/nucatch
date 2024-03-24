@@ -13,31 +13,33 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<MarkCorrectTap>(_onMarkCorrectTap);
     on<MarkWrongTap>(_onMarkWrongTap);
     on<ResetNewNumber>(_onResetNewNumber);
-    on<Restart>(_onRestart);
+
+    on<Start>(_onStart);
+    on<CountDownIntro>(_onCountDownIntro);
   }
 
-  Future<void> _onTap(
+  Future<bool> _onTap(
     Tap event,
     Emitter<TurnState> emitter,
   ) async {
     if (event.keyValue == KeyboardOption.reset) {
-      return;
+      return false;
     }
 
     if (event.keyValue == KeyboardOption.mainMenu) {
-      return;
+      return false;
     }
 
     if (state.lifeRemaining < 0) {
-      return;
+      return false;
     }
 
     if (state.expect == null || state.expect!.isEmpty) {
-      return;
+      return false;
     }
 
     if (!state.isAbleToTap) {
-      return;
+      return false;
     }
 
     // Checking is correct tap or not.
@@ -48,9 +50,12 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         emitter,
       );
     } else {
-      bool isAllowToContinue = await _onMarkWrongTap(MarkWrongTap(), emitter);
+      bool isAllowToContinue = await _onMarkWrongTap(
+        MarkWrongTap(),
+        emitter,
+      );
       if (!isAllowToContinue) {
-        return;
+        return false;
       }
     }
 
@@ -78,6 +83,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         ));
       }
     }
+    return true;
   }
 
   Future<void> _onSetLevel(
@@ -86,7 +92,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   ) async {
     emitter(
       state.copyWith(
-        status: TurnStatus.initial,
+        status: TurnStatus.playing,
         expect: "",
       ),
     );
@@ -102,7 +108,6 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
             : state.lifeRemaining + event.addPoint,
         expect: Helper().generateRandomNumber(event.level + 2),
         typing: "",
-        status: TurnStatus.initial,
       ),
     );
 
@@ -180,14 +185,41 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
-    await _onSetLevel(SetLevel(level: state.level, addPoint: 0), emitter);
+    await _onSetLevel(
+      SetLevel(
+        level: state.level,
+        addPoint: 0,
+      ),
+      emitter,
+    );
   }
 
-  Future<void> _onRestart(Restart event, Emitter<TurnState> emitter) async {
+  Future<void> _onStart(
+    Start event,
+    Emitter<TurnState> emitter,
+  ) async {
     emitter(
-      TurnState(),
+      TurnState().copyWith(
+        countDown: event.seconds,
+        status: TurnStatus.intro,
+      ),
     );
 
-    add(SetLevel(level: 1));
+    await Future.delayed(
+      Duration(
+        seconds: state.countDown,
+      ),
+    );
+
+    add(
+      SetLevel(
+        level: 1,
+      ),
+    );
   }
+
+  Future<void> _onCountDownIntro(
+    CountDownIntro event,
+    Emitter<TurnState> emitter,
+  ) async {}
 }

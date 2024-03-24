@@ -66,9 +66,7 @@ class _MenuNavState extends State<MenuNav> {
                               create: (context) => TurnBloc(
                                 TurnState(),
                               )..add(
-                                  SetLevel(
-                                    level: 1,
-                                  ),
+                                  Start(),
                                 ),
                             ),
                             BlocProvider(
