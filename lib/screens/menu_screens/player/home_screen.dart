@@ -10,7 +10,9 @@ import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({
+    super.key,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -152,16 +154,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                               duration: const Duration(
                                                   milliseconds: 200),
                                               opacity: hide,
-                                              child: Text(
-                                                inputted,
-                                                textAlign: TextAlign.center,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displaySmall!
-                                                    .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
+                                              child: AnimatedOpacity(
+                                                opacity:
+                                                    turnState.isFinishTarget
+                                                        ? 0
+                                                        : 1,
+                                                duration: const Duration(
+                                                    milliseconds: 400),
+                                                child: AnimatedScale(
+                                                  scale:
+                                                      turnState.isFinishTarget
+                                                          ? 1.15
+                                                          : 1,
+                                                  duration: const Duration(
+                                                      milliseconds: 200),
+                                                  child: Text(
+                                                    inputted,
+                                                    textAlign: TextAlign.center,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displaySmall!
+                                                        .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: turnState
+                                                                  .isFinishTarget
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .primaryColorLight
+                                                              : null,
+                                                        ),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                             AnimatedOpacity(
@@ -195,70 +219,90 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         spacing: buttonSpace,
                         runSpacing: buttonSpace,
-                        children: keyboardArray.entries.map((e) {
-                          return SizedBox(
-                            width: (screenWidth / 3) - buttonSpace * 2,
-                            height: (screenWidth / 3) - buttonSpace * 2,
-                            child: Builder(builder: (context) {
-                              if (e.key == KeyboardOption.reset) {
-                                return AnimatedOpacity(
-                                  opacity: (turnState.isAbleToReset &&
-                                          turnState.isAbleToTap)
-                                      ? 1
-                                      : 0.5,
-                                  duration: const Duration(milliseconds: 200),
-                                  child: ElevatedButton(
-                                    onPressed: () async {
-                                      context.read<TurnBloc>().add(
-                                            ResetNewNumber(),
-                                          );
-                                    },
-                                    child: Icon(
-                                      FontAwesomeIcons.arrowsRotate,
-                                      size: buttonStyle.fontSize,
-                                      color: buttonStyle.color,
-                                    ),
-                                  ),
-                                );
-                              }
+                        children: keyboardArray.entries.map(
+                          (e) {
+                            double originalScale = 1;
+                            int milisecondDuation = 50;
+                            return AnimatedScale(
+                              scale: originalScale,
+                              duration:
+                                  Duration(milliseconds: milisecondDuation),
+                              child: SizedBox(
+                                width: (screenWidth / 3) - buttonSpace * 2,
+                                height: (screenWidth / 3) - buttonSpace * 2,
+                                child: Builder(
+                                  builder: (context) {
+                                    if (e.key == KeyboardOption.reset) {
+                                      return AnimatedOpacity(
+                                        opacity: (turnState.isAbleToReset &&
+                                                turnState.isAbleToTap)
+                                            ? 1
+                                            : 0.5,
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            context.read<TurnBloc>().add(
+                                                  ResetNewNumber(),
+                                                );
+                                          },
+                                          child: Icon(
+                                            FontAwesomeIcons.arrowsRotate,
+                                            size: buttonStyle.fontSize,
+                                            color: buttonStyle.color,
+                                          ),
+                                        ),
+                                      );
+                                    }
 
-                              if (e.key == KeyboardOption.mainMenu) {
-                                return AnimatedOpacity(
-                                  opacity: (turnState.isAbleToTap) ? 1 : 0.5,
-                                  duration: const Duration(milliseconds: 200),
-                                  child: ElevatedButton(
-                                    onPressed: () async {
-                                      await pressMainMenu(context);
-                                    },
-                                    child: Icon(
-                                      FontAwesomeIcons.bars,
-                                      size: buttonStyle.fontSize,
-                                      color: buttonStyle.color,
-                                    ),
-                                  ),
-                                );
-                              }
+                                    if (e.key == KeyboardOption.mainMenu) {
+                                      return AnimatedOpacity(
+                                        opacity:
+                                            (turnState.isAbleToTap) ? 1 : 0.5,
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            await pressMainMenu(context);
+                                          },
+                                          child: Icon(
+                                            FontAwesomeIcons.bars,
+                                            size: buttonStyle.fontSize,
+                                            color: buttonStyle.color,
+                                          ),
+                                        ),
+                                      );
+                                    }
 
-                              return AnimatedOpacity(
-                                opacity: turnState.isAbleToTap ? 1 : 0.5,
-                                duration: const Duration(milliseconds: 200),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    context.read<TurnBloc>().add(
-                                          Tap(keyValue: e.key),
-                                        );
+                                    return AnimatedOpacity(
+                                      opacity: turnState.isAbleToTap ? 1 : 0.5,
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          context.read<TurnBloc>().add(
+                                                Tap(keyValue: e.key),
+                                              );
+
+                                          setState(() {
+                                            originalScale = 0.8;
+                                            milisecondDuation = 10;
+                                          });
+                                        },
+                                        child: Text(
+                                          e.value.toString(),
+                                          style: buttonStyle.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    );
                                   },
-                                  child: Text(
-                                    e.value.toString(),
-                                    style: buttonStyle.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
                                 ),
-                              );
-                            }),
-                          );
-                        }).toList(),
+                              ),
+                            );
+                          },
+                        ).toList(),
                       ),
                     )
                   ],
