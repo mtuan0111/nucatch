@@ -27,13 +27,27 @@ class _GameOverScreenState extends State<GameOverScreen> {
                   children: [
                     Text(
                       "Gameover",
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     Text(
                       "Correct ${turnBloc.state.expect}",
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                     Text(
                       "Point ${turnBloc.state.point}",
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                     const SizedBox(
                       height: 50,

@@ -63,7 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     "Ready!!",
                                     style: Theme.of(context)
                                         .textTheme
-                                        .displaySmall,
+                                        .displaySmall!
+                                        .copyWith(
+                                          fontStyle: FontStyle.italic,
+                                        ),
                                   ),
                                   Countdown(
                                     seconds: turnState.countDown,
@@ -73,7 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       time.round().toString(),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displayMedium,
+                                          .displayLarge!
+                                          .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                     ),
                                     interval: const Duration(seconds: 1),
                                     onFinished: () {
@@ -155,19 +161,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   milliseconds: 200),
                                               opacity: hide,
                                               child: AnimatedOpacity(
+                                                curve: Curves.easeOutQuart,
                                                 opacity:
                                                     turnState.isFinishTarget
                                                         ? 0
                                                         : 1,
                                                 duration: const Duration(
-                                                    milliseconds: 400),
+                                                    milliseconds: 1000),
                                                 child: AnimatedScale(
+                                                  curve: Curves.easeOutQuart,
                                                   scale:
                                                       turnState.isFinishTarget
                                                           ? 1.15
                                                           : 1,
                                                   duration: const Duration(
-                                                      milliseconds: 200),
+                                                      milliseconds: 1000),
                                                   child: Text(
                                                     inputted,
                                                     textAlign: TextAlign.center,
