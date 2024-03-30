@@ -1,7 +1,7 @@
 abstract class MenuState {}
 
 enum MenuOption {
-  home,
+  start,
   topScore,
   setting,
   about,
@@ -9,8 +9,8 @@ enum MenuOption {
 }
 
 const Map<MenuOption, String> menuArray = {
-  MenuOption.home: "Home",
-  MenuOption.topScore: "Top Score",
+  MenuOption.start: "Start",
+  MenuOption.topScore: "Top score",
   MenuOption.setting: "Setting",
   MenuOption.about: "About",
   MenuOption.exit: "Exit",

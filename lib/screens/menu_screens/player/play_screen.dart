@@ -9,16 +9,16 @@ import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({
+class PlayScreen extends StatefulWidget {
+  const PlayScreen({
     super.key,
   });
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<PlayScreen> createState() => _PlayScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _PlayScreenState extends State<PlayScreen> {
   double get screenWidth => MediaQuery.of(context).size.width;
   double get buttonSpace => 20;
   String inputtedValue = "";
@@ -31,7 +31,16 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocBuilder<TurnBloc, TurnState>(
         builder: (context, turnState) {
           return Container(
-            constraints: const BoxConstraints.expand(),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).secondaryHeaderColor,
+                ],
+              ),
+            ),
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -44,14 +53,40 @@ class _HomeScreenState extends State<HomeScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Level: ${turnState.level}"),
+                              Text(
+                                "Level: ${turnState.level}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
                               Wrap(
+                                spacing: 5,
                                 children: List.generate(
                                   turnState.lifeRemaining,
-                                  (index) => const Text('*'),
+                                  (index) => Icon(
+                                    FontAwesomeIcons.solidStar,
+                                    color: Colors.white,
+                                    size: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .fontSize,
+                                  ),
                                 ),
                               ),
-                              Text("Point: ${turnState.point}"),
+                              Text(
+                                "Point: ${turnState.point}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
                             ],
                           ),
                           if (turnState.status == TurnStatus.intro)
@@ -59,29 +94,62 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "Ready!!",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall!
-                                        .copyWith(
-                                          fontStyle: FontStyle.italic,
+                                  Countdown(
+                                    seconds: turnState.countDown,
+                                    interval: const Duration(milliseconds: 100),
+                                    build: (BuildContext context, double time) {
+                                      print(time);
+                                      return AnimatedOpacity(
+                                        opacity: time >= 1 ? 1 : 0,
+                                        duration:
+                                            const Duration(milliseconds: 1000),
+                                        curve: Curves.easeOutQuart,
+                                        child: AnimatedScale(
+                                          scale: time >= 1 ? 1 : 5,
+                                          duration:
+                                              const Duration(milliseconds: 200),
+                                          curve: Curves.easeOutQuart,
+                                          child: Text(
+                                            time >= 1 ? "Ready!!" : "Go",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge!
+                                                .copyWith(
+                                                  fontStyle: FontStyle.italic,
+                                                  color: Colors.white,
+                                                ),
+                                          ),
                                         ),
+                                      );
+                                    },
                                   ),
                                   Countdown(
                                     seconds: turnState.countDown,
+                                    interval: const Duration(milliseconds: 100),
                                     build:
                                         (BuildContext context, double time) =>
-                                            Text(
-                                      time.round().toString(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displayLarge!
-                                          .copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                            AnimatedOpacity(
+                                      opacity: time >= 1 ? 1 : 0,
+                                      duration:
+                                          const Duration(milliseconds: 1000),
+                                      curve: Curves.easeOutQuart,
+                                      child: AnimatedScale(
+                                        scale: time >= 1 ? 1 : 0,
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        curve: Curves.easeOutQuart,
+                                        child: Text(
+                                          time.round().toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displayLarge!
+                                              .copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                        ),
+                                      ),
                                     ),
-                                    interval: const Duration(seconds: 1),
                                     onFinished: () {
                                       print('Let start!');
                                     },
@@ -114,9 +182,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .displaySmall!
                                                   .copyWith(
                                                     fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
                                                   ),
                                             ),
-                                            const Text("_"),
+                                            const Icon(
+                                              FontAwesomeIcons.minus,
+                                              color: Colors.white,
+                                            ),
                                           ],
                                         ),
                                       );
@@ -172,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   curve: Curves.easeOutQuart,
                                                   scale:
                                                       turnState.isFinishTarget
-                                                          ? 1.15
+                                                          ? 2
                                                           : 1,
                                                   duration: const Duration(
                                                       milliseconds: 1000),
@@ -190,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               ? Theme.of(
                                                                       context)
                                                                   .primaryColorLight
-                                                              : null,
+                                                              : Colors.white,
                                                         ),
                                                   ),
                                                 ),
@@ -200,7 +272,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               opacity: (hide == 0) ? 1 : 0,
                                               duration: const Duration(
                                                   milliseconds: 200),
-                                              child: const Text("_"),
+                                              child: const Icon(
+                                                FontAwesomeIcons.minus,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ],
                                         ),

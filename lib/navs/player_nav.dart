@@ -5,7 +5,7 @@ import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch_with_bloc/screens/menu_screens/player/gameover_screen.dart';
-import 'package:nucatch_with_bloc/screens/menu_screens/player/home_screen.dart';
+import 'package:nucatch_with_bloc/screens/menu_screens/player/play_screen.dart';
 
 class PlayerNav extends StatefulWidget {
   const PlayerNav({super.key});
@@ -40,7 +40,7 @@ class _PlayerNavState extends State<PlayerNav> {
             },
             pages: [
               const MaterialPage(
-                child: HomeScreen(),
+                child: PlayScreen(),
               ),
               if (state is GameOverState)
                 const MaterialPage(

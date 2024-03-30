@@ -34,6 +34,17 @@ class MyApp extends StatelessWidget {
           //
           // This works for code too, not just values: Most code changes can be
           // tested with just a hot reload.
+
+          fontFamily: 'Charmonman',
+          fontFamilyFallback: const [
+            "Baloo Bhai",
+            "Charmonman",
+            "Dancing Script",
+            "Roboto Mono",
+            "Xanh Mono",
+            "JetBrains Mono",
+          ],
+
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
 
@@ -50,7 +61,18 @@ class MyApp extends StatelessWidget {
               create: (context) => UserBloc(UnAuthenticatedUser()),
             ),
           ],
-          child: const MenuNav(),
+          child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).secondaryHeaderColor,
+                  ],
+                ),
+              ),
+              child: const MenuNav()),
         ));
   }
 }

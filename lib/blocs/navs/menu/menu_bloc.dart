@@ -15,7 +15,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     Emitter<MenuState> emitter,
   ) async {
     switch (event.option) {
-      case MenuOption.home:
+      case MenuOption.start:
         emitter(Home());
         break;
 

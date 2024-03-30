@@ -62,7 +62,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/images/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
@@ -77,6 +78,53 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Baloo Bhai
+      fonts:
+        - asset: assets/fonts/Baloo_Bhai_2/BalooBhai2-Regular.ttf
+        - asset: assets/fonts/Baloo_Bhai_2/BalooBhai2-Medium.ttf
+          weight: 300
+        - asset: assets/fonts/Baloo_Bhai_2/BalooBhai2-SemiBold.ttf
+          weight: 500
+        - asset: assets/fonts/Baloo_Bhai_2/BalooBhai2-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Baloo_Bhai_2/BalooBhai2-ExtraBold.ttf
+          weight: 900
+          style: italic
+
+    - family: Charmonman
+      fonts:
+        - asset: assets/fonts/Charmonman/Charmonman-Regular.ttf
+          weight: 300
+        - asset: assets/fonts/Charmonman/Charmonman-Bold.ttf
+          weight: 500
+
+    - family: Dancing Script
+      fonts:
+        - asset: assets/fonts/Dancing_Script/DancingScript-VariableFont_wght.ttf
+
+    - family: Roboto Mono
+      fonts:
+        - asset: assets/fonts/Roboto_Mono/RobotoMono-VariableFont_wght.ttf
+
+    - family: Xanh Mono
+      fonts:
+        - asset: assets/fonts/Xanh_Mono/XanhMono-Regular.ttf
+        - asset: assets/fonts/Xanh_Mono/XanhMono-Italic.ttf
+          style: italic
+
+    - family: JetBrains Mono
+      fonts:
+        - asset: assets/fonts/JetBrains_Mono/static/JetBrainsMono-Regular.ttf
+        - asset: assets/fonts/JetBrains_Mono/static/JetBrainsMono-Medium.ttf
+          weight: 300
+        - asset: assets/fonts/JetBrains_Mono/static/JetBrainsMono-SemiBold.ttf
+          weight: 500
+        - asset: assets/fonts/JetBrains_Mono/static/JetBrainsMono-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/JetBrains_Mono/static/JetBrainsMono-ExtraBold.ttf
+          weight: 900
+          style: italic
   # fonts:
   #   - family: Schyler
   #     fonts:
