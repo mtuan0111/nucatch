@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
@@ -69,6 +70,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     // When correct Checking is finish the turn or not
     if (state.isFinishTarget) {
+      HapticFeedback.vibrate();
       emitter(
         state.copyWith(
           point: state.point + 1,
@@ -152,6 +154,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     MarkCorrectTap event,
     Emitter<TurnState> emitter,
   ) async {
+    HapticFeedback.heavyImpact();
+
     emitter(
       state.copyWith(
           typing: "${state.typing}${keyboardArray[event.keyValue].toString()}"),
@@ -218,6 +222,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         seconds: state.countDown,
       ),
     );
+
+    HapticFeedback.vibrate();
 
     add(
       SetLevel(

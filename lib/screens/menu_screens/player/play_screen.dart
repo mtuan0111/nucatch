@@ -25,7 +25,9 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle buttonStyle = Theme.of(context).textTheme.headlineMedium!;
+    TextStyle buttonStyle = Theme.of(context).textTheme.headlineLarge!.copyWith(
+          fontWeight: FontWeight.bold,
+        );
 
     return Scaffold(
       body: BlocBuilder<TurnBloc, TurnState>(
@@ -102,12 +104,12 @@ class _PlayScreenState extends State<PlayScreen> {
                                       return AnimatedOpacity(
                                         opacity: time >= 1 ? 1 : 0,
                                         duration:
-                                            const Duration(milliseconds: 1000),
+                                            const Duration(milliseconds: 400),
                                         curve: Curves.easeOutQuart,
                                         child: AnimatedScale(
-                                          scale: time >= 1 ? 1 : 5,
+                                          scale: time >= 1 ? 1 : 10,
                                           duration:
-                                              const Duration(milliseconds: 200),
+                                              const Duration(milliseconds: 400),
                                           curve: Curves.easeOutQuart,
                                           child: Text(
                                             time >= 1 ? "Ready!!" : "Go",
@@ -117,6 +119,15 @@ class _PlayScreenState extends State<PlayScreen> {
                                                 .copyWith(
                                                   fontStyle: FontStyle.italic,
                                                   color: Colors.white,
+                                                  fontSize: time <= 1
+                                                      ? (time /
+                                                              turnState
+                                                                  .countDown) *
+                                                          Theme.of(context)
+                                                              .textTheme
+                                                              .displayLarge!
+                                                              .fontSize!
+                                                      : null,
                                                 ),
                                           ),
                                         ),
@@ -138,16 +149,28 @@ class _PlayScreenState extends State<PlayScreen> {
                                         duration:
                                             const Duration(milliseconds: 200),
                                         curve: Curves.easeOutQuart,
-                                        child: Text(
-                                          time.round().toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displayLarge!
-                                              .copyWith(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                        ),
+                                        child: (time >= 1)
+                                            ? Text(
+                                                time.round().toString(),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displayLarge!
+                                                    .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white,
+                                                      fontSize: (time <= 1)
+                                                          ? (time /
+                                                                  turnState
+                                                                      .countDown) *
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .displayLarge!
+                                                                  .fontSize!
+                                                          : null,
+                                                    ),
+                                              )
+                                            : const SizedBox.shrink(),
                                       ),
                                     ),
                                     onFinished: () {
@@ -167,23 +190,15 @@ class _PlayScreenState extends State<PlayScreen> {
                                       String inputted =
                                           turnState.expect![index];
                                       return SizedBox(
-                                        width: (Theme.of(context)
-                                                .textTheme
-                                                .displaySmall!
-                                                .fontSize! *
-                                            0.65),
+                                        width: (buttonStyle.fontSize! * 0.65),
                                         child: Column(
                                           children: [
                                             Text(
                                               inputted,
                                               textAlign: TextAlign.center,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .displaySmall!
-                                                  .copyWith(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                  ),
+                                              style: buttonStyle.copyWith(
+                                                color: Colors.white,
+                                              ),
                                             ),
                                             const Icon(
                                               FontAwesomeIcons.minus,
@@ -221,11 +236,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                       String inputted =
                                           turnState.expect![index];
                                       return SizedBox(
-                                        width: (Theme.of(context)
-                                                .textTheme
-                                                .displaySmall!
-                                                .fontSize! *
-                                            0.65),
+                                        width: (buttonStyle.fontSize! * 0.65),
                                         child: Column(
                                           children: [
                                             AnimatedOpacity(
@@ -239,7 +250,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                         ? 0
                                                         : 1,
                                                 duration: const Duration(
-                                                    milliseconds: 1000),
+                                                    milliseconds: 400),
                                                 child: AnimatedScale(
                                                   curve: Curves.easeOutQuart,
                                                   scale:
@@ -247,23 +258,17 @@ class _PlayScreenState extends State<PlayScreen> {
                                                           ? 2
                                                           : 1,
                                                   duration: const Duration(
-                                                      milliseconds: 1000),
+                                                      milliseconds: 400),
                                                   child: Text(
                                                     inputted,
                                                     textAlign: TextAlign.center,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .displaySmall!
-                                                        .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: turnState
-                                                                  .isFinishTarget
-                                                              ? Theme.of(
-                                                                      context)
-                                                                  .primaryColorLight
-                                                              : Colors.white,
-                                                        ),
+                                                    style: buttonStyle.copyWith(
+                                                      color: turnState
+                                                              .isFinishTarget
+                                                          ? Theme.of(context)
+                                                              .primaryColorLight
+                                                          : Colors.white,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -374,9 +379,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                         },
                                         child: Text(
                                           e.value.toString(),
-                                          style: buttonStyle.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          style: buttonStyle,
                                         ),
                                       ),
                                     );
