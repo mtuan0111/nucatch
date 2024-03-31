@@ -7,6 +7,7 @@ import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
+import 'package:nucatch_with_bloc/helpers/const.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
 class PlayScreen extends StatefulWidget {
@@ -24,10 +25,16 @@ class _PlayScreenState extends State<PlayScreen> {
   String inputtedValue = "";
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    TextStyle buttonStyle = Theme.of(context).textTheme.headlineLarge!.copyWith(
-          fontWeight: FontWeight.bold,
-        );
+    // TextStyle buttonStyle = Theme.of(context).textTheme.headlineLarge!.copyWith(
+    //       fontWeight: FontWeight.bold,
+    //     );
 
     return Scaffold(
       body: BlocBuilder<TurnBloc, TurnState>(
@@ -35,8 +42,8 @@ class _PlayScreenState extends State<PlayScreen> {
           return Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
                 colors: [
                   Theme.of(context).primaryColor,
                   Theme.of(context).secondaryHeaderColor,
@@ -98,7 +105,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                 children: [
                                   Countdown(
                                     seconds: turnState.countDown,
-                                    interval: const Duration(milliseconds: 100),
+                                    interval: const Duration(milliseconds: 400),
                                     build: (BuildContext context, double time) {
                                       print(time);
                                       return AnimatedOpacity(
@@ -107,7 +114,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                             const Duration(milliseconds: 400),
                                         curve: Curves.easeOutQuart,
                                         child: AnimatedScale(
-                                          scale: time >= 1 ? 1 : 10,
+                                          scale: time >= 1 ? 1 : 15,
                                           duration:
                                               const Duration(milliseconds: 400),
                                           curve: Curves.easeOutQuart,
@@ -190,13 +197,17 @@ class _PlayScreenState extends State<PlayScreen> {
                                       String inputted =
                                           turnState.expect![index];
                                       return SizedBox(
-                                        width: (buttonStyle.fontSize! * 0.65),
+                                        width: (LayoutConfig.titleStyle(context)
+                                                .fontSize! *
+                                            0.65),
                                         child: Column(
                                           children: [
                                             Text(
                                               inputted,
                                               textAlign: TextAlign.center,
-                                              style: buttonStyle.copyWith(
+                                              style: LayoutConfig.titleStyle(
+                                                      context)
+                                                  .copyWith(
                                                 color: Colors.white,
                                               ),
                                             ),
@@ -236,7 +247,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                       String inputted =
                                           turnState.expect![index];
                                       return SizedBox(
-                                        width: (buttonStyle.fontSize! * 0.65),
+                                        width: (LayoutConfig.titleStyle(context)
+                                                .fontSize! *
+                                            0.65),
                                         child: Column(
                                           children: [
                                             AnimatedOpacity(
@@ -262,7 +275,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                                   child: Text(
                                                     inputted,
                                                     textAlign: TextAlign.center,
-                                                    style: buttonStyle.copyWith(
+                                                    style:
+                                                        LayoutConfig.titleStyle(
+                                                                context)
+                                                            .copyWith(
                                                       color: turnState
                                                               .isFinishTarget
                                                           ? Theme.of(context)
@@ -302,7 +318,7 @@ class _PlayScreenState extends State<PlayScreen> {
                       ),
                     ),
                     Expanded(
-                      flex: 3,
+                      flex: 2,
                       child: Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
                         spacing: buttonSpace,
@@ -329,6 +345,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                         duration:
                                             const Duration(milliseconds: 200),
                                         child: ElevatedButton(
+                                          style:
+                                              LayoutConfig.elevatedButtonStyle,
                                           onPressed: () async {
                                             context.read<TurnBloc>().add(
                                                   ResetNewNumber(),
@@ -336,8 +354,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                           },
                                           child: Icon(
                                             FontAwesomeIcons.arrowsRotate,
-                                            size: buttonStyle.fontSize,
-                                            color: buttonStyle.color,
+                                            size:
+                                                LayoutConfig.titleStyle(context)
+                                                    .fontSize,
+                                            color: Colors.black87,
                                           ),
                                         ),
                                       );
@@ -350,13 +370,17 @@ class _PlayScreenState extends State<PlayScreen> {
                                         duration:
                                             const Duration(milliseconds: 200),
                                         child: ElevatedButton(
+                                          style:
+                                              LayoutConfig.elevatedButtonStyle,
                                           onPressed: () async {
                                             await pressMainMenu(context);
                                           },
                                           child: Icon(
                                             FontAwesomeIcons.bars,
-                                            size: buttonStyle.fontSize,
-                                            color: buttonStyle.color,
+                                            size:
+                                                LayoutConfig.titleStyle(context)
+                                                    .fontSize,
+                                            color: Colors.black87,
                                           ),
                                         ),
                                       );
@@ -367,19 +391,26 @@ class _PlayScreenState extends State<PlayScreen> {
                                       duration:
                                           const Duration(milliseconds: 200),
                                       child: ElevatedButton(
+                                        style: LayoutConfig.elevatedButtonStyle,
                                         onPressed: () {
                                           context.read<TurnBloc>().add(
                                                 Tap(keyValue: e.key),
                                               );
 
-                                          setState(() {
-                                            originalScale = 0.8;
-                                            milisecondDuation = 10;
-                                          });
+                                          setState(
+                                            () {
+                                              originalScale = 0.8;
+                                              milisecondDuation = 10;
+                                            },
+                                          );
                                         },
                                         child: Text(
                                           e.value.toString(),
-                                          style: buttonStyle,
+                                          style:
+                                              LayoutConfig.titleStyle(context)
+                                                  .copyWith(
+                                            color: Colors.black87,
+                                          ),
                                         ),
                                       ),
                                     );

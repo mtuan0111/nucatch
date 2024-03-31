@@ -16,7 +16,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   ) async {
     switch (event.option) {
       case MenuOption.start:
-        emitter(Home());
+        emitter(Play());
         break;
 
       case MenuOption.topScore:

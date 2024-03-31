@@ -45,12 +45,17 @@ class MyApp extends StatelessWidget {
             "JetBrains Mono",
           ],
 
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+          ),
           useMaterial3: true,
 
           primaryColor: Colors.green,
           secondaryHeaderColor: Colors.red,
           scaffoldBackgroundColor: Colors.lightBlueAccent,
+
+          primaryTextTheme: Typography(platform: TargetPlatform.iOS).white,
+          textTheme: Typography(platform: TargetPlatform.iOS).white,
         ),
         home: MultiBlocProvider(
           providers: [
@@ -64,8 +69,8 @@ class MyApp extends StatelessWidget {
           child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                   colors: [
                     Theme.of(context).primaryColor,
                     Theme.of(context).secondaryHeaderColor,

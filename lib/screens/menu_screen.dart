@@ -5,6 +5,7 @@ import 'package:nucatch_with_bloc/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
+import 'package:nucatch_with_bloc/helpers/const.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -22,8 +23,8 @@ class _MenuScreenState extends State<MenuScreen> {
           body: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
                 colors: [
                   Theme.of(context).primaryColor,
                   Theme.of(context).secondaryHeaderColor,
@@ -108,17 +109,10 @@ class CustomeTitleButton extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: Text(
           text,
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-            color: Colors.white,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.bold,
-            shadows: [
-              const BoxShadow(
-                color: Colors.black54,
-                blurRadius: 4,
-                offset: Offset(0, 4),
-              )
-            ],
+          style: LayoutConfig.titleStyle(
+            context,
+            isActiveShadow: true,
+            isItalic: true,
           ),
         ),
       ),

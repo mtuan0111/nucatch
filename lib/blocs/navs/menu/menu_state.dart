@@ -49,7 +49,7 @@ const Map<KeyboardOption, int> keyboardArray = {
 
 class Menu extends MenuState {}
 
-class Home extends MenuState {}
+class Play extends MenuState {}
 
 class TopScore extends MenuState {}
 

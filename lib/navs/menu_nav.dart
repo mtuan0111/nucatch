@@ -58,7 +58,7 @@ class _MenuNavState extends State<MenuNav> {
                     const MaterialPage(
                       child: MenuScreen(),
                     ),
-                    if (navState is Home)
+                    if (navState is Play)
                       MaterialPage(
                         child: MultiBlocProvider(
                           providers: [
