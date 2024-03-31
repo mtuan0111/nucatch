@@ -21,16 +21,7 @@ class _MenuScreenState extends State<MenuScreen> {
       builder: (context, state) {
         return Scaffold(
           body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Theme.of(context).primaryColor,
-                  Theme.of(context).secondaryHeaderColor,
-                ],
-              ),
-            ),
+            decoration: LayoutConfig.gradientDecoration(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 50),
               child: SafeArea(
@@ -109,7 +100,7 @@ class CustomeTitleButton extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: Text(
           text,
-          style: LayoutConfig.titleStyle(
+          style: LayoutConfig.displaySmallStyle(
             context,
             isActiveShadow: true,
             isItalic: true,

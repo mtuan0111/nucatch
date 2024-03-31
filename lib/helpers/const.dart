@@ -8,10 +8,36 @@ class LayoutConfig {
   static double boxSize = 80;
   static double layoutBorderRadius = 30;
 
-  static TextStyle titleStyle(BuildContext context,
-          {bool isActiveShadow = false, bool isItalic = false}) =>
+  static TextStyle displaySmallStyle(
+    BuildContext context, {
+    bool isActiveShadow = false,
+    bool isItalic = false,
+    String? fontFamily,
+  }) =>
       Theme.of(context).textTheme.displaySmall!.copyWith(
         color: Colors.white,
+        fontFamily: fontFamily,
+        fontStyle: isItalic ? FontStyle.italic : null,
+        fontWeight: FontWeight.bold,
+        shadows: [
+          if (isActiveShadow)
+            const BoxShadow(
+              color: Colors.black54,
+              blurRadius: 0,
+              offset: Offset(-2, 4),
+            )
+        ],
+      );
+
+  static TextStyle titleMediumStyle(
+    BuildContext context, {
+    bool isActiveShadow = false,
+    bool isItalic = false,
+    String? fontFamily,
+  }) =>
+      Theme.of(context).textTheme.titleMedium!.copyWith(
+        color: Colors.white,
+        fontFamily: fontFamily,
         fontStyle: isItalic ? FontStyle.italic : null,
         fontWeight: FontWeight.bold,
         shadows: [
@@ -37,6 +63,18 @@ class LayoutConfig {
       109,
     ),
   );
+
+  static BoxDecoration gradientDecoration(BuildContext context) =>
+      BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Theme.of(context).primaryColor,
+            Theme.of(context).secondaryHeaderColor,
+          ],
+        ),
+      );
 
   static BoxDecoration boxDecoration = BoxDecoration(
     borderRadius: BorderRadius.circular(

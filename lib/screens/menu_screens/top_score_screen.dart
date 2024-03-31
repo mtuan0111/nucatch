@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nucatch_with_bloc/helpers/const.dart';
+import 'package:nucatch_with_bloc/screens/menu_screens/player/gameover_screen.dart';
 
 class TopScoreScreen extends StatefulWidget {
   const TopScoreScreen({super.key});
@@ -12,64 +14,57 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(),
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar(
-            title: Text("Top score"),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 50,
-              horizontal: 10,
+      body: Container(
+        decoration: LayoutConfig.gradientDecoration(context),
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  "Top score",
+                ),
+                centerTitle: true,
+              ),
+              backgroundColor: Colors.transparent,
+              expandedHeight: 100,
+              actions: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.menu),
+                  tooltip: "Menu",
+                  onPressed: () {
+                    return;
+                  },
+                ),
+              ],
             ),
-            sliver: SliverToBoxAdapter(
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                runSpacing: 20,
-                spacing: 20,
-                children: List.generate(
-                  5,
-                  (index) => TopScoreItem(
-                    index: index,
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 50,
+                horizontal: 10,
+              ),
+              sliver: SliverToBoxAdapter(
+                child: IntrinsicWidth(
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    runSpacing: 50,
+                    spacing: 50,
+                    children: List.generate(
+                      5,
+                      (index) => RankingItem(
+                        ranking: index + 1,
+                        playerName: "playerName",
+                        createdAt: DateTime.now(),
+                        turnedPoint: 2,
+                      ),
+                    ).toList(),
                   ),
-                ).toList(),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
-  }
-}
-
-class TopScoreItem extends StatelessWidget {
-  final int index;
-  const TopScoreItem({
-    super.key,
-    required this.index,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: 300,
-        color: Colors.red,
-        child: Row(
-          children: [
-            Container(
-                height: 80,
-                width: 80,
-                color: Colors.greenAccent,
-                child: Center(child: Text("Rank ${index + 1}"))),
-            const Expanded(
-                child: Column(
-              children: [
-                Text("Name"),
-                Text("Time"),
-                Text("Score"),
-              ],
-            )),
-          ],
-        ));
   }
 }

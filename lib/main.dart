@@ -4,6 +4,7 @@ import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
+import 'package:nucatch_with_bloc/helpers/const.dart';
 import 'package:nucatch_with_bloc/navs/menu_nav.dart';
 
 void main() {
@@ -67,16 +68,7 @@ class MyApp extends StatelessWidget {
             ),
           ],
           child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Theme.of(context).primaryColor,
-                    Theme.of(context).secondaryHeaderColor,
-                  ],
-                ),
-              ),
+              decoration: LayoutConfig.gradientDecoration(context),
               child: const MenuNav()),
         ));
   }
