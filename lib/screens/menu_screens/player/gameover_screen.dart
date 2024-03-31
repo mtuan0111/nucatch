@@ -177,7 +177,7 @@ class RankingItem extends StatelessWidget {
               createdAt.toString(),
             ),
             Text(
-              "Point ${turnedPoint}",
+              "Point $turnedPoint",
               style: LayoutConfig.titleMediumStyle(context),
             ),
           ],

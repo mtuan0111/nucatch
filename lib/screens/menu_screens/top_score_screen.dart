@@ -20,14 +20,15 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
           slivers: [
             SliverAppBar(
               pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
+              flexibleSpace: const FlexibleSpaceBar(
+                titlePadding: EdgeInsets.zero,
                 title: Text(
                   "Top score",
                 ),
-                centerTitle: true,
+                // centerTitle: true,
               ),
               backgroundColor: Colors.transparent,
-              expandedHeight: 100,
+              expandedHeight: 200,
               actions: <Widget>[
                 IconButton(
                   icon: const Icon(Icons.menu),

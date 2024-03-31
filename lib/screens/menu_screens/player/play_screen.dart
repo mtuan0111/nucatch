@@ -25,12 +25,6 @@ class _PlayScreenState extends State<PlayScreen> {
   String inputtedValue = "";
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     // TextStyle buttonStyle = Theme.of(context).textTheme.headlineLarge!.copyWith(
     //       fontWeight: FontWeight.bold,
@@ -103,12 +97,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                         opacity: time >= 1 ? 1 : 0,
                                         duration:
                                             const Duration(milliseconds: 400),
-                                        curve: Curves.easeOutQuart,
                                         child: AnimatedScale(
                                           scale: time >= 1 ? 1 : 15,
                                           duration:
                                               const Duration(milliseconds: 400),
-                                          curve: Curves.easeOutQuart,
                                           child: Text(
                                             time >= 1 ? "Ready!!" : "Go",
                                             style: Theme.of(context)

@@ -63,7 +63,7 @@ class TurnState {
   bool get isFinishTarget => expect == typing;
   int get getTimeShowTarget {
     // Unit ratio for each level : 0.2
-    return int.parse((1000 + level * DIFF_SHOW_LEVEL_MILISECOND).toString());
+    return int.parse((1000 + level * diffShowLevelMilisecond).toString());
   }
 
   bool get isExpectNotEmpty => (expect != null && expect!.isNotEmpty);

@@ -1,7 +1,7 @@
 // ignore: constant_identifier_names
 import 'package:flutter/material.dart';
 
-const DIFF_SHOW_LEVEL_MILISECOND = 250;
+const diffShowLevelMilisecond = 250;
 
 class LayoutConfig {
 // Layout
