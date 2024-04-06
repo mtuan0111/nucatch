@@ -15,29 +15,30 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
     return Scaffold(
       // appBar: AppBar(),
       body: Container(
-        decoration: LayoutConfig.gradientDecoration(context),
+        decoration: LayoutConfig(context).gradientDecoration,
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
+              shadowColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              // forceElevated: true,
+              elevation: 100,
               pinned: true,
-              flexibleSpace: const FlexibleSpaceBar(
+              flexibleSpace: FlexibleSpaceBar(
+                // background: Colors.transparent,
+
                 titlePadding: EdgeInsets.zero,
                 title: Text(
                   "Top score",
+                  style: LayoutConfig(context).displaySmallStyle(
+                    isActiveShadow: true,
+                    isItalic: true,
+                  ),
                 ),
                 // centerTitle: true,
               ),
               backgroundColor: Colors.transparent,
-              expandedHeight: 200,
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.menu),
-                  tooltip: "Menu",
-                  onPressed: () {
-                    return;
-                  },
-                ),
-              ],
+              expandedHeight: 100,
             ),
             SliverPadding(
               padding: const EdgeInsets.symmetric(

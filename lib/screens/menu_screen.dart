@@ -21,7 +21,7 @@ class _MenuScreenState extends State<MenuScreen> {
       builder: (context, state) {
         return Scaffold(
           body: Container(
-            decoration: LayoutConfig.gradientDecoration(context),
+            decoration: LayoutConfig(context).gradientDecoration,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 50),
               child: SafeArea(
@@ -42,15 +42,16 @@ class _MenuScreenState extends State<MenuScreen> {
                         child: Column(
                           children: [
                             Center(
-                                child: Text(
-                              "Welcome ${state.model.name}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall!
-                                  .copyWith(
-                                    color: Colors.white,
-                                  ),
-                            )),
+                              child: Text(
+                                "Welcome ${state.model.name}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(
+                                      color: Colors.white,
+                                    ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -59,14 +60,16 @@ class _MenuScreenState extends State<MenuScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: menuArray.entries
-                            .map((entry) => CustomeTitleButton(
-                                  text: entry.value,
-                                  onTap: () {
-                                    BlocProvider.of<MenuBloc>(context).add(
-                                      SelectOption(option: entry.key),
-                                    );
-                                  },
-                                ))
+                            .map(
+                              (entry) => CustomeTitleButton(
+                                text: entry.value,
+                                onTap: () {
+                                  BlocProvider.of<MenuBloc>(context).add(
+                                    SelectOption(option: entry.key),
+                                  );
+                                },
+                              ),
+                            )
                             .toList(),
                       ),
                     )
@@ -100,8 +103,7 @@ class CustomeTitleButton extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: Text(
           text,
-          style: LayoutConfig.displaySmallStyle(
-            context,
+          style: LayoutConfig(context).displaySmallStyle(
             isActiveShadow: true,
             isItalic: true,
           ),

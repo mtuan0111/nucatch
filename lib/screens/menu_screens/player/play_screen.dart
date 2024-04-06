@@ -34,7 +34,7 @@ class _PlayScreenState extends State<PlayScreen> {
       body: BlocBuilder<TurnBloc, TurnState>(
         builder: (context, turnState) {
           return Container(
-            decoration: LayoutConfig.gradientDecoration(context),
+            decoration: LayoutConfig(context).gradientDecoration,
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -180,8 +180,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                       String inputted =
                                           turnState.expect![index];
                                       return SizedBox(
-                                        width: (LayoutConfig.displaySmallStyle(
-                                                    context)
+                                        width: (LayoutConfig(context)
+                                                .displaySmallStyle()
                                                 .fontSize! *
                                             0.65),
                                         child: Column(
@@ -189,12 +189,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                             Text(
                                               inputted,
                                               textAlign: TextAlign.center,
-                                              style: LayoutConfig
-                                                      .displaySmallStyle(
-                                                          context)
+                                              style: LayoutConfig(context)
+                                                  .displaySmallStyle()
                                                   .copyWith(
-                                                color: Colors.white,
-                                              ),
+                                                    color: Colors.white,
+                                                  ),
                                             ),
                                             const Icon(
                                               FontAwesomeIcons.minus,
@@ -232,8 +231,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                       String inputted =
                                           turnState.expect![index];
                                       return SizedBox(
-                                        width: (LayoutConfig.displaySmallStyle(
-                                                    context)
+                                        width: (LayoutConfig(context)
+                                                .displaySmallStyle()
                                                 .fontSize! *
                                             0.65),
                                         child: Column(
@@ -261,16 +260,16 @@ class _PlayScreenState extends State<PlayScreen> {
                                                   child: Text(
                                                     inputted,
                                                     textAlign: TextAlign.center,
-                                                    style: LayoutConfig
-                                                            .displaySmallStyle(
-                                                                context)
+                                                    style: LayoutConfig(context)
+                                                        .displaySmallStyle()
                                                         .copyWith(
-                                                      color: turnState
-                                                              .isFinishTarget
-                                                          ? Theme.of(context)
-                                                              .primaryColorLight
-                                                          : Colors.white,
-                                                    ),
+                                                          color: turnState
+                                                                  .isFinishTarget
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .primaryColorLight
+                                                              : Colors.white,
+                                                        ),
                                                   ),
                                                 ),
                                               ),
@@ -340,10 +339,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                           },
                                           child: Icon(
                                             FontAwesomeIcons.arrowsRotate,
-                                            size:
-                                                LayoutConfig.displaySmallStyle(
-                                                        context)
-                                                    .fontSize,
+                                            size: LayoutConfig(context)
+                                                .displaySmallStyle()
+                                                .fontSize,
                                             color: Colors.black87,
                                           ),
                                         ),
@@ -364,10 +362,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                           },
                                           child: Icon(
                                             FontAwesomeIcons.bars,
-                                            size:
-                                                LayoutConfig.displaySmallStyle(
-                                                        context)
-                                                    .fontSize,
+                                            size: LayoutConfig(context)
+                                                .displaySmallStyle()
+                                                .fontSize,
                                             color: Colors.black87,
                                           ),
                                         ),
@@ -394,11 +391,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                         },
                                         child: Text(
                                           e.value.toString(),
-                                          style: LayoutConfig.displaySmallStyle(
-                                                  context)
+                                          style: LayoutConfig(context)
+                                              .displaySmallStyle()
                                               .copyWith(
-                                            color: Colors.black87,
-                                          ),
+                                                color: Colors.black87,
+                                              ),
                                         ),
                                       ),
                                     );

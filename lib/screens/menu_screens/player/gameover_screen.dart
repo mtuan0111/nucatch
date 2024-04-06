@@ -29,7 +29,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: LayoutConfig.gradientDecoration(context),
+        decoration: LayoutConfig(context).gradientDecoration,
         child: SafeArea(
           child: CustomScrollView(
             slivers: <Widget>[
@@ -117,72 +117,72 @@ class RankingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(
-          width: LayoutConfig.boxSize,
-          height: LayoutConfig.boxSize,
-          child: Stack(
+    return IntrinsicWidth(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: LayoutConfig.boxSize,
+            height: LayoutConfig.boxSize,
+            child: Stack(
+              children: [
+                Transform.rotate(
+                  angle: -math.pi / 4,
+                  child: Container(
+                    width: LayoutConfig.boxSize,
+                    height: LayoutConfig.boxSize,
+                    decoration: LayoutConfig(context).boxDecoration.copyWith(
+                          border: Border.all(
+                            width: 2,
+                            color: Colors.white,
+                          ),
+                        ),
+                  ),
+                ),
+                Transform.rotate(
+                  angle: -math.pi / 2,
+                  child: Container(
+                    width: LayoutConfig.boxSize,
+                    height: LayoutConfig.boxSize,
+                    decoration: LayoutConfig(context).boxDecoration.copyWith(
+                          border: Border.all(
+                            width: 2,
+                            color: Colors.white,
+                          ),
+                        ),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    ranking.toString(),
+                    style: LayoutConfig(context).displaySmallStyle(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Transform.rotate(
-                angle: -math.pi / 4,
-                child: Container(
-                  width: LayoutConfig.boxSize,
-                  height: LayoutConfig.boxSize,
-                  decoration: LayoutConfig.boxDecoration.copyWith(
-                    border: Border.all(
-                      width: 2,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+              Text(
+                playerName,
+                style: LayoutConfig(context).displaySmallStyle(),
               ),
-              Transform.rotate(
-                angle: -math.pi / 2,
-                child: Container(
-                  width: LayoutConfig.boxSize,
-                  height: LayoutConfig.boxSize,
-                  decoration: LayoutConfig.boxDecoration.copyWith(
-                    border: Border.all(
-                      width: 2,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+              Text(
+                createdAt.toString(),
               ),
-              Center(
-                child: Text(
-                  ranking.toString(),
-                  style: LayoutConfig.displaySmallStyle(
-                    context,
-                  ),
-                ),
+              Text(
+                "Point $turnedPoint",
+                style: LayoutConfig(context).titleMediumStyle(),
               ),
             ],
-          ),
-        ),
-        const SizedBox(
-          width: 20,
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              playerName,
-              style: LayoutConfig.displaySmallStyle(context),
-            ),
-            Text(
-              createdAt.toString(),
-            ),
-            Text(
-              "Point $turnedPoint",
-              style: LayoutConfig.titleMediumStyle(context),
-            ),
-          ],
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }

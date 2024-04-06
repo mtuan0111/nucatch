@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 const diffShowLevelMilisecond = 250;
 
 class LayoutConfig {
+  final BuildContext context;
+
 // Layout
   static double boxSize = 80;
-  static double layoutBorderRadius = 30;
+  static double layoutBorderRadius = 20;
 
-  static TextStyle displaySmallStyle(
-    BuildContext context, {
+  LayoutConfig(this.context);
+
+  TextStyle displaySmallStyle({
     bool isActiveShadow = false,
     bool isItalic = false,
     String? fontFamily,
@@ -29,8 +32,7 @@ class LayoutConfig {
         ],
       );
 
-  static TextStyle titleMediumStyle(
-    BuildContext context, {
+  TextStyle titleMediumStyle({
     bool isActiveShadow = false,
     bool isItalic = false,
     String? fontFamily,
@@ -50,6 +52,11 @@ class LayoutConfig {
         ],
       );
 
+  TextStyle get titleScreenStyle => displaySmallStyle(
+        isActiveShadow: true,
+        isItalic: true,
+      );
+
   static ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(
@@ -64,8 +71,7 @@ class LayoutConfig {
     ),
   );
 
-  static BoxDecoration gradientDecoration(BuildContext context) =>
-      BoxDecoration(
+  BoxDecoration get gradientDecoration => BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -76,12 +82,12 @@ class LayoutConfig {
         ),
       );
 
-  static BoxDecoration boxDecoration = BoxDecoration(
-    borderRadius: BorderRadius.circular(
-      LayoutConfig.layoutBorderRadius,
-    ),
-    border: Border.all(
-      color: Colors.white,
-    ),
-  );
+  BoxDecoration get boxDecoration => BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          LayoutConfig.layoutBorderRadius,
+        ),
+        border: Border.all(
+          color: Colors.white,
+        ),
+      );
 }
