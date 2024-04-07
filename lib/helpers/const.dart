@@ -82,6 +82,17 @@ class LayoutConfig {
         ),
       );
 
+  BoxDecoration get gradientDecorationReverted => BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Theme.of(context).primaryColor,
+            Theme.of(context).secondaryHeaderColor,
+          ].reversed.toList(),
+        ),
+      );
+
   BoxDecoration get boxDecoration => BoxDecoration(
         borderRadius: BorderRadius.circular(
           LayoutConfig.layoutBorderRadius,

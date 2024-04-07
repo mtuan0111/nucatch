@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
 import 'package:nucatch_with_bloc/screens/menu_screens/player/gameover_screen.dart';
 
@@ -19,26 +21,38 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              shadowColor: Colors.transparent,
               foregroundColor: Colors.white,
-              // forceElevated: true,
+              shadowColor: Colors.transparent,
+              surfaceTintColor: Colors.primaries[0],
+              backgroundColor: Colors.transparent,
+
               elevation: 100,
               pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                // background: Colors.transparent,
+              stretch: true,
 
+              flexibleSpace: FlexibleSpaceBar(
                 titlePadding: EdgeInsets.zero,
-                title: Text(
-                  "Top score",
-                  style: LayoutConfig(context).displaySmallStyle(
-                    isActiveShadow: true,
-                    isItalic: true,
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    menuArray[MenuOption.topScore]!,
+                    style: LayoutConfig(context).displaySmallStyle(
+                      isActiveShadow: true,
+                      isItalic: true,
+                    ),
                   ),
                 ),
-                // centerTitle: true,
               ),
-              backgroundColor: Colors.transparent,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(FontAwesomeIcons.chevronLeft),
+              ),
               expandedHeight: 100,
+
+              // leading: Expanded(child: Center(child: Text("back"))),
             ),
             SliverPadding(
               padding: const EdgeInsets.symmetric(
