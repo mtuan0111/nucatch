@@ -18,27 +18,7 @@ class LayoutConfig {
     String? fontFamily,
   }) =>
       Theme.of(context).textTheme.displaySmall!.copyWith(
-        color: Colors.white,
-        fontFamily: fontFamily,
-        fontStyle: isItalic ? FontStyle.italic : null,
-        fontWeight: FontWeight.bold,
-        shadows: [
-          if (isActiveShadow)
-            const BoxShadow(
-              color: Colors.black54,
-              blurRadius: 0,
-              offset: Offset(-2, 4),
-            )
-        ],
-      );
-
-  TextStyle titleMediumStyle({
-    bool isActiveShadow = false,
-    bool isItalic = false,
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.titleMedium!.copyWith(
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         fontFamily: fontFamily,
         fontStyle: isItalic ? FontStyle.italic : null,
         fontWeight: FontWeight.bold,
@@ -56,6 +36,42 @@ class LayoutConfig {
         isActiveShadow: true,
         isItalic: true,
       );
+
+  TextStyle titleSectionStyle({
+    bool isActiveShadow = false,
+    bool isItalic = false,
+    String? fontFamily,
+  }) =>
+      Theme.of(context).textTheme.titleLarge!.copyWith(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        fontFamily: fontFamily,
+        fontStyle: isItalic ? FontStyle.italic : null,
+        fontWeight: FontWeight.w600,
+        shadows: [
+          if (isActiveShadow)
+            const BoxShadow(
+              color: Colors.black54,
+              blurRadius: 0,
+              offset: Offset(-2, 4),
+            )
+        ],
+      );
+
+  TextStyle contentSectionStyle({
+    String? fontFamily,
+  }) =>
+      Theme.of(context).textTheme.bodyLarge!.copyWith(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            fontFamily: fontFamily,
+          );
+
+  TextStyle handWritingSectionStyle({
+    String? fontFamily,
+  }) =>
+      Theme.of(context).textTheme.displaySmall!.copyWith(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            fontFamily: "Dancing Script",
+          );
 
   static ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
     shape: RoundedRectangleBorder(
@@ -98,7 +114,7 @@ class LayoutConfig {
           LayoutConfig.layoutBorderRadius,
         ),
         border: Border.all(
-          color: Colors.white,
+          color: Theme.of(context).scaffoldBackgroundColor,
         ),
       );
 }

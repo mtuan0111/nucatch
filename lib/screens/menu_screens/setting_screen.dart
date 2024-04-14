@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch_with_bloc/helpers/const.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -8,81 +11,192 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+  String get screenTitle => menuArray[MenuOption.setting]!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar(
-            title: Text("Setting"),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 50,
-              vertical: 50,
-            ),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Form(
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      runSpacing: 20,
-                      spacing: 20,
-                      children: [
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            icon: Icon(Icons.person),
-                            labelText: 'Name',
-                          ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Font size"),
-                            Slider(
-                              value: 0,
-                              min: 0,
-                              max: 20,
-                              onChanged: (val) {},
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Volume"),
-                            Slider(
-                              value: 0,
-                              min: 0,
-                              max: 20,
-                              onChanged: (val) {},
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Number of top turn"),
-                            Slider(
-                              value: 0,
-                              min: 0,
-                              max: 20,
-                              onChanged: (val) {},
-                            ),
-                          ],
-                        )
-                      ],
+      body: Container(
+        decoration: LayoutConfig(context).gradientDecoration,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+              shadowColor: Colors.transparent,
+              // surfaceTintColor: Colors.transparent,
+              backgroundColor: Theme.of(context).primaryColor,
+
+              pinned: true,
+              stretch: true,
+
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding: EdgeInsets.zero,
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    screenTitle,
+                    style: LayoutConfig(context).displaySmallStyle(
+                      isActiveShadow: true,
+                      isItalic: true,
                     ),
-                  )
-                ],
+                  ),
+                ),
+              ),
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(FontAwesomeIcons.chevronLeft),
+              ),
+              expandedHeight: 100,
+
+              // leading: Expanded(child: Center(child: Text("back"))),
+            ),
+            DecoratedSliver(
+              decoration: const BoxDecoration(
+                color: Colors.transparent,
+              ),
+              sliver: SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 50,
+                  vertical: 50,
+                ),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Form(
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          runSpacing: 20,
+                          spacing: 20,
+                          children: [
+                            TextFormField(
+                              decoration: InputDecoration(
+                                icon: const Icon(
+                                  Icons.person,
+                                ),
+                                labelText: 'Name',
+                                labelStyle:
+                                    LayoutConfig(context).titleSectionStyle(),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    LayoutConfig.layoutBorderRadius,
+                                  ),
+                                ),
+                                iconColor:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                fillColor:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                focusColor:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.textWidth,
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Font size",
+                                        style: LayoutConfig(context)
+                                            .titleSectionStyle(),
+                                      ),
+                                      Slider(
+                                        value: 0,
+                                        min: 0,
+                                        max: 20,
+                                        onChanged: (val) {},
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.volumeHigh,
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Volume",
+                                        style: LayoutConfig(context)
+                                            .titleSectionStyle(),
+                                      ),
+                                      Slider(
+                                        value: 0,
+                                        min: 0,
+                                        max: 20,
+                                        onChanged: (val) {},
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.ribbon,
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Number of top turn",
+                                        style: LayoutConfig(context)
+                                            .titleSectionStyle(),
+                                      ),
+                                      Slider(
+                                        value: 0,
+                                        min: 0,
+                                        max: 20,
+                                        onChanged: (val) {},
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

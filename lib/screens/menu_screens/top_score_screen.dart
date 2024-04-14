@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
-import 'package:nucatch_with_bloc/screens/menu_screens/player/gameover_screen.dart';
+import 'package:nucatch_with_bloc/helpers/template.dart';
 
 class TopScoreScreen extends StatefulWidget {
   const TopScoreScreen({super.key});
@@ -12,6 +12,7 @@ class TopScoreScreen extends StatefulWidget {
 }
 
 class _TopScoreScreenState extends State<TopScoreScreen> {
+  String get screenTitle => menuArray[MenuOption.topScore]!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,22 +22,21 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              foregroundColor: Colors.white,
+              foregroundColor: Theme.of(context).scaffoldBackgroundColor,
               shadowColor: Colors.transparent,
-              surfaceTintColor: Colors.primaries[0],
-              backgroundColor: Colors.transparent,
+              // surfaceTintColor: Colors.transparent,
+              backgroundColor: Theme.of(context).primaryColor,
 
-              elevation: 100,
               pinned: true,
               stretch: true,
 
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding: EdgeInsets.zero,
                 title: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: Text(
                     textAlign: TextAlign.center,
-                    menuArray[MenuOption.topScore]!,
+                    screenTitle,
                     style: LayoutConfig(context).displaySmallStyle(
                       isActiveShadow: true,
                       isItalic: true,

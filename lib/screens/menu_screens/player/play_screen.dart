@@ -49,13 +49,8 @@ class _PlayScreenState extends State<PlayScreen> {
                             children: [
                               Text(
                                 "Level: ${turnState.level}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                style:
+                                    LayoutConfig(context).contentSectionStyle(),
                               ),
                               Wrap(
                                 spacing: 5,
@@ -63,7 +58,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                   turnState.lifeRemaining,
                                   (index) => Icon(
                                     FontAwesomeIcons.solidStar,
-                                    color: Colors.white,
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
                                     size: Theme.of(context)
                                         .textTheme
                                         .bodyLarge!
@@ -73,13 +69,8 @@ class _PlayScreenState extends State<PlayScreen> {
                               ),
                               Text(
                                 "Point: ${turnState.point}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                style:
+                                    LayoutConfig(context).contentSectionStyle(),
                               ),
                             ],
                           ),
@@ -103,12 +94,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                               const Duration(milliseconds: 400),
                                           child: Text(
                                             time >= 1 ? "Ready!!" : "Go",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge!
+                                            style: LayoutConfig(context)
+                                                .titleSectionStyle(
+                                                    isItalic: true)
                                                 .copyWith(
-                                                  fontStyle: FontStyle.italic,
-                                                  color: Colors.white,
                                                   fontSize: time <= 1
                                                       ? (time /
                                                               turnState
@@ -142,23 +131,19 @@ class _PlayScreenState extends State<PlayScreen> {
                                         child: (time >= 1)
                                             ? Text(
                                                 time.round().toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displayLarge!
+                                                style: (LayoutConfig(context)
+                                                        .displaySmallStyle())
                                                     .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white,
-                                                      fontSize: (time <= 1)
-                                                          ? (time /
-                                                                  turnState
-                                                                      .countDown) *
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .displayLarge!
-                                                                  .fontSize!
-                                                          : null,
-                                                    ),
+                                                  fontSize: (time <= 1)
+                                                      ? (time /
+                                                              turnState
+                                                                  .countDown) *
+                                                          Theme.of(context)
+                                                              .textTheme
+                                                              .displayLarge!
+                                                              .fontSize!
+                                                      : null,
+                                                ),
                                               )
                                             : const SizedBox.shrink(),
                                       ),
@@ -190,14 +175,12 @@ class _PlayScreenState extends State<PlayScreen> {
                                               inputted,
                                               textAlign: TextAlign.center,
                                               style: LayoutConfig(context)
-                                                  .displaySmallStyle()
-                                                  .copyWith(
-                                                    color: Colors.white,
-                                                  ),
+                                                  .displaySmallStyle(),
                                             ),
-                                            const Icon(
+                                            Icon(
                                               FontAwesomeIcons.minus,
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .scaffoldBackgroundColor,
                                             ),
                                           ],
                                         ),
@@ -261,15 +244,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                     inputted,
                                                     textAlign: TextAlign.center,
                                                     style: LayoutConfig(context)
-                                                        .displaySmallStyle()
-                                                        .copyWith(
-                                                          color: turnState
-                                                                  .isFinishTarget
-                                                              ? Theme.of(
-                                                                      context)
-                                                                  .primaryColorLight
-                                                              : Colors.white,
-                                                        ),
+                                                        .displaySmallStyle(),
                                                   ),
                                                 ),
                                               ),
@@ -278,9 +253,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                               opacity: (hide == 0) ? 1 : 0,
                                               duration: const Duration(
                                                   milliseconds: 200),
-                                              child: const Icon(
+                                              child: Icon(
                                                 FontAwesomeIcons.minus,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .scaffoldBackgroundColor,
                                               ),
                                             ),
                                           ],
