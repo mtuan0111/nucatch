@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch_with_bloc/features/settings/settings_controller.dart';
+
 import 'package:nucatch_with_bloc/helpers/const.dart';
 
 class SettingScreen extends StatefulWidget {
-  const SettingScreen({super.key});
+  final SettingsController settingsController;
+  const SettingScreen({
+    super.key,
+    required this.settingsController,
+  });
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
@@ -12,6 +18,9 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   String get screenTitle => menuArray[MenuOption.setting]!;
+
+  SettingsController get settingsController => widget.settingsController;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,10 +122,19 @@ class _SettingScreenState extends State<SettingScreen> {
                                             .titleSectionStyle(),
                                       ),
                                       Slider(
-                                        value: 0,
+                                        value: settingsController.fontSize,
                                         min: 0,
-                                        max: 20,
-                                        onChanged: (val) {},
+                                        max: 10,
+                                        divisions: 10,
+                                        label: settingsController.fontSize
+                                            .round()
+                                            .toString(),
+                                        onChanged: (val) {
+                                          setState(() {
+                                            settingsController
+                                                .updateFontSize(val.round());
+                                          });
+                                        },
                                       ),
                                     ],
                                   ),
@@ -126,7 +144,13 @@ class _SettingScreenState extends State<SettingScreen> {
                             Row(
                               children: [
                                 Icon(
-                                  FontAwesomeIcons.volumeHigh,
+                                  settingsController.vol > 7
+                                      ? FontAwesomeIcons.volumeHigh
+                                      : settingsController.vol > 4
+                                          ? FontAwesomeIcons.volumeLow
+                                          : settingsController.vol > 2
+                                              ? FontAwesomeIcons.volumeOff
+                                              : FontAwesomeIcons.volumeXmark,
                                   color:
                                       Theme.of(context).scaffoldBackgroundColor,
                                 ),
@@ -145,10 +169,19 @@ class _SettingScreenState extends State<SettingScreen> {
                                             .titleSectionStyle(),
                                       ),
                                       Slider(
-                                        value: 0,
+                                        value: settingsController.vol,
                                         min: 0,
-                                        max: 20,
-                                        onChanged: (val) {},
+                                        max: 10,
+                                        divisions: 10,
+                                        label: settingsController.vol
+                                            .round()
+                                            .toString(),
+                                        onChanged: (val) {
+                                          setState(() {
+                                            settingsController
+                                                .updateVol(val.round());
+                                          });
+                                        },
                                       ),
                                     ],
                                   ),
@@ -177,10 +210,20 @@ class _SettingScreenState extends State<SettingScreen> {
                                             .titleSectionStyle(),
                                       ),
                                       Slider(
-                                        value: 0,
-                                        min: 0,
-                                        max: 20,
-                                        onChanged: (val) {},
+                                        value: settingsController.numberOfTurn,
+                                        min: 20,
+                                        max: 100,
+                                        divisions: 8,
+                                        label: settingsController.numberOfTurn
+                                            .round()
+                                            .toString(),
+                                        onChanged: (val) {
+                                          setState(() {
+                                            settingsController
+                                                .updateNumberOfTurn(
+                                                    val.round());
+                                          });
+                                        },
                                       ),
                                     ],
                                   ),

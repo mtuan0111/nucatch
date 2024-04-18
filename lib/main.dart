@@ -13,11 +13,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
-  const Locale localLang = Locale("en");
   final settingsController = SettingsController(
-    SettingsService(
-      localLang: localLang,
-    ),
+    SettingsService(),
   );
 
   // Load the user's preferred theme while the splash screen is displayed.
@@ -82,13 +79,11 @@ class MyApp extends StatelessWidget {
                   "Xanh Mono",
                   "JetBrains Mono",
                 ],
-
-                // textTheme: Theme.of(context).textTheme.apply(
-                //       // fontSizeFactor: 1.1,
-                //       // fontSizeDelta: 2.0,
-                //       bodyColor: Theme.of(context).scaffoldBackgroundColor,
-                //     ),
-
+                textTheme: Theme.of(context).textTheme.apply(
+                      fontSizeFactor: 0.5 + (settingsController.fontSize / 20),
+                      fontSizeDelta: 1 + (settingsController.fontSize / 10),
+                      // bodyColor: Theme.of(context).scaffoldBackgroundColor,
+                    ),
                 colorScheme: ColorScheme.fromSeed(
                   seedColor: Colors.green,
                 ),
@@ -111,7 +106,9 @@ class MyApp extends StatelessWidget {
               ],
               child: Container(
                   decoration: LayoutConfig(context).gradientDecoration,
-                  child: const MenuNav()),
+                  child: MenuNav(
+                    settingsController: settingsController,
+                  )),
             ),
             themeMode: settingsController.themeMode,
           ),

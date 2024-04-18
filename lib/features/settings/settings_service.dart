@@ -7,8 +7,16 @@ import 'package:flutter/material.dart';
 /// you'd like to store settings on a web server, use the http package.
 class SettingsService {
   Locale localLang;
+  int vol;
+  int fontSize;
+  int numberOfTurn;
 
-  SettingsService({this.localLang = const Locale("en")});
+  SettingsService({
+    this.localLang = const Locale("en"),
+    this.vol = 8,
+    this.fontSize = 8,
+    this.numberOfTurn = 20,
+  });
 
   /// Loads the User's preferred ThemeMode from local or remote storage.
   Future<ThemeMode> themeMode() async => ThemeMode.system;
@@ -23,5 +31,23 @@ class SettingsService {
     // Use the shared_preferences package to persist settings locally or the
     // http package to persist settings over the network.
     localLang = locale;
+  }
+
+  Future<void> updateVol(int vol) async {
+    // Use the shared_preferences package to persist settings locally or the
+    // http package to persist settings over the network.
+    vol = vol;
+  }
+
+  Future<void> updateFontSize(int fontSize) async {
+    // Use the shared_preferences package to persist settings locally or the
+    // http package to persist settings over the network.
+    fontSize = fontSize;
+  }
+
+  Future<void> updateNumberOfTurn(int numberOfTurn) async {
+    // Use the shared_preferences package to persist settings locally or the
+    // http package to persist settings over the network.
+    numberOfTurn = numberOfTurn;
   }
 }
