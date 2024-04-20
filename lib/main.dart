@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/setting/setting_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/setting/setting_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
@@ -12,7 +11,6 @@ import 'package:nucatch_with_bloc/navs/menu_nav.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   // final settingsController = SettingsController(
@@ -23,9 +21,7 @@ Future<void> main() async {
   // This prevents a sudden theme change when the app is first displayed.
   // await settingsController.loadSettings();
 
-  runApp(MyApp(
-      // settingsController: settingsController,
-      ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -54,7 +50,7 @@ class _MyAppState extends State<MyApp> {
         child: BlocBuilder<SettingBloc, SettingState>(
           builder: (context, state) {
             return state.isLoading
-                ? LoadingWidget()
+                ? const LoadingWidget()
                 : MaterialApp(
                     title: 'Nucatch',
                     localizationsDelegates: const [

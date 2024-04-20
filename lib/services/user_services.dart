@@ -3,19 +3,27 @@ import 'package:nucatch_with_bloc/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserServices {
-  // SharedPreferences _prefs;
+  SharedPreferences? _prefs;
 
-  UserServices();
+  UserServices() {
+    loadSharedPreferences();
+  }
 
-  // Future<UserState> loadSharedPreferences() async {
-  //   _prefs = await SharedPreferences.getInstance();
-  // }
+  Future<void> loadSharedPreferences() async {
+    _prefs ??= await SharedPreferences.getInstance();
+  }
 
   Future<UserState> getUserSession() async {
-    // await Future.delayed(const Duration(seconds: 1));
+    _prefs ??= await SharedPreferences.getInstance();
 
-    UserModel attempUser = UserModel(name: "BOM", settings: null);
+    UserModel attempUser = UserModel(username: _prefs!.getString("username"));
 
     return AuthenticatedUser(model: attempUser);
+  }
+
+  Future<void> saveUsername(String newUsername) async {
+    _prefs ??= await SharedPreferences.getInstance();
+
+    _prefs!.setString("username", newUsername);
   }
 }

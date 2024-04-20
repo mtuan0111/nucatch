@@ -81,7 +81,7 @@ class _MenuNavState extends State<MenuNav> {
                         child: TopScoreScreen(),
                       ),
                     if (navState is Setting)
-                      MaterialPage(
+                      const MaterialPage(
                         child: SettingScreen(),
                       ),
                     if (navState is About)

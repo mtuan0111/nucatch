@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class SettingState {
   final ThemeMode themeMode;
+
   final String locale;
   final int vol;
   final int fontSize;

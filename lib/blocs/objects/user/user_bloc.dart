@@ -8,6 +8,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc(super.initialState) {
     on<AttempGettingUser>(_onAttempGettingUser);
 
+    on<UsernameChanged>(_onUsernameChanged);
+
     add(AttempGettingUser());
   }
 
@@ -18,6 +20,21 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emitter(
       UnAuthenticatedUser(),
     );
+
+    emitter(await _userServices.getUserSession());
+  }
+
+  Future<void> _onUsernameChanged(
+    UsernameChanged event,
+    Emitter<UserState> emitter,
+  ) async {
+    await _userServices.saveUsername(event.newUsername);
+
+    // emitter(
+    //   state.copyWith(
+    //     username: event.newUsername,
+    //   ),
+    // );
 
     emitter(await _userServices.getUserSession());
   }

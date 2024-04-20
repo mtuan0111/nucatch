@@ -1,9 +1,13 @@
 class UserModel {
-  final String name;
-  final Map<String, dynamic>? settings;
+  final String? username;
 
   UserModel({
-    required this.name,
-    this.settings,
+    this.username,
   });
+
+  UserModel copyWith({
+    String? username,
+  }) {
+    return UserModel(username: username ?? this.username);
+  }
 }

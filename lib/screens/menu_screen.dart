@@ -74,7 +74,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         children: [
                           Center(
                             child: Text(
-                              "Welcome ${state.model.name}",
+                              "Welcome ${state.username}",
                               style: LayoutConfig(context).titleSectionStyle(),
                             ),
                           ),

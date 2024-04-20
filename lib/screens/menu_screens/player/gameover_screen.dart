@@ -54,7 +54,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     ),
                     RankingItem(
                       ranking: 1,
-                      playerName: userBloc.state.model.name,
+                      playerName: userBloc.state.username,
                       createdAt: DateTime.now(),
                       turnedPoint: turnBloc.state.point,
                     ),
