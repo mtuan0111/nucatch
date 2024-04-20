@@ -9,7 +9,6 @@ import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
-import 'package:nucatch_with_bloc/features/settings/settings_controller.dart';
 import 'package:nucatch_with_bloc/navs/player_nav.dart';
 import 'package:nucatch_with_bloc/screens/menu_screens/about_screen.dart';
 
@@ -18,8 +17,7 @@ import 'package:nucatch_with_bloc/screens/menu_screens/setting_screen.dart';
 import 'package:nucatch_with_bloc/screens/menu_screens/top_score_screen.dart';
 
 class MenuNav extends StatefulWidget {
-  final SettingsController settingsController;
-  const MenuNav({super.key, required this.settingsController});
+  const MenuNav({super.key});
 
   @override
   State<MenuNav> createState() => _MenuNavState();
@@ -84,9 +82,7 @@ class _MenuNavState extends State<MenuNav> {
                       ),
                     if (navState is Setting)
                       MaterialPage(
-                        child: SettingScreen(
-                          settingsController: widget.settingsController,
-                        ),
+                        child: SettingScreen(),
                       ),
                     if (navState is About)
                       const MaterialPage(

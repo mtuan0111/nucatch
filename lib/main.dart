@@ -2,118 +2,128 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch_with_bloc/blocs/objects/setting/setting_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/setting/setting_event.dart';
+import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
-import 'package:nucatch_with_bloc/features/settings/settings_controller.dart';
-import 'package:nucatch_with_bloc/features/settings/settings_service.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
 import 'package:nucatch_with_bloc/navs/menu_nav.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
-  final settingsController = SettingsController(
-    SettingsService(),
-  );
+  // final settingsController = SettingsController(
+  //   SettingsService(),
+  // );
 
   // Load the user's preferred theme while the splash screen is displayed.
   // This prevents a sudden theme change when the app is first displayed.
-  await settingsController.loadSettings();
+  // await settingsController.loadSettings();
 
   runApp(MyApp(
-    settingsController: settingsController,
-  ));
+      // settingsController: settingsController,
+      ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({
     super.key,
-    required this.settingsController,
+    // required this.settingsController,
   });
 
-  final SettingsController settingsController;
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
-  // This widget is the root of your application.
+class _MyAppState extends State<MyApp> {
+  // final SettingsController settingsController;
+
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: settingsController,
-      builder: (BuildContext context, Widget? child) {
-        return GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          child: MaterialApp(
-            title: 'Nucatch',
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            locale: settingsController.countryLang,
-            theme: ThemeData(
-                // This is the theme of your application.
-                //
-                // TRY THIS: Try running your application with "flutter run". You'll see
-                // the application has a purple toolbar. Then, without quitting the app,
-                // try changing the seedColor in the colorScheme below to Colors.green
-                // and then invoke "hot reload" (save your changes or press the "hot
-                // reload" button in a Flutter-supported IDE, or press "r" if you used
-                // the command line to start the app).
-                //
-                // Notice that the counter didn't reset back to zero; the application
-                // state is not lost during the reload. To reset the state, use hot
-                // restart instead.
-                //
-                // This works for code too, not just values: Most code changes can be
-                // tested with just a hot reload.
-
-                // fontFamily: 'Charmonman',
-                fontFamilyFallback: const [
-                  "Baloo Bhai",
-                  "Roboto Mono",
-                  "Charmonman",
-                  "Dancing Script",
-                  "Xanh Mono",
-                  "JetBrains Mono",
-                ],
-                textTheme: Theme.of(context).textTheme.apply(
-                      fontSizeFactor: 0.5 + (settingsController.fontSize / 20),
-                      fontSizeDelta: 1 + (settingsController.fontSize / 10),
-                      // bodyColor: Theme.of(context).scaffoldBackgroundColor,
-                    ),
-                colorScheme: ColorScheme.fromSeed(
-                  seedColor: Colors.green,
-                ),
-                useMaterial3: true,
-                primaryColor: Colors.green,
-                secondaryHeaderColor: Colors.red,
-                // scaffoldBackgroundColor: Colors.lightBlueAccent,
-
-                primaryTextTheme: Typography().white
-                // textTheme: Typography(platform: TargetPlatform.iOS).white,
-                ),
-            home: MultiBlocProvider(
-              providers: [
-                BlocProvider<MenuBloc>(
-                  create: (context) => MenuBloc(Menu()),
-                ),
-                BlocProvider(
-                  create: (context) => UserBloc(UnAuthenticatedUser()),
-                ),
-              ],
-              child: Container(
-                  decoration: LayoutConfig(context).gradientDecoration,
-                  child: MenuNav(
-                    settingsController: settingsController,
-                  )),
-            ),
-            themeMode: settingsController.themeMode,
-          ),
-        );
+    return BlocProvider(
+      create: (context) {
+        return SettingBloc();
       },
+      child: GestureDetector(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: BlocBuilder<SettingBloc, SettingState>(
+          builder: (context, state) {
+            return state.isLoading
+                ? LoadingWidget()
+                : MaterialApp(
+                    title: 'Nucatch',
+                    localizationsDelegates: const [
+                      AppLocalizations.delegate,
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                    ],
+                    locale: Locale(state.locale),
+                    theme: ThemeData(
+                        // This is the theme of your application.
+                        //
+                        // TRY THIS: Try running your application with "flutter run". You'll see
+                        // the application has a purple toolbar. Then, without quitting the app,
+                        // try changing the seedColor in the colorScheme below to Colors.green
+                        // and then invoke "hot reload" (save your changes or press the "hot
+                        // reload" button in a Flutter-supported IDE, or press "r" if you used
+                        // the command line to start the app).
+                        //
+                        // Notice that the counter didn't reset back to zero; the application
+                        // state is not lost during the reload. To reset the state, use hot
+                        // restart instead.
+                        //
+                        // This works for code too, not just values: Most code changes can be
+                        // tested with just a hot reload.
+
+                        // fontFamily: 'Charmonman',
+                        fontFamilyFallback: const [
+                          "Baloo Bhai",
+                          "Roboto Mono",
+                          "Charmonman",
+                          "Dancing Script",
+                          "Xanh Mono",
+                          "JetBrains Mono",
+                        ],
+                        textTheme: Theme.of(context).textTheme.apply(
+                              fontSizeFactor: 0.5 + (state.fontSize / 20),
+                              fontSizeDelta: 1 + (state.fontSize / 10),
+                              // bodyColor: Theme.of(context).scaffoldBackgroundColor,
+                            ),
+                        colorScheme: ColorScheme.fromSeed(
+                          seedColor: Colors.green,
+                        ),
+                        useMaterial3: true,
+                        primaryColor: Colors.green,
+                        secondaryHeaderColor: Colors.red,
+                        // scaffoldBackgroundColor: Colors.lightBlueAccent,
+
+                        primaryTextTheme: Typography().white
+                        // textTheme: Typography(platform: TargetPlatform.iOS).white,
+                        ),
+                    home: MultiBlocProvider(
+                      providers: [
+                        BlocProvider<MenuBloc>(
+                          create: (context) => MenuBloc(Menu()),
+                        ),
+                        BlocProvider(
+                          create: (context) => UserBloc(UnAuthenticatedUser()),
+                        ),
+                      ],
+                      child: Container(
+                          decoration: LayoutConfig(context).gradientDecoration,
+                          child: const MenuNav()),
+                    ),
+                    themeMode: state.themeMode,
+                  );
+          },
+        ),
+      ),
     );
   }
 }

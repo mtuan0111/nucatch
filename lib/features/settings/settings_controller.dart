@@ -15,29 +15,22 @@ class SettingsController with ChangeNotifier {
   // Make ThemeMode a private variable so it is not updated directly without
   // also persisting the changes with the SettingsService.
   late ThemeMode _themeMode;
-  late Locale _countryLang;
-  late int _vol;
-  late int _fontSize;
-  late int _numberOfTurn;
 
   // late int _vol;
 
   // Allow Widgets to read the user's preferred ThemeMode.
   ThemeMode get themeMode => _themeMode;
-  Locale get countryLang => _countryLang;
-  double get vol => _vol.toDouble();
-  double get fontSize => _fontSize.toDouble();
-  double get numberOfTurn => _numberOfTurn.toDouble();
+  Locale get countryLang => _settingsService.localLang;
+  double get vol => _settingsService.vol.toDouble();
+  double get fontSize => _settingsService.fontSize.toDouble();
+  double get numberOfTurn => _settingsService.numberOfTurn.toDouble();
 
   /// Load the user's settings from the SettingsService. It may load from a
   /// local database or the internet. The controller only knows it can load the
   /// settings from the service.
   Future<void> loadSettings() async {
+    await _settingsService.loadSharedPreferences();
     _themeMode = await _settingsService.themeMode();
-    _countryLang = _settingsService.localLang;
-    _vol = _settingsService.vol;
-    _fontSize = _settingsService.fontSize;
-    _numberOfTurn = _settingsService.numberOfTurn;
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
@@ -62,38 +55,30 @@ class SettingsController with ChangeNotifier {
   }
 
   Future<void> updateLocale(Locale locale) async {
-    _countryLang = locale;
+    await _settingsService.updateLocale(locale);
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
-
-    await _settingsService.updateLocale(locale);
   }
 
   Future<void> updateVol(int value) async {
-    _vol = value;
+    await _settingsService.updateVol(value);
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
-
-    await _settingsService.updateVol(value);
   }
 
   Future<void> updateFontSize(int value) async {
-    _fontSize = value;
+    await _settingsService.updateFontSize(value);
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
-
-    await _settingsService.updateFontSize(value);
   }
 
   Future<void> updateNumberOfTurn(int value) async {
-    _numberOfTurn = value;
+    await _settingsService.updateNumberOfTurn(value);
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
-
-    await _settingsService.updateNumberOfTurn(value);
   }
 }
