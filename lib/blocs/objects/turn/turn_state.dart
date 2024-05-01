@@ -1,4 +1,5 @@
 import 'package:nucatch_with_bloc/helpers/const.dart';
+import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 
 enum TurnStatus {
   intro,
@@ -21,6 +22,7 @@ class TurnState {
   final String typing;
   final TurnStatus status;
   final int countDown;
+  final TurnRecordedModel? recordedItem;
 
   TurnState({
     this.level = 0,
@@ -31,6 +33,7 @@ class TurnState {
     this.status = TurnStatus.initial,
     this.typing = "",
     this.countDown = 0,
+    this.recordedItem,
   });
 
   TurnState copyWith({
@@ -43,20 +46,21 @@ class TurnState {
     String? typing,
     TurnStatus? status,
     int? countDown,
+    TurnRecordedModel? recordedItem,
   }) {
     return TurnState(
-      level: level ?? this.level,
-      timesCorrect: timesCorrect ?? this.timesCorrect,
-      point: point ?? this.point,
-      lifeRemaining: lifeRemaining != null
-          ? (lifeRemaining < 0 ? 0 : lifeRemaining)
-          : this.lifeRemaining,
-      // currentTypingIndex: currentTypingIndex ?? this.currentTypingIndex,
-      expect: expect ?? this.expect,
-      typing: typing ?? this.typing,
-      status: status ?? this.status,
-      countDown: countDown ?? this.countDown,
-    );
+        level: level ?? this.level,
+        timesCorrect: timesCorrect ?? this.timesCorrect,
+        point: point ?? this.point,
+        lifeRemaining: lifeRemaining != null
+            ? (lifeRemaining < 0 ? 0 : lifeRemaining)
+            : this.lifeRemaining,
+        // currentTypingIndex: currentTypingIndex ?? this.currentTypingIndex,
+        expect: expect ?? this.expect,
+        typing: typing ?? this.typing,
+        status: status ?? this.status,
+        countDown: countDown ?? this.countDown,
+        recordedItem: recordedItem);
   }
 
   int get currentTypingIndex => typing.length;

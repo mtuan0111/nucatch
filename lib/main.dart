@@ -4,6 +4,8 @@ import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/setting/setting_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
@@ -110,10 +112,18 @@ class _MyAppState extends State<MyApp> {
                         BlocProvider(
                           create: (context) => UserBloc(UnAuthenticatedUser()),
                         ),
+                        BlocProvider(
+                          create: (context) => TurnRecordedListBloc(
+                            TurnRecordedListState(
+                              numberOfTopBoard: 20,
+                            ),
+                          ),
+                        ),
                       ],
                       child: Container(
-                          decoration: LayoutConfig(context).gradientDecoration,
-                          child: const MenuNav()),
+                        decoration: LayoutConfig(context).gradientDecoration,
+                        child: const MenuNav(),
+                      ),
                     ),
                     themeMode: state.themeMode,
                   );

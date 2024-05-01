@@ -4,6 +4,10 @@ import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
+import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
 import 'package:nucatch_with_bloc/screens/menu_screens/player/gameover_screen.dart';
 import 'package:nucatch_with_bloc/screens/menu_screens/player/play_screen.dart';
 
@@ -15,6 +19,8 @@ class PlayerNav extends StatefulWidget {
 }
 
 class _PlayerNavState extends State<PlayerNav> {
+  UserState get userState => BlocProvider.of<UserBloc>(context).state;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PlayerNavCubit, PlayerNavState>(
@@ -25,6 +31,12 @@ class _PlayerNavState extends State<PlayerNav> {
               if (state is! GameOverState) {
                 BlocProvider.of<PlayerNavCubit>(context).showGameover();
               }
+
+              BlocProvider.of<TurnRecordedListBloc>(context).add(
+                AddItem(
+                  item: state.recordedItem!,
+                ),
+              );
             }
 
             if (state.status == TurnStatus.intro ||

@@ -7,6 +7,8 @@ import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
 import 'package:nucatch_with_bloc/navs/player_nav.dart';
@@ -77,8 +79,13 @@ class _MenuNavState extends State<MenuNav> {
                         ),
                       ),
                     if (navState is TopScore)
-                      const MaterialPage(
-                        child: TopScoreScreen(),
+                      MaterialPage(
+                        child: BlocBuilder<TurnRecordedListBloc,
+                            TurnRecordedListState>(
+                          builder: (context, state) {
+                            return const TopScoreScreen();
+                          },
+                        ),
                       ),
                     if (navState is Setting)
                       const MaterialPage(

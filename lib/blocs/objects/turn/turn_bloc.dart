@@ -4,6 +4,9 @@ import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch_with_bloc/helpers/helper.dart';
+import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
+import 'package:nucatch_with_bloc/models/turn_record_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TurnBloc extends Bloc<TurnEvent, TurnState> {
   TurnBloc(super.initialState) {
@@ -173,9 +176,17 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
 
     if (state.lifeRemaining == 0) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      String username = prefs.getString(PreferencesKey.USERNAME)!;
+
       emitter(
         state.copyWith(
           status: TurnStatus.gameOver,
+          recordedItem: TurnRecordedModel(
+            playedUsername: username,
+            point: state.point,
+          ),
         ),
       );
       return false;
@@ -224,6 +235,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
 
     HapticFeedback.vibrate();
+
+    if (isClosed) {
+      return;
+    }
 
     add(
       SetLevel(

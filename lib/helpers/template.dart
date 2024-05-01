@@ -13,7 +13,7 @@ class RankingItem extends StatelessWidget {
 
   final int ranking;
   final String playerName;
-  final DateTime createdAt;
+  final String createdAt;
   final int turnedPoint;
 
   @override
@@ -74,7 +74,7 @@ class RankingItem extends StatelessWidget {
                 style: LayoutConfig(context).titleSectionStyle(),
               ),
               Text(
-                createdAt.toString(),
+                createdAt,
                 style: LayoutConfig(context).contentSectionStyle(),
               ),
               Text("Point $turnedPoint",

@@ -28,14 +28,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     UsernameChanged event,
     Emitter<UserState> emitter,
   ) async {
-    await _userServices.saveUsername(event.newUsername);
-
-    // emitter(
-    //   state.copyWith(
-    //     username: event.newUsername,
-    //   ),
-    // );
-
-    emitter(await _userServices.getUserSession());
+    if (await _userServices.saveUsername(event.newUsername)) {
+      emitter(await _userServices.getUserSession());
+    }
   }
 }

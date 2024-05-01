@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
 
@@ -18,6 +20,9 @@ class GameOverScreen extends StatefulWidget {
 class _GameOverScreenState extends State<GameOverScreen> {
   UserBloc get userBloc => BlocProvider.of<UserBloc>(context);
   TurnBloc get turnBloc => BlocProvider.of<TurnBloc>(context);
+
+  TurnRecordedListBloc get turnListBloc =>
+      BlocProvider.of<TurnRecordedListBloc>(context);
 
   double get screenWidth => MediaQuery.of(context).size.width;
   double get buttonSpace => 20;
@@ -52,11 +57,17 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    RankingItem(
-                      ranking: 1,
-                      playerName: userBloc.state.username,
-                      createdAt: DateTime.now(),
-                      turnedPoint: turnBloc.state.point,
+                    BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
+                      builder: (context, state) {
+                        return RankingItem(
+                          ranking: state.indexOf(turnBloc.state.recordedItem!),
+                          playerName:
+                              turnBloc.state.recordedItem!.playedUsername,
+                          createdAt:
+                              turnBloc.state.recordedItem!.recordedTime ?? "",
+                          turnedPoint: turnBloc.state.recordedItem!.point,
+                        );
+                      },
                     ),
                     const SizedBox(
                       height: 50,

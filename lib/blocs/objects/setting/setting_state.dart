@@ -1,37 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:nucatch_with_bloc/models/setting_model.dart';
 
 class SettingState {
-  final ThemeMode themeMode;
+  // final ThemeMode themeMode;
 
-  final String locale;
-  final int vol;
-  final int fontSize;
-  final int numberOfTopBoard;
+  // final String locale;
+  // final int vol;
+  // final int fontSize;
+  // final int numberOfTopBoard;
+
+  SettingModel? model;
   final bool isLoading;
 
-  // final SharedPreferences prefs;
-
   SettingState({
-    this.themeMode = ThemeMode.system,
-    this.locale = "en",
-    this.vol = 8,
-    this.fontSize = 8,
-    this.numberOfTopBoard = 20,
+    this.model,
     this.isLoading = true,
-    // required this.prefs,
-  });
-
-  // ThemeMode get themeMode => ThemeMode.values
-  //     .where((element) => element.name == prefs.getString("themeMode"))
-  //     .first;
-
-  // Locale get locale => Locale(prefs.getString("locale") ?? "en");
-
-  // int get vol => prefs.getInt("vol") ?? 8;
-
-  // int get fontSize => prefs.getInt("fontSize") ?? 8;
-
-  // int get numberOfTopBoard => prefs.getInt("numberOfTopBoard") ?? 8;
+  }) {
+    model ??= SettingModel();
+  }
 
   SettingState copyWith({
     ThemeMode? themeMode,
@@ -40,24 +26,29 @@ class SettingState {
     int? fontSize,
     int? numberOfTopBoard,
     bool? isLoading,
+    SettingModel? model,
   }) {
-    // prefs.setString(
-    //     "themeMode", themeMode?.toString() ?? this.themeMode.toString());
-
-    // prefs.setString("locale", locale ?? this.locale.countryCode!);
-
-    // prefs.setInt("vol", vol ?? this.vol);
-
-    // prefs.setInt("fontSize", fontSize ?? this.fontSize);
-    // prefs.setInt("numberOfTopBoard", numberOfTopBoard ?? this.numberOfTopBoard);
-
     return SettingState(
-      themeMode: themeMode ?? this.themeMode,
-      locale: locale ?? this.locale,
-      vol: vol ?? this.vol,
-      fontSize: fontSize ?? this.fontSize,
-      numberOfTopBoard: numberOfTopBoard ?? this.numberOfTopBoard,
+      model: SettingModel(
+        themeMode: themeMode ?? model?.themeMode ?? this.model!.themeMode,
+        locale: locale ?? model?.locale ?? this.model!.locale,
+        vol: vol ?? model?.vol ?? this.model!.vol,
+        fontSize: fontSize ?? model?.fontSize ?? this.model!.fontSize,
+        numberOfTopBoard: numberOfTopBoard ??
+            model?.numberOfTopBoard ??
+            this.model!.numberOfTopBoard,
+      ),
       isLoading: isLoading ?? this.isLoading,
     );
   }
+
+  String get locale => model!.locale;
+
+  int get fontSize => model!.fontSize;
+
+  int get vol => model!.vol;
+
+  int get numberOfTopBoard => model!.numberOfTopBoard;
+
+  ThemeMode get themeMode => model!.themeMode;
 }

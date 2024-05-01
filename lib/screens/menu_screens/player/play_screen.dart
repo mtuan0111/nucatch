@@ -25,6 +25,12 @@ class _PlayScreenState extends State<PlayScreen> {
   String inputtedValue = "";
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // TextStyle buttonStyle = Theme.of(context).textTheme.headlineLarge!.copyWith(
     //       fontWeight: FontWeight.bold,

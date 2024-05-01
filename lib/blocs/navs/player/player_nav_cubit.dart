@@ -5,5 +5,7 @@ class PlayerNavCubit extends Cubit<PlayerNavState> {
   PlayerNavCubit() : super(PlayerNavInitial());
 
   void showPlay() => emit(PlayingState());
-  void showGameover() => emit(GameOverState());
+  void showGameover() => emit(
+        GameOverState(),
+      );
 }

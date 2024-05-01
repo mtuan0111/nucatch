@@ -3,10 +3,10 @@ import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 import 'package:nucatch_with_bloc/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserServices {
+class SettingServices {
   SharedPreferences? _prefs;
 
-  UserServices() {
+  SettingServices() {
     loadSharedPreferences();
   }
 

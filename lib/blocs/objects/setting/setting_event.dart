@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 abstract class SettingEvent {}
 
-class LoadSetting extends SettingEvent {}
+class LoadData extends SettingEvent {}
 
 class ChangedThemeMode extends SettingEvent {
   final ThemeMode themeMode;
