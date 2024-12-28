@@ -3,19 +3,23 @@ import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 class TurnRecordedListState {
   final int numberOfTopBoard;
   final List<TurnRecordedModel>? _listModel;
+  final bool isLoading;
 
   TurnRecordedListState({
     required this.numberOfTopBoard,
     List<TurnRecordedModel>? listModel,
+    this.isLoading = false,
   }) : _listModel = listModel;
 
   TurnRecordedListState copyWith({
     int? numberOfTopBoard,
     List<TurnRecordedModel>? listModel,
+    bool? isLoading,
   }) {
     return TurnRecordedListState(
       numberOfTopBoard: numberOfTopBoard ?? this.numberOfTopBoard,
       listModel: listModel ?? _listModel,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 

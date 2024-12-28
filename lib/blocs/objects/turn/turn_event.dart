@@ -35,6 +35,8 @@ class SetLevel extends TurnEvent {
   });
 }
 
+class SaveRecorded extends TurnEvent {}
+
 class ShowExpect extends TurnEvent {
   ShowExpect();
 }

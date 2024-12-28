@@ -60,11 +60,12 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
                       builder: (context, state) {
                         return RankingItem(
-                          ranking: state.indexOf(turnBloc.state.recordedItem!),
+                          ranking: state.listModel
+                                  ?.indexOf(turnBloc.state.recordedItem!) ??
+                              1,
                           playerName:
                               turnBloc.state.recordedItem!.playedUsername,
-                          createdAt:
-                              turnBloc.state.recordedItem!.recordedTime ?? "",
+                          createdAt: turnBloc.state.recordedItem!.recordedTime,
                           turnedPoint: turnBloc.state.recordedItem!.point,
                         );
                       },

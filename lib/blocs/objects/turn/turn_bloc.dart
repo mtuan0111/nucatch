@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
+import 'package:nucatch_with_bloc/helpers/const.dart';
 import 'package:nucatch_with_bloc/helpers/helper.dart';
 import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 import 'package:nucatch_with_bloc/models/turn_record_model.dart';
+import 'package:nucatch_with_bloc/services/turn_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TurnBloc extends Bloc<TurnEvent, TurnState> {
@@ -17,6 +19,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<MarkCorrectTap>(_onMarkCorrectTap);
     on<MarkWrongTap>(_onMarkWrongTap);
     on<ResetNewNumber>(_onResetNewNumber);
+    on<SaveRecorded>(_onSaveRecorded);
 
     on<Start>(_onStart);
     on<CountDownIntro>(_onCountDownIntro);
@@ -56,6 +59,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     // Checking is correct tap or not.
     String keyValue = keyboardArray[event.keyValue].toString();
+    if (state.expect == null || state.expect!.isEmpty) {
+      return false;
+    }
+
     if (keyValue == state.expect![state.currentTypingIndex]) {
       await _onMarkCorrectTap(
         MarkCorrectTap(keyValue: event.keyValue),
@@ -176,17 +183,13 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
 
     if (state.lifeRemaining == 0) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      String username = prefs.getString(PreferencesKey.USERNAME)!;
+      TurnRecordedModel itemSaved =
+          await _onSaveRecorded(SaveRecorded(), emitter);
 
       emitter(
         state.copyWith(
           status: TurnStatus.gameOver,
-          recordedItem: TurnRecordedModel(
-            playedUsername: username,
-            point: state.point,
-          ),
+          recordedItem: itemSaved,
         ),
       );
       return false;
@@ -215,6 +218,30 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
       emitter,
     );
+  }
+
+  Future<TurnRecordedModel> _onSaveRecorded(
+    SaveRecorded event,
+    Emitter<TurnState> emitter,
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    TurnRecordedServices turnedServices = TurnRecordedServices();
+    String username =
+        prefs.getString(PreferencesKey.USERNAME) ?? defaultUsername;
+
+    TurnRecordedModel itemModel = TurnRecordedModel(
+      playedUsername: username,
+      point: state.point,
+      recordedTime: DateTime.now(),
+    );
+    if (await turnedServices.addItem(itemModel)) {
+      // emitter(
+      //   state.copyWith(
+      //     listModel: await _turnedServices.getTurnedList(),
+      //   ),
+      // );
+    }
+    return itemModel;
   }
 
   Future<void> _onStart(

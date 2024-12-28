@@ -1,3 +1,4 @@
+import 'package:nucatch_with_bloc/helpers/const.dart';
 import 'package:nucatch_with_bloc/models/user_model.dart';
 
 class UserState {
@@ -7,7 +8,7 @@ class UserState {
     required this.model,
   });
 
-  String get username => model.username ?? "Anonymous";
+  String get username => model.username ?? defaultUsername;
 
   UserState copyWith({
     String? username,
@@ -22,7 +23,7 @@ class UserState {
 }
 
 class UnAuthenticatedUser extends UserState {
-  UnAuthenticatedUser() : super(model: UserModel(username: "Anonymous"));
+  UnAuthenticatedUser() : super(model: UserModel(username: defaultUsername));
 }
 
 class AuthenticatedUser extends UserState {

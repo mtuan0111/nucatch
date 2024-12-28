@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 import 'package:nucatch_with_bloc/models/turn_record_model.dart';
@@ -9,17 +10,21 @@ class TurnRecordedServices {
 
   List<TurnRecordedModel>? turnedRecordedList;
 
-  TurnRecordedServices() {
-    loadSharedPreferences();
+  TurnRecordedServices() {}
+
+  Future<SharedPreferences> get pref async {
+    await loadSharedPreferences();
+    return _prefs!;
   }
 
-  Future<void> loadSharedPreferences() async {
+  Future<SharedPreferences> loadSharedPreferences() async {
     _prefs ??= await SharedPreferences.getInstance();
+    return _prefs!;
   }
 
   Future<List<TurnRecordedModel>?> getTurnedList() async {
     turnedRecordedList =
-        _prefs!.getStringList(PreferencesKey.LIST_TURN_RECORDED)?.map((e) {
+        (await pref).getStringList(PreferencesKey.LIST_TURN_RECORDED)?.map((e) {
       return TurnRecordedModel.fromJSON(json.decode(e));
     }).toList();
 
@@ -27,14 +32,16 @@ class TurnRecordedServices {
   }
 
   Future<bool> addItem(TurnRecordedModel item) async {
-    turnedRecordedList ?? [].add(item);
+    List<TurnRecordedModel> addedList = (await getTurnedList() ?? []);
+    addedList.add(item);
 
     return _prefs!.setStringList(
         PreferencesKey.LIST_TURN_RECORDED,
-        turnedRecordedList!
-            .map(
-              (e) => e.toString(),
-            )
-            .toList());
+        addedList.map(
+          (e) {
+            log(e.toString());
+            return e.toString();
+          },
+        ).toList());
   }
 }

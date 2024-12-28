@@ -10,9 +10,9 @@ class TurnRecordedListBloc
 
   TurnRecordedListBloc(super.state) {
     on<LoadData>(_onLoadData);
-    on<AddItem>(_onAddItem);
+    // on<AddItem>(_onAddItem);
 
-    add(LoadData());
+    // add(LoadData());
   }
 
   Future<void> _onLoadData(
@@ -21,21 +21,31 @@ class TurnRecordedListBloc
   ) async {
     emitter(
       state.copyWith(
+        listModel: [],
+        isLoading: true,
+      ),
+    );
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    emitter(
+      state.copyWith(
         listModel: await _turnedServices.getTurnedList(),
+        isLoading: false,
       ),
     );
   }
 
-  Future<void> _onAddItem(
-    AddItem event,
-    Emitter<TurnRecordedListState> emitter,
-  ) async {
-    if (await _turnedServices.addItem(event.item)) {
-      emitter(
-        state.copyWith(
-          listModel: await _turnedServices.getTurnedList(),
-        ),
-      );
-    }
-  }
+  // Future<void> _onAddItem(
+  //   AddItem event,
+  //   Emitter<TurnRecordedListState> emitter,
+  // ) async {
+  //   if (await _turnedServices.addItem(event.item)) {
+  //     emitter(
+  //       state.copyWith(
+  //         listModel: await _turnedServices.getTurnedList(),
+  //       ),
+  //     );
+  //   }
+  // }
 }

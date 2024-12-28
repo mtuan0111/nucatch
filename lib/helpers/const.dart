@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 
 const diffShowLevelMilisecond = 250;
 
+const String timeDateClient = "dd/MM/yyyy hh:mm a";
+const String timeDateServer = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
+const String defaultUsername = "Anonymous";
+
 class LayoutConfig {
   final BuildContext context;
 
