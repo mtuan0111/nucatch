@@ -1,4 +1,5 @@
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 
 abstract class TurnEvent {}
 
@@ -35,7 +36,11 @@ class SetLevel extends TurnEvent {
   });
 }
 
-class SaveRecorded extends TurnEvent {}
+class SaveRecorded extends TurnEvent {
+  final TurnRecordedModel savingRecord;
+
+  SaveRecorded({required this.savingRecord});
+}
 
 class ShowExpect extends TurnEvent {
   ShowExpect();

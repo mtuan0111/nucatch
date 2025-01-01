@@ -26,7 +26,6 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -85,79 +84,84 @@ class _PlayScreenState extends State<PlayScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Countdown(
-                                    seconds: turnState.countDown,
-                                    interval: const Duration(milliseconds: 400),
-                                    build: (BuildContext context, double time) {
-                                      print(time);
-                                      return AnimatedOpacity(
-                                        opacity: time >= 1 ? 1 : 0,
-                                        duration:
-                                            const Duration(milliseconds: 400),
-                                        child: AnimatedScale(
-                                          scale: time >= 1 ? 1 : 15,
+                                  if (!context.read<TurnBloc>().isClosed)
+                                    Countdown(
+                                      seconds: turnState.countDown,
+                                      interval:
+                                          const Duration(milliseconds: 400),
+                                      build:
+                                          (BuildContext context, double time) {
+                                        print(time);
+                                        return AnimatedOpacity(
+                                          opacity: time >= 1 ? 1 : 0,
                                           duration:
                                               const Duration(milliseconds: 400),
-                                          child: Text(
-                                            time >= 1 ? "Ready!!" : "Go",
-                                            style: LayoutConfig(context)
-                                                .titleSectionStyle(
-                                                    isItalic: true)
-                                                .copyWith(
-                                                  fontSize: time <= 1
-                                                      ? (time /
-                                                              turnState
-                                                                  .countDown) *
-                                                          Theme.of(context)
-                                                              .textTheme
-                                                              .displayLarge!
-                                                              .fontSize!
-                                                      : null,
-                                                ),
+                                          child: AnimatedScale(
+                                            scale: time >= 1 ? 1 : 15,
+                                            duration: const Duration(
+                                                milliseconds: 400),
+                                            child: Text(
+                                              time >= 1 ? "Ready!!" : "Go",
+                                              style: LayoutConfig(context)
+                                                  .titleSectionStyle(
+                                                      isItalic: true)
+                                                  .copyWith(
+                                                    fontSize: time <= 1
+                                                        ? (time /
+                                                                turnState
+                                                                    .countDown) *
+                                                            Theme.of(context)
+                                                                .textTheme
+                                                                .displayLarge!
+                                                                .fontSize!
+                                                        : null,
+                                                  ),
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  Countdown(
-                                    seconds: turnState.countDown,
-                                    interval: const Duration(milliseconds: 100),
-                                    build:
-                                        (BuildContext context, double time) =>
-                                            AnimatedOpacity(
-                                      opacity: time >= 1 ? 1 : 0,
-                                      duration:
-                                          const Duration(milliseconds: 1000),
-                                      curve: Curves.easeOutQuart,
-                                      child: AnimatedScale(
-                                        scale: time >= 1 ? 1 : 0,
-                                        duration:
-                                            const Duration(milliseconds: 200),
-                                        curve: Curves.easeOutQuart,
-                                        child: (time >= 1)
-                                            ? Text(
-                                                time.round().toString(),
-                                                style: (LayoutConfig(context)
-                                                        .displaySmallStyle())
-                                                    .copyWith(
-                                                  fontSize: (time <= 1)
-                                                      ? (time /
-                                                              turnState
-                                                                  .countDown) *
-                                                          Theme.of(context)
-                                                              .textTheme
-                                                              .displayLarge!
-                                                              .fontSize!
-                                                      : null,
-                                                ),
-                                              )
-                                            : const SizedBox.shrink(),
-                                      ),
+                                        );
+                                      },
                                     ),
-                                    onFinished: () {
-                                      print('Let start!');
-                                    },
-                                  ),
+                                  if (!context.read<TurnBloc>().isClosed)
+                                    Countdown(
+                                      seconds: turnState.countDown,
+                                      interval:
+                                          const Duration(milliseconds: 100),
+                                      build:
+                                          (BuildContext context, double time) =>
+                                              AnimatedOpacity(
+                                        opacity: time >= 1 ? 1 : 0,
+                                        duration:
+                                            const Duration(milliseconds: 1000),
+                                        curve: Curves.easeOutQuart,
+                                        child: AnimatedScale(
+                                          scale: time >= 1 ? 1 : 0,
+                                          duration:
+                                              const Duration(milliseconds: 200),
+                                          curve: Curves.easeOutQuart,
+                                          child: (time >= 1)
+                                              ? Text(
+                                                  time.round().toString(),
+                                                  style: (LayoutConfig(context)
+                                                          .displaySmallStyle())
+                                                      .copyWith(
+                                                    fontSize: (time <= 1)
+                                                        ? (time /
+                                                                turnState
+                                                                    .countDown) *
+                                                            Theme.of(context)
+                                                                .textTheme
+                                                                .displayLarge!
+                                                                .fontSize!
+                                                        : null,
+                                                  ),
+                                                )
+                                              : const SizedBox.shrink(),
+                                        ),
+                                      ),
+                                      onFinished: () {
+                                        print('Let start!');
+                                      },
+                                    ),
                                 ],
                               ),
                             ),

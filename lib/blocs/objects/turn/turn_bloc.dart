@@ -11,6 +11,8 @@ import 'package:nucatch_with_bloc/services/turn_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TurnBloc extends Bloc<TurnEvent, TurnState> {
+  late TurnRecordedServices _turnedServices;
+
   TurnBloc(super.initialState) {
     on<Tap>(_onTap);
     on<SetLevel>(_onSetLevel);
@@ -23,26 +25,32 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     on<Start>(_onStart);
     on<CountDownIntro>(_onCountDownIntro);
+
+    _turnedServices = TurnRecordedServices();
   }
 
-  Future<bool> _onTap(
+  Future<void> _onTap(
     Tap event,
     Emitter<TurnState> emitter,
   ) async {
+    if (isClosed) {
+      return;
+    }
+
     if (event.keyValue == KeyboardOption.reset) {
-      return false;
+      return;
     }
 
     if (event.keyValue == KeyboardOption.mainMenu) {
-      return false;
+      return;
     }
 
     if (state.lifeRemaining < 0) {
-      return false;
+      return;
     }
 
     if (state.expect == null || state.expect!.isEmpty) {
-      return false;
+      return;
     }
 
     if (!state.isAbleToTap) {
@@ -53,14 +61,14 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
           ),
         );
       } else {
-        return false;
+        return;
       }
     }
 
     // Checking is correct tap or not.
     String keyValue = keyboardArray[event.keyValue].toString();
     if (state.expect == null || state.expect!.isEmpty) {
-      return false;
+      return;
     }
 
     if (keyValue == state.expect![state.currentTypingIndex]) {
@@ -74,7 +82,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         emitter,
       );
       if (!state.isAbleToContinue) {
-        return false;
+        return;
       }
     }
 
@@ -103,13 +111,16 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         ));
       }
     }
-    return true;
   }
 
   Future<void> _onSetLevel(
     SetLevel event,
     Emitter<TurnState> emitter,
   ) async {
+    if (isClosed) {
+      return;
+    }
+
     emitter(
       state.copyWith(
         status: TurnStatus.playing,
@@ -142,6 +153,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     ShowExpect event,
     Emitter<TurnState> emitter,
   ) {
+    if (isClosed) {
+      return;
+    }
+
     emitter(
       state.copyWith(
         status: TurnStatus.initial,
@@ -153,6 +168,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     HideExpect event,
     Emitter<TurnState> emitter,
   ) {
+    if (isClosed) {
+      return;
+    }
+
     emitter(
       state.copyWith(
         status: TurnStatus.playing,
@@ -165,6 +184,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     // MarkCorrectTap event,
     Emitter<TurnState> emitter,
   ) async {
+    if (isClosed) {
+      return;
+    }
+
     HapticFeedback.heavyImpact();
 
     emitter(
@@ -173,35 +196,54 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
   }
 
-  Future<bool> _onMarkWrongTap(
+  Future<void> _onMarkWrongTap(
     // MarkWrongTap event,
     Emitter<TurnState> emitter,
   ) async {
+    if (isClosed) {
+      return;
+    }
+
     emitter(
       state.copyWith(
         lifeRemaining: state.lifeRemaining - 1,
       ),
     );
 
-    if (state.lifeRemaining == 0) {
-      TurnRecordedModel itemSaved =
-          await _onSaveRecorded(SaveRecorded(), emitter);
+    if (!state.isAbleToContinue) {
+      // TurnRecordedModel itemSaved =
+      //     await _onSaveRecorded(SaveRecorded(), emitter);
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String username =
+          prefs.getString(PreferencesKey.USERNAME) ?? defaultUsername;
+
+      TurnRecordedModel itemModel = TurnRecordedModel(
+        playedUsername: username,
+        point: state.point,
+        recordedTime: DateTime.now(),
+      );
+
+      add(SaveRecorded(savingRecord: itemModel));
 
       emitter(
         state.copyWith(
           status: TurnStatus.gameOver,
-          recordedItem: itemSaved,
+          recordedItem: itemModel,
         ),
       );
-      return false;
+      return;
     }
-    return true;
   }
 
   Future<void> _onResetNewNumber(
     ResetNewNumber event,
     Emitter<TurnState> emitter,
   ) async {
+    if (isClosed) {
+      return;
+    }
+
     if (!state.isAbleToReset) {
       return;
     }
@@ -221,34 +263,33 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
   }
 
-  Future<TurnRecordedModel> _onSaveRecorded(
+  Future<void> _onSaveRecorded(
     SaveRecorded event,
     Emitter<TurnState> emitter,
   ) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    TurnRecordedServices turnedServices = TurnRecordedServices();
-    String username =
-        prefs.getString(PreferencesKey.USERNAME) ?? defaultUsername;
-
-    TurnRecordedModel itemModel = TurnRecordedModel(
-      playedUsername: username,
-      point: state.point,
-      recordedTime: DateTime.now(),
-    );
-    if (await turnedServices.addItem(itemModel)) {
-      // emitter(
-      //   state.copyWith(
-      //     listModel: await _turnedServices.getTurnedList(),
-      //   ),
-      // );
+    if (isClosed) {
+      return;
     }
-    return itemModel;
+
+    await _turnedServices.addItem(event.savingRecord);
+
+    // emitter(
+    //   state.copyWith(
+    //     listModel: await _turnedServices.getTurnedList(),
+    //   ),
+    // );
+
+    // return itemModel;
   }
 
   Future<void> _onStart(
     Start event,
     Emitter<TurnState> emitter,
   ) async {
+    if (isClosed) {
+      return;
+    }
+
     emitter(
       TurnState().copyWith(
         countDown: event.seconds,
@@ -262,11 +303,11 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
-    HapticFeedback.vibrate();
-
     if (isClosed) {
       return;
     }
+
+    HapticFeedback.vibrate();
 
     add(
       SetLevel(
@@ -278,5 +319,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   Future<void> _onCountDownIntro(
     CountDownIntro event,
     Emitter<TurnState> emitter,
-  ) async {}
+  ) async {
+    if (isClosed) {
+      return;
+    }
+  }
 }

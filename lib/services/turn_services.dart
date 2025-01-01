@@ -10,7 +10,7 @@ class TurnRecordedServices {
 
   List<TurnRecordedModel>? turnedRecordedList;
 
-  TurnRecordedServices() {}
+  TurnRecordedServices();
 
   Future<SharedPreferences> get pref async {
     await loadSharedPreferences();
