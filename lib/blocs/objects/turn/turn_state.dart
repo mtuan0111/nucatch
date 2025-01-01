@@ -79,6 +79,7 @@ class TurnState {
   bool get isAbleToTap =>
       (status == TurnStatus.playing) && isExpectNotEmpty && !isFinishTarget;
   bool get isAbleToReset => lifeRemaining > 1;
+  bool get isAbleToContinue => lifeRemaining > 0;
 }
 
 // class InitialState extends TurnState {}

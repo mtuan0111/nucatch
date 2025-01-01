@@ -16,8 +16,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<SetLevel>(_onSetLevel);
     on<ShowExpect>(_onShowExpect);
     on<HideExpect>(_onHideExpect);
-    on<MarkCorrectTap>(_onMarkCorrectTap);
-    on<MarkWrongTap>(_onMarkWrongTap);
+    // on<MarkCorrectTap>(_onMarkCorrectTap);
+    // on<MarkWrongTap>(_onMarkWrongTap);
     on<ResetNewNumber>(_onResetNewNumber);
     on<SaveRecorded>(_onSaveRecorded);
 
@@ -65,15 +65,15 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     if (keyValue == state.expect![state.currentTypingIndex]) {
       await _onMarkCorrectTap(
-        MarkCorrectTap(keyValue: event.keyValue),
+        event.keyValue,
         emitter,
       );
     } else {
-      bool isAllowToContinue = await _onMarkWrongTap(
-        MarkWrongTap(),
+      await _onMarkWrongTap(
+        // MarkWrongTap(),
         emitter,
       );
-      if (!isAllowToContinue) {
+      if (!state.isAbleToContinue) {
         return false;
       }
     }
@@ -161,19 +161,20 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   }
 
   Future<void> _onMarkCorrectTap(
-    MarkCorrectTap event,
+    KeyboardOption keyValue,
+    // MarkCorrectTap event,
     Emitter<TurnState> emitter,
   ) async {
     HapticFeedback.heavyImpact();
 
     emitter(
       state.copyWith(
-          typing: "${state.typing}${keyboardArray[event.keyValue].toString()}"),
+          typing: "${state.typing}${keyboardArray[keyValue].toString()}"),
     );
   }
 
   Future<bool> _onMarkWrongTap(
-    MarkWrongTap event,
+    // MarkWrongTap event,
     Emitter<TurnState> emitter,
   ) async {
     emitter(

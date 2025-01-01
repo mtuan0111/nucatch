@@ -45,11 +45,11 @@ class HideExpect extends TurnEvent {
   HideExpect();
 }
 
-class MarkCorrectTap extends TurnEvent {
-  final KeyboardOption keyValue;
-  MarkCorrectTap({required this.keyValue});
-}
+// class MarkCorrectTap extends TurnEvent {
+//   final KeyboardOption keyValue;
+//   MarkCorrectTap({required this.keyValue});
+// }
 
-class MarkWrongTap extends TurnEvent {}
+// class MarkWrongTap extends TurnEvent {}
 
 class ResetNewNumber extends TurnEvent {}
