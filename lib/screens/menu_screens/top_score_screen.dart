@@ -20,6 +20,9 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
   String get screenTitle => menuArray[MenuOption.topScore]!;
   @override
   Widget build(BuildContext context) {
+    // TurnRecordedListState turnRecordedListState =
+    //     BlocProvider.of<TurnRecordedListBloc>(context).state;
+
     return BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
       builder: (context, turnRecordedListState) {
         return Scaffold(

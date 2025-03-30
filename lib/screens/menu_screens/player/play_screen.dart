@@ -4,6 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_cubit.dart';
+import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
@@ -31,13 +33,22 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TextStyle buttonStyle = Theme.of(context).textTheme.headlineLarge!.copyWith(
-    //       fontWeight: FontWeight.bold,
-    //     );
-
     return Scaffold(
       body: BlocBuilder<TurnBloc, TurnState>(
         builder: (context, turnState) {
+          if (turnState.status == TurnStatus.gameOver) {
+            if (turnState is! GameOverState) {
+              BlocProvider.of<PlayerNavCubit>(context).showGameover();
+            }
+          }
+
+          if (turnState.status == TurnStatus.intro ||
+              turnState.status == TurnStatus.initial) {
+            if (turnState is! PlayingState) {
+              BlocProvider.of<PlayerNavCubit>(context).showPlay();
+            }
+          }
+
           return Container(
             decoration: LayoutConfig(context).gradientDecoration,
             child: SafeArea(

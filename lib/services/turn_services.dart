@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:nucatch_with_bloc/helpers/extension.dart';
 import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +26,8 @@ class TurnRecordedServices {
   Future<List<TurnRecordedModel>?> getTurnedList() async {
     turnedRecordedList =
         (await pref).getStringList(PreferencesKey.LIST_TURN_RECORDED)?.map((e) {
-      return TurnRecordedModel.fromJSON(json.decode(e));
+      Map<String, dynamic> map = jsonDecode(e.fixJsonString());
+      return TurnRecordedModel.fromJson(map);
     }).toList();
 
     return turnedRecordedList;
@@ -40,7 +42,7 @@ class TurnRecordedServices {
         addedList.map(
           (e) {
             log(e.toString());
-            return e.toString();
+            return e.toJson().toString();
           },
         ).toList());
   }

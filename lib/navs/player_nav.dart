@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_state.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
 import 'package:nucatch_with_bloc/screens/menu_screens/player/gameover_screen.dart';
@@ -23,40 +21,19 @@ class _PlayerNavState extends State<PlayerNav> {
   Widget build(BuildContext context) {
     return BlocBuilder<PlayerNavCubit, PlayerNavState>(
       builder: (context, state) {
-        return BlocListener<TurnBloc, TurnState>(
-          listener: (context, state) {
-            if (state.status == TurnStatus.gameOver) {
-              // BlocProvider.of<TurnRecordedListBloc>(context).add(
-              //   AddItem(
-              //     item: state.recordedItem!,
-              //   ),
-              // );
-              if (state is! GameOverState) {
-                BlocProvider.of<PlayerNavCubit>(context).showGameover();
-              }
-            }
-
-            if (state.status == TurnStatus.intro ||
-                state.status == TurnStatus.initial) {
-              if (state is! PlayingState) {
-                BlocProvider.of<PlayerNavCubit>(context).showPlay();
-              }
-            }
+        return Navigator(
+          onPopPage: (route, result) {
+            return route.didPop(result);
           },
-          child: Navigator(
-            onPopPage: (route, result) {
-              return route.didPop(result);
-            },
-            pages: [
+          pages: [
+            const MaterialPage(
+              child: PlayScreen(),
+            ),
+            if (state is GameOverState)
               const MaterialPage(
-                child: PlayScreen(),
-              ),
-              if (state is GameOverState)
-                const MaterialPage(
-                  child: GameOverScreen(),
-                )
-            ],
-          ),
+                child: GameOverScreen(),
+              )
+          ],
         );
       },
     );

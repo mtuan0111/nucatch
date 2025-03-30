@@ -33,6 +33,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     Tap event,
     Emitter<TurnState> emitter,
   ) async {
+    if (!state.isAbleToTap) {
+      return;
+    }
+
     if (isClosed) {
       return;
     }
@@ -99,6 +103,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       );
 
       await Future.delayed(const Duration(milliseconds: 1000));
+      if (isClosed) {
+        return;
+      }
 
       // Checking is up level or not
       if (state.timesCorrect > 3) {
