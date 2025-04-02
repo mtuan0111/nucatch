@@ -9,6 +9,7 @@ import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 import 'package:nucatch_with_bloc/services/turn_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class TurnBloc extends Bloc<TurnEvent, TurnState> {
   late TurnRecordedServices _turnedServices;
@@ -226,12 +227,13 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
           prefs.getString(PreferencesKey.USERNAME) ?? defaultUsername;
 
       TurnRecordedModel itemModel = TurnRecordedModel(
+        turnId: const Uuid().v4(),
         playedUsername: username,
         point: state.point,
         recordedTime: DateTime.now(),
       );
 
-      add(SaveRecorded(savingRecord: itemModel));
+      await _onSaveRecorded(SaveRecorded(savingRecord: itemModel), emitter);
 
       emitter(
         state.copyWith(
@@ -278,7 +280,19 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    emitter(
+      state.copyWith(
+        isLoading: true,
+      ),
+    );
+
     await _turnedServices.addItem(event.savingRecord);
+
+    emitter(
+      state.copyWith(
+        isLoading: false,
+      ),
+    );
 
     // emitter(
     //   state.copyWith(

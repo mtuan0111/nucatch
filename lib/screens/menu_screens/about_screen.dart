@@ -22,25 +22,37 @@ class _AboutScreenState extends State<AboutScreen> {
             SliverAppBar(
               foregroundColor: Theme.of(context).scaffoldBackgroundColor,
               shadowColor: Colors.transparent,
-              // surfaceTintColor: Colors.transparent,
-              backgroundColor: Theme.of(context).primaryColor,
-
+              backgroundColor: Colors.transparent,
               pinned: true,
               stretch: true,
+              flexibleSpace: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  final double appBarHeight = constraints.biggest.height;
+                  final bool isCollapsed = appBarHeight <=
+                      kToolbarHeight + MediaQuery.of(context).padding.top;
 
-              flexibleSpace: FlexibleSpaceBar(
-                titlePadding: EdgeInsets.zero,
-                title: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    screenTitle,
-                    style: LayoutConfig(context).displaySmallStyle(
-                      isActiveShadow: true,
-                      isItalic: true,
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    color: isCollapsed
+                        ? Theme.of(context).primaryColor
+                        : Colors.transparent,
+                    child: FlexibleSpaceBar(
+                      centerTitle: true,
+                      titlePadding: EdgeInsets.zero,
+                      title: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          screenTitle,
+                          textAlign: TextAlign.center,
+                          style: LayoutConfig(context).displaySmallStyle(
+                            isActiveShadow: true,
+                            isItalic: true,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
               leading: IconButton(
                 onPressed: () {
@@ -49,8 +61,6 @@ class _AboutScreenState extends State<AboutScreen> {
                 icon: const Icon(FontAwesomeIcons.chevronLeft),
               ),
               expandedHeight: 100,
-
-              // leading: Expanded(child: Center(child: Text("back"))),
             ),
             SliverPadding(
               padding: const EdgeInsets.symmetric(

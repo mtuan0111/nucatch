@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
+import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 
 extension DateTimeExtensions on DateTime {
   String formatClient() {
@@ -12,6 +13,38 @@ extension DateTimeExtensions on DateTime {
 
   toseconds() {
     return millisecondsSinceEpoch ~/ 1000;
+  }
+}
+
+extension ListOfTurnRecordedModel on List<TurnRecordedModel> {
+  int indexOfTurn(TurnRecordedModel item) {
+    if (isEmpty) return -1;
+
+    if (!containsTurnId(item.turnId)) return -1;
+
+    return indexOfTurnId(item.turnId);
+  }
+
+  bool containsTurnId(String turnId) {
+    if (isEmpty) return false;
+
+    for (var element in this) {
+      if (element.turnId == turnId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  int indexOfTurnId(String turnId) {
+    if (isEmpty) return -1;
+
+    for (var element in this) {
+      if (element.turnId == turnId) {
+        return indexOf(element) + 1;
+      }
+    }
+    return -1;
   }
 }
 

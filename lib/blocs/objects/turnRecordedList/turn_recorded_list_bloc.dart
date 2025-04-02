@@ -10,9 +10,8 @@ class TurnRecordedListBloc
 
   TurnRecordedListBloc(super.state) {
     on<LoadData>(_onLoadData);
-    // on<AddItem>(_onAddItem);
 
-    // add(LoadData());
+    add(LoadData());
   }
 
   Future<void> _onLoadData(

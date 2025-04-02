@@ -7,8 +7,10 @@ import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_l
 import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
+import 'package:nucatch_with_bloc/helpers/extension.dart';
 
 import 'package:nucatch_with_bloc/helpers/template.dart';
+import 'package:nucatch_with_bloc/navs/menu_nav.dart';
 
 class GameOverScreen extends StatefulWidget {
   const GameOverScreen({super.key});
@@ -23,9 +25,17 @@ class _GameOverScreenState extends State<GameOverScreen> {
 
   TurnRecordedListBloc get turnListBloc =>
       BlocProvider.of<TurnRecordedListBloc>(context);
+  TurnRecordedListState get turnListState => turnListBloc.state;
 
   double get screenWidth => MediaQuery.of(context).size.width;
   double get buttonSpace => 20;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +69,13 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     ),
                     BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
                       builder: (context, state) {
+                        if (state.isLoading) {
+                          return const LoadingWidget();
+                        }
+                        int indexOfItem = state.listModel!
+                            .indexOfTurn(turnBloc.state.recordedItem!);
                         return RankingItem(
-                          ranking: state.listModel
-                                  ?.indexOf(turnBloc.state.recordedItem!) ??
-                              1,
+                          ranking: indexOfItem,
                           playerName:
                               turnBloc.state.recordedItem!.playedUsername,
                           createdAt: turnBloc.state.recordedItem!.recordedTime,

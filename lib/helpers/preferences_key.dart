@@ -9,6 +9,7 @@ class PreferencesKey {
   static const LOCALE = "locale";
   static const THEME_MODE = "theme_mode";
 
+  static const TURN_ID = "turn_id";
   static const LIST_TURN_RECORDED = "list_turn_recorded";
   static const PLAYED_USERNAME = "played_username";
   static const POINT = "point";

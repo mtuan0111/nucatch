@@ -4,11 +4,13 @@ import 'dart:developer';
 import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 
 class TurnRecordedModel {
+  final String turnId;
   final String playedUsername;
   final int point;
   final DateTime recordedTime;
 
   TurnRecordedModel({
+    required this.turnId,
     required this.playedUsername,
     required this.point,
     required this.recordedTime,
@@ -26,6 +28,7 @@ class TurnRecordedModel {
 
   factory TurnRecordedModel.fromJson(Map<String, dynamic> json) {
     return TurnRecordedModel(
+      turnId: json[PreferencesKey.TURN_ID],
       playedUsername: json[PreferencesKey.PLAYED_USERNAME],
       point: int.tryParse(json[PreferencesKey.POINT].toString()) ?? 0,
       recordedTime: DateTime.fromMillisecondsSinceEpoch(
@@ -35,6 +38,7 @@ class TurnRecordedModel {
 
   Map<String, dynamic> toJson() {
     return {
+      PreferencesKey.TURN_ID: turnId,
       PreferencesKey.PLAYED_USERNAME: playedUsername,
       PreferencesKey.POINT: point,
       PreferencesKey.RECORDED_TIME: recordedTime.millisecondsSinceEpoch,

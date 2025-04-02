@@ -24,6 +24,8 @@ class TurnState {
   final int countDown;
   final TurnRecordedModel? recordedItem;
 
+  final bool isLoading;
+
   TurnState({
     this.level = 0,
     this.timesCorrect = 0,
@@ -34,6 +36,7 @@ class TurnState {
     this.typing = "",
     this.countDown = 0,
     this.recordedItem,
+    this.isLoading = false,
   });
 
   TurnState copyWith({
@@ -47,20 +50,23 @@ class TurnState {
     TurnStatus? status,
     int? countDown,
     TurnRecordedModel? recordedItem,
+    bool? isLoading,
   }) {
     return TurnState(
-        level: level ?? this.level,
-        timesCorrect: timesCorrect ?? this.timesCorrect,
-        point: point ?? this.point,
-        lifeRemaining: lifeRemaining != null
-            ? (lifeRemaining < 0 ? 0 : lifeRemaining)
-            : this.lifeRemaining,
-        // currentTypingIndex: currentTypingIndex ?? this.currentTypingIndex,
-        expect: expect ?? this.expect,
-        typing: typing ?? this.typing,
-        status: status ?? this.status,
-        countDown: countDown ?? this.countDown,
-        recordedItem: recordedItem);
+      level: level ?? this.level,
+      timesCorrect: timesCorrect ?? this.timesCorrect,
+      point: point ?? this.point,
+      lifeRemaining: lifeRemaining != null
+          ? (lifeRemaining < 0 ? 0 : lifeRemaining)
+          : this.lifeRemaining,
+      // currentTypingIndex: currentTypingIndex ?? this.currentTypingIndex,
+      expect: expect ?? this.expect,
+      typing: typing ?? this.typing,
+      status: status ?? this.status,
+      countDown: countDown ?? this.countDown,
+      recordedItem: recordedItem ?? this.recordedItem,
+      isLoading: isLoading ?? this.isLoading,
+    );
   }
 
   int get currentTypingIndex => typing.length;

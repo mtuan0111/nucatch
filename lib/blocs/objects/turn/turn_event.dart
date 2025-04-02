@@ -42,6 +42,10 @@ class SaveRecorded extends TurnEvent {
   SaveRecorded({required this.savingRecord});
 }
 
+class GetTurnRecordedList extends TurnEvent {
+  GetTurnRecordedList();
+}
+
 class ShowExpect extends TurnEvent {
   ShowExpect();
 }
