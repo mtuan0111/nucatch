@@ -56,3 +56,40 @@ class TurnRecordedModel {
     });
   }
 }
+
+// class TurnRecordedModel {
+//   final String turnId;
+//   final String playedUsername;
+//   final int point;
+//   final DateTime recordedTime;
+
+//   TurnRecordedModel({
+//     required this.turnId,
+//     required this.playedUsername,
+//     required this.point,
+//     required this.recordedTime,
+//   });
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'turnId': turnId,
+//       'playedUsername': playedUsername,
+//       'point': point,
+//       'recordedTime': recordedTime.toIso8601String(),
+//     };
+//   }
+
+//   factory TurnRecordedModel.fromJson(Map<String, dynamic> json) {
+//     return TurnRecordedModel(
+//       turnId: json['turnId'],
+//       playedUsername: json['playedUsername'],
+//       point: json['point'],
+//       recordedTime: DateTime.parse(json['recordedTime']),
+//     );
+//   }
+
+//   @override
+//   String toString() {
+//     return 'TurnRecordedModel(turnId: $turnId, playedUsername: $playedUsername, point: $point, recordedTime: $recordedTime)';
+//   }
+// }

@@ -1,49 +1,71 @@
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:nucatch_with_bloc/helpers/extension.dart';
-import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 import 'package:nucatch_with_bloc/models/turn_record_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class TurnRecordedServices {
-  SharedPreferences? _prefs;
-
-  List<TurnRecordedModel>? turnedRecordedList;
+  Database? _database;
 
   TurnRecordedServices();
 
-  Future<SharedPreferences> get pref async {
-    await loadSharedPreferences();
-    return _prefs!;
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
+    return _database!;
   }
 
-  Future<SharedPreferences> loadSharedPreferences() async {
-    _prefs ??= await SharedPreferences.getInstance();
-    return _prefs!;
+  Future<Database> _initDatabase() async {
+    final dbPath = await getDatabasesPath();
+    return openDatabase(
+      join(dbPath, 'turn_records.db'),
+      onCreate: (db, version) async {
+        await db.execute('''
+          CREATE TABLE turn_records (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            turnId TEXT NOT NULL,
+            playedUsername TEXT NOT NULL,
+            point INTEGER NOT NULL,
+            recordedTime TEXT NOT NULL
+          )
+        ''');
+      },
+      version: 1,
+    );
   }
 
   Future<List<TurnRecordedModel>?> getTurnedList() async {
-    turnedRecordedList =
-        (await pref).getStringList(PreferencesKey.LIST_TURN_RECORDED)?.map((e) {
-      Map<String, dynamic> map = jsonDecode(e.fixJsonString());
-      return TurnRecordedModel.fromJson(map);
-    }).toList();
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('turn_records');
 
-    return turnedRecordedList;
+    return maps.map((map) {
+      return TurnRecordedModel(
+        turnId: map['turnId'],
+        playedUsername: map['playedUsername'],
+        point: map['point'],
+        recordedTime: DateTime.parse(map['recordedTime']),
+      );
+    }).toList();
   }
 
   Future<bool> addItem(TurnRecordedModel item) async {
-    List<TurnRecordedModel> addedList = (await getTurnedList() ?? []);
-    addedList.add(item);
-
-    return _prefs!.setStringList(
-        PreferencesKey.LIST_TURN_RECORDED,
-        addedList.map(
-          (e) {
-            log(e.toString());
-            return e.toJson().toString();
-          },
-        ).toList());
+    final db = await database;
+    try {
+      await db.insert(
+        'turn_records',
+        {
+          'turnId': item.turnId,
+          'playedUsername': item.playedUsername,
+          'point': item.point,
+          'recordedTime': item.recordedTime.toIso8601String(),
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      log(item.toString());
+      return true;
+    } catch (e) {
+      log('Error adding item: $e');
+      return false;
+    }
   }
 }

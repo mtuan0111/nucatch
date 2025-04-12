@@ -42,6 +42,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    if (state.isLoading) {
+      return;
+    }
+
     if (event.keyValue == KeyboardOption.reset) {
       return;
     }
@@ -129,6 +133,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    if (state.isLoading) {
+      return;
+    }
+
     emitter(
       state.copyWith(
         status: TurnStatus.playing,
@@ -167,6 +175,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    if (state.isLoading) {
+      return;
+    }
+
     emitter(
       state.copyWith(
         status: TurnStatus.initial,
@@ -179,6 +191,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
 
     if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
       return;
     }
 
@@ -213,6 +229,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    if (state.isLoading) {
+      return;
+    }
+
     HapticFeedback.heavyImpact();
 
     emitter(
@@ -226,6 +246,14 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     Emitter<TurnState> emitter,
   ) async {
     if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
+      return;
+    }
+
+    if (state.isLoading) {
       return;
     }
 
@@ -270,6 +298,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    if (state.isLoading) {
+      return;
+    }
+
     if (!state.isAbleToReset) {
       return;
     }
@@ -294,6 +326,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     Emitter<TurnState> emitter,
   ) async {
     if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
       return;
     }
 
@@ -328,6 +364,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    if (state.isLoading) {
+      return;
+    }
+
     emitter(
       TurnState().copyWith(
         countDown: event.seconds,
@@ -345,6 +385,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    if (state.isLoading) {
+      return;
+    }
+
     HapticFeedback.vibrate();
 
     add(
@@ -359,6 +403,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     Emitter<TurnState> emitter,
   ) async {
     if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
       return;
     }
   }
