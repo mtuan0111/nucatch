@@ -79,11 +79,16 @@ class TurnState {
   bool get isExpectNotEmpty => (expect != null && expect!.isNotEmpty);
   bool get isTypingNotEmpty => (typing.isNotEmpty);
 
-  bool get isShowExpect => status == TurnStatus.initial && isExpectNotEmpty;
-  bool get isTimeForTyping => status == TurnStatus.playing && isExpectNotEmpty;
+  bool get isShowExpect =>
+      status == TurnStatus.initial && isExpectNotEmpty && !isTypingNotEmpty;
+  bool get isTimeForTyping =>
+      status == TurnStatus.playing && isExpectNotEmpty || isTypingNotEmpty;
   bool get isCorrectAnimate => isFinishTarget;
   bool get isAbleToTap =>
-      (status == TurnStatus.playing) && isExpectNotEmpty && !isFinishTarget;
+      // -> let user able to quick tap
+      // (status == TurnStatus.playing) &&
+      isExpectNotEmpty && !isFinishTarget;
+
   bool get isAbleToReset => lifeRemaining > 1;
   bool get isAbleToContinue => lifeRemaining > 0;
 }

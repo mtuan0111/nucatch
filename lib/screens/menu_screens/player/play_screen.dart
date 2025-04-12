@@ -10,6 +10,8 @@ import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
+import 'package:nucatch_with_bloc/helpers/template.dart';
+
 import 'package:timer_count_down/timer_count_down.dart';
 
 class PlayScreen extends StatefulWidget {
@@ -326,21 +328,13 @@ class _PlayScreenState extends State<PlayScreen> {
                                             : 0.5,
                                         duration:
                                             const Duration(milliseconds: 200),
-                                        child: ElevatedButton(
-                                          style:
-                                              LayoutConfig.elevatedButtonStyle,
+                                        child: CustomElevatedButton(
+                                          icon: FontAwesomeIcons.arrowsRotate,
                                           onPressed: () async {
                                             context.read<TurnBloc>().add(
                                                   ResetNewNumber(),
                                                 );
                                           },
-                                          child: Icon(
-                                            FontAwesomeIcons.arrowsRotate,
-                                            size: LayoutConfig(context)
-                                                .displaySmallStyle()
-                                                .fontSize,
-                                            color: Colors.black87,
-                                          ),
                                         ),
                                       );
                                     }
@@ -351,19 +345,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                             (turnState.isAbleToTap) ? 1 : 0.5,
                                         duration:
                                             const Duration(milliseconds: 200),
-                                        child: ElevatedButton(
-                                          style:
-                                              LayoutConfig.elevatedButtonStyle,
+                                        child: CustomElevatedButton(
+                                          icon: FontAwesomeIcons.bars,
                                           onPressed: () async {
                                             await pressMainMenu(context);
                                           },
-                                          child: Icon(
-                                            FontAwesomeIcons.bars,
-                                            size: LayoutConfig(context)
-                                                .displaySmallStyle()
-                                                .fontSize,
-                                            color: Colors.black87,
-                                          ),
                                         ),
                                       );
                                     }
@@ -372,8 +358,25 @@ class _PlayScreenState extends State<PlayScreen> {
                                       opacity: turnState.isAbleToTap ? 1 : 0.5,
                                       duration:
                                           const Duration(milliseconds: 200),
-                                      child: ElevatedButton(
-                                        style: LayoutConfig.elevatedButtonStyle,
+                                      child:
+                                          // buttonWidget(
+                                          //       context,
+                                          //       text: e.value.toString(),
+                                          //       onTap: () {
+                                          //         context.read<TurnBloc>().add(
+                                          //               Tap(keyValue: e.key),
+                                          //             );
+
+                                          //         setState(
+                                          //           () {
+                                          //             originalScale = 0.8;
+                                          //             milisecondDuation = 10;
+                                          //           },
+                                          //         );
+                                          //       },
+                                          //     ) ??
+                                          CustomElevatedButton(
+                                        text: e.value.toString(),
                                         onPressed: () {
                                           context.read<TurnBloc>().add(
                                                 Tap(keyValue: e.key),
@@ -386,14 +389,14 @@ class _PlayScreenState extends State<PlayScreen> {
                                             },
                                           );
                                         },
-                                        child: Text(
-                                          e.value.toString(),
-                                          style: LayoutConfig(context)
-                                              .displaySmallStyle()
-                                              .copyWith(
-                                                color: Colors.black87,
-                                              ),
-                                        ),
+                                        // child: Text(
+                                        //   e.value.toString(),
+                                        //   style: LayoutConfig(context)
+                                        //       .displaySmallStyle()
+                                        //       .copyWith(
+                                        //         color: Colors.black87,
+                                        //       ),
+                                        // ),
                                       ),
                                     );
                                   },

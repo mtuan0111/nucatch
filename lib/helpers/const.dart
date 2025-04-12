@@ -15,6 +15,8 @@ class LayoutConfig {
   static double boxSize = 80;
   static double layoutBorderRadius = 20;
 
+  static double opacityDisabled = 0.5;
+
   LayoutConfig(this.context);
 
   TextStyle displaySmallStyle({
@@ -90,6 +92,8 @@ class LayoutConfig {
       109,
       109,
     ),
+
+    shadowColor: Colors.grey, // Added background grey
   );
 
   BoxDecoration get gradientDecoration => BoxDecoration(

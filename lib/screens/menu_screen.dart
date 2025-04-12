@@ -42,17 +42,13 @@ class _MenuScreenState extends State<MenuScreen> {
             decoration: LayoutConfig(context).gradientDecoration,
             child: SafeArea(
               child: CustomScrollView(
-                slivers: <Widget>[
+                slivers: [
                   SliverAppBar(
                     foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    backgroundColor: Colors.transparent,
                     shadowColor: Colors.transparent,
                     surfaceTintColor: Colors.transparent,
-                    backgroundColor: Colors.transparent,
-
                     pinned: true,
-                    stretch: false,
-
-                    excludeHeaderSemantics: true,
                     flexibleSpace: const Center(
                       child: Image(
                         height: 160,
@@ -60,25 +56,17 @@ class _MenuScreenState extends State<MenuScreen> {
                         fit: BoxFit.contain,
                       ),
                     ),
-
-                    expandedHeight: 180,
-
-                    // leading: Expanded(child: Center(child: Text("back"))),
+                    expandedHeight: 240,
+                    toolbarHeight: 80,
                   ),
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                      ),
-                      child: Column(
-                        children: [
-                          Center(
-                            child: Text(
-                              "Welcome ${state.username}",
-                              style: LayoutConfig(context).titleSectionStyle(),
-                            ),
-                          ),
-                        ],
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Center(
+                        child: Text(
+                          "Welcome ${state.username}",
+                          style: LayoutConfig(context).titleSectionStyle(),
+                        ),
                       ),
                     ),
                   ),
@@ -86,17 +74,13 @@ class _MenuScreenState extends State<MenuScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          MapEntry<MenuOption, String> entry =
-                              menuArray.entries.elementAt(index);
+                        (context, index) {
+                          final entry = menuArray.entries.elementAt(index);
                           return Center(
                             child: CustomeTitleButton(
                               text: entry.value,
-                              onTap: () {
-                                BlocProvider.of<MenuBloc>(context).add(
-                                  SelectOption(option: entry.key),
-                                );
-                              },
+                              onTap: () => BlocProvider.of<MenuBloc>(context)
+                                  .add(SelectOption(option: entry.key)),
                             ),
                           );
                         },
@@ -104,13 +88,12 @@ class _MenuScreenState extends State<MenuScreen> {
                       ),
                     ),
                   ),
-                  if (version != null && version!.isNotEmpty)
+                  if (version?.isNotEmpty ?? false)
                     SliverFillRemaining(
                       hasScrollBody: false,
                       child: Container(
                         margin: const EdgeInsets.all(10),
                         alignment: Alignment.bottomCenter,
-                        // color: Colors.amber,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -120,10 +103,10 @@ class _MenuScreenState extends State<MenuScreen> {
                               style: LayoutConfig(context).titleSectionStyle(),
                             ),
                             Text(
-                              version ?? "",
+                              version!,
                               style:
                                   LayoutConfig(context).contentSectionStyle(),
-                            )
+                            ),
                           ],
                         ),
                       ),

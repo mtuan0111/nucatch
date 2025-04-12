@@ -18,7 +18,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<Tap>(_onTap);
     on<SetLevel>(_onSetLevel);
     on<ShowExpect>(_onShowExpect);
-    on<HideExpect>(_onHideExpect);
+    // on<HideExpect>(_onHideExpect);
     // on<MarkCorrectTap>(_onMarkCorrectTap);
     // on<MarkWrongTap>(_onMarkWrongTap);
     on<ResetNewNumber>(_onResetNewNumber);
@@ -145,22 +145,24 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         lifeRemaining: state.level != event.level
             ? state.lifeRemaining
             : state.lifeRemaining + event.addPoint,
-        expect: Helper().generateRandomNumber(event.level + 2),
+        expect: Helper().generateRandomNumber(event.level + 3),
         typing: "",
       ),
     );
 
-    add(ShowExpect());
+    add(ShowExpect(
+      Duration(milliseconds: state.getTimeShowTarget),
+    ));
 
-    await Future.delayed(Duration(milliseconds: state.getTimeShowTarget));
+    // await Future.delayed(Duration(milliseconds: state.getTimeShowTarget));
 
-    add(HideExpect());
+    // add(HideExpect());
   }
 
-  void _onShowExpect(
+  Future<void> _onShowExpect(
     ShowExpect event,
     Emitter<TurnState> emitter,
-  ) {
+  ) async {
     if (isClosed) {
       return;
     }
@@ -170,12 +172,12 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         status: TurnStatus.initial,
       ),
     );
-  }
 
-  void _onHideExpect(
-    HideExpect event,
-    Emitter<TurnState> emitter,
-  ) {
+    await Future.delayed(
+      event.duration,
+      () {},
+    );
+
     if (isClosed) {
       return;
     }
@@ -186,6 +188,21 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
   }
+
+  // void _onHideExpect(
+  //   HideExpect event,
+  //   Emitter<TurnState> emitter,
+  // ) {
+  //   if (isClosed) {
+  //     return;
+  //   }
+
+  //   emitter(
+  //     state.copyWith(
+  //       status: TurnStatus.playing,
+  //     ),
+  //   );
+  // }
 
   Future<void> _onMarkCorrectTap(
     KeyboardOption keyValue,
@@ -332,7 +349,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     add(
       SetLevel(
-        level: 1,
+        level: 0,
       ),
     );
   }

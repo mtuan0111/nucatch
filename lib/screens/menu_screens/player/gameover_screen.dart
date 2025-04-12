@@ -94,18 +94,26 @@ class _GameOverScreenState extends State<GameOverScreen> {
                         SizedBox(
                           width: (screenWidth / 3) - buttonSpace * 2,
                           height: (screenWidth / 3) - buttonSpace * 2,
-                          child: ElevatedButton(
-                            style: LayoutConfig.elevatedButtonStyle,
-                            onPressed: () {
-                              BlocProvider.of<TurnBloc>(context).add(
-                                Start(),
+                          child: BlocBuilder<TurnRecordedListBloc,
+                              TurnRecordedListState>(
+                            builder: (context, state) {
+                              if (state.isLoading) {
+                                return const LoadingWidget();
+                              }
+                              return ElevatedButton(
+                                style: LayoutConfig.elevatedButtonStyle,
+                                onPressed: () {
+                                  BlocProvider.of<TurnBloc>(context).add(
+                                    Start(),
+                                  );
+                                },
+                                child: Icon(
+                                  FontAwesomeIcons.arrowRotateLeft,
+                                  size: buttonStyle.fontSize,
+                                  color: Colors.black87,
+                                ),
                               );
                             },
-                            child: Icon(
-                              FontAwesomeIcons.arrowRotateLeft,
-                              size: buttonStyle.fontSize,
-                              color: Colors.black87,
-                            ),
                           ),
                         ),
                       ],

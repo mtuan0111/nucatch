@@ -47,7 +47,8 @@ class GetTurnRecordedList extends TurnEvent {
 }
 
 class ShowExpect extends TurnEvent {
-  ShowExpect();
+  final Duration duration;
+  ShowExpect(this.duration);
 }
 
 class HideExpect extends TurnEvent {

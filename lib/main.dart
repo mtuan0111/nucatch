@@ -97,8 +97,9 @@ class _MyAppState extends State<MyApp> {
                           seedColor: Colors.green,
                         ),
                         useMaterial3: true,
-                        primaryColor: Colors.green,
-                        secondaryHeaderColor: Colors.red,
+                        primaryColor: const Color.fromARGB(255, 0, 174, 90),
+                        secondaryHeaderColor:
+                            const Color.fromARGB(255, 0, 51, 105),
                         // scaffoldBackgroundColor: Colors.lightBlueAccent,
 
                         primaryTextTheme: Typography().white
