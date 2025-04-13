@@ -47,7 +47,7 @@ class RankingItem extends StatelessWidget {
                             width: 2,
                             color: Theme.of(context).scaffoldBackgroundColor,
                           ),
-                          color: Theme.of(context).secondaryHeaderColor,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                         ),
                   ),
                 ),
@@ -81,9 +81,9 @@ class RankingItem extends StatelessWidget {
                   top: 0,
                   right: 0,
                   child: Icon(
-                    FontAwesomeIcons.certificate,
+                    FontAwesomeIcons.trophy,
                     color: Colors.amber,
-                    // size: 50,
+                    size: 30, // Increased size for a bigger icon
                   ),
                 ),
               Center(
@@ -102,16 +102,51 @@ class RankingItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              playerName,
-              style: LayoutConfig(context).titleSectionStyle(),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.person,
+                  size: 16,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  playerName,
+                  style: LayoutConfig(context).titleSectionStyle(),
+                ),
+              ],
             ),
-            Text(
-              createdAt.formatClient(),
-              style: LayoutConfig(context).contentSectionStyle(),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.calendar_today,
+                  size: 16,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  createdAt.formatClient(),
+                  style: LayoutConfig(context).contentSectionStyle(),
+                ),
+              ],
             ),
-            Text("Point $turnedPoint",
-                style: LayoutConfig(context).contentSectionStyle()),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.star,
+                  size: 16,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  "${lang(context).score}: $turnedPoint",
+                  style: LayoutConfig(context).contentSectionStyle(),
+                ),
+              ],
+            ),
           ],
         )
       ],

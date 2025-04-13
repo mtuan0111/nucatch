@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
-import 'package:nucatch_with_bloc/helpers/const.dart';
 import 'package:nucatch_with_bloc/helpers/helper.dart';
 import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 import 'package:nucatch_with_bloc/services/turn_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:vibration/vibration.dart';
 
 class TurnBloc extends Bloc<TurnEvent, TurnState> {
   late TurnRecordedServices _turnedServices;
@@ -102,8 +102,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         state.copyWith(
           point: state.point + 1,
           timesCorrect: state.timesCorrect + 1,
-          // status: TurnStatus.rest,
-          // expect: "",
+          lifeRemaining: state.timesCorrect >= 3
+              ? state.lifeRemaining + 1
+              : state.lifeRemaining,
         ),
       );
 
@@ -150,9 +151,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         timesCorrect: state.level != event.level
             ? 0
             : state.timesCorrect + (event.addPoint > 0 ? 1 : 0),
-        lifeRemaining: state.level != event.level
-            ? state.lifeRemaining
-            : state.lifeRemaining + event.addPoint,
+        // lifeRemaining: state.level != event.level
+        //     ? state.lifeRemaining
+        //     : state.lifeRemaining + event.addPoint,
         expect: Helper().generateRandomNumber(event.level + 3),
         typing: "",
       ),
@@ -233,7 +234,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    HapticFeedback.heavyImpact();
+    Vibration.vibrate(duration: 50);
 
     emitter(
       state.copyWith(
@@ -243,6 +244,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
   Future<void> _onMarkWrongTap(
     // MarkWrongTap event,
+
     Emitter<TurnState> emitter,
   ) async {
     if (isClosed) {
@@ -252,10 +254,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (state.isLoading) {
       return;
     }
-
-    if (state.isLoading) {
-      return;
-    }
+    Vibration.vibrate(duration: 500);
 
     emitter(
       state.copyWith(
@@ -268,8 +267,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       //     await _onSaveRecorded(SaveRecorded(), emitter);
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String username =
-          prefs.getString(PreferencesKey.USERNAME) ?? defaultUsername;
+      String? username = prefs.getString(PreferencesKey.USERNAME);
 
       TurnRecordedModel itemModel = TurnRecordedModel(
         turnId: const Uuid().v4(),

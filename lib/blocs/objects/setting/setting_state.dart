@@ -50,5 +50,7 @@ class SettingState {
 
   int get numberOfTopBoard => model!.numberOfTopBoard;
 
+  // String get locale => model!.locale;
+
   ThemeMode get themeMode => model!.themeMode;
 }

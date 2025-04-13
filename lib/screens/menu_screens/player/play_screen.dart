@@ -65,17 +65,10 @@ class _PlayScreenState extends State<PlayScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                "Level: ${turnState.level}",
-                                style:
-                                    LayoutConfig(context).contentSectionStyle(),
-                              ),
-                              Wrap(
-                                spacing: 5,
-                                children: List.generate(
-                                  turnState.lifeRemaining,
-                                  (index) => Icon(
-                                    FontAwesomeIcons.solidStar,
+                              Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.layerGroup,
                                     color: Theme.of(context)
                                         .scaffoldBackgroundColor,
                                     size: Theme.of(context)
@@ -83,12 +76,91 @@ class _PlayScreenState extends State<PlayScreen> {
                                         .bodyLarge!
                                         .fontSize,
                                   ),
-                                ),
+                                  const SizedBox(width: 5),
+                                  Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: "${lang(context).level}: ",
+                                          style: LayoutConfig(context)
+                                              .contentSectionStyle()
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                        ),
+                                        TextSpan(
+                                          text: "${turnState.level}",
+                                          style: LayoutConfig(context)
+                                              .contentSectionStyle(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "Point: ${turnState.point}",
-                                style:
-                                    LayoutConfig(context).contentSectionStyle(),
+                              Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.chartLine,
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    size: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .fontSize,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: "${lang(context).score}: ",
+                                          style: LayoutConfig(context)
+                                              .contentSectionStyle()
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                        ),
+                                        TextSpan(
+                                          text: "${turnState.point}",
+                                          style: LayoutConfig(context)
+                                              .contentSectionStyle(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Positioned(
+                                      child: Wrap(
+                                        spacing: 5,
+                                        runSpacing: 5,
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.spaceBetween,
+
+                                        children: List.generate(
+                                          turnState.lifeRemaining,
+                                          (index) => Icon(
+                                            FontAwesomeIcons.solidStar,
+                                            color: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                            size: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .fontSize,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -114,7 +186,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                             duration: const Duration(
                                                 milliseconds: 400),
                                             child: Text(
-                                              time >= 1 ? "Ready!!" : "Go",
+                                              time >= 1
+                                                  ? "${lang(context).ready}!!"
+                                                  : lang(context).go,
                                               style: LayoutConfig(context)
                                                   .titleSectionStyle(
                                                       isItalic: true)

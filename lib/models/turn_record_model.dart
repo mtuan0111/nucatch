@@ -5,13 +5,13 @@ import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 
 class TurnRecordedModel {
   final String turnId;
-  final String playedUsername;
+  final String? playedUsername;
   final int point;
   final DateTime recordedTime;
 
   TurnRecordedModel({
     required this.turnId,
-    required this.playedUsername,
+    this.playedUsername,
     required this.point,
     required this.recordedTime,
   });

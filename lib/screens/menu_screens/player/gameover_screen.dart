@@ -54,14 +54,14 @@ class _GameOverScreenState extends State<GameOverScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Gameover",
+                      lang(context).gameOver,
                       style: LayoutConfig(context).displaySmallStyle(),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     Text(
-                      "The correct is ${turnBloc.state.expect}",
+                      "${lang(context).theCorrectIs} ${turnBloc.state.expect}",
                       style: LayoutConfig(context).contentSectionStyle(),
                     ),
                     const SizedBox(
@@ -77,7 +77,8 @@ class _GameOverScreenState extends State<GameOverScreen> {
                         return RankingItem(
                           ranking: indexOfItem,
                           playerName:
-                              turnBloc.state.recordedItem!.playedUsername,
+                              turnBloc.state.recordedItem!.playedUsername ??
+                                  lang(context).anonymous,
                           createdAt: turnBloc.state.recordedItem!.recordedTime,
                           turnedPoint: turnBloc.state.recordedItem!.point,
                         );

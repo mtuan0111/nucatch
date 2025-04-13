@@ -3,5 +3,29 @@
   "appTitle": "new_flutter_template",
   "@appTitle": {
     "description": "The title of the application"
-  } 
+  },
+  "welcome": "Welcome",
+  "start": "Start",
+  "topScore": "Top score",
+  "setting": "Setting",
+  "about": "About",
+  "exit": "Exit",
+
+  "version": "Version",
+
+  "anonymous": "Anonymous",
+  
+  "level": "Level",
+  "score": "Score",
+  "ready": "Ready",
+  "go": "Go",
+
+  "gameOver": "Game Over",
+  "theCorrectIs": "The correct is",
+
+  "name": "Name",
+  "fontSize": "Font size",
+  "volume": "Volume",
+  "numberOfTopScores": "Number of top scores",
+  "language": "Language"
 }

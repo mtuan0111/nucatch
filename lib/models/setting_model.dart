@@ -9,7 +9,7 @@ class SettingModel {
 
   SettingModel({
     this.themeMode = ThemeMode.system,
-    this.locale = "en",
+    this.locale = 'en',
     this.vol = 8,
     this.fontSize = 8,
     this.numberOfTopBoard = 20,

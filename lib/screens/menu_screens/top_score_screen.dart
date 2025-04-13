@@ -17,7 +17,7 @@ class TopScoreScreen extends StatefulWidget {
 }
 
 class _TopScoreScreenState extends State<TopScoreScreen> {
-  String get screenTitle => menuArray[MenuOption.topScore]!;
+  String get screenTitle => menuArray(context)[MenuOption.topScore]!;
   @override
   Widget build(BuildContext context) {
     // TurnRecordedListState turnRecordedListState =
@@ -46,27 +46,17 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                     flexibleSpace: LayoutBuilder(
                       builder:
                           (BuildContext context, BoxConstraints constraints) {
-                        final double appBarHeight = constraints.biggest.height;
-                        final bool isCollapsed = appBarHeight <=
-                            kToolbarHeight + MediaQuery.of(context).padding.top;
-
-                        return AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          color: isCollapsed
-                              ? Theme.of(context).primaryColor
-                              : Colors.transparent,
-                          child: FlexibleSpaceBar(
-                            centerTitle: true,
-                            titlePadding: EdgeInsets.zero,
-                            title: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Text(
-                                screenTitle,
-                                textAlign: TextAlign.center,
-                                style: LayoutConfig(context).displaySmallStyle(
-                                  isActiveShadow: true,
-                                  isItalic: true,
-                                ),
+                        return FlexibleSpaceBar(
+                          centerTitle: true,
+                          titlePadding: EdgeInsets.zero,
+                          title: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              screenTitle,
+                              textAlign: TextAlign.center,
+                              style: LayoutConfig(context).displaySmallStyle(
+                                isActiveShadow: true,
+                                isItalic: true,
                               ),
                             ),
                           ),
@@ -77,7 +67,9 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(FontAwesomeIcons.chevronLeft),
+                      icon: const Icon(
+                        FontAwesomeIcons.chevronLeft,
+                      ),
                     ),
                     expandedHeight: 100,
                   ),
@@ -90,32 +82,21 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                       child: IntrinsicWidth(
                         child: Wrap(
                           alignment: WrapAlignment.center,
-                          runAlignment: WrapAlignment.spaceBetween,
                           runSpacing: 50,
                           spacing: 50,
                           children: [
-                            ...(turnRecordedListState.listModel
-                                    ?.map(
-                                      (e) => RankingItem(
-                                        ranking:
-                                            turnRecordedListState.indexOf(e),
-                                        playerName: e.playedUsername,
-                                        createdAt: e.recordedTime,
-                                        turnedPoint: e.point,
-                                      ),
-                                    )
-                                    .toList() ??
-                                List.generate(
-                                  5,
-                                  (index) => RankingItem(
-                                    ranking: index + 1,
-                                    playerName: "playerName",
-                                    createdAt: DateTime.now(),
-                                    turnedPoint: 2,
-                                  ),
-                                ).toList()),
+                            if (turnRecordedListState.listModel != null)
+                              ...turnRecordedListState.listModel!.map(
+                                (e) => RankingItem(
+                                  ranking: turnRecordedListState.indexOf(e),
+                                  playerName: e.playedUsername ??
+                                      lang(context).anonymous,
+                                  createdAt: e.recordedTime,
+                                  turnedPoint: e.point,
+                                ),
+                              ),
                             if (turnRecordedListState.isLoading)
-                              const LoadingWidget()
+                              const LoadingWidget(),
                           ],
                         ),
                       ),

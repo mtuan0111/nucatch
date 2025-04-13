@@ -28,7 +28,6 @@ class _MenuScreenState extends State<MenuScreen> {
       setState(() {
         version = packageInfo.version;
         log("version: ");
-        log(version!);
       });
     });
   }
@@ -64,7 +63,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: Center(
                         child: Text(
-                          "Welcome ${state.username}",
+                          "${lang(context).welcome} ${state.username ?? lang(context).anonymous}",
                           style: LayoutConfig(context).titleSectionStyle(),
                         ),
                       ),
@@ -75,7 +74,8 @@ class _MenuScreenState extends State<MenuScreen> {
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          final entry = menuArray.entries.elementAt(index);
+                          final entry =
+                              menuArray(context).entries.elementAt(index);
                           return Center(
                             child: CustomeTitleButton(
                               text: entry.value,
@@ -84,7 +84,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             ),
                           );
                         },
-                        childCount: menuArray.length,
+                        childCount: menuArray(context).length,
                       ),
                     ),
                   ),
@@ -99,11 +99,11 @@ class _MenuScreenState extends State<MenuScreen> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              "Version: ",
-                              style: LayoutConfig(context).titleSectionStyle(),
+                              "${lang(context).version}: ",
+                              // style: LayoutConfig(context).titleSectionStyle(),
                             ),
                             Text(
-                              version!,
+                              version ?? "",
                               style:
                                   LayoutConfig(context).contentSectionStyle(),
                             ),

@@ -1,12 +1,20 @@
 // ignore: constant_identifier_names
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const diffShowLevelMilisecond = 250;
 
 const String timeDateClient = "dd/MM/yyyy hh:mm a";
 const String timeDateServer = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
-const String defaultUsername = "Anonymous";
+const Map<String, String> languages = {
+  'en': "English",
+  'vi': "Tiếng Việt",
+};
+
+String defaultUsername(context) => lang(context).anonymous;
+
+AppLocalizations lang(context) => AppLocalizations.of(context)!;
 
 class LayoutConfig {
   final BuildContext context;

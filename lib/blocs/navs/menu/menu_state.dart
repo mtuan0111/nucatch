@@ -1,3 +1,6 @@
+import 'package:flutter/widgets.dart';
+import 'package:nucatch_with_bloc/helpers/const.dart';
+
 abstract class MenuState {}
 
 enum MenuOption {
@@ -8,13 +11,13 @@ enum MenuOption {
   exit,
 }
 
-const Map<MenuOption, String> menuArray = {
-  MenuOption.start: "Start",
-  MenuOption.topScore: "Top score",
-  MenuOption.setting: "Setting",
-  MenuOption.about: "About",
-  MenuOption.exit: "Exit",
-};
+Map<MenuOption, String> menuArray(BuildContext context) => {
+      MenuOption.start: lang(context).start,
+      MenuOption.topScore: lang(context).topScore,
+      MenuOption.setting: lang(context).setting,
+      MenuOption.about: lang(context).about,
+      MenuOption.exit: lang(context).exit,
+    };
 
 enum KeyboardOption {
   one,

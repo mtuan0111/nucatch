@@ -62,49 +62,58 @@ class _MyAppState extends State<MyApp> {
                       GlobalCupertinoLocalizations.delegate,
                     ],
                     locale: Locale(state.locale),
+                    supportedLocales: const [
+                      Locale('en'), // English
+                      Locale(
+                          'vi'), // Vietnamese (example for your current location)
+                      // Add more locales as needed
+                    ],
                     theme: ThemeData(
-                        // This is the theme of your application.
-                        //
-                        // TRY THIS: Try running your application with "flutter run". You'll see
-                        // the application has a purple toolbar. Then, without quitting the app,
-                        // try changing the seedColor in the colorScheme below to Colors.green
-                        // and then invoke "hot reload" (save your changes or press the "hot
-                        // reload" button in a Flutter-supported IDE, or press "r" if you used
-                        // the command line to start the app).
-                        //
-                        // Notice that the counter didn't reset back to zero; the application
-                        // state is not lost during the reload. To reset the state, use hot
-                        // restart instead.
-                        //
-                        // This works for code too, not just values: Most code changes can be
-                        // tested with just a hot reload.
+                      // This is the theme of your application.
+                      //
+                      // TRY THIS: Try running your application with "flutter run". You'll see
+                      // the application has a purple toolbar. Then, without quitting the app,
+                      // try changing the seedColor in the colorScheme below to Colors.green
+                      // and then invoke "hot reload" (save your changes or press the "hot
+                      // reload" button in a Flutter-supported IDE, or press "r" if you used
+                      // the command line to start the app).
+                      //
+                      // Notice that the counter didn't reset back to zero; the application
+                      // state is not lost during the reload. To reset the state, use hot
+                      // restart instead.
+                      //
+                      // This works for code too, not just values: Most code changes can be
+                      // tested with just a hot reload.
 
-                        // fontFamily: 'Charmonman',
-                        fontFamilyFallback: const [
-                          "Baloo Bhai",
-                          "Roboto Mono",
-                          "Charmonman",
-                          "Dancing Script",
-                          "Xanh Mono",
-                          "JetBrains Mono",
-                        ],
-                        textTheme: Theme.of(context).textTheme.apply(
-                              fontSizeFactor: 0.5 + (state.fontSize / 20),
-                              fontSizeDelta: 1 + (state.fontSize / 10),
-                              // bodyColor: Theme.of(context).scaffoldBackgroundColor,
-                            ),
-                        colorScheme: ColorScheme.fromSeed(
-                          seedColor: Colors.green,
-                        ),
-                        useMaterial3: true,
-                        primaryColor: const Color.fromARGB(255, 0, 174, 90),
-                        secondaryHeaderColor:
-                            const Color.fromARGB(255, 0, 51, 105),
-                        // scaffoldBackgroundColor: Colors.lightBlueAccent,
+                      // fontFamily: 'Charmonman',
+                      fontFamilyFallback: const [
+                        "Baloo Bhai",
+                        "Roboto Mono",
+                        "Charmonman",
+                        "Dancing Script",
+                        "Xanh Mono",
+                        "JetBrains Mono",
+                      ],
+                      textTheme: Theme.of(context).textTheme.apply(
+                            fontSizeFactor: 0.5 + (state.fontSize / 20),
+                            fontSizeDelta: 1 + (state.fontSize / 10),
+                            bodyColor:
+                                Theme.of(context).scaffoldBackgroundColor,
 
-                        primaryTextTheme: Typography().white
-                        // textTheme: Typography(platform: TargetPlatform.iOS).white,
-                        ),
+                            // displayColor: Colors.white,
+                          ),
+                      colorScheme: ColorScheme.fromSeed(
+                        seedColor: Colors.green,
+                      ),
+                      useMaterial3: true,
+                      primaryColor: const Color.fromARGB(255, 0, 174, 90),
+                      secondaryHeaderColor:
+                          const Color.fromARGB(255, 0, 51, 105),
+                      // scaffoldBackgroundColor: Colors.lightBlueAccent,
+
+                      // primaryTextTheme: Typography().white
+                      // textTheme: Typography(platform: TargetPlatform.iOS).white,
+                    ),
                     home: MultiBlocProvider(
                       providers: [
                         BlocProvider<MenuBloc>(

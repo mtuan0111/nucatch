@@ -21,7 +21,7 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  String get screenTitle => menuArray[MenuOption.setting]!;
+  String get screenTitle => menuArray(context)[MenuOption.setting]!;
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                         icon: const Icon(
                                           Icons.person,
                                         ),
-                                        labelText: 'Name',
+                                        labelText: lang(context).name,
+                                        hintText: lang(context).anonymous,
                                         labelStyle: LayoutConfig(context)
                                             .titleSectionStyle(),
                                         border: OutlineInputBorder(
@@ -145,7 +146,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Font size",
+                                                lang(context).fontSize,
                                                 style: LayoutConfig(context)
                                                     .titleSectionStyle(),
                                               ),
@@ -202,7 +203,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Volume",
+                                                lang(context).volume,
                                                 style: LayoutConfig(context)
                                                     .titleSectionStyle(),
                                               ),
@@ -248,7 +249,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Number of top turn",
+                                                lang(context).numberOfTopScores,
                                                 style: LayoutConfig(context)
                                                     .titleSectionStyle(),
                                               ),
@@ -281,7 +282,73 @@ class _SettingScreenState extends State<SettingScreen> {
                                           ),
                                         ),
                                       ],
-                                    )
+                                    ),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          FontAwesomeIcons.language,
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 16,
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                lang(context).language,
+                                                style: LayoutConfig(context)
+                                                    .titleSectionStyle(),
+                                              ),
+                                              DropdownButtonFormField<String>(
+                                                value: settingState.locale,
+                                                items: languages.entries
+                                                    .map(
+                                                      (lang) =>
+                                                          DropdownMenuItem<
+                                                              String>(
+                                                        value: lang.key,
+                                                        child: Text(lang.value),
+                                                      ),
+                                                    )
+                                                    .toList(),
+                                                onChanged: (val) {
+                                                  if (val != null) {
+                                                    BlocProvider.of<
+                                                                SettingBloc>(
+                                                            context)
+                                                        .add(
+                                                      ChangedLocale(
+                                                          locale: val),
+                                                    );
+                                                  }
+                                                },
+                                                decoration: InputDecoration(
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      LayoutConfig
+                                                          .layoutBorderRadius,
+                                                    ),
+                                                  ),
+                                                  fillColor: Theme.of(context)
+                                                      .scaffoldBackgroundColor,
+                                                  focusColor: Theme.of(context)
+                                                      .scaffoldBackgroundColor,
+                                                ),
+                                                dropdownColor: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               );

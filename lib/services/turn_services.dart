@@ -24,7 +24,7 @@ class TurnRecordedServices {
           CREATE TABLE turn_records (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             turnId TEXT NOT NULL,
-            playedUsername TEXT NOT NULL,
+            playedUsername TEXT NULL,
             point INTEGER NOT NULL,
             recordedTime TEXT NOT NULL
           )

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -11,7 +12,21 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-  String get screenTitle => menuArray[MenuOption.about]!;
+  String get screenTitle => menuArray(context)[MenuOption.about]!;
+
+  String? version;
+
+  @override
+  void initState() {
+    super.initState();
+
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      setState(() {
+        version = packageInfo.version;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,12 +120,12 @@ class _AboutScreenState extends State<AboutScreen> {
                     Row(
                       children: [
                         Text(
-                          "Version: ",
-                          style: LayoutConfig(context).contentSectionStyle(),
+                          "${lang(context).version}: ",
+                          // style: LayoutConfig(context).titleSectionStyle(),
                         ),
                         Text(
-                          "1.2.1",
-                          style: LayoutConfig(context).titleSectionStyle(),
+                          version ?? "",
+                          style: LayoutConfig(context).contentSectionStyle(),
                         ),
                       ],
                     ),
