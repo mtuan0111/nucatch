@@ -6,6 +6,7 @@ import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch_with_bloc/helpers/helper.dart';
 import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 import 'package:nucatch_with_bloc/models/turn_record_model.dart';
+import 'package:nucatch_with_bloc/services/audio_services.dart';
 import 'package:nucatch_with_bloc/services/turn_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -13,6 +14,7 @@ import 'package:vibration/vibration.dart';
 
 class TurnBloc extends Bloc<TurnEvent, TurnState> {
   late TurnRecordedServices _turnedServices;
+  late AudioServices _audioServices;
 
   TurnBloc(super.initialState) {
     on<Tap>(_onTap);
@@ -28,6 +30,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<CountDownIntro>(_onCountDownIntro);
 
     _turnedServices = TurnRecordedServices();
+    _audioServices = AudioServices();
   }
 
   Future<void> _onTap(
@@ -45,6 +48,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (state.isLoading) {
       return;
     }
+
+    _audioServices.playTap();
 
     if (event.keyValue == KeyboardOption.reset) {
       return;
@@ -98,6 +103,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     // When correct Checking is finish the turn or not
     if (state.isFinishTarget) {
       HapticFeedback.vibrate();
+
       emitter(
         state.copyWith(
           point: state.point + 1,
@@ -107,6 +113,13 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
               : state.lifeRemaining,
         ),
       );
+
+      // Play sound immediately
+      if (state.timesCorrect > 3) {
+        _audioServices.playCorrectUp();
+      } else {
+        _audioServices.playCorrect();
+      }
 
       await Future.delayed(const Duration(milliseconds: 1000));
       if (isClosed) {
@@ -263,8 +276,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
 
     if (!state.isAbleToContinue) {
-      // TurnRecordedModel itemSaved =
-      //     await _onSaveRecorded(SaveRecorded(), emitter);
+      _audioServices.playEnd();
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? username = prefs.getString(PreferencesKey.USERNAME);
@@ -285,6 +297,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         ),
       );
       return;
+    } else {
+      _audioServices.playWrong();
     }
   }
 
@@ -372,6 +386,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         status: TurnStatus.intro,
       ),
     );
+
+    _audioServices.playIntro();
 
     await Future.delayed(
       Duration(
