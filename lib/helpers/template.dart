@@ -221,6 +221,53 @@ class CustomElevatedButton extends StatelessWidget {
   }
 }
 
+class MainLogo extends StatelessWidget {
+  const MainLogo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Hero(
+      tag: "logo",
+      // transitionOnUserGestures: true,
+      child: Image(
+        height: 160,
+        image: AssetImage("assets/images/main-logo.png"),
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+}
+
+class CustomeTitleButton extends StatelessWidget {
+  final String text;
+  final Function onTap;
+  const CustomeTitleButton({
+    super.key,
+    required this.text,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Text(
+          text,
+          style: LayoutConfig(context).displaySmallStyle(
+            isActiveShadow: true,
+            isItalic: true,
+          ),
+        ),
+      ),
+    );
+  }
+}
 // Widget buttonWidget(
 //   BuildContext context, {
 //   required String text,

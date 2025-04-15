@@ -115,7 +115,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       );
 
       // Play sound immediately
-      if (state.timesCorrect > 3) {
+      if (state.timesCorrect > 2) {
         _audioServices.playCorrectUp();
       } else {
         _audioServices.playCorrect();
@@ -127,7 +127,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       }
 
       // Checking is up level or not
-      if (state.timesCorrect > 3) {
+      if (state.timesCorrect > 2) {
         add(SetLevel(
           level: state.level + 1,
         ));
@@ -161,13 +161,11 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     emitter(
       state.copyWith(
         level: event.level,
-        timesCorrect: state.level != event.level
-            ? 0
-            : state.timesCorrect + (event.addPoint > 0 ? 1 : 0),
+        timesCorrect: state.level != event.level ? 0 : null,
         // lifeRemaining: state.level != event.level
         //     ? state.lifeRemaining
         //     : state.lifeRemaining + event.addPoint,
-        expect: Helper().generateRandomNumber(event.level + 3),
+        expect: Helper().generateRandomNumber(event.level + 2),
         typing: "",
       ),
     );
@@ -407,7 +405,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     add(
       SetLevel(
-        level: 0,
+        level: 1,
       ),
     );
   }

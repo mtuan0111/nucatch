@@ -69,25 +69,27 @@ class TurnState {
     );
   }
 
-  int get currentTypingIndex => typing.length;
-  bool get isFinishTarget => expect == typing;
-  int get getTimeShowTarget {
-    // Unit ratio for each level : 0.2
-    return int.parse((1000 + level * diffShowLevelMilisecond).toString());
+  String get levelAndTimeCorrect {
+    return "$level - ${timesCorrect + 1}";
   }
 
-  bool get isExpectNotEmpty => (expect != null && expect!.isNotEmpty);
-  bool get isTypingNotEmpty => (typing.isNotEmpty);
+  int get currentTypingIndex => typing.length;
+  bool get isFinishTarget => expect == typing;
+
+  int get getTimeShowTarget => 1000 + level * diffShowLevelMilisecond;
+
+  bool get isExpectNotEmpty => expect?.isNotEmpty ?? false;
+  bool get isTypingNotEmpty => typing.isNotEmpty;
 
   bool get isShowExpect =>
       status == TurnStatus.initial && isExpectNotEmpty && !isTypingNotEmpty;
+
   bool get isTimeForTyping =>
-      status == TurnStatus.playing && isExpectNotEmpty || isTypingNotEmpty;
+      status == TurnStatus.playing && (isExpectNotEmpty || isTypingNotEmpty);
+
   bool get isCorrectAnimate => isFinishTarget;
-  bool get isAbleToTap =>
-      // -> let user able to quick tap
-      // (status == TurnStatus.playing) &&
-      isExpectNotEmpty && !isFinishTarget;
+
+  bool get isAbleToTap => isExpectNotEmpty && !isFinishTarget;
 
   bool get isAbleToReset => lifeRemaining > 1;
   bool get isAbleToContinue => lifeRemaining > 0;

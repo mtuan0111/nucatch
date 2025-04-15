@@ -88,7 +88,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                   fontWeight: FontWeight.bold),
                                         ),
                                         TextSpan(
-                                          text: "${turnState.level}",
+                                          text: turnState.levelAndTimeCorrect,
                                           style: LayoutConfig(context)
                                               .contentSectionStyle(),
                                         ),
@@ -377,108 +377,111 @@ class _PlayScreenState extends State<PlayScreen> {
                     ),
                     Expanded(
                       flex: 2,
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        spacing: buttonSpace,
-                        runSpacing: buttonSpace,
-                        children: keyboardArray.entries.map(
-                          (e) {
-                            double originalScale = 1;
-                            int milisecondDuation = 50;
-                            return AnimatedScale(
-                              scale: originalScale,
-                              duration:
-                                  Duration(milliseconds: milisecondDuation),
-                              child: SizedBox(
-                                width: (screenWidth / 3) - buttonSpace * 2,
-                                height: (screenWidth / 3) - buttonSpace * 2,
-                                child: Builder(
-                                  builder: (context) {
-                                    if (e.key == KeyboardOption.reset) {
-                                      return AnimatedOpacity(
-                                        opacity: (turnState.isAbleToReset &&
-                                                turnState.isAbleToTap)
-                                            ? 1
-                                            : 0.5,
-                                        duration:
-                                            const Duration(milliseconds: 200),
-                                        child: CustomElevatedButton(
-                                          icon: FontAwesomeIcons.arrowsRotate,
-                                          onPressed: () async {
-                                            context.read<TurnBloc>().add(
-                                                  ResetNewNumber(),
-                                                );
-                                          },
-                                        ),
-                                      );
-                                    }
+                      child: Center(
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: buttonSpace,
+                          runSpacing: buttonSpace,
+                          children: keyboardArray.entries.map(
+                            (e) {
+                              double originalScale = 1;
+                              int milisecondDuation = 50;
+                              return AnimatedScale(
+                                scale: originalScale,
+                                duration:
+                                    Duration(milliseconds: milisecondDuation),
+                                child: SizedBox(
+                                  width: (screenWidth / 3) - buttonSpace * 2,
+                                  height: (screenWidth / 3) - buttonSpace * 2,
+                                  child: Builder(
+                                    builder: (context) {
+                                      if (e.key == KeyboardOption.reset) {
+                                        return AnimatedOpacity(
+                                          opacity: (turnState.isAbleToReset &&
+                                                  turnState.isAbleToTap)
+                                              ? 1
+                                              : 0.5,
+                                          duration:
+                                              const Duration(milliseconds: 200),
+                                          child: CustomElevatedButton(
+                                            icon: FontAwesomeIcons.arrowsRotate,
+                                            onPressed: () async {
+                                              context.read<TurnBloc>().add(
+                                                    ResetNewNumber(),
+                                                  );
+                                            },
+                                          ),
+                                        );
+                                      }
 
-                                    if (e.key == KeyboardOption.mainMenu) {
+                                      if (e.key == KeyboardOption.mainMenu) {
+                                        return AnimatedOpacity(
+                                          opacity:
+                                              (turnState.isAbleToTap) ? 1 : 0.5,
+                                          duration:
+                                              const Duration(milliseconds: 200),
+                                          child: CustomElevatedButton(
+                                            icon: FontAwesomeIcons.bars,
+                                            onPressed: () async {
+                                              await pressMainMenu(context);
+                                            },
+                                          ),
+                                        );
+                                      }
+
                                       return AnimatedOpacity(
                                         opacity:
-                                            (turnState.isAbleToTap) ? 1 : 0.5,
+                                            turnState.isAbleToTap ? 1 : 0.5,
                                         duration:
                                             const Duration(milliseconds: 200),
-                                        child: CustomElevatedButton(
-                                          icon: FontAwesomeIcons.bars,
-                                          onPressed: () async {
-                                            await pressMainMenu(context);
+                                        child:
+                                            // buttonWidget(
+                                            //       context,
+                                            //       text: e.value.toString(),
+                                            //       onTap: () {
+                                            //         context.read<TurnBloc>().add(
+                                            //               Tap(keyValue: e.key),
+                                            //             );
+
+                                            //         setState(
+                                            //           () {
+                                            //             originalScale = 0.8;
+                                            //             milisecondDuation = 10;
+                                            //           },
+                                            //         );
+                                            //       },
+                                            //     ) ??
+                                            CustomElevatedButton(
+                                          text: e.value.toString(),
+                                          onPressed: () {
+                                            context.read<TurnBloc>().add(
+                                                  Tap(keyValue: e.key),
+                                                );
+
+                                            setState(
+                                              () {
+                                                originalScale = 0.8;
+                                                milisecondDuation = 10;
+                                              },
+                                            );
                                           },
+                                          // child: Text(
+                                          //   e.value.toString(),
+                                          //   style: LayoutConfig(context)
+                                          //       .displaySmallStyle()
+                                          //       .copyWith(
+                                          //         color: Colors.black87,
+                                          //       ),
+                                          // ),
                                         ),
                                       );
-                                    }
-
-                                    return AnimatedOpacity(
-                                      opacity: turnState.isAbleToTap ? 1 : 0.5,
-                                      duration:
-                                          const Duration(milliseconds: 200),
-                                      child:
-                                          // buttonWidget(
-                                          //       context,
-                                          //       text: e.value.toString(),
-                                          //       onTap: () {
-                                          //         context.read<TurnBloc>().add(
-                                          //               Tap(keyValue: e.key),
-                                          //             );
-
-                                          //         setState(
-                                          //           () {
-                                          //             originalScale = 0.8;
-                                          //             milisecondDuation = 10;
-                                          //           },
-                                          //         );
-                                          //       },
-                                          //     ) ??
-                                          CustomElevatedButton(
-                                        text: e.value.toString(),
-                                        onPressed: () {
-                                          context.read<TurnBloc>().add(
-                                                Tap(keyValue: e.key),
-                                              );
-
-                                          setState(
-                                            () {
-                                              originalScale = 0.8;
-                                              milisecondDuation = 10;
-                                            },
-                                          );
-                                        },
-                                        // child: Text(
-                                        //   e.value.toString(),
-                                        //   style: LayoutConfig(context)
-                                        //       .displaySmallStyle()
-                                        //       .copyWith(
-                                        //         color: Colors.black87,
-                                        //       ),
-                                        // ),
-                                      ),
-                                    );
-                                  },
+                                    },
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        ).toList(),
+                              );
+                            },
+                          ).toList(),
+                        ),
                       ),
                     )
                   ],

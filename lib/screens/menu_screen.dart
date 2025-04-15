@@ -8,6 +8,7 @@ import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
+import 'package:nucatch_with_bloc/helpers/template.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -49,11 +50,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     surfaceTintColor: Colors.transparent,
                     pinned: true,
                     flexibleSpace: const Center(
-                      child: Image(
-                        height: 160,
-                        image: AssetImage("assets/images/main-logo.png"),
-                        fit: BoxFit.contain,
-                      ),
+                      child: MainLogo(),
                     ),
                     expandedHeight: 240,
                     toolbarHeight: 80,
@@ -117,35 +114,6 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-class CustomeTitleButton extends StatelessWidget {
-  final String text;
-  final Function onTap;
-  const CustomeTitleButton({
-    super.key,
-    required this.text,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        onTap();
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Text(
-          text,
-          style: LayoutConfig(context).displaySmallStyle(
-            isActiveShadow: true,
-            isItalic: true,
-          ),
-        ),
-      ),
     );
   }
 }

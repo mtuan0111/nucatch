@@ -98,9 +98,6 @@ class _GameOverScreenState extends State<GameOverScreen> {
                           child: BlocBuilder<TurnRecordedListBloc,
                               TurnRecordedListState>(
                             builder: (context, state) {
-                              if (state.isLoading) {
-                                return const LoadingWidget();
-                              }
                               return ElevatedButton(
                                 style: LayoutConfig.elevatedButtonStyle,
                                 onPressed: () {
