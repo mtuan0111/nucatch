@@ -5,6 +5,7 @@ import 'package:nucatch_with_bloc/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch_with_bloc/blocs/objects/setting/setting_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
@@ -28,6 +29,7 @@ class MenuNav extends StatefulWidget {
 }
 
 class _MenuNavState extends State<MenuNav> {
+  SettingState get settingState => BlocProvider.of<SettingBloc>(context).state;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MenuBloc, MenuState>(
@@ -69,7 +71,10 @@ class _MenuNavState extends State<MenuNav> {
                             BlocProvider(
                               create: (context) => TurnBloc(
                                 TurnState(),
-                              )..add(
+                              )
+                                ..add(ApplySetting(
+                                    settingModel: settingState.model!))
+                                ..add(
                                   Start(),
                                 ),
                             ),

@@ -69,9 +69,11 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     ),
                     BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
                       builder: (context, state) {
-                        if (state.isLoading) {
+                        if (state.isLoading ||
+                            turnBloc.state.recordedItem == null) {
                           return const LoadingWidget();
                         }
+
                         int indexOfItem = state.listModel!
                             .indexOfTurn(turnBloc.state.recordedItem!);
                         return RankingItem(

@@ -1,4 +1,5 @@
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch_with_bloc/models/setting_model.dart';
 import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 
 abstract class TurnEvent {}
@@ -63,3 +64,10 @@ class HideExpect extends TurnEvent {
 // class MarkWrongTap extends TurnEvent {}
 
 class ResetNewNumber extends TurnEvent {}
+
+class ApplySetting extends TurnEvent {
+  final SettingModel settingModel;
+  ApplySetting({
+    required this.settingModel,
+  });
+}

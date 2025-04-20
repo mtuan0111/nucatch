@@ -5,6 +5,7 @@ import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch_with_bloc/helpers/helper.dart';
 import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
+import 'package:nucatch_with_bloc/models/setting_model.dart';
 import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 import 'package:nucatch_with_bloc/services/audio_services.dart';
 import 'package:nucatch_with_bloc/services/turn_services.dart';
@@ -16,7 +17,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   late TurnRecordedServices _turnedServices;
   late AudioServices _audioServices;
 
-  TurnBloc(super.initialState) {
+  TurnBloc(super.initialState, {SettingModel? settingModel}) {
     on<Tap>(_onTap);
     on<SetLevel>(_onSetLevel);
     on<ShowExpect>(_onShowExpect);
@@ -28,6 +29,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     on<Start>(_onStart);
     on<CountDownIntro>(_onCountDownIntro);
+    on<ApplySetting>(_onApplySetting);
 
     _turnedServices = TurnRecordedServices();
     _audioServices = AudioServices();
@@ -421,5 +423,13 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (state.isLoading) {
       return;
     }
+  }
+
+  Future<void> _onApplySetting(
+    ApplySetting event,
+    Emitter<TurnState> emitter,
+  ) async {
+    // _audioServices.setVolume(event.settingModel.vol / 10) = AudioServices(volume: event.settingModel.vol / 10);
+    _audioServices.setVolume = event.settingModel.vol / 10;
   }
 }

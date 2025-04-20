@@ -77,13 +77,14 @@ class RankingItem extends StatelessWidget {
                 ),
               ),
               if (ranking == 1)
-                const Positioned(
+                Positioned(
                   top: 0,
                   right: 0,
                   child: Icon(
                     FontAwesomeIcons.trophy,
                     color: Colors.amber,
-                    size: 30, // Increased size for a bigger icon
+                    size: Theme.of(context).textTheme.displaySmall!.fontSize!,
+                    // Increased size for a bigger icon
                   ),
                 ),
               Center(
@@ -107,7 +108,7 @@ class RankingItem extends StatelessWidget {
               children: [
                 Icon(
                   Icons.person,
-                  size: 16,
+                  size: Theme.of(context).textTheme.titleLarge!.fontSize,
                   color: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 const SizedBox(width: 5),
@@ -122,7 +123,7 @@ class RankingItem extends StatelessWidget {
               children: [
                 Icon(
                   Icons.calendar_today,
-                  size: 16,
+                  size: Theme.of(context).textTheme.titleLarge!.fontSize,
                   color: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 const SizedBox(width: 5),
@@ -137,7 +138,7 @@ class RankingItem extends StatelessWidget {
               children: [
                 Icon(
                   Icons.star,
-                  size: 16,
+                  size: Theme.of(context).textTheme.titleLarge!.fontSize,
                   color: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 const SizedBox(width: 5),

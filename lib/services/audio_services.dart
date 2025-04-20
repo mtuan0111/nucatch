@@ -19,23 +19,25 @@ class AudioServices {
   // AudioCache end_sound_audio = AudioCache()
 
   // late AudioPlayer _audioPlayer;
-  double volume = 7;
+  double volume = 0.7;
   double get getVolume => volume;
   set setVolume(double volume) {
     this.volume = volume;
   }
 
-  AudioServices() {
-    // _audioPlayer = AudioPlayer();
-  }
-  void dispose() {
-    // _audioPlayer.dispose();
+  AudioServices({double? volume}) {
+    if (volume != null) {
+      this.volume = volume;
+    }
   }
 
   Future<void> playSound(String soundPath) async {
+    if (getVolume == 0) {
+      return;
+    }
     AudioPlayer().play(
       AssetSource(FREFIX + soundPath),
-      volume: getVolume / 10,
+      volume: getVolume,
       mode: PlayerMode.lowLatency,
     );
   }

@@ -85,7 +85,8 @@ class TurnState {
       status == TurnStatus.initial && isExpectNotEmpty && !isTypingNotEmpty;
 
   bool get isTimeForTyping =>
-      status == TurnStatus.playing && (isExpectNotEmpty || isTypingNotEmpty);
+      (status == TurnStatus.playing || !isShowExpect) &&
+      (isExpectNotEmpty || isTypingNotEmpty);
 
   bool get isCorrectAnimate => isFinishTarget;
 

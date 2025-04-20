@@ -6,6 +6,8 @@ import 'package:nucatch_with_bloc/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch_with_bloc/blocs/objects/setting/setting_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
@@ -27,6 +29,18 @@ class _PlayScreenState extends State<PlayScreen> {
   double get screenWidth => MediaQuery.of(context).size.width;
   double get buttonSpace => 20;
   String inputtedValue = "";
+
+  TurnBloc get turnBloc => BlocProvider.of<TurnBloc>(context);
+  TurnState get turnState => turnBloc.state;
+
+  SettingState get settingState => BlocProvider.of<SettingBloc>(context).state;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
 
   @override
   void dispose() {

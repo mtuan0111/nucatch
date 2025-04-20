@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/setting/setting_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
+import 'package:nucatch_with_bloc/services/audio_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingBloc extends Bloc<SettingEvent, SettingState> {
   SharedPreferences? _prefs;
+  late AudioServices _audioServices;
 
   SettingBloc() : super(SettingState()) {
     on<LoadData>(_onLoadData);
@@ -16,6 +18,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<ChangedVol>(_onChangedVol);
     on<ChangedFontSize>(_onChangedFontSize);
     on<ChangedNumberOfTopBoard>(_onChangedNumberOfTopBoard);
+
+    _audioServices = AudioServices();
 
     add(LoadData());
   }
@@ -79,6 +83,9 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         vol: event.vol,
       ),
     );
+
+    _audioServices.setVolume = event.vol / 10;
+    _audioServices.playCorrect();
   }
 
   Future<void> _onChangedFontSize(
