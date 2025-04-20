@@ -30,5 +30,12 @@
   "fontSize": "Kích thước phông chữ",
   "volume": "Âm lượng",
   "numberOfTopScores": "Số điểm cao nhất",
-  "language": "Ngôn ngữ"
+  "language": "Ngôn ngữ",
+
+  "thankYou": "Cảm ơn bạn!",
+  "thankYouMessage": "Cảm ơn bạn đã chơi trò chơi của chúng tôi. Chúng tôi hy vọng bạn đã thích nó. Nếu bạn có bất kỳ phản hồi hoặc đề xuất nào, xin vui lòng cho chúng tôi biết.",
+  "authorName": "Tác giả",
+  
+  "connectWithUs": "Kết nối với chúng tôi",
+  "connectWithUsMessage": "Nếu bạn có bất kỳ câu hỏi hoặc phản hồi nào, hãy liên hệ với chúng tôi qua các kênh truyền thông xã hội của chúng tôi."
 }

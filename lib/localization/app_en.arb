@@ -27,5 +27,12 @@
   "fontSize": "Font size",
   "volume": "Volume",
   "numberOfTopScores": "Number of top scores",
-  "language": "Language"
+  "language": "Language",
+
+  "thankYou": "Thank you for playing",
+  "thankYouMessage": "Thank you for playing our game. We hope you enjoyed it. If you have any feedback or suggestions, please let us know.",
+  "authorName": "Author",
+  
+  "connectWithUs": "Connect with us",
+  "connectWithUsMessage": "If you have any questions or feedback, feel free to reach out to us on our social media channels."
 }

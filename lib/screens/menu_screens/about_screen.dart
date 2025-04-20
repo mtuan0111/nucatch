@@ -78,37 +78,57 @@ class _AboutScreenState extends State<AboutScreen> {
               expandedHeight: 100,
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 50,
-                vertical: 20,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               sliver: SliverToBoxAdapter(
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  runSpacing: 20,
-                  spacing: 20,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Thanks for enjoying!",
-                      style: LayoutConfig(context).handWritingSectionStyle(),
+                      lang(context).thankYou,
+                      style: LayoutConfig(context).titleSectionStyle(),
                     ),
-                    Text(
-                      "Thanks for enjoying! Thanks for enjoying! Thanks for enjoying! Thanks for enjoying! Thanks for enjoying! Thanks for enjoying! Thanks for enjoying! ",
-                      style: LayoutConfig(context).contentSectionStyle(),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.solidHeart,
+                          color: Theme.of(context).primaryColor,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            lang(context).thankYouMessage,
+                            style: LayoutConfig(context).contentSectionStyle(),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               sliver: SliverToBoxAdapter(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      lang(context).authorName,
+                      style: LayoutConfig(context).titleSectionStyle(),
+                    ),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
+                        Icon(
+                          FontAwesomeIcons.user,
+                          color: Theme.of(context).primaryColor,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 10),
                         Text(
-                          "Author: ",
+                          "${lang(context).authorName}: ",
                           style: LayoutConfig(context).contentSectionStyle(),
                         ),
                         Text(
@@ -117,14 +137,21 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 5),
                     Row(
                       children: [
+                        Icon(
+                          FontAwesomeIcons.codeBranch,
+                          color: Theme.of(context).primaryColor,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 10),
                         Text(
                           "${lang(context).version}: ",
-                          // style: LayoutConfig(context).titleSectionStyle(),
+                          style: LayoutConfig(context).contentSectionStyle(),
                         ),
                         Text(
-                          version ?? "",
+                          version ?? "N/A",
                           style: LayoutConfig(context).contentSectionStyle(),
                         ),
                       ],
@@ -134,39 +161,76 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               sliver: SliverToBoxAdapter(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Additional information",
+                      lang(context).connectWithUs,
                       style: LayoutConfig(context).titleSectionStyle(),
                     ),
-                    Wrap(
+                    const SizedBox(height: 10),
+                    Row(
                       children: [
-                        IconButton(
-                          onPressed: null,
-                          icon: Icon(
-                            FontAwesomeIcons.share,
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                        Icon(
+                          FontAwesomeIcons.connectdevelop,
+                          color: Theme.of(context).primaryColor,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            lang(context).connectWithUsMessage,
+                            style: LayoutConfig(context).contentSectionStyle(),
                           ),
                         ),
-                        IconButton(
-                          onPressed: null,
-                          icon: Icon(
-                            FontAwesomeIcons.facebook,
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: null,
-                          icon: Icon(
-                            FontAwesomeIcons.shieldHalved,
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                          ),
-                        )
                       ],
-                    )
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              // Add share functionality
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.shareNodes,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              // Add Facebook link
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.facebookF,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              // Add privacy policy link
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.shieldHalved,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              // Add email link
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.envelope,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
