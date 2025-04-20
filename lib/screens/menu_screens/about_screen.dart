@@ -93,7 +93,8 @@ class _AboutScreenState extends State<AboutScreen> {
                         Icon(
                           FontAwesomeIcons.solidHeart,
                           color: Theme.of(context).primaryColor,
-                          size: 18,
+                          size:
+                              Theme.of(context).textTheme.titleLarge!.fontSize,
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -124,7 +125,8 @@ class _AboutScreenState extends State<AboutScreen> {
                         Icon(
                           FontAwesomeIcons.user,
                           color: Theme.of(context).primaryColor,
-                          size: 18,
+                          size:
+                              Theme.of(context).textTheme.titleLarge!.fontSize,
                         ),
                         const SizedBox(width: 10),
                         Text(
@@ -143,7 +145,8 @@ class _AboutScreenState extends State<AboutScreen> {
                         Icon(
                           FontAwesomeIcons.codeBranch,
                           color: Theme.of(context).primaryColor,
-                          size: 18,
+                          size:
+                              Theme.of(context).textTheme.titleLarge!.fontSize,
                         ),
                         const SizedBox(width: 10),
                         Text(
@@ -176,7 +179,8 @@ class _AboutScreenState extends State<AboutScreen> {
                         Icon(
                           FontAwesomeIcons.connectdevelop,
                           color: Theme.of(context).primaryColor,
-                          size: 18,
+                          size:
+                              Theme.of(context).textTheme.titleLarge!.fontSize,
                         ),
                         const SizedBox(width: 10),
                         Expanded(
