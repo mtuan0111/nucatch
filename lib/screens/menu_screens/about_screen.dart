@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch_with_bloc/blocs/objects/setting/setting_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
+import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
+import 'package:nucatch_with_bloc/helpers/helper.dart';
+import 'package:nucatch_with_bloc/models/setting_model.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:share_plus/share_plus.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -14,7 +23,19 @@ class AboutScreen extends StatefulWidget {
 class _AboutScreenState extends State<AboutScreen> {
   String get screenTitle => menuArray(context)[MenuOption.about]!;
 
+  SettingBloc get settingBloc => BlocProvider.of<SettingBloc>(context);
+  SettingState get settingState => settingBloc.state;
+  SettingModel get settingModel => settingState.model!;
+
+  UserBloc get userBloc => BlocProvider.of<UserBloc>(context);
+  UserState get userState => userBloc.state;
+
   String? version;
+
+  String profileUrl = dotenv.env['PROFILE_URL']!;
+  String privacyPolicyUrl = dotenv.env['PRIVACY_POLICY_URL']!;
+  String facebookUrl = dotenv.env['FACEBOOK_URL']!;
+  String email = dotenv.env['EMAIL_CONTACT']!;
 
   @override
   void initState() {
@@ -78,7 +99,7 @@ class _AboutScreenState extends State<AboutScreen> {
               expandedHeight: 100,
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               sliver: SliverToBoxAdapter(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,6 +110,7 @@ class _AboutScreenState extends State<AboutScreen> {
                     ),
                     const SizedBox(height: 10),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(
                           FontAwesomeIcons.solidHeart,
@@ -99,7 +121,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            lang(context).thankYouMessage,
+                            "${lang(context).introductionContent}\n\n${lang(context).thankYouMessage}",
                             style: LayoutConfig(context).contentSectionStyle(),
                           ),
                         ),
@@ -110,7 +132,7 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               sliver: SliverToBoxAdapter(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +186,7 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               sliver: SliverToBoxAdapter(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,6 +197,7 @@ class _AboutScreenState extends State<AboutScreen> {
                     ),
                     const SizedBox(height: 10),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(
                           FontAwesomeIcons.connectdevelop,
@@ -191,49 +214,61 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              // Add share functionality
-                            },
-                            icon: Icon(
-                              FontAwesomeIcons.shareNodes,
-                              color: Theme.of(context).primaryColor,
-                            ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            if (userState.username == null) {
+                              Share.share(
+                                lang(context).messageShareIntro(
+                                  dotenv.env['PROFILE_URL']!,
+                                ),
+                              );
+                            } else {
+                              Share.share(
+                                lang(context).messageShareIntroWIthUsername(
+                                  userState.username ?? lang(context).anonymous,
+                                  dotenv.env['PROFILE_URL']!,
+                                ),
+                              );
+                            }
+                          },
+                          icon: Icon(
+                            FontAwesomeIcons.shareNodes,
+                            color: Theme.of(context).primaryColor,
                           ),
-                          IconButton(
-                            onPressed: () {
-                              // Add Facebook link
-                            },
-                            icon: Icon(
-                              FontAwesomeIcons.facebookF,
-                              color: Theme.of(context).primaryColor,
-                            ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Helper.launchURL(facebookUrl,
+                                fallbackUrl: facebookUrl);
+                          },
+                          icon: Icon(
+                            FontAwesomeIcons.facebookF,
+                            color: Theme.of(context).primaryColor,
                           ),
-                          IconButton(
-                            onPressed: () {
-                              // Add privacy policy link
-                            },
-                            icon: Icon(
-                              FontAwesomeIcons.shieldHalved,
-                              color: Theme.of(context).primaryColor,
-                            ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Helper.launchURL(privacyPolicyUrl);
+                          },
+                          icon: Icon(
+                            FontAwesomeIcons.shieldHalved,
+                            color: Theme.of(context).primaryColor,
                           ),
-                          IconButton(
-                            onPressed: () {
-                              // Add email link
-                            },
-                            icon: Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Theme.of(context).primaryColor,
-                            ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Helper.launchURL("mailto:$email");
+                          },
+                          icon: Icon(
+                            FontAwesomeIcons.envelope,
+                            color: Theme.of(context).primaryColor,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

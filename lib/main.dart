@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/setting/setting_bloc.dart';
@@ -23,6 +24,8 @@ Future<void> main() async {
   // This prevents a sudden theme change when the app is first displayed.
   // await settingsController.loadSettings();
 
+  await dotenv.load(fileName: ".env");
+
   runApp(const MyApp());
 }
 
@@ -38,6 +41,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // final SettingsController settingsController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

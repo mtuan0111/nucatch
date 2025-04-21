@@ -34,5 +34,33 @@
   "authorName": "Author",
   
   "connectWithUs": "Connect with us",
-  "connectWithUsMessage": "If you have any questions or feedback, feel free to reach out to us on our social media channels."
+  "connectWithUsMessage": "If you have any questions or feedback, feel free to reach out to us on our social media channels.",
+
+  "introductionContent":
+        "NuCatch is a fun and engaging brain game designed to sharpen your memory and improve focus. Challenge yourself to quickly catch numbers in a short time, helping you remember things like OTPs, phone numbers, birthdays, and more. Enjoy the experience and boost your memory skills!",
+
+  "messageShareIntroWIthUsername": "Join #NuCatch with {username}! Explore it now at {profileUrl}",
+  "@messageShareIntroWIthUsername": {
+    "description": "It will be replaced by the actual application name",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      },
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "messageShareIntro": "Explore #NuCatch now at {profileUrl}",
+  "@messageShareIntro": {
+    "description": "It will be replaced with the actual URL",
+    "placeholders": {
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  }
 }

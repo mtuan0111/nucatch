@@ -37,5 +37,33 @@
   "authorName": "Tác giả",
   
   "connectWithUs": "Kết nối với chúng tôi",
-  "connectWithUsMessage": "Nếu bạn có bất kỳ câu hỏi hoặc phản hồi nào, hãy liên hệ với chúng tôi qua các kênh truyền thông xã hội của chúng tôi."
+  "connectWithUsMessage": "Nếu bạn có bất kỳ câu hỏi hoặc phản hồi nào, hãy liên hệ với chúng tôi qua các kênh truyền thông xã hội của chúng tôi.",
+
+  "introductionContent":
+        "NuCatch là một trò chơi đơn giản và thú vị, được thiết kế để giúp bạn rèn luyện trí nhớ và cải thiện sự tập trung. Hãy thử thách bản thân và tận hưởng trò chơi!",
+  
+  "messageShareIntroWIthUsername": "Tham gia #NuCatch với {username}! Khám phá ngay tại {profileUrl}",
+  "@messageShareIntroWIthUsername": {
+    "description": "Nó sẽ được thay thế bằng tên ứng dụng thực tế",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "Nguyễn Văn A"
+      },
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "messageShareIntro": "Khám phá #NuCatch ngay tại {profileUrl}",
+  "@messageShareIntro": {
+    "description": "Nó sẽ được thay thế bằng URL thực tế",
+    "placeholders": {
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  }
 }
