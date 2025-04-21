@@ -514,11 +514,111 @@ class _PlayScreenState extends State<PlayScreen> {
 
   Future<void> pressMainMenu(BuildContext context) async {
     // context.read<MenuBloc>().add(SelectOption(option: null),);
-    BlocProvider.of<MenuBloc>(context).add(
-      SelectOption(
-        option: null,
-      ),
+
+    TurnState turnState = BlocProvider.of<TurnBloc>(context).state;
+
+    bool? confirmExit = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomeAlert(
+          point: turnState.point,
+        );
+      },
     );
+
+    if (confirmExit == true) {
+      BlocProvider.of<MenuBloc>(context).add(
+        SelectOption(
+          option: null,
+        ),
+      );
+    }
+
     return;
+  }
+}
+
+class CustomeAlert extends StatelessWidget {
+  final int point;
+  const CustomeAlert({
+    super.key,
+    this.point = 0,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text(
+        lang(context).confirmExit,
+        style: TextStyle(
+          color: Theme.of(context).primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+        textAlign: TextAlign.center,
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            lang(context).areYouSureExit,
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontSize: 18,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            "${lang(context).score}: $point",
+            style: TextStyle(
+              color: Theme.of(context).secondaryHeaderColor,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+      actionsAlignment: MainAxisAlignment.spaceEvenly,
+      actions: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.redAccent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text(
+            lang(context).no,
+            style: TextStyle(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: () => Navigator.of(context).pop(true),
+          child: Text(
+            lang(context).yes,
+            style: TextStyle(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
