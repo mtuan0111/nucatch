@@ -11,6 +11,8 @@ import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
 import 'package:nucatch_with_bloc/helpers/template.dart';
 
@@ -538,13 +540,22 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 }
 
-class CustomeAlert extends StatelessWidget {
+class CustomeAlert extends StatefulWidget {
   final int point;
   const CustomeAlert({
     super.key,
     this.point = 0,
   });
 
+  @override
+  State<CustomeAlert> createState() => _CustomeAlertState();
+}
+
+class _CustomeAlertState extends State<CustomeAlert> {
+  TurnRecordedListBloc get turnRecordedListBloc =>
+      context.read<TurnRecordedListBloc>();
+  TurnRecordedListState get turnRecordedListState =>
+      context.read<TurnRecordedListBloc>().state;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -574,7 +585,7 @@ class CustomeAlert extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            "${lang(context).score}: $point",
+            "${lang(context).score}: ${widget.point}",
             style: TextStyle(
               color: Theme.of(context).secondaryHeaderColor,
               fontSize: 22,
@@ -582,6 +593,16 @@ class CustomeAlert extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
+          // const SizedBox(height: 20),
+          // Text(
+          //   "Rank: ${turnRecordedListState.rankOfPoint(widget.point)}",
+          //   style: TextStyle(
+          //     color: Theme.of(context).secondaryHeaderColor,
+          //     fontSize: 22,
+          //     fontWeight: FontWeight.bold,
+          //   ),
+          //   textAlign: TextAlign.center,
+          // ),
         ],
       ),
       actionsAlignment: MainAxisAlignment.spaceEvenly,

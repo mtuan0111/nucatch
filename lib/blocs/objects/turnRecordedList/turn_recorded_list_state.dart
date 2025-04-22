@@ -38,4 +38,12 @@ class TurnRecordedListState {
 
     return listModel!.indexOf(item) + 1;
   }
+
+  int rankOfPoint(int point) {
+    if (listModel == null) return -1;
+
+    if (!listModel!.any((element) => element.point == point)) return -1;
+
+    return listModel!.indexWhere((element) => element.point == point) + 1;
+  }
 }

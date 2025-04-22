@@ -87,19 +87,7 @@ class _MenuNavState extends State<MenuNav> {
                       ),
                     if (navState is TopScore)
                       MaterialPage(
-                        child: BlocProvider(
-                          create: (context) =>
-                              TurnRecordedListBloc(TurnRecordedListState(
-                            numberOfTopBoard: context
-                                .read<SettingBloc>()
-                                .state
-                                .numberOfTopBoard,
-                          ))
-                                ..add(
-                                  LoadData(),
-                                ),
-                          child: const TopScoreScreen(),
-                        ),
+                        child: const TopScoreScreen(),
                       ),
                     if (navState is Setting)
                       const MaterialPage(

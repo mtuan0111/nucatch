@@ -18,20 +18,27 @@ class TopScoreScreen extends StatefulWidget {
 
 class _TopScoreScreenState extends State<TopScoreScreen> {
   String get screenTitle => menuArray(context)[MenuOption.topScore]!;
+  TurnRecordedListBloc get turnRecordedListBloc =>
+      context.read<TurnRecordedListBloc>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    turnRecordedListBloc.add(LoadData());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TurnRecordedListState turnRecordedListState =
-    //     BlocProvider.of<TurnRecordedListBloc>(context).state;
-
     return BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
       builder: (context, turnRecordedListState) {
         return Scaffold(
           // appBar: AppBar(),
           body: RefreshIndicator(
             onRefresh: () async {
-              context.read<TurnRecordedListBloc>().add(
-                    LoadData(),
-                  );
+              turnRecordedListBloc.add(
+                LoadData(),
+              );
             },
             child: Container(
               decoration: LayoutConfig(context).gradientDecoration,

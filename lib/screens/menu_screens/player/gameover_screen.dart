@@ -20,11 +20,10 @@ class GameOverScreen extends StatefulWidget {
 }
 
 class _GameOverScreenState extends State<GameOverScreen> {
-  UserBloc get userBloc => BlocProvider.of<UserBloc>(context);
-  TurnBloc get turnBloc => BlocProvider.of<TurnBloc>(context);
+  UserBloc get userBloc => context.read<UserBloc>();
+  TurnBloc get turnBloc => context.read<TurnBloc>();
 
-  TurnRecordedListBloc get turnListBloc =>
-      BlocProvider.of<TurnRecordedListBloc>(context);
+  TurnRecordedListBloc get turnListBloc => context.read<TurnRecordedListBloc>();
   TurnRecordedListState get turnListState => turnListBloc.state;
 
   double get screenWidth => MediaQuery.of(context).size.width;
@@ -103,7 +102,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                               return ElevatedButton(
                                 style: LayoutConfig.elevatedButtonStyle,
                                 onPressed: () {
-                                  BlocProvider.of<TurnBloc>(context).add(
+                                  turnBloc.add(
                                     Start(),
                                   );
                                 },

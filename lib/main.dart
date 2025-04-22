@@ -135,7 +135,10 @@ class _MyAppState extends State<MyApp> {
                         BlocProvider(
                           create: (context) => TurnRecordedListBloc(
                             TurnRecordedListState(
-                              numberOfTopBoard: 20,
+                              numberOfTopBoard: context
+                                  .read<SettingBloc>()
+                                  .state
+                                  .numberOfTopBoard,
                             ),
                           ),
                         ),

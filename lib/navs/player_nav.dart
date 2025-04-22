@@ -33,11 +33,7 @@ class _PlayerNavState extends State<PlayerNav> {
             ),
             if (state is GameOverState)
               MaterialPage(
-                child: BlocProvider<TurnRecordedListBloc>(
-                  create: (context) =>
-                      TurnRecordedListBloc(TurnRecordedListState()),
-                  child: const GameOverScreen(),
-                ),
+                child: const GameOverScreen(),
               )
           ],
         );
