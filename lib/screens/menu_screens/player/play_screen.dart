@@ -452,7 +452,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                           child: CustomElevatedButton(
                                             icon: FontAwesomeIcons.bars,
                                             onPressed: () async {
-                                              await pressMainMenu(context);
+                                              await pressMainMenu();
                                             },
                                           ),
                                         );
@@ -527,7 +527,7 @@ class _PlayScreenState extends State<PlayScreen> {
     return;
   }
 
-  Future<void> pressMainMenu(BuildContext context) async {
+  Future<void> pressMainMenu() async {
     bool? confirmExit = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
