@@ -20,6 +20,8 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   String? version;
+  MenuBloc get menuBloc => context.read<MenuBloc>();
+  MenuState get menuState => menuBloc.state;
 
   @override
   void initState() {
@@ -76,8 +78,8 @@ class _MenuScreenState extends State<MenuScreen> {
                           return Center(
                             child: CustomeTitleButton(
                               text: entry.value,
-                              onTap: () => BlocProvider.of<MenuBloc>(context)
-                                  .add(SelectOption(option: entry.key)),
+                              onTap: () =>
+                                  menuBloc.add(SelectOption(option: entry.key)),
                             ),
                           );
                         },

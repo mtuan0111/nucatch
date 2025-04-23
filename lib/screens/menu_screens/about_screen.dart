@@ -23,11 +23,11 @@ class AboutScreen extends StatefulWidget {
 class _AboutScreenState extends State<AboutScreen> {
   String get screenTitle => menuArray(context)[MenuOption.about]!;
 
-  SettingBloc get settingBloc => BlocProvider.of<SettingBloc>(context);
+  SettingBloc get settingBloc => context.read<SettingBloc>();
   SettingState get settingState => settingBloc.state;
   SettingModel get settingModel => settingState.model!;
 
-  UserBloc get userBloc => BlocProvider.of<UserBloc>(context);
+  UserBloc get userBloc => context.read<UserBloc>();
   UserState get userState => userBloc.state;
 
   String? version;

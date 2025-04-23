@@ -31,71 +31,7 @@ class RankingItem extends StatelessWidget {
       spacing: 20,
       runSpacing: 20,
       children: [
-        SizedBox(
-          width: LayoutConfig.boxSize,
-          height: LayoutConfig.boxSize,
-          child: Stack(
-            children: [
-              Center(
-                child: Transform.rotate(
-                  angle: -math.pi / 4,
-                  child: Container(
-                    width: LayoutConfig.boxSize + 20,
-                    height: LayoutConfig.boxSize + 20,
-                    decoration: LayoutConfig(context).boxDecoration.copyWith(
-                          border: Border.all(
-                            width: 2,
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                          ),
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                        ),
-                  ),
-                ),
-              ),
-              // Transform.rotate(
-              //   angle: -math.pi / 2,
-              //   child: Container(
-              //     width: LayoutConfig.boxSize,
-              //     height: LayoutConfig.boxSize,
-              //     decoration: LayoutConfig(context).boxDecoration.copyWith(
-              //           border: Border.all(
-              //             width: 2,
-              //             color: Theme.of(context).scaffoldBackgroundColor,
-              //           ),
-              //         ),
-              //   ),
-              // ),
-              Positioned(
-                // top: 0,
-                // right: 0,
-                child: Center(
-                  child: Icon(
-                    FontAwesomeIcons.certificate,
-                    color: Theme.of(context).primaryColor,
-                    size: LayoutConfig.boxSize,
-                  ),
-                ),
-              ),
-              if (ranking == 1)
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Icon(
-                    FontAwesomeIcons.trophy,
-                    color: Colors.amber,
-                    size: Theme.of(context).textTheme.displaySmall!.fontSize!,
-                    // Increased size for a bigger icon
-                  ),
-                ),
-              Center(
-                child: Text(
-                  ranking.toString(),
-                  style: LayoutConfig(context).displaySmallStyle(),
-                ),
-              ),
-            ],
-          ),
-        ),
+        RankBadge(ranking: ranking),
         // const SizedBox(
         //   width: 20,
         // ),
@@ -151,6 +87,84 @@ class RankingItem extends StatelessWidget {
           ],
         )
       ],
+    );
+  }
+}
+
+class RankBadge extends StatelessWidget {
+  const RankBadge({
+    super.key,
+    required this.ranking,
+  });
+
+  final int ranking;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: LayoutConfig.boxSize,
+      height: LayoutConfig.boxSize,
+      child: Stack(
+        children: [
+          Center(
+            child: Transform.rotate(
+              angle: -math.pi / 4,
+              child: Container(
+                width: LayoutConfig.boxSize + 20,
+                height: LayoutConfig.boxSize + 20,
+                decoration: LayoutConfig(context).boxDecoration.copyWith(
+                      border: Border.all(
+                        width: 2,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+              ),
+            ),
+          ),
+          // Transform.rotate(
+          //   angle: -math.pi / 2,
+          //   child: Container(
+          //     width: LayoutConfig.boxSize,
+          //     height: LayoutConfig.boxSize,
+          //     decoration: LayoutConfig(context).boxDecoration.copyWith(
+          //           border: Border.all(
+          //             width: 2,
+          //             color: Theme.of(context).scaffoldBackgroundColor,
+          //           ),
+          //         ),
+          //   ),
+          // ),
+          Positioned(
+            // top: 0,
+            // right: 0,
+            child: Center(
+              child: Icon(
+                FontAwesomeIcons.certificate,
+                color: Theme.of(context).primaryColor,
+                size: LayoutConfig.boxSize,
+              ),
+            ),
+          ),
+          if (ranking == 1)
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Icon(
+                FontAwesomeIcons.trophy,
+                color: Colors.amber,
+                size: Theme.of(context).textTheme.displaySmall!.fontSize!,
+                // Increased size for a bigger icon
+              ),
+            ),
+          Center(
+            child: Text(
+              ranking.toString(),
+              style: LayoutConfig(context).displaySmallStyle(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

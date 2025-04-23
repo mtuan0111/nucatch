@@ -9,9 +9,6 @@ import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
 import 'package:nucatch_with_bloc/navs/player_nav.dart';
@@ -29,7 +26,8 @@ class MenuNav extends StatefulWidget {
 }
 
 class _MenuNavState extends State<MenuNav> {
-  SettingState get settingState => BlocProvider.of<SettingBloc>(context).state;
+  SettingBloc get settingBloc => context.read<SettingBloc>();
+  SettingState get settingState => settingBloc.state;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MenuBloc, MenuState>(

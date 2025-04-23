@@ -68,11 +68,7 @@
     "description": "Warning when the user presses the exit button",
     "placeholders": {}
   },
-  "areYouSureExit": "Are you sure you want to exit?",
-  "@areYouSureExit": {
-    "description": "Warning when the user presses the exit button",
-    "placeholders": {}
-  },
+  
   "no": "No",
   "@no": {
     "description": "No button in the confirmation dialog",

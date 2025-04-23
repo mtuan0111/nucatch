@@ -12,6 +12,7 @@ import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
 import 'package:nucatch_with_bloc/helpers/template.dart';
@@ -32,14 +33,26 @@ class _PlayScreenState extends State<PlayScreen> {
   double get buttonSpace => 20;
   String inputtedValue = "";
 
-  TurnBloc get turnBloc => BlocProvider.of<TurnBloc>(context);
+  PlayerNavCubit get playerNavCubit => context.read<PlayerNavCubit>();
+  PlayerNavState get playerNavState => playerNavCubit.state;
+
+  MenuBloc get menuBloc => context.read<MenuBloc>();
+  MenuState get menuState => menuBloc.state;
+
+  TurnBloc get turnBloc => context.read<TurnBloc>();
   TurnState get turnState => turnBloc.state;
 
-  SettingState get settingState => BlocProvider.of<SettingBloc>(context).state;
+  SettingBloc get settingBloc => context.read<SettingBloc>();
+  SettingState get settingState => settingBloc.state;
+
+  TurnRecordedListBloc get turnRecordedListBloc =>
+      context.read<TurnRecordedListBloc>();
+  TurnRecordedListState get turnRecordedListState => turnRecordedListBloc.state;
 
   @override
   void initState() {
     // TODO: implement initState
+    turnRecordedListBloc.add(LoadData());
 
     super.initState();
   }
@@ -56,14 +69,14 @@ class _PlayScreenState extends State<PlayScreen> {
         builder: (context, turnState) {
           if (turnState.status == TurnStatus.gameOver) {
             if (turnState is! GameOverState) {
-              BlocProvider.of<PlayerNavCubit>(context).showGameover();
+              playerNavCubit.showGameover();
             }
           }
 
           if (turnState.status == TurnStatus.intro ||
               turnState.status == TurnStatus.initial) {
             if (turnState is! PlayingState) {
-              BlocProvider.of<PlayerNavCubit>(context).showPlay();
+              playerNavCubit.showPlay();
             }
           }
 
@@ -515,21 +528,18 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 
   Future<void> pressMainMenu(BuildContext context) async {
-    // context.read<MenuBloc>().add(SelectOption(option: null),);
-
-    TurnState turnState = BlocProvider.of<TurnBloc>(context).state;
-
     bool? confirmExit = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return CustomeAlert(
           point: turnState.point,
+          rank: 1,
         );
       },
     );
 
     if (confirmExit == true) {
-      BlocProvider.of<MenuBloc>(context).add(
+      menuBloc.add(
         SelectOption(
           option: null,
         ),
@@ -542,9 +552,12 @@ class _PlayScreenState extends State<PlayScreen> {
 
 class CustomeAlert extends StatefulWidget {
   final int point;
+  final int rank;
+
   const CustomeAlert({
     super.key,
     this.point = 0,
+    this.rank = 0,
   });
 
   @override
@@ -552,10 +565,6 @@ class CustomeAlert extends StatefulWidget {
 }
 
 class _CustomeAlertState extends State<CustomeAlert> {
-  TurnRecordedListBloc get turnRecordedListBloc =>
-      context.read<TurnRecordedListBloc>();
-  TurnRecordedListState get turnRecordedListState =>
-      context.read<TurnRecordedListBloc>().state;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -575,14 +584,7 @@ class _CustomeAlertState extends State<CustomeAlert> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            lang(context).areYouSureExit,
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 18,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          RankBadge(ranking: widget.rank),
           const SizedBox(height: 20),
           Text(
             "${lang(context).score}: ${widget.point}",
@@ -593,16 +595,6 @@ class _CustomeAlertState extends State<CustomeAlert> {
             ),
             textAlign: TextAlign.center,
           ),
-          // const SizedBox(height: 20),
-          // Text(
-          //   "Rank: ${turnRecordedListState.rankOfPoint(widget.point)}",
-          //   style: TextStyle(
-          //     color: Theme.of(context).secondaryHeaderColor,
-          //     fontSize: 22,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          //   textAlign: TextAlign.center,
-          // ),
         ],
       ),
       actionsAlignment: MainAxisAlignment.spaceEvenly,

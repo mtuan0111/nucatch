@@ -71,11 +71,7 @@
     "description": "Cảnh báo khi người dùng nhấn nút thoát",
     "placeholders": {}
   },
-  "areYouSureExit": "Bạn có chắc chắn muốn thoát không?",
-  "@areYouSureExit": {
-    "description": "Cảnh báo khi người dùng nhấn nút thoát",
-    "placeholders": {}
-  },
+  
   "no": "Không",
   "@no": {
     "description": "Nút không trong hộp thoại xác nhận",

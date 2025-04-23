@@ -22,6 +22,11 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   String get screenTitle => menuArray(context)[MenuOption.setting]!;
+  UserBloc get userBloc => context.read<UserBloc>();
+  UserState get userState => userBloc.state;
+
+  SettingBloc get settingBloc => context.read<SettingBloc>();
+  SettingState get settingState => settingBloc.state;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +126,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                           .titleSectionStyle(),
                                       initialValue: userState.model.username,
                                       onChanged: (value) {
-                                        BlocProvider.of<UserBloc>(context).add(
+                                        userBloc.add(
                                           UsernameChanged(
                                             newUsername: value,
                                           ),
@@ -161,10 +166,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     .toString(),
                                                 onChanged: (val) {
                                                   setState(() {
-                                                    BlocProvider.of<
-                                                                SettingBloc>(
-                                                            context)
-                                                        .add(
+                                                    settingBloc.add(
                                                       ChangedFontSize(
                                                         fontSize: val.round(),
                                                       ),
@@ -217,9 +219,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     .round()
                                                     .toString(),
                                                 onChanged: (val) {
-                                                  BlocProvider.of<SettingBloc>(
-                                                          context)
-                                                      .add(
+                                                  settingBloc.add(
                                                     ChangedVol(
                                                       vol: val.round(),
                                                     ),
@@ -266,10 +266,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     .toString(),
                                                 onChanged: (val) {
                                                   setState(() {
-                                                    BlocProvider.of<
-                                                                SettingBloc>(
-                                                            context)
-                                                        .add(
+                                                    settingBloc.add(
                                                       ChangedNumberOfTopBoard(
                                                         numberOfTopBoard:
                                                             val.round(),
@@ -319,10 +316,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     .toList(),
                                                 onChanged: (val) {
                                                   if (val != null) {
-                                                    BlocProvider.of<
-                                                                SettingBloc>(
-                                                            context)
-                                                        .add(
+                                                    settingBloc.add(
                                                       ChangedLocale(
                                                           locale: val),
                                                     );
