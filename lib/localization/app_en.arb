@@ -20,42 +20,104 @@
     }
   },
   "start": "Start",
+  "@start": {
+    "description": "Start button label"
+  },
   "topScore": "Top score",
+  "@topScore": {
+    "description": "Label for the top score"
+  },
   "setting": "Setting",
+  "@setting": {
+    "description": "Settings menu label"
+  },
   "about": "About",
+  "@about": {
+    "description": "About menu label"
+  },
   "exit": "Exit",
-
+  "@exit": {
+    "description": "Exit button label"
+  },
   "version": "Version",
-
+  "@version": {
+    "description": "The version label of the application"
+  },
   "anonymous": "Anonymous",
-  
+  "@anonymous": {
+    "description": "Label for anonymous user"
+  },
   "level": "Level",
+  "@level": {
+    "description": "Label for game level"
+  },
   "score": "Score",
+  "@score": {
+    "description": "Label for game score"
+  },
   "ready": "Ready",
+  "@ready": {
+    "description": "Ready status label"
+  },
   "go": "Go",
-
+  "@go": {
+    "description": "Go status label"
+  },
   "gameOver": "Game Over",
+  "@gameOver": {
+    "description": "Game over message"
+  },
   "theCorrectIs": "The correct is",
-
+  "@theCorrectIs": {
+    "description": "Message indicating the correct answer"
+  },
   "name": "Name",
+  "@name": {
+    "description": "Label for name input"
+  },
   "fontSize": "Font size",
+  "@fontSize": {
+    "description": "Label for font size setting"
+  },
   "volume": "Volume",
+  "@volume": {
+    "description": "Label for volume setting"
+  },
   "numberOfTopScores": "Number of top scores",
+  "@numberOfTopScores": {
+    "description": "Label for number of top scores setting"
+  },
   "language": "Language",
-
+  "@language": {
+    "description": "Label for language setting"
+  },
   "thankYou": "Thank you for playing",
+  "@thankYou": {
+    "description": "Thank you message"
+  },
   "thankYouMessage": "Thank you for playing our game. We hope you enjoyed it. If you have any feedback or suggestions, please let us know.",
+  "@thankYouMessage": {
+    "description": "Detailed thank you message"
+  },
   "authorName": "Author",
-  
+  "@authorName": {
+    "description": "Label for author name"
+  },
   "connectWithUs": "Connect with us",
+  "@connectWithUs": {
+    "description": "Label for connect with us section"
+  },
   "connectWithUsMessage": "If you have any questions or feedback, feel free to reach out to us on our social media channels.",
-
-  "introductionContent":
-        "NuCatch is a fun and engaging brain game designed to sharpen your memory and improve focus. Challenge yourself to quickly catch numbers in a short time, helping you remember things like OTPs, phone numbers, birthdays, and more. Enjoy the experience and boost your memory skills!",
-
+  "@connectWithUsMessage": {
+    "description": "Message encouraging users to connect on social media"
+  },
+  "introductionContent": "NuCatch is a fun and engaging brain game designed to sharpen your memory and improve focus. Challenge yourself to quickly catch numbers in a short time, helping you remember things like OTPs, phone numbers, birthdays, and more. Enjoy the experience and boost your memory skills!",
+  "@introductionContent": {
+    "description": "Introduction content for the application"
+  },
   "messageShareIntroWIthUsername": "Join #NuCatch with {username}! Explore it now at {profileUrl}",
   "@messageShareIntroWIthUsername": {
-    "description": "It will be replaced by the actual application name",
+    "description": "Message for sharing the app with username and profile URL",
     "placeholders": {
       "username": {
         "type": "String",
@@ -69,7 +131,7 @@
   },
   "messageShareIntro": "Explore #NuCatch now at {profileUrl}",
   "@messageShareIntro": {
-    "description": "It will be replaced with the actual URL",
+    "description": "Message for sharing the app with profile URL",
     "placeholders": {
       "profileUrl": {
         "type": "String",
@@ -82,7 +144,6 @@
     "description": "Warning when the user presses the exit button",
     "placeholders": {}
   },
-  
   "no": "No",
   "@no": {
     "description": "No button in the confirmation dialog",

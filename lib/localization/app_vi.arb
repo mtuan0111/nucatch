@@ -20,42 +20,101 @@
     }
   },
   "start": "Bắt đầu",
+  "@start": {
+    "description": "Nút bắt đầu trò chơi"
+  },
   "topScore": "Điểm cao nhất",
+  "@topScore": {
+    "description": "Hiển thị điểm cao nhất của người chơi"
+  },
   "setting": "Cài đặt",
+  "@setting": {
+    "description": "Mở màn hình cài đặt"
+  },
   "about": "Giới thiệu",
+  "@about": {
+    "description": "Mở màn hình giới thiệu ứng dụng"
+  },
   "exit": "Thoát",
-
+  "@exit": {
+    "description": "Nút thoát ứng dụng"
+  },
   "version": "Phiên bản",
   "@version": {
     "description": "Version of the app"
   },
-
   "anonymous": "Ẩn danh",
-
+  "@anonymous": {
+    "description": "Tên người chơi khi không đăng nhập"
+  },
   "level": "Cấp độ",
+  "@level": {
+    "description": "Cấp độ hiện tại của trò chơi"
+  },
   "score": "Điểm số",
+  "@score": {
+    "description": "Điểm số hiện tại của người chơi"
+  },
   "ready": "Sẵn sàng",
+  "@ready": {
+    "description": "Thông báo người chơi sẵn sàng bắt đầu"
+  },
   "go": "Bắt đầu",
-
+  "@go": {
+    "description": "Thông báo bắt đầu trò chơi"
+  },
   "gameOver": "Kết thúc trò chơi",
+  "@gameOver": {
+    "description": "Thông báo kết thúc trò chơi"
+  },
   "theCorrectIs": "Đáp án đúng là",
-
+  "@theCorrectIs": {
+    "description": "Hiển thị đáp án đúng"
+  },
   "name": "Tên người chơi",
+  "@name": {
+    "description": "Tên của người chơi"
+  },
   "fontSize": "Kích thước phông chữ",
+  "@fontSize": {
+    "description": "Cài đặt kích thước phông chữ"
+  },
   "volume": "Âm lượng",
+  "@volume": {
+    "description": "Cài đặt âm lượng"
+  },
   "numberOfTopScores": "Số điểm cao nhất",
+  "@numberOfTopScores": {
+    "description": "Số lượng điểm cao nhất được hiển thị"
+  },
   "language": "Ngôn ngữ",
-
+  "@language": {
+    "description": "Cài đặt ngôn ngữ của ứng dụng"
+  },
   "thankYou": "Cảm ơn bạn!",
+  "@thankYou": {
+    "description": "Lời cảm ơn đến người chơi"
+  },
   "thankYouMessage": "Cảm ơn bạn đã chơi trò chơi của chúng tôi. Chúng tôi hy vọng bạn đã thích nó. Nếu bạn có bất kỳ phản hồi hoặc đề xuất nào, xin vui lòng cho chúng tôi biết.",
+  "@thankYouMessage": {
+    "description": "Thông điệp cảm ơn người chơi"
+  },
   "authorName": "Tác giả",
-  
+  "@authorName": {
+    "description": "Tên của tác giả ứng dụng"
+  },
   "connectWithUs": "Kết nối với chúng tôi",
+  "@connectWithUs": {
+    "description": "Lời mời kết nối với nhóm phát triển"
+  },
   "connectWithUsMessage": "Nếu bạn có bất kỳ câu hỏi hoặc phản hồi nào, hãy liên hệ với chúng tôi qua các kênh truyền thông xã hội của chúng tôi.",
-
-  "introductionContent":
-        "NuCatch là một trò chơi đơn giản và thú vị, được thiết kế để giúp bạn rèn luyện trí nhớ và cải thiện sự tập trung. Hãy thử thách bản thân và tận hưởng trò chơi!",
-  
+  "@connectWithUsMessage": {
+    "description": "Thông điệp mời người chơi kết nối với nhóm phát triển"
+  },
+  "introductionContent": "NuCatch là một trò chơi đơn giản và thú vị, được thiết kế để giúp bạn rèn luyện trí nhớ và cải thiện sự tập trung. Hãy thử thách bản thân và tận hưởng trò chơi!",
+  "@introductionContent": {
+    "description": "Nội dung giới thiệu về trò chơi"
+  },
   "messageShareIntroWIthUsername": "Tham gia #NuCatch với {username}! Khám phá ngay tại {profileUrl}",
   "@messageShareIntroWIthUsername": {
     "description": "Nó sẽ được thay thế bằng tên ứng dụng thực tế",
@@ -85,7 +144,6 @@
     "description": "Cảnh báo khi người dùng nhấn nút thoát",
     "placeholders": {}
   },
-  
   "no": "Không",
   "@no": {
     "description": "Nút không trong hộp thoại xác nhận",
