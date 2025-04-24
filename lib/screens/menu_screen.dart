@@ -62,7 +62,9 @@ class _MenuScreenState extends State<MenuScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: Center(
                         child: Text(
-                          "${lang(context).welcome} ${state.username ?? lang(context).anonymous}",
+                          state.username != null
+                              ? lang(context).welcomeUser(state.username!)
+                              : lang(context).welcome,
                           style: LayoutConfig(context).titleSectionStyle(),
                         ),
                       ),

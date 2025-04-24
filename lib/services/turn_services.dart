@@ -34,9 +34,13 @@ class TurnRecordedServices {
     );
   }
 
-  Future<List<TurnRecordedModel>?> getTurnedList() async {
+  Future<List<TurnRecordedModel>?> getTurnedList(int limit) async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query('turn_records');
+    final List<Map<String, dynamic>> maps = await db.query(
+      'turn_records',
+      orderBy: 'point DESC',
+      limit: limit,
+    );
 
     return maps.map((map) {
       return TurnRecordedModel(

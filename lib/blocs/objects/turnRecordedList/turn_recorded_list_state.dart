@@ -1,12 +1,14 @@
+import 'dart:math';
+
 import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 
 class TurnRecordedListState {
-  final int? numberOfTopBoard;
+  final int numberOfTopBoard;
   final List<TurnRecordedModel>? _listModel;
   final bool isLoading;
 
   TurnRecordedListState({
-    this.numberOfTopBoard,
+    required this.numberOfTopBoard,
     List<TurnRecordedModel>? listModel,
     this.isLoading = true,
   }) : _listModel = listModel;
@@ -39,11 +41,23 @@ class TurnRecordedListState {
     return listModel!.indexOf(item) + 1;
   }
 
-  int rankOfPoint(int point) {
-    if (listModel == null) return -1;
+  int? rankOfPoint(int point) {
+    List<TurnRecordedModel> tempList = List.from(listModel ?? []);
+    TurnRecordedModel tempModel = TurnRecordedModel(
+      turnId: Random().nextInt(1000).toString(),
+      point: point,
+      recordedTime: DateTime.now(),
+    );
 
-    if (!listModel!.any((element) => element.point == point)) return -1;
+    tempList.add(tempModel);
+    tempList.sort((a, b) => b.point.compareTo(a.point));
 
-    return listModel!.indexWhere((element) => element.point == point) + 1;
+    int tempRank = tempList.indexOf(tempModel) + 1;
+
+    if (tempRank > numberOfTopBoard) {
+      return null;
+    }
+
+    return tempRank;
   }
 }

@@ -75,6 +75,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
 
                         int indexOfItem = state.listModel!
                             .indexOfTurn(turnBloc.state.recordedItem!);
+                        int rank = state.indexOf(turnBloc.state.recordedItem!);
                         return RankingItem(
                           ranking: indexOfItem,
                           playerName:

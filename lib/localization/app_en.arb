@@ -4,7 +4,21 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "welcome": "Welcome",
+  "welcome": "Welcome!!",
+  "@welcome": {
+    "description": "Welcome the user to the application",
+    "placeholders": {}
+  },
+  "welcomeUser": "Welcome {username}!!",
+  "@welcomeUser": {
+    "description": "Welcome the user to the application",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
   "start": "Start",
   "topScore": "Top score",
   "setting": "Setting",

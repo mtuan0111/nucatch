@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
@@ -341,6 +344,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    if (event.savingRecord.point == 0) {
+      return;
+    }
+
     if (state.isLoading) {
       return;
     }
@@ -351,7 +358,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
-    await _turnedServices.addItem(event.savingRecord);
+    bool insertSuccess = await _turnedServices.addItem(event.savingRecord);
+    if (insertSuccess) {
+      log("Insert success");
+    }
 
     emitter(
       state.copyWith(

@@ -4,7 +4,21 @@
   "@appTitle": {
     "description": "Tiêu đề của ứng dụng"
   },
-  "welcome": "Chào mừng",
+  "welcome": "Chào mừng!!",
+  "@welcome": {
+    "description": "Chào mừng người dùng đến với ứng dụng",
+    "placeholders": {}
+  },
+  "welcomeUser": "Chào mừng {username}!!",
+  "@welcomeUser": {
+    "description": "Chào mừng người dùng đến với ứng dụng",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "Nguyễn Văn A"
+      }
+    }
+  },
   "start": "Bắt đầu",
   "topScore": "Điểm cao nhất",
   "setting": "Cài đặt",

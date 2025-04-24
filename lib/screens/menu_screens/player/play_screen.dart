@@ -15,9 +15,13 @@ import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_l
 import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
+import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 import 'package:nucatch_with_bloc/helpers/template.dart';
+import 'package:nucatch_with_bloc/models/turn_record_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:timer_count_down/timer_count_down.dart';
+import 'package:uuid/uuid.dart';
 
 class PlayScreen extends StatefulWidget {
   const PlayScreen({
@@ -528,17 +532,33 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 
   Future<void> pressMainMenu() async {
+    int? rankTemporary = turnRecordedListState.rankOfPoint(turnState.point);
     bool? confirmExit = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return CustomeAlert(
           point: turnState.point,
-          rank: 1,
+          rank: rankTemporary,
         );
       },
     );
 
     if (confirmExit == true) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? username = prefs.getString(PreferencesKey.USERNAME);
+      TurnRecordedModel itemModel = TurnRecordedModel(
+        turnId: const Uuid().v4(),
+        playedUsername: username,
+        point: turnState.point,
+        recordedTime: DateTime.now(),
+      );
+
+      turnBloc.add(SaveRecorded(savingRecord: itemModel));
+
+      await Future.delayed(
+        const Duration(milliseconds: 200),
+      );
+
       menuBloc.add(
         SelectOption(
           option: null,
@@ -552,7 +572,7 @@ class _PlayScreenState extends State<PlayScreen> {
 
 class CustomeAlert extends StatefulWidget {
   final int point;
-  final int rank;
+  final int? rank;
 
   const CustomeAlert({
     super.key,
@@ -576,7 +596,7 @@ class _CustomeAlertState extends State<CustomeAlert> {
         lang(context).confirmExit,
         style: TextStyle(
           color: Theme.of(context).primaryColor,
-          fontSize: 24,
+          fontSize: Theme.of(context).textTheme.titleLarge!.fontSize,
           fontWeight: FontWeight.bold,
         ),
         textAlign: TextAlign.center,
@@ -584,13 +604,13 @@ class _CustomeAlertState extends State<CustomeAlert> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          RankBadge(ranking: widget.rank),
-          const SizedBox(height: 20),
+          if (widget.rank != null) RankBadge(ranking: widget.rank!),
+          if (widget.rank != null) const SizedBox(height: 20),
           Text(
             "${lang(context).score}: ${widget.point}",
             style: TextStyle(
               color: Theme.of(context).secondaryHeaderColor,
-              fontSize: 22,
+              fontSize: Theme.of(context).textTheme.titleLarge!.fontSize,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
