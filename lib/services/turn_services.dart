@@ -66,6 +66,7 @@ class TurnRecordedServices {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
       log(item.toString());
+
       return true;
     } catch (e) {
       log('Error adding item: $e');

@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/models/setting_model.dart';
-import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 
 abstract class TurnEvent {}
 
@@ -17,6 +17,15 @@ class Start extends TurnEvent {
   Start({
     this.seconds = 3,
   });
+}
+
+class End extends TurnEvent {
+  // final TurnRecordedModel turnRecordedModel;
+  End(
+      // {
+      // required this.turnRecordedModel,
+      // }
+      );
 }
 
 class Tap extends TurnEvent {
@@ -38,9 +47,17 @@ class SetLevel extends TurnEvent {
 }
 
 class SaveRecorded extends TurnEvent {
-  final TurnRecordedModel savingRecord;
+  // final TurnRecordedModel savingRecord;
+  // final String? messageSuccess;
+  // final String? messageFailure;
+  final BuildContext context;
 
-  SaveRecorded({required this.savingRecord});
+  SaveRecorded({
+    // required this.savingRecord,
+    // this.messageSuccess,
+    // this.messageFailure,
+    required this.context,
+  });
 }
 
 class GetTurnRecordedList extends TurnEvent {

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
 import 'package:nucatch_with_bloc/models/turn_record_model.dart';
 
@@ -25,8 +26,10 @@ class TurnState {
   final TurnRecordedModel? recordedItem;
 
   final bool isLoading;
+  final BuildContext context;
 
-  TurnState({
+  TurnState(
+    this.context, {
     this.level = 0,
     this.timesCorrect = 0,
     this.point = 0,
@@ -40,6 +43,7 @@ class TurnState {
   });
 
   TurnState copyWith({
+    BuildContext? context,
     int? level,
     int? timesCorrect,
     int? point,
@@ -53,6 +57,7 @@ class TurnState {
     bool? isLoading,
   }) {
     return TurnState(
+      context ?? this.context,
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,
       point: point ?? this.point,

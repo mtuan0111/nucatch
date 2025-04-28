@@ -68,7 +68,7 @@ class _MenuNavState extends State<MenuNav> {
                           providers: [
                             BlocProvider(
                               create: (context) => TurnBloc(
-                                TurnState(),
+                                TurnState(context),
                               )
                                 ..add(ApplySetting(
                                     settingModel: settingState.model!))

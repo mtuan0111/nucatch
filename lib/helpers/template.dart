@@ -14,7 +14,7 @@ class RankingItem extends StatelessWidget {
     required this.turnedPoint,
   });
 
-  final int ranking;
+  final int? ranking;
   final String playerName;
   final DateTime createdAt;
   final int turnedPoint;
@@ -31,7 +31,10 @@ class RankingItem extends StatelessWidget {
       spacing: 20,
       runSpacing: 20,
       children: [
-        RankBadge(ranking: ranking),
+        if (ranking != null)
+          RankBadge(
+            ranking: ranking!,
+          ),
         // const SizedBox(
         //   width: 20,
         // ),

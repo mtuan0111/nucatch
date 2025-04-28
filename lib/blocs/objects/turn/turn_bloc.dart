@@ -2,10 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
+import 'package:nucatch_with_bloc/helpers/const.dart';
 import 'package:nucatch_with_bloc/helpers/helper.dart';
 import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 import 'package:nucatch_with_bloc/models/setting_model.dart';
@@ -31,6 +33,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<SaveRecorded>(_onSaveRecorded);
 
     on<Start>(_onStart);
+    on<End>(_onEnd);
+
     on<CountDownIntro>(_onCountDownIntro);
     on<ApplySetting>(_onApplySetting);
 
@@ -113,7 +117,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         state.copyWith(
           point: state.point + 1,
           timesCorrect: state.timesCorrect + 1,
-          lifeRemaining: state.timesCorrect >= 3
+          lifeRemaining: state.timesCorrect >= 2
               ? state.lifeRemaining + 1
               : state.lifeRemaining,
         ),
@@ -279,26 +283,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
 
     if (!state.isAbleToContinue) {
-      _audioServices.playEnd();
+      add(End());
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? username = prefs.getString(PreferencesKey.USERNAME);
-
-      TurnRecordedModel itemModel = TurnRecordedModel(
-        turnId: const Uuid().v4(),
-        playedUsername: username,
-        point: state.point,
-        recordedTime: DateTime.now(),
-      );
-
-      await _onSaveRecorded(SaveRecorded(savingRecord: itemModel), emitter);
-
-      emitter(
-        state.copyWith(
-          status: TurnStatus.gameOver,
-          recordedItem: itemModel,
-        ),
-      );
       return;
     } else {
       _audioServices.playWrong();
@@ -344,7 +330,11 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    if (event.savingRecord.point == 0) {
+    if (state.recordedItem == null) {
+      return;
+    }
+
+    if (state.recordedItem!.point == 0) {
       return;
     }
 
@@ -358,10 +348,15 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
-    bool insertSuccess = await _turnedServices.addItem(event.savingRecord);
-    if (insertSuccess) {
-      log("Insert success");
-    }
+    bool insertSuccess = await _turnedServices.addItem(state.recordedItem!);
+
+    Fluttertoast.showToast(
+      msg: insertSuccess
+          ? lang(event.context).insertedSuccess
+          : lang(event.context).insertedFailed,
+    );
+
+    log(insertSuccess ? "Insert success" : "Insert failed");
 
     emitter(
       state.copyWith(
@@ -391,7 +386,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     }
 
     emitter(
-      TurnState().copyWith(
+      TurnState(state.context).copyWith(
         countDown: event.seconds,
         status: TurnStatus.intro,
       ),
@@ -418,6 +413,37 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     add(
       SetLevel(
         level: 1,
+      ),
+    );
+  }
+
+  Future<void> _onEnd(
+    End event,
+    Emitter<TurnState> emitter,
+  ) async {
+    if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
+      return;
+    }
+    _audioServices.playEnd();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString(PreferencesKey.USERNAME);
+
+    TurnRecordedModel itemModel = TurnRecordedModel(
+      turnId: const Uuid().v4(),
+      playedUsername: username,
+      point: state.point,
+      recordedTime: DateTime.now(),
+    );
+
+    emitter(
+      state.copyWith(
+        status: TurnStatus.gameOver,
+        recordedItem: itemModel,
       ),
     );
   }

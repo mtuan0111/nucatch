@@ -33,15 +33,16 @@ class TurnRecordedListState {
     return listModelResult;
   }
 
-  int indexOf(TurnRecordedModel item) {
-    if (listModel == null) return -1;
+  int? indexOf(TurnRecordedModel item) {
+    if (listModel == null) return null;
 
-    if (!listModel!.contains(item)) return -1;
+    if (!listModel!.contains(item)) return null;
 
     return listModel!.indexOf(item) + 1;
   }
 
   int? rankOfPoint(int point) {
+    if (point == 0) return null;
     List<TurnRecordedModel> tempList = List.from(listModel ?? []);
     TurnRecordedModel tempModel = TurnRecordedModel(
       turnId: Random().nextInt(1000).toString(),

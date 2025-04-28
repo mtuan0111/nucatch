@@ -15,13 +15,10 @@ import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_l
 import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
-import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
 import 'package:nucatch_with_bloc/helpers/template.dart';
-import 'package:nucatch_with_bloc/models/turn_record_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:nucatch_with_bloc/navs/menu_nav.dart';
 
 import 'package:timer_count_down/timer_count_down.dart';
-import 'package:uuid/uuid.dart';
 
 class PlayScreen extends StatefulWidget {
   const PlayScreen({
@@ -455,8 +452,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                               const Duration(milliseconds: 200),
                                           child: CustomElevatedButton(
                                             icon: FontAwesomeIcons.bars,
-                                            onPressed: () async {
-                                              await pressMainMenu();
+                                            onPressed: () {
+                                              pressMainMenu()
+                                                  .then((confirmedMenu) {
+                                                if (confirmedMenu) {}
+                                              });
                                             },
                                           ),
                                         );
@@ -531,33 +531,33 @@ class _PlayScreenState extends State<PlayScreen> {
     return;
   }
 
-  Future<void> pressMainMenu() async {
+  Future<bool> pressMainMenu() async {
     int? rankTemporary = turnRecordedListState.rankOfPoint(turnState.point);
-    bool? confirmExit = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return CustomeAlert(
-          point: turnState.point,
-          rank: rankTemporary,
-        );
-      },
-    );
+    bool confirmExit = true;
+
+    if (rankTemporary != null) {
+      confirmExit = await showDialog<bool>(
+            context: context,
+            builder: (BuildContext context) {
+              if (turnRecordedListState.isLoading) {
+                return const LoadingWidget();
+              }
+
+              return CustomeAlert(
+                point: turnState.point,
+                rank: rankTemporary,
+              );
+            },
+          ) ??
+          true;
+    }
 
     if (confirmExit == true) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? username = prefs.getString(PreferencesKey.USERNAME);
-      TurnRecordedModel itemModel = TurnRecordedModel(
-        turnId: const Uuid().v4(),
-        playedUsername: username,
-        point: turnState.point,
-        recordedTime: DateTime.now(),
-      );
+      turnBloc.add(End());
 
-      turnBloc.add(SaveRecorded(savingRecord: itemModel));
-
-      await Future.delayed(
-        const Duration(milliseconds: 200),
-      );
+      if (turnState.recordedItem != null) {
+        turnBloc.add(SaveRecorded(context: context));
+      }
 
       menuBloc.add(
         SelectOption(
@@ -566,7 +566,7 @@ class _PlayScreenState extends State<PlayScreen> {
       );
     }
 
-    return;
+    return confirmExit;
   }
 }
 

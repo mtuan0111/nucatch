@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
+import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch_with_bloc/helpers/const.dart';
@@ -21,10 +23,13 @@ class GameOverScreen extends StatefulWidget {
 
 class _GameOverScreenState extends State<GameOverScreen> {
   UserBloc get userBloc => context.read<UserBloc>();
-  TurnBloc get turnBloc => context.read<TurnBloc>();
 
-  TurnRecordedListBloc get turnListBloc => context.read<TurnRecordedListBloc>();
-  TurnRecordedListState get turnListState => turnListBloc.state;
+  TurnBloc get turnBloc => context.read<TurnBloc>();
+  TurnState get turnState => turnBloc.state;
+
+  TurnRecordedListBloc get turnRecordedListBloc =>
+      context.read<TurnRecordedListBloc>();
+  TurnRecordedListState get turnRecordedListState => turnRecordedListBloc.state;
 
   double get screenWidth => MediaQuery.of(context).size.width;
   double get buttonSpace => 20;
@@ -32,6 +37,12 @@ class _GameOverScreenState extends State<GameOverScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    turnRecordedListBloc.add(
+      LoadData(),
+    );
+
+    // await _onSaveRecorded(SaveRecorded(savingRecord: itemModel), emitter);
+    turnBloc.add(SaveRecorded(context: context));
 
     super.initState();
   }
@@ -60,7 +71,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                       height: 20,
                     ),
                     Text(
-                      "${lang(context).theCorrectIs} ${turnBloc.state.expect}",
+                      "${lang(context).theCorrectIs} ${turnState.expect}",
                       style: LayoutConfig(context).contentSectionStyle(),
                     ),
                     const SizedBox(
@@ -68,21 +79,19 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     ),
                     BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
                       builder: (context, state) {
-                        if (state.isLoading ||
-                            turnBloc.state.recordedItem == null) {
+                        if (state.isLoading || turnState.recordedItem == null) {
                           return const LoadingWidget();
                         }
 
-                        int indexOfItem = state.listModel!
-                            .indexOfTurn(turnBloc.state.recordedItem!);
+                        int? indexOfItem = state.listModel!
+                            .indexOfTurn(turnState.recordedItem!);
 
                         return RankingItem(
                           ranking: indexOfItem,
-                          playerName:
-                              turnBloc.state.recordedItem!.playedUsername ??
-                                  lang(context).anonymous,
-                          createdAt: turnBloc.state.recordedItem!.recordedTime,
-                          turnedPoint: turnBloc.state.recordedItem!.point,
+                          playerName: turnState.recordedItem!.playedUsername ??
+                              lang(context).anonymous,
+                          createdAt: turnState.recordedItem!.recordedTime,
+                          turnedPoint: turnState.recordedItem!.point,
                         );
                       },
                     ),

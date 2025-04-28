@@ -153,5 +153,16 @@
   "@yes": {
     "description": "Nút có trong hộp thoại xác nhận",
     "placeholders": {}
+  },
+
+  "insertedSuccess": "Ghi lượt chơi của bạn thành công",
+  "@insertedSuccess": {
+    "description": "Thông báo khi dữ liệu được thêm thành công",
+    "placeholders": {}
+  },
+  "insertedFailed": "Ghi lượt chơi của bạn thất bại",
+  "@insertedFailed": {
+    "description": "Thông báo khi thêm dữ liệu thất bại",
+    "placeholders": {}
   }
 }

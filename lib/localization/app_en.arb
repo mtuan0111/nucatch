@@ -153,5 +153,16 @@
   "@yes": {
     "description": "Yes button in the confirmation dialog",
     "placeholders": {}
+  },
+
+  "insertedSuccess": "Recorded your turn successfully",
+  "@insertedSuccess": {
+    "description": "Notification when data is added successfully",
+    "placeholders": {}
+  },
+  "insertedFailed": "Recorded your turn failed",
+  "@insertedFailed": {
+    "description": "Notification when data addition fails",
+    "placeholders": {}
   }
 }

@@ -17,10 +17,10 @@ extension DateTimeExtensions on DateTime {
 }
 
 extension ListOfTurnRecordedModel on List<TurnRecordedModel> {
-  int indexOfTurn(TurnRecordedModel item) {
-    if (isEmpty) return -1;
+  int? indexOfTurn(TurnRecordedModel item) {
+    if (isEmpty) return null;
 
-    if (!containsTurnId(item.turnId)) return -1;
+    if (!containsTurnId(item.turnId)) return null;
 
     return indexOfTurnId(item.turnId);
   }
@@ -36,8 +36,8 @@ extension ListOfTurnRecordedModel on List<TurnRecordedModel> {
     return false;
   }
 
-  int indexOfTurnId(String turnId) {
-    if (isEmpty) return -1;
+  int? indexOfTurnId(String turnId) {
+    if (isEmpty) return null;
 
     for (var element in this) {
       if (element.turnId == turnId) {
