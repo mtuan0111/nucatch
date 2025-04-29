@@ -36,13 +36,13 @@ class _GameOverScreenState extends State<GameOverScreen> {
 
   @override
   void initState() {
+    // await _onSaveRecorded(SaveRecorded(savingRecord: itemModel), emitter);
+    turnBloc.add(SaveRecorded(context: context));
+
     // TODO: implement initState
     turnRecordedListBloc.add(
       LoadData(),
     );
-
-    // await _onSaveRecorded(SaveRecorded(savingRecord: itemModel), emitter);
-    turnBloc.add(SaveRecorded(context: context));
 
     super.initState();
   }
@@ -70,9 +70,20 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Text(
-                      "${lang(context).theCorrectIs} ${turnState.expect}",
-                      style: LayoutConfig(context).contentSectionStyle(),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      runAlignment: WrapAlignment.center,
+                      spacing: buttonSpace,
+                      children: [
+                        Text(
+                          lang(context).theCorrectIs,
+                          style: LayoutConfig(context).contentSectionStyle(),
+                        ),
+                        Text(
+                          turnState.expect ?? '',
+                          style: LayoutConfig(context).displaySmallStyle(),
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 20,

@@ -55,6 +55,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   url_launcher: ^6.3.1
   fluttertoast: ^8.2.5
+  flutter_launcher_icons: ^0.14.3
 
 dependency_overrides:
   win32: ^5.5.4
@@ -161,3 +162,21 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_launcher_icons:
+  # android: true
+  # ios: true
+  image_path: "assets/images/nucatch-launcher.png"
+  # # adaptive_icon_background: "assets/images/launcher-background.png"
+  # image_path_ios: "assets/images/yimcenter-ios.png"
+  
+  # setting for android
+  image_path_android: "assets/images/nucatch-launcher.png"
+  adaptive_icon_background: "#ffffff"
+
+  android: "launcher_icon"
+  ios: true # can specify file name here e.g. "My-Launcher-Icon"
+  # adaptive_icon_background: "assets/images/launcher-background.png" # only available for Android 8.0 devices and above
+  # adaptive_icon_foreground: "assets/images/nuCatch-icon.png" # only available for Android 8.0 devices and above
+  # Execute query: flutter pub run flutter_launcher_icons:main
+  remove_alpha_ios: true

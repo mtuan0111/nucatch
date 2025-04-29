@@ -8,7 +8,7 @@
 PRODUCT_NAME = nucatch_with_bloc
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.nucatchWithBloc
+PRODUCT_BUNDLE_IDENTIFIER = bomnguyen.game.nucatch
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2024 com.example. All rights reserved.

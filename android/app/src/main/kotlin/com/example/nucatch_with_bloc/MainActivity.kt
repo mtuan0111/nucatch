@@ -1,4 +1,4 @@
-package com.example.nucatch_with_bloc
+package bomnguyen.nucatch
 
 import io.flutter.embedding.android.FlutterActivity
 
