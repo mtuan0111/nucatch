@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nucatch_with_bloc/models/setting_model.dart';
+import 'package:nucatch/models/setting_model.dart';
 
 class SettingState {
   // final ThemeMode themeMode;

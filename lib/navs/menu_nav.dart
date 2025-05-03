@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_event.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
-import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_cubit.dart';
-import 'package:nucatch_with_bloc/blocs/objects/setting/setting_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turn/turn_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turn/turn_event.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turn/turn_state.dart';
-import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
-import 'package:nucatch_with_bloc/navs/player_nav.dart';
-import 'package:nucatch_with_bloc/screens/menu_screens/about_screen.dart';
+import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
+import 'package:nucatch/blocs/navs/menu/menu_event.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
+import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
+import 'package:nucatch/blocs/objects/setting/setting_state.dart';
+import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
+import 'package:nucatch/blocs/objects/turn/turn_event.dart';
+import 'package:nucatch/blocs/objects/turn/turn_state.dart';
+import 'package:nucatch/blocs/objects/user/user_bloc.dart';
+import 'package:nucatch/blocs/objects/user/user_state.dart';
+import 'package:nucatch/navs/player_nav.dart';
+import 'package:nucatch/screens/menu_screens/about_screen.dart';
 
-import 'package:nucatch_with_bloc/screens/menu_screen.dart';
-import 'package:nucatch_with_bloc/screens/menu_screens/setting_screen.dart';
-import 'package:nucatch_with_bloc/screens/menu_screens/top_score_screen.dart';
+import 'package:nucatch/screens/menu_screen.dart';
+import 'package:nucatch/screens/menu_screens/setting_screen.dart';
+import 'package:nucatch/screens/menu_screens/top_score_screen.dart';
 
 class MenuNav extends StatefulWidget {
   const MenuNav({super.key});

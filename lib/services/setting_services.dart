@@ -1,6 +1,6 @@
-import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
-import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
-import 'package:nucatch_with_bloc/models/user_model.dart';
+import 'package:nucatch/blocs/objects/user/user_state.dart';
+import 'package:nucatch/helpers/preferences_key.dart';
+import 'package:nucatch/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingServices {

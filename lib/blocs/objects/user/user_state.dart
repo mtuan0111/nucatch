@@ -1,4 +1,4 @@
-import 'package:nucatch_with_bloc/models/user_model.dart';
+import 'package:nucatch/models/user_model.dart';
 
 class UserState {
   final UserModel model;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/setting/setting_event.dart';
-import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
-import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
-import 'package:nucatch_with_bloc/services/audio_services.dart';
+import 'package:nucatch/blocs/objects/setting/setting_event.dart';
+import 'package:nucatch/blocs/objects/setting/setting_state.dart';
+import 'package:nucatch/helpers/preferences_key.dart';
+import 'package:nucatch/services/audio_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingBloc extends Bloc<SettingEvent, SettingState> {

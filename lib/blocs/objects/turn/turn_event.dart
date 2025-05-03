@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
-import 'package:nucatch_with_bloc/models/setting_model.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/models/setting_model.dart';
 
 abstract class TurnEvent {}
 

@@ -2,13 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_event.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
-import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
-import 'package:nucatch_with_bloc/helpers/const.dart';
-import 'package:nucatch_with_bloc/helpers/template.dart';
+import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
+import 'package:nucatch/blocs/navs/menu/menu_event.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/objects/user/user_bloc.dart';
+import 'package:nucatch/blocs/objects/user/user_state.dart';
+import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/template.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class MenuScreen extends StatefulWidget {

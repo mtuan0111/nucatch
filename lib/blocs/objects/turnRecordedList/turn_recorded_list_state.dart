@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:nucatch_with_bloc/models/turn_record_model.dart';
+import 'package:nucatch/models/turn_record_model.dart';
 
 class TurnRecordedListState {
   final int numberOfTopBoard;

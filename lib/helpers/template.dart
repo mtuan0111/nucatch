@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:nucatch_with_bloc/helpers/const.dart';
+import 'package:nucatch/helpers/const.dart';
 import 'dart:math' as math;
 
-import 'package:nucatch_with_bloc/helpers/extension.dart';
+import 'package:nucatch/helpers/extension.dart';
 
 class RankingItem extends StatelessWidget {
   const RankingItem({

@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_event.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/navs/menu/menu_event.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
   MenuBloc(super.initialState) {

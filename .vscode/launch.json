@@ -5,20 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "nucatch_with_bloc",
+            "name": "nucatch",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart"
         },
         {
-            "name": "nucatch_with_bloc (profile mode)",
+            "name": "nucatch (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
             "program": "lib/main.dart"
         },
         {
-            "name": "nucatch_with_bloc (release mode)",
+            "name": "nucatch (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_cubit.dart';
-import 'package:nucatch_with_bloc/blocs/navs/player/player_nav_state.dart';
-import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
-import 'package:nucatch_with_bloc/screens/menu_screens/player/gameover_screen.dart';
-import 'package:nucatch_with_bloc/screens/menu_screens/player/play_screen.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch/blocs/objects/user/user_bloc.dart';
+import 'package:nucatch/blocs/objects/user/user_state.dart';
+import 'package:nucatch/screens/menu_screens/player/gameover_screen.dart';
+import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
 
 class PlayerNav extends StatefulWidget {
   const PlayerNav({super.key});

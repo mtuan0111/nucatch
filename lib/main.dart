@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
-import 'package:nucatch_with_bloc/blocs/objects/setting/setting_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/setting/setting_state.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
-import 'package:nucatch_with_bloc/blocs/objects/user/user_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
-import 'package:nucatch_with_bloc/helpers/const.dart';
-import 'package:nucatch_with_bloc/navs/menu_nav.dart';
+import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
+import 'package:nucatch/blocs/objects/setting/setting_state.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
+import 'package:nucatch/blocs/objects/user/user_bloc.dart';
+import 'package:nucatch/blocs/objects/user/user_state.dart';
+import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/navs/menu_nav.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

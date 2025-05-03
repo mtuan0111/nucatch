@@ -1,4 +1,4 @@
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 abstract class MenuEvent {}
 

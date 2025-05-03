@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/user/user_event.dart';
-import 'package:nucatch_with_bloc/blocs/objects/user/user_state.dart';
-import 'package:nucatch_with_bloc/services/user_services.dart';
+import 'package:nucatch/blocs/objects/user/user_event.dart';
+import 'package:nucatch/blocs/objects/user/user_state.dart';
+import 'package:nucatch/services/user_services.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserServices _userServices = UserServices();

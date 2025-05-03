@@ -1,6 +1,6 @@
 {
-    "name": "nucatch_with_bloc",
-    "short_name": "nucatch_with_bloc",
+    "name": "nucatch",
+    "short_name": "nucatch",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

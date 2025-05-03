@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:nucatch_with_bloc/blocs/navs/menu/menu_state.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
-import 'package:nucatch_with_bloc/helpers/const.dart';
-import 'package:nucatch_with_bloc/helpers/template.dart';
-import 'package:nucatch_with_bloc/navs/menu_nav.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
+import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/navs/menu_nav.dart';
 
 class TopScoreScreen extends StatefulWidget {
   const TopScoreScreen({super.key});

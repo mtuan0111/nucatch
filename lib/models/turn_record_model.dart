@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:nucatch_with_bloc/helpers/preferences_key.dart';
+import 'package:nucatch/helpers/preferences_key.dart';
 
 class TurnRecordedModel {
   final String turnId;

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
-import 'package:nucatch_with_bloc/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
-import 'package:nucatch_with_bloc/services/turn_services.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
+import 'package:nucatch/services/turn_services.dart';
 
 class TurnRecordedListBloc
     extends Bloc<TurnRecordedListEvent, TurnRecordedListState> {

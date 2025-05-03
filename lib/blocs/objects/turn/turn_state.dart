@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nucatch_with_bloc/helpers/const.dart';
-import 'package:nucatch_with_bloc/models/turn_record_model.dart';
+import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/models/turn_record_model.dart';
 
 enum TurnStatus {
   intro,

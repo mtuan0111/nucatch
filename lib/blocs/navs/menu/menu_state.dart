@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:nucatch_with_bloc/helpers/const.dart';
+import 'package:nucatch/helpers/const.dart';
 
 abstract class MenuState {}
 
