@@ -9,4 +9,10 @@
             android:gravity="center"
             android:src="@mipmap/launch_image" />
     </item> -->
+    <item
+        android:width="60dp"
+        android:height="60dp"
+        android:gravity="center"
+        android:drawable="@mipmap/launcher_icon"
+        />
 </layer-list>

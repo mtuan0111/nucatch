@@ -13,6 +13,6 @@
         android:width="60dp"
         android:height="60dp"
         android:gravity="center"
-        android:drawable="@mipmap/laucher_icon.png"
+        android:drawable="@mipmap/launcher_icon"
         />
 </layer-list>
