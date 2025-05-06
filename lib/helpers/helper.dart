@@ -18,11 +18,11 @@ class Helper {
     final Uri uri = Uri.tryParse(
         scheme != null ? url.replaceFirst('https://', '$scheme://') : url)!;
 
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else if (fallbackUrl != null) {
-      final Uri fallbackUri = Uri.tryParse(fallbackUrl)!;
-      if (await canLaunchUrl(fallbackUri)) {
+    await launchUrl(uri);
+
+    if (fallbackUrl != null) {
+      final Uri? fallbackUri = Uri.tryParse(fallbackUrl);
+      if (fallbackUri != null && await canLaunchUrl(fallbackUri)) {
         await launchUrl(fallbackUri);
       }
     }
