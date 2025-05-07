@@ -23,7 +23,6 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     turnRecordedListBloc.add(LoadData());
     super.initState();
   }

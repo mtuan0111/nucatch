@@ -39,7 +39,6 @@ class _GameOverScreenState extends State<GameOverScreen> {
     // await _onSaveRecorded(SaveRecorded(savingRecord: itemModel), emitter);
     turnBloc.add(SaveRecorded(context: context));
 
-    // TODO: implement initState
     turnRecordedListBloc.add(
       LoadData(),
     );

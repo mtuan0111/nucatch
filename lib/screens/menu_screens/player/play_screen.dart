@@ -52,7 +52,6 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     turnRecordedListBloc.add(LoadData());
 
     super.initState();
@@ -206,7 +205,6 @@ class _PlayScreenState extends State<PlayScreen> {
                                           const Duration(milliseconds: 400),
                                       build:
                                           (BuildContext context, double time) {
-                                        print(time);
                                         return AnimatedOpacity(
                                           opacity: time >= 1 ? 1 : 0,
                                           duration:
@@ -275,9 +273,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                               : const SizedBox.shrink(),
                                         ),
                                       ),
-                                      onFinished: () {
-                                        print('Let start!');
-                                      },
+                                      onFinished: () {},
                                     ),
                                 ],
                               ),

@@ -31,8 +31,8 @@ class _PlayerNavState extends State<PlayerNav> {
               child: PlayScreen(),
             ),
             if (state is GameOverState)
-              MaterialPage(
-                child: const GameOverScreen(),
+              const MaterialPage(
+                child: GameOverScreen(),
               )
           ],
         );

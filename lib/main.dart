@@ -43,13 +43,6 @@ class _MyAppState extends State<MyApp> {
   // final SettingsController settingsController;
 
   @override
-  void initState() {
-    // TODO: implement initState
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {

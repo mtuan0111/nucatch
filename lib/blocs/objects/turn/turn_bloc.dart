@@ -352,7 +352,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     Fluttertoast.showToast(
       msg: insertSuccess
+          // ignore: use_build_context_synchronously
           ? lang(event.context).insertedSuccess
+          // ignore: use_build_context_synchronously
           : lang(event.context).insertedFailed,
     );
 

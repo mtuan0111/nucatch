@@ -1,21 +1,21 @@
 import 'package:audioplayers/audioplayers.dart';
 
 class AudioServices {
-  static const FREFIX = "sounds/";
+  static const pathPrefix = "sounds/";
 
-  static const TAP_SOUND = "tap.mp3";
+  static const tapSound = "tap.mp3";
   // AudioCache tap_sound_audio = AudioCache()
-  static const INTRO_SOUND = "intro.mp3";
+  static const introSound = "intro.mp3";
   // AudioCache intro_sound_audio = AudioCache()
 
-  static const CORRECT_SOUND = "correct.mp3";
+  static const correctSound = "correct.mp3";
   // AudioCache correct_sound_audio = AudioCache()
-  static const CORRECT_UP_SOUND = "correct_up.mp3";
+  static const correctUpSound = "correct_up.mp3";
   // AudioCache correct_up_sound_audio = AudioCache()
 
-  static const WRONG_SOUND = "wrong.mp3";
+  static const wrongSOund = "wrong.mp3";
   // AudioCache wrong_sound_audio = AudioCache()
-  static const END_SOUND = "end.mp3";
+  static const endSound = "end.mp3";
   // AudioCache end_sound_audio = AudioCache()
 
   // late AudioPlayer _audioPlayer;
@@ -36,33 +36,33 @@ class AudioServices {
       return;
     }
     AudioPlayer().play(
-      AssetSource(FREFIX + soundPath),
+      AssetSource(pathPrefix + soundPath),
       volume: getVolume,
       mode: PlayerMode.lowLatency,
     );
   }
 
   Future<void> playTap() {
-    return playSound(TAP_SOUND);
+    return playSound(tapSound);
   }
 
   Future<void> playIntro() {
-    return playSound(INTRO_SOUND);
+    return playSound(introSound);
   }
 
   Future<void> playCorrect() {
-    return playSound(CORRECT_SOUND);
+    return playSound(correctSound);
   }
 
   Future<void> playCorrectUp() {
-    return playSound(CORRECT_UP_SOUND);
+    return playSound(correctUpSound);
   }
 
   Future<void> playWrong() {
-    return playSound(WRONG_SOUND);
+    return playSound(wrongSOund);
   }
 
   Future<void> playEnd() {
-    return playSound(END_SOUND);
+    return playSound(endSound);
   }
 }
