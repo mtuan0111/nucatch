@@ -97,3 +97,54 @@ If you have run out of energy or time for your project, put a note at the top of
 
 - Command line:
 ```dart run flutter_launcher_icons```
+
+## Released on: 17/04/2025
+### App core:
+Version: 1.0.15
+[GitHub Repository](https://github.com/macromilldev/app_core.git)
+
+### Custom version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 411          | 3.7.18  |
+| iOS      | 267          | 5.6.13  |
+
+### Release note:
+- Update ErrorResponseModel to log non-fatal errors to Firebase Crashlytics
+
+### Git note release: 
+#### Command for copilot
+    Generate the message using the `Git message template`, `Flutter build for Android`, `Flutter build for iOS`
+
+    `[Builded] Version 3.7.18 - 411 / 5.6.13 - 267 _ Update ErrorResponseModel to log non-fatal errors to Firebase Crashlytics`
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=3.7.18 --build-number=411 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=5.6.13 --build-number=267 --release```
+
+---
+## Released on: 07/05/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 35           | 2.0.0  |
+| iOS      | 36           | 2.0.0  |
+
+### Release note:
+- Build the latest version of the app using Flutter to ensure all updates and enhancements are included.
+_ Update README and build.gradle for versioning and signing configuration; add keystore for release builds
+
+### Git note release: 
+#### Command for copilot
+    Generate the message using the `Git message template`, `Flutter build for Android`, `Flutter build for iOS`
+
+    `[Builded] Version 2.0.0 - 35 / 2.0.0 - 36 _ Build the latest version of the app using Flutter to ensure all updates and enhancements are included`
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.0.0 --build-number=35 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.0.0 --build-number=36 --release```
+---
