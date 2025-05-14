@@ -45,7 +45,7 @@ dependencies:
   timer_count_down: ^2.2.2
   
   
-  package_info_plus: ^5.0.1
+  package_info_plus: ^8.3.0
   shared_preferences: ^2.2.3
   uuid: ^4.5.1
   sqflite: ^2.4.1
@@ -167,12 +167,10 @@ flutter:
 flutter_launcher_icons:
   # android: true
   # ios: true
-  image_path: "assets/images/nucatch-launcher.png"
+  image_path: "assets/images/nuCatch-icon.png"
   # # adaptive_icon_background: "assets/images/launcher-background.png"
-  # image_path_ios: "assets/images/yimcenter-ios.png"
-  
-  # setting for android
-  image_path_android: "assets/images/nucatch-launcher.png"
+  image_path_android: "assets/images/nuCatch-launcher-512.png"
+  image_path_ios: "assets/images/nuCatch-launcher-512.png"
   adaptive_icon_background: "#ffffff"
 
   android: "launcher_icon"

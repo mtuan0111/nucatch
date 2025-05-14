@@ -57,6 +57,7 @@ class _MyAppState extends State<MyApp> {
             return state.isLoading
                 ? const LoadingWidget()
                 : MaterialApp(
+                    debugShowCheckedModeBanner: false,
                     title: 'Nucatch',
                     localizationsDelegates: const [
                       AppLocalizations.delegate,
