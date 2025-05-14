@@ -148,3 +148,30 @@ _ Update README and build.gradle for versioning and signing configuration; add k
     Flutter build for iOS
     ```flutter build ios --build-name=2.0.0 --build-number=36 --release```
 ---
+## Released on: 14/05/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 36           | 2.0.1  |
+| iOS      | 40           | 2.0.0  |
+
+### Release note:
+Update app icons and privacy information; enhance play screen layout
+
+- Replaced multiple app icon images in the iOS asset catalog with updated versions.
+- Added PrivacyInfo.xcprivacy file for privacy settings.
+- Modified main.dart to disable the debug banner.
+- Enhanced play_screen.dart layout for better responsiveness on tablet devices.
+
+### Git note release: 
+#### Command for copilot
+    Generate the message using the `Git message template`, `Flutter build for Android`, `Flutter build for iOS`
+
+    `[Builded] Version 2.0.1 - 36 / 2.0.0 - 40 _ Update app icons and privacy information; enhance play screen layout`
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.0.1 --build-number=36 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.0.0 --build-number=40 --release```
+---
