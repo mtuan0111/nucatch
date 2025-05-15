@@ -98,10 +98,11 @@ class _GameOverScreenState extends State<GameOverScreen> {
 
                         return RankingItem(
                           ranking: indexOfItem,
-                          playerName: turnState.recordedItem!.playedUsername ??
-                              lang(context).anonymous,
-                          createdAt: turnState.recordedItem!.recordedTime,
-                          turnedPoint: turnState.recordedItem!.point,
+                          turnRecordedModel: turnState.recordedItem!,
+                          // playerName: turnState.recordedItem!.playedUsername ??
+                          //     lang(context).anonymous,
+                          // createdAt: turnState.recordedItem!.recordedTime,
+                          // turnedPoint: turnState.recordedItem!.point,
                         );
                       },
                     ),

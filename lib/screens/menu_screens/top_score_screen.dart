@@ -95,10 +95,11 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                               ...turnRecordedListState.listModel!.map(
                                 (e) => RankingItem(
                                   ranking: turnRecordedListState.indexOf(e),
-                                  playerName: e.playedUsername ??
-                                      lang(context).anonymous,
-                                  createdAt: e.recordedTime,
-                                  turnedPoint: e.point,
+                                  turnRecordedModel: e,
+                                  // playerName: e.playedUsername ??
+                                  //     lang(context).anonymous,
+                                  // createdAt: e.recordedTime,
+                                  // turnedPoint: e.point,
                                 ),
                               ),
                             if (turnRecordedListState.isLoading)

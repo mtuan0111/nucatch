@@ -4,6 +4,7 @@ import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
+import 'package:nucatch/blocs/navs/top_score/top_score_cubit.dart';
 import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
 import 'package:nucatch/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
@@ -12,11 +13,11 @@ import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/navs/player_nav.dart';
+import 'package:nucatch/navs/top_score_nav.dart';
 import 'package:nucatch/screens/menu_screens/about_screen.dart';
 
 import 'package:nucatch/screens/menu_screen.dart';
 import 'package:nucatch/screens/menu_screens/setting_screen.dart';
-import 'package:nucatch/screens/menu_screens/top_score_screen.dart';
 
 class MenuNav extends StatefulWidget {
   const MenuNav({super.key});
@@ -84,8 +85,11 @@ class _MenuNavState extends State<MenuNav> {
                         ),
                       ),
                     if (navState is TopScore)
-                      const MaterialPage(
-                        child: TopScoreScreen(),
+                      MaterialPage(
+                        child: BlocProvider(
+                          create: (context) => TopScoreCubit(),
+                          child: TopScoreNav(),
+                        ),
                       ),
                     if (navState is Setting)
                       const MaterialPage(

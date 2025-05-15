@@ -4,20 +4,24 @@ import 'package:nucatch/helpers/const.dart';
 import 'dart:math' as math;
 
 import 'package:nucatch/helpers/extension.dart';
+import 'package:nucatch/models/turn_record_model.dart';
 
 class RankingItem extends StatelessWidget {
   const RankingItem({
     super.key,
+    required this.turnRecordedModel,
     required this.ranking,
-    required this.playerName,
-    required this.createdAt,
-    required this.turnedPoint,
+    // required this.playerName,
+    // required this.createdAt,
+    // required this.turnedPoint,
   });
 
+  final TurnRecordedModel? turnRecordedModel;
   final int? ranking;
-  final String playerName;
-  final DateTime createdAt;
-  final int turnedPoint;
+
+  String? get playerName => turnRecordedModel?.playedUsername;
+  DateTime get createdAt => turnRecordedModel?.recordedTime ?? DateTime.now();
+  int get turnedPoint => turnRecordedModel?.point ?? 0;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +56,7 @@ class RankingItem extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
                 Text(
-                  playerName,
+                  playerName ?? lang(context).anonymous,
                   style: LayoutConfig(context).titleSectionStyle(),
                 ),
               ],
