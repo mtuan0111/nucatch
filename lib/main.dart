@@ -10,9 +10,9 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/localization/app_localizations.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {

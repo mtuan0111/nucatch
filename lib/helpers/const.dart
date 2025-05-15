@@ -1,6 +1,6 @@
 // ignore: constant_identifier_names
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:nucatch/localization/app_localizations.dart';
 
 const diffShowLevelMilisecond = 250;
 
