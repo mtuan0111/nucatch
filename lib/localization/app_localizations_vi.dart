@@ -105,6 +105,21 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get messageSharePlayedLeaderSubject => 'Trải nghiệm cùng #NuCatch';
+
+  @override
+  String messageSharePlayedLeaderBody(
+      String username, num point, String timeCreated) {
+    return '$username đã đạt được $point điểm vào lúc $timeCreated. Hãy tham gia #NuCatch cùng $username!!';
+  }
+
+  @override
+  String messageSharePlayedLeaderBodyAnonymousBody(
+      num point, String timeCreated) {
+    return 'Một người chơi đã đạt được $point điểm vào lúc $timeCreated. Hãy tham gia #NuCatch ngay!!';
+  }
+
+  @override
   String get confirmExit => 'Bạn có chắc chắn muốn thoát không?';
 
   @override

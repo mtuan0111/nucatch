@@ -105,6 +105,21 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get messageSharePlayedLeaderSubject => 'Experience with #NuCatch';
+
+  @override
+  String messageSharePlayedLeaderBody(
+      String username, num point, String timeCreated) {
+    return '$username was got the $point points at $timeCreated. Let\'\'s join #NuCatch with $username!!';
+  }
+
+  @override
+  String messageSharePlayedLeaderBodyAnonymousBody(
+      num point, String timeCreated) {
+    return 'A player got $point points at $timeCreated. Join #NuCatch now!!';
+  }
+
+  @override
   String get confirmExit => 'Are you sure you want to exit?';
 
   @override

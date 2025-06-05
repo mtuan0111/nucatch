@@ -50,15 +50,17 @@ class _MenuNavState extends State<MenuNav> {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
 
-              context.read<MenuBloc>().add(SelectOption(option: null));
+              context.read<MenuBloc>().add(ShowMenu());
             },
             child: BlocBuilder<UserBloc, UserState>(
               builder: (context, userState) {
                 return Navigator(
-                  onPopPage: (route, result) {
-                    context.read<MenuBloc>().add(SelectOption(option: null));
-                    return route.didPop(result);
-                  },
+                  // onPopPage: (route, result) {
+                  //   context.read<MenuBloc>().add(SelectOption(option: null));
+                  //   return route.didPop(result);
+                  // },
+                  onDidRemovePage: (page) =>
+                      context.read<MenuBloc>().add(SelectOption(option: null)),
                   pages: [
                     const MaterialPage(
                       child: MenuScreen(),
@@ -88,7 +90,7 @@ class _MenuNavState extends State<MenuNav> {
                       MaterialPage(
                         child: BlocProvider(
                           create: (context) => TopScoreCubit(),
-                          child: TopScoreNav(),
+                          child: const TopScoreNav(),
                         ),
                       ),
                     if (navState is Setting)

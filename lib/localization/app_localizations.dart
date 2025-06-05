@@ -272,6 +272,26 @@ abstract class AppLocalizations {
   /// **'Explore #NuCatch now at {profileUrl}'**
   String messageShareIntro(String profileUrl);
 
+  /// Subject of the message for sharing the score
+  ///
+  /// In en, this message translates to:
+  /// **'Experience with #NuCatch'**
+  String get messageSharePlayedLeaderSubject;
+
+  /// Message for sharing the score of a player
+  ///
+  /// In en, this message translates to:
+  /// **'{username} was got the {point} points at {timeCreated}. Let\'\'s join #NuCatch with {username}!!'**
+  String messageSharePlayedLeaderBody(
+      String username, num point, String timeCreated);
+
+  /// Message for sharing the score when username is not available
+  ///
+  /// In en, this message translates to:
+  /// **'A player got {point} points at {timeCreated}. Join #NuCatch now!!'**
+  String messageSharePlayedLeaderBodyAnonymousBody(
+      num point, String timeCreated);
+
   /// Warning when the user presses the exit button
   ///
   /// In en, this message translates to:

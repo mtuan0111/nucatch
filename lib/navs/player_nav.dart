@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
+import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
@@ -22,19 +24,30 @@ class _PlayerNavState extends State<PlayerNav> {
   Widget build(BuildContext context) {
     return BlocBuilder<PlayerNavCubit, PlayerNavState>(
       builder: (context, state) {
-        return Navigator(
-          onPopPage: (route, result) {
-            return route.didPop(result);
-          },
-          pages: [
-            const MaterialPage(
-              child: PlayScreen(),
-            ),
-            if (state is GameOverState)
+        return PopScope(
+          canPop: false,
+          child: Navigator(
+            // onPopPage: (route, result) {
+            //   return false;
+            // },
+            onDidRemovePage: (page) {
+              if (page is MaterialPage) {
+                return context.read<MenuBloc>().add(ShowMenu());
+              }
+            },
+            pages: [
               const MaterialPage(
-                child: GameOverScreen(),
-              )
-          ],
+                child: PopScope(
+                  canPop: true,
+                  child: PlayScreen(),
+                ),
+              ),
+              if (state is GameOverState)
+                const MaterialPage(
+                  child: GameOverScreen(),
+                )
+            ],
+          ),
         );
       },
     );

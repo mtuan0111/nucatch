@@ -9,3 +9,7 @@ class SelectOption extends MenuEvent {
     this.option,
   });
 }
+
+class ShowMenu extends MenuEvent {
+  ShowMenu();
+}

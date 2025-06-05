@@ -25,75 +25,78 @@ class RankingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      // mainAxisSize: MainAxisSize.max,
-      // mainAxisAlignment: MainAxisAlignment.spaceAround,
-      // crossAxisAlignment: WrapCrossAlignment.start,
-      // alignment: WrapAlignment.start,
-      // runAlignment: WrapAlignment.start,
+    return Hero(
+      tag: "ranking-${turnRecordedModel!.turnId}",
+      child: Wrap(
+        // mainAxisSize: MainAxisSize.max,
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // crossAxisAlignment: WrapCrossAlignment.start,
+        // alignment: WrapAlignment.start,
+        // runAlignment: WrapAlignment.start,
 
-      spacing: 20,
-      runSpacing: 20,
-      children: [
-        if (ranking != null)
-          RankBadge(
-            ranking: ranking!,
-          ),
-        // const SizedBox(
-        //   width: 20,
-        // ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.person,
-                  size: Theme.of(context).textTheme.titleLarge!.fontSize,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  playerName ?? lang(context).anonymous,
-                  style: LayoutConfig(context).titleSectionStyle(),
-                ),
-              ],
+        spacing: 20,
+        runSpacing: 20,
+        children: [
+          if (ranking != null)
+            RankBadge(
+              ranking: ranking!,
             ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.calendar_today,
-                  size: Theme.of(context).textTheme.titleLarge!.fontSize,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  createdAt.formatClient(),
-                  style: LayoutConfig(context).contentSectionStyle(),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.star,
-                  size: Theme.of(context).textTheme.titleLarge!.fontSize,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  "${lang(context).score}: $turnedPoint",
-                  style: LayoutConfig(context).contentSectionStyle(),
-                ),
-              ],
-            ),
-          ],
-        )
-      ],
+          // const SizedBox(
+          //   width: 20,
+          // ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.person,
+                    size: Theme.of(context).textTheme.titleLarge!.fontSize,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    playerName ?? lang(context).anonymous,
+                    style: LayoutConfig(context).titleSectionStyle(),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.calendar_today,
+                    size: Theme.of(context).textTheme.titleLarge!.fontSize,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    createdAt.formatClient(),
+                    style: LayoutConfig(context).contentSectionStyle(),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.star,
+                    size: Theme.of(context).textTheme.titleLarge!.fontSize,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    "${lang(context).score}: $turnedPoint",
+                    style: LayoutConfig(context).contentSectionStyle(),
+                  ),
+                ],
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -290,71 +293,3 @@ class CustomeTitleButton extends StatelessWidget {
     );
   }
 }
-// Widget buttonWidget(
-//   BuildContext context, {
-//   required String text,
-//   required Function onTap,
-//   Color? color,
-//   Color? textColor,
-// }) {
-//   return GestureDetector(
-//     onTap: () {
-//       onTap();
-//     },
-//     child: SizedBox(
-//       width: LayoutConfig.boxSize,
-//       height: LayoutConfig.boxSize,
-//       child: Stack(
-//         children: [
-//           Transform.rotate(
-//             angle: -math.pi / 4,
-//             child: Container(
-//               width: LayoutConfig.boxSize,
-//               height: LayoutConfig.boxSize,
-//               decoration: LayoutConfig(context).boxDecoration.copyWith(
-//                     border: Border.all(
-//                       width: 2,
-//                       color: Theme.of(context).scaffoldBackgroundColor,
-//                     ),
-//                   ),
-//             ),
-//           ),
-//           // Transform.rotate(
-//           //   angle: -math.pi / 2,
-//           //   child: Container(
-//           //     width: LayoutConfig.boxSize,
-//           //     height: LayoutConfig.boxSize,
-//           //     decoration: LayoutConfig(context).boxDecoration.copyWith(
-//           //           border: Border.all(
-//           //             width: 2,
-//           //             color: Theme.of(context).scaffoldBackgroundColor,
-//           //           ),
-//           //         ),
-//           //   ),
-//           // ),
-//           // Positioned(
-//           //   // top: 0,
-//           //   // right: 0,
-//           //   child: Center(
-//           //     child: Icon(
-//           //       FontAwesomeIcons.certificate,
-//           //       color: Theme.of(context).primaryColor,
-//           //       size: LayoutConfig.boxSize,
-//           //     ),
-//           //   ),
-//           // ),
-
-//           Center(
-//             child: Text(
-//               text,
-//               style: LayoutConfig(context).displaySmallStyle(),
-//             ),
-//           ),
-//         ],
-//       ),
-//     ),
-//     // const SizedBox(
-//     //   width: 20,
-//     // ),
-//   );
-// }

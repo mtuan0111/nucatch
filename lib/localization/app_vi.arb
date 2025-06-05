@@ -139,6 +139,44 @@
       }
     }
   },
+  "messageSharePlayedLeaderSubject": "Trải nghiệm cùng #NuCatch",
+  "@messageSharePlayedLeaderSubject": {
+    "description": "Chủ đề của thông điệp chia sẻ điểm số",
+    "placeholders": {}
+  },
+  
+  "messageSharePlayedLeaderBody": "{username} đã đạt được {point} điểm vào lúc {timeCreated}. Hãy tham gia #NuCatch cùng {username}!!",
+  "@messageSharePlayedLeaderBody": {
+    "description": "Thông điệp chia sẻ điểm số của người chơi",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "Nguyễn Văn A"
+      },
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
+  "messageSharePlayedLeaderBodyAnonymousBody": "Một người chơi đã đạt được {point} điểm vào lúc {timeCreated}. Hãy tham gia #NuCatch ngay!!",
+  "@messageSharePlayedLeaderBodyAnonymousBody": {
+    "description": "Thông điệp chia sẻ điểm số khi không có username",
+    "placeholders": {
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
   "confirmExit": "Bạn có chắc chắn muốn thoát không?",
   "@confirmExit": {
     "description": "Cảnh báo khi người dùng nhấn nút thoát",

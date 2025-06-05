@@ -139,6 +139,45 @@
       }
     }
   },
+  "messageSharePlayedLeaderSubject": "Experience with #NuCatch",
+  "@messageSharePlayedLeaderSubject": {
+    "description": "Subject of the message for sharing the score",
+    "placeholders": {}
+  },
+
+  "messageSharePlayedLeaderBody": "{username} was got the {point} points at {timeCreated}. Let''s join #NuCatch with {username}!!",
+  "@messageSharePlayedLeaderBody": {
+    "description": "Message for sharing the score of a player",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      },
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
+  "messageSharePlayedLeaderBodyAnonymousBody": "A player got {point} points at {timeCreated}. Join #NuCatch now!!",
+  "@messageSharePlayedLeaderBodyAnonymousBody": {
+    "description": "Message for sharing the score when username is not available",
+    "placeholders": {
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
+
   "confirmExit": "Are you sure you want to exit?",
   "@confirmExit": {
     "description": "Warning when the user presses the exit button",

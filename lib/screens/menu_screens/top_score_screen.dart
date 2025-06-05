@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
+import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/navs/top_score/top_score_cubit.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
@@ -20,6 +23,8 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
   String get screenTitle => menuArray(context)[MenuOption.topScore]!;
   TurnRecordedListBloc get turnRecordedListBloc =>
       context.read<TurnRecordedListBloc>();
+
+  MenuBloc get mainMenuBloc => context.read<MenuBloc>();
 
   @override
   void initState() {
@@ -71,7 +76,9 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                     ),
                     leading: IconButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        mainMenuBloc.add(ShowMenu());
+                        // Navigator.pop(context);
+                        // Navigator.pop
                       },
                       icon: const Icon(
                         FontAwesomeIcons.chevronLeft,
@@ -93,13 +100,23 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                           children: [
                             if (turnRecordedListState.listModel != null)
                               ...turnRecordedListState.listModel!.map(
-                                (e) => RankingItem(
-                                  ranking: turnRecordedListState.indexOf(e),
-                                  turnRecordedModel: e,
-                                  // playerName: e.playedUsername ??
-                                  //     lang(context).anonymous,
-                                  // createdAt: e.recordedTime,
-                                  // turnedPoint: e.point,
+                                (e) => GestureDetector(
+                                  onTap: () {
+                                    context
+                                        .read<TopScoreCubit>()
+                                        .showTopScoreDetail(
+                                          e,
+                                          turnRecordedListState.indexOf(e),
+                                        );
+                                  },
+                                  child: RankingItem(
+                                    ranking: turnRecordedListState.indexOf(e),
+                                    turnRecordedModel: e,
+                                    // playerName: e.playedUsername ??
+                                    //     lang(context).anonymous,
+                                    // createdAt: e.recordedTime,
+                                    // turnedPoint: e.point,
+                                  ),
                                 ),
                               ),
                             if (turnRecordedListState.isLoading)

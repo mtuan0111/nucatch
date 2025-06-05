@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
+import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
 import 'package:nucatch/blocs/objects/setting/setting_event.dart';
@@ -92,7 +94,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   leading: IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.read<MenuBloc>().add(ShowMenu());
+                      // Navigator.pop(context);
                     },
                     icon: const Icon(FontAwesomeIcons.chevronLeft),
                   ),
