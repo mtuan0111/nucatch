@@ -28,12 +28,12 @@ class RankingItem extends StatelessWidget {
     return Hero(
       tag: "ranking-${turnRecordedModel!.turnId}",
       child: Wrap(
+        key: key,
         // mainAxisSize: MainAxisSize.max,
         // mainAxisAlignment: MainAxisAlignment.spaceAround,
-        // crossAxisAlignment: WrapCrossAlignment.start,
-        // alignment: WrapAlignment.start,
-        // runAlignment: WrapAlignment.start,
-
+        crossAxisAlignment: WrapCrossAlignment.center,
+        alignment: WrapAlignment.center,
+        runAlignment: WrapAlignment.center,
         spacing: 20,
         runSpacing: 20,
         children: [
@@ -290,6 +290,29 @@ class CustomeTitleButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class WidgetToImage extends StatefulWidget {
+  final Function(GlobalKey key) builder;
+
+  const WidgetToImage({
+    Key? key,
+    required this.builder,
+  }) : super(key: key);
+
+  @override
+  State<WidgetToImage> createState() => _WidgetToImageState();
+}
+
+class _WidgetToImageState extends State<WidgetToImage> {
+  final globalKey = GlobalKey();
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      key: globalKey,
+      child: widget.builder(globalKey),
     );
   }
 }

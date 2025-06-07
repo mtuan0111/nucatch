@@ -1,10 +1,10 @@
 import 'package:nucatch/models/turn_record_model.dart';
 
-abstract class TopScoreState {}
+abstract class TopScoreNavState {}
 
-class TopScoreRootState extends TopScoreState {}
+class TopScoreRootState extends TopScoreNavState {}
 
-class TopScoreDetailState extends TopScoreState {
+class TopScoreDetailState extends TopScoreNavState {
   final TurnRecordedModel turnRecordedModel;
   final int? ranking;
 

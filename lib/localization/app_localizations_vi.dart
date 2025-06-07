@@ -108,6 +108,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get messageSharePlayedLeaderSubject => 'Trải nghiệm cùng #NuCatch';
 
   @override
+  String messageSharePlayedLeaderSubjectWithUsername(String username) {
+    return 'Experience with $username at #NuCatch';
+  }
+
+  @override
   String messageSharePlayedLeaderBody(
       String username, num point, String timeCreated) {
     return '$username đã đạt được $point điểm vào lúc $timeCreated. Hãy tham gia #NuCatch cùng $username!!';

@@ -1,4 +1,7 @@
 // ignore: constant_identifier_names
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:nucatch/localization/app_localizations.dart';
 
@@ -11,6 +14,12 @@ const Map<String, String> languages = {
   'en': "English",
   'vi': "Tiếng Việt",
 };
+
+const String secretKey = "NUCATCH_NO_NEED_TO_CHEAT_ME";
+const int luckyNumber = 11;
+String encodedKey = md5.convert(utf8.encode(secretKey)).toString();
+String profileUrlShareWithKey(profileUrl) =>
+    profileUrl + "&u=%username%&p=%point%&t=%timeCreated%&k=%md5Key%";
 
 String defaultUsername(context) => lang(context).anonymous;
 

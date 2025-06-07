@@ -278,6 +278,12 @@ abstract class AppLocalizations {
   /// **'Experience with #NuCatch'**
   String get messageSharePlayedLeaderSubject;
 
+  /// Subject of the message for sharing the score with username
+  ///
+  /// In en, this message translates to:
+  /// **'Experience with {username} at #NuCatch'**
+  String messageSharePlayedLeaderSubjectWithUsername(String username);
+
   /// Message for sharing the score of a player
   ///
   /// In en, this message translates to:

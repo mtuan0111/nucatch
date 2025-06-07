@@ -145,6 +145,18 @@
     "placeholders": {}
   },
 
+  "messageSharePlayedLeaderSubjectWithUsername": "Experience with {username} at #NuCatch",
+  "@messageSharePlayedLeaderSubjectWithUsername": {
+    "description": "Subject of the message for sharing the score with username",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  
+
   "messageSharePlayedLeaderBody": "{username} was got the {point} points at {timeCreated}. Let''s join #NuCatch with {username}!!",
   "@messageSharePlayedLeaderBody": {
     "description": "Message for sharing the score of a player",

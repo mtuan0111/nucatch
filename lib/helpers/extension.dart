@@ -90,4 +90,19 @@ extension StringExtensions on String {
       },
     );
   }
+
+  String decodedSortedEvenOddKey() {
+    String evenString = "";
+    String oddString = "";
+
+    for (int i = 0; i < length; i++) {
+      if (i % 2 == 0) {
+        evenString += this[i];
+      } else {
+        oddString += this[i];
+      }
+    }
+
+    return evenString + oddString;
+  }
 }

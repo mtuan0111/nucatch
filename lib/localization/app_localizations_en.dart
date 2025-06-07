@@ -108,6 +108,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageSharePlayedLeaderSubject => 'Experience with #NuCatch';
 
   @override
+  String messageSharePlayedLeaderSubjectWithUsername(String username) {
+    return 'Experience with $username at #NuCatch';
+  }
+
+  @override
   String messageSharePlayedLeaderBody(
       String username, num point, String timeCreated) {
     return '$username was got the $point points at $timeCreated. Let\'\'s join #NuCatch with $username!!';

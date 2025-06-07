@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
-import 'package:nucatch/blocs/navs/top_score/top_score_cubit.dart';
-import 'package:nucatch/blocs/navs/top_score/top_score_state.dart';
+import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
+import 'package:nucatch/blocs/navs/top_score/top_score_nav_state.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_state.dart';
 import 'package:nucatch/screens/menu_screens/top_score_details_screen.dart';
@@ -17,11 +17,11 @@ class TopScoreNav extends StatefulWidget {
 }
 
 class _TopScoreNavState extends State<TopScoreNav> {
-  TopScoreCubit get topScoreCubit => context.read<TopScoreCubit>();
-  TopScoreState get topScoreState => topScoreCubit.state;
+  TopScoreNavCubit get topScoreCubit => context.read<TopScoreNavCubit>();
+  TopScoreNavState get topScoreState => topScoreCubit.state;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TopScoreCubit, TopScoreState>(
+    return BlocBuilder<TopScoreNavCubit, TopScoreNavState>(
       builder: (context, state) {
         return Navigator(
           // onPopPage: (route, result) {
