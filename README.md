@@ -187,8 +187,27 @@ feat: Add QR code scanning functionality and localization support for scan instr
 
 ### Git note release: 
 #### Command for copilot
-    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message` , `Flutter build for Android`, `Flutter build for iOS`
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en` , `Flutter build for Android`, `Flutter build for iOS`
 
+    [Builded] Version 2.0.2 - 37 / 2.0.1 - 41 _ Add QR code scanning functionality and localization support for scan instructions
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Introduced QR code scanning feature for enhanced user interaction.  
+        - Added localization for scan instructions to support multiple languages.  
+        - Improved user experience and accessibility.
+
+    - **Tiếng Việt:**  
+        - Đã thêm tính năng quét mã QR giúp tương tác người dùng tốt hơn.  
+        - Bổ sung đa ngôn ngữ cho hướng dẫn quét mã.  
+        - Nâng cao trải nghiệm và khả năng tiếp cận cho người dùng.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.0.2 --build-number=37 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.0.1 --build-number=41 --release```
     [Builded] Version 2.0.2 - 37 / 2.0.1 - 41 _ Add QR code scanning functionality and localization support for scan instructions
 
     **Store notices / What's new / Summary:**
