@@ -129,6 +129,18 @@
       }
     }
   },
+
+  "messageSharePlayedLeaderSubjectWithUsername": "Trải nghiệm cùng {username} tại #NuCatch",
+  "@messageSharePlayedLeaderSubjectWithUsername": {
+    "description": "Chủ đề của thông điệp chia sẻ điểm số với tên người dùng",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "Nguyễn Văn A"
+      }
+    }
+  },
+
   "messageShareIntro": "Khám phá #NuCatch ngay tại {profileUrl}",
   "@messageShareIntro": {
     "description": "Nó sẽ được thay thế bằng URL thực tế",
@@ -201,6 +213,12 @@
   "insertedFailed": "Ghi lượt chơi của bạn thất bại",
   "@insertedFailed": {
     "description": "Thông báo khi thêm dữ liệu thất bại",
+    "placeholders": {}
+  },
+
+  "scanQrToViewDetails": "Quét mã QR để xem chi tiết",
+  "@scanQrToViewDetails": {
+    "description": "Hướng dẫn người dùng quét mã QR để xem chi tiết",
     "placeholders": {}
   }
 }

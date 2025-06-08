@@ -109,7 +109,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String messageSharePlayedLeaderSubjectWithUsername(String username) {
-    return 'Experience with $username at #NuCatch';
+    return 'Trải nghiệm cùng $username tại #NuCatch';
   }
 
   @override
@@ -138,4 +138,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get insertedFailed => 'Ghi lượt chơi của bạn thất bại';
+
+  @override
+  String get scanQrToViewDetails => 'Quét mã QR để xem chi tiết';
 }

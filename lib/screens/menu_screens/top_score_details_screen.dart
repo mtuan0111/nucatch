@@ -13,6 +13,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/models/turn_record_model.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class TopScoreDetailScreen extends StatefulWidget {
   const TopScoreDetailScreen({super.key});
@@ -105,11 +106,64 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                     child: Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Expanded(
-                            child: RankingItem(
-                              ranking: ranking,
-                              turnRecordedModel: turnRecordedModel,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                RankingItem(
+                                  ranking: ranking,
+                                  turnRecordedModel: turnRecordedModel,
+                                ),
+                                const SizedBox(height: 32),
+                                Card(
+                                  elevation: 6,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          lang(context).scanQrToViewDetails,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium!
+                                              .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                              ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const SizedBox(height: 10),
+                                        SizedBox(
+                                          height: 180,
+                                          width: 180,
+                                          child: QrImageView(
+                                            data: state.secureLink,
+                                            version: QrVersions.auto,
+                                            size: 180.0,
+                                            embeddedImage: const AssetImage(
+                                              'assets/images/nuCatch-launcher-512.png',
+                                            ),
+                                            // 6 modules in a 180x180 QR means each module is 30px,
+                                            // so embedded image should be about 6*moduleSize = 36px
+                                            embeddedImageStyle:
+                                                const QrEmbeddedImageStyle(
+                                              size: Size(36, 36),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 24),
@@ -170,18 +224,6 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                           horizontal: 24, vertical: 12),
                                     ),
                                   ),
-                                  const SizedBox(width: 16),
-                                  ElevatedButton.icon(
-                                    onPressed: () {
-                                      // TODO: Implement challenge functionality
-                                    },
-                                    icon: const Icon(Icons.sports_kabaddi),
-                                    label: const Text('Challenge'),
-                                    style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 24, vertical: 12),
-                                    ),
-                                  ),
                                 ],
                               ),
                             ),
@@ -190,9 +232,9 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                       ),
                     ),
                   ),
-                  SliverFillRemaining(
+                  const SliverFillRemaining(
                     hasScrollBody: false,
-                    child: const SizedBox.shrink(),
+                    child: SizedBox.shrink(),
                   ),
                 ],
               ),

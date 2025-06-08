@@ -327,6 +327,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recorded your turn failed'**
   String get insertedFailed;
+
+  /// Instruction to scan QR code for details
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the QR code to view details'**
+  String get scanQrToViewDetails;
 }
 
 class _AppLocalizationsDelegate

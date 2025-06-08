@@ -215,5 +215,11 @@
   "@insertedFailed": {
     "description": "Notification when data addition fails",
     "placeholders": {}
+  },
+
+  "scanQrToViewDetails": "Scan the QR code to view details",
+  "@scanQrToViewDetails": {
+    "description": "Instruction to scan QR code for details",
+    "placeholders": {}
   }
 }

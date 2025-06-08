@@ -175,3 +175,30 @@ Update app icons and privacy information; enhance play screen layout
     Flutter build for iOS
     ```flutter build ios --build-name=2.0.0 --build-number=40 --release```
 ---
+## Released on: 08/06/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 37           | 2.0.2  |
+| iOS      | 41           | 2.0.1  |
+
+### Release note:
+feat: Add QR code scanning functionality and localization support for scan instructions
+
+### Git note release: 
+#### Command for copilot
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message` , `Flutter build for Android`, `Flutter build for iOS`
+
+    [Builded] Version 2.0.2 - 37 / 2.0.1 - 41 _ Add QR code scanning functionality and localization support for scan instructions
+
+    **Store notices / What's new / Summary:**
+    - Introduced QR code scanning feature for enhanced user interaction.
+    - Added localization for scan instructions to support multiple languages.
+    - Improved user experience and accessibility.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.0.2 --build-number=37 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.0.1 --build-number=41 --release```
+---
