@@ -65,19 +65,17 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     Text(
                       lang(context).gameOver,
                       style: LayoutConfig(context).displaySmallStyle(),
+                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      runAlignment: WrapAlignment.center,
-                      spacing: buttonSpace,
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           lang(context).theCorrectIs,
                           style: LayoutConfig(context).contentSectionStyle(),
                         ),
+                        const SizedBox(width: 8),
                         Text(
                           turnState.expect ?? '',
                           style: LayoutConfig(context).displaySmallStyle(),

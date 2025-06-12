@@ -571,7 +571,7 @@ class _CustomeAlertState extends State<CustomeAlert> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (widget.rank != null) RankBadge(ranking: widget.rank!),
+          if (widget.rank != null) RankingSortingWidget(position: widget.rank!),
           if (widget.rank != null) const SizedBox(height: 20),
           Text(
             "${lang(context).score}: ${widget.point}",

@@ -37,10 +37,7 @@ class RankingItem extends StatelessWidget {
         spacing: 20,
         runSpacing: 20,
         children: [
-          if (ranking != null)
-            RankBadge(
-              ranking: ranking!,
-            ),
+          if (ranking != null) RankingSortingWidget(position: ranking!),
           // const SizedBox(
           //   width: 20,
           // ),
@@ -175,6 +172,109 @@ class RankBadge extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class RankingSortingWidget extends StatelessWidget {
+  final int position;
+  final double wingSize;
+  final Widget? childElement;
+  final double? size; // Add a size parameter
+
+  const RankingSortingWidget({
+    Key? key,
+    required this.position,
+    this.wingSize = 1,
+    this.childElement,
+    this.size, // Accept size
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fillColor = position == 1
+        ? theme.cardColor
+        : (position > 3 ? theme.canvasColor : theme.canvasColor);
+    final strokeColor = theme.primaryColor;
+
+    // Use provided size or fallback to a reasonable default
+    final double baseSize = size ?? 60.0;
+
+    Widget buildWing(double width, double height,
+        {double opacity = 1.0, EdgeInsets? margin}) {
+      return Positioned(
+        child: Opacity(
+          opacity: opacity,
+          child: Container(
+            margin: margin,
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              color: fillColor,
+              borderRadius:
+                  const BorderRadius.vertical(bottom: Radius.circular(100)),
+              boxShadow: [
+                BoxShadow(
+                  color: strokeColor.withOpacity(0.8),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        if (position == 1)
+          buildWing(baseSize * 2 * wingSize, (baseSize - 20) / 1.2,
+              opacity: 0.5, margin: const EdgeInsets.only(top: 20)),
+        if (position <= 3)
+          buildWing(baseSize * 1.8 * wingSize, (baseSize - 20) / 1.5,
+              margin: const EdgeInsets.only(bottom: 10)),
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: baseSize - 20,
+            minWidth: baseSize * 1.8 * wingSize,
+            maxHeight: childElement == null ? baseSize + 10 : baseSize + 40,
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            width: baseSize * 1.8 * wingSize,
+            height: baseSize * 1.8 * wingSize,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomRight,
+                end: Alignment.topLeft,
+                colors: [fillColor, fillColor, strokeColor],
+              ),
+              shape: BoxShape.circle,
+              border: Border.all(width: baseSize * 0.08, color: strokeColor),
+              boxShadow: [
+                BoxShadow(
+                  color: strokeColor.withOpacity(0.2),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: childElement ??
+                Text(
+                  position.toString(),
+                  style: theme.textTheme.displaySmall?.copyWith(
+                    color: theme.secondaryHeaderColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize:
+                        baseSize / 2.5, // Adjust font size based on widget size
+                  ),
+                ),
+          ),
+        ),
+      ],
     );
   }
 }
