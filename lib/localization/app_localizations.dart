@@ -339,6 +339,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scan the QR code to view details'**
   String get scanQrToViewDetails;
+
+  /// Prompt asking the user if they want to exit
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to exit?'**
+  String get doYouWantToExit;
 }
 
 class _AppLocalizationsDelegate

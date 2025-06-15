@@ -224,5 +224,11 @@
   "@scanQrToViewDetails": {
     "description": "Hướng dẫn người dùng quét mã QR để xem chi tiết",
     "placeholders": {}
+  },
+
+  "doYouWantToExit": "Bạn có muốn thoát không?",
+  "@doYouWantToExit": {
+    "description": "Hỏi người dùng có muốn thoát ứng dụng hay không",
+    "placeholders": {}
   }
 }

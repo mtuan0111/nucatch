@@ -144,4 +144,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scanQrToViewDetails => 'Scan the QR code to view details';
+
+  @override
+  String get doYouWantToExit => 'Do you want to exit?';
 }

@@ -144,4 +144,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get scanQrToViewDetails => 'Quét mã QR để xem chi tiết';
+
+  @override
+  String get doYouWantToExit => 'Bạn có muốn thoát không?';
 }

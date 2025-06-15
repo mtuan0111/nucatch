@@ -12,6 +12,7 @@ import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
+import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/navs/player_nav.dart';
 import 'package:nucatch/navs/top_score_nav.dart';
 import 'package:nucatch/screens/menu_screens/about_screen.dart';
@@ -37,9 +38,9 @@ class _MenuNavState extends State<MenuNav> {
             onPopInvoked: (involked) {
               if (navState is Menu) {
                 SnackBar snackBar = SnackBar(
-                  content: const Text("Do you want to close the app?"),
+                  content: Text(lang(context).doYouWantToExit),
                   action: SnackBarAction(
-                    label: 'Yes',
+                    label: lang(context).yes,
                     onPressed: () {
                       context
                           .read<MenuBloc>()

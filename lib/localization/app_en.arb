@@ -225,5 +225,11 @@
   "@scanQrToViewDetails": {
     "description": "Instruction to scan QR code for details",
     "placeholders": {}
+  },
+
+  "doYouWantToExit": "Do you want to exit?",
+  "@doYouWantToExit": {
+    "description": "Prompt asking the user if they want to exit",
+    "placeholders": {}
   }
 }

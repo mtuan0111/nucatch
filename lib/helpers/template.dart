@@ -216,7 +216,7 @@ class RankingSortingWidget extends StatelessWidget {
                   const BorderRadius.vertical(bottom: Radius.circular(100)),
               boxShadow: [
                 BoxShadow(
-                  color: strokeColor.withOpacity(0.8),
+                  color: strokeColor.withValues(alpha: 0.8),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -256,7 +256,7 @@ class RankingSortingWidget extends StatelessWidget {
               border: Border.all(width: baseSize * 0.08, color: strokeColor),
               boxShadow: [
                 BoxShadow(
-                  color: strokeColor.withOpacity(0.2),
+                  color: strokeColor.withValues(alpha: .2),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),
