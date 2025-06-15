@@ -108,63 +108,61 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                RankingItem(
-                                  ranking: ranking,
-                                  turnRecordedModel: turnRecordedModel,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              RankingItem(
+                                ranking: ranking,
+                                turnRecordedModel: turnRecordedModel,
+                              ),
+                              const SizedBox(height: 32),
+                              Card(
+                                elevation: 6,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                const SizedBox(height: 32),
-                                Card(
-                                  elevation: 6,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          lang(context).scanQrToViewDetails,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium!
-                                              .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                              ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        const SizedBox(height: 10),
-                                        SizedBox(
-                                          height: 180,
-                                          width: 180,
-                                          child: QrImageView(
-                                            data: state.secureLink,
-                                            version: QrVersions.auto,
-                                            size: 180.0,
-                                            embeddedImage: const AssetImage(
-                                              'assets/images/nuCatch-launcher-512.png',
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        lang(context).scanQrToViewDetails,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
                                             ),
-                                            // 6 modules in a 180x180 QR means each module is 30px,
-                                            // so embedded image should be about 6*moduleSize = 36px
-                                            embeddedImageStyle:
-                                                const QrEmbeddedImageStyle(
-                                              size: Size(36, 36),
-                                            ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      SizedBox(
+                                        height: 180,
+                                        width: 180,
+                                        child: QrImageView(
+                                          data: state.secureLink,
+                                          version: QrVersions.auto,
+                                          size: 180.0,
+                                          embeddedImage: const AssetImage(
+                                            'assets/images/nuCatch-launcher-512.png',
+                                          ),
+                                          // 6 modules in a 180x180 QR means each module is 30px,
+                                          // so embedded image should be about 6*moduleSize = 36px
+                                          embeddedImageStyle:
+                                              const QrEmbeddedImageStyle(
+                                            size: Size(36, 36),
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 24),
                           Expanded(

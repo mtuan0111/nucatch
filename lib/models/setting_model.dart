@@ -12,7 +12,7 @@ class SettingModel {
     this.themeMode = ThemeMode.system,
     this.locale = 'en',
     this.vol = 8,
-    this.isVibrate = false,
+    this.isVibrate = true,
     this.fontSize = 8,
     this.numberOfTopBoard = 20,
   });

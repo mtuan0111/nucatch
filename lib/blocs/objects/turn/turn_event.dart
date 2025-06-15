@@ -21,11 +21,12 @@ class Start extends TurnEvent {
 
 class End extends TurnEvent {
   // final TurnRecordedModel turnRecordedModel;
-  End(
-      // {
-      // required this.turnRecordedModel,
-      // }
-      );
+  final bool isCauseGameOver;
+
+  End({
+    // required this.turnRecordedModel,
+    this.isCauseGameOver = true,
+  });
 }
 
 class Tap extends TurnEvent {

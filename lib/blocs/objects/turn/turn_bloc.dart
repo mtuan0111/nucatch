@@ -359,6 +359,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
           : lang(event.context).insertedFailed,
     );
 
+    _audioServices.playSaveSuccess();
+
     log(insertSuccess ? "Insert success" : "Insert failed");
 
     emitter(
@@ -431,7 +433,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (state.isLoading) {
       return;
     }
-    _audioServices.playEnd();
+    if (event.isCauseGameOver) {
+      _audioServices.playEnd();
+    }
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString(PreferencesKey.USERNAME);

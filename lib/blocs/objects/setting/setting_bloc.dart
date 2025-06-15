@@ -36,6 +36,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         themeMode: ThemeMode.values.where((element) => true).first,
         locale: _prefs!.getString(PreferencesKey.LOCALE),
         vol: _prefs!.getInt(PreferencesKey.VOL),
+        isVibrate: _prefs!.getBool(PreferencesKey.IS_VIBRATE) ?? true,
         fontSize: _prefs!.getInt(PreferencesKey.FONT_SIZE),
         numberOfTopBoard: _prefs!.getInt(PreferencesKey.NUMBER_OF_TOP_BOARD),
         isLoading: false,

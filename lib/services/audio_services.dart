@@ -19,6 +19,8 @@ class AudioServices {
   static const endSound = "end.mp3";
   // AudioCache end_sound_audio = AudioCache()
 
+  static const saveSuccessSound = "save_success.wav";
+
   // late AudioPlayer _audioPlayer;
   double volume = 0.7;
   double get getVolume => volume;
@@ -53,6 +55,10 @@ class AudioServices {
 
   Future<void> playCorrect() {
     return playSound(correctSound);
+  }
+
+  Future<void> playSaveSuccess() {
+    return playSound(saveSuccessSound);
   }
 
   Future<void> playCorrectUp() {

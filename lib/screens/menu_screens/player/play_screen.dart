@@ -504,6 +504,7 @@ class _PlayScreenState extends State<PlayScreen> {
 
     if (rankTemporary != null) {
       confirmExit = await showDialog<bool>(
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
               if (turnRecordedListState.isLoading) {
@@ -520,7 +521,9 @@ class _PlayScreenState extends State<PlayScreen> {
     }
 
     if (confirmExit == true) {
-      turnBloc.add(End());
+      turnBloc.add(End(
+        isCauseGameOver: false,
+      ));
 
       if (turnState.recordedItem != null) {
         turnBloc.add(SaveRecorded(context: context));
@@ -609,7 +612,9 @@ class _CustomeAlertState extends State<CustomeAlert> {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          onPressed: () => Navigator.of(context).pop(true),
+          onPressed: () {
+            return Navigator.of(context).pop(true);
+          },
           child: Text(
             lang(context).yes,
             style: TextStyle(
