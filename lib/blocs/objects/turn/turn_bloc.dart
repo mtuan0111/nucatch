@@ -453,6 +453,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         recordedItem: itemModel,
       ),
     );
+
+    add(SaveRecorded(
+      context: state.context,
+    ));
   }
 
   Future<void> _onCountDownIntro(

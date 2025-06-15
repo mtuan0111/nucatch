@@ -525,9 +525,9 @@ class _PlayScreenState extends State<PlayScreen> {
         isCauseGameOver: false,
       ));
 
-      if (turnState.recordedItem != null) {
-        turnBloc.add(SaveRecorded(context: context));
-      }
+      // if (turnState.recordedItem != null) {
+      //   turnBloc.add(SaveRecorded(context: context));
+      // }
 
       menuBloc.add(
         SelectOption(

@@ -253,3 +253,39 @@ feat: Replace RankBadge with RankingSortingWidget for improved ranking display; 
     Flutter build for iOS
     ```flutter build ios --build-name=2.0.2 --build-number=42 --release```
 ---
+## Released on: <today>
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 39           | 2.0.4   |
+| iOS      | 43           | 2.0.3   |
+
+### Release note:
+feat: 
+_ Add save success sound and vibration settings
+_ Update event handling for game over
+_ Update game over and play screens
+_ Modify save recorded event handling
+
+### Git note release: 
+#### Command for copilot
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en` , `Flutter build for Android`, `Flutter build for iOS`
+
+    [Builded] Version 2.0.3 - 38 / 2.0.2 - 42 _ Replace RankBadge with RankingSortingWidget for improved ranking display; update game over and play screens
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Updated game over and play screens for enhanced user experience.  
+        - Improved UI consistency and performance.
+
+    - **Tiếng Việt:**  
+        - Cập nhật màn hình kết thúc trò chơi và màn hình chơi để nâng cao trải nghiệm người dùng.  
+        - Cải thiện sự nhất quán giao diện và hiệu năng.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.0.3 --build-number=38 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.0.2 --build-number=42 --release```
+---
