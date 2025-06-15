@@ -212,6 +212,12 @@ abstract class AppLocalizations {
   /// **'Volume'**
   String get volume;
 
+  /// Label for vibration setting
+  ///
+  /// In en, this message translates to:
+  /// **'Vibrate'**
+  String get vibrate;
+
   /// Label for number of top scores setting
   ///
   /// In en, this message translates to:

@@ -16,6 +16,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<ChangedThemeMode>(_onChangedThemeMode);
     on<ChangedLocale>(_onChangedLocale);
     on<ChangedVol>(_onChangedVol);
+    on<ChangedIsVibrate>(_onChangedIsVibrate);
     on<ChangedFontSize>(_onChangedFontSize);
     on<ChangedNumberOfTopBoard>(_onChangedNumberOfTopBoard);
 
@@ -86,6 +87,20 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
     _audioServices.setVolume = event.vol / 10;
     _audioServices.playCorrect();
+  }
+
+  Future<void> _onChangedIsVibrate(
+    ChangedIsVibrate event,
+    Emitter<SettingState> emitter,
+  ) async {
+    _prefs ??= await SharedPreferences.getInstance();
+    _prefs!.setBool(PreferencesKey.IS_VIBRATE, event.isVibrate);
+
+    emitter(
+      state.copyWith(
+        isVibrate: event.isVibrate,
+      ),
+    );
   }
 
   Future<void> _onChangedFontSize(

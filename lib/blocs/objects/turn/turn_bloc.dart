@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -16,11 +15,11 @@ import 'package:nucatch/services/audio_services.dart';
 import 'package:nucatch/services/turn_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-import 'package:vibration/vibration.dart';
 
 class TurnBloc extends Bloc<TurnEvent, TurnState> {
   late TurnRecordedServices _turnedServices;
   late AudioServices _audioServices;
+  late VibrationServices _vibrateServices;
 
   TurnBloc(super.initialState, {SettingModel? settingModel}) {
     on<Tap>(_onTap);
@@ -40,6 +39,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     _turnedServices = TurnRecordedServices();
     _audioServices = AudioServices();
+    _vibrateServices = VibrationServices();
   }
 
   Future<void> _onTap(
@@ -111,7 +111,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     // When correct Checking is finish the turn or not
     if (state.isFinishTarget) {
-      HapticFeedback.vibrate();
+      _vibrateServices.vibrate(duration: 100);
 
       emitter(
         state.copyWith(
@@ -254,7 +254,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    Vibration.vibrate(duration: 50);
+    _vibrateServices.vibrate(duration: 50);
 
     emitter(
       state.copyWith(
@@ -274,7 +274,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (state.isLoading) {
       return;
     }
-    Vibration.vibrate(duration: 500);
+
+    _vibrateServices.vibrate(duration: 500);
 
     emitter(
       state.copyWith(
@@ -410,7 +411,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    HapticFeedback.vibrate();
+    _vibrateServices.vibrate(duration: 100);
 
     add(
       SetLevel(
@@ -469,5 +470,6 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   ) async {
     // _audioServices.setVolume(event.settingModel.vol / 10) = AudioServices(volume: event.settingModel.vol / 10);
     _audioServices.setVolume = event.settingModel.vol / 10;
+    _vibrateServices.setIsVibrate = event.settingModel.isVibrate;
   }
 }

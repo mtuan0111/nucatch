@@ -83,6 +83,10 @@
   "@volume": {
     "description": "Label for volume setting"
   },
+  "vibrate": "Vibrate",
+  "@vibrate": {
+    "description": "Label for vibration setting"
+  },
   "numberOfTopScores": "Number of top scores",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"

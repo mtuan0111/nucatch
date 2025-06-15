@@ -254,6 +254,38 @@ class _SettingScreenState extends State<SettingScreen> {
                                     Row(
                                       children: [
                                         Icon(
+                                          FontAwesomeIcons.waveSquare,
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                lang(context).vibrate,
+                                                style: LayoutConfig(context)
+                                                    .titleSectionStyle(),
+                                              ),
+                                              Switch(
+                                                value: settingState.isVibrate,
+                                                onChanged: (val) {
+                                                  settingBloc.add(
+                                                    ChangedIsVibrate(
+                                                        isVibrate: val),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Icon(
                                           FontAwesomeIcons.ribbon,
                                           color: Theme.of(context)
                                               .scaffoldBackgroundColor,

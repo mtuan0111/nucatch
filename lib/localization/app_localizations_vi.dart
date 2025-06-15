@@ -68,6 +68,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get volume => 'Âm lượng';
 
   @override
+  String get vibrate => 'Rung';
+
+  @override
   String get numberOfTopScores => 'Số điểm cao nhất';
 
   @override

@@ -6,6 +6,7 @@ class PreferencesKey {
   static const NUMBER_OF_TOP_BOARD = "number_of_top_board";
   static const FONT_SIZE = "font_size";
   static const VOL = "vol";
+  static const IS_VIBRATE = "is_variant";
   static const LOCALE = "locale";
   static const THEME_MODE = "theme_mode";
 

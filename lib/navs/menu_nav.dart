@@ -74,7 +74,7 @@ class _MenuNavState extends State<MenuNav> {
                                 TurnState(context),
                               )
                                 ..add(ApplySetting(
-                                    settingModel: settingState.model!))
+                                    settingModel: settingState.model))
                                 ..add(
                                   Start(),
                                 ),

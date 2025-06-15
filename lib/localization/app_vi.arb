@@ -83,6 +83,10 @@
   "@volume": {
     "description": "Cài đặt âm lượng"
   },
+  "vibrate": "Rung",
+  "@vibrate": {
+    "description": "Cài đặt rung khi có sự kiện"
+  },
   "numberOfTopScores": "Số điểm cao nhất",
   "@numberOfTopScores": {
     "description": "Số lượng điểm cao nhất được hiển thị"

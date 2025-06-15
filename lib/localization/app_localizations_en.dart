@@ -68,6 +68,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get volume => 'Volume';
 
   @override
+  String get vibrate => 'Vibrate';
+
+  @override
   String get numberOfTopScores => 'Number of top scores';
 
   @override

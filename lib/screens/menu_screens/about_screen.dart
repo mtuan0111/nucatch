@@ -25,7 +25,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
   SettingBloc get settingBloc => context.read<SettingBloc>();
   SettingState get settingState => settingBloc.state;
-  SettingModel get settingModel => settingState.model!;
+  SettingModel get settingModel => settingState.model;
 
   UserBloc get userBloc => context.read<UserBloc>();
   UserState get userState => userBloc.state;

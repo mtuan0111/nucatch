@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:vibration/vibration.dart';
 
 class AudioServices {
   static const pathPrefix = "sounds/";
@@ -64,5 +65,21 @@ class AudioServices {
 
   Future<void> playEnd() {
     return playSound(endSound);
+  }
+}
+
+class VibrationServices {
+  bool isVibrate = true;
+
+  set setIsVibrate(bool isVibrate) {
+    this.isVibrate = isVibrate;
+  }
+
+  void vibrate({int duration = 100}) {
+    if (!isVibrate) {
+      return;
+    }
+
+    Vibration.vibrate(duration: duration);
   }
 }

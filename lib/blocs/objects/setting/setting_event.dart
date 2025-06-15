@@ -16,6 +16,12 @@ class ChangedVol extends SettingEvent {
   ChangedVol({required this.vol});
 }
 
+class ChangedIsVibrate extends SettingEvent {
+  final bool isVibrate;
+
+  ChangedIsVibrate({required this.isVibrate});
+}
+
 class ChangedFontSize extends SettingEvent {
   final int fontSize;
 
