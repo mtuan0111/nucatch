@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/models/turn_record_model.dart';
@@ -104,5 +105,21 @@ extension StringExtensions on String {
     }
 
     return evenString + oddString;
+  }
+}
+
+extension ColorCustome on Color {
+  Color getDarker({int percentage = 50}) {
+    int r = (red * (100 - percentage) / 100).round();
+    int g = (green * (100 - percentage) / 100).round();
+    int b = (blue * (100 - percentage) / 100).round();
+    return Color.fromARGB(alpha, r, g, b);
+  }
+
+  Color getLighter({int percentage = 50}) {
+    int r = (red + (255 - red) * percentage / 100).round();
+    int g = (green + (255 - green) * percentage / 100).round();
+    int b = (blue + (255 - blue) * percentage / 100).round();
+    return Color.fromARGB(alpha, r, g, b);
   }
 }

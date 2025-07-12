@@ -35,6 +35,8 @@ class _PlayScreenState extends State<PlayScreen> {
   double get buttonSpace => 20;
   String inputtedValue = "";
 
+  int? _prevLifeRemaining;
+
   PlayerNavCubit get playerNavCubit => context.read<PlayerNavCubit>();
   PlayerNavState get playerNavState => playerNavCubit.state;
 
@@ -64,6 +66,12 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 
   @override
+  void didUpdateWidget(covariant PlayScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // No-op, but required for stateful logic
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isTablet = screenWidth > 600; // Adjust layout for tablets
     final padding = isTablet ? 40.0 : 20.0;
@@ -86,6 +94,10 @@ class _PlayScreenState extends State<PlayScreen> {
               playerNavCubit.showPlay();
             }
           }
+
+          // Store previous lifeRemaining for animation logic
+          final prevLife = _prevLifeRemaining;
+          _prevLifeRemaining = turnState.lifeRemaining;
 
           return Container(
             decoration: LayoutConfig(context).gradientDecoration,
@@ -167,32 +179,89 @@ class _PlayScreenState extends State<PlayScreen> {
                               ),
                             ],
                           ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Expanded(
+                          //       child: Stack(
+                          //         alignment: Alignment.center,
+                          //         children: [
+                          //           Positioned(
+                          //             child: Wrap(
+                          //               spacing: 5,
+                          //               runSpacing: 5,
+                          //               children: List.generate(
+                          //                 turnState.lifeRemaining,
+                          //                 (index) => Icon(
+                          //                   FontAwesomeIcons.solidStar,
+                          //                   color: Theme.of(context)
+                          //                       .scaffoldBackgroundColor,
+                          //                   size: Theme.of(context)
+                          //                       .textTheme
+                          //                       .bodyLarge!
+                          //                       .fontSize,
+                          //                 ),
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Positioned(
-                                      child: Wrap(
-                                        spacing: 5,
-                                        runSpacing: 5,
-                                        children: List.generate(
-                                          turnState.lifeRemaining,
-                                          (index) => Icon(
-                                            FontAwesomeIcons.solidStar,
-                                            color: Theme.of(context)
-                                                .scaffoldBackgroundColor,
-                                            size: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .fontSize,
-                                          ),
-                                        ),
-                                      ),
+                                child: Center(
+                                  child: Wrap(
+                                    spacing: 10,
+                                    key: ValueKey<int>(turnState.lifeRemaining),
+                                    children: List.generate(
+                                      turnState.lifeRemaining,
+                                      (index) {
+                                        final isLast = index ==
+                                            turnState.lifeRemaining - 1;
+                                        final shouldAnimate =
+                                            prevLife != null &&
+                                                turnState.lifeRemaining >
+                                                    prevLife &&
+                                                isLast;
+                                        if (shouldAnimate) {
+                                          return TweenAnimationBuilder<double>(
+                                            tween: Tween<double>(
+                                                begin: 0.0, end: 1.0),
+                                            duration: const Duration(
+                                                milliseconds: 1000),
+                                            curve: Curves.elasticOut,
+                                            builder: (context, scale, child) {
+                                              return Transform.scale(
+                                                scale: scale,
+                                                child: Icon(
+                                                  FontAwesomeIcons.solidStar,
+                                                  color: Theme.of(context)
+                                                      .scaffoldBackgroundColor,
+                                                  size: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge!
+                                                      .fontSize,
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        }
+                                        return Icon(
+                                          FontAwesomeIcons.solidStar,
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                          size: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .fontSize,
+                                        );
+                                      },
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -468,7 +537,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                               setState(
                                                 () {
                                                   originalScale = 0.8;
-                                                  milisecondDuation = 10;
+                                                  // milisecondDuation = 100;
                                                 },
                                               );
                                             },

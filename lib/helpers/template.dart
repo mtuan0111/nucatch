@@ -279,7 +279,7 @@ class RankingSortingWidget extends StatelessWidget {
   }
 }
 
-class CustomElevatedButton extends StatelessWidget {
+class CustomElevatedButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget? child;
   final double opacity;
@@ -297,50 +297,110 @@ class CustomElevatedButton extends StatelessWidget {
     this.color,
   }) : super(key: key);
 
+  @override
+  State<CustomElevatedButton> createState() => _CustomElevatedButtonState();
+}
+
+class _CustomElevatedButtonState extends State<CustomElevatedButton> {
+  bool isPressed = false;
+
   Widget children(context) {
-    if (text != null) {
+    if (widget.text != null) {
       return Text(
-        text!,
+        widget.text!,
         style: LayoutConfig(context)
             .displaySmallStyle(
                 // fontFamily: 'Lobster',
                 // fontSizeDelta: 1,
                 )
             .copyWith(
-              color: color ?? Theme.of(context).secondaryHeaderColor,
+              color: isPressed
+                  ? (widget.color ?? Theme.of(context).secondaryHeaderColor)
+                      .getLighter()
+                  : (widget.color ?? Theme.of(context).secondaryHeaderColor),
             ),
       );
     }
 
-    if (icon != null) {
+    if (widget.icon != null) {
       return Icon(
-        icon,
-        color: color ?? Theme.of(context).secondaryHeaderColor,
+        widget.icon,
+        color: isPressed
+            ? (widget.color ?? Theme.of(context).secondaryHeaderColor)
+                .getLighter()
+            : (widget.color ?? Theme.of(context).secondaryHeaderColor),
         size: LayoutConfig(context).displaySmallStyle().fontSize,
       );
     }
-    return child ?? Container();
+    return widget.child ?? Container();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedOpacity(
-      opacity: opacity,
-      duration: const Duration(milliseconds: 200),
-      child: ElevatedButton(
-        style: LayoutConfig.elevatedButtonStyle.copyWith(
-          backgroundColor: WidgetStateProperty.all(
-            Theme.of(context).primaryColor,
+      opacity: widget.opacity,
+      duration: const Duration(milliseconds: 10),
+      child: AnimatedPadding(
+        duration: const Duration(milliseconds: 100),
+        padding: isPressed ? const EdgeInsets.all(5) : const EdgeInsets.all(0),
+        child: AnimatedScale(
+          duration: const Duration(milliseconds: 100),
+          scale: isPressed ? 0.9 : 1.0,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 100),
+            decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.circular(LayoutConfig.layoutBorderRadius),
+              boxShadow: isPressed
+                  ? null
+                  : [
+                      BoxShadow(
+                        color: Theme.of(context)
+                            .primaryColor
+                            .getDarker()
+                            .withAlpha(50),
+                        blurRadius: 5,
+                        offset: const Offset(5, 5),
+                      ),
+                      BoxShadow(
+                        color: Theme.of(context)
+                            .primaryColor
+                            .getLighter()
+                            .withAlpha(50),
+                        blurRadius: 5,
+                        offset: const Offset(-5, -5),
+                      ),
+                    ],
+            ),
+            child: ElevatedButton(
+              style: LayoutConfig.elevatedButtonStyle.copyWith(
+                backgroundColor: WidgetStateProperty.all(
+                  isPressed
+                      ? Theme.of(context).primaryColor.getLighter()
+                      : Theme.of(context).primaryColor,
+                ),
+                // shape: WidgetStateProperty.all(
+                //   RoundedRectangleBorder(
+                //     borderRadius:
+                //         BorderRadius.circular(LayoutConfig.layoutBorderRadius),
+                //   ),
+                // ),
+              ),
+              onPressed: () {
+                widget.onPressed?.call();
+                setState(() {
+                  isPressed = true;
+                });
+                Future.delayed(const Duration(milliseconds: 100), () {
+                  setState(() {
+                    isPressed = false;
+                  });
+                });
+              },
+              child: children(context),
+            ),
           ),
-          // shape: WidgetStateProperty.all(
-          //   RoundedRectangleBorder(
-          //     borderRadius:
-          //         BorderRadius.circular(LayoutConfig.layoutBorderRadius),
-          //   ),
-          // ),
         ),
-        onPressed: onPressed,
-        child: children(context),
       ),
     );
   }
