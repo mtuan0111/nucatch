@@ -81,11 +81,22 @@ class VibrationServices {
     this.isVibrate = isVibrate;
   }
 
-  void vibrate({int duration = 100}) {
+  Future<void> vibrate({int duration = 100}) async {
     if (!isVibrate) {
       return;
     }
 
-    Vibration.vibrate(duration: duration);
+    await Vibration.vibrate(duration: duration);
+  }
+
+  Future<void> multipleVibrate(
+      {int count = 3, int duration = 200, int pause = 100}) async {
+    if (!isVibrate) return;
+    for (int i = 0; i < count; i++) {
+      await vibrate(duration: duration);
+      if (i < count - 1) {
+        await Future.delayed(Duration(milliseconds: pause));
+      }
+    }
   }
 }

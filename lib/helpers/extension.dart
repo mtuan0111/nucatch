@@ -110,16 +110,27 @@ extension StringExtensions on String {
 
 extension ColorCustome on Color {
   Color getDarker({int percentage = 50}) {
-    int r = (red * (100 - percentage) / 100).round();
-    int g = (green * (100 - percentage) / 100).round();
-    int b = (blue * (100 - percentage) / 100).round();
-    return Color.fromARGB(alpha, r, g, b);
+    int r =
+        (((this.r * 255.0).round() & 0xff) * (100 - percentage) / 100).round();
+    int g =
+        (((this.g * 255.0).round() & 0xff) * (100 - percentage) / 100).round();
+    int b =
+        (((this.b * 255.0).round() & 0xff) * (100 - percentage) / 100).round();
+    int a = (this.a * 255.0).round() & 0xff;
+    return Color.fromARGB(a, r, g, b);
   }
 
   Color getLighter({int percentage = 50}) {
-    int r = (red + (255 - red) * percentage / 100).round();
-    int g = (green + (255 - green) * percentage / 100).round();
-    int b = (blue + (255 - blue) * percentage / 100).round();
-    return Color.fromARGB(alpha, r, g, b);
+    int r = (((this.r * 255.0).round() & 0xff) +
+            ((255 - ((this.r * 255.0).round() & 0xff)) * percentage / 100))
+        .round();
+    int g = (((this.g * 255.0).round() & 0xff) +
+            ((255 - ((this.g * 255.0).round() & 0xff)) * percentage / 100))
+        .round();
+    int b = (((this.b * 255.0).round() & 0xff) +
+            ((255 - ((this.b * 255.0).round() & 0xff)) * percentage / 100))
+        .round();
+    int a = (this.a * 255.0).round() & 0xff;
+    return Color.fromARGB(a, r, g, b);
   }
 }

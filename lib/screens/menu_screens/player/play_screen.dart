@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -35,7 +37,10 @@ class _PlayScreenState extends State<PlayScreen> {
   double get buttonSpace => 20;
   String inputtedValue = "";
 
+  late bool wasLifeIncreased;
+  late bool wasLifeDecreased;
   int? _prevLifeRemaining;
+  late int _currentLifeRemaining;
 
   PlayerNavCubit get playerNavCubit => context.read<PlayerNavCubit>();
   PlayerNavState get playerNavState => playerNavCubit.state;
@@ -56,6 +61,13 @@ class _PlayScreenState extends State<PlayScreen> {
   @override
   void initState() {
     turnRecordedListBloc.add(LoadData());
+
+    // Store previous lifeRemaining for animation logic
+    // final prevLife = _prevLifeRemaining;
+    // _prevLifeRemaining = turnState.lifeRemaining;
+    _currentLifeRemaining = turnState.lifeRemaining;
+    wasLifeDecreased = false;
+    wasLifeIncreased = false;
 
     super.initState();
   }
@@ -94,10 +106,6 @@ class _PlayScreenState extends State<PlayScreen> {
               playerNavCubit.showPlay();
             }
           }
-
-          // Store previous lifeRemaining for animation logic
-          final prevLife = _prevLifeRemaining;
-          _prevLifeRemaining = turnState.lifeRemaining;
 
           return Container(
             decoration: LayoutConfig(context).gradientDecoration,
@@ -209,62 +217,127 @@ class _PlayScreenState extends State<PlayScreen> {
                           //     ),
                           //   ],
                           // ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Center(
-                                  child: Wrap(
-                                    spacing: 10,
-                                    key: ValueKey<int>(turnState.lifeRemaining),
-                                    children: List.generate(
-                                      turnState.lifeRemaining,
-                                      (index) {
-                                        final isLast = index ==
-                                            turnState.lifeRemaining - 1;
-                                        final shouldAnimate =
-                                            prevLife != null &&
-                                                turnState.lifeRemaining >
-                                                    prevLife &&
-                                                isLast;
-                                        if (shouldAnimate) {
-                                          return TweenAnimationBuilder<double>(
-                                            tween: Tween<double>(
-                                                begin: 0.0, end: 1.0),
-                                            duration: const Duration(
-                                                milliseconds: 1000),
-                                            curve: Curves.elasticOut,
-                                            builder: (context, scale, child) {
-                                              return Transform.scale(
-                                                scale: scale,
-                                                child: Icon(
-                                                  FontAwesomeIcons.solidStar,
-                                                  color: Theme.of(context)
-                                                      .scaffoldBackgroundColor,
-                                                  size: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyLarge!
-                                                      .fontSize,
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        }
-                                        return Icon(
-                                          FontAwesomeIcons.solidStar,
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor,
-                                          size: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .fontSize,
-                                        );
-                                      },
+                          BlocListener<TurnBloc, TurnState>(
+                            listener: (context, state) {
+                              // Update _currentLifeRemaining only when lifeRemaining changes
+                              wasLifeIncreased = _prevLifeRemaining != null &&
+                                  state.lifeRemaining > _prevLifeRemaining!;
+                              wasLifeDecreased = _prevLifeRemaining != null &&
+                                  state.lifeRemaining < _prevLifeRemaining!;
+                              if (_prevLifeRemaining == null ||
+                                  state.lifeRemaining != _prevLifeRemaining) {
+                                setState(() {
+                                  _prevLifeRemaining = state.lifeRemaining;
+                                  // Don't update _currentLifeRemaining here, let animation handle it
+                                });
+
+                                if (wasLifeIncreased) {
+                                  setState(() {
+                                    _currentLifeRemaining = state.lifeRemaining;
+                                  });
+                                }
+                              }
+                              // if (wasLifeIncreased) {
+                              //   setState(() {
+                              //     _prevLifeRemaining = state.lifeRemaining;
+                              //     _currentLifeRemaining = state.lifeRemaining;
+                              //   });
+                              // }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Center(
+                                    child: Wrap(
+                                      spacing: 00,
+                                      children: List.generate(
+                                        _currentLifeRemaining,
+                                        (index) {
+                                          final isLast = index ==
+                                              _currentLifeRemaining - 1;
+                                          // final wasLifeIncreased =
+                                          //     _prevLifeRemaining != null &&
+                                          //         _currentLifeRemaining <
+                                          //             _prevLifeRemaining!;
+                                          // final wasLifeDecreased =
+                                          //     _prevLifeRemaining != null &&
+                                          //         _currentLifeRemaining >
+                                          //             _prevLifeRemaining!;
+                                          bool shouldAnimateAdd =
+                                              wasLifeIncreased && isLast;
+                                          bool shouldAnimateRemove =
+                                              wasLifeDecreased && isLast;
+
+                                          if (isLast) {
+                                            // Handle last life icon specific logic
+                                            log("message: Last life icon at index $index, shouldAnimateAdd: $shouldAnimateAdd, shouldAnimateRemove: $shouldAnimateRemove");
+                                          }
+
+                                          if (shouldAnimateAdd) {
+                                            return TweenAnimationBuilder<
+                                                double>(
+                                              tween: Tween<double>(
+                                                  begin: 0.0, end: 1.0),
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.elasticOut,
+                                              onEnd: () {},
+                                              builder: (context, value, child) {
+                                                return Transform.scale(
+                                                  scale: value,
+                                                  child: LifeStar(
+                                                    value: value,
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          }
+                                          if (shouldAnimateRemove) {
+                                            return TweenAnimationBuilder<
+                                                double>(
+                                              tween: Tween<double>(
+                                                  begin: 1.0, end: 0.0),
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.elasticIn,
+                                              onEnd: () async {
+                                                await Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 300),
+                                                ).then((_) {
+                                                  wasLifeDecreased = false;
+                                                  shouldAnimateRemove = false;
+                                                  setState(() {
+                                                    _currentLifeRemaining =
+                                                        _prevLifeRemaining ??
+                                                            _currentLifeRemaining;
+                                                  });
+                                                });
+                                                // setState(() {
+                                                //   _currentLifeRemaining =
+                                                //       _prevLifeRemaining ??
+                                                //           _currentLifeRemaining;
+                                                // });
+                                              },
+                                              builder: (context, value, child) {
+                                                return Transform.scale(
+                                                  scale: value,
+                                                  child: LifeStar(
+                                                    value: value,
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          }
+                                          return LifeStar();
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           if (turnState.status == TurnStatus.intro)
                             Expanded(
@@ -606,6 +679,28 @@ class _PlayScreenState extends State<PlayScreen> {
     }
 
     return confirmExit;
+  }
+}
+
+class LifeStar extends StatelessWidget {
+  final double value;
+  const LifeStar({
+    super.key,
+    this.value = 1.0,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width:
+          (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0) * value,
+      height: (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0),
+      child: Icon(
+        FontAwesomeIcons.solidStar,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        size: Theme.of(context).textTheme.titleLarge!.fontSize,
+      ),
+    );
   }
 }
 

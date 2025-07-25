@@ -308,18 +308,20 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    emitter(
-      state.copyWith(
-        lifeRemaining: state.lifeRemaining - 1,
-      ),
-    );
-
     await _onSetLevel(
       SetLevel(
         level: state.level,
         addPoint: 0,
       ),
       emitter,
+    );
+
+    _vibrateServices.multipleVibrate();
+
+    emitter(
+      state.copyWith(
+        lifeRemaining: state.lifeRemaining - 1,
+      ),
     );
   }
 
