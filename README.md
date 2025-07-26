@@ -293,3 +293,39 @@ _ Update localization and UI handling
     Flutter build for iOS
     ```flutter build ios --build-name=2.0.3 --build-number=43 --release```
 ---
+---
+## Released on: 26/07/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 40           | 2.0.5   |
+| iOS      | 44           | 2.0.4   |
+
+### Release note:
+feat: 
+_ Add the animation for the life remaining
+
+### Git note release: 
+#### Command for copilot
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+    [Builded] Version 2.0.4 - 39 / 2.0.3 - 43 _ Add save success sound and vibration settings; update event handling and localization
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Added sound and vibration options for save success.  
+        - Improved event handling and screen updates.  
+        - Enhanced localization and UI prompts.
+
+    - **Tiếng Việt:**  
+        - Thêm tùy chọn âm thanh và rung khi lưu thành công.  
+        - Cải thiện xử lý sự kiện và cập nhật giao diện.  
+        - Nâng cao đa ngôn ngữ và thông báo giao diện.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.0.4 --build-number=39 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.0.3 --build-number=43 --release```
+---
