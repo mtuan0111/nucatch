@@ -255,14 +255,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                         (index) {
                                           final isLast = index ==
                                               _currentLifeRemaining - 1;
-                                          // final wasLifeIncreased =
-                                          //     _prevLifeRemaining != null &&
-                                          //         _currentLifeRemaining <
-                                          //             _prevLifeRemaining!;
-                                          // final wasLifeDecreased =
-                                          //     _prevLifeRemaining != null &&
-                                          //         _currentLifeRemaining >
-                                          //             _prevLifeRemaining!;
+
                                           bool shouldAnimateAdd =
                                               wasLifeIncreased && isLast;
                                           bool shouldAnimateRemove =
