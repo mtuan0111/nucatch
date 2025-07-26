@@ -95,7 +95,11 @@ class TurnState {
 
   bool get isCorrectAnimate => isFinishTarget;
 
-  bool get isAbleToTap => isExpectNotEmpty && !isFinishTarget;
+  // bool get isAbleToTap => isExpectNotEmpty && !isFinishTarget;
+
+  bool get isAbleToTap =>
+      // -> let user able to quick tap
+      (status == TurnStatus.playing) && isExpectNotEmpty && !isFinishTarget;
 
   bool get isAbleToReset => lifeRemaining > 1;
   bool get isAbleToContinue => lifeRemaining > 0;

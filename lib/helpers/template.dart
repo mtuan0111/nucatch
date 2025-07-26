@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
+import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'dart:math' as math;
 
@@ -400,6 +403,129 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
               child: children(context),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class AnimatedButton extends StatefulWidget {
+  final BuildContext context;
+
+  final double buttonSize;
+  // final MapEntry<KeyboardOption, int> e;
+
+  final IconData? iconData;
+  final String? text;
+
+  final VoidCallback onPressed;
+  const AnimatedButton(
+    this.context, {
+    super.key,
+    this.iconData,
+    this.text,
+    required this.buttonSize,
+    // required this.e,
+    required this.onPressed,
+  });
+
+  @override
+  State<AnimatedButton> createState() => _AnimatedButtonState();
+}
+
+class _AnimatedButtonState extends State<AnimatedButton> {
+  get buttonSize => widget.buttonSize;
+  // MapEntry<KeyboardOption, int> get e => widget.e;
+
+  TurnBloc get turnBloc => widget.context.read<TurnBloc>();
+  TurnState get turnState => widget.context.read<TurnBloc>().state;
+
+  VoidCallback get onPressed => widget.onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    double originalScale = 1;
+    int milisecondDuation = 50;
+    return AnimatedScale(
+      scale: originalScale,
+      duration: Duration(milliseconds: milisecondDuation),
+      child: SizedBox(
+        width: buttonSize,
+        height: buttonSize,
+        child: Builder(
+          builder: (context) {
+            Duration duration = const Duration(milliseconds: 200);
+            return AnimatedOpacity(
+              opacity:
+                  (turnState.isAbleToReset && turnState.isAbleToTap) ? 1 : 0.5,
+              duration: duration,
+              child: CustomElevatedButton(
+                icon: widget.iconData,
+                text: widget.text,
+                onPressed: () {
+                  onPressed();
+
+                  setState(() {
+                    originalScale = 0.8;
+                    milisecondDuation = 100;
+                  });
+                },
+              ),
+            );
+
+            // if (e.key == KeyboardOption.reset) {
+            //   return AnimatedOpacity(
+            //     opacity: (turnState.isAbleToReset && turnState.isAbleToTap)
+            //         ? 1
+            //         : 0.5,
+            //     duration: duration,
+            //     child: CustomElevatedButton(
+            //       icon: FontAwesomeIcons.arrowsRotate,
+            //       onPressed: () async {
+            //         context.read<TurnBloc>().add(
+            //               ResetNewNumber(context, duration: duration),
+            //             );
+            //       },
+            //     ),
+            //   );
+            // }
+
+            // if (e.key == KeyboardOption.mainMenu) {
+            //   return AnimatedOpacity(
+            //     opacity: (turnState.isAbleToTap) ? 1 : 0.5,
+            //     duration: const Duration(milliseconds: 200),
+            //     child: CustomElevatedButton(
+            //       icon: FontAwesomeIcons.bars,
+            //       onPressed: () {
+            //         widget.onPressed?.call();
+            //         // pressMainMenu(context).then((confirmedMenu) {
+            //         //   if (confirmedMenu) {}
+            //         // });
+            //       },
+            //     ),
+            //   );
+            // }
+
+            // return AnimatedOpacity(
+            //   opacity: turnState.isAbleToTap ? 1 : 0.5,
+            //   duration: const Duration(milliseconds: 200),
+            //   child: CustomElevatedButton(
+            //     text: e.value.toString(),
+            //     onPressed: () {
+            //       context.read<TurnBloc>().add(
+            //             Tap(context, keyValue: e.key),
+            //           );
+
+            //       setState(
+            //         () {
+            //           originalScale = 0.8;
+            //           // milisecondDuation = 100;
+            //         },
+            //       );
+            //     },
+            //   ),
+            // );
+          },
         ),
       ),
     );

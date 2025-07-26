@@ -21,18 +21,22 @@ class Start extends TurnEvent {
 
 class End extends TurnEvent {
   // final TurnRecordedModel turnRecordedModel;
+  BuildContext context;
   final bool isCauseGameOver;
 
-  End({
+  End(
+    this.context, {
     // required this.turnRecordedModel,
     this.isCauseGameOver = true,
   });
 }
 
 class Tap extends TurnEvent {
+  BuildContext context;
   final KeyboardOption keyValue;
 
-  Tap({
+  Tap(
+    this.context, {
     required this.keyValue,
   });
 }
@@ -48,9 +52,11 @@ class SetLevel extends TurnEvent {
 }
 
 class LostLife extends TurnEvent {
+  BuildContext context;
   final int lifeRemaining;
 
-  LostLife({
+  LostLife(
+    this.context, {
     this.lifeRemaining = 1,
   });
 }
@@ -69,12 +75,7 @@ class SaveRecorded extends TurnEvent {
   // final String? messageFailure;
   final BuildContext context;
 
-  SaveRecorded({
-    // required this.savingRecord,
-    // this.messageSuccess,
-    // this.messageFailure,
-    required this.context,
-  });
+  SaveRecorded(this.context);
 }
 
 class GetTurnRecordedList extends TurnEvent {
@@ -98,8 +99,10 @@ class HideExpect extends TurnEvent {
 // class MarkWrongTap extends TurnEvent {}
 
 class ResetNewNumber extends TurnEvent {
+  BuildContext context;
   Duration duration;
-  ResetNewNumber({
+  ResetNewNumber(
+    this.context, {
     required this.duration,
   });
 }

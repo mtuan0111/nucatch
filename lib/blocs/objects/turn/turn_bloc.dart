@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -103,6 +104,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       );
     } else {
       await _onMarkWrongTap(
+        event.context,
         // MarkWrongTap(),
         emitter,
       );
@@ -209,7 +211,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
 
     if (!state.isAbleToContinue) {
-      add(End(isCauseGameOver: true));
+      add(End(event.context, isCauseGameOver: true));
     }
   }
 
@@ -309,6 +311,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   }
 
   Future<void> _onMarkWrongTap(
+    BuildContext context,
     // MarkWrongTap event,
 
     Emitter<TurnState> emitter,
@@ -323,10 +326,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     _vibrateServices.vibrate(duration: 500);
 
-    add(LostLife());
+    add(LostLife(context));
 
     if (!state.isAbleToContinue) {
-      add(End());
+      add(End(context));
 
       return;
     } else {
@@ -350,7 +353,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    add(LostLife());
+    add(LostLife(event.context));
     _vibrateServices.multipleVibrate();
 
     await Future.delayed(
@@ -496,7 +499,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
 
     add(SaveRecorded(
-      context: state.context,
+      event.context,
     ));
   }
 

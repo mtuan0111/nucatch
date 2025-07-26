@@ -5,9 +5,19 @@ import 'dart:ui';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
+import 'package:nucatch/blocs/navs/menu/menu_event.dart';
+import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
+import 'package:nucatch/blocs/objects/turn/turn_event.dart';
+import 'package:nucatch/blocs/objects/turn/turn_state.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
+import 'package:nucatch/navs/menu_nav.dart';
+import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Helper {
@@ -100,5 +110,56 @@ class Helper {
     }
 
     return generatingUrl;
+  }
+
+  static Future<bool> pressMainMenu(BuildContext context) async {
+    TurnRecordedListBloc turnRecordedListBloc =
+        context.read<TurnRecordedListBloc>();
+    TurnRecordedListState turnRecordedListState = turnRecordedListBloc.state;
+
+    TurnBloc turnBloc = context.read<TurnBloc>();
+    TurnState turnState = turnBloc.state;
+
+    MenuBloc menuBloc = context.read<MenuBloc>();
+
+    int? rankTemporary = turnRecordedListState.rankOfPoint(turnState.point);
+    bool confirmExit = true;
+
+    if (rankTemporary != null) {
+      confirmExit = await showDialog<bool>(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              if (turnRecordedListState.isLoading) {
+                return const LoadingWidget();
+              }
+
+              return CustomeAlert(
+                point: turnState.point,
+                rank: rankTemporary,
+              );
+            },
+          ) ??
+          true;
+    }
+
+    if (confirmExit == true) {
+      turnBloc.add(End(
+        context,
+        isCauseGameOver: false,
+      ));
+
+      // if (turnState.recordedItem != null) {
+      //   turnBloc.add(SaveRecorded(context: context));
+      // }
+
+      menuBloc.add(
+        SelectOption(
+          option: null,
+        ),
+      );
+    }
+
+    return confirmExit;
   }
 }

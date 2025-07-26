@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
@@ -17,8 +16,8 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.d
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/navs/menu_nav.dart';
 
 import 'package:timer_count_down/timer_count_down.dart';
 
@@ -330,7 +329,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                               },
                                             );
                                           }
-                                          return LifeStar();
+                                          return const LifeStar();
                                         },
                                       ),
                                     ),
@@ -545,83 +544,144 @@ class _PlayScreenState extends State<PlayScreen> {
                             runSpacing: buttonSpace,
                             children: keyboardArray.entries.map(
                               (e) {
-                                double originalScale = 1;
-                                int milisecondDuation = 50;
-                                return AnimatedScale(
-                                  scale: originalScale,
-                                  duration:
-                                      Duration(milliseconds: milisecondDuation),
-                                  child: SizedBox(
-                                    width: buttonSize,
-                                    height: buttonSize,
-                                    child: Builder(
-                                      builder: (context) {
-                                        Duration duration =
-                                            const Duration(milliseconds: 200);
-                                        if (e.key == KeyboardOption.reset) {
-                                          return AnimatedOpacity(
-                                            opacity: (turnState.isAbleToReset &&
-                                                    turnState.isAbleToTap)
-                                                ? 1
-                                                : 0.5,
-                                            duration: duration,
-                                            child: CustomElevatedButton(
-                                              icon:
-                                                  FontAwesomeIcons.arrowsRotate,
-                                              onPressed: () async {
-                                                context.read<TurnBloc>().add(
-                                                      ResetNewNumber(
-                                                          duration: duration),
-                                                    );
-                                              },
-                                            ),
+                                Duration duration =
+                                    const Duration(milliseconds: 200);
+                                if (e.key == KeyboardOption.reset) {
+                                  return AnimatedButton(
+                                    context,
+                                    buttonSize: buttonSize,
+                                    iconData: FontAwesomeIcons.arrowsRotate,
+                                    onPressed: () {
+                                      context.read<TurnBloc>().add(
+                                            ResetNewNumber(context,
+                                                duration: duration),
                                           );
-                                        }
+                                    },
+                                  );
+                                }
 
-                                        if (e.key == KeyboardOption.mainMenu) {
-                                          return AnimatedOpacity(
-                                            opacity: (turnState.isAbleToTap)
-                                                ? 1
-                                                : 0.5,
-                                            duration: const Duration(
-                                                milliseconds: 200),
-                                            child: CustomElevatedButton(
-                                              icon: FontAwesomeIcons.bars,
-                                              onPressed: () {
-                                                pressMainMenu()
-                                                    .then((confirmedMenu) {
-                                                  if (confirmedMenu) {}
-                                                });
-                                              },
-                                            ),
-                                          );
-                                        }
+                                if (e.key == KeyboardOption.mainMenu) {
+                                  return AnimatedButton(
+                                    context,
+                                    buttonSize: buttonSize,
+                                    iconData: FontAwesomeIcons.bars,
+                                    onPressed: () {
+                                      Helper.pressMainMenu(context)
+                                          .then((confirmedMenu) {
+                                        if (confirmedMenu) {}
+                                      });
+                                    },
+                                  );
+                                }
 
-                                        return AnimatedOpacity(
-                                          opacity:
-                                              turnState.isAbleToTap ? 1 : 0.5,
-                                          duration:
-                                              const Duration(milliseconds: 200),
-                                          child: CustomElevatedButton(
-                                            text: e.value.toString(),
-                                            onPressed: () {
-                                              context.read<TurnBloc>().add(
-                                                    Tap(keyValue: e.key),
-                                                  );
+                                // return AnimatedOpacity(
+                                //   opacity: turnState.isAbleToTap ? 1 : 0.5,
+                                //   duration: const Duration(milliseconds: 200),
+                                //   child: CustomElevatedButton(
+                                //     text: e.value.toString(),
+                                //     onPressed: () {
+                                //       context.read<TurnBloc>().add(
+                                //             Tap(context, keyValue: e.key),
+                                //           );
 
-                                              setState(
-                                                () {
-                                                  originalScale = 0.8;
-                                                  // milisecondDuation = 100;
-                                                },
-                                              );
-                                            },
-                                          ),
+                                //       setState(
+                                //         () {
+                                //           originalScale = 0.8;
+                                //           // milisecondDuation = 100;
+                                //         },
+                                //       );
+                                //     },
+                                //   ),
+                                // );
+
+                                return AnimatedButton(
+                                  context,
+                                  buttonSize: buttonSize,
+                                  text: e.value.toString(),
+                                  onPressed: () {
+                                    context.read<TurnBloc>().add(
+                                          Tap(context, keyValue: e.key),
                                         );
-                                      },
-                                    ),
-                                  ),
+                                  },
                                 );
+                                // double originalScale = 1;
+                                // int milisecondDuation = 50;
+                                // return AnimatedScale(
+                                //   scale: originalScale,
+                                //   duration:
+                                //       Duration(milliseconds: milisecondDuation),
+                                //   child: SizedBox(
+                                //     width: buttonSize,
+                                //     height: buttonSize,
+                                //     child: Builder(
+                                //       builder: (context) {
+                                //         Duration duration =
+                                //             const Duration(milliseconds: 200);
+                                //         if (e.key == KeyboardOption.reset) {
+                                //           return AnimatedOpacity(
+                                //             opacity: (turnState.isAbleToReset &&
+                                //                     turnState.isAbleToTap)
+                                //                 ? 1
+                                //                 : 0.5,
+                                //             duration: duration,
+                                //             child: CustomElevatedButton(
+                                //               icon:
+                                //                   FontAwesomeIcons.arrowsRotate,
+                                //               onPressed: () async {
+                                //                 context.read<TurnBloc>().add(
+                                //                       ResetNewNumber(context,
+                                //                           duration: duration),
+                                //                     );
+                                //               },
+                                //             ),
+                                //           );
+                                //         }
+
+                                //         if (e.key == KeyboardOption.mainMenu) {
+                                //           return AnimatedOpacity(
+                                //             opacity: (turnState.isAbleToTap)
+                                //                 ? 1
+                                //                 : 0.5,
+                                //             duration: const Duration(
+                                //                 milliseconds: 200),
+                                //             child: CustomElevatedButton(
+                                //               icon: FontAwesomeIcons.bars,
+                                //               onPressed: () {
+                                //                 pressMainMenu(context)
+                                //                     .then((confirmedMenu) {
+                                //                   if (confirmedMenu) {}
+                                //                 });
+                                //               },
+                                //             ),
+                                //           );
+                                //         }
+
+                                //         return AnimatedOpacity(
+                                //           opacity:
+                                //               turnState.isAbleToTap ? 1 : 0.5,
+                                //           duration:
+                                //               const Duration(milliseconds: 200),
+                                //           child: CustomElevatedButton(
+                                //             text: e.value.toString(),
+                                //             onPressed: () {
+                                //               context.read<TurnBloc>().add(
+                                //                     Tap(context,
+                                //                         keyValue: e.key),
+                                //                   );
+
+                                //               setState(
+                                //                 () {
+                                //                   originalScale = 0.8;
+                                //                   // milisecondDuation = 100;
+                                //                 },
+                                //               );
+                                //             },
+                                //           ),
+                                //         );
+                                //       },
+                                //     ),
+                                //   ),
+                                // );
                               },
                             ).toList(),
                           ),
@@ -640,47 +700,6 @@ class _PlayScreenState extends State<PlayScreen> {
 
   Future<void> pressReset() async {
     return;
-  }
-
-  Future<bool> pressMainMenu() async {
-    int? rankTemporary = turnRecordedListState.rankOfPoint(turnState.point);
-    bool confirmExit = true;
-
-    if (rankTemporary != null) {
-      confirmExit = await showDialog<bool>(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) {
-              if (turnRecordedListState.isLoading) {
-                return const LoadingWidget();
-              }
-
-              return CustomeAlert(
-                point: turnState.point,
-                rank: rankTemporary,
-              );
-            },
-          ) ??
-          true;
-    }
-
-    if (confirmExit == true) {
-      turnBloc.add(End(
-        isCauseGameOver: false,
-      ));
-
-      // if (turnState.recordedItem != null) {
-      //   turnBloc.add(SaveRecorded(context: context));
-      // }
-
-      menuBloc.add(
-        SelectOption(
-          option: null,
-        ),
-      );
-    }
-
-    return confirmExit;
   }
 }
 
