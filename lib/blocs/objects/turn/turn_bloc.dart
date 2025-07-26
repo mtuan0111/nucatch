@@ -24,6 +24,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   TurnBloc(super.initialState, {SettingModel? settingModel}) {
     on<Tap>(_onTap);
     on<SetLevel>(_onSetLevel);
+    on<LostLife>(_onLostLife);
+    on<GainLife>(_onGainLife);
     on<ShowExpect>(_onShowExpect);
     // on<HideExpect>(_onHideExpect);
     // on<MarkCorrectTap>(_onMarkCorrectTap);
@@ -188,6 +190,50 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     // add(HideExpect());
   }
 
+  Future<void> _onLostLife(
+    LostLife event,
+    Emitter<TurnState> emitter,
+  ) async {
+    if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
+      return;
+    }
+
+    emitter(
+      state.copyWith(
+        lifeRemaining: state.lifeRemaining - event.lifeRemaining,
+      ),
+    );
+
+    if (!state.isAbleToContinue) {
+      add(End(isCauseGameOver: true));
+    }
+  }
+
+  Future<void> _onGainLife(
+    GainLife event,
+    Emitter<TurnState> emitter,
+  ) async {
+    if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
+      return;
+    }
+
+    emitter(
+      state.copyWith(
+        lifeRemaining: state.lifeRemaining + event.lifeGained,
+      ),
+    );
+
+    _vibrateServices.vibrate(duration: 100);
+  }
+
   Future<void> _onShowExpect(
     ShowExpect event,
     Emitter<TurnState> emitter,
@@ -277,11 +323,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     _vibrateServices.vibrate(duration: 500);
 
-    emitter(
-      state.copyWith(
-        lifeRemaining: state.lifeRemaining - 1,
-      ),
-    );
+    add(LostLife());
 
     if (!state.isAbleToContinue) {
       add(End());
@@ -308,20 +350,17 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    add(LostLife());
+    _vibrateServices.multipleVibrate();
+
+    await Future.delayed(
+        Duration(milliseconds: event.duration.inMilliseconds + 500));
     await _onSetLevel(
       SetLevel(
         level: state.level,
         addPoint: 0,
       ),
       emitter,
-    );
-
-    _vibrateServices.multipleVibrate();
-
-    emitter(
-      state.copyWith(
-        lifeRemaining: state.lifeRemaining - 1,
-      ),
     );
   }
 

@@ -556,20 +556,22 @@ class _PlayScreenState extends State<PlayScreen> {
                                     height: buttonSize,
                                     child: Builder(
                                       builder: (context) {
+                                        Duration duration =
+                                            const Duration(milliseconds: 200);
                                         if (e.key == KeyboardOption.reset) {
                                           return AnimatedOpacity(
                                             opacity: (turnState.isAbleToReset &&
                                                     turnState.isAbleToTap)
                                                 ? 1
                                                 : 0.5,
-                                            duration: const Duration(
-                                                milliseconds: 200),
+                                            duration: duration,
                                             child: CustomElevatedButton(
                                               icon:
                                                   FontAwesomeIcons.arrowsRotate,
                                               onPressed: () async {
                                                 context.read<TurnBloc>().add(
-                                                      ResetNewNumber(),
+                                                      ResetNewNumber(
+                                                          duration: duration),
                                                     );
                                               },
                                             ),

@@ -47,6 +47,22 @@ class SetLevel extends TurnEvent {
   });
 }
 
+class LostLife extends TurnEvent {
+  final int lifeRemaining;
+
+  LostLife({
+    this.lifeRemaining = 1,
+  });
+}
+
+class GainLife extends TurnEvent {
+  final int lifeGained;
+
+  GainLife({
+    this.lifeGained = 1,
+  });
+}
+
 class SaveRecorded extends TurnEvent {
   // final TurnRecordedModel savingRecord;
   // final String? messageSuccess;
@@ -81,7 +97,12 @@ class HideExpect extends TurnEvent {
 
 // class MarkWrongTap extends TurnEvent {}
 
-class ResetNewNumber extends TurnEvent {}
+class ResetNewNumber extends TurnEvent {
+  Duration duration;
+  ResetNewNumber({
+    required this.duration,
+  });
+}
 
 class ApplySetting extends TurnEvent {
   final SettingModel settingModel;
