@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 
@@ -17,6 +18,8 @@ class TurnState {
   final int level;
   final int timesCorrect;
   final int point;
+  final Difficulty? difficulty; // Default difficulty
+
   final int lifeRemaining;
 
   final String? expect;
@@ -33,6 +36,7 @@ class TurnState {
     this.level = 0,
     this.timesCorrect = 0,
     this.point = 0,
+    this.difficulty,
     this.lifeRemaining = 3,
     this.expect,
     this.status = TurnStatus.initial,
@@ -47,6 +51,7 @@ class TurnState {
     int? level,
     int? timesCorrect,
     int? point,
+    Difficulty? difficulty,
     int? lifeRemaining,
     // int? currentTypingIndex,
     String? expect,
@@ -61,6 +66,7 @@ class TurnState {
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,
       point: point ?? this.point,
+      difficulty: difficulty ?? this.difficulty,
       lifeRemaining: lifeRemaining != null
           ? (lifeRemaining < 0 ? 0 : lifeRemaining)
           : this.lifeRemaining,

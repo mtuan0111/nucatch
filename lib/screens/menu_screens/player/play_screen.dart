@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
+import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
@@ -68,6 +69,10 @@ class _PlayScreenState extends State<PlayScreen> {
     wasLifeDecreased = false;
     wasLifeIncreased = false;
 
+    if (turnState.difficulty == null) {
+      playerNavCubit.showSetDifficulty();
+    }
+
     super.initState();
   }
 
@@ -99,12 +104,12 @@ class _PlayScreenState extends State<PlayScreen> {
             }
           }
 
-          if (turnState.status == TurnStatus.intro ||
-              turnState.status == TurnStatus.initial) {
-            if (turnState is! PlayingState) {
-              playerNavCubit.showPlay();
-            }
-          }
+          // if (turnState.status == TurnStatus.intro ||
+          //     turnState.status == TurnStatus.initial) {
+          //   if (turnState is! PlayingState) {
+          //     playerNavCubit.showPlay();
+          //   }
+          // }
 
           return Container(
             decoration: LayoutConfig(context).gradientDecoration,
@@ -544,6 +549,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                     context,
                                     buttonSize: buttonSize,
                                     iconData: FontAwesomeIcons.arrowsRotate,
+                                    isEnable: turnState.isAbleToReset &&
+                                        turnState.isAbleToTap,
                                     onPressed: () {
                                       context.read<TurnBloc>().add(
                                             ResetNewNumber(context,
@@ -561,7 +568,22 @@ class _PlayScreenState extends State<PlayScreen> {
                                     onPressed: () {
                                       Helper.pressMainMenu(context)
                                           .then((confirmedMenu) {
-                                        if (confirmedMenu) {}
+                                        if (confirmedMenu) {
+                                          turnBloc.add(End(
+                                            context,
+                                            isCauseGameOver: false,
+                                          ));
+
+                                          // if (turnState.recordedItem != null) {
+                                          //   turnBloc.add(SaveRecorded(context: context));
+                                          // }
+
+                                          menuBloc.add(
+                                            SelectOption(
+                                              option: null,
+                                            ),
+                                          );
+                                        }
                                       });
                                     },
                                   );
@@ -591,6 +613,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                   context,
                                   buttonSize: buttonSize,
                                   text: e.value.toString(),
+                                  isEnable: turnState.isAbleToTap,
                                   onPressed: () {
                                     context.read<TurnBloc>().add(
                                           Tap(context, keyValue: e.key),

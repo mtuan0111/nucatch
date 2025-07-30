@@ -56,6 +56,34 @@ class AppLocalizationsVi extends AppLocalizations {
   String get gameOver => 'Kết thúc trò chơi';
 
   @override
+  String get difficultySetting => 'Cài đặt độ khó';
+
+  @override
+  String get easy => 'Dễ';
+
+  @override
+  String get medium => 'Trung bình';
+
+  @override
+  String get hard => 'Khó';
+
+  @override
+  String get veryHard => 'Rất khó';
+
+  @override
+  String get extreme => 'Cực kỳ khó';
+
+  @override
+  String get selectDifficulty => 'Chọn độ khó';
+
+  @override
+  String get selectLevel => 'Chọn cấp độ';
+
+  @override
+  String get selectLevelMessage =>
+      'Chọn cấp độ bạn muốn chơi. Cấp độ càng cao, độ khó càng tăng.';
+
+  @override
   String get theCorrectIs => 'Đáp án đúng là';
 
   @override

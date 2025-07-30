@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/models/setting_model.dart';
 
 abstract class TurnEvent {}
@@ -14,8 +15,10 @@ class CountDownIntro extends TurnEvent {
 class Start extends TurnEvent {
 // Marking the status transform from initial status to playing status
   int seconds;
+  Difficulty difficulty;
   Start({
     this.seconds = 3,
+    required this.difficulty,
   });
 }
 
@@ -48,6 +51,16 @@ class SetLevel extends TurnEvent {
   SetLevel({
     required this.level,
     this.addPoint = 1,
+  });
+}
+
+class SetDifficulty extends TurnEvent {
+  final Difficulty difficulty;
+  final void Function(Difficulty)? onChanged;
+
+  SetDifficulty({
+    required this.difficulty,
+    this.onChanged,
   });
 }
 

@@ -8,4 +8,8 @@ class PlayerNavCubit extends Cubit<PlayerNavState> {
   void showGameover() => emit(
         GameOverState(),
       );
+
+  void showSetDifficulty() {
+    emit(SetDifficultyState());
+  }
 }

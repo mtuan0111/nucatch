@@ -67,6 +67,45 @@
   "@gameOver": {
     "description": "Thông báo kết thúc trò chơi"
   },
+
+  "difficultySetting": "Cài đặt độ khó",
+  "@difficultySetting": {
+    "description": "Cài đặt độ khó của trò chơi"
+  },
+
+  "easy": "Dễ",
+  "@easy": {
+    "description": "Mức độ dễ của trò chơi"
+  },  
+  "medium": "Trung bình",
+  "@medium": {
+    "description": "Mức độ trung bình của trò chơi"
+  },
+  "hard": "Khó",
+  "@hard": {
+    "description": "Mức độ khó của trò chơi"
+  },
+  "veryHard": "Rất khó",
+  "@veryHard": {
+    "description": "Mức độ rất khó của trò chơi"
+  },
+  "extreme": "Cực kỳ khó",
+  "@extreme": {
+    "description": "Mức độ cực kỳ khó của trò chơi"
+  },
+  "selectDifficulty": "Chọn độ khó",
+  "@selectDifficulty": {
+    "description": "Hướng dẫn người dùng chọn độ khó của trò chơi"
+  },
+  "selectLevel": "Chọn cấp độ",
+  "@selectLevel": {
+    "description": "Hướng dẫn người dùng chọn cấp độ của trò chơi"
+  },
+  "selectLevelMessage": "Chọn cấp độ bạn muốn chơi. Cấp độ càng cao, độ khó càng tăng.",
+  "@selectLevelMessage": {
+    "description": "Thông điệp hướng dẫn người dùng chọn cấp độ"
+  },
+
   "theCorrectIs": "Đáp án đúng là",
   "@theCorrectIs": {
     "description": "Hiển thị đáp án đúng"

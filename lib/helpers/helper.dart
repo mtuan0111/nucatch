@@ -7,10 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
-import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
@@ -21,7 +18,7 @@ import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Helper {
-  generateRandomNumber(int length) {
+  String generateRandomNumber(int length) {
     var randomNumber = "";
 
     for (int i = 0; i < length; i++) {
@@ -29,6 +26,26 @@ class Helper {
     }
 
     return randomNumber;
+  }
+
+  String randomCalculator(int sum) {
+    Random random = Random();
+    int result = random.nextInt(100);
+    String expression = result.toString();
+
+    for (int i = 1; i < sum; i++) {
+      bool isPlus = random.nextBool();
+      int nextNum = random.nextInt(100);
+      if (isPlus) {
+        result += nextNum;
+        expression += ' + $nextNum';
+      } else {
+        result -= nextNum;
+        expression += ' - $nextNum';
+      }
+    }
+    expression += ' = $result';
+    return expression;
   }
 
   static Future<void> launchURL(String url,
@@ -120,7 +137,7 @@ class Helper {
     TurnBloc turnBloc = context.read<TurnBloc>();
     TurnState turnState = turnBloc.state;
 
-    MenuBloc menuBloc = context.read<MenuBloc>();
+    // MenuBloc menuBloc = context.read<MenuBloc>();
 
     int? rankTemporary = turnRecordedListState.rankOfPoint(turnState.point);
     bool confirmExit = true;
@@ -141,23 +158,6 @@ class Helper {
             },
           ) ??
           true;
-    }
-
-    if (confirmExit == true) {
-      turnBloc.add(End(
-        context,
-        isCauseGameOver: false,
-      ));
-
-      // if (turnState.recordedItem != null) {
-      //   turnBloc.add(SaveRecorded(context: context));
-      // }
-
-      menuBloc.add(
-        SelectOption(
-          option: null,
-        ),
-      );
     }
 
     return confirmExit;

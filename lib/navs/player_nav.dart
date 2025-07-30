@@ -6,6 +6,7 @@ import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/screens/menu_screens/player/gameover_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
+import 'package:nucatch/screens/menu_screens/player/set_difficult_screen.dart';
 
 class PlayerNav extends StatefulWidget {
   const PlayerNav({super.key});
@@ -40,6 +41,17 @@ class _PlayerNavState extends State<PlayerNav> {
                   child: PlayScreen(),
                 ),
               ),
+              if (state is SetDifficultyState)
+                const MaterialPage(
+                  child: SetDifficultScreen(),
+                ),
+              // if (state is PlayingState)
+              //   const MaterialPage(
+              //     child: PopScope(
+              //       canPop: true,
+              //       child: PlayScreen(),
+              //     ),
+              //   ),
               if (state is GameOverState)
                 const MaterialPage(
                   child: GameOverScreen(),

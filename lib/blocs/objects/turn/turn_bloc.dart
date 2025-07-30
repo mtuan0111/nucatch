@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/helpers/const.dart';
@@ -28,6 +29,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<LostLife>(_onLostLife);
     on<GainLife>(_onGainLife);
     on<ShowExpect>(_onShowExpect);
+    on<SetDifficulty>(_onSetDifficulty);
+
     // on<HideExpect>(_onHideExpect);
     // on<MarkCorrectTap>(_onMarkCorrectTap);
     // on<MarkWrongTap>(_onMarkWrongTap);
@@ -178,7 +181,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         // lifeRemaining: state.level != event.level
         //     ? state.lifeRemaining
         //     : state.lifeRemaining + event.addPoint,
-        expect: Helper().generateRandomNumber(event.level + 2),
+        // expect: Helper().generateRandomNumber(event.level + 2),
         typing: "",
       ),
     );
@@ -248,9 +251,24 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    late String expect;
+
+    switch (state.difficulty ?? Difficulty.easy) {
+      case Difficulty.easy:
+        expect = Helper().generateRandomNumber(state.level + 2);
+        break;
+      case Difficulty.medium:
+        expect = Helper().generateRandomNumber(state.level + 3);
+        break;
+      case Difficulty.hard:
+        expect = Helper().generateRandomNumber(state.level + 4);
+        break;
+    }
+
     emitter(
       state.copyWith(
         status: TurnStatus.initial,
+        expect: expect,
       ),
     );
 
@@ -272,6 +290,31 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         status: TurnStatus.playing,
       ),
     );
+  }
+
+  Future<void> _onSetDifficulty(
+    SetDifficulty event,
+    Emitter<TurnState> emitter,
+  ) async {
+    if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
+      return;
+    }
+
+    emitter(
+      state.copyWith(
+        difficulty: event.difficulty,
+      ),
+    );
+
+    // add(Start(
+    //   seconds: state.countDown,
+    // ));
+
+    event.onChanged?.call(event.difficulty);
   }
 
   // void _onHideExpect(
@@ -438,6 +481,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       TurnState(state.context).copyWith(
         countDown: event.seconds,
         status: TurnStatus.intro,
+        difficulty: event.difficulty,
       ),
     );
 

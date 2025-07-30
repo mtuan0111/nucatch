@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
@@ -27,6 +28,8 @@ class _GameOverScreenState extends State<GameOverScreen> {
   TurnBloc get turnBloc => context.read<TurnBloc>();
   TurnState get turnState => turnBloc.state;
 
+  PlayerNavCubit get playerNavCubit => context.read<PlayerNavCubit>();
+
   TurnRecordedListBloc get turnRecordedListBloc =>
       context.read<TurnRecordedListBloc>();
   TurnRecordedListState get turnRecordedListState => turnRecordedListBloc.state;
@@ -48,10 +51,6 @@ class _GameOverScreenState extends State<GameOverScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle buttonStyle = Theme.of(context).textTheme.headlineLarge!.copyWith(
-          fontWeight: FontWeight.bold,
-        );
-
     return Scaffold(
       body: Container(
         decoration: LayoutConfig(context).gradientDecoration,
@@ -118,18 +117,16 @@ class _GameOverScreenState extends State<GameOverScreen> {
                           child: BlocBuilder<TurnRecordedListBloc,
                               TurnRecordedListState>(
                             builder: (context, state) {
-                              return ElevatedButton(
-                                style: LayoutConfig.elevatedButtonStyle,
+                              return AnimatedButton(
+                                context,
                                 onPressed: () {
+                                  playerNavCubit.showPlay();
+
                                   turnBloc.add(
-                                    Start(),
+                                    Start(difficulty: turnState.difficulty!),
                                   );
                                 },
-                                child: Icon(
-                                  FontAwesomeIcons.arrowRotateLeft,
-                                  size: buttonStyle.fontSize,
-                                  color: Colors.black87,
-                                ),
+                                iconData: FontAwesomeIcons.arrowRotateLeft,
                               );
                             },
                           ),

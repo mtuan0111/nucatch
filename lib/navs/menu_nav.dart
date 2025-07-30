@@ -73,16 +73,18 @@ class _MenuNavState extends State<MenuNav> {
                             BlocProvider(
                               create: (context) => TurnBloc(
                                 TurnState(context),
-                              )
-                                ..add(ApplySetting(
-                                    settingModel: settingState.model))
-                                ..add(
-                                  Start(),
-                                ),
+                              )..add(ApplySetting(
+                                  settingModel: settingState.model))
+                              // ..add(
+                              //   Start(),
+                              // )
+                              ,
                             ),
                             BlocProvider(
-                              create: (context) => PlayerNavCubit(),
-                            ),
+                                create: (context) =>
+                                    PlayerNavCubit()..showPlay()
+                                // ..showSetDifficulty(),
+                                ),
                           ],
                           child: const PlayerNav(),
                         ),

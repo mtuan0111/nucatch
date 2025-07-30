@@ -67,6 +67,44 @@
   "@gameOver": {
     "description": "Game over message"
   },
+  
+  "difficultySetting": "Difficulty Setting",
+  "@difficultySetting": {
+    "description": "Label for difficulty setting in the game"
+  },
+  
+  "easy": "Easy",
+  "@easy": {
+    "description": "Easy difficulty level of the game"
+  },  
+  "medium": "Medium",
+  "@medium": {
+    "description": "Medium difficulty level of the game"
+  },
+  "hard": "Hard",
+  "@hard": {
+    "description": "Hard difficulty level of the game"
+  },
+  "veryHard": "Very Hard",
+  "@veryHard": {
+    "description": "Very hard difficulty level of the game"
+  },
+  "extreme": "Extreme",
+  "@extreme": {
+    "description": "Extreme difficulty level of the game"
+  },
+  "selectDifficulty": "Select difficulty",
+  "@selectDifficulty": {
+    "description": "Prompt for user to select the game difficulty"
+  },
+  "selectLevel": "Select level",
+  "@selectLevel": {
+    "description": "Prompt for user to select the game level"
+  },
+  "selectLevelMessage": "Choose the level you want to play. The higher the level, the more difficult it becomes.",
+  "@selectLevelMessage": {
+    "description": "Message guiding the user to select a level"
+  },
   "theCorrectIs": "The correct is",
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"

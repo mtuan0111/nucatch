@@ -188,6 +188,60 @@ abstract class AppLocalizations {
   /// **'Game Over'**
   String get gameOver;
 
+  /// Label for difficulty setting in the game
+  ///
+  /// In en, this message translates to:
+  /// **'Difficulty Setting'**
+  String get difficultySetting;
+
+  /// Easy difficulty level of the game
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get easy;
+
+  /// Medium difficulty level of the game
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get medium;
+
+  /// Hard difficulty level of the game
+  ///
+  /// In en, this message translates to:
+  /// **'Hard'**
+  String get hard;
+
+  /// Very hard difficulty level of the game
+  ///
+  /// In en, this message translates to:
+  /// **'Very Hard'**
+  String get veryHard;
+
+  /// Extreme difficulty level of the game
+  ///
+  /// In en, this message translates to:
+  /// **'Extreme'**
+  String get extreme;
+
+  /// Prompt for user to select the game difficulty
+  ///
+  /// In en, this message translates to:
+  /// **'Select difficulty'**
+  String get selectDifficulty;
+
+  /// Prompt for user to select the game level
+  ///
+  /// In en, this message translates to:
+  /// **'Select level'**
+  String get selectLevel;
+
+  /// Message guiding the user to select a level
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the level you want to play. The higher the level, the more difficult it becomes.'**
+  String get selectLevelMessage;
+
   /// Message indicating the correct answer
   ///
   /// In en, this message translates to:

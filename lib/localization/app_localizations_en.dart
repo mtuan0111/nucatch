@@ -56,6 +56,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameOver => 'Game Over';
 
   @override
+  String get difficultySetting => 'Difficulty Setting';
+
+  @override
+  String get easy => 'Easy';
+
+  @override
+  String get medium => 'Medium';
+
+  @override
+  String get hard => 'Hard';
+
+  @override
+  String get veryHard => 'Very Hard';
+
+  @override
+  String get extreme => 'Extreme';
+
+  @override
+  String get selectDifficulty => 'Select difficulty';
+
+  @override
+  String get selectLevel => 'Select level';
+
+  @override
+  String get selectLevelMessage =>
+      'Choose the level you want to play. The higher the level, the more difficult it becomes.';
+
+  @override
   String get theCorrectIs => 'The correct is';
 
   @override
