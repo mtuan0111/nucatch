@@ -27,6 +27,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<Tap>(_onTap);
     on<SetLevel>(_onSetLevel);
     on<LostLife>(_onLostLife);
+    on<AddPoint>(_onAddPoint); // Handle AddPoint as a SetLevel event
     on<GainLife>(_onGainLife);
     on<GeneratedRequiredString>(_onGeneratedRequiredString);
     on<ShowExpect>(_onShowExpect);
@@ -121,9 +122,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (state.isFinishTarget) {
       _vibrateServices.vibrate(duration: 100);
 
+      await _onAddPoint(AddPoint(), emitter);
       emitter(
         state.copyWith(
-          point: state.point + 1,
           timesCorrect: state.timesCorrect + 1,
           lifeRemaining: state.timesCorrect >= 2
               ? state.lifeRemaining + 1
@@ -217,6 +218,25 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (!state.isAbleToContinue) {
       add(End(event.context, isCauseGameOver: true));
     }
+  }
+
+  Future<void> _onAddPoint(
+    AddPoint event,
+    Emitter<TurnState> emitter,
+  ) async {
+    if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
+      return;
+    }
+
+    emitter(
+      state.copyWith(
+        point: state.point + state.difficultyModel!.pointEachTurn,
+      ),
+    );
   }
 
   Future<void> _onGainLife(

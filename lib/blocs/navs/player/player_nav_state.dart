@@ -20,28 +20,33 @@ class SetDifficultyState extends PlayerNavState {
 
 class DifficultyModel {
   final Difficulty difficulty;
+  final int pointEachTurn; // Points awarded for each turn
   final int timeLimitPerTurn; // in seconds
   final int numberOfCharacters;
 
   const DifficultyModel({
     required this.difficulty,
+    this.pointEachTurn = 1,
     required this.timeLimitPerTurn,
     required this.numberOfCharacters,
   });
 
-  static const Map<Difficulty, DifficultyModel> models = {
-    Difficulty.easy: DifficultyModel(
+  static Map<Difficulty, DifficultyModel> models = {
+    Difficulty.easy: const DifficultyModel(
       difficulty: Difficulty.easy,
+      pointEachTurn: 1,
       timeLimitPerTurn: 30,
       numberOfCharacters: 4,
     ),
-    Difficulty.medium: DifficultyModel(
+    Difficulty.medium: const DifficultyModel(
       difficulty: Difficulty.medium,
+      pointEachTurn: 2,
       timeLimitPerTurn: 20,
       numberOfCharacters: 6,
     ),
-    Difficulty.hard: DifficultyModel(
+    Difficulty.hard: const DifficultyModel(
       difficulty: Difficulty.hard,
+      pointEachTurn: 4,
       timeLimitPerTurn: 10,
       numberOfCharacters: 8,
     ),

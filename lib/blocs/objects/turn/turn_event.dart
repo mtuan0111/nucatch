@@ -73,6 +73,10 @@ class LostLife extends TurnEvent {
   });
 }
 
+class AddPoint extends TurnEvent {
+  AddPoint();
+}
+
 class GainLife extends TurnEvent {
   final int lifeGained;
 
