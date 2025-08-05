@@ -15,10 +15,9 @@ class CountDownIntro extends TurnEvent {
 class Start extends TurnEvent {
 // Marking the status transform from initial status to playing status
   int seconds;
-  Difficulty difficulty;
+
   Start({
     this.seconds = 3,
-    required this.difficulty,
   });
 }
 
@@ -55,11 +54,11 @@ class SetLevel extends TurnEvent {
 }
 
 class SetDifficulty extends TurnEvent {
-  final Difficulty difficulty;
-  final void Function(Difficulty)? onChanged;
+  final DifficultyModel difficultyModel;
+  final void Function(DifficultyModel)? onChanged;
 
   SetDifficulty({
-    required this.difficulty,
+    required this.difficultyModel,
     this.onChanged,
   });
 }
@@ -93,6 +92,10 @@ class SaveRecorded extends TurnEvent {
 
 class GetTurnRecordedList extends TurnEvent {
   GetTurnRecordedList();
+}
+
+class GeneratedRequiredString extends TurnEvent {
+  GeneratedRequiredString();
 }
 
 class ShowExpect extends TurnEvent {

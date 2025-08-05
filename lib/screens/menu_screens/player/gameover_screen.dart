@@ -123,7 +123,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                                   playerNavCubit.showPlay();
 
                                   turnBloc.add(
-                                    Start(difficulty: turnState.difficulty!),
+                                    Start(),
                                   );
                                 },
                                 iconData: FontAwesomeIcons.arrowRotateLeft,

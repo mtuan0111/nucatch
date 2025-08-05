@@ -18,10 +18,11 @@ class TurnState {
   final int level;
   final int timesCorrect;
   final int point;
-  final Difficulty? difficulty; // Default difficulty
+  final DifficultyModel? difficultyModel; // Default difficulty
 
   final int lifeRemaining;
 
+  final String? requirementString;
   final String? expect;
   final String typing;
   final TurnStatus status;
@@ -36,8 +37,9 @@ class TurnState {
     this.level = 0,
     this.timesCorrect = 0,
     this.point = 0,
-    this.difficulty,
+    this.difficultyModel,
     this.lifeRemaining = 3,
+    this.requirementString,
     this.expect,
     this.status = TurnStatus.initial,
     this.typing = "",
@@ -51,9 +53,10 @@ class TurnState {
     int? level,
     int? timesCorrect,
     int? point,
-    Difficulty? difficulty,
+    DifficultyModel? difficultyModel,
     int? lifeRemaining,
     // int? currentTypingIndex,
+    String? requirementString,
     String? expect,
     String? typing,
     TurnStatus? status,
@@ -66,11 +69,12 @@ class TurnState {
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,
       point: point ?? this.point,
-      difficulty: difficulty ?? this.difficulty,
+      difficultyModel: difficultyModel ?? this.difficultyModel,
       lifeRemaining: lifeRemaining != null
           ? (lifeRemaining < 0 ? 0 : lifeRemaining)
           : this.lifeRemaining,
       // currentTypingIndex: currentTypingIndex ?? this.currentTypingIndex,
+      requirementString: requirementString ?? this.requirementString,
       expect: expect ?? this.expect,
       typing: typing ?? this.typing,
       status: status ?? this.status,

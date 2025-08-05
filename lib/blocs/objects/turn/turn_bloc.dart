@@ -28,6 +28,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<SetLevel>(_onSetLevel);
     on<LostLife>(_onLostLife);
     on<GainLife>(_onGainLife);
+    on<GeneratedRequiredString>(_onGeneratedRequiredString);
     on<ShowExpect>(_onShowExpect);
     on<SetDifficulty>(_onSetDifficulty);
 
@@ -131,7 +132,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       );
 
       // Play sound immediately
-      if (state.timesCorrect > 2) {
+      if (state.timesCorrect >= 3) {
         _audioServices.playCorrectUp();
       } else {
         _audioServices.playCorrect();
@@ -143,7 +144,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       }
 
       // Checking is up level or not
-      if (state.timesCorrect > 2) {
+      if (state.timesCorrect >= 3) {
         add(SetLevel(
           level: state.level + 1,
         ));
@@ -239,6 +240,43 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     _vibrateServices.vibrate(duration: 100);
   }
 
+  Future<String> _onGeneratedRequiredString(
+    GeneratedRequiredString event,
+    Emitter<TurnState> emitter,
+  ) async {
+    String requiredString;
+    late String expectString;
+
+    switch (state.difficultyModel?.difficulty ?? Difficulty.easy) {
+      case Difficulty.medium:
+        Map<String, String> result =
+            Helper().randomCalculatorWithPlusMinus(state.level + 1);
+        expectString = result['expect']!;
+        requiredString = result['expression']!;
+        break;
+      case Difficulty.hard:
+        Map<String, String> result =
+            Helper().randomCalculatorWithMulDiv(state.level);
+        expectString = result['expect']!;
+        requiredString = result['expression']!;
+        break;
+      case Difficulty.easy:
+        expectString = Helper().generateRandomNumber(state.level + 2);
+        requiredString = expectString;
+        break;
+    }
+
+    // String requiredString = Helper().generateRandomNumber(event.difficulty);
+
+    emitter(
+      state.copyWith(
+        requirementString: requiredString,
+        expect: expectString,
+      ),
+    );
+    return requiredString;
+  }
+
   Future<void> _onShowExpect(
     ShowExpect event,
     Emitter<TurnState> emitter,
@@ -250,25 +288,13 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (state.isLoading) {
       return;
     }
-
-    late String expect;
-
-    switch (state.difficulty ?? Difficulty.easy) {
-      case Difficulty.easy:
-        expect = Helper().generateRandomNumber(state.level + 2);
-        break;
-      case Difficulty.medium:
-        expect = Helper().generateRandomNumber(state.level + 3);
-        break;
-      case Difficulty.hard:
-        expect = Helper().generateRandomNumber(state.level + 4);
-        break;
-    }
+    await _onGeneratedRequiredString(GeneratedRequiredString(), emitter);
 
     emitter(
       state.copyWith(
         status: TurnStatus.initial,
-        expect: expect,
+        // expect: await _onGeneratedRequiredString(
+        //     GeneratedRequiredString(), emitter),
       ),
     );
 
@@ -306,7 +332,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     emitter(
       state.copyWith(
-        difficulty: event.difficulty,
+        difficultyModel: event.difficultyModel,
       ),
     );
 
@@ -314,7 +340,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     //   seconds: state.countDown,
     // ));
 
-    event.onChanged?.call(event.difficulty);
+    event.onChanged?.call(event.difficultyModel);
   }
 
   // void _onHideExpect(
@@ -481,7 +507,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       TurnState(state.context).copyWith(
         countDown: event.seconds,
         status: TurnStatus.intro,
-        difficulty: event.difficulty,
+        difficultyModel:
+            state.difficultyModel ?? DifficultyModel.getModel(Difficulty.easy),
       ),
     );
 

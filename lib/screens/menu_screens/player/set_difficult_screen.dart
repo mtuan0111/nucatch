@@ -68,11 +68,11 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       spacing: buttonSpace,
                       runSpacing: buttonSpace,
-                      children: Difficulty.values.map((difficulty) {
+                      children: Difficulty.values.map((difficultyModel) {
                         String textButton = '';
 
                         IconData difficultyIcon = FontAwesomeIcons.flag;
-                        switch (difficulty) {
+                        switch (difficultyModel) {
                           case Difficulty.easy:
                             textButton = lang(context).easy;
                             difficultyIcon = FontAwesomeIcons.faceSmileBeam;
@@ -95,14 +95,14 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                               onPressed: () {
                                 turnBloc.add(
                                   SetDifficulty(
-                                      difficulty: difficulty,
-                                      onChanged: (_) {
-                                        turnBloc
-                                            .add(Start(difficulty: difficulty));
-                                        context
-                                            .read<PlayerNavCubit>()
-                                            .showPlay();
-                                      }),
+                                    difficultyModel: DifficultyModel.getModel(
+                                      difficultyModel,
+                                    ),
+                                    onChanged: (_) {
+                                      turnBloc.add(Start());
+                                      context.read<PlayerNavCubit>().showPlay();
+                                    },
+                                  ),
                                 );
                               },
                               // text: textButton,

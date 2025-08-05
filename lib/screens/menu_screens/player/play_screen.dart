@@ -69,7 +69,7 @@ class _PlayScreenState extends State<PlayScreen> {
     wasLifeDecreased = false;
     wasLifeIncreased = false;
 
-    if (turnState.difficulty == null) {
+    if (turnState.difficultyModel == null) {
       playerNavCubit.showSetDifficulty();
     }
 
@@ -426,10 +426,10 @@ class _PlayScreenState extends State<PlayScreen> {
                               child: Center(
                                 child: Wrap(
                                   children: List.generate(
-                                    turnState.expect!.length,
+                                    turnState.requirementString!.length,
                                     (index) {
                                       String inputted =
-                                          turnState.expect![index];
+                                          turnState.requirementString![index];
                                       return SizedBox(
                                         width: (LayoutConfig(context)
                                                 .displaySmallStyle()
