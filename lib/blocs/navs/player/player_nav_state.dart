@@ -4,6 +4,7 @@ enum Difficulty {
   easy,
   medium,
   hard,
+  extreme,
 }
 
 class PlayerNavInitial extends PlayerNavState {}
@@ -21,12 +22,14 @@ class SetDifficultyState extends PlayerNavState {
 class DifficultyModel {
   final Difficulty difficulty;
   final int pointEachTurn; // Points awarded for each turn
+  final int numberTurnEachLevel;
   final int timeLimitPerTurn; // in seconds
   final int numberOfCharacters;
 
   const DifficultyModel({
     required this.difficulty,
     this.pointEachTurn = 1,
+    this.numberTurnEachLevel = 3,
     required this.timeLimitPerTurn,
     required this.numberOfCharacters,
   });
@@ -41,6 +44,7 @@ class DifficultyModel {
     Difficulty.medium: const DifficultyModel(
       difficulty: Difficulty.medium,
       pointEachTurn: 2,
+      numberTurnEachLevel: 5,
       timeLimitPerTurn: 20,
       numberOfCharacters: 6,
     ),
@@ -49,6 +53,12 @@ class DifficultyModel {
       pointEachTurn: 4,
       timeLimitPerTurn: 10,
       numberOfCharacters: 8,
+    ),
+    Difficulty.extreme: const DifficultyModel(
+      difficulty: Difficulty.extreme,
+      pointEachTurn: 8,
+      timeLimitPerTurn: 5,
+      numberOfCharacters: 10,
     ),
   };
 

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
@@ -16,6 +17,8 @@ import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../blocs/navs/player/player_nav_state.dart';
 
 class Helper {
   String generateRandomNumber(int length, {int minLengthOfNumber = 1}) {
@@ -148,138 +151,89 @@ class Helper {
     }
   }
 
-  /// Generates a multiplication or division expression where the result is a repeated digit number.
-  /// For example:
-  /// lengthOfExpect: 3, numberCount: 2 => expect: 888, expression: "1776 / 2" or "111 * 8"
   /// Generates a multiplication or division expression where the result is a random number with the specified length.
-  /// Ensures the expression is not just a single number (e.g., "7") and avoids trivial cases.
+  /// Tries to randomize the first number, then finds the second to match the expected result.
   Map<String, String> randomCalculatorWithMulDiv(
     int lengthOfExpect, {
     int numberCount = 2,
   }) {
     Random random = Random();
 
-    // Generate the expected result as a random number with the specified length
-    int min = pow(10, lengthOfExpect - 1).toInt();
-    int max = pow(10, lengthOfExpect).toInt() - 1;
-    int expect = random.nextInt(max - min + 1) + min;
+    while (true) {
+      int minimum = pow(10, lengthOfExpect - 1).toInt();
+      int maximum = pow(10, lengthOfExpect).toInt() - 1;
+      int expect = random.nextInt(maximum - minimum + 1) + minimum;
 
-    // Helper to get factors > 1 and < n
-    List<int> getValidFactors(int n) {
-      List<int> factors = [];
-      for (int i = 2; i <= sqrt(n).toInt(); i++) {
-        if (n % i == 0) {
-          factors.add(i);
-          if (i != n ~/ i && n ~/ i != n) {
-            factors.add(n ~/ i);
+      if (random.nextInt(10) % 2 == 0) {
+        // Try multiplication first: expect = a * b
+        int a = random.nextInt(expect - 1) + 2; // a >= 2
+        if (expect % a == 0) {
+          int b = expect ~/ a;
+          if (b > 1 && a > 1 && a != expect && b != expect) {
+            return {
+              'expression': "$a * $b",
+              'expect': expect.toString(),
+            };
           }
         }
-      }
-      return factors.where((f) => f > 1 && f < n).toList();
-    }
 
-    if (numberCount == 2) {
-      // Find all factor pairs for multiplication, avoiding 1 and expect
-      List<List<int>> factorPairs = [];
-      for (int i = 2; i <= sqrt(expect).toInt(); i++) {
-        if (expect % i == 0) {
-          int j = expect ~/ i;
-          if (i != expect && j != expect && i != 1 && j != 1) {
-            factorPairs.add([i, j]);
-          }
-        }
-      }
-      if (factorPairs.isEmpty) {
-        // fallback: use "2 * ${expect ~/ 2}" if possible, else "2 * expect"
-        if (expect % 2 == 0 && expect ~/ 2 > 1) {
+        // Try division: expect = a / b
+        int bDiv = random.nextInt(8) + 2; // bDiv >= 2
+        int aDiv = expect * bDiv;
+        if (aDiv > 1 && bDiv > 1 && aDiv != expect && bDiv != expect) {
           return {
-            'expression': "2 * ${expect ~/ 2}",
+            'expression': "$aDiv / $bDiv",
             'expect': expect.toString(),
           };
         }
-        // fallback: pick two random numbers > 1 whose product is not expect, but at least not trivial
-        int a = random.nextInt(8) + 2;
-        int b = expect ~/ a;
-        if (a * b == expect && a != expect && b != expect && a != 1 && b != 1) {
-          return {
-            'expression': "$a * $b",
-            'expect': expect.toString(),
-          };
-        }
-        // fallback: generate a non-trivial multiplication
-        return {
-          'expression': "2 * $expect",
-          'expect': (2 * expect).toString(),
-        };
-      }
-      List<int> selectedPair = factorPairs[random.nextInt(factorPairs.length)];
-      String expression = "${selectedPair[0]} * ${selectedPair[1]}";
-      int result = selectedPair[0] * selectedPair[1];
-      // Avoid expressions like "7" (single number)
-      if (expression == expect.toString()) {
-        expression = "2 * ${expect ~/ 2}";
-        result = expect;
-      }
-      return {
-        'expression': expression,
-        'expect': result.toString(),
-      };
-    } else {
-      // For more than 2 numbers, build a chain of multiplications that result in expect, avoiding 1
-      int result = expect;
-      List<int> numbers = [];
-      List<String> operators = [];
 
-      for (int i = 0; i < numberCount - 1; i++) {
-        List<int> factors = getValidFactors(result);
-        if (factors.isEmpty) {
-          // fallback: break and fill remaining with random numbers > 1
-          while (numbers.length < numberCount - 1) {
-            int randNum = random.nextInt(8) + 2; // 2-9
-            numbers.add(randNum);
-            operators.add('*');
-          }
-          break;
-        }
-        int nextNum = factors[random.nextInt(factors.length)];
-        operators.add('*');
-        numbers.add(nextNum);
-        result = result ~/ nextNum;
-      }
-      // Avoid 1 in the first number as well
-      if (result == 1) {
-        // Try to swap with a previous number if possible
-        for (int i = numbers.length - 1; i >= 0; i--) {
-          if (numbers[i] > 2) {
-            numbers[i] = numbers[i] - 1;
-            result = 2;
+        // If can't find, try again
+        continue;
+      } else {
+        // For more than 2 numbers, build a chain: expect = a * b * c...
+        List<int> numbers = [];
+        List<String> operators = [];
+        int result = expect;
+
+        bool valid = true;
+        for (int i = 0; i < numberCount - 1; i++) {
+          int factorMin = 2;
+          int factorMax = max(2, result ~/ 2);
+          if (factorMax < factorMin) {
+            valid = false;
             break;
           }
+          int factor = random.nextInt(factorMax - factorMin + 1) + factorMin;
+          while (result % factor != 0 && factor > factorMin) {
+            factor--;
+          }
+          if (result % factor != 0 || factor < 2) {
+            valid = false;
+            break;
+          }
+          numbers.add(factor);
+          operators.add('*');
+          result = result ~/ factor;
         }
-      }
-      numbers.insert(0, result);
-
-      // If any number is 1, replace with random 2-9
-      for (int i = 0; i < numbers.length; i++) {
-        if (numbers[i] == 1) {
-          numbers[i] = random.nextInt(8) + 2;
+        if (!valid || result < 2) {
+          continue;
         }
-      }
+        numbers.insert(0, result);
 
-      // Avoid expressions like "7" (single number)
-      if (numbers.length == 1) {
-        numbers.insert(0, 2);
-        operators.insert(0, '*');
-      }
+        // Avoid 1s in the numbers
+        if (numbers.any((n) => n == 1)) {
+          continue;
+        }
 
-      String expression = numbers[0].toString();
-      for (int i = 0; i < operators.length; i++) {
-        expression += ' ${operators[i]} ${numbers[i + 1]}';
+        String expression = numbers[0].toString();
+        for (int i = 0; i < operators.length; i++) {
+          expression += ' ${operators[i]} ${numbers[i + 1]}';
+        }
+        return {
+          'expression': expression,
+          'expect': expect.toString(),
+        };
       }
-      return {
-        'expression': expression,
-        'expect': expect.toString(),
-      };
     }
   }
 
@@ -439,5 +393,27 @@ class Helper {
     }
 
     return confirmExit;
+  }
+
+  static IconData getIconFromDifficulty(
+      BuildContext context, Difficulty? difficultyModel) {
+    IconData difficultyIcon = FontAwesomeIcons.flag;
+    switch (difficultyModel) {
+      // case Difficulty.easy:
+      //   difficultyIcon = FontAwesomeIcons.faceSmileBeam;
+      //   break;
+      case Difficulty.medium:
+        difficultyIcon = FontAwesomeIcons.faceMeh;
+        break;
+      case Difficulty.hard:
+        difficultyIcon = FontAwesomeIcons.faceFrownOpen;
+        break;
+      case Difficulty.extreme:
+        difficultyIcon = FontAwesomeIcons.skullCrossbones;
+        break;
+      default:
+        difficultyIcon = FontAwesomeIcons.faceSmileBeam;
+    }
+    return difficultyIcon;
   }
 }

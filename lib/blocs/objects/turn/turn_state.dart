@@ -114,6 +114,9 @@ class TurnState {
 
   bool get isAbleToReset => status == TurnStatus.playing && lifeRemaining > 1;
   bool get isAbleToContinue => lifeRemaining > 0;
+
+  bool get isAbleToLevelUp =>
+      timesCorrect >= difficultyModel!.numberTurnEachLevel;
 }
 
 // class InitialState extends TurnState {}

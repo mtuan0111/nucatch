@@ -133,7 +133,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       );
 
       // Play sound immediately
-      if (state.timesCorrect >= 3) {
+      if (state.isAbleToLevelUp) {
         _audioServices.playCorrectUp();
       } else {
         _audioServices.playCorrect();
@@ -145,7 +145,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       }
 
       // Checking is up level or not
-      if (state.timesCorrect >= 3) {
+      if (state.isAbleToLevelUp) {
         add(SetLevel(
           level: state.level + 1,
         ));
@@ -270,11 +270,17 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     switch (state.difficultyModel?.difficulty ?? Difficulty.easy) {
       case Difficulty.medium:
         Map<String, String> result =
-            Helper().randomCalculatorWithPlusMinus(state.level + 1);
+            Helper().randomCalculatorWithPlusMinus(state.level);
         expectString = result['expect']!;
         requiredString = result['expression']!;
         break;
       case Difficulty.hard:
+        Map<String, String> result =
+            Helper().randomCalculatorWithMulDiv(state.level);
+        expectString = result['expect']!;
+        requiredString = result['expression']!;
+        break;
+      case Difficulty.extreme:
         Map<String, String> result =
             Helper().randomCalculatorWithMulDiv(state.level);
         expectString = result['expect']!;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
@@ -11,6 +10,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/helper.dart';
 
 import 'package:nucatch/helpers/template.dart';
 
@@ -68,24 +68,11 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       spacing: buttonSpace,
                       runSpacing: buttonSpace,
-                      children: Difficulty.values.map((difficultyModel) {
+                      children: Difficulty.values.map((difficulty) {
                         String textButton = '';
 
-                        IconData difficultyIcon = FontAwesomeIcons.flag;
-                        switch (difficultyModel) {
-                          case Difficulty.easy:
-                            textButton = lang(context).easy;
-                            difficultyIcon = FontAwesomeIcons.faceSmileBeam;
-                            break;
-                          case Difficulty.medium:
-                            textButton = lang(context).medium;
-                            difficultyIcon = FontAwesomeIcons.faceMeh;
-                            break;
-                          case Difficulty.hard:
-                            textButton = lang(context).hard;
-                            difficultyIcon = FontAwesomeIcons.faceFrownOpen;
-                            break;
-                        }
+                        IconData difficultyIcon =
+                            Helper.getIconFromDifficulty(context, difficulty);
 
                         return Column(
                           children: [
@@ -96,7 +83,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                 turnBloc.add(
                                   SetDifficulty(
                                     difficultyModel: DifficultyModel.getModel(
-                                      difficultyModel,
+                                      difficulty,
                                     ),
                                     onChanged: (_) {
                                       turnBloc.add(Start());

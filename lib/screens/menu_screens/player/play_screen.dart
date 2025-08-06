@@ -128,7 +128,8 @@ class _PlayScreenState extends State<PlayScreen> {
                               Row(
                                 children: [
                                   Icon(
-                                    FontAwesomeIcons.layerGroup,
+                                    Helper.getIconFromDifficulty(context,
+                                        turnState.difficultyModel?.difficulty),
                                     color: Theme.of(context)
                                         .scaffoldBackgroundColor,
                                     size: Theme.of(context)
@@ -443,11 +444,13 @@ class _PlayScreenState extends State<PlayScreen> {
                                               style: LayoutConfig(context)
                                                   .displaySmallStyle(),
                                             ),
-                                            Icon(
-                                              FontAwesomeIcons.minus,
-                                              color: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
-                                            ),
+                                            // if (turnState.expect ==
+                                            //     turnState.requirementString)
+                                            //   Icon(
+                                            //     FontAwesomeIcons.minus,
+                                            //     color: Theme.of(context)
+                                            //         .scaffoldBackgroundColor,
+                                            //   ),
                                           ],
                                         ),
                                       );
