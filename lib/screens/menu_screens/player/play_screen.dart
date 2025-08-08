@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'dart:developer' as dev;
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,8 +34,8 @@ class PlayScreen extends StatefulWidget {
 }
 
 class _PlayScreenState extends State<PlayScreen> {
-  double get screenWidth => MediaQuery.of(context).size.width;
-  double get screenHeight => MediaQuery.of(context).size.height;
+  double get screenWidth => max(MediaQuery.of(context).size.width, 600);
+
   double get buttonSpace => 20;
   String inputtedValue = "";
 
@@ -90,10 +92,11 @@ class _PlayScreenState extends State<PlayScreen> {
   @override
   Widget build(BuildContext context) {
     final isTablet = screenWidth > 600; // Adjust layout for tablets
-    final padding = isTablet ? 40.0 : 20.0;
-    final buttonSize = isTablet
-        ? (screenWidth / 5) - buttonSpace * 2
-        : (screenWidth / 3) - buttonSpace * 2;
+    // final padding = isTablet ? 40.0 : 20.0;
+    final buttonSize = 50.0; // Fixed button size for simplicity
+    // final buttonSize = isTablet
+    //     ? (screenWidth / 5) - buttonSpace * 2
+    //     : (screenWidth / 3) - buttonSpace * 2;
 
     return Scaffold(
       body: BlocBuilder<TurnBloc, TurnState>(
@@ -114,8 +117,7 @@ class _PlayScreenState extends State<PlayScreen> {
           return Container(
             decoration: LayoutConfig(context).gradientDecoration,
             child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.all(padding),
+              child: DeviceWrapper(
                 child: Column(
                   children: [
                     Expanded(
@@ -269,7 +271,8 @@ class _PlayScreenState extends State<PlayScreen> {
 
                                           if (isLast) {
                                             // Handle last life icon specific logic
-                                            log("message: Last life icon at index $index, shouldAnimateAdd: $shouldAnimateAdd, shouldAnimateRemove: $shouldAnimateRemove");
+                                            dev.log(
+                                                "message: Last life icon at index $index, shouldAnimateAdd: $shouldAnimateAdd, shouldAnimateRemove: $shouldAnimateRemove");
                                           }
 
                                           if (shouldAnimateAdd) {
@@ -533,24 +536,32 @@ class _PlayScreenState extends State<PlayScreen> {
                     ),
                     Expanded(
                       flex: 2,
-                      child: Center(
-                        child: Container(
-                          constraints: BoxConstraints(
-                            maxWidth: (buttonSize + buttonSpace) *
-                                3, // Make it in 3 column
-                          ),
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            spacing: buttonSpace,
-                            runSpacing: buttonSpace,
-                            children: keyboardArray.entries.map(
-                              (e) {
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          // Prepare 3x4 grid
+                          final keys = keyboardArray.entries.toList();
+                          const columns = 3;
+                          const rows = 4;
+                          final buttonWidth = constraints.maxWidth / columns;
+                          final buttonHeight = constraints.maxHeight / rows;
+                          const buttonSpacing = 20.0;
+
+                          List<TableRow> tableRows = [];
+                          for (int r = 0; r < rows; r++) {
+                            List<Widget> rowChildren = [];
+                            for (int c = 0; c < columns; c++) {
+                              int idx = r * columns + c;
+                              if (idx < keys.length) {
+                                final e = keys[idx];
                                 Duration duration =
                                     const Duration(milliseconds: 200);
+                                Widget button;
                                 if (e.key == KeyboardOption.reset) {
-                                  return AnimatedButton(
+                                  button = AnimatedButton(
                                     context,
-                                    buttonSize: buttonSize,
+                                    buttonSize: buttonWidth < buttonHeight
+                                        ? buttonWidth - buttonSpacing
+                                        : buttonHeight - buttonSpacing,
                                     iconData: FontAwesomeIcons.arrowsRotate,
                                     isEnable: turnState.isAbleToReset &&
                                         turnState.isAbleToTap,
@@ -561,12 +572,12 @@ class _PlayScreenState extends State<PlayScreen> {
                                           );
                                     },
                                   );
-                                }
-
-                                if (e.key == KeyboardOption.mainMenu) {
-                                  return AnimatedButton(
+                                } else if (e.key == KeyboardOption.mainMenu) {
+                                  button = AnimatedButton(
                                     context,
-                                    buttonSize: buttonSize,
+                                    buttonSize: buttonWidth < buttonHeight
+                                        ? buttonWidth - buttonSpacing
+                                        : buttonHeight - buttonSpacing,
                                     iconData: FontAwesomeIcons.bars,
                                     onPressed: () {
                                       Helper.pressMainMenu(context)
@@ -576,11 +587,6 @@ class _PlayScreenState extends State<PlayScreen> {
                                             context,
                                             isCauseGameOver: false,
                                           ));
-
-                                          // if (turnState.recordedItem != null) {
-                                          //   turnBloc.add(SaveRecorded(context: context));
-                                          // }
-
                                           menuBloc.add(
                                             SelectOption(
                                               option: null,
@@ -590,121 +596,55 @@ class _PlayScreenState extends State<PlayScreen> {
                                       });
                                     },
                                   );
+                                } else {
+                                  button = AnimatedButton(
+                                    context,
+                                    buttonSize: buttonWidth < buttonHeight
+                                        ? buttonWidth - buttonSpacing
+                                        : buttonHeight - buttonSpacing,
+                                    text: e.value.toString(),
+                                    isEnable: turnState.isAbleToTap,
+                                    onPressed: () {
+                                      context.read<TurnBloc>().add(
+                                            Tap(context, keyValue: e.key),
+                                          );
+                                    },
+                                  );
                                 }
-
-                                // return AnimatedOpacity(
-                                //   opacity: turnState.isAbleToTap ? 1 : 0.5,
-                                //   duration: const Duration(milliseconds: 200),
-                                //   child: CustomElevatedButton(
-                                //     text: e.value.toString(),
-                                //     onPressed: () {
-                                //       context.read<TurnBloc>().add(
-                                //             Tap(context, keyValue: e.key),
-                                //           );
-
-                                //       setState(
-                                //         () {
-                                //           originalScale = 0.8;
-                                //           // milisecondDuation = 100;
-                                //         },
-                                //       );
-                                //     },
-                                //   ),
-                                // );
-
-                                return AnimatedButton(
-                                  context,
-                                  buttonSize: buttonSize,
-                                  text: e.value.toString(),
-                                  isEnable: turnState.isAbleToTap,
-                                  onPressed: () {
-                                    context.read<TurnBloc>().add(
-                                          Tap(context, keyValue: e.key),
-                                        );
-                                  },
+                                rowChildren.add(
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.all(buttonSpacing / 2),
+                                    child: SizedBox(
+                                      width: buttonWidth - buttonSpacing,
+                                      height: buttonHeight - buttonSpacing,
+                                      child: button,
+                                    ),
+                                  ),
                                 );
-                                // double originalScale = 1;
-                                // int milisecondDuation = 50;
-                                // return AnimatedScale(
-                                //   scale: originalScale,
-                                //   duration:
-                                //       Duration(milliseconds: milisecondDuation),
-                                //   child: SizedBox(
-                                //     width: buttonSize,
-                                //     height: buttonSize,
-                                //     child: Builder(
-                                //       builder: (context) {
-                                //         Duration duration =
-                                //             const Duration(milliseconds: 200);
-                                //         if (e.key == KeyboardOption.reset) {
-                                //           return AnimatedOpacity(
-                                //             opacity: (turnState.isAbleToReset &&
-                                //                     turnState.isAbleToTap)
-                                //                 ? 1
-                                //                 : 0.5,
-                                //             duration: duration,
-                                //             child: CustomElevatedButton(
-                                //               icon:
-                                //                   FontAwesomeIcons.arrowsRotate,
-                                //               onPressed: () async {
-                                //                 context.read<TurnBloc>().add(
-                                //                       ResetNewNumber(context,
-                                //                           duration: duration),
-                                //                     );
-                                //               },
-                                //             ),
-                                //           );
-                                //         }
-
-                                //         if (e.key == KeyboardOption.mainMenu) {
-                                //           return AnimatedOpacity(
-                                //             opacity: (turnState.isAbleToTap)
-                                //                 ? 1
-                                //                 : 0.5,
-                                //             duration: const Duration(
-                                //                 milliseconds: 200),
-                                //             child: CustomElevatedButton(
-                                //               icon: FontAwesomeIcons.bars,
-                                //               onPressed: () {
-                                //                 pressMainMenu(context)
-                                //                     .then((confirmedMenu) {
-                                //                   if (confirmedMenu) {}
-                                //                 });
-                                //               },
-                                //             ),
-                                //           );
-                                //         }
-
-                                //         return AnimatedOpacity(
-                                //           opacity:
-                                //               turnState.isAbleToTap ? 1 : 0.5,
-                                //           duration:
-                                //               const Duration(milliseconds: 200),
-                                //           child: CustomElevatedButton(
-                                //             text: e.value.toString(),
-                                //             onPressed: () {
-                                //               context.read<TurnBloc>().add(
-                                //                     Tap(context,
-                                //                         keyValue: e.key),
-                                //                   );
-
-                                //               setState(
-                                //                 () {
-                                //                   originalScale = 0.8;
-                                //                   // milisecondDuation = 100;
-                                //                 },
-                                //               );
-                                //             },
-                                //           ),
-                                //         );
-                                //       },
-                                //     ),
-                                //   ),
-                                // );
-                              },
-                            ).toList(),
-                          ),
-                        ),
+                              } else {
+                                rowChildren.add(
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.all(buttonSpacing / 2),
+                                    child: SizedBox(
+                                      width: buttonWidth - buttonSpacing,
+                                      height: buttonHeight - buttonSpacing,
+                                    ),
+                                  ),
+                                );
+                              }
+                            }
+                            tableRows.add(TableRow(
+                              children: rowChildren,
+                            ));
+                          }
+                          return Table(
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: tableRows,
+                          );
+                        },
                       ),
                     )
                   ],
