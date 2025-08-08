@@ -399,6 +399,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Do you want to exit?'**
   String get doYouWantToExit;
+
+  /// Description for easy difficulty level logic
+  ///
+  /// In en, this message translates to:
+  /// **'Generates a random number with a slightly increased level for simple challenges.'**
+  String get difficultyEasyDescription;
+
+  /// Description for medium difficulty level logic
+  ///
+  /// In en, this message translates to:
+  /// **'Produces a plus/minus calculation expression for moderate difficulty.'**
+  String get difficultyMediumDescription;
+
+  /// Description for hard difficulty level logic
+  ///
+  /// In en, this message translates to:
+  /// **'Creates a multiplication/division calculation expression for advanced difficulty.'**
+  String get difficultyHardDescription;
+
+  /// Description for extreme difficulty level logic
+  ///
+  /// In en, this message translates to:
+  /// **'Randomly selects between generating a complex plus/minus calculation, a higher-level random number, or a multiplication/division calculation for the most challenging experience.'**
+  String get difficultyExtremeDescription;
+
+  /// Title for easy difficulty mode
+  ///
+  /// In en, this message translates to:
+  /// **'Easy Mode'**
+  String get difficultyEasyTitle;
+
+  /// Title for medium difficulty mode
+  ///
+  /// In en, this message translates to:
+  /// **'Medium Mode'**
+  String get difficultyMediumTitle;
+
+  /// Title for hard difficulty mode
+  ///
+  /// In en, this message translates to:
+  /// **'Hard Mode'**
+  String get difficultyHardTitle;
+
+  /// Title for extreme difficulty mode
+  ///
+  /// In en, this message translates to:
+  /// **'Extreme Mode'**
+  String get difficultyExtremeTitle;
 }
 
 class _AppLocalizationsDelegate

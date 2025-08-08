@@ -16,6 +16,7 @@ import 'package:nucatch/blocs/objects/user/user_event.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/template.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({
@@ -107,7 +108,6 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   sliver: SliverPadding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 50,
                       vertical: 50,
                     ),
                     sliver: SliverList(
@@ -115,287 +115,294 @@ class _SettingScreenState extends State<SettingScreen> {
                         [
                           BlocBuilder<UserBloc, UserState>(
                             builder: (context, userState) {
-                              return Form(
-                                child: Wrap(
-                                  alignment: WrapAlignment.center,
-                                  runSpacing: 20,
-                                  spacing: 20,
-                                  children: [
-                                    TextFormField(
-                                      decoration: InputDecoration(
-                                        icon: const Icon(
-                                          Icons.person,
+                              return DeviceWrapper(
+                                child: Form(
+                                  child: Wrap(
+                                    alignment: WrapAlignment.center,
+                                    runSpacing: 20,
+                                    spacing: 20,
+                                    children: [
+                                      TextFormField(
+                                        decoration: InputDecoration(
+                                          icon: const Icon(
+                                            Icons.person,
+                                          ),
+                                          labelText: lang(context).name,
+                                          hintText: lang(context).anonymous,
+                                          labelStyle: LayoutConfig(context)
+                                              .titleSectionStyle(),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              LayoutConfig.layoutBorderRadius,
+                                            ),
+                                          ),
+                                          iconColor: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                          fillColor: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                          focusColor: Theme.of(context)
+                                              .scaffoldBackgroundColor,
                                         ),
-                                        labelText: lang(context).name,
-                                        hintText: lang(context).anonymous,
-                                        labelStyle: LayoutConfig(context)
+                                        style: LayoutConfig(context)
                                             .titleSectionStyle(),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            LayoutConfig.layoutBorderRadius,
-                                          ),
-                                        ),
-                                        iconColor: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        fillColor: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        focusColor: Theme.of(context)
-                                            .scaffoldBackgroundColor,
+                                        initialValue: userState.model.username,
+                                        onChanged: (value) {
+                                          userBloc.add(
+                                            UsernameChanged(
+                                              newUsername: value,
+                                            ),
+                                          );
+                                        },
                                       ),
-                                      style: LayoutConfig(context)
-                                          .titleSectionStyle(),
-                                      initialValue: userState.model.username,
-                                      onChanged: (value) {
-                                        userBloc.add(
-                                          UsernameChanged(
-                                            newUsername: value,
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            FontAwesomeIcons.textWidth,
+                                            color: Theme.of(context)
+                                                .scaffoldBackgroundColor,
                                           ),
-                                        );
-                                      },
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          FontAwesomeIcons.textWidth,
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor,
-                                        ),
-                                        const SizedBox(
-                                          width: 16,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                lang(context).fontSize,
-                                                style: LayoutConfig(context)
-                                                    .titleSectionStyle(),
-                                              ),
-                                              Slider(
-                                                value: settingState.fontSize
-                                                    .toDouble(),
-                                                min: 0,
-                                                max: 10,
-                                                divisions: 10,
-                                                label: settingState.fontSize
-                                                    .round()
-                                                    .toString(),
-                                                onChanged: (val) {
-                                                  setState(() {
-                                                    settingBloc.add(
-                                                      ChangedFontSize(
-                                                        fontSize: val.round(),
-                                                      ),
-                                                    );
-                                                  });
-                                                },
-                                              ),
-                                            ],
+                                          const SizedBox(
+                                            width: 16,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          settingState.vol > 7
-                                              ? FontAwesomeIcons.volumeHigh
-                                              : settingState.vol > 4
-                                                  ? FontAwesomeIcons.volumeLow
-                                                  : settingState.vol > 2
-                                                      ? FontAwesomeIcons
-                                                          .volumeOff
-                                                      : FontAwesomeIcons
-                                                          .volumeXmark,
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor,
-                                        ),
-                                        const SizedBox(
-                                          width: 16,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                lang(context).volume,
-                                                style: LayoutConfig(context)
-                                                    .titleSectionStyle(),
-                                              ),
-                                              Slider(
-                                                value:
-                                                    settingState.vol.toDouble(),
-                                                min: 0,
-                                                max: 10,
-                                                divisions: 10,
-                                                label: settingState.vol
-                                                    .round()
-                                                    .toString(),
-                                                onChanged: (val) {
-                                                  settingBloc.add(
-                                                    ChangedVol(
-                                                      vol: val.round(),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          FontAwesomeIcons.waveSquare,
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor,
-                                        ),
-                                        const SizedBox(width: 16),
-                                        Expanded(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                lang(context).vibrate,
-                                                style: LayoutConfig(context)
-                                                    .titleSectionStyle(),
-                                              ),
-                                              Switch(
-                                                value: settingState.isVibrate,
-                                                onChanged: (val) {
-                                                  settingBloc.add(
-                                                    ChangedIsVibrate(
-                                                        isVibrate: val),
-                                                  );
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          FontAwesomeIcons.ribbon,
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor,
-                                        ),
-                                        const SizedBox(
-                                          width: 16,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                lang(context).numberOfTopScores,
-                                                style: LayoutConfig(context)
-                                                    .titleSectionStyle(),
-                                              ),
-                                              Slider(
-                                                value: settingState
-                                                    .numberOfTopBoard
-                                                    .toDouble(),
-                                                min: 20,
-                                                max: 100,
-                                                divisions: 8,
-                                                label: settingState
-                                                    .numberOfTopBoard
-                                                    .round()
-                                                    .toString(),
-                                                onChanged: (val) {
-                                                  setState(() {
-                                                    settingBloc.add(
-                                                      ChangedNumberOfTopBoard(
-                                                        numberOfTopBoard:
-                                                            val.round(),
-                                                      ),
-                                                    );
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          FontAwesomeIcons.language,
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor,
-                                        ),
-                                        const SizedBox(
-                                          width: 16,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                lang(context).language,
-                                                style: LayoutConfig(context)
-                                                    .titleSectionStyle(),
-                                              ),
-                                              DropdownButtonFormField<String>(
-                                                value: settingState.locale,
-                                                items: languages.entries
-                                                    .map(
-                                                      (lang) =>
-                                                          DropdownMenuItem<
-                                                              String>(
-                                                        value: lang.key,
-                                                        child: Text(lang.value),
-                                                      ),
-                                                    )
-                                                    .toList(),
-                                                onChanged: (val) {
-                                                  if (val != null) {
-                                                    settingBloc.add(
-                                                      ChangedLocale(
-                                                          locale: val),
-                                                    );
-                                                  }
-                                                },
-                                                decoration: InputDecoration(
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      LayoutConfig
-                                                          .layoutBorderRadius,
-                                                    ),
-                                                  ),
-                                                  fillColor: Theme.of(context)
-                                                      .scaffoldBackgroundColor,
-                                                  focusColor: Theme.of(context)
-                                                      .scaffoldBackgroundColor,
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  lang(context).fontSize,
+                                                  style: LayoutConfig(context)
+                                                      .titleSectionStyle(),
                                                 ),
-                                                dropdownColor: Theme.of(context)
-                                                    .primaryColor,
-                                              ),
-                                            ],
+                                                Slider(
+                                                  value: settingState.fontSize
+                                                      .toDouble(),
+                                                  min: 0,
+                                                  max: 10,
+                                                  divisions: 10,
+                                                  label: settingState.fontSize
+                                                      .round()
+                                                      .toString(),
+                                                  onChanged: (val) {
+                                                    setState(() {
+                                                      settingBloc.add(
+                                                        ChangedFontSize(
+                                                          fontSize: val.round(),
+                                                        ),
+                                                      );
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            settingState.vol > 7
+                                                ? FontAwesomeIcons.volumeHigh
+                                                : settingState.vol > 4
+                                                    ? FontAwesomeIcons.volumeLow
+                                                    : settingState.vol > 2
+                                                        ? FontAwesomeIcons
+                                                            .volumeOff
+                                                        : FontAwesomeIcons
+                                                            .volumeXmark,
+                                            color: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                          ),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  lang(context).volume,
+                                                  style: LayoutConfig(context)
+                                                      .titleSectionStyle(),
+                                                ),
+                                                Slider(
+                                                  value: settingState.vol
+                                                      .toDouble(),
+                                                  min: 0,
+                                                  max: 10,
+                                                  divisions: 10,
+                                                  label: settingState.vol
+                                                      .round()
+                                                      .toString(),
+                                                  onChanged: (val) {
+                                                    settingBloc.add(
+                                                      ChangedVol(
+                                                        vol: val.round(),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            FontAwesomeIcons.waveSquare,
+                                            color: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                          ),
+                                          const SizedBox(width: 16),
+                                          Expanded(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  lang(context).vibrate,
+                                                  style: LayoutConfig(context)
+                                                      .titleSectionStyle(),
+                                                ),
+                                                Switch(
+                                                  value: settingState.isVibrate,
+                                                  onChanged: (val) {
+                                                    settingBloc.add(
+                                                      ChangedIsVibrate(
+                                                          isVibrate: val),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            FontAwesomeIcons.ribbon,
+                                            color: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                          ),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  lang(context)
+                                                      .numberOfTopScores,
+                                                  style: LayoutConfig(context)
+                                                      .titleSectionStyle(),
+                                                ),
+                                                Slider(
+                                                  value: settingState
+                                                      .numberOfTopBoard
+                                                      .toDouble(),
+                                                  min: 20,
+                                                  max: 100,
+                                                  divisions: 8,
+                                                  label: settingState
+                                                      .numberOfTopBoard
+                                                      .round()
+                                                      .toString(),
+                                                  onChanged: (val) {
+                                                    setState(() {
+                                                      settingBloc.add(
+                                                        ChangedNumberOfTopBoard(
+                                                          numberOfTopBoard:
+                                                              val.round(),
+                                                        ),
+                                                      );
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            FontAwesomeIcons.language,
+                                            color: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                          ),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  lang(context).language,
+                                                  style: LayoutConfig(context)
+                                                      .titleSectionStyle(),
+                                                ),
+                                                DropdownButtonFormField<String>(
+                                                  value: settingState.locale,
+                                                  items: languages.entries
+                                                      .map(
+                                                        (lang) =>
+                                                            DropdownMenuItem<
+                                                                String>(
+                                                          value: lang.key,
+                                                          child:
+                                                              Text(lang.value),
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                  onChanged: (val) {
+                                                    if (val != null) {
+                                                      settingBloc.add(
+                                                        ChangedLocale(
+                                                            locale: val),
+                                                      );
+                                                    }
+                                                  },
+                                                  decoration: InputDecoration(
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        LayoutConfig
+                                                            .layoutBorderRadius,
+                                                      ),
+                                                    ),
+                                                    fillColor: Theme.of(context)
+                                                        .scaffoldBackgroundColor,
+                                                    focusColor: Theme.of(
+                                                            context)
+                                                        .scaffoldBackgroundColor,
+                                                  ),
+                                                  dropdownColor:
+                                                      Theme.of(context)
+                                                          .primaryColor,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },

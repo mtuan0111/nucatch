@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -268,25 +268,48 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     late String expectString;
 
     switch (state.difficultyModel?.difficulty ?? Difficulty.easy) {
+      /// Handles the generation of calculation expressions or random numbers based on the selected [Difficulty] mode:
+      ///
+      /// - [Difficulty.easy]: Generates a random number with a slightly increased level for simple challenges.
+      /// - [Difficulty.medium]: Produces a plus/minus calculation expression for moderate difficulty.
+      /// - [Difficulty.hard]: Creates a multiplication/division calculation expression for advanced difficulty.
+      /// - [Difficulty.extreme]: Randomly selects between generating a complex plus/minus calculation, a higher-level random number, or a multiplication/division calculation for the most challenging experience.
       case Difficulty.medium:
+        // Generate a plus/minus calculation expression for medium difficulty
         Map<String, String> result =
             Helper().randomCalculatorWithPlusMinus(state.level);
         expectString = result['expect']!;
         requiredString = result['expression']!;
         break;
       case Difficulty.hard:
+        // Generate a multiplication/division calculation expression for hard difficulty
         Map<String, String> result =
             Helper().randomCalculatorWithMulDiv(state.level);
         expectString = result['expect']!;
         requiredString = result['expression']!;
         break;
       case Difficulty.extreme:
-        Map<String, String> result =
-            Helper().randomCalculatorWithMulDiv(state.level);
-        expectString = result['expect']!;
-        requiredString = result['expression']!;
+        // For extreme difficulty, randomly choose between different generators for added challenge
+        final rand = Random();
+        final choice = rand.nextInt(3);
+        if (choice == 0) {
+          // Plus/minus calculation with higher level
+          var result = Helper().randomCalculatorWithPlusMinus(state.level + 2);
+          expectString = result['expect']!;
+          requiredString = result['expression']!;
+        } else if (choice == 1) {
+          // Generate a random number with higher level
+          expectString = Helper().generateRandomNumber(state.level + 5);
+          requiredString = expectString;
+        } else {
+          // Multiplication/division calculation with higher level
+          var result = Helper().randomCalculatorWithMulDiv(state.level + 2);
+          expectString = result['expect']!;
+          requiredString = result['expression']!;
+        }
         break;
       case Difficulty.easy:
+        // Generate a random number for easy difficulty
         expectString = Helper().generateRandomNumber(state.level + 2);
         requiredString = expectString;
         break;
@@ -499,8 +522,6 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
 
     _audioServices.playSaveSuccess();
-
-    log(insertSuccess ? "Insert success" : "Insert failed");
 
     emitter(
       state.copyWith(

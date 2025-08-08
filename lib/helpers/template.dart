@@ -550,3 +550,44 @@ class _WidgetToImageState extends State<WidgetToImage> {
     );
   }
 }
+
+class DeviceWrapper extends StatelessWidget {
+  final Widget child;
+  final bool isNavBar;
+
+  const DeviceWrapper({
+    super.key,
+    required this.child,
+    this.isNavBar = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Get the screen width
+    final double screenWidth = MediaQuery.of(context).size.width;
+
+    // Check if the screen width is greater than 600, which is a common breakpoint for an iPad
+    final bool isIpad = screenWidth > 600;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: isNavBar ? 20 : 40),
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          if (isIpad) {
+            // If it's an iPad, return the child inside a Center widget to center it on the screen
+            // and limit its width to a maximum of 600 pixels
+            return Center(
+              child: SizedBox(
+                width: 600,
+                child: child,
+              ),
+            );
+          } else {
+            // If it's not an iPad, return the child as is
+            return child;
+          }
+        },
+      ),
+    );
+  }
+}

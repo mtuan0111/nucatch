@@ -144,6 +144,11 @@ class Helper {
         continue;
       }
 
+      // If any member of the calculator is 0, regenerate
+      if (numbers.contains(0)) {
+        continue;
+      }
+
       return {
         'expression': expression,
         'expect': expect.toString(),
@@ -415,5 +420,41 @@ class Helper {
         difficultyIcon = FontAwesomeIcons.faceSmileBeam;
     }
     return difficultyIcon;
+  }
+
+  static String getDescriptionFromDifficulty(
+      BuildContext context, Difficulty? difficultyModel) {
+    switch (difficultyModel) {
+      case Difficulty.easy:
+        return lang(context).difficultyEasyDescription;
+      case Difficulty.medium:
+        return lang(context).difficultyMediumDescription;
+      case Difficulty.hard:
+        return lang(context).difficultyHardDescription;
+      case Difficulty.extreme:
+        return lang(context).difficultyExtremeDescription;
+      default:
+        return lang(context).difficultyEasyDescription;
+    }
+  }
+
+  static String getTitleFromDifficulty(
+      BuildContext context, Difficulty? difficultyModel) {
+    switch (difficultyModel) {
+      case Difficulty.easy:
+        return lang(context).difficultyEasyTitle;
+      case Difficulty.medium:
+        return lang(context).difficultyMediumTitle;
+      case Difficulty.hard:
+        return lang(context).difficultyHardTitle;
+      case Difficulty.extreme:
+        return lang(context).difficultyExtremeTitle;
+      default:
+        return lang(context).difficultyEasyTitle;
+    }
+  }
+
+  bool randomBool() {
+    return Random().nextBool();
   }
 }

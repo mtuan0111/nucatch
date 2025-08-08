@@ -269,5 +269,39 @@
   "@doYouWantToExit": {
     "description": "Hỏi người dùng có muốn thoát ứng dụng hay không",
     "placeholders": {}
+  },
+
+  "difficultyEasyDescription": "Bạn sẽ gặp các câu hỏi đơn giản, chủ yếu là số nhỏ, rất phù hợp để làm quen và bắt đầu chơi.",
+  "@difficultyEasyDescription": {
+    "description": "Mô tả cấp độ dễ, thân thiện và tự nhiên cho người Việt"
+  },
+  "difficultyMediumDescription": "Các phép cộng và trừ với số lớn hơn, giúp bạn nâng cao kỹ năng một cách nhẹ nhàng.",
+  "@difficultyMediumDescription": {
+    "description": "Mô tả cấp độ trung bình, thân thiện và tự nhiên cho người Việt"
+  },
+  "difficultyHardDescription": "Xuất hiện phép nhân và chia, yêu cầu bạn phải tập trung và phản xạ nhanh hơn.",
+  "@difficultyHardDescription": {
+    "description": "Mô tả cấp độ khó, thân thiện và tự nhiên cho người Việt"
+  },
+  "difficultyExtremeDescription": "Câu hỏi đa dạng, số lớn, phép tính phức tạp, mang đến thử thách thực sự cho bạn.",
+  "@difficultyExtremeDescription": {
+    "description": "Mô tả cấp độ cực kỳ khó, thân thiện và tự nhiên cho người Việt"
+  },
+  
+  "difficultyEasyTitle": "Chế độ dễ",
+  "@difficultyEasyTitle": {
+    "description": "Tiêu đề cho chế độ dễ"
+  },
+  "difficultyMediumTitle": "Chế độ trung bình",
+  "@difficultyMediumTitle": {
+    "description": "Tiêu đề cho chế độ trung bình"
+  },
+  "difficultyHardTitle": "Chế độ khó",
+  "@difficultyHardTitle": {
+    "description": "Tiêu đề cho chế độ khó"
+  },
+  "difficultyExtremeTitle": "Chế độ cực kỳ khó",
+  "@difficultyExtremeTitle": {
+    "description": "Tiêu đề cho chế độ cực kỳ khó"
   }
 }

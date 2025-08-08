@@ -89,39 +89,40 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 50,
-                      horizontal: 10,
                     ),
                     sliver: SliverToBoxAdapter(
                       child: IntrinsicWidth(
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          runSpacing: 50,
-                          spacing: 50,
-                          children: [
-                            if (turnRecordedListState.listModel != null)
-                              ...turnRecordedListState.listModel!.map(
-                                (e) => GestureDetector(
-                                  onTap: () {
-                                    context
-                                        .read<TopScoreNavCubit>()
-                                        .showTopScoreDetail(
-                                          e,
-                                          turnRecordedListState.indexOf(e),
-                                        );
-                                  },
-                                  child: RankingItem(
-                                    ranking: turnRecordedListState.indexOf(e),
-                                    turnRecordedModel: e,
-                                    // playerName: e.playedUsername ??
-                                    //     lang(context).anonymous,
-                                    // createdAt: e.recordedTime,
-                                    // turnedPoint: e.point,
+                        child: DeviceWrapper(
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            runSpacing: 50,
+                            spacing: 50,
+                            children: [
+                              if (turnRecordedListState.listModel != null)
+                                ...turnRecordedListState.listModel!.map(
+                                  (e) => GestureDetector(
+                                    onTap: () {
+                                      context
+                                          .read<TopScoreNavCubit>()
+                                          .showTopScoreDetail(
+                                            e,
+                                            turnRecordedListState.indexOf(e),
+                                          );
+                                    },
+                                    child: RankingItem(
+                                      ranking: turnRecordedListState.indexOf(e),
+                                      turnRecordedModel: e,
+                                      // playerName: e.playedUsername ??
+                                      //     lang(context).anonymous,
+                                      // createdAt: e.recordedTime,
+                                      // turnedPoint: e.point,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            if (turnRecordedListState.isLoading)
-                              const LoadingWidget(),
-                          ],
+                              if (turnRecordedListState.isLoading)
+                                const LoadingWidget(),
+                            ],
+                          ),
                         ),
                       ),
                     ),

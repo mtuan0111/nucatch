@@ -9,6 +9,7 @@ import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/models/setting_model.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
@@ -99,178 +100,201 @@ class _AboutScreenState extends State<AboutScreen> {
               expandedHeight: 100,
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(
+                vertical: 20,
+              ),
               sliver: SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      lang(context).thankYou,
-                      style: LayoutConfig(context).titleSectionStyle(),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.solidHeart,
-                          color: Theme.of(context).primaryColor,
-                          size:
-                              Theme.of(context).textTheme.titleLarge!.fontSize,
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            "${lang(context).introductionContent}\n\n${lang(context).thankYouMessage}",
-                            style: LayoutConfig(context).contentSectionStyle(),
+                child: DeviceWrapper(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lang(context).thankYou,
+                        style: LayoutConfig(context).titleSectionStyle(),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.solidHeart,
+                            color: Theme.of(context).primaryColor,
+                            size: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .fontSize,
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              "${lang(context).introductionContent}\n\n${lang(context).thankYouMessage}",
+                              style:
+                                  LayoutConfig(context).contentSectionStyle(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(
+                vertical: 20,
+              ),
               sliver: SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      lang(context).authorName,
-                      style: LayoutConfig(context).titleSectionStyle(),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.user,
-                          color: Theme.of(context).primaryColor,
-                          size:
-                              Theme.of(context).textTheme.titleLarge!.fontSize,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          "${lang(context).authorName}: ",
-                          style: LayoutConfig(context).contentSectionStyle(),
-                        ),
-                        Text(
-                          "BOM",
-                          style: LayoutConfig(context).titleSectionStyle(),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.codeBranch,
-                          color: Theme.of(context).primaryColor,
-                          size:
-                              Theme.of(context).textTheme.titleLarge!.fontSize,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          "${lang(context).version}: ",
-                          style: LayoutConfig(context).contentSectionStyle(),
-                        ),
-                        Text(
-                          version ?? "N/A",
-                          style: LayoutConfig(context).contentSectionStyle(),
-                        ),
-                      ],
-                    ),
-                  ],
+                child: DeviceWrapper(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lang(context).authorName,
+                        style: LayoutConfig(context).titleSectionStyle(),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.user,
+                            color: Theme.of(context).primaryColor,
+                            size: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .fontSize,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            "${lang(context).authorName}: ",
+                            style: LayoutConfig(context).contentSectionStyle(),
+                          ),
+                          Text(
+                            "BOM",
+                            style: LayoutConfig(context).titleSectionStyle(),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.codeBranch,
+                            color: Theme.of(context).primaryColor,
+                            size: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .fontSize,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            "${lang(context).version}: ",
+                            style: LayoutConfig(context).contentSectionStyle(),
+                          ),
+                          Text(
+                            version ?? "N/A",
+                            style: LayoutConfig(context).contentSectionStyle(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(
+                vertical: 20,
+              ),
               sliver: SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      lang(context).connectWithUs,
-                      style: LayoutConfig(context).titleSectionStyle(),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.connectdevelop,
-                          color: Theme.of(context).primaryColor,
-                          size:
-                              Theme.of(context).textTheme.titleLarge!.fontSize,
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            lang(context).connectWithUsMessage,
-                            style: LayoutConfig(context).contentSectionStyle(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            if (userState.username == null) {
-                              Share.share(
-                                lang(context).messageShareIntro(
-                                  dotenv.env['PROFILE_URL']!,
-                                ),
-                              );
-                            } else {
-                              Share.share(
-                                lang(context).messageShareIntroWIthUsername(
-                                  userState.username ?? lang(context).anonymous,
-                                  dotenv.env['PROFILE_URL']!,
-                                ),
-                              );
-                            }
-                          },
-                          icon: Icon(
-                            FontAwesomeIcons.shareNodes,
+                child: DeviceWrapper(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lang(context).connectWithUs,
+                        style: LayoutConfig(context).titleSectionStyle(),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.connectdevelop,
                             color: Theme.of(context).primaryColor,
+                            size: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .fontSize,
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            Helper.launchURL(facebookUrl,
-                                fallbackUrl: facebookUrl);
-                          },
-                          icon: Icon(
-                            FontAwesomeIcons.facebookF,
-                            color: Theme.of(context).primaryColor,
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              lang(context).connectWithUsMessage,
+                              style:
+                                  LayoutConfig(context).contentSectionStyle(),
+                            ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            Helper.launchURL(privacyPolicyUrl);
-                          },
-                          icon: Icon(
-                            FontAwesomeIcons.shieldHalved,
-                            color: Theme.of(context).primaryColor,
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              if (userState.username == null) {
+                                Share.share(
+                                  lang(context).messageShareIntro(
+                                    dotenv.env['PROFILE_URL']!,
+                                  ),
+                                );
+                              } else {
+                                Share.share(
+                                  lang(context).messageShareIntroWIthUsername(
+                                    userState.username ??
+                                        lang(context).anonymous,
+                                    dotenv.env['PROFILE_URL']!,
+                                  ),
+                                );
+                              }
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.shareNodes,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            Helper.launchURL("mailto:$email");
-                          },
-                          icon: Icon(
-                            FontAwesomeIcons.envelope,
-                            color: Theme.of(context).primaryColor,
+                          IconButton(
+                            onPressed: () {
+                              Helper.launchURL(facebookUrl,
+                                  fallbackUrl: facebookUrl);
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.facebookF,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          IconButton(
+                            onPressed: () {
+                              Helper.launchURL(privacyPolicyUrl);
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.shieldHalved,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Helper.launchURL("mailto:$email");
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.envelope,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

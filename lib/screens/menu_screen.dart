@@ -59,7 +59,9 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                      ),
                       child: Center(
                         child: Text(
                           state.username != null
@@ -71,7 +73,9 @@ class _MenuScreenState extends State<MenuScreen> {
                     ),
                   ),
                   SliverPadding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                    ),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {

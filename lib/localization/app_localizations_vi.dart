@@ -175,4 +175,32 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get doYouWantToExit => 'Bạn có muốn thoát không?';
+
+  @override
+  String get difficultyEasyDescription =>
+      'Bạn sẽ gặp các câu hỏi đơn giản, chủ yếu là số nhỏ, rất phù hợp để làm quen và bắt đầu chơi.';
+
+  @override
+  String get difficultyMediumDescription =>
+      'Các phép cộng và trừ với số lớn hơn, giúp bạn nâng cao kỹ năng một cách nhẹ nhàng.';
+
+  @override
+  String get difficultyHardDescription =>
+      'Xuất hiện phép nhân và chia, yêu cầu bạn phải tập trung và phản xạ nhanh hơn.';
+
+  @override
+  String get difficultyExtremeDescription =>
+      'Câu hỏi đa dạng, số lớn, phép tính phức tạp, mang đến thử thách thực sự cho bạn.';
+
+  @override
+  String get difficultyEasyTitle => 'Chế độ dễ';
+
+  @override
+  String get difficultyMediumTitle => 'Chế độ trung bình';
+
+  @override
+  String get difficultyHardTitle => 'Chế độ khó';
+
+  @override
+  String get difficultyExtremeTitle => 'Chế độ cực kỳ khó';
 }

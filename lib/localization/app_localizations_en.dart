@@ -175,4 +175,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get doYouWantToExit => 'Do you want to exit?';
+
+  @override
+  String get difficultyEasyDescription =>
+      'Generates a random number with a slightly increased level for simple challenges.';
+
+  @override
+  String get difficultyMediumDescription =>
+      'Produces a plus/minus calculation expression for moderate difficulty.';
+
+  @override
+  String get difficultyHardDescription =>
+      'Creates a multiplication/division calculation expression for advanced difficulty.';
+
+  @override
+  String get difficultyExtremeDescription =>
+      'Randomly selects between generating a complex plus/minus calculation, a higher-level random number, or a multiplication/division calculation for the most challenging experience.';
+
+  @override
+  String get difficultyEasyTitle => 'Easy Mode';
+
+  @override
+  String get difficultyMediumTitle => 'Medium Mode';
+
+  @override
+  String get difficultyHardTitle => 'Hard Mode';
+
+  @override
+  String get difficultyExtremeTitle => 'Extreme Mode';
 }

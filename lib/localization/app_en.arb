@@ -269,5 +269,39 @@
   "@doYouWantToExit": {
     "description": "Prompt asking the user if they want to exit",
     "placeholders": {}
+  },
+
+  "difficultyEasyDescription": "Generates a random number with a slightly increased level for simple challenges.",
+  "@difficultyEasyDescription": {
+    "description": "Description for easy difficulty level logic"
+  },
+  "difficultyMediumDescription": "Produces a plus/minus calculation expression for moderate difficulty.",
+  "@difficultyMediumDescription": {
+    "description": "Description for medium difficulty level logic"
+  },
+  "difficultyHardDescription": "Creates a multiplication/division calculation expression for advanced difficulty.",
+  "@difficultyHardDescription": {
+    "description": "Description for hard difficulty level logic"
+  },
+  "difficultyExtremeDescription": "Randomly selects between generating a complex plus/minus calculation, a higher-level random number, or a multiplication/division calculation for the most challenging experience.",
+  "@difficultyExtremeDescription": {
+    "description": "Description for extreme difficulty level logic"
+  },
+
+  "difficultyEasyTitle": "Easy Mode",
+  "@difficultyEasyTitle": {
+    "description": "Title for easy difficulty mode"
+  },
+  "difficultyMediumTitle": "Medium Mode",
+  "@difficultyMediumTitle": {
+    "description": "Title for medium difficulty mode"
+  },
+  "difficultyHardTitle": "Hard Mode",
+  "@difficultyHardTitle": {
+    "description": "Title for hard difficulty mode"
+  },
+  "difficultyExtremeTitle": "Extreme Mode",
+  "@difficultyExtremeTitle": {
+    "description": "Title for extreme difficulty mode"
   }
 }
