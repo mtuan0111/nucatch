@@ -91,12 +91,12 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isTablet = screenWidth > 600; // Adjust layout for tablets
-    // final padding = isTablet ? 40.0 : 20.0;
-    final buttonSize = 50.0; // Fixed button size for simplicity
-    // final buttonSize = isTablet
-    //     ? (screenWidth / 5) - buttonSpace * 2
-    //     : (screenWidth / 3) - buttonSpace * 2;
+    // final isTablet = screenWidth > 600; // Adjust layout for tablets
+    // // final padding = isTablet ? 40.0 : 20.0;
+    // final buttonSize = 50.0; // Fixed button size for simplicity
+    // // final buttonSize = isTablet
+    // //     ? (screenWidth / 5) - buttonSpace * 2
+    // //     : (screenWidth / 3) - buttonSpace * 2;
 
     return Scaffold(
       body: BlocBuilder<TurnBloc, TurnState>(
