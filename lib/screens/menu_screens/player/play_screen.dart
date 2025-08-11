@@ -1,3 +1,4 @@
+// ignore: unused_import
 import 'dart:developer';
 import 'dart:developer' as dev;
 import 'dart:math';
@@ -684,21 +685,152 @@ class LifeStar extends StatelessWidget {
   }
 }
 
-class CustomeAlert extends StatefulWidget {
+class MenuAlert extends StatelessWidget {
   final int point;
   final int? rank;
+  final TurnBloc turnBloc;
+  final TurnState turnState;
+  final PlayerNavCubit playerNavCubit;
 
-  const CustomeAlert({
+  const MenuAlert({
     super.key,
     this.point = 0,
-    this.rank = 0,
+    this.rank,
+    required this.turnBloc,
+    required this.turnState,
+    required this.playerNavCubit,
   });
 
   @override
-  State<CustomeAlert> createState() => _CustomeAlertState();
+  Widget build(BuildContext context) {
+    return _AlertTemplate(
+      title: lang(context).confirmExit,
+      message: lang(context).areYouSure,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (rank != null) RankingSortingWidget(position: rank!),
+          if (rank != null) const SizedBox(height: 20),
+          Text(
+            "${lang(context).score}: $point",
+            style: TextStyle(
+              color: Theme.of(context).secondaryHeaderColor,
+              fontSize: Theme.of(context).textTheme.titleSmall!.fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, turnState.difficultyModel!.difficulty)}",
+            style: TextStyle(
+              color: Theme.of(context).secondaryHeaderColor,
+              fontSize: Theme.of(context).textTheme.titleSmall!.fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+      actions: [
+        _buildActionButton(
+          context,
+          label: lang(context).no,
+          color: Theme.of(context).colorScheme.error,
+          onPressed: () => Navigator.of(context).pop(false),
+        ),
+        _buildActionButton(
+          context,
+          label: lang(context).yes,
+          color: Theme.of(context).primaryColor,
+          onPressed: () => Navigator.of(context).pop(true),
+        ),
+        _buildActionButton(
+          context,
+          label: lang(context).difficultySetting,
+          color: Theme.of(context).secondaryHeaderColor,
+          onPressed: () {
+            showDialog<bool>(
+              context: context,
+              builder: (context) => _AlertTemplate(
+                title: lang(context).confirmChangeDifficulty,
+                message: lang(context).areYouSure,
+                content: Text(lang(context).areYouSure),
+                actions: [
+                  _buildActionButton(
+                    context,
+                    label: lang(context).yes,
+                    color: Theme.of(context).primaryColor,
+                    onPressed: () => Navigator.of(context).pop(true),
+                  ),
+                  _buildActionButton(
+                    context,
+                    label: lang(context).no,
+                    color: Theme.of(context).colorScheme.error,
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
+                  // TextButton(
+                  //   onPressed: () => Navigator.of(context).pop(false),
+                  //   child: Text(lang(context).no),
+                  // ),
+                  // TextButton(
+                  //   onPressed: () => Navigator.of(context).pop(true),
+                  //   child: Text(lang(context).yes),
+                  // ),
+                ],
+              ),
+            ).then((confirmed) {
+              if (confirmed == true) {
+                turnBloc.add(SaveRecorded(
+                  context,
+                  callback: () {
+                    playerNavCubit.showSetDifficulty();
+                    Navigator.of(context).pop(false);
+                  },
+                ));
+              }
+            });
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionButton(BuildContext context,
+      {required String label,
+      required Color color,
+      required VoidCallback onPressed}) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        label,
+        style: TextStyle(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
 }
 
-class _CustomeAlertState extends State<CustomeAlert> {
+class _AlertTemplate extends StatelessWidget {
+  final String title;
+  final String? message;
+  final Widget content;
+  final List<Widget> actions;
+
+  const _AlertTemplate({
+    required this.title,
+    this.message,
+    required this.content,
+    required this.actions,
+  });
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -706,67 +838,38 @@ class _CustomeAlertState extends State<CustomeAlert> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      title: Text(
-        lang(context).confirmExit,
-        style: TextStyle(
-          color: Theme.of(context).primaryColor,
-          fontSize: Theme.of(context).textTheme.titleLarge!.fontSize,
-          fontWeight: FontWeight.bold,
-        ),
-        textAlign: TextAlign.center,
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
+      title: Column(
         children: [
-          if (widget.rank != null) RankingSortingWidget(position: widget.rank!),
-          if (widget.rank != null) const SizedBox(height: 20),
           Text(
-            "${lang(context).score}: ${widget.point}",
+            title,
             style: TextStyle(
-              color: Theme.of(context).secondaryHeaderColor,
+              color: Theme.of(context).primaryColor,
               fontSize: Theme.of(context).textTheme.titleLarge!.fontSize,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
+          if (message != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                message!,
+                style: TextStyle(
+                  color: Theme.of(context).hintColor,
+                  fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
         ],
       ),
+      content: content,
       actionsAlignment: MainAxisAlignment.spaceEvenly,
       actions: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.redAccent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(
-            lang(context).no,
-            style: TextStyle(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          onPressed: () {
-            return Navigator.of(context).pop(true);
-          },
-          child: Text(
-            lang(context).yes,
-            style: TextStyle(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: actions,
+        )
       ],
     );
   }

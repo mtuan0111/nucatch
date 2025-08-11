@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
@@ -366,44 +367,49 @@ class Helper {
     return generatingUrl;
   }
 
-  static Future<bool> pressMainMenu(BuildContext context) async {
+  static Future<dynamic> pressMainMenu(BuildContext buildContext) async {
     TurnRecordedListBloc turnRecordedListBloc =
-        context.read<TurnRecordedListBloc>();
+        buildContext.read<TurnRecordedListBloc>();
     TurnRecordedListState turnRecordedListState = turnRecordedListBloc.state;
 
-    TurnBloc turnBloc = context.read<TurnBloc>();
+    TurnBloc turnBloc = buildContext.read<TurnBloc>();
     TurnState turnState = turnBloc.state;
+
+    PlayerNavCubit playerNavCubit = buildContext.read<PlayerNavCubit>();
 
     // MenuBloc menuBloc = context.read<MenuBloc>();
 
     int? rankTemporary = turnRecordedListState.rankOfPoint(turnState.point);
-    bool confirmExit = true;
+    dynamic confirmExit = true;
 
-    if (rankTemporary != null) {
-      confirmExit = await showDialog<bool>(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) {
-              if (turnRecordedListState.isLoading) {
-                return const LoadingWidget();
-              }
+    // if (rankTemporary != null) {
+    confirmExit = await showDialog<bool>(
+          barrierDismissible: false,
+          context: buildContext,
+          builder: (BuildContext context) {
+            if (turnRecordedListState.isLoading) {
+              return const LoadingWidget();
+            }
 
-              return CustomeAlert(
-                point: turnState.point,
-                rank: rankTemporary,
-              );
-            },
-          ) ??
-          true;
-    }
+            return MenuAlert(
+              rank: rankTemporary,
+              point: turnState.point,
+              turnState: turnState,
+              turnBloc: turnBloc,
+              playerNavCubit: playerNavCubit,
+            );
+          },
+        ) ??
+        true;
+    // }
 
     return confirmExit;
   }
 
   static IconData getIconFromDifficulty(
-      BuildContext context, Difficulty? difficultyModel) {
+      BuildContext context, Difficulty? difficulty) {
     IconData difficultyIcon = FontAwesomeIcons.flag;
-    switch (difficultyModel) {
+    switch (difficulty) {
       // case Difficulty.easy:
       //   difficultyIcon = FontAwesomeIcons.faceSmileBeam;
       //   break;
@@ -439,8 +445,8 @@ class Helper {
   }
 
   static String getTitleFromDifficulty(
-      BuildContext context, Difficulty? difficultyModel) {
-    switch (difficultyModel) {
+      BuildContext context, Difficulty? difficulty) {
+    switch (difficulty) {
       case Difficulty.easy:
         return lang(context).difficultyEasyTitle;
       case Difficulty.medium:

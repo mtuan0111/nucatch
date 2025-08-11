@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'dart:math' as math;
 
 import 'package:nucatch/helpers/extension.dart';
+import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 
 class RankingItem extends StatelessWidget {
@@ -22,6 +24,7 @@ class RankingItem extends StatelessWidget {
   String? get playerName => turnRecordedModel?.playedUsername;
   DateTime get createdAt => turnRecordedModel?.recordedTime ?? DateTime.now();
   int get turnedPoint => turnRecordedModel?.point ?? 0;
+  Difficulty get difficulty => turnRecordedModel?.difficulty ?? Difficulty.easy;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +89,21 @@ class RankingItem extends StatelessWidget {
                   const SizedBox(width: 5),
                   Text(
                     "${lang(context).score}: $turnedPoint",
+                    style: LayoutConfig(context).contentSectionStyle(),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Helper.getIconFromDifficulty(context, difficulty),
+                    size: Theme.of(context).textTheme.titleLarge!.fontSize,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, difficulty)}",
                     style: LayoutConfig(context).contentSectionStyle(),
                   ),
                 ],

@@ -72,6 +72,11 @@
   "@difficultySetting": {
     "description": "Label for difficulty setting in the game"
   },
+
+  "difficulty": "Difficulty",
+  "@difficulty": {
+    "description": "Difficulty level of the game"
+  },
   
   "easy": "Easy",
   "@easy": {
@@ -303,5 +308,23 @@
   "difficultyExtremeTitle": "Extreme Mode",
   "@difficultyExtremeTitle": {
     "description": "Title for extreme difficulty mode"
+  },
+
+  "confirmChangeDifficulty": "Your turn will be reset. Are you sure you want to change the difficulty?",
+  "@confirmChangeDifficulty": {
+    "description": "Warning when the user changes the difficulty",
+    "placeholders": {}
+  },
+
+  "areYouSure": "Are you sure?",
+  "@areYouSure": {
+    "description": "Warning when the user performs an important action",
+    "placeholders": {}
+  },
+
+  "no_turn_yet": "No turns yet",
+  "@no_turn_yet": {
+    "description": "Notification when there are no turns yet",
+    "placeholders": {}
   }
 }

@@ -32,6 +32,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<GeneratedRequiredString>(_onGeneratedRequiredString);
     on<ShowExpect>(_onShowExpect);
     on<SetDifficulty>(_onSetDifficulty);
+    // on<ResetDifficulty>(_onResetDifficulty);
 
     // on<HideExpect>(_onHideExpect);
     // on<MarkCorrectTap>(_onMarkCorrectTap);
@@ -381,7 +382,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     emitter(
       state.copyWith(
-        difficultyModel: event.difficultyModel,
+        difficultyModel: DifficultyModel.getModel(event.difficulty),
       ),
     );
 
@@ -389,8 +390,32 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     //   seconds: state.countDown,
     // ));
 
-    event.onChanged?.call(event.difficultyModel);
+    event.onChanged?.call();
   }
+
+  // Future<void> _onResetDifficulty(
+  //   ResetDifficulty event,
+  //   Emitter<TurnState> emitter,
+  // ) async {
+  //   if (isClosed) {
+  //     return;
+  //   }
+
+  //   if (state.isLoading) {
+  //     return;
+  //   }
+
+  //   emitter(
+  //     state.copyWith(
+  //       difficultyModel: DifficultyModel.getModel(Difficulty.easy),
+  //     ),
+  //   );
+
+  //   add(SetLevel(
+  //     level: 0,
+  //     addPoint: 1,
+  //   ));
+  // }
 
   // void _onHideExpect(
   //   HideExpect event,
@@ -490,18 +515,22 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     Emitter<TurnState> emitter,
   ) async {
     if (isClosed) {
+      event.callback?.call();
       return;
     }
 
     if (state.recordedItem == null) {
+      event.callback?.call();
       return;
     }
 
     if (state.recordedItem!.point == 0) {
+      event.callback?.call();
       return;
     }
 
     if (state.isLoading) {
+      event.callback?.call();
       return;
     }
 
@@ -513,7 +542,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     bool insertSuccess = await _turnedServices.addItem(state.recordedItem!);
 
-    Fluttertoast.showToast(
+    await Fluttertoast.showToast(
       msg: insertSuccess
           // ignore: use_build_context_synchronously
           ? lang(event.context).insertedSuccess
@@ -536,6 +565,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     // );
 
     // return itemModel;
+
+    event.callback?.call();
   }
 
   Future<void> _onStart(
@@ -607,6 +638,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       playedUsername: username,
       point: state.point,
       recordedTime: DateTime.now(),
+      difficulty: state.difficultyModel?.difficulty ?? Difficulty.easy,
     );
 
     emitter(

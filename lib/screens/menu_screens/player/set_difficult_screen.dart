@@ -76,8 +76,8 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                               Helper.getIconFromDifficulty(context, difficulty);
 
                           return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               AnimatedButton(
                                 context,
@@ -85,10 +85,8 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                 onPressed: () {
                                   turnBloc.add(
                                     SetDifficulty(
-                                      difficultyModel: DifficultyModel.getModel(
-                                        difficulty,
-                                      ),
-                                      onChanged: (_) {
+                                      difficulty: difficulty,
+                                      onChanged: () {
                                         turnBloc.add(Start());
                                         context
                                             .read<PlayerNavCubit>()

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 
 class TurnRecordedListState {
@@ -45,10 +46,10 @@ class TurnRecordedListState {
     if (point == 0) return null;
     List<TurnRecordedModel> tempList = List.from(listModel ?? []);
     TurnRecordedModel tempModel = TurnRecordedModel(
-      turnId: Random().nextInt(1000).toString(),
-      point: point,
-      recordedTime: DateTime.now(),
-    );
+        turnId: Random().nextInt(1000).toString(),
+        point: point,
+        recordedTime: DateTime.now(),
+        difficulty: Difficulty.easy);
 
     tempList.add(tempModel);
     tempList.sort((a, b) => b.point.compareTo(a.point));

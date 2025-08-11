@@ -59,6 +59,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get difficultySetting => 'Difficulty Setting';
 
   @override
+  String get difficulty => 'Difficulty';
+
+  @override
   String get easy => 'Easy';
 
   @override
@@ -203,4 +206,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => 'Extreme Mode';
+
+  @override
+  String get confirmChangeDifficulty =>
+      'Your turn will be reset. Are you sure you want to change the difficulty?';
+
+  @override
+  String get areYouSure => 'Are you sure?';
+
+  @override
+  String get no_turn_yet => 'No turns yet';
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
 
 class TurnRecordedModel {
@@ -8,12 +9,14 @@ class TurnRecordedModel {
   final String? playedUsername;
   final int point;
   final DateTime recordedTime;
+  final Difficulty difficulty;
 
   TurnRecordedModel({
     required this.turnId,
     this.playedUsername,
     required this.point,
     required this.recordedTime,
+    required this.difficulty,
   });
 
   // DateTime get recordedTime => _recordedTime;
@@ -33,6 +36,8 @@ class TurnRecordedModel {
       point: int.tryParse(json[PreferencesKey.POINT].toString()) ?? 0,
       recordedTime: DateTime.fromMillisecondsSinceEpoch(
           int.tryParse(json[PreferencesKey.RECORDED_TIME].toString()) ?? 0),
+      difficulty: Difficulty.values[
+          int.tryParse(json[PreferencesKey.DIFFICULTY].toString()) ?? 0],
     );
   }
 
@@ -42,6 +47,7 @@ class TurnRecordedModel {
       PreferencesKey.PLAYED_USERNAME: playedUsername,
       PreferencesKey.POINT: point,
       PreferencesKey.RECORDED_TIME: recordedTime.millisecondsSinceEpoch,
+      PreferencesKey.DIFFICULTY: difficulty.index,
     };
   }
 

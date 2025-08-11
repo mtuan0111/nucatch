@@ -59,6 +59,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get difficultySetting => 'Cài đặt độ khó';
 
   @override
+  String get difficulty => 'Độ khó';
+
+  @override
   String get easy => 'Dễ';
 
   @override
@@ -203,4 +206,14 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => 'Chế độ cực kỳ khó';
+
+  @override
+  String get confirmChangeDifficulty =>
+      'Lượt chơi sẽ bị reset. Bạn có chắc chắn muốn thay đổi không?';
+
+  @override
+  String get areYouSure => 'Bạn có chắc chắn không?';
+
+  @override
+  String get no_turn_yet => 'Chưa có lượt chơi nào';
 }

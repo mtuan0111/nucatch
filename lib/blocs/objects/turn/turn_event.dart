@@ -54,11 +54,12 @@ class SetLevel extends TurnEvent {
 }
 
 class SetDifficulty extends TurnEvent {
-  final DifficultyModel difficultyModel;
-  final void Function(DifficultyModel)? onChanged;
+  // final BuildContext context;
+  final Difficulty difficulty;
+  final void Function()? onChanged;
 
   SetDifficulty({
-    required this.difficultyModel,
+    required this.difficulty,
     this.onChanged,
   });
 }
@@ -90,8 +91,9 @@ class SaveRecorded extends TurnEvent {
   // final String? messageSuccess;
   // final String? messageFailure;
   final BuildContext context;
+  final void Function()? callback;
 
-  SaveRecorded(this.context);
+  SaveRecorded(this.context, {this.callback});
 }
 
 class GetTurnRecordedList extends TurnEvent {

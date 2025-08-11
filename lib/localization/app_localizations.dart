@@ -194,6 +194,12 @@ abstract class AppLocalizations {
   /// **'Difficulty Setting'**
   String get difficultySetting;
 
+  /// Difficulty level of the game
+  ///
+  /// In en, this message translates to:
+  /// **'Difficulty'**
+  String get difficulty;
+
   /// Easy difficulty level of the game
   ///
   /// In en, this message translates to:
@@ -447,6 +453,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Extreme Mode'**
   String get difficultyExtremeTitle;
+
+  /// Warning when the user changes the difficulty
+  ///
+  /// In en, this message translates to:
+  /// **'Your turn will be reset. Are you sure you want to change the difficulty?'**
+  String get confirmChangeDifficulty;
+
+  /// Warning when the user performs an important action
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure?'**
+  String get areYouSure;
+
+  /// Notification when there are no turns yet
+  ///
+  /// In en, this message translates to:
+  /// **'No turns yet'**
+  String get no_turn_yet;
 }
 
 class _AppLocalizationsDelegate

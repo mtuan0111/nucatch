@@ -15,4 +15,5 @@ class PreferencesKey {
   static const PLAYED_USERNAME = "played_username";
   static const POINT = "point";
   static const RECORDED_TIME = "recorded_time";
+  static const DIFFICULTY = "difficulty";
 }

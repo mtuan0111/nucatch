@@ -98,7 +98,8 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                             runSpacing: 50,
                             spacing: 50,
                             children: [
-                              if (turnRecordedListState.listModel != null)
+                              if (turnRecordedListState.listModel != null &&
+                                  turnRecordedListState.listModel!.isNotEmpty)
                                 ...turnRecordedListState.listModel!.map(
                                   (e) => GestureDetector(
                                     onTap: () {
@@ -118,6 +119,12 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                                       // turnedPoint: e.point,
                                     ),
                                   ),
+                                )
+                              else
+                                Text(
+                                  lang(context).no_turn_yet,
+                                  style: LayoutConfig(context)
+                                      .contentSectionStyle(),
                                 ),
                               if (turnRecordedListState.isLoading)
                                 const LoadingWidget(),

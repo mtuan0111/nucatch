@@ -73,6 +73,11 @@
     "description": "Cài đặt độ khó của trò chơi"
   },
 
+  "difficulty": "Độ khó",
+  "@difficulty": {
+    "description": "Mức độ khó của trò chơi"
+  },
+
   "easy": "Dễ",
   "@easy": {
     "description": "Mức độ dễ của trò chơi"
@@ -303,5 +308,24 @@
   "difficultyExtremeTitle": "Chế độ cực kỳ khó",
   "@difficultyExtremeTitle": {
     "description": "Tiêu đề cho chế độ cực kỳ khó"
+  },
+
+  "confirmChangeDifficulty": "Lượt chơi sẽ bị reset. Bạn có chắc chắn muốn thay đổi không?",
+  "@confirmChangeDifficulty": {
+    "description": "Cảnh báo khi người dùng thay đổi độ khó",
+    "placeholders": {}
+  },
+
+  "areYouSure": "Bạn có chắc chắn không?",
+  "@areYouSure": {
+    "description": "Cảnh báo khi người dùng thực hiện một hành động quan trọng",
+    "placeholders": {}
+  },
+
+  "no_turn_yet": "Chưa có lượt chơi nào",
+  "@no_turn_yet": {
+    "description": "Thông báo khi chưa có lượt chơi nào",
+    "placeholders": {}
   }
+
 }
