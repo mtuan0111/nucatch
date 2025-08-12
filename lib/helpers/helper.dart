@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
@@ -18,8 +19,6 @@ import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../blocs/navs/player/player_nav_state.dart';
 
 class Helper {
   String generateRandomNumber(int length, {int minLengthOfNumber = 1}) {
