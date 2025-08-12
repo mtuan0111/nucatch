@@ -325,3 +325,35 @@ _ Add the animation for the life remaining
     Flutter build for iOS
     ```flutter build ios --build-name=2.0.4 --build-number=44 --release```
 ---
+---
+## Released on: 12/08/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 41           | 2.1.0   |
+| iOS      | 45           | 2.1.0   |
+
+### Release note:
+feat: 
+_ Add the setting the difficult level
+
+### Git note release: 
+#### Command for copilot
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+    [Builded] Version 2.1.0 - 41 / 2.1.0 - 45 _ Add difficulty level setting
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Added option to set difficulty level for a more personalized experience.
+
+    - **Tiếng Việt:**  
+        - Thêm tùy chọn thiết lập mức độ khó để cá nhân hóa trải nghiệm người dùng.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.1.0 --build-number=41 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.1.0 --build-number=45 --release```
+---
