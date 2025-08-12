@@ -415,7 +415,11 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                   });
                 });
               },
-              child: children(context),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 20.0),
+                child: children(context),
+              ),
             ),
           ),
         ),
@@ -465,33 +469,29 @@ class _AnimatedButtonState extends State<AnimatedButton> {
     return AnimatedScale(
       scale: originalScale,
       duration: Duration(milliseconds: milisecondDuation),
-      child: SizedBox(
-        width: size,
-        height: size,
-        child: AnimatedOpacity(
-          opacity:
-              // (turnState.isAbleToReset && turnState.isAbleToTap)
-              isEnable ? 1 : 0.5,
-          duration: duration,
-          child: CustomElevatedButton(
-            icon: widget.iconData,
-            text: widget.text,
-            onPressed: () {
-              onPressed();
+      child: AnimatedOpacity(
+        opacity:
+            // (turnState.isAbleToReset && turnState.isAbleToTap)
+            isEnable ? 1 : 0.5,
+        duration: duration,
+        child: CustomElevatedButton(
+          icon: widget.iconData,
+          text: widget.text,
+          onPressed: () {
+            onPressed();
 
+            setState(() {
+              originalScale = 0.8;
+              milisecondDuation = 1000;
+            });
+
+            Future.delayed(duration, () {
               setState(() {
-                originalScale = 0.8;
-                milisecondDuation = 1000;
+                originalScale = 1;
+                milisecondDuation = 10;
               });
-
-              Future.delayed(duration, () {
-                setState(() {
-                  originalScale = 1;
-                  milisecondDuation = 10;
-                });
-              });
-            },
-          ),
+            });
+          },
         ),
       ),
     );

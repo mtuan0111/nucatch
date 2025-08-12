@@ -15,8 +15,8 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.d
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
+import 'package:nucatch/helpers/template/custome_alert.dart';
 import 'package:nucatch/navs/menu_nav.dart';
-import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../blocs/navs/player/player_nav_state.dart';
