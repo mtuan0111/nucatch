@@ -358,7 +358,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                                       .titleSectionStyle(),
                                                 ),
                                                 DropdownButtonFormField<String>(
-                                                  value: settingState.locale,
+                                                  initialValue:
+                                                      settingState.locale,
                                                   items: languages.entries
                                                       .map(
                                                         (lang) =>

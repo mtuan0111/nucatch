@@ -58,7 +58,10 @@ class _GameOverScreenState extends State<GameOverScreen> {
           child: CustomScrollView(
             slivers: <Widget>[
               SliverFillRemaining(
+                // fillOverscroll: true,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -112,32 +115,20 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     const SizedBox(
                       height: 50,
                     ),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: buttonSpace,
-                      runSpacing: buttonSpace,
-                      children: [
-                        SizedBox(
-                          width: (screenWidth / 3) - buttonSpace * 2,
-                          height: (screenWidth / 3) - buttonSpace * 2,
-                          child: BlocBuilder<TurnRecordedListBloc,
-                              TurnRecordedListState>(
-                            builder: (context, state) {
-                              return AnimatedButton(
-                                context,
-                                onPressed: () {
-                                  playerNavCubit.showPlay();
+                    BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
+                      builder: (context, state) {
+                        return AnimatedButton(
+                          context,
+                          onPressed: () {
+                            playerNavCubit.showPlay();
 
-                                  turnBloc.add(
-                                    Start(),
-                                  );
-                                },
-                                iconData: FontAwesomeIcons.arrowRotateLeft,
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+                            turnBloc.add(
+                              Start(),
+                            );
+                          },
+                          iconData: FontAwesomeIcons.arrowRotateLeft,
+                        );
+                      },
                     ),
                   ],
                 ),

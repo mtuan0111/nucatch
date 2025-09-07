@@ -56,78 +56,82 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
             slivers: <Widget>[
               SliverFillRemaining(
                 child: DeviceWrapper(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        lang(context).difficultySetting,
-                        style: LayoutConfig(context).displaySmallStyle(),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 24),
-                      Column(
-                        // crossAxisAlignment: WrapCrossAlignment.center,
-                        spacing: buttonSpace,
-                        // runSpacing: buttonSpace,
-                        children: Difficulty.values.map((difficulty) {
-                          String textButton = '';
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          lang(context).difficultySetting,
+                          style: LayoutConfig(context).displaySmallStyle(),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 24),
+                        Column(
+                          // crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: buttonSpace,
+                          // runSpacing: buttonSpace,
+                          children: Difficulty.values.map((difficulty) {
+                            String textButton = '';
 
-                          IconData difficultyIcon =
-                              Helper.getIconFromDifficulty(context, difficulty);
+                            IconData difficultyIcon =
+                                Helper.getIconFromDifficulty(
+                                    context, difficulty);
 
-                          return Row(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            // crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              AnimatedButton(
-                                context,
-                                buttonSize: 100,
-                                onPressed: () {
-                                  turnBloc.add(
-                                    SetDifficulty(
-                                      difficulty: difficulty,
-                                      onChanged: () {
-                                        turnBloc.add(Start());
-                                        context
-                                            .read<PlayerNavCubit>()
-                                            .showPlay();
-                                      },
-                                    ),
-                                  );
-                                },
-                                // text: textButton,
-                                iconData: difficultyIcon,
-                              ),
-                              Text(
-                                textButton,
-                                style:
-                                    LayoutConfig(context).titleSectionStyle(),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      Helper.getTitleFromDifficulty(
-                                          context, difficulty),
-                                      textAlign: TextAlign.start,
-                                      style: LayoutConfig(context)
-                                          .titleSectionStyle(),
-                                    ),
-                                    Text(
-                                      Helper.getDescriptionFromDifficulty(
-                                          context, difficulty),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ],
+                            return Row(
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              // crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                AnimatedButton(
+                                  context,
+
+                                  onPressed: () {
+                                    turnBloc.add(
+                                      SetDifficulty(
+                                        difficulty: difficulty,
+                                        onChanged: () {
+                                          turnBloc.add(Start());
+                                          context
+                                              .read<PlayerNavCubit>()
+                                              .showPlay();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  // text: textButton,
+                                  iconData: difficultyIcon,
                                 ),
-                              ),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    ],
+                                Text(
+                                  textButton,
+                                  style:
+                                      LayoutConfig(context).titleSectionStyle(),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        Helper.getTitleFromDifficulty(
+                                            context, difficulty),
+                                        textAlign: TextAlign.start,
+                                        style: LayoutConfig(context)
+                                            .titleSectionStyle(),
+                                      ),
+                                      Text(
+                                        Helper.getDescriptionFromDifficulty(
+                                            context, difficulty),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

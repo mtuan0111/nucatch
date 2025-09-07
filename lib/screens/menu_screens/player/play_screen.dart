@@ -560,9 +560,6 @@ class _PlayScreenState extends State<PlayScreen> {
                                 if (e.key == KeyboardOption.reset) {
                                   button = AnimatedButton(
                                     context,
-                                    buttonSize: buttonWidth < buttonHeight
-                                        ? buttonWidth - buttonSpacing
-                                        : buttonHeight - buttonSpacing,
                                     iconData: FontAwesomeIcons.arrowsRotate,
                                     isEnable: turnState.isAbleToReset &&
                                         turnState.isAbleToTap,
@@ -576,9 +573,6 @@ class _PlayScreenState extends State<PlayScreen> {
                                 } else if (e.key == KeyboardOption.mainMenu) {
                                   button = AnimatedButton(
                                     context,
-                                    buttonSize: buttonWidth < buttonHeight
-                                        ? buttonWidth - buttonSpacing
-                                        : buttonHeight - buttonSpacing,
                                     iconData: FontAwesomeIcons.bars,
                                     onPressed: () {
                                       Helper.pressMainMenu(context)
@@ -600,9 +594,6 @@ class _PlayScreenState extends State<PlayScreen> {
                                 } else {
                                   button = AnimatedButton(
                                     context,
-                                    buttonSize: buttonWidth < buttonHeight
-                                        ? buttonWidth - buttonSpacing
-                                        : buttonHeight - buttonSpacing,
                                     text: e.value.toString(),
                                     isEnable: turnState.isAbleToTap,
                                     onPressed: () {

@@ -30,88 +30,97 @@ class RankingItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: "ranking-${turnRecordedModel!.turnId}",
-      child: Wrap(
-        key: key,
-        // mainAxisSize: MainAxisSize.max,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         // mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        alignment: WrapAlignment.center,
-        runAlignment: WrapAlignment.center,
+        // crossAxisAlignment: WrapCrossAlignment.center,
+        // alignment: WrapAlignment.center,
+        // runAlignment: WrapAlignment.center,
         spacing: 20,
-        runSpacing: 20,
+        // runSpacing: 20,
         children: [
-          if (ranking != null) RankingSortingWidget(position: ranking!),
+          if (ranking != null)
+            Flexible(
+                flex: 1,
+                child: RankingSortingWidget(
+                  position: ranking!,
+                )),
           // const SizedBox(
           //   width: 20,
           // ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.person,
-                    size: Theme.of(context).textTheme.titleLarge!.fontSize,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    playerName ?? lang(context).anonymous,
-                    style: LayoutConfig(context).titleSectionStyle(),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.calendar_today,
-                    size: Theme.of(context).textTheme.titleLarge!.fontSize,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    createdAt.formatClient(),
-                    style: LayoutConfig(context).contentSectionStyle(),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.star,
-                    size: Theme.of(context).textTheme.titleLarge!.fontSize,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    "${lang(context).score}: $turnedPoint",
-                    style: LayoutConfig(context).contentSectionStyle(),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Helper.getIconFromDifficulty(context, difficulty),
-                    size: Theme.of(context).textTheme.titleLarge!.fontSize,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, difficulty)}",
-                    style: LayoutConfig(context).contentSectionStyle(),
-                  ),
-                ],
-              ),
-            ],
+          Flexible(
+            fit: FlexFit.loose,
+            flex: 2,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RankingInfoRow(
+                  icon: Icons.person,
+                  text: playerName ?? lang(context).anonymous,
+                  style: LayoutConfig(context).titleSectionStyle(),
+                ),
+                RankingInfoRow(
+                  icon: Icons.calendar_today,
+                  text: createdAt.formatClient(),
+                  style: LayoutConfig(context).contentSectionStyle(),
+                ),
+                RankingInfoRow(
+                  icon: Icons.star,
+                  text: "${lang(context).score}: $turnedPoint",
+                  style: LayoutConfig(context).contentSectionStyle(),
+                ),
+                RankingInfoRow(
+                  icon: Helper.getIconFromDifficulty(context, difficulty),
+                  text:
+                      "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, difficulty)}",
+                  style: LayoutConfig(context).contentSectionStyle(),
+                ),
+              ],
+            ),
           )
         ],
       ),
+    );
+  }
+}
+
+class RankingInfoRow extends StatelessWidget {
+  const RankingInfoRow({
+    super.key,
+    // super.key,
+    required this.icon,
+    required this.text,
+    required this.style,
+    // required this.context,
+  });
+
+  final IconData icon;
+  final String text;
+  final TextStyle style;
+  // final BuildContext context;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          icon,
+          size: Theme.of(context).textTheme.titleLarge?.fontSize,
+          color: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        const SizedBox(width: 5),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            text,
+            style: style,
+            overflow: TextOverflow.ellipsis,
+            softWrap: true,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -297,6 +306,8 @@ class RankingSortingWidget extends StatelessWidget {
   }
 }
 
+enum ButtonSize { small, medium, large }
+
 class CustomElevatedButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget? child;
@@ -304,6 +315,7 @@ class CustomElevatedButton extends StatefulWidget {
   final String? text;
   final IconData? icon;
   final Color? color;
+  final ButtonSize buttonSize;
 
   const CustomElevatedButton({
     Key? key,
@@ -313,6 +325,7 @@ class CustomElevatedButton extends StatefulWidget {
     this.text,
     this.icon,
     this.color,
+    this.buttonSize = ButtonSize.medium,
   }) : super(key: key);
 
   @override
@@ -322,16 +335,47 @@ class CustomElevatedButton extends StatefulWidget {
 class _CustomElevatedButtonState extends State<CustomElevatedButton> {
   bool isPressed = false;
 
+  double getVerticalPadding() {
+    switch (widget.buttonSize) {
+      case ButtonSize.small:
+        return 10.0;
+      case ButtonSize.medium:
+        return 20.0;
+      case ButtonSize.large:
+        return 32.0;
+    }
+  }
+
+  double getHorizontalPadding() {
+    switch (widget.buttonSize) {
+      case ButtonSize.small:
+        return 4.0;
+      case ButtonSize.medium:
+        return 8.0;
+      case ButtonSize.large:
+        return 12.0;
+    }
+  }
+
+  double getFontSize(BuildContext context) {
+    final baseFontSize =
+        LayoutConfig(context).displaySmallStyle().fontSize ?? 16;
+    switch (widget.buttonSize) {
+      case ButtonSize.small:
+        return baseFontSize * 0.8;
+      case ButtonSize.medium:
+        return baseFontSize;
+      case ButtonSize.large:
+        return baseFontSize * 1.2;
+    }
+  }
+
   Widget children(context) {
     if (widget.text != null) {
       return Text(
         widget.text!,
-        style: LayoutConfig(context)
-            .displaySmallStyle(
-                // fontFamily: 'Lobster',
-                // fontSizeDelta: 1,
-                )
-            .copyWith(
+        style: LayoutConfig(context).displaySmallStyle().copyWith(
+              fontSize: getFontSize(context),
               color: isPressed
                   ? (widget.color ?? Theme.of(context).secondaryHeaderColor)
                       .getLighter()
@@ -347,7 +391,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
             ? (widget.color ?? Theme.of(context).secondaryHeaderColor)
                 .getLighter()
             : (widget.color ?? Theme.of(context).secondaryHeaderColor),
-        size: LayoutConfig(context).displaySmallStyle().fontSize,
+        size: getFontSize(context),
       );
     }
     return widget.child ?? Container();
@@ -397,12 +441,6 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                       ? Theme.of(context).primaryColor.getLighter()
                       : Theme.of(context).primaryColor,
                 ),
-                // shape: WidgetStateProperty.all(
-                //   RoundedRectangleBorder(
-                //     borderRadius:
-                //         BorderRadius.circular(LayoutConfig.layoutBorderRadius),
-                //   ),
-                // ),
               ),
               onPressed: () {
                 widget.onPressed?.call();
@@ -415,11 +453,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                   });
                 });
               },
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 20.0),
-                child: children(context),
-              ),
+              child: children(context),
             ),
           ),
         ),
@@ -430,7 +464,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
 
 class AnimatedButton extends StatefulWidget {
   final BuildContext context;
-  final double? buttonSize;
+  final ButtonSize? buttonSize;
   final IconData? iconData;
   final String? text;
   final VoidCallback onPressed;
@@ -461,8 +495,6 @@ class _AnimatedButtonState extends State<AnimatedButton> {
 
   @override
   Widget build(BuildContext context) {
-    final double size =
-        widget.buttonSize ?? 56.0; // Default size if not provided
     Duration duration = const Duration(milliseconds: 200);
     bool isEnable = widget.isEnable ?? true;
 
@@ -477,6 +509,7 @@ class _AnimatedButtonState extends State<AnimatedButton> {
         child: CustomElevatedButton(
           icon: widget.iconData,
           text: widget.text,
+          buttonSize: widget.buttonSize ?? ButtonSize.medium,
           onPressed: () {
             onPressed();
 
@@ -584,8 +617,8 @@ class DeviceWrapper extends StatelessWidget {
     // Get the screen width
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    // Check if the screen width is greater than 600, which is a common breakpoint for an iPad
-    final bool isIpad = screenWidth > 600;
+    // Check if the screen width is greater than 800, which is a common breakpoint for an iPad
+    final bool isIpad = screenWidth > 800;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: isNavBar ? 20 : 40),
@@ -593,10 +626,10 @@ class DeviceWrapper extends StatelessWidget {
         builder: (BuildContext context, BoxConstraints constraints) {
           if (isIpad) {
             // If it's an iPad, return the child inside a Center widget to center it on the screen
-            // and limit its width to a maximum of 600 pixels
+            // and limit its width to a maximum of 800 pixels
             return Center(
               child: SizedBox(
-                width: 600,
+                width: 800,
                 child: child,
               ),
             );

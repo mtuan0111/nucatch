@@ -29,7 +29,7 @@ class MenuAlert extends StatelessWidget {
       title: lang(context).confirmExit,
       message: lang(context).areYouSure,
       content: Column(
-        spacing: 10,
+        spacing: 5,
         mainAxisSize: MainAxisSize.min,
         children: [
           if (rank != null) RankingSortingWidget(position: rank!),
@@ -38,7 +38,7 @@ class MenuAlert extends StatelessWidget {
             "${lang(context).score}: $point",
             style: TextStyle(
               color: Theme.of(context).secondaryHeaderColor,
-              fontSize: Theme.of(context).textTheme.titleSmall!.fontSize,
+              fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
@@ -47,7 +47,7 @@ class MenuAlert extends StatelessWidget {
             "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, turnState.difficultyModel!.difficulty)}",
             style: TextStyle(
               color: Theme.of(context).secondaryHeaderColor,
-              fontSize: Theme.of(context).textTheme.titleSmall!.fontSize,
+              fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
@@ -55,7 +55,10 @@ class MenuAlert extends StatelessWidget {
           AnimatedButton(
             context,
             iconData: Helper.getIconFromDifficulty(
-                context, turnState.difficultyModel!.difficulty),
+              context,
+              turnState.difficultyModel!.difficulty,
+            ),
+            buttonSize: ButtonSize.small,
 
             // icon: Icon(Helper.getIconFromDifficulty(
             //     context, turnState.difficultyModel!.difficulty)),
@@ -101,18 +104,19 @@ class MenuAlert extends StatelessWidget {
       actions: [
         _buildActionButton(
           context,
-          label: lang(context).no,
-          color: Theme.of(context).colorScheme.error,
-          icon: Icons.close,
-          onPressed: () => Navigator.of(context).pop(false),
-        ),
-        _buildActionButton(
-          context,
           label: lang(context).yes,
           color: Theme.of(context).primaryColor,
           icon: Icons.check,
           onPressed: () => Navigator.of(context).pop(true),
         ),
+        _buildActionButton(
+          context,
+          label: lang(context).no,
+          color: Theme.of(context).colorScheme.error,
+          icon: Icons.close,
+          onPressed: () => Navigator.of(context).pop(false),
+        ),
+
         // _buildActionButton(
         //   context,
         //   label: lang(context).difficultySetting,
@@ -172,6 +176,7 @@ class AlertTemplate extends StatelessWidget {
   final List<Widget> actions;
 
   const AlertTemplate({
+    super.key,
     required this.title,
     this.message,
     required this.content,

@@ -171,19 +171,27 @@ class Helper {
 
       if (random.nextInt(10) % 2 == 0) {
         // Try multiplication first: expect = a * b
-        int a = random.nextInt(expect - 1) + 2; // a >= 2
+        int maxA = expect - 2;
+        if (maxA < 1) {
+          continue;
+        }
+        int a = random.nextInt(maxA) + 2; // a >= 2, maxA >= 1
         if (expect % a == 0) {
           int b = expect ~/ a;
           if (b > 1 && a > 1 && a != expect && b != expect) {
             return {
-              'expression': "$a * $b",
+              'expression': "$a × $b",
               'expect': expect.toString(),
             };
           }
         }
 
         // Try division: expect = a / b
-        int bDiv = random.nextInt(8) + 2; // bDiv >= 2
+        int maxBDiv = 8;
+        if (maxBDiv < 1) {
+          continue;
+        }
+        int bDiv = random.nextInt(maxBDiv) + 2; // bDiv >= 2
         int aDiv = expect * bDiv;
         if (aDiv > 1 && bDiv > 1 && aDiv != expect && bDiv != expect) {
           return {
@@ -208,7 +216,12 @@ class Helper {
             valid = false;
             break;
           }
-          int factor = random.nextInt(factorMax - factorMin + 1) + factorMin;
+          int range = factorMax - factorMin + 1;
+          if (range < 1) {
+            valid = false;
+            break;
+          }
+          int factor = random.nextInt(range) + factorMin;
           while (result % factor != 0 && factor > factorMin) {
             factor--;
           }
@@ -217,7 +230,7 @@ class Helper {
             break;
           }
           numbers.add(factor);
-          operators.add('*');
+          operators.add('×');
           result = result ~/ factor;
         }
         if (!valid || result < 2) {
