@@ -434,26 +434,32 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                       ),
                     ],
             ),
-            child: ElevatedButton(
-              style: LayoutConfig.elevatedButtonStyle.copyWith(
-                backgroundColor: WidgetStateProperty.all(
-                  isPressed
-                      ? Theme.of(context).primaryColor.getLighter()
-                      : Theme.of(context).primaryColor,
-                ),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                minWidth: 80,
+                minHeight: 80,
               ),
-              onPressed: () {
-                widget.onPressed?.call();
-                setState(() {
-                  isPressed = true;
-                });
-                Future.delayed(const Duration(milliseconds: 100), () {
+              child: ElevatedButton(
+                style: LayoutConfig.elevatedButtonStyle.copyWith(
+                  backgroundColor: WidgetStateProperty.all(
+                    isPressed
+                        ? Theme.of(context).primaryColor.getLighter()
+                        : Theme.of(context).primaryColor,
+                  ),
+                ),
+                onPressed: () {
+                  widget.onPressed?.call();
                   setState(() {
-                    isPressed = false;
+                    isPressed = true;
                   });
-                });
-              },
-              child: children(context),
+                  Future.delayed(const Duration(milliseconds: 100), () {
+                    setState(() {
+                      isPressed = false;
+                    });
+                  });
+                },
+                child: children(context),
+              ),
             ),
           ),
         ),
