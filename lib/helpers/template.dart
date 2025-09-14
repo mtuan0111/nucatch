@@ -313,7 +313,7 @@ class CustomElevatedButton extends StatefulWidget {
   final Widget? child;
   final double opacity;
   final String? text;
-  final IconData? icon;
+  final IconData? iconData;
   final Color? color;
   final ButtonSize buttonSize;
 
@@ -323,7 +323,7 @@ class CustomElevatedButton extends StatefulWidget {
     this.child,
     this.opacity = 1.0,
     this.text,
-    this.icon,
+    this.iconData,
     this.color,
     this.buttonSize = ButtonSize.medium,
   }) : super(key: key);
@@ -384,9 +384,9 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
       );
     }
 
-    if (widget.icon != null) {
+    if (widget.iconData != null) {
       return Icon(
-        widget.icon,
+        widget.iconData,
         color: isPressed
             ? (widget.color ?? Theme.of(context).secondaryHeaderColor)
                 .getLighter()
@@ -513,7 +513,7 @@ class _AnimatedButtonState extends State<AnimatedButton> {
             isEnable ? 1 : 0.5,
         duration: duration,
         child: CustomElevatedButton(
-          icon: widget.iconData,
+          iconData: widget.iconData,
           text: widget.text,
           buttonSize: widget.buttonSize ?? ButtonSize.medium,
           onPressed: () {
