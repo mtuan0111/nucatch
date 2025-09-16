@@ -66,27 +66,57 @@ class _GameOverScreenState extends State<GameOverScreen> {
                   children: [
                     Text(
                       lang(context).gameOver,
-                      style: LayoutConfig(context).displaySmallStyle(),
+                      style: LayoutConfig(context).displaySmallStyle().copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 32),
                     if (turnState.expect != turnState.requirementString)
-                      Text(
-                        turnState.requirementString ?? '',
-                        style: LayoutConfig(context).contentSectionStyle(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        child: Text(
+                          turnState.requirementString ?? '',
+                          style: LayoutConfig(context)
+                              .contentSectionStyle()
+                              .copyWith(
+                                color: Colors.white,
+                                fontStyle: FontStyle.italic,
+                              ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    const SizedBox(width: 8),
+                    const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           lang(context).theCorrectIs,
-                          style: LayoutConfig(context).contentSectionStyle(),
+                          style: LayoutConfig(context)
+                              .contentSectionStyle()
+                              .copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          turnState.expect ?? '',
-                          style: LayoutConfig(context).displaySmallStyle(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            turnState.expect ?? '',
+                            style: LayoutConfig(context)
+                                .displaySmallStyle()
+                                .copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
                         ),
                       ],
                     ),

@@ -36,26 +36,26 @@ class _PlayerNavState extends State<PlayerNav> {
             // },
             pages: [
               const MaterialPage(
-                child: PopScope(
-                  canPop: true,
-                  child: PlayScreen(),
-                ),
+                child: SetDifficultScreen(),
               ),
-              if (state is SetDifficultyState)
+              if (state is PlayingState)
                 const MaterialPage(
-                  child: SetDifficultScreen(),
+                  child: PopScope(
+                    canPop: true,
+                    child: PlayScreen(),
+                  ),
                 ),
-              // if (state is PlayingState)
-              //   const MaterialPage(
-              //     child: PopScope(
-              //       canPop: true,
-              //       child: PlayScreen(),
-              //     ),
-              //   ),
-              if (state is GameOverState)
+              if (state is GameOverState) ...[
+                const MaterialPage(
+                  child: PopScope(
+                    canPop: true,
+                    child: PlayScreen(),
+                  ),
+                ),
                 const MaterialPage(
                   child: GameOverScreen(),
-                )
+                ),
+              ],
             ],
           ),
         );

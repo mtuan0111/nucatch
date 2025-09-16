@@ -392,3 +392,34 @@ feat: Update environment URLs, improve layout responsiveness, and enhance button
     Flutter build for iOS
     ```flutter build ios --build-name=2.1.1 --build-number=46 --release```
 ---
+---
+## Released on: 16/09/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 43           | 2.1.2   |
+| iOS      | 47           | 2.1.2   |
+
+### Release note:
+feat: Implement difficulty settings, enhance UI responsiveness, and improve user experience across various screens
+
+### Git note release: 
+#### Command for copilot
+    [Builded] Version 2.1.2 - 43 / 2.1.2 - 47 _ Implement difficulty settings, enhance UI responsiveness, and improve user experience across various screens
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Added new difficulty settings for more flexible gameplay.  
+        - Improved UI responsiveness and user experience on multiple screens.
+
+    - **Tiếng Việt:**  
+        - Thêm thiết lập độ khó mới cho trải nghiệm chơi linh hoạt hơn.  
+        - Nâng cao khả năng phản hồi giao diện và trải nghiệm người dùng trên nhiều màn hình.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.1.2 --build-number=43 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.1.2 --build-number=47 --release```
+---

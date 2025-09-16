@@ -206,94 +206,96 @@ class _AboutScreenState extends State<AboutScreen> {
                 vertical: 20,
               ),
               sliver: SliverToBoxAdapter(
-                child: DeviceWrapper(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        lang(context).connectWithUs,
-                        style: LayoutConfig(context).titleSectionStyle(),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.connectdevelop,
-                            color: Theme.of(context).primaryColor,
-                            size: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .fontSize,
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              lang(context).connectWithUsMessage,
-                              style:
-                                  LayoutConfig(context).contentSectionStyle(),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              if (userState.username == null) {
-                                Share.share(
-                                  lang(context).messageShareIntro(
-                                    dotenv.env['PROFILE_URL']!,
-                                  ),
-                                );
-                              } else {
-                                Share.share(
-                                  lang(context).messageShareIntroWIthUsername(
-                                    userState.username ??
-                                        lang(context).anonymous,
-                                    dotenv.env['PROFILE_URL']!,
-                                  ),
-                                );
-                              }
-                            },
-                            icon: Icon(
-                              FontAwesomeIcons.shareNodes,
+                child: SafeArea(
+                  child: DeviceWrapper(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          lang(context).connectWithUs,
+                          style: LayoutConfig(context).titleSectionStyle(),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.connectdevelop,
                               color: Theme.of(context).primaryColor,
+                              size: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .fontSize,
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Helper.launchURL(facebookUrl,
-                                  fallbackUrl: facebookUrl);
-                            },
-                            icon: Icon(
-                              FontAwesomeIcons.facebookF,
-                              color: Theme.of(context).primaryColor,
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                lang(context).connectWithUsMessage,
+                                style:
+                                    LayoutConfig(context).contentSectionStyle(),
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Helper.launchURL(privacyPolicyUrl);
-                            },
-                            icon: Icon(
-                              FontAwesomeIcons.shieldHalved,
-                              color: Theme.of(context).primaryColor,
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                if (userState.username == null) {
+                                  Share.share(
+                                    lang(context).messageShareIntro(
+                                      dotenv.env['PROFILE_URL']!,
+                                    ),
+                                  );
+                                } else {
+                                  Share.share(
+                                    lang(context).messageShareIntroWIthUsername(
+                                      userState.username ??
+                                          lang(context).anonymous,
+                                      dotenv.env['PROFILE_URL']!,
+                                    ),
+                                  );
+                                }
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.shareNodes,
+                                color: Theme.of(context).primaryColor,
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Helper.launchURL("mailto:$email");
-                            },
-                            icon: Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Theme.of(context).primaryColor,
+                            IconButton(
+                              onPressed: () {
+                                Helper.launchURL(facebookUrl,
+                                    fallbackUrl: facebookUrl);
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.facebookF,
+                                color: Theme.of(context).primaryColor,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            IconButton(
+                              onPressed: () {
+                                Helper.launchURL(privacyPolicyUrl);
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.shieldHalved,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Helper.launchURL("mailto:$email");
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.envelope,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -70,7 +70,7 @@ class _MenuNavState extends State<MenuNav> {
                       MaterialPage(
                         child: MultiBlocProvider(
                           providers: [
-                            BlocProvider(
+                            BlocProvider<TurnBloc>(
                               create: (context) => TurnBloc(
                                 TurnState(context),
                               )..add(ApplySetting(
@@ -80,9 +80,10 @@ class _MenuNavState extends State<MenuNav> {
                               // )
                               ,
                             ),
-                            BlocProvider(
-                                create: (context) =>
-                                    PlayerNavCubit()..showPlay()
+                            BlocProvider<PlayerNavCubit>(create: (context) {
+                              return PlayerNavCubit()..showSetDifficulty();
+                            }
+
                                 // ..showSetDifficulty(),
                                 ),
                           ],

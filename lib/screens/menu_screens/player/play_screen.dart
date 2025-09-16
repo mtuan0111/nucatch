@@ -546,12 +546,14 @@ class _PlayScreenState extends State<PlayScreen> {
                           final buttonWidth = constraints.maxWidth / columns;
                           final buttonHeight = constraints.maxHeight / rows;
                           const buttonSpacing = 20.0;
+                          const tableGap = 10.0;
 
                           List<TableRow> tableRows = [];
                           for (int r = 0; r < rows; r++) {
                             List<Widget> rowChildren = [];
                             for (int c = 0; c < columns; c++) {
                               int idx = r * columns + c;
+                              Widget cell;
                               if (idx < keys.length) {
                                 final e = keys[idx];
                                 Duration duration =
@@ -603,33 +605,55 @@ class _PlayScreenState extends State<PlayScreen> {
                                     },
                                   );
                                 }
-                                rowChildren.add(
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.all(buttonSpacing / 2),
-                                    child: SizedBox(
-                                      width: buttonWidth - buttonSpacing,
-                                      height: buttonHeight - buttonSpacing,
-                                      child: button,
-                                    ),
-                                  ),
+                                cell = SizedBox(
+                                  width: buttonWidth - buttonSpacing,
+                                  height: buttonHeight - buttonSpacing,
+                                  child: button,
                                 );
                               } else {
-                                rowChildren.add(
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.all(buttonSpacing / 2),
-                                    child: SizedBox(
-                                      width: buttonWidth - buttonSpacing,
-                                      height: buttonHeight - buttonSpacing,
-                                    ),
+                                cell = Padding(
+                                  padding:
+                                      const EdgeInsets.all(buttonSpacing / 2),
+                                  child: SizedBox(
+                                    width: buttonWidth - buttonSpacing,
+                                    height: buttonHeight - buttonSpacing,
                                   ),
                                 );
                               }
+                              // Add gap to the right except for last column
+                              if (c < columns - 1) {
+                                rowChildren.add(Padding(
+                                  padding:
+                                      const EdgeInsets.only(right: tableGap),
+                                  child: cell,
+                                ));
+                              } else {
+                                rowChildren.add(cell);
+                              }
                             }
-                            tableRows.add(TableRow(
-                              children: rowChildren,
-                            ));
+                            // Add gap to the bottom except for last row
+                            if (r < rows - 1) {
+                              tableRows.add(
+                                TableRow(
+                                  children: rowChildren,
+                                ),
+                              );
+                              // Add a gap row
+                              tableRows.add(
+                                TableRow(
+                                  children: List.generate(
+                                    columns,
+                                    (_) => SizedBox(height: tableGap),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              tableRows.add(
+                                TableRow(
+                                  children: rowChildren,
+                                ),
+                              );
+                            }
                           }
                           return Table(
                             defaultVerticalAlignment:

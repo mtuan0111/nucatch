@@ -91,7 +91,7 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                       vertical: 50,
                     ),
                     sliver: SliverToBoxAdapter(
-                      child: IntrinsicWidth(
+                      child: SafeArea(
                         child: DeviceWrapper(
                           child: Wrap(
                             alignment: WrapAlignment.center,
