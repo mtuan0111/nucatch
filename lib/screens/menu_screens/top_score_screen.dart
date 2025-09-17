@@ -46,95 +46,99 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
             },
             child: Container(
               decoration: LayoutConfig(context).gradientDecoration,
-              child: CustomScrollView(
-                slivers: [
-                  SliverAppBar(
-                    foregroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    shadowColor: Colors.transparent,
-                    backgroundColor: Colors.transparent,
-                    pinned: true,
-                    stretch: true,
-                    flexibleSpace: LayoutBuilder(
-                      builder:
-                          (BuildContext context, BoxConstraints constraints) {
-                        return FlexibleSpaceBar(
-                          centerTitle: true,
-                          titlePadding: EdgeInsets.zero,
-                          title: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              screenTitle,
-                              textAlign: TextAlign.center,
-                              style: LayoutConfig(context).displaySmallStyle(
-                                isActiveShadow: true,
-                                isItalic: true,
+              child: SafeArea(
+                child: CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      foregroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      shadowColor: Colors.transparent,
+                      backgroundColor: Colors.transparent,
+                      pinned: true,
+                      stretch: true,
+                      flexibleSpace: LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          return FlexibleSpaceBar(
+                            centerTitle: true,
+                            titlePadding: EdgeInsets.zero,
+                            title: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                screenTitle,
+                                textAlign: TextAlign.center,
+                                style: LayoutConfig(context).displaySmallStyle(
+                                  isActiveShadow: true,
+                                  isItalic: true,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                    leading: IconButton(
-                      onPressed: () {
-                        mainMenuBloc.add(ShowMenu());
-                        // Navigator.pop(context);
-                        // Navigator.pop
-                      },
-                      icon: const Icon(
-                        FontAwesomeIcons.chevronLeft,
+                          );
+                        },
                       ),
+                      leading: IconButton(
+                        onPressed: () {
+                          mainMenuBloc.add(ShowMenu());
+                          // Navigator.pop(context);
+                          // Navigator.pop
+                        },
+                        icon: const Icon(
+                          FontAwesomeIcons.chevronLeft,
+                        ),
+                      ),
+                      expandedHeight: 100,
                     ),
-                    expandedHeight: 100,
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 50,
-                    ),
-                    sliver: SliverToBoxAdapter(
-                      child: SafeArea(
-                        child: DeviceWrapper(
-                          child: Wrap(
-                            alignment: WrapAlignment.center,
-                            runSpacing: 50,
-                            spacing: 50,
-                            children: [
-                              if (turnRecordedListState.listModel != null &&
-                                  turnRecordedListState.listModel!.isNotEmpty)
-                                ...turnRecordedListState.listModel!.map(
-                                  (e) => GestureDetector(
-                                    onTap: () {
-                                      context
-                                          .read<TopScoreNavCubit>()
-                                          .showTopScoreDetail(
-                                            e,
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 50,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: SafeArea(
+                          child: DeviceWrapper(
+                            child: Wrap(
+                              alignment: WrapAlignment.center,
+                              runSpacing: 50,
+                              spacing: 50,
+                              children: [
+                                if (turnRecordedListState.listModel != null &&
+                                    turnRecordedListState.listModel!.isNotEmpty)
+                                  ...turnRecordedListState.listModel!.map(
+                                    (e) => GestureDetector(
+                                      onTap: () {
+                                        context
+                                            .read<TopScoreNavCubit>()
+                                            .showTopScoreDetail(
+                                              e,
+                                              turnRecordedListState.indexOf(e),
+                                            );
+                                      },
+                                      child: RankingItem(
+                                        ranking:
                                             turnRecordedListState.indexOf(e),
-                                          );
-                                    },
-                                    child: RankingItem(
-                                      ranking: turnRecordedListState.indexOf(e),
-                                      turnRecordedModel: e,
-                                      // playerName: e.playedUsername ??
-                                      //     lang(context).anonymous,
-                                      // createdAt: e.recordedTime,
-                                      // turnedPoint: e.point,
+                                        turnRecordedModel: e,
+                                        // playerName: e.playedUsername ??
+                                        //     lang(context).anonymous,
+                                        // createdAt: e.recordedTime,
+                                        // turnedPoint: e.point,
+                                      ),
                                     ),
+                                  )
+                                else
+                                  Text(
+                                    lang(context).no_turn_yet,
+                                    style: LayoutConfig(context)
+                                        .contentSectionStyle(),
                                   ),
-                                )
-                              else
-                                Text(
-                                  lang(context).no_turn_yet,
-                                  style: LayoutConfig(context)
-                                      .contentSectionStyle(),
-                                ),
-                              if (turnRecordedListState.isLoading)
-                                const LoadingWidget(),
-                            ],
+                                if (turnRecordedListState.isLoading)
+                                  const LoadingWidget(),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

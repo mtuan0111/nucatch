@@ -95,72 +95,94 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                 leading: IconButton(
                   onPressed: () {
                     context.read<MenuBloc>().add(ShowMenu());
+                    // Navigator.pop(context);
                   },
                   icon: const Icon(FontAwesomeIcons.chevronLeft),
                 ),
-                expandedHeight: MediaQuery.of(context).size.height * 0.22,
+                expandedHeight: 100,
               ),
-              SliverFillRemaining(
-                child: DeviceWrapper(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      // crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: buttonSpace,
-                      // runSpacing: buttonSpace,
-                      children: Difficulty.values.map((difficulty) {
-                        String textButton = '';
+              DecoratedSliver(
+                decoration: const BoxDecoration(
+                  color: Colors.transparent,
+                ),
+                sliver: SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 50,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: SafeArea(
+                      child: DeviceWrapper(
+                        child: Column(
+                          // crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: buttonSpace,
+                          // runSpacing: buttonSpace,
+                          children: Difficulty.values.map((difficulty) {
+                            String textButton = '';
 
-                        IconData difficultyIcon =
-                            Helper.getIconFromDifficulty(context, difficulty);
+                            IconData difficultyIcon =
+                                Helper.getIconFromDifficulty(
+                                    context, difficulty);
 
-                        return Row(
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            AnimatedButton(
-                              context,
-
-                              onPressed: () {
-                                turnBloc.add(
-                                  SetDifficulty(
-                                    difficulty: difficulty,
-                                    onChanged: () {
-                                      turnBloc.add(Start());
-                                      context.read<PlayerNavCubit>().showPlay();
-                                    },
-                                  ),
-                                );
+                            Function onTap = () {
+                              turnBloc.add(
+                                SetDifficulty(
+                                  difficulty: difficulty,
+                                  onChanged: () {
+                                    turnBloc.add(Start());
+                                    context.read<PlayerNavCubit>().showPlay();
+                                  },
+                                ),
+                              );
+                            };
+                            return GestureDetector(
+                              onTap: () {
+                                onTap();
                               },
-                              // text: textButton,
-                              iconData: difficultyIcon,
-                            ),
-                            Text(
-                              textButton,
-                              style: LayoutConfig(context).titleSectionStyle(),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                // crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
+                                  AnimatedButton(
+                                    context,
+
+                                    onPressed: () {
+                                      onTap();
+                                    },
+                                    // text: textButton,
+                                    iconData: difficultyIcon,
+                                  ),
                                   Text(
-                                    Helper.getTitleFromDifficulty(
-                                        context, difficulty),
-                                    textAlign: TextAlign.start,
+                                    textButton,
                                     style: LayoutConfig(context)
                                         .titleSectionStyle(),
                                   ),
-                                  Text(
-                                    Helper.getDescriptionFromDifficulty(
-                                        context, difficulty),
-                                    textAlign: TextAlign.start,
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          Helper.getTitleFromDifficulty(
+                                              context, difficulty),
+                                          textAlign: TextAlign.start,
+                                          style: LayoutConfig(context)
+                                              .titleSectionStyle(),
+                                        ),
+                                        Text(
+                                          Helper.getDescriptionFromDifficulty(
+                                              context, difficulty),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ),
                   ),
                 ),

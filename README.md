@@ -405,6 +405,9 @@ feat: Implement difficulty settings, enhance UI responsiveness, and improve user
 
 ### Git note release: 
 #### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
     [Builded] Version 2.1.2 - 43 / 2.1.2 - 47 _ Implement difficulty settings, enhance UI responsiveness, and improve user experience across various screens
 
     **Store notices / What's new / Summary:**
@@ -422,4 +425,44 @@ feat: Implement difficulty settings, enhance UI responsiveness, and improve user
 
     Flutter build for iOS
     ```flutter build ios --build-name=2.1.2 --build-number=47 --release```
+---
+---
+## Released on: 17/09/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 44           | 2.1.3   |
+| iOS      | 48           | 2.1.3   |
+
+### Release note:
+Update launcher icons and refactor UI components in various screens
+
+- Updated launcher icons for different mipmap densities.
+- Refactored the About Screen to improve layout and structure.
+- Enhanced the Set Difficulty Screen with better state management and UI responsiveness.
+- Improved the Setting Screen by organizing form fields and enhancing user experience.
+- Refined the Top Score Details and Top Score Screens for better readability and maintainability.
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+    [Builded] Version 2.1.3 - 44 / 2.1.3 - 48 _ Update launcher icons and refactor UI components in various screens
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Updated launcher icons for improved appearance.  
+        - Refactored and enhanced UI components across multiple screens.
+
+    - **Tiếng Việt:**  
+        - Cập nhật biểu tượng ứng dụng cho giao diện đẹp hơn.  
+        - Cải tiến và sắp xếp lại các thành phần giao diện trên nhiều màn hình.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.1.3 --build-number=44 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.1.3 --build-number=48 --release```
 ---
