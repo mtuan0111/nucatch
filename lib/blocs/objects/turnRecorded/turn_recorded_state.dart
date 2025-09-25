@@ -29,6 +29,7 @@ class TurnRecordedState {
       model.playedUsername ?? "",
       model.point.toString(),
       model.recordedTime,
+      model.difficulty,
     );
   }
 }

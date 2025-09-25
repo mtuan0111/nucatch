@@ -327,6 +327,7 @@ class Helper {
     String username,
     String point,
     DateTime timeCreated,
+    Difficulty difficulty,
   ) {
     final int? pointInt = int.tryParse(point);
     if (pointInt == null || pointInt == 0) return "";
@@ -341,6 +342,7 @@ class Helper {
       "username": username,
       "point": point,
       "timeCode": timeCode,
+      "difficulty": difficulty.name,
       "key": encodedKey,
     };
 
@@ -367,6 +369,8 @@ class Helper {
         generatingUrl.replaceAll("%point%", Uri.encodeQueryComponent(point));
     generatingUrl = generatingUrl.replaceAll(
         "%timeCreated%", Uri.encodeQueryComponent(timeCreatedString));
+    generatingUrl = generatingUrl.replaceAll(
+        "%difficulty%", Uri.encodeQueryComponent(difficulty.name));
     generatingUrl = generatingUrl.replaceAll(
         "%md5Key%", Uri.encodeQueryComponent(finalConfirmKey));
 
