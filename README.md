@@ -466,3 +466,37 @@ Update launcher icons and refactor UI components in various screens
     Flutter build for iOS
     ```flutter build ios --build-name=2.1.3 --build-number=48 --release```
 ---
+---
+## Released on: 18/109/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 45           | 2.2.1   |
+| iOS      | 49           | 2.2.1   |
+
+### Release note:
+Update the top recorded scores to be stored online
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+    [Builded] Version 2.2.1 - 45 / 2.2.1 - 49 _ Update the top recorded scores to be stored online
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Added online score storage for top recorded scores.  
+        - Enhanced leaderboard functionality for better competition experience.
+
+    - **Tiếng Việt:**  
+        - Thêm tính năng lưu trữ điểm số cao nhất trực tuyến.  
+        - Nâng cao chức năng bảng xếp hạng cho trải nghiệm cạnh tranh tốt hơn.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.2.1 --build-number=45 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.2.1 --build-number=49 --release```
+---
