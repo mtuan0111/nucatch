@@ -60,6 +60,8 @@ dependencies:
   path_provider: ^2.1.5
   crypto: ^3.0.6
   qr_flutter: ^4.1.0
+  cloud_firestore: ^6.0.3
+
 
 dependency_overrides:
   win32: ^5.5.4

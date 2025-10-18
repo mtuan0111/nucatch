@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -7,6 +8,7 @@ import 'package:path/path.dart';
 
 class TurnRecordedServices {
   Database? _database;
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   TurnRecordedServices();
 
@@ -87,11 +89,33 @@ class TurnRecordedServices {
     }).toList();
   }
 
+  Future<List<TurnRecordedModel>?> getTurnedListFirebase(int limit) async {
+    final querySnapshot = await firebaseFirestore
+        .collection('turn_records')
+        .orderBy('point', descending: true)
+        .limit(limit)
+        .get();
+
+    return querySnapshot.docs.map((doc) {
+      final data = doc.data();
+      return TurnRecordedModel(
+        turnId: data['turnId'],
+        playedUsername: data['playedUsername'],
+        point: data['point'],
+        recordedTime: DateTime.parse(data['recordedTime']),
+        difficulty: Difficulty.values.firstWhere(
+          (e) => e.name == data['difficulty'],
+          orElse: () => Difficulty.easy,
+        ),
+      );
+    }).toList();
+  }
+
   Future<bool> addItem(TurnRecordedModel item) async {
     final db = await database;
     try {
       await db.insert(
-        'turn_records',
+        tableTurnRecords,
         {
           'turnId': item.turnId,
           'playedUsername': item.playedUsername,
@@ -101,7 +125,27 @@ class TurnRecordedServices {
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-      log(item.toString());
+      log("inserted to local database");
+      return true;
+    } catch (e) {
+      log('Error adding item: $e');
+      return false;
+    }
+  }
+
+  Future<bool> addItemToFirebase(TurnRecordedModel item) async {
+    try {
+      Map<String, dynamic> newRecorded = {
+        'turnId': item.turnId,
+        'playedUsername': item.playedUsername,
+        'point': item.point,
+        'recordedTime': item.recordedTime.toIso8601String(),
+        'difficulty': item.difficulty.name,
+      };
+
+      await firebaseFirestore.collection('turn_records').add(newRecorded);
+
+      log("inserted to Firebase database");
 
       return true;
     } catch (e) {

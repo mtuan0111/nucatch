@@ -540,7 +540,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
-    bool insertSuccess = await _turnedServices.addItem(state.recordedItem!);
+    bool insertSuccess =
+        await _turnedServices.addItemToFirebase(state.recordedItem!);
+
+    await _turnedServices.addItem(state.recordedItem!); //For backup locally
 
     await Fluttertoast.showToast(
       msg: insertSuccess

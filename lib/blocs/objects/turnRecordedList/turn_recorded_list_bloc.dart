@@ -28,7 +28,10 @@ class TurnRecordedListBloc
 
     emitter(
       state.copyWith(
-        listModel: await _turnedServices.getTurnedList(state.numberOfTopBoard),
+        listModel: await _turnedServices
+                .getTurnedListFirebase(state.numberOfTopBoard) ??
+            await _turnedServices
+                .getTurnedList(state.numberOfTopBoard), // Use if no Internet
         isLoading: false,
       ),
     );
