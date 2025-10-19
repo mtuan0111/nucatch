@@ -655,6 +655,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     Emitter<TurnState> emitter,
   ) async {
     _audioBloc.add(SetAudioVolume(volume: event.settingModel.vol / 10));
-    _vibrationBloc.add(SetVibrationEnabled(enabled: event.settingModel.isVibrate));
+    _vibrationBloc
+        .add(SetVibrationEnabled(enabled: event.settingModel.isVibrate));
   }
 }

@@ -350,19 +350,20 @@ class _PlayScreenState extends State<PlayScreen> {
                                     Builder(
                                       builder: (widgetContext) {
                                         // Capture localized strings using the widget context
-                                        final readyText = "${lang(widgetContext).ready}!!";
+                                        final readyText =
+                                            "${lang(widgetContext).ready}!!";
                                         final goText = lang(widgetContext).go;
-                                        
+
                                         return Countdown(
                                           seconds: turnState.countDown,
                                           interval:
                                               const Duration(milliseconds: 400),
-                                          build:
-                                              (BuildContext context, double time) {
+                                          build: (BuildContext context,
+                                              double time) {
                                             return AnimatedOpacity(
                                               opacity: time >= 1 ? 1 : 0,
-                                              duration:
-                                                  const Duration(milliseconds: 400),
+                                              duration: const Duration(
+                                                  milliseconds: 400),
                                               child: AnimatedScale(
                                                 scale: time >= 1 ? 1 : 15,
                                                 duration: const Duration(
@@ -371,34 +372,45 @@ class _PlayScreenState extends State<PlayScreen> {
                                                   time >= 1
                                                       ? readyText
                                                       : goText,
-                                                  style: LayoutConfig(context)
-                                                      .titleSectionStyle(
-                                                          isItalic: true)
-                                                      .copyWith(
-                                                        fontSize: time <= 1
-                                                            ? () {
-                                                                // Safety checks to prevent invalid font sizes
-                                                                if (turnState.countDown <= 0) return null;
-                                                                
-                                                                final baseFontSize = Theme.of(context)
-                                                                    .textTheme
-                                                                    .displayLarge
-                                                                    ?.fontSize ?? 24.0;
-                                                                
-                                                                final calculatedSize = (time / turnState.countDown) * baseFontSize;
-                                                                
-                                                                // Ensure the fontSize is valid and within reasonable bounds
-                                                                if (calculatedSize.isNaN || 
-                                                                    calculatedSize.isInfinite || 
-                                                                    calculatedSize <= 0 || 
-                                                                    calculatedSize > 200) {
-                                                                  return null;
-                                                                }
-                                                                
-                                                                return calculatedSize;
-                                                              }()
-                                                            : null,
-                                                      ),
+                                                  style:
+                                                      LayoutConfig(context)
+                                                          .titleSectionStyle(
+                                                              isItalic: true)
+                                                          .copyWith(
+                                                            fontSize: time <= 1
+                                                                ? () {
+                                                                    // Safety checks to prevent invalid font sizes
+                                                                    if (turnState
+                                                                            .countDown <=
+                                                                        0) {
+                                                                      return null;
+                                                                    }
+
+                                                                    final baseFontSize = Theme.of(context)
+                                                                            .textTheme
+                                                                            .displayLarge
+                                                                            ?.fontSize ??
+                                                                        24.0;
+
+                                                                    final calculatedSize =
+                                                                        (time / turnState.countDown) *
+                                                                            baseFontSize;
+
+                                                                    // Ensure the fontSize is valid and within reasonable bounds
+                                                                    if (calculatedSize.isNaN ||
+                                                                        calculatedSize
+                                                                            .isInfinite ||
+                                                                        calculatedSize <=
+                                                                            0 ||
+                                                                        calculatedSize >
+                                                                            200) {
+                                                                      return null;
+                                                                    }
+
+                                                                    return calculatedSize;
+                                                                  }()
+                                                                : null,
+                                                          ),
                                                 ),
                                               ),
                                             );
@@ -663,7 +675,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                 TableRow(
                                   children: List.generate(
                                     columns,
-                                    (_) => SizedBox(height: tableGap),
+                                    (_) => const SizedBox(height: tableGap),
                                   ),
                                 ),
                               );
