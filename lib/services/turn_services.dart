@@ -76,16 +76,7 @@ class TurnRecordedServices {
     );
 
     return maps.map((map) {
-      return TurnRecordedModel(
-        turnId: map['turnId'],
-        playedUsername: map['playedUsername'],
-        point: map['point'],
-        recordedTime: DateTime.parse(map['recordedTime']),
-        difficulty: Difficulty.values.firstWhere(
-          (e) => e.name == map['difficulty'],
-          orElse: () => Difficulty.easy,
-        ),
-      );
+      return TurnRecordedModel.fromJson(map);
     }).toList();
   }
 
@@ -98,16 +89,7 @@ class TurnRecordedServices {
 
     return querySnapshot.docs.map((doc) {
       final data = doc.data();
-      return TurnRecordedModel(
-        turnId: data['turnId'],
-        playedUsername: data['playedUsername'],
-        point: data['point'],
-        recordedTime: DateTime.parse(data['recordedTime']),
-        difficulty: Difficulty.values.firstWhere(
-          (e) => e.name == data['difficulty'],
-          orElse: () => Difficulty.easy,
-        ),
-      );
+      return TurnRecordedModel.fromJson(data);
     }).toList();
   }
 
@@ -116,13 +98,7 @@ class TurnRecordedServices {
     try {
       await db.insert(
         tableTurnRecords,
-        {
-          'turnId': item.turnId,
-          'playedUsername': item.playedUsername,
-          'point': item.point,
-          'recordedTime': item.recordedTime.toIso8601String(),
-          'difficulty': item.difficulty.name,
-        },
+        item.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
       log("inserted to local database");
@@ -135,15 +111,9 @@ class TurnRecordedServices {
 
   Future<bool> addItemToFirebase(TurnRecordedModel item) async {
     try {
-      Map<String, dynamic> newRecorded = {
-        'turnId': item.turnId,
-        'playedUsername': item.playedUsername,
-        'point': item.point,
-        'recordedTime': item.recordedTime.toIso8601String(),
-        'difficulty': item.difficulty.name,
-      };
-
-      await firebaseFirestore.collection('turn_records').add(newRecorded);
+      await firebaseFirestore.collection('turn_records').add(
+            item.toJson(),
+          );
 
       log("inserted to Firebase database");
 

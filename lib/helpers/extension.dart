@@ -106,6 +106,23 @@ extension StringExtensions on String {
 
     return evenString + oddString;
   }
+
+  String snakeCaseToCamel() {
+    if (isEmpty) return this;
+
+    List<String> parts = split('_');
+    String camelCaseString = parts[0];
+
+    for (int i = 1; i < parts.length; i++) {
+      String part = parts[i];
+      if (part.isNotEmpty) {
+        camelCaseString +=
+            part[0].toUpperCase() + part.substring(1).toLowerCase();
+      }
+    }
+
+    return camelCaseString;
+  }
 }
 
 extension ColorCustome on Color {

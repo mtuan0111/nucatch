@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
 
 class TurnRecordedModel {
@@ -30,14 +31,24 @@ class TurnRecordedModel {
   //       );
 
   factory TurnRecordedModel.fromJson(Map<String, dynamic> json) {
+    T getValue<T>(String key, T defaultValue, T Function(dynamic) converter) {
+      final value = json[key] ?? json[key.snakeCaseToCamel()];
+      return value != null ? converter(value) : defaultValue;
+    }
+
     return TurnRecordedModel(
-      turnId: json[PreferencesKey.TURN_ID],
-      playedUsername: json[PreferencesKey.PLAYED_USERNAME],
-      point: int.tryParse(json[PreferencesKey.POINT].toString()) ?? 0,
-      recordedTime: DateTime.fromMillisecondsSinceEpoch(
-          int.tryParse(json[PreferencesKey.RECORDED_TIME].toString()) ?? 0),
-      difficulty: Difficulty.values[
-          int.tryParse(json[PreferencesKey.DIFFICULTY].toString()) ?? 0],
+      turnId: getValue(PreferencesKey.TURN_ID, '', (v) => v.toString()),
+      playedUsername:
+          getValue(PreferencesKey.PLAYED_USERNAME, null, (v) => v.toString()),
+      point: getValue(
+          PreferencesKey.POINT, 0, (v) => int.tryParse(v.toString()) ?? 0),
+      recordedTime: getValue(
+          PreferencesKey.RECORDED_TIME,
+          DateTime.now(),
+          (v) => DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(v.toString()) ?? 0)),
+      difficulty: getValue(PreferencesKey.DIFFICULTY, Difficulty.values.first,
+          (v) => Difficulty.values[int.tryParse(v.toString()) ?? 0]),
     );
   }
 
