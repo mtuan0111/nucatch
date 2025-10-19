@@ -1,38 +1,30 @@
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
-import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 
-enum TurnStatus {
+enum GameStatus {
   intro,
   initial,
   correct,
   playing,
-
   rest,
-
   gameOver,
 }
 
-class TurnState {
+class GameState {
   final int level;
   final int timesCorrect;
   final int point;
-  final DifficultyModel? difficultyModel; // Default difficulty
-
+  final DifficultyModel? difficultyModel;
   final int lifeRemaining;
-
   final String? requirementString;
   final String? expect;
   final String typing;
-  final TurnStatus status;
+  final GameStatus status;
   final int countDown;
   final TurnRecordedModel? recordedItem;
-
   final bool isLoading;
-  final String? message;
-  final bool saveSuccess;
 
-  const TurnState({
+  const GameState({
     this.level = 0,
     this.timesCorrect = 0,
     this.point = 0,
@@ -40,16 +32,14 @@ class TurnState {
     this.lifeRemaining = 3,
     this.requirementString,
     this.expect,
-    this.status = TurnStatus.initial,
+    this.status = GameStatus.initial,
     this.typing = "",
     this.countDown = 0,
     this.recordedItem,
     this.isLoading = false,
-    this.message,
-    this.saveSuccess = false,
   });
 
-  TurnState copyWith({
+  GameState copyWith({
     int? level,
     int? timesCorrect,
     int? point,
@@ -58,14 +48,12 @@ class TurnState {
     String? requirementString,
     String? expect,
     String? typing,
-    TurnStatus? status,
+    GameStatus? status,
     int? countDown,
     TurnRecordedModel? recordedItem,
     bool? isLoading,
-    String? message,
-    bool? saveSuccess,
   }) {
-    return TurnState(
+    return GameState(
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,
       point: point ?? this.point,
@@ -80,50 +68,34 @@ class TurnState {
       countDown: countDown ?? this.countDown,
       recordedItem: recordedItem ?? this.recordedItem,
       isLoading: isLoading ?? this.isLoading,
-      message: message ?? this.message,
-      saveSuccess: saveSuccess ?? this.saveSuccess,
     );
   }
 
-  String get levelAndTimeCorrect {
-    return "$level - ${timesCorrect + 1}";
-  }
+  // Game logic getters
+  String get levelAndTimeCorrect => "$level - ${timesCorrect + 1}";
 
   int get currentTypingIndex => typing.length;
+
   bool get isFinishTarget => expect == typing;
 
-  int get getTimeShowTarget => 1000 + level * diffShowLevelMilisecond;
-
   bool get isExpectNotEmpty => expect?.isNotEmpty ?? false;
+
   bool get isTypingNotEmpty => typing.isNotEmpty;
 
   bool get isShowExpect =>
-      status == TurnStatus.initial && isExpectNotEmpty && !isTypingNotEmpty;
+      status == GameStatus.initial && isExpectNotEmpty && !isTypingNotEmpty;
 
   bool get isTimeForTyping =>
-      (status == TurnStatus.playing
-      // || !isShowExpect
-      ) &&
-      (isExpectNotEmpty || isTypingNotEmpty);
+      (status == GameStatus.playing) && (isExpectNotEmpty || isTypingNotEmpty);
 
   bool get isCorrectAnimate => isFinishTarget;
 
-  // bool get isAbleToTap => isExpectNotEmpty && !isFinishTarget;
+  bool get isAbleToTap => isExpectNotEmpty && !isFinishTarget;
 
-  bool get isAbleToTap =>
-      // -> let user able to quick tap
-      // (status == TurnStatus.playing) &&
-      isExpectNotEmpty && !isFinishTarget;
+  bool get isAbleToReset => status == GameStatus.playing && lifeRemaining > 1;
 
-  bool get isAbleToReset => status == TurnStatus.playing && lifeRemaining > 1;
   bool get isAbleToContinue => lifeRemaining > 0;
 
   bool get isAbleToLevelUp =>
-      timesCorrect >= difficultyModel!.numberTurnEachLevel;
+      timesCorrect >= (difficultyModel?.numberTurnEachLevel ?? 3);
 }
-
-// class InitialState extends TurnState {}
-
-// class RestState extends TurnState {}
-
-// class PlayingState extends TurnState {}

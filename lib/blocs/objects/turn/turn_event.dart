@@ -1,137 +1,123 @@
-import 'package:flutter/material.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/models/setting_model.dart';
 
 abstract class TurnEvent {}
 
-class CountDownIntro extends TurnEvent {
+class CountDownIntroStarted extends TurnEvent {
   int seconds;
-  CountDownIntro({
+  CountDownIntroStarted({
     required this.seconds,
   });
 }
 
-class Start extends TurnEvent {
-// Marking the status transform from initial status to playing status
+class GameStarted extends TurnEvent {
+  // Marking the status transform from initial status to playing status
   int seconds;
 
-  Start({
+  GameStarted({
     this.seconds = 3,
   });
 }
 
-class End extends TurnEvent {
-  // final TurnRecordedModel turnRecordedModel;
-  BuildContext context;
+class GameEnded extends TurnEvent {
   final bool isCauseGameOver;
 
-  End(
-    this.context, {
-    // required this.turnRecordedModel,
+  GameEnded({
     this.isCauseGameOver = true,
   });
 }
 
-class Tap extends TurnEvent {
-  BuildContext context;
+class PlayerTapped extends TurnEvent {
   final KeyboardOption keyValue;
 
-  Tap(
-    this.context, {
+  PlayerTapped({
     required this.keyValue,
   });
 }
 
-class SetLevel extends TurnEvent {
+class LevelChanged extends TurnEvent {
   final int level;
   final int addPoint;
 
-  SetLevel({
+  LevelChanged({
     required this.level,
     this.addPoint = 1,
   });
 }
 
-class SetDifficulty extends TurnEvent {
-  // final BuildContext context;
+class DifficultyChanged extends TurnEvent {
   final Difficulty difficulty;
   final void Function()? onChanged;
 
-  SetDifficulty({
+  DifficultyChanged({
     required this.difficulty,
     this.onChanged,
   });
 }
 
-class LostLife extends TurnEvent {
-  BuildContext context;
+class LifeLost extends TurnEvent {
   final int lifeRemaining;
 
-  LostLife(
-    this.context, {
+  LifeLost({
     this.lifeRemaining = 1,
   });
 }
 
-class AddPoint extends TurnEvent {
-  AddPoint();
+class PointAdded extends TurnEvent {
+  PointAdded();
 }
 
-class GainLife extends TurnEvent {
+class LifeGained extends TurnEvent {
   final int lifeGained;
 
-  GainLife({
-    this.lifeGained = 1,
-  });
+  LifeGained({this.lifeGained = 1});
 }
 
-class SaveRecorded extends TurnEvent {
-  // final TurnRecordedModel savingRecord;
-  // final String? messageSuccess;
-  // final String? messageFailure;
-  final BuildContext context;
-  final void Function()? callback;
-
-  SaveRecorded(this.context, {this.callback});
+class RequiredStringGenerated extends TurnEvent {
+  RequiredStringGenerated();
 }
 
-class GetTurnRecordedList extends TurnEvent {
-  GetTurnRecordedList();
-}
-
-class GeneratedRequiredString extends TurnEvent {
-  GeneratedRequiredString();
-}
-
-class ShowExpect extends TurnEvent {
+class ExpectShown extends TurnEvent {
   final Duration duration;
-  ShowExpect(this.duration);
+
+  ExpectShown(this.duration);
 }
 
-class HideExpect extends TurnEvent {
-  HideExpect();
-}
-
-// class MarkCorrectTap extends TurnEvent {
-//   final KeyboardOption keyValue;
-//   MarkCorrectTap({required this.keyValue});
-// }
-
-// class MarkWrongTap extends TurnEvent {}
-
-class ResetNewNumber extends TurnEvent {
-  BuildContext context;
+class NumberReset extends TurnEvent {
   Duration duration;
-  ResetNewNumber(
-    this.context, {
+  NumberReset({
     required this.duration,
   });
 }
 
-class ApplySetting extends TurnEvent {
+class RecordSaved extends TurnEvent {
+  final void Function()? callback;
+
+  RecordSaved({this.callback});
+}
+
+class SettingApplied extends TurnEvent {
   final SettingModel settingModel;
-  ApplySetting({
+
+  SettingApplied({
     required this.settingModel,
   });
 }
+
+// Legacy event aliases for backward compatibility
+// These should be gradually replaced in the codebase
+typedef CountDownIntro = CountDownIntroStarted;
+typedef Start = GameStarted;
+typedef End = GameEnded;
+typedef Tap = PlayerTapped;
+typedef SetLevel = LevelChanged;
+typedef SetDifficulty = DifficultyChanged;
+typedef LostLife = LifeLost;
+typedef AddPoint = PointAdded;
+typedef GainLife = LifeGained;
+typedef GeneratedRequiredString = RequiredStringGenerated;
+typedef ShowExpect = ExpectShown;
+typedef ResetNewNumber = NumberReset;
+typedef SaveRecorded = RecordSaved;
+typedef ApplySetting = SettingApplied;

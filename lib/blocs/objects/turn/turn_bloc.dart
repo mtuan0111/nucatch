@@ -1,54 +1,48 @@
 import 'dart:math';
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
+import 'package:nucatch/blocs/objects/audio/audio_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
-import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
+import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
-import 'package:nucatch/models/setting_model.dart';
 import 'package:nucatch/models/turn_record_model.dart';
-import 'package:nucatch/services/audio_services.dart';
 import 'package:nucatch/services/turn_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class TurnBloc extends Bloc<TurnEvent, TurnState> {
-  late TurnRecordedServices _turnedServices;
-  late AudioServices _audioServices;
-  late VibrationServices _vibrateServices;
+  final TurnRecordedServices _turnedServices = TurnRecordedServices();
+  final AudioBloc _audioBloc;
+  final VibrationBloc _vibrationBloc;
 
-  TurnBloc(super.initialState, {SettingModel? settingModel}) {
+  TurnBloc(
+    TurnState initialState, {
+    required AudioBloc audioBloc,
+    required VibrationBloc vibrationBloc,
+  })  : _audioBloc = audioBloc,
+        _vibrationBloc = vibrationBloc,
+        super(initialState) {
     on<Tap>(_onTap);
-    on<SetLevel>(_onSetLevel);
+    on<AddPoint>(_onAddPoint);
     on<LostLife>(_onLostLife);
-    on<AddPoint>(_onAddPoint); // Handle AddPoint as a SetLevel event
     on<GainLife>(_onGainLife);
-    on<GeneratedRequiredString>(_onGeneratedRequiredString);
     on<ShowExpect>(_onShowExpect);
+    on<SetLevel>(_onSetLevel);
     on<SetDifficulty>(_onSetDifficulty);
-    // on<ResetDifficulty>(_onResetDifficulty);
-
-    // on<HideExpect>(_onHideExpect);
-    // on<MarkCorrectTap>(_onMarkCorrectTap);
-    // on<MarkWrongTap>(_onMarkWrongTap);
+    on<GeneratedRequiredString>(_onGeneratedRequiredString);
     on<ResetNewNumber>(_onResetNewNumber);
     on<SaveRecorded>(_onSaveRecorded);
-
     on<Start>(_onStart);
     on<End>(_onEnd);
-
     on<CountDownIntro>(_onCountDownIntro);
     on<ApplySetting>(_onApplySetting);
-
-    _turnedServices = TurnRecordedServices();
-    _audioServices = AudioServices();
-    _vibrateServices = VibrationServices();
   }
 
   Future<void> _onTap(
@@ -67,7 +61,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    _audioServices.playTap();
+    _audioBloc.add(PlayTapAudio());
 
     if (event.keyValue == KeyboardOption.reset) {
       return;
@@ -110,8 +104,6 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       );
     } else {
       await _onMarkWrongTap(
-        event.context,
-        // MarkWrongTap(),
         emitter,
       );
       if (!state.isAbleToContinue) {
@@ -121,7 +113,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     // When correct Checking is finish the turn or not
     if (state.isFinishTarget) {
-      _vibrateServices.vibrate(duration: 100);
+      _vibrationBloc.add(VibrateShort());
 
       await _onAddPoint(AddPoint(), emitter);
       emitter(
@@ -135,9 +127,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
       // Play sound immediately
       if (state.isAbleToLevelUp) {
-        _audioServices.playCorrectUp();
+        _audioBloc.add(PlayCorrectUpAudio());
       } else {
-        _audioServices.playCorrect();
+        _audioBloc.add(PlayCorrectAudio());
       }
 
       await Future.delayed(const Duration(milliseconds: 1000));
@@ -217,7 +209,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     );
 
     if (!state.isAbleToContinue) {
-      add(End(event.context, isCauseGameOver: true));
+      add(End(isCauseGameOver: true));
     }
   }
 
@@ -258,7 +250,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
-    _vibrateServices.vibrate(duration: 100);
+    _vibrationBloc.add(VibrateShort());
   }
 
   Future<String> _onGeneratedRequiredString(
@@ -445,7 +437,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    _vibrateServices.vibrate(duration: 50);
+    _vibrationBloc.add(VibrateShort());
 
     emitter(
       state.copyWith(
@@ -454,9 +446,6 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   }
 
   Future<void> _onMarkWrongTap(
-    BuildContext context,
-    // MarkWrongTap event,
-
     Emitter<TurnState> emitter,
   ) async {
     if (isClosed) {
@@ -467,16 +456,16 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    _vibrateServices.vibrate(duration: 500);
+    _vibrationBloc.add(VibrateLong());
 
-    add(LostLife(context));
+    add(LostLife());
 
     if (!state.isAbleToContinue) {
-      add(End(context));
+      add(End());
 
       return;
     } else {
-      _audioServices.playWrong();
+      _audioBloc.add(PlayWrongAudio());
     }
   }
 
@@ -496,8 +485,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    add(LostLife(event.context));
-    _vibrateServices.multipleVibrate();
+    add(LostLife());
+    _vibrationBloc.add(VibrateMultiple());
 
     await Future.delayed(
         Duration(milliseconds: event.duration.inMilliseconds + 500));
@@ -545,19 +534,13 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     await _turnedServices.addItem(state.recordedItem!); //For backup locally
 
-    await Fluttertoast.showToast(
-      msg: insertSuccess
-          // ignore: use_build_context_synchronously
-          ? lang(event.context).insertedSuccess
-          // ignore: use_build_context_synchronously
-          : lang(event.context).insertedFailed,
-    );
-
-    _audioServices.playSaveSuccess();
+    _audioBloc.add(PlaySaveSuccessAudio());
 
     emitter(
       state.copyWith(
         isLoading: false,
+        saveSuccess: insertSuccess,
+        message: insertSuccess ? 'save_success' : 'save_failed',
       ),
     );
 
@@ -585,7 +568,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     }
 
     emitter(
-      TurnState(state.context).copyWith(
+      const TurnState().copyWith(
         countDown: event.seconds,
         status: TurnStatus.intro,
         difficultyModel:
@@ -593,7 +576,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
-    _audioServices.playIntro();
+    _audioBloc.add(PlayIntroAudio());
 
     await Future.delayed(
       Duration(
@@ -609,7 +592,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    _vibrateServices.vibrate(duration: 100);
+    _vibrationBloc.add(VibrateShort());
 
     add(
       SetLevel(
@@ -630,7 +613,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
     if (event.isCauseGameOver) {
-      _audioServices.playEnd();
+      _audioBloc.add(PlayEndAudio());
     }
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -651,9 +634,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
-    add(SaveRecorded(
-      event.context,
-    ));
+    add(SaveRecorded());
   }
 
   Future<void> _onCountDownIntro(
@@ -673,8 +654,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     ApplySetting event,
     Emitter<TurnState> emitter,
   ) async {
-    // _audioServices.setVolume(event.settingModel.vol / 10) = AudioServices(volume: event.settingModel.vol / 10);
-    _audioServices.setVolume = event.settingModel.vol / 10;
-    _vibrateServices.setIsVibrate = event.settingModel.isVibrate;
+    _audioBloc.add(SetAudioVolume(volume: event.settingModel.vol / 10));
+    _vibrationBloc.add(SetVibrationEnabled(enabled: event.settingModel.isVibrate));
   }
 }

@@ -5,6 +5,8 @@ import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
+import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
+import 'package:nucatch/blocs/objects/audio/audio_event.dart';
 import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
 import 'package:nucatch/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
@@ -12,6 +14,8 @@ import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
+import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
+import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/navs/player_nav.dart';
 import 'package:nucatch/navs/top_score_nav.dart';
@@ -70,9 +74,21 @@ class _MenuNavState extends State<MenuNav> {
                       MaterialPage(
                         child: MultiBlocProvider(
                           providers: [
+                            BlocProvider(
+                              create: (context) => AudioBloc()
+                                ..add(SetAudioVolume(
+                                    volume: settingState.vol / 10)),
+                            ),
+                            BlocProvider(
+                              create: (context) => VibrationBloc()
+                                ..add(SetVibrationEnabled(
+                                    enabled: settingState.isVibrate)),
+                            ),
                             BlocProvider<TurnBloc>(
                               create: (context) => TurnBloc(
-                                TurnState(context),
+                                const TurnState(),
+                                audioBloc: context.read<AudioBloc>(),
+                                vibrationBloc: context.read<VibrationBloc>(),
                               )..add(ApplySetting(
                                   settingModel: settingState.model))
                               // ..add(

@@ -347,40 +347,62 @@ class _PlayScreenState extends State<PlayScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   if (!context.read<TurnBloc>().isClosed)
-                                    Countdown(
-                                      seconds: turnState.countDown,
-                                      interval:
-                                          const Duration(milliseconds: 400),
-                                      build:
-                                          (BuildContext context, double time) {
-                                        return AnimatedOpacity(
-                                          opacity: time >= 1 ? 1 : 0,
-                                          duration:
+                                    Builder(
+                                      builder: (widgetContext) {
+                                        // Capture localized strings using the widget context
+                                        final readyText = "${lang(widgetContext).ready}!!";
+                                        final goText = lang(widgetContext).go;
+                                        
+                                        return Countdown(
+                                          seconds: turnState.countDown,
+                                          interval:
                                               const Duration(milliseconds: 400),
-                                          child: AnimatedScale(
-                                            scale: time >= 1 ? 1 : 15,
-                                            duration: const Duration(
-                                                milliseconds: 400),
-                                            child: Text(
-                                              time >= 1
-                                                  ? "${lang(context).ready}!!"
-                                                  : lang(context).go,
-                                              style: LayoutConfig(context)
-                                                  .titleSectionStyle(
-                                                      isItalic: true)
-                                                  .copyWith(
-                                                    fontSize: time <= 1
-                                                        ? (time /
-                                                                turnState
-                                                                    .countDown) *
-                                                            Theme.of(context)
-                                                                .textTheme
-                                                                .displayLarge!
-                                                                .fontSize!
-                                                        : null,
-                                                  ),
-                                            ),
-                                          ),
+                                          build:
+                                              (BuildContext context, double time) {
+                                            return AnimatedOpacity(
+                                              opacity: time >= 1 ? 1 : 0,
+                                              duration:
+                                                  const Duration(milliseconds: 400),
+                                              child: AnimatedScale(
+                                                scale: time >= 1 ? 1 : 15,
+                                                duration: const Duration(
+                                                    milliseconds: 400),
+                                                child: Text(
+                                                  time >= 1
+                                                      ? readyText
+                                                      : goText,
+                                                  style: LayoutConfig(context)
+                                                      .titleSectionStyle(
+                                                          isItalic: true)
+                                                      .copyWith(
+                                                        fontSize: time <= 1
+                                                            ? () {
+                                                                // Safety checks to prevent invalid font sizes
+                                                                if (turnState.countDown <= 0) return null;
+                                                                
+                                                                final baseFontSize = Theme.of(context)
+                                                                    .textTheme
+                                                                    .displayLarge
+                                                                    ?.fontSize ?? 24.0;
+                                                                
+                                                                final calculatedSize = (time / turnState.countDown) * baseFontSize;
+                                                                
+                                                                // Ensure the fontSize is valid and within reasonable bounds
+                                                                if (calculatedSize.isNaN || 
+                                                                    calculatedSize.isInfinite || 
+                                                                    calculatedSize <= 0 || 
+                                                                    calculatedSize > 200) {
+                                                                  return null;
+                                                                }
+                                                                
+                                                                return calculatedSize;
+                                                              }()
+                                                            : null,
+                                                      ),
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         );
                                       },
                                     ),
@@ -567,8 +589,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                         turnState.isAbleToTap,
                                     onPressed: () {
                                       context.read<TurnBloc>().add(
-                                            ResetNewNumber(context,
-                                                duration: duration),
+                                            ResetNewNumber(duration: duration),
                                           );
                                     },
                                   );
@@ -581,7 +602,6 @@ class _PlayScreenState extends State<PlayScreen> {
                                           .then((confirmedMenu) {
                                         if (confirmedMenu) {
                                           turnBloc.add(End(
-                                            context,
                                             isCauseGameOver: false,
                                           ));
                                           menuBloc.add(
@@ -600,7 +620,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                     isEnable: turnState.isAbleToTap,
                                     onPressed: () {
                                       context.read<TurnBloc>().add(
-                                            Tap(context, keyValue: e.key),
+                                            Tap(keyValue: e.key),
                                           );
                                     },
                                   );

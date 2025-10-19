@@ -89,7 +89,6 @@ class MenuAlert extends StatelessWidget {
               ).then((confirmed) {
                 if (confirmed == true) {
                   turnBloc.add(SaveRecorded(
-                    context,
                     callback: () {
                       playerNavCubit.showSetDifficulty();
                       Navigator.of(context).pop(false);
