@@ -47,8 +47,17 @@ class TurnRecordedModel {
           DateTime.now(),
           (v) => DateTime.fromMillisecondsSinceEpoch(
               int.tryParse(v.toString()) ?? 0)),
-      difficulty: getValue(PreferencesKey.DIFFICULTY, Difficulty.values.first,
-          (v) => Difficulty.values[int.tryParse(v.toString()) ?? 0]),
+      difficulty: getValue<Difficulty>(
+          PreferencesKey.DIFFICULTY, Difficulty.values.first, (v) {
+        if (v is int) {
+          return Difficulty.values.elementAtOrNull(v) ??
+              Difficulty.values.first;
+        }
+        return Difficulty.values.firstWhere(
+          (d) => d.name.toLowerCase() == v.toString().toLowerCase(),
+          orElse: () => Difficulty.values.first,
+        );
+      }),
     );
   }
 

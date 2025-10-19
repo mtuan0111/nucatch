@@ -534,3 +534,39 @@ Update the top recorded scores to be stored online
     Flutter build for iOS
     ```flutter build ios --build-name=2.2.2 --build-number=50 --release```
 ---
+---
+## Released on: 19/10/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 47           | 2.2.3   |
+| iOS      | 51           | 2.2.3   |
+
+### Release note:
+Optimize the application
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+    [Builded] Version 2.2.3 - 47 / 2.2.3 - 51 _ Optimize the application
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Optimized application performance for faster and smoother experience.  
+        - Enhanced overall stability and responsiveness.
+
+    - **Tiếng Việt:**  
+        - Tối ưu hóa hiệu suất ứng dụng cho trải nghiệm nhanh hơn và mượt mà hơn.  
+        - Nâng cao độ ổn định và khả năng phản hồi tổng thể.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.2.3 --build-number=47 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.2.3 --build-number=51 --release```
+
+---

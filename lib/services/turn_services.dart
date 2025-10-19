@@ -89,6 +89,7 @@ class TurnRecordedServices {
 
     return querySnapshot.docs.map((doc) {
       final data = doc.data();
+      final TurnRecordedModel item = TurnRecordedModel.fromJson(data);
       return TurnRecordedModel.fromJson(data);
     }).toList();
   }
