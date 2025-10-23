@@ -37,26 +37,28 @@ class TurnRecordedModel {
     }
 
     return TurnRecordedModel(
-      turnId: getValue(PreferencesKey.TURN_ID, '', (v) => v.toString()),
-      playedUsername:
-          getValue(PreferencesKey.PLAYED_USERNAME, null, (v) => v.toString()),
-      point: getValue(
+      turnId: getValue<String>(PreferencesKey.TURN_ID, '', (v) => v.toString()),
+      playedUsername: getValue<String?>(
+          PreferencesKey.PLAYED_USERNAME, null, (v) => v?.toString()),
+      point: getValue<int>(
           PreferencesKey.POINT, 0, (v) => int.tryParse(v.toString()) ?? 0),
-      recordedTime: getValue(
-          PreferencesKey.RECORDED_TIME,
-          DateTime.now(),
-          (v) => DateTime.fromMillisecondsSinceEpoch(
-              int.tryParse(v.toString()) ?? 0)),
+      recordedTime:
+          getValue<DateTime>(PreferencesKey.RECORDED_TIME, DateTime.now(), (v) {
+        final str = v.toString();
+        return str.contains('T')
+            ? DateTime.tryParse(str) ?? DateTime.now()
+            : DateTime.fromMillisecondsSinceEpoch(int.tryParse(str) ?? 0);
+      }),
       difficulty: getValue<Difficulty>(
           PreferencesKey.DIFFICULTY, Difficulty.values.first, (v) {
-        if (v is int) {
-          return Difficulty.values.elementAtOrNull(v) ??
-              Difficulty.values.first;
-        }
-        return Difficulty.values.firstWhere(
-          (d) => d.name.toLowerCase() == v.toString().toLowerCase(),
-          orElse: () => Difficulty.values.first,
-        );
+        return v is int
+            ? Difficulty.values.elementAtOrNull(v) ?? Difficulty.values.first
+            : Difficulty.values.cast<Difficulty?>().firstWhere(
+                      (d) =>
+                          d?.name.toLowerCase() == v.toString().toLowerCase(),
+                      orElse: () => null,
+                    ) ??
+                Difficulty.values.first;
       }),
     );
   }

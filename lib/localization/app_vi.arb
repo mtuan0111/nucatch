@@ -293,19 +293,19 @@
     "description": "Mô tả cấp độ cực kỳ khó, thân thiện và tự nhiên cho người Việt"
   },
   
-  "difficultyEasyTitle": "Chế độ dễ",
+  "difficultyEasyTitle": "Dễ",
   "@difficultyEasyTitle": {
     "description": "Tiêu đề cho chế độ dễ"
   },
-  "difficultyMediumTitle": "Chế độ trung bình",
+  "difficultyMediumTitle": "Trung bình",
   "@difficultyMediumTitle": {
     "description": "Tiêu đề cho chế độ trung bình"
   },
-  "difficultyHardTitle": "Chế độ khó",
+  "difficultyHardTitle": "Khó",
   "@difficultyHardTitle": {
     "description": "Tiêu đề cho chế độ khó"
   },
-  "difficultyExtremeTitle": "Chế độ cực kỳ khó",
+  "difficultyExtremeTitle": "Cực kỳ khó",
   "@difficultyExtremeTitle": {
     "description": "Tiêu đề cho chế độ cực kỳ khó"
   },

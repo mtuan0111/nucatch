@@ -196,16 +196,16 @@ class AppLocalizationsVi extends AppLocalizations {
       'Câu hỏi đa dạng, số lớn, phép tính phức tạp, mang đến thử thách thực sự cho bạn.';
 
   @override
-  String get difficultyEasyTitle => 'Chế độ dễ';
+  String get difficultyEasyTitle => 'Dễ';
 
   @override
-  String get difficultyMediumTitle => 'Chế độ trung bình';
+  String get difficultyMediumTitle => 'Trung bình';
 
   @override
-  String get difficultyHardTitle => 'Chế độ khó';
+  String get difficultyHardTitle => 'Khó';
 
   @override
-  String get difficultyExtremeTitle => 'Chế độ cực kỳ khó';
+  String get difficultyExtremeTitle => 'Cực kỳ khó';
 
   @override
   String get confirmChangeDifficulty =>
