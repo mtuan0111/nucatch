@@ -447,12 +447,12 @@ class _PlayScreenState extends State<PlayScreen> {
                                             return AnimatedScale(
                                               duration: const Duration(
                                                   milliseconds: 500),
-                                              scale: time > 1 ? 1.0 : 5,
+                                              scale: time > 0.5 ? 1.0 : 5,
                                               curve: Curves.easeOutQuart,
                                               child: AnimatedOpacity(
                                                 duration: const Duration(
                                                     milliseconds: 500),
-                                                opacity: time > 1 ? 1.0 : 0.0,
+                                                opacity: time > 0.5 ? 1.0 : 0.0,
                                                 curve: Curves.easeOutQuart,
                                                 child: Container(
                                                   width: 140,

@@ -68,6 +68,7 @@ class MenuAlert extends StatelessWidget {
             onPressed: () {
               showDialog<bool>(
                 context: context,
+                barrierDismissible: false,
                 builder: (context) => AlertTemplate(
                   title: lang(context).difficultySetting,
                   message: lang(context).confirmChangeDifficulty,
