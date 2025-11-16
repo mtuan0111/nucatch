@@ -3,12 +3,6 @@ import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 
 abstract class GameEvent {}
 
-class GameStarted extends GameEvent {
-  final int countdownSeconds;
-
-  GameStarted({this.countdownSeconds = 3});
-}
-
 class GameEnded extends GameEvent {
   final bool isCauseGameOver;
 

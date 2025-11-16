@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
@@ -13,14 +12,15 @@ import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 
 class TopScoreScreen extends StatefulWidget {
-  const TopScoreScreen({super.key});
+  const TopScoreScreen({super.key, required this.title});
+  final String title;
 
   @override
   State<TopScoreScreen> createState() => _TopScoreScreenState();
 }
 
 class _TopScoreScreenState extends State<TopScoreScreen> {
-  String get screenTitle => menuArray(context)[MenuOption.topScore]!;
+  String get screenTitle => widget.title;
   TurnRecordedListBloc get turnRecordedListBloc =>
       context.read<TurnRecordedListBloc>();
 

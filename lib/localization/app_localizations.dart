@@ -116,6 +116,12 @@ abstract class AppLocalizations {
   /// **'Welcome {username}!!'**
   String welcomeUser(String username);
 
+  /// Tiêu đề của trang chính
+  ///
+  /// In en, this message translates to:
+  /// **'Main Menu'**
+  String get mainMenu;
+
   /// Start button label
   ///
   /// In en, this message translates to:
@@ -247,6 +253,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose the level you want to play. The higher the level, the more difficult it becomes.'**
   String get selectLevelMessage;
+
+  /// Thông báo điểm số của người chơi
+  ///
+  /// In en, this message translates to:
+  /// **'Your score currently is'**
+  String get yourScoreIs;
 
   /// Message indicating the correct answer
   ///

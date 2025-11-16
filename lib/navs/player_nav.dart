@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
@@ -65,17 +66,21 @@ class _PlayerNavState extends State<PlayerNav> {
                   child: SetDifficultScreen(),
                 ),
                 if (state is PlayingState)
-                  const MaterialPage(
+                  MaterialPage(
                     child: PopScope(
                       canPop: true,
-                      child: PlayScreen(),
+                      child: PlayScreen(
+                        title: menuArray(context)[MenuOption.start]!['text']!,
+                      ),
                     ),
                   ),
                 if (state is GameOverState) ...[
-                  const MaterialPage(
+                  MaterialPage(
                     child: PopScope(
                       canPop: true,
-                      child: PlayScreen(),
+                      child: PlayScreen(
+                          title:
+                              menuArray(context)[MenuOption.start]!['text']!),
                     ),
                   ),
                   const MaterialPage(

@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -90,7 +89,7 @@ class TurnRecordedServices {
     return querySnapshot.docs.map((doc) {
       final data = doc.data();
       final TurnRecordedModel item = TurnRecordedModel.fromJson(data);
-      return TurnRecordedModel.fromJson(data);
+      return item;
     }).toList();
   }
 

@@ -578,11 +578,22 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     _audioBloc.add(PlayIntroAudio());
 
-    await Future.delayed(
-      Duration(
-        seconds: state.countDown,
-      ),
-    );
+    // await Future.delayed(
+    //   Duration(
+    //     seconds: state.countDown,
+    //   ),
+    // );
+
+    // Play countdown audio for each second
+    for (int i = state.countDown; i > 0; i--) {
+      if (i > 1) {
+        _audioBloc.add(PlaySecondTicking());
+      }
+      await Future.delayed(const Duration(seconds: 1));
+      if (isClosed) {
+        return;
+      }
+    }
 
     if (isClosed) {
       return;

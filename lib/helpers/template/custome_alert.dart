@@ -26,8 +26,8 @@ class MenuAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertTemplate(
-      title: lang(context).confirmExit,
-      message: lang(context).areYouSure,
+      title: lang(context).mainMenu,
+      message: lang(context).confirmExit,
       content: Column(
         spacing: 5,
         mainAxisSize: MainAxisSize.min,
@@ -35,7 +35,7 @@ class MenuAlert extends StatelessWidget {
           if (rank != null) RankingSortingWidget(position: rank!),
           if (rank != null) const SizedBox(height: 20),
           Text(
-            "${lang(context).score}: $point",
+            "${lang(context).yourScoreIs}: $point",
             style: TextStyle(
               color: Theme.of(context).secondaryHeaderColor,
               fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
@@ -58,7 +58,10 @@ class MenuAlert extends StatelessWidget {
               context,
               turnState.difficultyModel!.difficulty,
             ),
-            buttonSize: ButtonSize.small,
+            shapeAt: RoundedWithShapeAt.topLeft,
+            // backgroundColor: Colors.white70,
+            // color: Colors.black87,
+            buttonSize: ButtonSize.smallest,
 
             // icon: Icon(Helper.getIconFromDifficulty(
             //     context, turnState.difficultyModel!.difficulty)),
@@ -66,25 +69,14 @@ class MenuAlert extends StatelessWidget {
               showDialog<bool>(
                 context: context,
                 builder: (context) => AlertTemplate(
-                  title: lang(context).confirmChangeDifficulty,
-                  message: lang(context).areYouSure,
-                  content: Text(lang(context).areYouSure),
-                  actions: [
-                    _buildActionButton(
-                      context,
-                      label: lang(context).yes,
-                      color: Theme.of(context).primaryColor,
-                      icon: Icons.check,
-                      onPressed: () => Navigator.of(context).pop(true),
-                    ),
-                    _buildActionButton(
-                      context,
-                      label: lang(context).no,
-                      color: Theme.of(context).colorScheme.error,
-                      icon: Icons.close,
-                      onPressed: () => Navigator.of(context).pop(false),
-                    ),
-                  ],
+                  title: lang(context).difficultySetting,
+                  message: lang(context).confirmChangeDifficulty,
+                  possitiveButtonLabel: lang(context).yes,
+                  onPossitiveButtonPressed: () =>
+                      Navigator.of(context).pop(true),
+                  negativeButtonLabel: lang(context).no,
+                  onNegativeButtonPressed: () =>
+                      Navigator.of(context).pop(false),
                 ),
               ).then((confirmed) {
                 if (confirmed == true) {
@@ -100,70 +92,10 @@ class MenuAlert extends StatelessWidget {
           )
         ],
       ),
-      actions: [
-        _buildActionButton(
-          context,
-          label: lang(context).yes,
-          color: Theme.of(context).primaryColor,
-          icon: Icons.check,
-          onPressed: () => Navigator.of(context).pop(true),
-        ),
-        _buildActionButton(
-          context,
-          label: lang(context).no,
-          color: Theme.of(context).colorScheme.error,
-          icon: Icons.close,
-          onPressed: () => Navigator.of(context).pop(false),
-        ),
-
-        // _buildActionButton(
-        //   context,
-        //   label: lang(context).difficultySetting,
-        //   color: Theme.of(context).secondaryHeaderColor,
-        //   onPressed: () {
-        //     ;
-        //   },
-        // ),
-      ],
-    );
-  }
-
-  Widget _buildActionButton(
-    BuildContext context, {
-    required String label,
-    required Color color,
-    required VoidCallback onPressed,
-    IconData? icon,
-  }) {
-    return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      onPressed: onPressed,
-      icon: icon != null
-          ? Icon(
-              icon,
-              color: Theme.of(context).scaffoldBackgroundColor,
-              fontWeight: FontWeight.bold,
-            )
-          : const SizedBox.shrink(),
-      label: Row(
-        children: [
-          Expanded(
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
+      possitiveButtonLabel: lang(context).yes,
+      onPossitiveButtonPressed: () => Navigator.of(context).pop(true),
+      negativeButtonLabel: lang(context).no,
+      onNegativeButtonPressed: () => Navigator.of(context).pop(false),
     );
   }
 }
@@ -171,57 +103,220 @@ class MenuAlert extends StatelessWidget {
 class AlertTemplate extends StatelessWidget {
   final String title;
   final String? message;
-  final Widget content;
-  final List<Widget> actions;
+  final Widget? content;
+  // final List<Widget> actions;
+  final String? possitiveButtonLabel;
+  final VoidCallback? onPossitiveButtonPressed;
+  final String? negativeButtonLabel;
+  final VoidCallback? onNegativeButtonPressed;
 
   const AlertTemplate({
     super.key,
     required this.title,
     this.message,
-    required this.content,
-    required this.actions,
+    this.content,
+    // required this.actions,
+    this.possitiveButtonLabel,
+    this.onPossitiveButtonPressed,
+    this.negativeButtonLabel,
+    this.onNegativeButtonPressed,
   });
+
+  Widget _buildPossitiveButton(BuildContext context) {
+    return CustomElevatedButton(
+      text: possitiveButtonLabel ?? lang(context).yes,
+      onPressed: onPossitiveButtonPressed ?? () => Navigator.of(context).pop(),
+      color: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).primaryColor,
+      buttonSize: ButtonSize.small,
+      shapeAt: RoundedWithShapeAt.topLeft,
+    );
+  }
+
+  Widget _buildNegativeButton(BuildContext context) {
+    return CustomElevatedButton(
+      text: negativeButtonLabel ?? lang(context).no,
+      onPressed: onNegativeButtonPressed ?? () => Navigator.of(context).pop(),
+      color: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.error,
+      buttonSize: ButtonSize.small,
+      shapeAt: RoundedWithShapeAt.topRight,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      title: Column(
+    return
+        // Dialog(
+        //       backgroundColor: Colors.transparent,
+        //       child: Column(
+        //         mainAxisSize: MainAxisSize.min,
+        //         children: [
+        //           // Main dialog content
+        //           Container(
+        //             decoration: BoxDecoration(
+        //               color: Theme.of(context).scaffoldBackgroundColor,
+        //               borderRadius: BorderRadius.circular(20),
+        //             ),
+        //             child: Column(
+        //               mainAxisSize: MainAxisSize.min,
+        //               children: [
+        //                 // Title section
+        //                 Stack(
+        //                   clipBehavior: Clip.none,
+        //                   children: [
+        //                     Positioned(
+        //                       top: -40,
+        //                       left: 0,
+        //                       right: 0,
+        //                       child: Center(
+        //                         child: CustomElevatedButton(
+        //                           text: title,
+        //                           buttonSize: ButtonSize.small,
+        //                           shapeAt: RoundedWithShapeAt.topLeft,
+        //                           color: Colors.black87,
+        //                         ),
+        //                       ),
+        //                     ),
+        //                     Padding(
+        //                       padding: const EdgeInsets.all(20),
+        //                       child: Column(
+        //                         children: [
+        //                           const SizedBox(
+        //                               height: 20), // Space for positioned title
+        //                           if (message != null)
+        //                             Text(
+        //                               message!,
+        //                               style: TextStyle(
+        //                                 color: Theme.of(context).hintColor,
+        //                                 fontSize: Theme.of(context)
+        //                                     .textTheme
+        //                                     .bodyMedium!
+        //                                     .fontSize,
+        //                               ),
+        //                               textAlign: TextAlign.center,
+        //                             ),
+        //                         ],
+        //                       ),
+        //                     ),
+        //                   ],
+        //                 ),
+        //                 // Content section
+        //                 Padding(
+        //                   padding: const EdgeInsets.only(
+        //                       left: 20, right: 20, bottom: 20),
+        //                   child: content,
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //           // Buttons outside the dialog
+        //           const SizedBox(height: 20),
+        //           Padding(
+        //             padding: const EdgeInsets.symmetric(horizontal: 20),
+        //             child: Row(
+        //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //               children: [
+        //                 if (negativeButtonLabel != null)
+        //                   Expanded(child: _buildNegativeButton(context)),
+        //                 if (negativeButtonLabel != null &&
+        //                     possitiveButtonLabel != null)
+        //                   const SizedBox(width: 10),
+        //                 if (possitiveButtonLabel != null)
+        //                   Expanded(child: _buildPossitiveButton(context)),
+        //               ],
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //     ) ??
+        Dialog(
+      // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.circular(20),
+      // ),
+      // clipBehavior: Clip.none,
+      backgroundColor: Colors.transparent,
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: Theme.of(context).textTheme.titleLarge!.fontSize,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          if (message != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                message!,
-                style: TextStyle(
-                  color: Theme.of(context).hintColor,
-                  fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+          // Main dialog content
+          Padding(
+            padding: const EdgeInsets.only(top: 30, bottom: 30),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomElevatedButton(
+                        backgroundColor:
+                            Theme.of(context).scaffoldBackgroundColor,
+                        shapeAt: RoundedWithShapeAt.topRight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (content != null) content!,
+                              // const SizedBox(height: 70), // Space for buttons
+                              if (message != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                    message!,
+                                    style: TextStyle(
+                                      color: Theme.of(context).hintColor,
+                                      fontSize: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .fontSize,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                textAlign: TextAlign.center,
+              ],
+            ),
+          ),
+          // Title positioned on top
+          Positioned(
+            top: 0,
+            left: 20,
+            right: 20,
+            child: Center(
+              child: CustomElevatedButton(
+                text: title,
+                buttonSize: ButtonSize.small,
+                shapeAt: RoundedWithShapeAt.topLeft,
+                color: Colors.black87,
               ),
             ),
+          ),
+          Positioned(
+              bottom: 0,
+              left: 20,
+              right: 20,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  if (negativeButtonLabel != null)
+                    Expanded(child: _buildNegativeButton(context)),
+                  if (negativeButtonLabel != null &&
+                      possitiveButtonLabel != null)
+                    const SizedBox(width: 10),
+                  if (possitiveButtonLabel != null)
+                    Expanded(child: _buildPossitiveButton(context)),
+                ],
+              ))
         ],
       ),
-      content: content,
-      actionsAlignment: MainAxisAlignment.spaceEvenly,
-      actions: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: actions,
-        )
-      ],
     );
   }
 }

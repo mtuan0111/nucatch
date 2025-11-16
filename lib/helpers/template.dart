@@ -306,26 +306,50 @@ class RankingSortingWidget extends StatelessWidget {
   }
 }
 
-enum ButtonSize { small, medium, large }
+enum ButtonSize {
+  smallest,
+  small,
+  medium,
+  large,
+}
+
+enum RoundedWithShapeAt {
+  topLeft,
+  topRight,
+  bottomLeft,
+  bottomRight,
+}
 
 class CustomElevatedButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget? child;
   final double opacity;
   final String? text;
+  final TextStyle? style;
   final IconData? iconData;
-  final Color? color;
   final ButtonSize buttonSize;
+  final RoundedWithShapeAt? shapeAt;
+  final double? minWidth;
+  final double? minHeight;
+  final Color? color;
+  final Color? backgroundColor;
+  final TextDirection? textDirection;
 
   const CustomElevatedButton({
     Key? key,
-    required this.onPressed,
+    this.onPressed,
     this.child,
     this.opacity = 1.0,
     this.text,
+    this.style,
     this.iconData,
-    this.color,
     this.buttonSize = ButtonSize.medium,
+    this.shapeAt,
+    this.minWidth,
+    this.minHeight,
+    this.color,
+    this.backgroundColor,
+    this.textDirection,
   }) : super(key: key);
 
   @override
@@ -335,66 +359,134 @@ class CustomElevatedButton extends StatefulWidget {
 class _CustomElevatedButtonState extends State<CustomElevatedButton> {
   bool isPressed = false;
 
-  double getVerticalPadding() {
-    switch (widget.buttonSize) {
-      case ButtonSize.small:
-        return 10.0;
-      case ButtonSize.medium:
-        return 20.0;
-      case ButtonSize.large:
-        return 32.0;
-    }
-  }
-
-  double getHorizontalPadding() {
-    switch (widget.buttonSize) {
-      case ButtonSize.small:
-        return 4.0;
-      case ButtonSize.medium:
-        return 8.0;
-      case ButtonSize.large:
-        return 12.0;
-    }
-  }
-
   double getFontSize(BuildContext context) {
-    final baseFontSize =
-        LayoutConfig(context).displaySmallStyle().fontSize ?? 16;
+    final baseFontSize = LayoutConfig(context).titleScreenStyle.fontSize ?? 20;
     switch (widget.buttonSize) {
+      case ButtonSize.smallest:
+        return baseFontSize * 0.4;
       case ButtonSize.small:
-        return baseFontSize * 0.8;
+        return baseFontSize * 0.5;
       case ButtonSize.medium:
         return baseFontSize;
       case ButtonSize.large:
-        return baseFontSize * 1.2;
+        return baseFontSize * 1.33;
     }
   }
 
-  Widget children(context) {
-    if (widget.text != null) {
-      return Text(
-        widget.text!,
-        style: LayoutConfig(context).displaySmallStyle().copyWith(
+  double getPaddingSize() {
+    double basePadding = 20;
+    switch (widget.buttonSize) {
+      case ButtonSize.smallest:
+        return basePadding * 0.8;
+      case ButtonSize.small:
+        return basePadding * 0.8;
+      case ButtonSize.medium:
+        return basePadding;
+      case ButtonSize.large:
+        return basePadding * 1.2;
+    }
+  }
+
+  BorderRadius getBorderRadius(RoundedWithShapeAt? shapeAt) {
+    BorderRadius baseRadius = BorderRadius.only(
+      topLeft: Radius.circular(LayoutConfig.layoutBorderRadius),
+      topRight: Radius.circular(LayoutConfig.layoutBorderRadius),
+      bottomLeft: Radius.circular(LayoutConfig.layoutBorderRadius),
+      bottomRight: Radius.circular(LayoutConfig.layoutBorderRadius),
+    );
+
+    switch (shapeAt) {
+      case RoundedWithShapeAt.topLeft:
+        baseRadius = baseRadius.copyWith(
+          topLeft: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
+        );
+      case RoundedWithShapeAt.topRight:
+        baseRadius = baseRadius.copyWith(
+          topRight: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
+        );
+      case RoundedWithShapeAt.bottomLeft:
+        baseRadius = baseRadius.copyWith(
+          bottomLeft: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
+        );
+      case RoundedWithShapeAt.bottomRight:
+        baseRadius = baseRadius.copyWith(
+          bottomRight: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
+        );
+      default:
+        break;
+    }
+
+    return baseRadius;
+  }
+
+  TextStyle getTextStyle(BuildContext context) {
+    return widget.style ??
+        LayoutConfig(context).displaySmallStyle().copyWith(
               fontSize: getFontSize(context),
-              color: isPressed
-                  ? (widget.color ?? Theme.of(context).secondaryHeaderColor)
-                      .getLighter()
-                  : (widget.color ?? Theme.of(context).secondaryHeaderColor),
-            ),
+              color: getPressedColor(context),
+              fontStyle: FontStyle.italic,
+            );
+  }
+
+  Color getColor(BuildContext context) {
+    return widget.color ?? Theme.of(context).secondaryHeaderColor;
+  }
+
+  Color getPressedColor(BuildContext context) {
+    return isPressed ? getColor(context).getLighter() : getColor(context);
+  }
+
+  Color getBackgroundColor(BuildContext context) {
+    return widget.backgroundColor ?? Theme.of(context).primaryColor;
+  }
+
+  Color getBackgroundColorAndPressed(BuildContext context) {
+    return isPressed
+        ? getBackgroundColor(context).getLighter()
+        : getBackgroundColor(context);
+  }
+
+  TextDirection getTextDirection() {
+    return widget.textDirection ?? TextDirection.ltr;
+  }
+
+  Widget children(BuildContext context) {
+    Widget? textWidget;
+    Widget? iconWidget;
+    if (widget.text != null) {
+      textWidget = Expanded(
+        child: Text(
+          widget.text!,
+          style: getTextStyle(context).copyWith(
+            fontSize: getFontSize(context),
+            color: getPressedColor(context),
+          ),
+        ),
       );
     }
 
     if (widget.iconData != null) {
-      return Icon(
+      iconWidget = Icon(
         widget.iconData,
-        color: isPressed
-            ? (widget.color ?? Theme.of(context).secondaryHeaderColor)
-                .getLighter()
-            : (widget.color ?? Theme.of(context).secondaryHeaderColor),
+        color: getPressedColor(context),
         size: getFontSize(context),
       );
     }
-    return widget.child ?? Container();
+
+    Widget row = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      textDirection: getTextDirection(),
+      children: [
+        if (iconWidget != null) iconWidget,
+        if (iconWidget != null && textWidget != null) const SizedBox(width: 8),
+        if (textWidget != null) textWidget,
+      ],
+    );
+
+    Widget content = widget.child ?? row;
+
+    return IntrinsicWidth(child: content);
   }
 
   @override
@@ -411,8 +503,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 100),
             decoration: BoxDecoration(
-              borderRadius:
-                  BorderRadius.circular(LayoutConfig.layoutBorderRadius),
+              borderRadius: getBorderRadius(widget.shapeAt),
               boxShadow: isPressed
                   ? null
                   : [
@@ -435,28 +526,43 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                     ],
             ),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                minWidth: 80,
-                minHeight: 80,
+              constraints: BoxConstraints(
+                minWidth: widget.minWidth ?? 50,
+                minHeight: widget.minHeight ?? 50,
               ),
               child: ElevatedButton(
                 style: LayoutConfig.elevatedButtonStyle.copyWith(
                   backgroundColor: WidgetStateProperty.all(
-                    isPressed
-                        ? Theme.of(context).primaryColor.getLighter()
-                        : Theme.of(context).primaryColor,
+                    getBackgroundColorAndPressed(context),
+                  ),
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: getBorderRadius(widget.shapeAt),
+                    ),
+                  ),
+                  padding: WidgetStateProperty.all(
+                    EdgeInsets.symmetric(
+                      vertical: getPaddingSize(),
+                      horizontal: getPaddingSize(),
+                    ),
                   ),
                 ),
                 onPressed: () {
+                  if (widget.onPressed == null) return;
                   widget.onPressed?.call();
-                  setState(() {
-                    isPressed = true;
-                  });
-                  Future.delayed(const Duration(milliseconds: 100), () {
-                    setState(() {
-                      isPressed = false;
-                    });
-                  });
+                  setState(
+                    () {
+                      isPressed = true;
+                    },
+                  );
+                  Future.delayed(
+                    const Duration(milliseconds: 100),
+                    () {
+                      setState(() {
+                        isPressed = false;
+                      });
+                    },
+                  );
                 },
                 child: children(context),
               ),
@@ -473,17 +579,31 @@ class AnimatedButton extends StatefulWidget {
   final ButtonSize? buttonSize;
   final IconData? iconData;
   final String? text;
+  final TextStyle? style;
   final VoidCallback onPressed;
   final bool? isEnable;
+  final RoundedWithShapeAt? shapeAt;
+  final double? minWidth;
+  final double? minHeight;
+  final Color? color;
+  final Color? backgroundColor;
+  final TextDirection? textDirection;
 
   const AnimatedButton(
     this.context, {
     super.key,
     this.iconData,
     this.text,
+    this.style,
     this.buttonSize,
     required this.onPressed,
     this.isEnable,
+    this.shapeAt = RoundedWithShapeAt.topLeft,
+    this.minWidth,
+    this.minHeight,
+    this.color,
+    this.backgroundColor,
+    this.textDirection,
   });
 
   @override
@@ -498,6 +618,45 @@ class _AnimatedButtonState extends State<AnimatedButton> {
   // TurnState get turnState => widget.context.read<TurnBloc>().state;
 
   VoidCallback get onPressed => widget.onPressed;
+
+  get isIconOnly => widget.iconData != null && widget.text == null;
+
+  double get minWidthAuto {
+    double defaultWidth = 80;
+
+    switch (widget.buttonSize) {
+      case ButtonSize.smallest:
+        return defaultWidth * 0.6;
+      case ButtonSize.small:
+        return defaultWidth * 0.8;
+      case ButtonSize.medium:
+        return defaultWidth * 1;
+      case ButtonSize.large:
+        return defaultWidth * 1.2;
+      default:
+        return defaultWidth;
+    }
+  }
+
+  double get minHeightAuto {
+    double defaultHeight = 80;
+
+    switch (widget.buttonSize) {
+      case ButtonSize.smallest:
+        return defaultHeight * 0.6;
+      case ButtonSize.small:
+        return defaultHeight * 0.8;
+      case ButtonSize.medium:
+        return defaultHeight * 1;
+      case ButtonSize.large:
+        return defaultHeight * 1.2;
+      default:
+        return defaultHeight;
+    }
+  }
+
+  double? get minWidth => isIconOnly ? minWidthAuto : widget.minWidth;
+  double? get minHeight => isIconOnly ? minHeightAuto : widget.minHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -515,7 +674,14 @@ class _AnimatedButtonState extends State<AnimatedButton> {
         child: CustomElevatedButton(
           iconData: widget.iconData,
           text: widget.text,
+          style: widget.style,
           buttonSize: widget.buttonSize ?? ButtonSize.medium,
+          shapeAt: widget.shapeAt,
+          minWidth: minWidth,
+          minHeight: minHeight,
+          color: widget.color,
+          backgroundColor: widget.backgroundColor,
+          textDirection: widget.textDirection,
           onPressed: () {
             onPressed();
 

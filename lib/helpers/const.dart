@@ -31,7 +31,7 @@ class LayoutConfig {
 
 // Layout
   static double boxSize = 80;
-  static double layoutBorderRadius = 20;
+  static double layoutBorderRadius = 30;
 
   static double opacityDisabled = 0.5;
 
@@ -61,6 +61,13 @@ class LayoutConfig {
         isActiveShadow: true,
         isItalic: true,
       );
+
+  TextStyle get boldedStyle =>
+      Theme.of(context).textTheme.displayLarge!.copyWith(
+            fontFamily: "Inter",
+            fontWeight: FontWeight.w900,
+            fontStyle: FontStyle.italic,
+          );
 
   TextStyle titleSectionStyle({
     bool isActiveShadow = false,

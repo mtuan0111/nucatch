@@ -66,8 +66,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                   children: [
                     Text(
                       lang(context).gameOver,
-                      style: LayoutConfig(context).displaySmallStyle().copyWith(
-                            fontWeight: FontWeight.bold,
+                      style: LayoutConfig(context).boldedStyle.copyWith(
                             color: Colors.white,
                           ),
                       textAlign: TextAlign.center,
@@ -78,17 +77,16 @@ class _GameOverScreenState extends State<GameOverScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 24.0),
                         child: Text(
                           turnState.requirementString ?? '',
-                          style: LayoutConfig(context)
-                              .contentSectionStyle()
-                              .copyWith(
-                                color: Colors.white,
-                                fontStyle: FontStyle.italic,
+                          style: LayoutConfig(context).boldedStyle.copyWith(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                fontSize: 24,
                               ),
                           textAlign: TextAlign.center,
                         ),
                       ),
                     const SizedBox(height: 16),
-                    Row(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
@@ -101,22 +99,11 @@ class _GameOverScreenState extends State<GameOverScreen> {
                               ),
                         ),
                         const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            turnState.expect ?? '',
-                            style: LayoutConfig(context)
-                                .displaySmallStyle()
-                                .copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
+                        Text(
+                          turnState.expect ?? '',
+                          style: LayoutConfig(context).boldedStyle.copyWith(
+                                color: Colors.white,
+                              ),
                         ),
                       ],
                     ),

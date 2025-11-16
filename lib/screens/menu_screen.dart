@@ -75,17 +75,38 @@ class _MenuScreenState extends State<MenuScreen> {
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 20,
+                      horizontal: 20,
                     ),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
                           final entry =
                               menuArray(context).entries.elementAt(index);
-                          return Center(
-                            child: CustomeTitleButton(
-                              text: entry.value,
-                              onTap: () =>
-                                  menuBloc.add(SelectOption(option: entry.key)),
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: AnimatedButton(
+                                context,
+                                text: (entry.value['text'] as String)
+                                    .toUpperCase(),
+                                style: LayoutConfig(context)
+                                    .titleSectionStyle()
+                                    .copyWith(
+                                      fontWeight: FontWeight.w900,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                iconData: entry.value['icon'] as IconData,
+                                backgroundColor: Colors.white70,
+                                // textDirection: TextDirection.rtl,
+                                color: Colors.black87,
+                                onPressed: () => menuBloc.add(
+                                  SelectOption(
+                                    option: entry.key,
+                                  ),
+                                ),
+                                buttonSize: ButtonSize.small,
+                              ),
                             ),
                           );
                         },

@@ -20,6 +20,9 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get mainMenu => 'Trang chính';
+
+  @override
   String get start => 'Bắt đầu';
 
   @override
@@ -85,6 +88,9 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get selectLevelMessage =>
       'Chọn cấp độ bạn muốn chơi. Cấp độ càng cao, độ khó càng tăng.';
+
+  @override
+  String get yourScoreIs => 'Điểm của bạn hiện là';
 
   @override
   String get theCorrectIs => 'Đáp án đúng là';

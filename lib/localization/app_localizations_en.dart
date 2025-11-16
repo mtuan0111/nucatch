@@ -20,6 +20,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get mainMenu => 'Main Menu';
+
+  @override
   String get start => 'Start';
 
   @override
@@ -85,6 +88,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get selectLevelMessage =>
       'Choose the level you want to play. The higher the level, the more difficult it becomes.';
+
+  @override
+  String get yourScoreIs => 'Your score currently is';
 
   @override
   String get theCorrectIs => 'The correct is';

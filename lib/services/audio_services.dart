@@ -19,6 +19,8 @@ class AudioServices {
   static const endSound = "end.mp3";
   // AudioCache end_sound_audio = AudioCache()
 
+  static const secondTickingSound = "second_ticking.mp3";
+
   static const saveSuccessSound = "save_success.wav";
 
   // late AudioPlayer _audioPlayer;
@@ -71,6 +73,10 @@ class AudioServices {
 
   Future<void> playEnd() {
     return playSound(endSound);
+  }
+
+  Future<void> playSecondTicking() {
+    return playSound(secondTickingSound);
   }
 }
 

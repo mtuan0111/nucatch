@@ -19,6 +19,10 @@
       }
     }
   },
+  "mainMenu": "Main Menu",
+  "@mainMenu": {
+    "description": "Tiêu đề của trang chính"
+  },
   "start": "Start",
   "@start": {
     "description": "Start button label"
@@ -110,6 +114,12 @@
   "@selectLevelMessage": {
     "description": "Message guiding the user to select a level"
   },
+
+  "yourScoreIs": "Your score currently is",
+  "@yourScoreIs": {
+    "description": "Thông báo điểm số của người chơi"
+  },
+
   "theCorrectIs": "The correct is",
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"

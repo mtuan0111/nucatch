@@ -117,13 +117,11 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                           spacing: buttonSpace,
                           // runSpacing: buttonSpace,
                           children: Difficulty.values.map((difficulty) {
-                            String textButton = '';
-
                             IconData difficultyIcon =
                                 Helper.getIconFromDifficulty(
                                     context, difficulty);
 
-                            Function onTap = () {
+                            void onTap() {
                               turnBloc.add(
                                 SetDifficulty(
                                   difficulty: difficulty,
@@ -133,7 +131,8 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                   },
                                 ),
                               );
-                            };
+                            }
+
                             return GestureDetector(
                               onTap: () {
                                 onTap();
@@ -142,40 +141,53 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                 // mainAxisAlignment: MainAxisAlignment.center,
                                 // crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 40),
+                                      child: Stack(
+                                        clipBehavior: Clip.none,
+                                        children: [
+                                          CustomElevatedButton(
+                                            text: Helper
+                                                .getDescriptionFromDifficulty(
+                                                    context, difficulty),
+                                            style: LayoutConfig(context)
+                                                .contentSectionStyle(),
+                                            buttonSize: ButtonSize.smallest,
+                                            shapeAt:
+                                                RoundedWithShapeAt.topRight,
+                                            backgroundColor: Colors.black54,
+                                            color: Colors.grey,
+                                          ),
+                                          Positioned(
+                                            top: -45,
+                                            right: 10,
+                                            child: CustomElevatedButton(
+                                              text:
+                                                  Helper.getTitleFromDifficulty(
+                                                      context, difficulty),
+                                              buttonSize: ButtonSize.small,
+                                              shapeAt: RoundedWithShapeAt
+                                                  .bottomRight,
+                                              backgroundColor: Colors.grey,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
                                   AnimatedButton(
                                     context,
-
                                     onPressed: () {
                                       onTap();
                                     },
                                     // text: textButton,
                                     iconData: difficultyIcon,
-                                  ),
-                                  Text(
-                                    textButton,
-                                    style: LayoutConfig(context)
-                                        .titleSectionStyle(),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          Helper.getTitleFromDifficulty(
-                                              context, difficulty),
-                                          textAlign: TextAlign.start,
-                                          style: LayoutConfig(context)
-                                              .titleSectionStyle(),
-                                        ),
-                                        Text(
-                                          Helper.getDescriptionFromDifficulty(
-                                              context, difficulty),
-                                          textAlign: TextAlign.start,
-                                        ),
-                                      ],
-                                    ),
+                                    shapeAt: RoundedWithShapeAt.topLeft,
+                                    backgroundColor: Colors.white70,
+                                    color: Colors.black87,
                                   ),
                                 ],
                               ),

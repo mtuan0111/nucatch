@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
 import 'package:nucatch/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
@@ -15,14 +14,15 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 
 class AboutScreen extends StatefulWidget {
-  const AboutScreen({super.key});
+  const AboutScreen({super.key, required this.title});
+  final String title;
 
   @override
   State<AboutScreen> createState() => _AboutScreenState();
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-  String get screenTitle => menuArray(context)[MenuOption.about]!;
+  String get screenTitle => widget.title;
 
   SettingBloc get settingBloc => context.read<SettingBloc>();
   SettingState get settingState => settingBloc.state;

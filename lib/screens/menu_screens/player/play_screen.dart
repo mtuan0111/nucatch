@@ -28,13 +28,16 @@ import 'package:timer_count_down/timer_count_down.dart';
 class PlayScreen extends StatefulWidget {
   const PlayScreen({
     super.key,
+    required this.title,
   });
+  final String title;
 
   @override
   State<PlayScreen> createState() => _PlayScreenState();
 }
 
 class _PlayScreenState extends State<PlayScreen> {
+  String get screenTitle => widget.title;
   double get screenWidth => max(MediaQuery.of(context).size.width, 600);
 
   double get buttonSpace => 20;
@@ -60,6 +63,25 @@ class _PlayScreenState extends State<PlayScreen> {
   TurnRecordedListBloc get turnRecordedListBloc =>
       context.read<TurnRecordedListBloc>();
   TurnRecordedListState get turnRecordedListState => turnRecordedListBloc.state;
+
+  // Font size constants
+  TextStyle boldedStyleFont({int numberOfCharactor = 1}) {
+    double fontSize = 50;
+
+    if (numberOfCharactor >= 10) {
+      fontSize = 24;
+    } else if (numberOfCharactor >= 8) {
+      fontSize = 32;
+    } else if (numberOfCharactor >= 6) {
+      fontSize = 40;
+    } else if (numberOfCharactor >= 4) {
+      fontSize = 45;
+    }
+    return LayoutConfig(context).boldedStyle.copyWith(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          fontSize: fontSize,
+        );
+  }
 
   @override
   void initState() {
@@ -126,72 +148,82 @@ class _PlayScreenState extends State<PlayScreen> {
                       child: Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Helper.getIconFromDifficulty(context,
-                                        turnState.difficultyModel?.difficulty),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor,
-                                    size: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .fontSize,
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Text.rich(
-                                    TextSpan(
+                              Expanded(
+                                child: Wrap(
+                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  alignment: WrapAlignment.spaceBetween,
+                                  children: [
+                                    Wrap(
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.center,
                                       children: [
-                                        TextSpan(
-                                          text: "${lang(context).level}: ",
+                                        Icon(
+                                          Helper.getIconFromDifficulty(
+                                              context,
+                                              turnState
+                                                  .difficultyModel?.difficulty),
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                          size: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .fontSize,
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    "${lang(context).level}: ",
+                                                style: LayoutConfig(context)
+                                                    .contentSectionStyle()
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                              ),
+                                              TextSpan(
+                                                text: turnState
+                                                    .levelAndTimeCorrect,
+                                                style: LayoutConfig(context)
+                                                    .contentSectionStyle(),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Wrap(
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.center,
+                                      children: [
+                                        Icon(
+                                          FontAwesomeIcons.chartLine,
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                          size: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .fontSize,
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          "${lang(context).score}: ",
                                           style: LayoutConfig(context)
                                               .contentSectionStyle()
                                               .copyWith(
                                                   fontWeight: FontWeight.bold),
                                         ),
-                                        TextSpan(
-                                          text: turnState.levelAndTimeCorrect,
+                                        Text(
+                                          "${turnState.point}",
                                           style: LayoutConfig(context)
                                               .contentSectionStyle(),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.chartLine,
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor,
-                                    size: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .fontSize,
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: "${lang(context).score}: ",
-                                          style: LayoutConfig(context)
-                                              .contentSectionStyle()
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold),
-                                        ),
-                                        TextSpan(
-                                          text: "${turnState.point}",
-                                          style: LayoutConfig(context)
-                                              .contentSectionStyle(),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -357,105 +389,184 @@ class _PlayScreenState extends State<PlayScreen> {
                                         return Countdown(
                                           seconds: turnState.countDown,
                                           interval:
-                                              const Duration(milliseconds: 400),
+                                              const Duration(milliseconds: 10),
                                           build: (BuildContext context,
                                               double time) {
-                                            return AnimatedOpacity(
-                                              opacity: time >= 1 ? 1 : 0,
+                                            // Calculate which second we're in (1, 2, or 3)
+                                            final currentSecond =
+                                                turnState.countDown -
+                                                    time.floor();
+                                            // Calculate progress within current second (0.0 to 1.0)
+                                            final secondProgress =
+                                                time - time.floor();
+                                            dev.log(
+                                                "message: currentSecond: $currentSecond, secondProgress: $secondProgress");
+
+                                            Gradient getCountdownGradient(
+                                                double time) {
+                                              if (time >= 3) {
+                                                return LinearGradient(
+                                                  colors: [
+                                                    Colors.green.shade300,
+                                                    Colors.green.shade700
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                );
+                                              }
+                                              if (time >= 2) {
+                                                return LinearGradient(
+                                                  colors: [
+                                                    Colors.blue.shade300,
+                                                    Colors.blue.shade700
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                );
+                                              }
+                                              if (time >= 1) {
+                                                return LinearGradient(
+                                                  colors: [
+                                                    Colors.orange.shade300,
+                                                    Colors.orange.shade700
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                );
+                                              }
+                                              return LinearGradient(
+                                                colors: [
+                                                  Colors.red.shade300,
+                                                  Colors.red.shade700
+                                                ],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              );
+                                            }
+
+                                            return AnimatedScale(
                                               duration: const Duration(
-                                                  milliseconds: 400),
-                                              child: AnimatedScale(
-                                                scale: time >= 1 ? 1 : 15,
+                                                  milliseconds: 500),
+                                              scale: time > 1 ? 1.0 : 5,
+                                              curve: Curves.easeOutQuart,
+                                              child: AnimatedOpacity(
                                                 duration: const Duration(
-                                                    milliseconds: 400),
-                                                child: Text(
-                                                  time >= 1
-                                                      ? readyText
-                                                      : goText,
-                                                  style:
-                                                      LayoutConfig(context)
-                                                          .titleSectionStyle(
-                                                              isItalic: true)
-                                                          .copyWith(
-                                                            fontSize: time <= 1
-                                                                ? () {
-                                                                    // Safety checks to prevent invalid font sizes
-                                                                    if (turnState
-                                                                            .countDown <=
-                                                                        0) {
-                                                                      return null;
-                                                                    }
-
-                                                                    final baseFontSize = Theme.of(context)
-                                                                            .textTheme
-                                                                            .displayLarge
-                                                                            ?.fontSize ??
-                                                                        24.0;
-
-                                                                    final calculatedSize =
-                                                                        (time / turnState.countDown) *
-                                                                            baseFontSize;
-
-                                                                    // Ensure the fontSize is valid and within reasonable bounds
-                                                                    if (calculatedSize.isNaN ||
-                                                                        calculatedSize
-                                                                            .isInfinite ||
-                                                                        calculatedSize <=
-                                                                            0 ||
-                                                                        calculatedSize >
-                                                                            200) {
-                                                                      return null;
-                                                                    }
-
-                                                                    return calculatedSize;
-                                                                  }()
-                                                                : null,
-                                                          ),
+                                                    milliseconds: 500),
+                                                opacity: time > 1 ? 1.0 : 0.0,
+                                                curve: Curves.easeOutQuart,
+                                                child: Container(
+                                                  width: 140,
+                                                  height: 140,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    gradient:
+                                                        getCountdownGradient(
+                                                            time),
+                                                  ),
+                                                  child: Stack(
+                                                    alignment: Alignment.center,
+                                                    children: [
+                                                      // Circular progress indicator - completes once per second
+                                                      SizedBox(
+                                                        width: 120,
+                                                        height: 120,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          value: secondProgress,
+                                                          strokeWidth: 8,
+                                                          backgroundColor:
+                                                              Colors.white
+                                                                  .withOpacity(
+                                                                      0.3),
+                                                          valueColor:
+                                                              const AlwaysStoppedAnimation<
+                                                                      Color>(
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                      // Text content
+                                                      Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          if (time >= 1)
+                                                            AnimatedDefaultTextStyle(
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          300),
+                                                              style: LayoutConfig(
+                                                                      context)
+                                                                  .displaySmallStyle()
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        40,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                              child: Text(
+                                                                time
+                                                                    .truncate()
+                                                                    .toString(),
+                                                              ),
+                                                            ),
+                                                          if (time >= 1)
+                                                            AnimatedDefaultTextStyle(
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          300),
+                                                              style: LayoutConfig(
+                                                                      context)
+                                                                  .titleSectionStyle(
+                                                                      isItalic:
+                                                                          true)
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        16,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                              child: Text(
+                                                                  readyText),
+                                                            )
+                                                          else
+                                                            AnimatedDefaultTextStyle(
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          300),
+                                                              style: LayoutConfig(
+                                                                      context)
+                                                                  .titleSectionStyle(
+                                                                      isItalic:
+                                                                          true)
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        32,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                              child:
+                                                                  Text(goText),
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             );
                                           },
+                                          onFinished: () {},
                                         );
                                       },
-                                    ),
-                                  if (!context.read<TurnBloc>().isClosed)
-                                    Countdown(
-                                      seconds: turnState.countDown,
-                                      interval:
-                                          const Duration(milliseconds: 100),
-                                      build:
-                                          (BuildContext context, double time) =>
-                                              AnimatedOpacity(
-                                        opacity: time >= 1 ? 1 : 0,
-                                        duration:
-                                            const Duration(milliseconds: 1000),
-                                        curve: Curves.easeOutQuart,
-                                        child: AnimatedScale(
-                                          scale: time >= 1 ? 1 : 0,
-                                          duration:
-                                              const Duration(milliseconds: 200),
-                                          curve: Curves.easeOutQuart,
-                                          child: (time >= 1)
-                                              ? Text(
-                                                  time.round().toString(),
-                                                  style: (LayoutConfig(context)
-                                                          .displaySmallStyle())
-                                                      .copyWith(
-                                                    fontSize: (time <= 1)
-                                                        ? (time /
-                                                                turnState
-                                                                    .countDown) *
-                                                            Theme.of(context)
-                                                                .textTheme
-                                                                .displayLarge!
-                                                                .fontSize!
-                                                        : null,
-                                                  ),
-                                                )
-                                              : const SizedBox.shrink(),
-                                        ),
-                                      ),
-                                      onFinished: () {},
                                     ),
                                 ],
                               ),
@@ -470,8 +581,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                       String inputted =
                                           turnState.requirementString![index];
                                       return SizedBox(
-                                        width: (LayoutConfig(context)
-                                                .displaySmallStyle()
+                                        width: (boldedStyleFont(
+                                                    numberOfCharactor: turnState
+                                                        .requirementString!
+                                                        .length)
                                                 .fontSize! *
                                             0.65),
                                         child: Column(
@@ -479,8 +592,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                             Text(
                                               inputted,
                                               textAlign: TextAlign.center,
-                                              style: LayoutConfig(context)
-                                                  .displaySmallStyle(),
+                                              style: boldedStyleFont(
+                                                numberOfCharactor: turnState
+                                                    .requirementString!.length,
+                                              ),
                                             ),
                                             // if (turnState.expect ==
                                             //     turnState.requirementString)
@@ -513,8 +628,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                       String inputted =
                                           turnState.expect![index];
                                       return SizedBox(
-                                        width: (LayoutConfig(context)
-                                                .displaySmallStyle()
+                                        width: (boldedStyleFont(
+                                                    numberOfCharactor: turnState
+                                                        .requirementString!
+                                                        .length)
                                                 .fontSize! *
                                             0.65),
                                         child: Column(
@@ -542,8 +659,12 @@ class _PlayScreenState extends State<PlayScreen> {
                                                   child: Text(
                                                     inputted,
                                                     textAlign: TextAlign.center,
-                                                    style: LayoutConfig(context)
-                                                        .displaySmallStyle(),
+                                                    style: boldedStyleFont(
+                                                      numberOfCharactor:
+                                                          turnState
+                                                              .requirementString!
+                                                              .length,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -629,6 +750,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                   button = AnimatedButton(
                                     context,
                                     text: e.value.toString(),
+                                    style: LayoutConfig(context).boldedStyle,
                                     isEnable: turnState.isAbleToTap,
                                     onPressed: () {
                                       context.read<TurnBloc>().add(

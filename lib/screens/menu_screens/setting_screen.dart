@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
 import 'package:nucatch/blocs/objects/setting/setting_event.dart';
 import 'package:nucatch/blocs/objects/setting/setting_state.dart';
@@ -21,14 +20,16 @@ import 'package:nucatch/helpers/template.dart';
 class SettingScreen extends StatefulWidget {
   const SettingScreen({
     super.key,
+    required this.title,
   });
+  final String title;
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  String get screenTitle => menuArray(context)[MenuOption.setting]!;
+  String get screenTitle => widget.title;
 
   UserBloc get userBloc => context.read<UserBloc>();
   UserState get userState => userBloc.state;

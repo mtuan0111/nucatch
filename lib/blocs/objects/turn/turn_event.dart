@@ -16,7 +16,7 @@ class GameStarted extends TurnEvent {
   int seconds;
 
   GameStarted({
-    this.seconds = 3,
+    this.seconds = 4,
   });
 }
 

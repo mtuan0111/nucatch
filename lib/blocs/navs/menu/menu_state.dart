@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/helpers/const.dart';
 
 abstract class MenuState {}
@@ -11,12 +12,27 @@ enum MenuOption {
   exit,
 }
 
-Map<MenuOption, String> menuArray(BuildContext context) => {
-      MenuOption.start: lang(context).start,
-      MenuOption.topScore: lang(context).topScore,
-      MenuOption.setting: lang(context).setting,
-      MenuOption.about: lang(context).about,
-      MenuOption.exit: lang(context).exit,
+Map<MenuOption, Map<String, dynamic>> menuArray(BuildContext context) => {
+      MenuOption.start: {
+        "text": lang(context).start,
+        "icon": FontAwesomeIcons.play,
+      },
+      MenuOption.topScore: {
+        "text": lang(context).topScore,
+        "icon": FontAwesomeIcons.trophy,
+      },
+      MenuOption.setting: {
+        "text": lang(context).setting,
+        "icon": FontAwesomeIcons.gear,
+      },
+      MenuOption.about: {
+        "text": lang(context).about,
+        "icon": FontAwesomeIcons.circleInfo,
+      },
+      MenuOption.exit: {
+        "text": lang(context).exit,
+        "icon": FontAwesomeIcons.rightFromBracket,
+      },
     };
 
 enum KeyboardOption {

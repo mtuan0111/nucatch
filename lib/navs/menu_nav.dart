@@ -114,12 +114,18 @@ class _MenuNavState extends State<MenuNav> {
                         ),
                       ),
                     if (navState is Setting)
-                      const MaterialPage(
-                        child: SettingScreen(),
+                      MaterialPage(
+                        child: SettingScreen(
+                          title: (menuArray(
+                              context)[MenuOption.setting]!['text']!),
+                        ),
                       ),
                     if (navState is About)
-                      const MaterialPage(
-                        child: AboutScreen(),
+                      MaterialPage(
+                        child: AboutScreen(
+                          title:
+                              (menuArray(context)[MenuOption.about]!['text']!),
+                        ),
                       ),
                   ],
                 );

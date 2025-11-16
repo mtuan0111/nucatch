@@ -19,6 +19,10 @@
       }
     }
   },
+  "mainMenu": "Trang chính",
+  "@mainMenu": {
+    "description": "Tiêu đề của trang chính"
+  },
   "start": "Bắt đầu",
   "@start": {
     "description": "Nút bắt đầu trò chơi"
@@ -109,6 +113,11 @@
   "selectLevelMessage": "Chọn cấp độ bạn muốn chơi. Cấp độ càng cao, độ khó càng tăng.",
   "@selectLevelMessage": {
     "description": "Thông điệp hướng dẫn người dùng chọn cấp độ"
+  },
+
+  "yourScoreIs": "Điểm của bạn hiện là",
+  "@yourScoreIs": {
+    "description": "Thông báo điểm số của người chơi"
   },
 
   "theCorrectIs": "Đáp án đúng là",

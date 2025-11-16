@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_state.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_bloc.dart';
@@ -16,14 +15,18 @@ import 'package:nucatch/models/turn_record_model.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class TopScoreDetailScreen extends StatefulWidget {
-  const TopScoreDetailScreen({super.key});
+  const TopScoreDetailScreen({
+    super.key,
+    required this.title,
+  });
+  final String title;
 
   @override
   State<TopScoreDetailScreen> createState() => _TopScoreDetailScreenState();
 }
 
 class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
-  String get screenTitle => menuArray(context)[MenuOption.topScore]!;
+  String get screenTitle => widget.title;
 
   TopScoreNavCubit get topScoreCubit => context.read<TopScoreNavCubit>();
   TopScoreDetailState get topScoreDetailState =>

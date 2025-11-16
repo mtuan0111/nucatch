@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_state.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_bloc.dart';
@@ -70,8 +71,10 @@ class _TopScoreNavState extends State<TopScoreNav> {
           // },
 
           pages: [
-            const MaterialPage(
-              child: TopScoreScreen(),
+            MaterialPage(
+              child: TopScoreScreen(
+                title: menuArray(context)[MenuOption.topScore]!['text']!,
+              ),
             ),
             if (state is TopScoreDetailState)
               MaterialPage(
@@ -83,7 +86,9 @@ class _TopScoreNavState extends State<TopScoreNav> {
                       ),
                     );
                   },
-                  child: const TopScoreDetailScreen(),
+                  child: TopScoreDetailScreen(
+                    title: menuArray(context)[MenuOption.topScore]!['text']!,
+                  ),
                 ),
               ),
           ],
