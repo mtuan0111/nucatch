@@ -222,4 +222,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get no_turn_yet => 'No turns yet';
+
+  @override
+  String get daily => 'In a day';
+
+  @override
+  String get dailyDescription => 'Rankings based on turns recorded today.';
+
+  @override
+  String get weekly => 'In a week';
+
+  @override
+  String get weeklyDescription =>
+      'Rankings based on turns recorded in the past 7 days.';
+
+  @override
+  String get allTime => 'All time';
+
+  @override
+  String get allTimeDescription => 'Rankings based on all recorded turns.';
 }

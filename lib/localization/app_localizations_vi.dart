@@ -222,4 +222,25 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get no_turn_yet => 'Chưa có lượt chơi nào';
+
+  @override
+  String get daily => 'Trong ngày';
+
+  @override
+  String get dailyDescription =>
+      'Xếp hạng dựa trên các lượt chơi được ghi trong ngày hôm nay.';
+
+  @override
+  String get weekly => 'Trong tuần';
+
+  @override
+  String get weeklyDescription =>
+      'Xếp hạng dựa trên các lượt chơi được ghi trong 7 ngày qua.';
+
+  @override
+  String get allTime => 'Tất cả';
+
+  @override
+  String get allTimeDescription =>
+      'Xếp hạng dựa trên các lượt chơi được ghi trong tất cả thời gian.';
 }

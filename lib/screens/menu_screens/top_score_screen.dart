@@ -26,10 +26,37 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
 
   MenuBloc get mainMenuBloc => context.read<MenuBloc>();
 
+  // Track selected tab with enum
+  RankingPeriod _selectedPeriod = RankingPeriod.weekly;
+
   @override
   void initState() {
-    turnRecordedListBloc.add(LoadData());
+    // Load all time data initially
+    turnRecordedListBloc.add(LoadDataByPeriod(period: RankingPeriod.daily));
     super.initState();
+  }
+
+  void _onTabChanged(RankingPeriod period) {
+    setState(() {
+      _selectedPeriod = period;
+    });
+    turnRecordedListBloc.add(LoadDataByPeriod(period: period));
+  }
+
+  String _getPeriodTitle() {
+    switch (_selectedPeriod) {
+      case RankingPeriod.daily:
+        return lang(context).dailyDescription;
+      case RankingPeriod.weekly:
+        return lang(context).weeklyDescription;
+      case RankingPeriod.all:
+        return lang(context).allTimeDescription;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -79,14 +106,12 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                       leading: IconButton(
                         onPressed: () {
                           mainMenuBloc.add(ShowMenu());
-                          // Navigator.pop(context);
-                          // Navigator.pop
                         },
                         icon: const Icon(
                           FontAwesomeIcons.chevronLeft,
                         ),
                       ),
-                      expandedHeight: 100,
+                      expandedHeight: 100, // Increased to accommodate buttons
                     ),
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(
@@ -94,48 +119,76 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                       ),
                       sliver: SliverToBoxAdapter(
                         child: SafeArea(
-                          child: DeviceWrapper(
-                            child: Wrap(
-                              alignment: WrapAlignment.center,
-                              runSpacing: 50,
-                              spacing: 50,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                if (turnRecordedListState.listModel != null &&
-                                    turnRecordedListState.listModel!.isNotEmpty)
-                                  ...turnRecordedListState.listModel!.map(
-                                    (e) => GestureDetector(
-                                      onTap: () {
-                                        context
-                                            .read<TopScoreNavCubit>()
-                                            .showTopScoreDetail(
-                                              e,
-                                              turnRecordedListState.indexOf(e),
-                                            );
-                                      },
-                                      child: RankingItem(
-                                        ranking:
-                                            turnRecordedListState.indexOf(e),
-                                        turnRecordedModel: e,
-                                        // playerName: e.playedUsername ??
-                                        //     lang(context).anonymous,
-                                        // createdAt: e.recordedTime,
-                                        // turnedPoint: e.point,
-                                      ),
-                                    ),
-                                  )
-                                else
-                                  Text(
-                                    lang(context).no_turn_yet,
-                                    style: LayoutConfig(context)
-                                        .contentSectionStyle(),
+                                Expanded(
+                                  child: AnimatedButton(
+                                    context,
+                                    text: lang(context).daily,
+                                    buttonSize: ButtonSize.small,
+                                    shapeAt: RoundedWithShapeAt.topLeft,
+                                    backgroundColor:
+                                        _selectedPeriod == RankingPeriod.daily
+                                            ? Theme.of(context).primaryColor
+                                            : Theme.of(context)
+                                                .primaryColor
+                                                .withOpacity(0.6),
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    onPressed: () =>
+                                        _onTabChanged(RankingPeriod.daily),
                                   ),
-                                if (turnRecordedListState.isLoading)
-                                  const LoadingWidget(),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: AnimatedButton(
+                                    context,
+                                    text: lang(context).weekly,
+                                    buttonSize: ButtonSize.small,
+                                    shapeAt: RoundedWithShapeAt.topRight,
+                                    backgroundColor:
+                                        _selectedPeriod == RankingPeriod.weekly
+                                            ? Theme.of(context).primaryColor
+                                            : Theme.of(context)
+                                                .primaryColor
+                                                .withOpacity(0.6),
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    onPressed: () =>
+                                        _onTabChanged(RankingPeriod.weekly),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: AnimatedButton(
+                                    context,
+                                    text: lang(context).allTime,
+                                    buttonSize: ButtonSize.small,
+                                    shapeAt: RoundedWithShapeAt.bottomLeft,
+                                    backgroundColor:
+                                        _selectedPeriod == RankingPeriod.all
+                                            ? Theme.of(context).primaryColor
+                                            : Theme.of(context)
+                                                .primaryColor
+                                                .withOpacity(0.6),
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    onPressed: () =>
+                                        _onTabChanged(RankingPeriod.all),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ),
+                    ),
+                    SliverFillRemaining(
+                      child: _buildRankingList(turnRecordedListState),
                     ),
                   ],
                 ),
@@ -144,6 +197,75 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildRankingList(TurnRecordedListState turnRecordedListState) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        // Reload data for current period
+        turnRecordedListBloc.add(LoadDataByPeriod(
+          period: turnRecordedListState.currentPeriod,
+        ));
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 30),
+          child: SafeArea(
+            child: DeviceWrapper(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Period title
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: Text(
+                      _getPeriodTitle(),
+                      style: LayoutConfig(context).titleSectionStyle(),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    runSpacing: 50,
+                    spacing: 50,
+                    children: [
+                      if (turnRecordedListState.listModel != null &&
+                          turnRecordedListState.listModel!.isNotEmpty)
+                        ...turnRecordedListState.listModel!.asMap().entries.map(
+                          (entry) {
+                            int index = entry.key;
+                            var e = entry.value;
+                            return GestureDetector(
+                              onTap: () {
+                                context
+                                    .read<TopScoreNavCubit>()
+                                    .showTopScoreDetail(e, index + 1);
+                              },
+                              child: RankingItem(
+                                ranking: index + 1,
+                                turnRecordedModel: e,
+                              ),
+                            );
+                          },
+                        )
+                      else if (!turnRecordedListState.isLoading)
+                        Text(
+                          lang(context).no_turn_yet,
+                          style: LayoutConfig(context).contentSectionStyle(),
+                        ),
+                      if (turnRecordedListState.isLoading)
+                        const LoadingWidget(),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

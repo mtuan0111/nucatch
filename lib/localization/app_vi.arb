@@ -335,6 +335,30 @@
   "@no_turn_yet": {
     "description": "Thông báo khi chưa có lượt chơi nào",
     "placeholders": {}
-  }
+  },
 
+  "daily": "Trong ngày",
+  "@daily": {
+    "description": "Bảng xếp hạng hàng ngày"
+  },
+  "dailyDescription": "Xếp hạng dựa trên các lượt chơi được ghi trong ngày hôm nay.",
+  "@dailyDescription": {
+    "description": "Mô tả cho bảng xếp hạng hàng ngày"
+  },
+  "weekly": "Trong tuần", 
+  "@weekly": {
+    "description": "Bảng xếp hạng hàng tuần"
+  },
+  "weeklyDescription": "Xếp hạng dựa trên các lượt chơi được ghi trong 7 ngày qua.",
+  "@weeklyDescription": {
+    "description": "Mô tả cho bảng xếp hạng hàng tuần"
+  },
+  "allTime": "Tất cả",
+  "@allTime": {
+    "description": "Bảng xếp hạng tất cả thời gian"
+  },
+  "allTimeDescription": "Xếp hạng dựa trên các lượt chơi được ghi trong tất cả thời gian.",
+  "@allTimeDescription": {
+    "description": "Mô tả cho bảng xếp hạng tất cả thời gian"
+  }
 }

@@ -1,6 +1,47 @@
 abstract class TurnRecordedListEvent {}
 
+enum RankingPeriod {
+  daily,
+  weekly,
+  all,
+}
+
+extension RankingPeriodExtension on RankingPeriod {
+  String get value {
+    switch (this) {
+      case RankingPeriod.daily:
+        return 'daily';
+      case RankingPeriod.weekly:
+        return 'weekly';
+      case RankingPeriod.all:
+        return 'all';
+    }
+  }
+
+  static RankingPeriod fromString(String value) {
+    switch (value.toLowerCase()) {
+      case 'daily':
+        return RankingPeriod.daily;
+      case 'weekly':
+        return RankingPeriod.weekly;
+      case 'all':
+      default:
+        return RankingPeriod.all;
+    }
+  }
+}
+
 class LoadData extends TurnRecordedListEvent {}
+
+class LoadDataByPeriod extends TurnRecordedListEvent {
+  final RankingPeriod period; // Now using enum instead of String
+  final bool useFirebase;
+
+  LoadDataByPeriod({
+    required this.period,
+    this.useFirebase = true,
+  });
+}
 
 // class AddItem extends TurnRecordedListEvent {
 //   final TurnRecordedModel item;
@@ -16,3 +57,6 @@ class ChangeNumberOfTopBoard extends TurnRecordedListEvent {
 
   ChangeNumberOfTopBoard({required this.numberOfTopBoard});
 }
+
+// Debug event to help troubleshoot date filtering
+class DebugDatabaseContent extends TurnRecordedListEvent {}

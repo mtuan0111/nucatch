@@ -336,5 +336,31 @@
   "@no_turn_yet": {
     "description": "Notification when there are no turns yet",
     "placeholders": {}
+  },
+    
+  "daily": "In a day",
+  "@daily": {
+    "description": "Daily leaderboard"
+  },
+  "dailyDescription": "Rankings based on turns recorded today.",
+  "@dailyDescription": {
+    "description": "Description for daily leaderboard"
+  },
+
+  "weekly": "In a week", 
+  "@weekly": {
+    "description": "Weekly leaderboard"
+  },
+  "weeklyDescription": "Rankings based on turns recorded in the past 7 days.",
+  "@weeklyDescription": {
+    "description": "Description for weekly leaderboard"
+  },
+  "allTime": "All time",
+  "@allTime": {
+    "description": "All-time leaderboard"
+  },
+  "allTimeDescription": "Rankings based on all recorded turns.",
+  "@allTimeDescription": {
+    "description": "Description for all-time leaderboard"
   }
 }

@@ -1,28 +1,33 @@
 import 'dart:math';
 
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 
 class TurnRecordedListState {
   final int numberOfTopBoard;
   final List<TurnRecordedModel>? _listModel;
   final bool isLoading;
+  final RankingPeriod currentPeriod; // Now using enum
 
   TurnRecordedListState({
     required this.numberOfTopBoard,
     List<TurnRecordedModel>? listModel,
     this.isLoading = true,
+    this.currentPeriod = RankingPeriod.all, // Default to all time
   }) : _listModel = listModel;
 
   TurnRecordedListState copyWith({
     int? numberOfTopBoard,
     List<TurnRecordedModel>? listModel,
     bool? isLoading,
+    RankingPeriod? currentPeriod,
   }) {
     return TurnRecordedListState(
       numberOfTopBoard: numberOfTopBoard ?? this.numberOfTopBoard,
       listModel: listModel ?? _listModel,
       isLoading: isLoading ?? this.isLoading,
+      currentPeriod: currentPeriod ?? this.currentPeriod,
     );
   }
 

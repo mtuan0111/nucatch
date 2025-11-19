@@ -483,6 +483,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No turns yet'**
   String get no_turn_yet;
+
+  /// Daily leaderboard
+  ///
+  /// In en, this message translates to:
+  /// **'In a day'**
+  String get daily;
+
+  /// Description for daily leaderboard
+  ///
+  /// In en, this message translates to:
+  /// **'Rankings based on turns recorded today.'**
+  String get dailyDescription;
+
+  /// Weekly leaderboard
+  ///
+  /// In en, this message translates to:
+  /// **'In a week'**
+  String get weekly;
+
+  /// Description for weekly leaderboard
+  ///
+  /// In en, this message translates to:
+  /// **'Rankings based on turns recorded in the past 7 days.'**
+  String get weeklyDescription;
+
+  /// All-time leaderboard
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get allTime;
+
+  /// Description for all-time leaderboard
+  ///
+  /// In en, this message translates to:
+  /// **'Rankings based on all recorded turns.'**
+  String get allTimeDescription;
 }
 
 class _AppLocalizationsDelegate
