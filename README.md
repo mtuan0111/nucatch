@@ -572,3 +572,74 @@ Optimize the application
 
 
 ---
+---
+## Released on: 19/10/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 46           | 2.2.2   |
+| iOS      | 50           | 2.2.2   |
+
+### Release note:
+Update the top recorded scores to be stored online
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+    [Builded] Version 2.2.2 - 46 / 2.2.2 - 50 _ Update the top recorded scores to be stored online
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Enhanced online score storage system for improved performance.  
+        - Optimized leaderboard functionality and data synchronization.
+
+    - **Tiếng Việt:**  
+        - Nâng cao hệ thống lưu trữ điểm số trực tuyến để hiệu suất tốt hơn.  
+        - Tối ưu hóa chức năng bảng xếp hạng và đồng bộ hóa dữ liệu.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.2.2 --build-number=46 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.2.2 --build-number=50 --release```
+---
+---
+## Released on: 23/11/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 49           | 2.3.1   |
+| iOS      | 53           | 2.3.1   |
+
+### Release note:
+feat: Implement leaderboard filtering by daily, weekly, and all-time periods; enhance localization support
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+    [Builded] Version 2.3.1 - 49 / 2.3.1 - 53 _ Implement leaderboard filtering by daily, weekly, and all-time periods; enhance localization support
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Added leaderboard filtering options for daily, weekly, and all-time periods.  
+        - Enhanced localization support for better global user experience.
+
+    - **Tiếng Việt:**  
+        - Thêm tùy chọn lọc bảng xếp hạng theo ngày, tuần và tất cả thời gian.  
+        - Nâng cao hỗ trợ đa ngôn ngữ cho trải nghiệm người dùng toàn cầu tốt hơn.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.3.1 --build-number=49 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.3.1 --build-number=53 --release```
+
+
+---
