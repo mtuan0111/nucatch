@@ -588,6 +588,14 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     for (int i = state.countDown; i > 0; i--) {
       if (i > 1) {
         _audioBloc.add(PlaySecondTicking());
+      } else {
+        Future.delayed(const Duration(milliseconds: 500)).then((_) {
+          _audioBloc.add(PlayNewTings());
+        });
+      }
+
+      if (i > 0 && i < state.countDown) {
+        _vibrationBloc.add(VibrateShort());
       }
       await Future.delayed(const Duration(seconds: 1));
       if (isClosed) {
@@ -603,7 +611,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
-    _vibrationBloc.add(VibrateShort());
+    _vibrationBloc.add(VibrateLong());
 
     add(
       SetLevel(

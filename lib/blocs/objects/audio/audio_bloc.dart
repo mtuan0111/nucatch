@@ -17,6 +17,7 @@ class AudioBloc extends Bloc<AudioEvent, AudioState> {
     on<PlayEndAudio>(_onPlayEnd);
     on<PlaySaveSuccessAudio>(_onPlaySaveSuccess);
     on<PlaySecondTicking>(_onPlaySecondTicking);
+    on<PlayNewTings>(_onPlayNewTings);
     on<SetAudioVolume>(_onSetVolume);
   }
 
@@ -89,6 +90,15 @@ class AudioBloc extends Bloc<AudioEvent, AudioState> {
   ) async {
     emitter(state.copyWith(isPlaying: true, lastPlayedSound: 'second_ticking'));
     await _audioServices.playSecondTicking();
+    emitter(state.copyWith(isPlaying: false));
+  }
+
+  Future<void> _onPlayNewTings(
+    PlayNewTings event,
+    Emitter<AudioState> emitter,
+  ) async {
+    emitter(state.copyWith(isPlaying: true, lastPlayedSound: 'new_tings'));
+    await _audioServices.playNewTings();
     emitter(state.copyWith(isPlaying: false));
   }
 

@@ -16,6 +16,8 @@ class PlaySaveSuccessAudio extends AudioEvent {}
 
 class PlaySecondTicking extends AudioEvent {}
 
+class PlayNewTings extends AudioEvent {}
+
 class SetAudioVolume extends AudioEvent {
   final double volume;
 

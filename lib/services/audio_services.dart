@@ -23,6 +23,8 @@ class AudioServices {
 
   static const saveSuccessSound = "save_success.wav";
 
+  static const newTingsSound = "new_tings.mp3";
+
   // late AudioPlayer _audioPlayer;
   double volume = 0.7;
   double get getVolume => volume;
@@ -77,6 +79,10 @@ class AudioServices {
 
   Future<void> playSecondTicking() {
     return playSound(secondTickingSound);
+  }
+
+  Future<void> playNewTings() async {
+    return playSound(newTingsSound);
   }
 }
 
