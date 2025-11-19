@@ -586,9 +586,11 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     // Play countdown audio for each second
     for (int i = state.countDown; i > 0; i--) {
-      if (i > 1) {
+      if (i > 0 && i <= state.countDown - 1) {
         _audioBloc.add(PlaySecondTicking());
-      } else {
+      }
+
+      if (i == 1) {
         Future.delayed(const Duration(milliseconds: 500)).then((_) {
           _audioBloc.add(PlayNewTings());
         });
