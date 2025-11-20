@@ -238,90 +238,94 @@ class AlertTemplate extends StatelessWidget {
       // ),
       // clipBehavior: Clip.none,
       backgroundColor: Colors.transparent,
-      child: Stack(
-        clipBehavior: Clip.none,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Main dialog content
-          Padding(
-            padding: const EdgeInsets.only(top: 30, bottom: 30),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
+          Row(
+            children: [
+              Expanded(
+                child: CustomElevatedButton(
+                  text: title,
+                  buttonSize: ButtonSize.small,
+                  shapeAt: RoundedWithShapeAt.topLeft,
+                  color: Colors.black87,
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Theme.of(context).primaryColor,
+                      Theme.of(context).secondaryHeaderColor,
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              // Main dialog content
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 30),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Expanded(
-                      child: CustomElevatedButton(
-                        backgroundColor:
-                            Theme.of(context).scaffoldBackgroundColor,
-                        shapeAt: RoundedWithShapeAt.topRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (content != null) content!,
-                              // const SizedBox(height: 70), // Space for buttons
-                              if (message != null)
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Text(
-                                    message!,
-                                    style: TextStyle(
-                                      color: Theme.of(context).hintColor,
-                                      fontSize: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .fontSize,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomElevatedButton(
+                            backgroundColor:
+                                Theme.of(context).scaffoldBackgroundColor,
+                            shapeAt: RoundedWithShapeAt.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (content != null) content!,
+                                  // const SizedBox(height: 70), // Space for buttons
+                                  if (message != null)
+                                    Text(
+                                      message!,
+                                      style: TextStyle(
+                                        color: Theme.of(context).hintColor,
+                                        fontSize: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .fontSize,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                            ],
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          // Title positioned on top
-          Positioned(
-            top: 0,
-            left: 20,
-            right: 20,
-            child: CustomElevatedButton(
-              text: title,
-              buttonSize: ButtonSize.small,
-              shapeAt: RoundedWithShapeAt.topLeft,
-              color: Colors.black87,
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Theme.of(context).primaryColor,
-                  Theme.of(context).secondaryHeaderColor,
-                ],
               ),
-            ),
+              // Title positioned on top
+
+              Positioned(
+                  bottom: 0,
+                  left: 20,
+                  right: 20,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      if (negativeButtonLabel != null)
+                        Expanded(child: _buildNegativeButton(context)),
+                      if (negativeButtonLabel != null &&
+                          possitiveButtonLabel != null)
+                        const SizedBox(width: 10),
+                      if (possitiveButtonLabel != null)
+                        Expanded(child: _buildPossitiveButton(context)),
+                    ],
+                  ))
+            ],
           ),
-          Positioned(
-              bottom: 0,
-              left: 20,
-              right: 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  if (negativeButtonLabel != null)
-                    Expanded(child: _buildNegativeButton(context)),
-                  if (negativeButtonLabel != null &&
-                      possitiveButtonLabel != null)
-                    const SizedBox(width: 10),
-                  if (possitiveButtonLabel != null)
-                    Expanded(child: _buildPossitiveButton(context)),
-                ],
-              ))
         ],
       ),
     );
