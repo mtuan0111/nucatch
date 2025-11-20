@@ -643,3 +643,38 @@ feat: Implement leaderboard filtering by daily, weekly, and all-time periods; en
 
 
 ---
+---
+## Released on: 23/11/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 50           | 2.3.2   |
+| iOS      | 54           | 2.3.2   |
+
+### Release note:
+feat: Implement cache management for Firebase data and add refresh functionality
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+    [Builded] Version 2.3.2 - 50 / 2.3.2 - 54 _ Implement cache management for Firebase data and add refresh functionality
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Added cache management for improved data loading performance.  
+        - Implemented refresh functionality for updated content.
+
+    - **Tiếng Việt:**  
+        - Thêm quản lý bộ nhớ đệm để cải thiện hiệu suất tải dữ liệu.  
+        - Triển khai chức năng làm mới để cập nhật nội dung.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.3.2 --build-number=50 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.3.2 --build-number=54 --release```
+---
