@@ -278,7 +278,8 @@ class AlertTemplate extends StatelessWidget {
                                 Theme.of(context).scaffoldBackgroundColor,
                             shapeAt: RoundedWithShapeAt.topRight,
                             child: Padding(
-                              padding: const EdgeInsets.all(20.0),
+                              padding:
+                                  const EdgeInsets.all(30.0).copyWith(top: 10),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
