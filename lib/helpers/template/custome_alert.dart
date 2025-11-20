@@ -291,12 +291,18 @@ class AlertTemplate extends StatelessWidget {
             top: 0,
             left: 20,
             right: 20,
-            child: Center(
-              child: CustomElevatedButton(
-                text: title,
-                buttonSize: ButtonSize.small,
-                shapeAt: RoundedWithShapeAt.topLeft,
-                color: Colors.black87,
+            child: CustomElevatedButton(
+              text: title,
+              buttonSize: ButtonSize.small,
+              shapeAt: RoundedWithShapeAt.topLeft,
+              color: Colors.black87,
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).secondaryHeaderColor,
+                ],
               ),
             ),
           ),

@@ -36,10 +36,12 @@ class LoadData extends TurnRecordedListEvent {}
 class LoadDataByPeriod extends TurnRecordedListEvent {
   final RankingPeriod period; // Now using enum instead of String
   final bool useFirebase;
+  final bool isRefresh; // New parameter for refresh operations
 
   LoadDataByPeriod({
     required this.period,
     this.useFirebase = true,
+    this.isRefresh = false, // Default to false for non-refresh operations
   });
 }
 

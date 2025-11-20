@@ -10,7 +10,48 @@ class TurnRecordedServices {
   Database? _database;
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
+  // Cache for Firebase data with timestamps
+  static final Map<String, List<TurnRecordedModel>?> _firebaseCache = {};
+  static final Map<String, DateTime> _cacheTimestamps = {};
+  static const Duration _cacheExpiration = Duration(hours: 1);
+
   TurnRecordedServices();
+
+  // Check if cache is valid for a given key
+  bool _isCacheValid(String key) {
+    if (!_firebaseCache.containsKey(key) ||
+        !_cacheTimestamps.containsKey(key)) {
+      return false;
+    }
+    final cacheTime = _cacheTimestamps[key]!;
+    return DateTime.now().difference(cacheTime) < _cacheExpiration;
+  }
+
+  // Get data from cache
+  List<TurnRecordedModel>? _getFromCache(String key) {
+    if (_isCacheValid(key)) {
+      return _firebaseCache[key];
+    }
+    return null;
+  }
+
+  // Set data to cache
+  void _setToCache(String key, List<TurnRecordedModel>? data) {
+    _firebaseCache[key] = data;
+    _cacheTimestamps[key] = DateTime.now();
+  }
+
+  // Clear all Firebase cache
+  void _clearFirebaseCache() {
+    _firebaseCache.clear();
+    _cacheTimestamps.clear();
+    log('Firebase cache cleared');
+  }
+
+  // Public method to clear cache (for refresh operations)
+  void clearCache() {
+    _clearFirebaseCache();
+  }
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -127,6 +168,16 @@ class TurnRecordedServices {
   }
 
   Future<List<TurnRecordedModel>?> getTurnedListFirebase(int limit) async {
+    final cacheKey = 'all_time_$limit';
+
+    // Check cache first
+    final cachedData = _getFromCache(cacheKey);
+    if (cachedData != null) {
+      log('Returning cached all-time data');
+      return cachedData;
+    }
+
+    // Fetch from Firebase if not cached
     final querySnapshot = await firebaseFirestore
         .collection('turn_records')
         .orderBy(PreferencesKey.POINT, descending: true)
@@ -134,11 +185,17 @@ class TurnRecordedServices {
         .limit(limit)
         .get();
 
-    return querySnapshot.docs.map((doc) {
+    final result = querySnapshot.docs.map((doc) {
       final data = doc.data();
       final TurnRecordedModel item = TurnRecordedModel.fromJson(data);
       return item;
     }).toList();
+
+    // Cache the result
+    _setToCache(cacheKey, result);
+    log('Cached all-time data');
+
+    return result;
   }
 
   // Get daily rankings from Firebase (today only)
@@ -146,6 +203,15 @@ class TurnRecordedServices {
     final today = DateTime.now();
     final startOfDay = DateTime(today.year, today.month, today.day);
     final endOfDay = startOfDay.add(const Duration(days: 1));
+
+    final cacheKey = 'daily_${startOfDay.millisecondsSinceEpoch}_$limit';
+
+    // Check cache first
+    final cachedData = _getFromCache(cacheKey);
+    if (cachedData != null) {
+      log('Returning cached daily data');
+      return cachedData;
+    }
 
     // Ensure we use integer milliseconds for comparison
     final startOfDayMillis = startOfDay.millisecondsSinceEpoch;
@@ -162,10 +228,16 @@ class TurnRecordedServices {
         .limit(limit)
         .get();
 
-    return querySnapshot.docs.map((doc) {
+    final result = querySnapshot.docs.map((doc) {
       final data = doc.data();
       return TurnRecordedModel.fromJson(data);
     }).toList();
+
+    // Cache the result
+    _setToCache(cacheKey, result);
+    log('Cached daily data');
+
+    return result;
   }
 
   // Get weekly rankings from Firebase (last 7 days)
@@ -173,6 +245,15 @@ class TurnRecordedServices {
       int limit) async {
     final now = DateTime.now();
     final weekAgo = now.subtract(const Duration(days: 7));
+
+    final cacheKey = 'weekly_${weekAgo.millisecondsSinceEpoch}_$limit';
+
+    // Check cache first
+    final cachedData = _getFromCache(cacheKey);
+    if (cachedData != null) {
+      log('Returning cached weekly data');
+      return cachedData;
+    }
 
     // Ensure we use integer milliseconds for comparison
     final weekAgoMillis = weekAgo.millisecondsSinceEpoch;
@@ -184,14 +265,19 @@ class TurnRecordedServices {
             isGreaterThanOrEqualTo: weekAgoMillis)
         .orderBy(PreferencesKey.POINT, descending: true)
         .orderBy(PreferencesKey.RECORDED_TIME)
-        // .orderBy(PreferencesKey.PLAYED_USERNAME, descending: true)
         .limit(limit)
         .get();
 
-    return querySnapshot.docs.map((doc) {
+    final result = querySnapshot.docs.map((doc) {
       final data = doc.data();
       return TurnRecordedModel.fromJson(data);
     }).toList();
+
+    // Cache the result
+    _setToCache(cacheKey, result);
+    log('Cached weekly data');
+
+    return result;
   }
 
   // Get all time rankings from Firebase (existing method renamed for clarity)
@@ -203,7 +289,12 @@ class TurnRecordedServices {
   // Convenient method to get data by period type
   Future<List<TurnRecordedModel>?> getTurnedListByPeriod(
       String period, int limit,
-      {bool useFirebase = false}) async {
+      {bool useFirebase = false, bool clearCache = false}) async {
+    // Clear cache if requested (for refresh operations)
+    if (clearCache) {
+      _clearFirebaseCache();
+    }
+
     switch (period.toLowerCase()) {
       case 'daily':
         return await getDailyTurnedListFirebase(limit) ??
@@ -282,6 +373,9 @@ class TurnRecordedServices {
       await firebaseFirestore.collection('turn_records').add(
             item.toJson(),
           );
+
+      // Clear cache after successful insert
+      _clearFirebaseCache();
 
       log("inserted to Firebase database");
 

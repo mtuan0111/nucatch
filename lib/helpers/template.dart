@@ -266,21 +266,22 @@ class RankingSortingWidget extends StatelessWidget {
         ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: baseSize - 20,
-            minWidth: baseSize * 1.8 * wingSize,
+            minWidth: baseSize - 20,
             maxHeight: childElement == null ? baseSize + 10 : baseSize + 40,
           ),
           child: Container(
             alignment: Alignment.center,
-            width: baseSize * 1.8 * wingSize,
-            height: baseSize * 1.8 * wingSize,
+            width: baseSize,
+            height: baseSize,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomRight,
                 end: Alignment.topLeft,
                 colors: [fillColor, fillColor, strokeColor],
               ),
-              shape: BoxShape.circle,
+              shape: BoxShape.rectangle,
               border: Border.all(width: baseSize * 0.08, color: strokeColor),
+              borderRadius: BorderRadius.circular(baseSize * 0.3),
               boxShadow: [
                 BoxShadow(
                   color: strokeColor.withValues(alpha: .2),
@@ -333,6 +334,7 @@ class CustomElevatedButton extends StatefulWidget {
   final double? minHeight;
   final Color? color;
   final Color? backgroundColor;
+  final LinearGradient? gradient;
   final TextDirection? textDirection;
 
   const CustomElevatedButton({
@@ -349,6 +351,7 @@ class CustomElevatedButton extends StatefulWidget {
     this.minHeight,
     this.color,
     this.backgroundColor,
+    this.gradient,
     this.textDirection,
   }) : super(key: key);
 
@@ -429,6 +432,10 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
   }
 
   Color getColor(BuildContext context) {
+    if (widget.gradient != null) {
+      return Theme.of(context).scaffoldBackgroundColor;
+    }
+
     return widget.color ?? Theme.of(context).secondaryHeaderColor;
   }
 
@@ -437,10 +444,18 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
   }
 
   Color getBackgroundColor(BuildContext context) {
+    if (widget.gradient != null) {
+      return Colors.transparent;
+    }
+
     return widget.backgroundColor ?? Theme.of(context).primaryColor;
   }
 
   Color getBackgroundColorAndPressed(BuildContext context) {
+    if (widget.gradient != null) {
+      return Colors.transparent;
+    }
+
     return isPressed
         ? getBackgroundColor(context).getLighter()
         : getBackgroundColor(context);
@@ -503,6 +518,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 100),
             decoration: BoxDecoration(
+              gradient: widget.gradient,
               borderRadius: getBorderRadius(widget.shapeAt),
               boxShadow: isPressed
                   ? null
@@ -524,7 +540,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                         offset: const Offset(-5, -5),
                       ),
                     ],
-            ),
+            ).copyWith(),
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 minWidth: widget.minWidth ?? 50,

@@ -29,6 +29,9 @@ class TurnRecordedListBloc
       ),
     );
 
+    // Clear cache for refresh operation
+    _turnedServices.clearCache();
+
     emitter(
       state.copyWith(
         listModel: await _turnedServices
@@ -62,6 +65,8 @@ class TurnRecordedListBloc
           event.period.value, // Convert enum to string for service
           state.numberOfTopBoard,
           useFirebase: true,
+          clearCache:
+              event.isRefresh, // Clear cache if it's a refresh operation
         );
       }
 
@@ -70,6 +75,7 @@ class TurnRecordedListBloc
         event.period.value, // Convert enum to string for service
         state.numberOfTopBoard,
         useFirebase: false,
+        clearCache: event.isRefresh, // Clear cache if it's a refresh operation
       );
 
       emitter(

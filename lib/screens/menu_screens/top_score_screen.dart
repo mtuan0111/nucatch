@@ -32,7 +32,7 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
   @override
   void initState() {
     // Load all time data initially
-    turnRecordedListBloc.add(LoadDataByPeriod(period: RankingPeriod.daily));
+    turnRecordedListBloc.add(LoadDataByPeriod(period: _selectedPeriod));
     super.initState();
   }
 
@@ -67,8 +67,12 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
           // appBar: AppBar(),
           body: RefreshIndicator(
             onRefresh: () async {
+              // Clear cache and reload data for current period
               turnRecordedListBloc.add(
-                LoadData(),
+                LoadDataByPeriod(
+                  period: _selectedPeriod,
+                  isRefresh: true, // This will clear the cache
+                ),
               );
             },
             child: Container(
@@ -203,9 +207,10 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
   Widget _buildRankingList(TurnRecordedListState turnRecordedListState) {
     return RefreshIndicator(
       onRefresh: () async {
-        // Reload data for current period
+        // Reload data for current period with cache clearing
         turnRecordedListBloc.add(LoadDataByPeriod(
           period: turnRecordedListState.currentPeriod,
+          isRefresh: true, // This will clear the cache
         ));
       },
       child: SingleChildScrollView(

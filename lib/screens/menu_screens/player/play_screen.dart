@@ -393,14 +393,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                           build: (BuildContext context,
                                               double time) {
                                             // Calculate which second we're in (1, 2, or 3)
-                                            final currentSecond =
-                                                turnState.countDown -
-                                                    time.floor();
                                             // Calculate progress within current second (0.0 to 1.0)
                                             final secondProgress =
                                                 time - time.floor();
-                                            dev.log(
-                                                "message: currentSecond: $currentSecond, secondProgress: $secondProgress");
 
                                             Gradient getCountdownGradient(
                                                 double time) {
