@@ -40,11 +40,9 @@ class RankingItem extends StatelessWidget {
         // runSpacing: 20,
         children: [
           if (ranking != null)
-            Flexible(
-                flex: 1,
-                child: RankingSortingWidget(
-                  position: ranking!,
-                )),
+            RankingSortingWidget(
+              position: ranking!,
+            ),
           // const SizedBox(
           //   width: 20,
           // ),
@@ -186,10 +184,6 @@ class WingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color.withOpacity(opacity)
-      ..style = PaintingStyle.fill;
-
     final path = Path();
     path.moveTo(0, size.height);
     path.lineTo(size.width / 2, 0);
@@ -285,188 +279,143 @@ class RankBadge extends StatelessWidget {
 
 class RankingSortingWidget extends StatelessWidget {
   final int position;
-
   final Widget? childElement;
-  final double? size; // Add a size parameter
+  final double? size;
 
   // Component sizing constants
+  static const double _defaultSize = 60.0;
   static const double _innerContainerPadding = 10.0;
   static const double _highlightBorderPadding = 12.0;
   static const double _shadowBorderPadding = 2.0;
+  static const double _wingOpacity = 0.8;
+  static const double _shadowOpacity = 0.5;
 
   const RankingSortingWidget({
-    Key? key,
+    super.key,
     required this.position,
     this.childElement,
-    this.size, // Accept size
-  }) : super(key: key);
+    this.size,
+  });
+
+  Color _getPositionColor(ThemeData theme) {
+    return switch (position) {
+      1 => Colors.pink,
+      2 => Colors.blueAccent,
+      3 => Colors.green,
+      _ => theme.primaryColor,
+    };
+  }
+
+  Widget _buildWingPair({
+    required double baseSize,
+    required Color fillColor,
+    required double width,
+    required double height,
+    required EdgeInsets margin,
+    required BorderRadius leftRadius,
+    required BorderRadius rightRadius,
+  }) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      verticalDirection: VerticalDirection.up,
+      children: [
+        Flexible(
+          child: Wing(
+            width,
+            height,
+            opacity: _wingOpacity,
+            margin: margin,
+            fillColor: fillColor,
+            radiusCircle: baseSize / 1.5,
+            borderRadius: leftRadius,
+          ),
+        ),
+        Flexible(
+          child: Wing(
+            width,
+            height,
+            opacity: _wingOpacity,
+            margin: margin,
+            fillColor: fillColor,
+            radiusCircle: baseSize / 1.5,
+            borderRadius: rightRadius,
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    Color fillColor() {
-      return switch (position) {
-        1 => Colors.pink,
-        2 => Colors.blueAccent,
-        3 => Colors.green,
-        _ => theme.primaryColor,
-      };
-    }
-
-    Color darkerFillColor = fillColor().getDarker();
-
-    // Use provided size or fallback to a reasonable default
-    final double baseSize = size ?? 60.0;
+    final fillColor = _getPositionColor(theme);
+    final darkerFillColor = fillColor.getDarker();
+    final baseSize = size ?? _defaultSize;
+    final wingRadius = baseSize / 1.5;
 
     return Stack(
       alignment: Alignment.center,
       clipBehavior: Clip.none,
       children: [
+        // Top wings for position 1
         if (position == 1)
           Positioned(
-            // left: baseSize * 5,
-            // right: baseSize * 5,
-            child: SizedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // mainAxisSize: MainAxisSize.max,
-                // clipBehavior: Clip.none,
-                // alignment: WrapAlignment.center,
-                // spacing: 0,
-                // runSpacing: 0,
-                verticalDirection: VerticalDirection.up,
-                children: [
-                  Flexible(
-                    child: Wing(
-                      baseSize / 1.5,
-                      baseSize,
-                      opacity: 0.8,
-                      margin: EdgeInsets.only(bottom: baseSize / 2),
-                      fillColor: fillColor(),
-                      radiusCircle: baseSize / 1.5,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(baseSize / 1.5),
-                        bottomLeft: Radius.circular(baseSize),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Wing(
-                      baseSize / 1.5,
-                      baseSize,
-                      opacity: 0.8,
-                      margin: EdgeInsets.only(bottom: baseSize / 2),
-                      fillColor: fillColor(),
-                      radiusCircle: baseSize / 1.5,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(baseSize / 1.5),
-                        bottomRight: Radius.circular(baseSize),
-                      ),
-                    ),
-                  ),
-                ],
+            child: _buildWingPair(
+              baseSize: baseSize,
+              fillColor: fillColor,
+              width: wingRadius,
+              height: baseSize,
+              margin: EdgeInsets.only(bottom: baseSize / 2),
+              leftRadius: BorderRadius.only(
+                topRight: Radius.circular(wingRadius),
+                bottomLeft: Radius.circular(baseSize),
+              ),
+              rightRadius: BorderRadius.only(
+                topLeft: Radius.circular(wingRadius),
+                bottomRight: Radius.circular(baseSize),
               ),
             ),
           ),
+        // Middle wings for positions 1-2
         if (position <= 2)
           Positioned(
-            // left: baseSize * 5,
-            // right: baseSize * 5,
-            child: SizedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // mainAxisSize: MainAxisSize.max,
-                // clipBehavior: Clip.none,
-                // alignment: WrapAlignment.center,
-                // spacing: 0,
-                // runSpacing: 0,
-                verticalDirection: VerticalDirection.up,
-                children: [
-                  Flexible(
-                    child: Wing(
-                      baseSize / 2,
-                      baseSize / 1.5,
-                      opacity: 0.8,
-                      margin: EdgeInsets.only(top: baseSize / 2),
-                      fillColor: fillColor(),
-                      radiusCircle: baseSize / 1.5,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(baseSize / 1.5),
-                        bottomRight: Radius.circular(baseSize),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Wing(
-                      baseSize / 2,
-                      baseSize / 1.5,
-                      opacity: 0.8,
-                      margin: EdgeInsets.only(top: baseSize / 2),
-                      fillColor: fillColor(),
-                      radiusCircle: baseSize / 1.5,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(baseSize / 1.5),
-                        bottomLeft: Radius.circular(baseSize),
-                      ),
-                    ),
-                  ),
-                ],
+            child: _buildWingPair(
+              baseSize: baseSize,
+              fillColor: fillColor,
+              width: baseSize / 2,
+              height: wingRadius,
+              margin: EdgeInsets.only(top: baseSize / 2),
+              leftRadius: BorderRadius.only(
+                topLeft: Radius.circular(wingRadius),
+                bottomRight: Radius.circular(baseSize),
+              ),
+              rightRadius: BorderRadius.only(
+                topRight: Radius.circular(wingRadius),
+                bottomLeft: Radius.circular(baseSize),
               ),
             ),
           ),
-        // Positioned(
-        //   right: baseSize / 1.2,
-        //   child: Wing(
-        //     baseSize / 1.5,
-        //     baseSize,
-        //     opacity: 0.8,
-        //     margin: EdgeInsets.only(bottom: baseSize / 2),
-        //     fillColor: fillColor(),
-        //     radiusCircle: baseSize / 1.5,
-        //     borderRadius: BorderRadius.only(
-        //       topRight: Radius.circular(baseSize / 1.5),
-        //       bottomLeft: Radius.circular(baseSize),
-        //     ),
-        //   ),
-        // ),
-
+        // Bottom wings for positions 1-3
         if (position <= 3)
           Positioned(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: Wing(
-                    baseSize * 1.2,
-                    baseSize / 1.5,
-                    opacity: 0.8,
-                    margin: EdgeInsets.only(bottom: 0),
-                    fillColor: fillColor(),
-                    radiusCircle: baseSize / 1.5,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(baseSize / 1.5),
-                      bottomLeft: Radius.circular(baseSize / 1.5),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: Wing(
-                    baseSize * 1.2,
-                    baseSize / 1.5,
-                    opacity: 0.8,
-                    margin: EdgeInsets.only(bottom: 0),
-                    fillColor: fillColor(),
-                    radiusCircle: baseSize / 1.5,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(baseSize / 1.5),
-                      bottomRight: Radius.circular(baseSize / 1.5),
-                    ),
-                  ),
-                ),
-              ],
+            child: _buildWingPair(
+              baseSize: baseSize,
+              fillColor: fillColor,
+              width: baseSize * 1.2,
+              height: wingRadius,
+              margin: EdgeInsets.zero,
+              leftRadius: BorderRadius.only(
+                topRight: Radius.circular(wingRadius),
+                bottomLeft: Radius.circular(wingRadius),
+              ),
+              rightRadius: BorderRadius.only(
+                topLeft: Radius.circular(wingRadius),
+                bottomRight: Radius.circular(wingRadius),
+              ),
             ),
           ),
-
+        // Center badge
         Stack(
           clipBehavior: Clip.none,
           alignment: Alignment.center,
@@ -479,7 +428,7 @@ class RankingSortingWidget extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
-                  colors: [fillColor(), darkerFillColor],
+                  colors: [fillColor, darkerFillColor],
                 ),
                 borderRadius: BorderRadius.circular(baseSize * 0.35),
                 boxShadow: [
@@ -495,11 +444,12 @@ class RankingSortingWidget extends StatelessWidget {
             Container(
               width: baseSize - _innerContainerPadding,
               height: baseSize - _innerContainerPadding,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomLeft,
-                  colors: [fillColor(), darkerFillColor],
+                  colors: [fillColor, darkerFillColor],
                 ),
                 borderRadius: BorderRadius.circular(baseSize * 0.3),
                 boxShadow: [
@@ -510,7 +460,6 @@ class RankingSortingWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              alignment: Alignment.center,
               child: childElement ??
                   Text(
                     position.toString(),
@@ -519,6 +468,7 @@ class RankingSortingWidget extends StatelessWidget {
                           fontWeight: FontWeight.w900,
                           fontSize: baseSize / 1.5,
                         ),
+                    textAlign: TextAlign.center,
                   ),
             ),
             // Top-right highlight border
@@ -527,23 +477,22 @@ class RankingSortingWidget extends StatelessWidget {
               height: baseSize - _highlightBorderPadding,
               decoration: BoxDecoration(
                 border: Border(
-                  top: BorderSide(width: 2, color: fillColor().getLighter()),
-                  right: BorderSide(width: 1, color: fillColor().getLighter()),
+                  top: BorderSide(width: 2, color: fillColor.getLighter()),
+                  right: BorderSide(width: 1, color: fillColor.getLighter()),
                 ),
                 borderRadius: BorderRadius.circular(baseSize * 0.3),
               ),
             ),
             // Bottom-left shadow border
             Opacity(
-              opacity: 0.5,
+              opacity: _shadowOpacity,
               child: Container(
                 width: baseSize - _shadowBorderPadding,
                 height: baseSize - _shadowBorderPadding,
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom:
-                        BorderSide(width: 2, color: fillColor().getLighter()),
-                    left: BorderSide(width: 3, color: fillColor().getLighter()),
+                    bottom: BorderSide(width: 2, color: fillColor.getLighter()),
+                    left: BorderSide(width: 3, color: fillColor.getLighter()),
                   ),
                   borderRadius: BorderRadius.circular(baseSize * 0.35),
                 ),
@@ -611,6 +560,11 @@ class CustomElevatedButton extends StatefulWidget {
 class _CustomElevatedButtonState extends State<CustomElevatedButton> {
   bool isPressed = false;
 
+  // Border effect constants similar to RankingSortingWidget
+  static const double _highlightBorderPadding = 4.0;
+  static const double _shadowBorderPadding = 2.0;
+  static const double _shadowOpacity = 0.5;
+
   double getFontSize(BuildContext context) {
     final baseFontSize = LayoutConfig(context).titleScreenStyle.fontSize ?? 20;
     switch (widget.buttonSize) {
@@ -639,30 +593,32 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
     }
   }
 
-  BorderRadius getBorderRadius(RoundedWithShapeAt? shapeAt) {
+  BorderRadius getBorderRadius(RoundedWithShapeAt? shapeAt,
+      {double adjustment = 0}) {
+    double adjustedRadius = LayoutConfig.layoutBorderRadius + adjustment;
     BorderRadius baseRadius = BorderRadius.only(
-      topLeft: Radius.circular(LayoutConfig.layoutBorderRadius),
-      topRight: Radius.circular(LayoutConfig.layoutBorderRadius),
-      bottomLeft: Radius.circular(LayoutConfig.layoutBorderRadius),
-      bottomRight: Radius.circular(LayoutConfig.layoutBorderRadius),
+      topLeft: Radius.circular(adjustedRadius),
+      topRight: Radius.circular(adjustedRadius),
+      bottomLeft: Radius.circular(adjustedRadius),
+      bottomRight: Radius.circular(adjustedRadius),
     );
 
     switch (shapeAt) {
       case RoundedWithShapeAt.topLeft:
         baseRadius = baseRadius.copyWith(
-          topLeft: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
+          topLeft: Radius.circular(adjustedRadius / 5),
         );
       case RoundedWithShapeAt.topRight:
         baseRadius = baseRadius.copyWith(
-          topRight: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
+          topRight: Radius.circular(adjustedRadius / 5),
         );
       case RoundedWithShapeAt.bottomLeft:
         baseRadius = baseRadius.copyWith(
-          bottomLeft: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
+          bottomLeft: Radius.circular(adjustedRadius / 5),
         );
       case RoundedWithShapeAt.bottomRight:
         baseRadius = baseRadius.copyWith(
-          bottomRight: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
+          bottomRight: Radius.circular(adjustedRadius / 5),
         );
       default:
         break;
@@ -680,12 +636,30 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
             );
   }
 
+  Color _getSmartColor(BuildContext context, Color backgroundColor) {
+    // Calculate luminance to determine if we need dark or light text
+    final luminance = backgroundColor.computeLuminance();
+    final theme = Theme.of(context);
+    // If background is light (luminance > 0.5), use dark/black text
+    // If background is dark (luminance <= 0.5), use scaffoldBackgroundColor (light) text
+    return luminance > 0.5
+        ? theme.colorScheme.onSurface
+        : theme.scaffoldBackgroundColor;
+  }
+
   Color getColor(BuildContext context) {
     if (widget.gradient != null) {
       return Theme.of(context).scaffoldBackgroundColor;
     }
 
-    return widget.color ?? Theme.of(context).secondaryHeaderColor;
+    if (widget.color != null) {
+      return widget.color!;
+    }
+
+    // Generate smart color based on background color contrast
+    final backgroundColor =
+        widget.backgroundColor ?? Theme.of(context).primaryColor;
+    return _getSmartColor(context, backgroundColor);
   }
 
   Color getPressedColor(BuildContext context) {
@@ -755,6 +729,10 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = getBackgroundColor(context);
+    final darkerBackgroundColor = backgroundColor.getDarker();
+    final borderRadiusValue = getBorderRadius(widget.shapeAt);
+
     return AnimatedOpacity(
       opacity: widget.opacity,
       duration: const Duration(milliseconds: 10),
@@ -764,73 +742,142 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
         child: AnimatedScale(
           duration: const Duration(milliseconds: 100),
           scale: isPressed ? 0.9 : 1.0,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 100),
-            decoration: BoxDecoration(
-              gradient: widget.gradient,
-              borderRadius: getBorderRadius(widget.shapeAt),
-              boxShadow: isPressed
-                  ? null
-                  : [
-                      BoxShadow(
-                        color: Theme.of(context)
-                            .primaryColor
-                            .getDarker()
-                            .withAlpha(50),
-                        blurRadius: 5,
-                        offset: const Offset(5, 5),
-                      ),
-                      BoxShadow(
-                        color: Theme.of(context)
-                            .primaryColor
-                            .getLighter()
-                            .withAlpha(50),
-                        blurRadius: 5,
-                        offset: const Offset(-5, -5),
-                      ),
-                    ],
-            ).copyWith(),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: widget.minWidth ?? 50,
-                minHeight: widget.minHeight ?? 50,
-              ),
-              child: ElevatedButton(
-                style: LayoutConfig.elevatedButtonStyle.copyWith(
-                  backgroundColor: WidgetStateProperty.all(
-                    getBackgroundColorAndPressed(context),
-                  ),
-                  shape: WidgetStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: getBorderRadius(widget.shapeAt),
-                    ),
-                  ),
-                  padding: WidgetStateProperty.all(
-                    EdgeInsets.symmetric(
-                      vertical: getPaddingSize(),
-                      horizontal: getPaddingSize(),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: widget.minWidth ?? 50,
+              minHeight: widget.minHeight ?? 50,
+            ),
+            child: Stack(
+              clipBehavior: Clip.none,
+              fit: StackFit.passthrough,
+              alignment: Alignment.center,
+              children: [
+                Positioned.fill(
+                  child: Container(
+                    // margin: const EdgeInsets.all(),
+                    decoration: BoxDecoration(
+                      // color: Colors.redAccent,
+                      gradient: widget.gradient ??
+                          LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [
+                              backgroundColor,
+                              darkerBackgroundColor,
+                            ],
+                          ),
+
+                      borderRadius: getBorderRadius(widget.shapeAt,
+                          adjustment: _highlightBorderPadding),
                     ),
                   ),
                 ),
-                onPressed: () {
-                  if (widget.onPressed == null) return;
-                  widget.onPressed?.call();
-                  setState(
-                    () {
-                      isPressed = true;
-                    },
-                  );
-                  Future.delayed(
-                    const Duration(milliseconds: 100),
-                    () {
-                      setState(() {
-                        isPressed = false;
-                      });
-                    },
-                  );
-                },
-                child: children(context),
-              ),
+                Positioned.fill(
+                  child: Container(
+                    margin: EdgeInsets.all(_highlightBorderPadding),
+                    decoration: BoxDecoration(
+                      // color: Colors.redAccent,
+                      gradient: widget.gradient ??
+                          LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              backgroundColor,
+                              darkerBackgroundColor,
+                            ],
+                          ),
+
+                      borderRadius: borderRadiusValue,
+                    ),
+                  ),
+                ),
+
+                // Outer container with shadow (base layer)
+                ElevatedButton(
+                  style: LayoutConfig.elevatedButtonStyle.copyWith(
+                    backgroundColor: WidgetStateProperty.all(
+                      Colors.transparent,
+                    ),
+                    shadowColor: WidgetStateProperty.all(Colors.transparent),
+                    shape: WidgetStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: borderRadiusValue,
+                      ),
+                    ),
+                    padding: WidgetStateProperty.all(
+                      EdgeInsets.symmetric(
+                        vertical: getPaddingSize(),
+                        horizontal: getPaddingSize(),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (widget.onPressed == null) return;
+                    widget.onPressed?.call();
+                    setState(
+                      () {
+                        isPressed = true;
+                      },
+                    );
+                    Future.delayed(
+                      const Duration(milliseconds: 100),
+                      () {
+                        setState(() {
+                          isPressed = false;
+                        });
+                      },
+                    );
+                  },
+                  child: children(context),
+                ),
+                // Top-right highlight border
+
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: Container(
+                      margin: EdgeInsets.all(_highlightBorderPadding),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            width: 2,
+                            color: backgroundColor.getLighter(),
+                          ),
+                          right: BorderSide(
+                            width: 1,
+                            color: backgroundColor.getLighter(),
+                          ),
+                        ),
+                        borderRadius: borderRadiusValue,
+                      ),
+                    ),
+                  ),
+                ),
+                // Bottom-left shadow border
+
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: Opacity(
+                      opacity: _shadowOpacity,
+                      child: Container(
+                        // margin: EdgeInsets.all(_shadowBorderPadding),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 2,
+                              color: backgroundColor.getLighter(),
+                            ),
+                            left: BorderSide(
+                              width: 3,
+                              color: backgroundColor.getLighter(),
+                            ),
+                          ),
+                          borderRadius: borderRadiusValue,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

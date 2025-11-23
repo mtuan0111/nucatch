@@ -28,11 +28,17 @@ class MenuAlert extends StatelessWidget {
     return AlertTemplate(
       title: lang(context).mainMenu,
       message: lang(context).confirmExit,
-      content: Stack(
-        // spacing: 5,
-        // mainAxisSize: MainAxisSize.min,
+      content: Column(
+        spacing: 5,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          if (rank != null) RankingSortingWidget(position: rank!),
+          if (rank != null)
+            Flexible(
+              flex: 1,
+              child: RankingSortingWidget(
+                position: rank!,
+              ),
+            ),
           if (rank != null) const SizedBox(height: 20),
           Text(
             "${lang(context).yourScoreIs}: $point",
@@ -52,6 +58,7 @@ class MenuAlert extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
+          const SizedBox(height: 10),
           AnimatedButton(
             context,
             iconData: Helper.getIconFromDifficulty(
@@ -90,7 +97,8 @@ class MenuAlert extends StatelessWidget {
                 }
               });
             },
-          )
+          ),
+          const SizedBox(height: 10),
         ],
       ),
       possitiveButtonLabel: lang(context).yes,
