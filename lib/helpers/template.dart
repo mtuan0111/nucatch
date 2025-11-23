@@ -289,6 +289,11 @@ class RankingSortingWidget extends StatelessWidget {
   final Widget? childElement;
   final double? size; // Add a size parameter
 
+  // Component sizing constants
+  static const double _innerContainerPadding = 10.0;
+  static const double _highlightBorderPadding = 12.0;
+  static const double _shadowBorderPadding = 2.0;
+
   const RankingSortingWidget({
     Key? key,
     required this.position,
@@ -466,8 +471,8 @@ class RankingSortingWidget extends StatelessWidget {
           clipBehavior: Clip.none,
           alignment: Alignment.center,
           children: [
+            // Outer container with shadow
             Container(
-              alignment: Alignment.center,
               width: baseSize,
               height: baseSize,
               decoration: BoxDecoration(
@@ -476,7 +481,6 @@ class RankingSortingWidget extends StatelessWidget {
                   end: Alignment.topCenter,
                   colors: [fillColor(), darkerFillColor],
                 ),
-                shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(baseSize * 0.35),
                 boxShadow: [
                   BoxShadow(
@@ -487,19 +491,16 @@ class RankingSortingWidget extends StatelessWidget {
                 ],
               ),
             ),
+            // Inner container with content
             Container(
-              alignment: Alignment.center,
-              width: baseSize - 10,
-              height: baseSize - 10,
+              width: baseSize - _innerContainerPadding,
+              height: baseSize - _innerContainerPadding,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomLeft,
                   colors: [fillColor(), darkerFillColor],
                 ),
-                shape: BoxShape.rectangle,
-                // border: Border.all(
-                //     width: baseSize * 0.08, color: darkerFillColor),
                 borderRadius: BorderRadius.circular(baseSize * 0.3),
                 boxShadow: [
                   BoxShadow(
@@ -509,23 +510,22 @@ class RankingSortingWidget extends StatelessWidget {
                   ),
                 ],
               ),
+              alignment: Alignment.center,
               child: childElement ??
                   Text(
                     position.toString(),
                     style: LayoutConfig(context).boldedStyle.copyWith(
                           color: theme.scaffoldBackgroundColor,
                           fontWeight: FontWeight.w900,
-                          fontSize: baseSize /
-                              1.5, // Adjust font size based on widget size
+                          fontSize: baseSize / 1.5,
                         ),
                   ),
             ),
+            // Top-right highlight border
             Container(
-              alignment: Alignment.center,
-              width: baseSize - 2 - 10,
-              height: baseSize - 2 - 10,
+              width: baseSize - _highlightBorderPadding,
+              height: baseSize - _highlightBorderPadding,
               decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
                 border: Border(
                   top: BorderSide(width: 2, color: fillColor().getLighter()),
                   right: BorderSide(width: 1, color: fillColor().getLighter()),
@@ -533,14 +533,13 @@ class RankingSortingWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(baseSize * 0.3),
               ),
             ),
+            // Bottom-left shadow border
             Opacity(
               opacity: 0.5,
               child: Container(
-                alignment: Alignment.center,
-                width: baseSize - 2,
-                height: baseSize - 2,
+                width: baseSize - _shadowBorderPadding,
+                height: baseSize - _shadowBorderPadding,
                 decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
                   border: Border(
                     bottom:
                         BorderSide(width: 2, color: fillColor().getLighter()),
@@ -549,7 +548,7 @@ class RankingSortingWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(baseSize * 0.35),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ],
