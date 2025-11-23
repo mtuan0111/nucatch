@@ -28,9 +28,9 @@ class MenuAlert extends StatelessWidget {
     return AlertTemplate(
       title: lang(context).mainMenu,
       message: lang(context).confirmExit,
-      content: Column(
-        spacing: 5,
-        mainAxisSize: MainAxisSize.min,
+      content: Stack(
+        // spacing: 5,
+        // mainAxisSize: MainAxisSize.min,
         children: [
           if (rank != null) RankingSortingWidget(position: rank!),
           if (rank != null) const SizedBox(height: 20),

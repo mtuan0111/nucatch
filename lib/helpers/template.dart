@@ -125,6 +125,84 @@ class RankingInfoRow extends StatelessWidget {
   }
 }
 
+class Wing extends StatelessWidget {
+  final double width;
+  final double height;
+  final double opacity;
+  final Color fillColor;
+  final EdgeInsets? margin;
+  final double radiusCircle;
+  final BorderRadius? borderRadius;
+  final double? left;
+  final double? top;
+  final double? right;
+  final double? bottom;
+
+  const Wing(
+    this.width,
+    this.height, {
+    super.key,
+    this.opacity = 1.0,
+    this.fillColor = Colors.white,
+    this.margin,
+    this.radiusCircle = 50,
+    this.borderRadius,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: opacity,
+      child: Container(
+        margin: margin,
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: fillColor.getLighter().withValues(alpha: 0.7),
+          borderRadius: borderRadius ??
+              BorderRadius.vertical(bottom: Radius.circular(radiusCircle)),
+          boxShadow: [
+            BoxShadow(
+              color: fillColor.getDarker().withValues(alpha: 0.8),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class WingPainter extends CustomPainter {
+  final Color color;
+  final double opacity;
+
+  WingPainter({required this.color, this.opacity = 1.0});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color.withOpacity(opacity)
+      ..style = PaintingStyle.fill;
+
+    final path = Path();
+    path.moveTo(0, size.height);
+    path.lineTo(size.width / 2, 0);
+    path.lineTo(size.width, size.height);
+    path.close();
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
 class RankBadge extends StatelessWidget {
   const RankBadge({
     super.key,
@@ -139,6 +217,8 @@ class RankBadge extends StatelessWidget {
       width: LayoutConfig.boxSize,
       height: LayoutConfig.boxSize,
       child: Stack(
+        alignment: Alignment.center,
+        clipBehavior: Clip.none,
         children: [
           Center(
             child: Transform.rotate(
@@ -205,14 +285,13 @@ class RankBadge extends StatelessWidget {
 
 class RankingSortingWidget extends StatelessWidget {
   final int position;
-  final double wingSize;
+
   final Widget? childElement;
   final double? size; // Add a size parameter
 
   const RankingSortingWidget({
     Key? key,
     required this.position,
-    this.wingSize = 1,
     this.childElement,
     this.size, // Accept size
   }) : super(key: key);
@@ -220,87 +299,258 @@ class RankingSortingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final fillColor = position == 1
-        ? theme.cardColor
-        : (position > 3 ? theme.canvasColor : theme.canvasColor);
-    final strokeColor = theme.primaryColor;
+    Color fillColor() {
+      return switch (position) {
+        1 => Colors.pink,
+        2 => Colors.blueAccent,
+        3 => Colors.green,
+        _ => theme.primaryColor,
+      };
+    }
+
+    Color darkerFillColor = fillColor().getDarker();
 
     // Use provided size or fallback to a reasonable default
     final double baseSize = size ?? 60.0;
 
-    Widget buildWing(double width, double height,
-        {double opacity = 1.0, EdgeInsets? margin}) {
-      return Positioned(
-        child: Opacity(
-          opacity: opacity,
-          child: Container(
-            margin: margin,
-            width: width,
-            height: height,
-            decoration: BoxDecoration(
-              color: fillColor,
-              borderRadius:
-                  const BorderRadius.vertical(bottom: Radius.circular(100)),
-              boxShadow: [
-                BoxShadow(
-                  color: strokeColor.withValues(alpha: 0.8),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
     return Stack(
       alignment: Alignment.center,
+      clipBehavior: Clip.none,
       children: [
         if (position == 1)
-          buildWing(baseSize * 2 * wingSize, (baseSize - 20) / 1.2,
-              opacity: 0.5, margin: const EdgeInsets.only(top: 20)),
-        if (position <= 3)
-          buildWing(baseSize * 1.8 * wingSize, (baseSize - 20) / 1.5,
-              margin: const EdgeInsets.only(bottom: 10)),
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: baseSize - 20,
-            minWidth: baseSize - 20,
-            maxHeight: childElement == null ? baseSize + 10 : baseSize + 40,
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            width: baseSize,
-            height: baseSize,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomRight,
-                end: Alignment.topLeft,
-                colors: [fillColor, fillColor, strokeColor],
+          Positioned(
+            // left: baseSize * 5,
+            // right: baseSize * 5,
+            child: SizedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                // mainAxisSize: MainAxisSize.max,
+                // clipBehavior: Clip.none,
+                // alignment: WrapAlignment.center,
+                // spacing: 0,
+                // runSpacing: 0,
+                verticalDirection: VerticalDirection.up,
+                children: [
+                  Flexible(
+                    child: Wing(
+                      baseSize / 1.5,
+                      baseSize,
+                      opacity: 0.8,
+                      margin: EdgeInsets.only(bottom: baseSize / 2),
+                      fillColor: fillColor(),
+                      radiusCircle: baseSize / 1.5,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(baseSize / 1.5),
+                        bottomLeft: Radius.circular(baseSize),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Wing(
+                      baseSize / 1.5,
+                      baseSize,
+                      opacity: 0.8,
+                      margin: EdgeInsets.only(bottom: baseSize / 2),
+                      fillColor: fillColor(),
+                      radiusCircle: baseSize / 1.5,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(baseSize / 1.5),
+                        bottomRight: Radius.circular(baseSize),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              shape: BoxShape.rectangle,
-              border: Border.all(width: baseSize * 0.08, color: strokeColor),
-              borderRadius: BorderRadius.circular(baseSize * 0.3),
-              boxShadow: [
-                BoxShadow(
-                  color: strokeColor.withValues(alpha: .2),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
+            ),
+          ),
+        if (position <= 2)
+          Positioned(
+            // left: baseSize * 5,
+            // right: baseSize * 5,
+            child: SizedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                // mainAxisSize: MainAxisSize.max,
+                // clipBehavior: Clip.none,
+                // alignment: WrapAlignment.center,
+                // spacing: 0,
+                // runSpacing: 0,
+                verticalDirection: VerticalDirection.up,
+                children: [
+                  Flexible(
+                    child: Wing(
+                      baseSize / 2,
+                      baseSize / 1.5,
+                      opacity: 0.8,
+                      margin: EdgeInsets.only(top: baseSize / 2),
+                      fillColor: fillColor(),
+                      radiusCircle: baseSize / 1.5,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(baseSize / 1.5),
+                        bottomRight: Radius.circular(baseSize),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Wing(
+                      baseSize / 2,
+                      baseSize / 1.5,
+                      opacity: 0.8,
+                      margin: EdgeInsets.only(top: baseSize / 2),
+                      fillColor: fillColor(),
+                      radiusCircle: baseSize / 1.5,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(baseSize / 1.5),
+                        bottomLeft: Radius.circular(baseSize),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        // Positioned(
+        //   right: baseSize / 1.2,
+        //   child: Wing(
+        //     baseSize / 1.5,
+        //     baseSize,
+        //     opacity: 0.8,
+        //     margin: EdgeInsets.only(bottom: baseSize / 2),
+        //     fillColor: fillColor(),
+        //     radiusCircle: baseSize / 1.5,
+        //     borderRadius: BorderRadius.only(
+        //       topRight: Radius.circular(baseSize / 1.5),
+        //       bottomLeft: Radius.circular(baseSize),
+        //     ),
+        //   ),
+        // ),
+
+        if (position <= 3)
+          Positioned(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Wing(
+                    baseSize * 1.2,
+                    baseSize / 1.5,
+                    opacity: 0.8,
+                    margin: EdgeInsets.only(bottom: 0),
+                    fillColor: fillColor(),
+                    radiusCircle: baseSize / 1.5,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(baseSize / 1.5),
+                      bottomLeft: Radius.circular(baseSize / 1.5),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Wing(
+                    baseSize * 1.2,
+                    baseSize / 1.5,
+                    opacity: 0.8,
+                    margin: EdgeInsets.only(bottom: 0),
+                    fillColor: fillColor(),
+                    radiusCircle: baseSize / 1.5,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(baseSize / 1.5),
+                      bottomRight: Radius.circular(baseSize / 1.5),
+                    ),
+                  ),
                 ),
               ],
             ),
-            child: childElement ??
-                Text(
-                  position.toString(),
-                  style: theme.textTheme.displaySmall?.copyWith(
-                    color: theme.secondaryHeaderColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize:
-                        baseSize / 2.5, // Adjust font size based on widget size
-                  ),
-                ),
           ),
+
+        Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            Container(
+              alignment: Alignment.center,
+              width: baseSize,
+              height: baseSize,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [fillColor(), darkerFillColor],
+                ),
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(baseSize * 0.35),
+                boxShadow: [
+                  BoxShadow(
+                    color: darkerFillColor.withValues(alpha: .4),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              width: baseSize - 10,
+              height: baseSize - 10,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomLeft,
+                  colors: [fillColor(), darkerFillColor],
+                ),
+                shape: BoxShape.rectangle,
+                // border: Border.all(
+                //     width: baseSize * 0.08, color: darkerFillColor),
+                borderRadius: BorderRadius.circular(baseSize * 0.3),
+                boxShadow: [
+                  BoxShadow(
+                    color: darkerFillColor.withValues(alpha: .2),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: childElement ??
+                  Text(
+                    position.toString(),
+                    style: LayoutConfig(context).boldedStyle.copyWith(
+                          color: theme.scaffoldBackgroundColor,
+                          fontWeight: FontWeight.w900,
+                          fontSize: baseSize /
+                              1.5, // Adjust font size based on widget size
+                        ),
+                  ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              width: baseSize - 2 - 10,
+              height: baseSize - 2 - 10,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                border: Border(
+                  top: BorderSide(width: 2, color: fillColor().getLighter()),
+                  right: BorderSide(width: 1, color: fillColor().getLighter()),
+                ),
+                borderRadius: BorderRadius.circular(baseSize * 0.3),
+              ),
+            ),
+            Opacity(
+              opacity: 0.5,
+              child: Container(
+                alignment: Alignment.center,
+                width: baseSize - 2,
+                height: baseSize - 2,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  border: Border(
+                    bottom:
+                        BorderSide(width: 2, color: fillColor().getLighter()),
+                    left: BorderSide(width: 3, color: fillColor().getLighter()),
+                  ),
+                  borderRadius: BorderRadius.circular(baseSize * 0.35),
+                ),
+              ),
+            )
+          ],
         ),
       ],
     );
