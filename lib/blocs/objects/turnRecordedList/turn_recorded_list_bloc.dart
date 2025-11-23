@@ -62,7 +62,7 @@ class TurnRecordedListBloc
       // Try Firebase first, then fallback to local
       if (event.useFirebase) {
         data = await _turnedServices.getTurnedListByPeriod(
-          event.period.value, // Convert enum to string for service
+          event.period, // Convert enum to string for service
           state.numberOfTopBoard,
           useFirebase: true,
           clearCache:
@@ -72,7 +72,7 @@ class TurnRecordedListBloc
 
       // Fallback to local if Firebase fails or not requested
       data ??= await _turnedServices.getTurnedListByPeriod(
-        event.period.value, // Convert enum to string for service
+        event.period, // Convert enum to string for service
         state.numberOfTopBoard,
         useFirebase: false,
         clearCache: event.isRefresh, // Clear cache if it's a refresh operation

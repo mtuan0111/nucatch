@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -288,23 +289,21 @@ class TurnRecordedServices {
 
   // Convenient method to get data by period type
   Future<List<TurnRecordedModel>?> getTurnedListByPeriod(
-      String period, int limit,
+      RankingPeriod period, int limit,
       {bool useFirebase = false, bool clearCache = false}) async {
     // Clear cache if requested (for refresh operations)
     if (clearCache) {
       _clearFirebaseCache();
     }
 
-    switch (period.toLowerCase()) {
-      case 'daily':
+    switch (period) {
+      case RankingPeriod.daily:
         return await getDailyTurnedListFirebase(limit) ??
             await getDailyTurnedList(limit);
-      case 'weekly':
+      case RankingPeriod.weekly:
         return await getWeeklyTurnedListFirebase(limit) ??
             await getWeeklyTurnedList(limit);
-      case 'all':
-      case 'alltime':
-      default:
+      case RankingPeriod.all:
         return await getAllTimeTurnedListFirebase(limit) ??
             await getAllTimeTurnedList(limit);
     }
