@@ -678,3 +678,40 @@ feat: Implement cache management for Firebase data and add refresh functionality
     Flutter build for iOS
     ```flutter build ios --build-name=2.3.2 --build-number=54 --release```
 ---
+---
+## Released on: 23/11/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 51           | 2.3.3   |
+| iOS      | 55           | 2.3.3   |
+
+### Release note:
+ Refactor MenuAlert layout to use Column and improve RankingSortingWidget integration
+ Enhance RankingSortingWidget layout with improved padding and border adjustments
+ Update TurnRecordedListBloc and TurnRecordedServices to use RankingPeriod enum for period handling
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+    [Builded] Version 2.3.3 - 51 / 2.3.3 - 55 _ Improve app layout and user interface design
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Enhanced menu layout and ranking widget integration for better user experience.  
+        - Improved UI responsiveness and visual consistency.
+
+    - **Tiếng Việt:**  
+        - Nâng cao bố cục menu và tích hợp widget xếp hạng để trải nghiệm người dùng tốt hơn.  
+        - Cải thiện khả năng phản hồi giao diện và tính nhất quán hình ảnh.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.3.3 --build-number=51 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.3.3 --build-number=55 --release```
+---
