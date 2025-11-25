@@ -13,6 +13,7 @@ import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
 import 'package:nucatch/models/turn_record_model.dart';
+import 'package:nucatch/services/user_services.dart';
 import 'package:nucatch/services/turn_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -640,12 +641,18 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString(PreferencesKey.USERNAME);
 
+    // Get Firebase UID from UserServices
+    final userServices = UserServices();
+    final userState = await userServices.getUserSession();
+    String? firebaseUserId = userState.model.firebaseUserId;
+
     TurnRecordedModel itemModel = TurnRecordedModel(
       turnId: const Uuid().v4(),
       playedUsername: username,
       point: state.point,
       recordedTime: DateTime.now(),
       difficulty: state.difficultyModel?.difficulty ?? Difficulty.easy,
+      firebaseUserId: firebaseUserId,
     );
 
     emitter(
