@@ -1,0 +1,79 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Build Flutter app for iOS"
+  lane :build do
+    Dir.chdir("../..") do
+      sh("flutter clean")
+      sh("flutter pub get")
+      sh("flutter build ios --release --no-codesign")
+    end
+  end
+
+  desc "Build and archive iOS app"
+  lane :archive do
+    Dir.chdir("../..") do
+      sh("flutter clean")
+      sh("flutter pub get")
+      sh("flutter build ios --release")
+    end
+    
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      output_directory: "../build/ios/ipa"
+    )
+  end
+
+  desc "Submit a new Beta Build to TestFlight"
+  lane :beta do
+    archive
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      ipa: "../build/ios/ipa/Runner.ipa"
+    )
+  end
+
+  desc "Deploy a new version to the App Store"
+  lane :release do
+    archive
+    upload_to_app_store(
+      ipa: "../build/ios/ipa/Runner.ipa",
+      submit_for_review: false,
+      automatic_release: false,
+      skip_metadata: false,
+      skip_screenshots: false,
+      precheck_include_in_app_purchases: false
+    )
+  end
+
+  desc "Generate new localized screenshots"
+  lane :screenshots do
+    capture_screenshots(workspace: "Runner.xcworkspace", scheme: "Runner")
+    upload_to_app_store(skip_binary_upload: true, skip_metadata: true)
+  end
+
+  desc "Sync code signing with match"
+  lane :sync_signing do
+    match(
+      type: "appstore",
+      readonly: true
+    )
+  end
+end

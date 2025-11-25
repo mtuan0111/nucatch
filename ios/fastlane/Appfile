@@ -1,0 +1,8 @@
+app_identifier("bomnguyen.game.nucatch") # The bundle identifier of your app
+apple_id("mtuan.0111@gmail.com") # Your Apple Developer Portal username
+
+itc_team_id("124354642") # App Store Connect Team ID
+team_id("R23LP5MFKD") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
