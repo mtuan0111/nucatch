@@ -461,22 +461,42 @@ class _PlayScreenState extends State<PlayScreen> {
                                                   child: Stack(
                                                     alignment: Alignment.center,
                                                     children: [
+                                                      Positioned.fill(
+                                                        child: CustomElevatedButton(
+                                                            buttonRadius: 1000,
+                                                            shapeAt:
+                                                                RoundedWithShapeAt
+                                                                    .all,
+                                                            gradient: LinearGradient(
+                                                                colors:
+                                                                    getCountdownGradient(
+                                                                            time)
+                                                                        .colors)),
+                                                      ),
                                                       // Circular progress indicator - completes once per second
                                                       SizedBox(
                                                         width: 120,
                                                         height: 120,
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          value: secondProgress,
-                                                          strokeWidth: 8,
-                                                          backgroundColor:
-                                                              Colors.white
-                                                                  .withOpacity(
-                                                                      0.3),
-                                                          valueColor:
-                                                              const AlwaysStoppedAnimation<
-                                                                      Color>(
-                                                                  Colors.white),
+                                                        child: Stack(
+                                                          children: [
+                                                            Positioned.fill(
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                value:
+                                                                    secondProgress,
+                                                                strokeWidth: 8,
+                                                                backgroundColor:
+                                                                    Colors.white
+                                                                        .withOpacity(
+                                                                            0.3),
+                                                                valueColor:
+                                                                    const AlwaysStoppedAnimation<
+                                                                        Color>(
+                                                                  Colors.white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
                                                       // Text content

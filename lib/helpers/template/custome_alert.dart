@@ -65,6 +65,10 @@ class MenuAlert extends StatelessWidget {
               context,
               turnState.difficultyModel!.difficulty,
             ),
+            backgroundColor: Helper.getColorIconFromDifficulty(
+              context,
+              turnState.difficultyModel!.difficulty,
+            ),
             shapeAt: RoundedWithShapeAt.topLeft,
             // backgroundColor: Colors.white70,
             // color: Colors.black87,
@@ -252,19 +256,32 @@ class AlertTemplate extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: CustomElevatedButton(
-                  text: title,
-                  buttonSize: ButtonSize.small,
-                  shapeAt: RoundedWithShapeAt.topLeft,
-                  color: Colors.black87,
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).secondaryHeaderColor,
-                    ],
-                  ),
+                child: Stack(
+                  children: [
+                    Opacity(
+                      opacity: 1,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CustomElevatedButton(
+                              text: title,
+                              buttonSize: ButtonSize.small,
+                              shapeAt: RoundedWithShapeAt.topLeft,
+                              // color: Colors.black87,
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Theme.of(context).primaryColor,
+                                  Theme.of(context).secondaryHeaderColor,
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

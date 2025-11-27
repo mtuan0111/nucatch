@@ -444,6 +444,28 @@ class Helper {
     return difficultyIcon;
   }
 
+  static Color getColorIconFromDifficulty(
+      BuildContext context, Difficulty? difficulty) {
+    Color difficultyColor = Theme.of(context).colorScheme.primary;
+    switch (difficulty) {
+      case Difficulty.easy:
+        difficultyColor = Colors.green;
+        break;
+      case Difficulty.medium:
+        difficultyColor = Colors.orange;
+        break;
+      case Difficulty.hard:
+        difficultyColor = Colors.red;
+        break;
+      case Difficulty.extreme:
+        difficultyColor = Colors.purple;
+        break;
+      default:
+        difficultyColor = Theme.of(context).colorScheme.primary;
+    }
+    return difficultyColor;
+  }
+
   static String getDescriptionFromDifficulty(
       BuildContext context, Difficulty? difficultyModel) {
     switch (difficultyModel) {

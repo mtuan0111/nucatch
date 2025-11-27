@@ -135,14 +135,10 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                                     text: lang(context).daily,
                                     buttonSize: ButtonSize.small,
                                     shapeAt: RoundedWithShapeAt.topLeft,
+                                    isActive:
+                                        _selectedPeriod == RankingPeriod.daily,
                                     backgroundColor:
-                                        _selectedPeriod == RankingPeriod.daily
-                                            ? Theme.of(context).primaryColor
-                                            : Theme.of(context)
-                                                .primaryColor
-                                                .withOpacity(0.6),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor,
+                                        Theme.of(context).primaryColor,
                                     onPressed: () =>
                                         _onTabChanged(RankingPeriod.daily),
                                   ),
@@ -154,14 +150,10 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                                     text: lang(context).weekly,
                                     buttonSize: ButtonSize.small,
                                     shapeAt: RoundedWithShapeAt.topRight,
+                                    isActive:
+                                        _selectedPeriod == RankingPeriod.weekly,
                                     backgroundColor:
-                                        _selectedPeriod == RankingPeriod.weekly
-                                            ? Theme.of(context).primaryColor
-                                            : Theme.of(context)
-                                                .primaryColor
-                                                .withOpacity(0.6),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor,
+                                        Theme.of(context).primaryColor,
                                     onPressed: () =>
                                         _onTabChanged(RankingPeriod.weekly),
                                   ),
@@ -173,14 +165,10 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                                     text: lang(context).allTime,
                                     buttonSize: ButtonSize.small,
                                     shapeAt: RoundedWithShapeAt.bottomLeft,
+                                    isActive:
+                                        _selectedPeriod == RankingPeriod.all,
                                     backgroundColor:
-                                        _selectedPeriod == RankingPeriod.all
-                                            ? Theme.of(context).primaryColor
-                                            : Theme.of(context)
-                                                .primaryColor
-                                                .withOpacity(0.6),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor,
+                                        Theme.of(context).primaryColor,
                                     onPressed: () =>
                                         _onTabChanged(RankingPeriod.all),
                                   ),

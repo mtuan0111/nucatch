@@ -122,11 +122,9 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                   turnRecordedModel: turnRecordedModel,
                                 ),
                                 const SizedBox(height: 32),
-                                Card(
-                                  elevation: 6,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
+                                CustomElevatedButton(
+                                  backgroundColor:
+                                      Theme.of(context).scaffoldBackgroundColor,
                                   child: Padding(
                                     padding: const EdgeInsets.all(20.0),
                                     child: Column(
@@ -173,61 +171,62 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                             Expanded(
                               child: Opacity(
                                 opacity: state.isCapturing ? 0.0 : 1.0,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ElevatedButton.icon(
-                                      onPressed: () {
-                                        String shareMessage = '';
-                                        String shareSubject = lang(context)
-                                            .messageSharePlayedLeaderSubject;
+                                child: IntrinsicWidth(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      AnimatedButton(
+                                        context,
+                                        onPressed: () {
+                                          String shareMessage = '';
+                                          String shareSubject = lang(context)
+                                              .messageSharePlayedLeaderSubject;
 
-                                        // TODO: Implement share functionality
-                                        if (userState.username == null) {
-                                          shareMessage = lang(context)
-                                              .messageSharePlayedLeaderBodyAnonymousBody(
-                                            turnRecordedModel.point,
-                                            turnRecordedModel.recordedTime
-                                                .formatClient(),
+                                          // TODO: Implement share functionality
+                                          if (userState.username == null) {
+                                            shareMessage = lang(context)
+                                                .messageSharePlayedLeaderBodyAnonymousBody(
+                                              turnRecordedModel.point,
+                                              turnRecordedModel.recordedTime
+                                                  .formatClient(),
+                                            );
+                                          } else {
+                                            shareMessage = lang(context)
+                                                .messageSharePlayedLeaderBody(
+                                              userState.username!,
+                                              turnRecordedModel.point,
+                                              turnRecordedModel.recordedTime
+                                                  .formatClient(),
+                                            );
+                                            shareSubject = lang(context)
+                                                .messageSharePlayedLeaderSubjectWithUsername(
+                                              userState.username!,
+                                            );
+                                            // Share.share(
+                                            //   lang(context).messageSharePlayedLeaderBody(
+                                            //     userState.username ??
+                                            //         lang(context).anonymous,
+                                            //     turnRecordedModel.point,
+                                            //     turnRecordedModel.recordedTime
+                                            //         .formatClient(),
+                                            //   ),
+                                            // );
+                                          }
+                                          turnRecordedBloc.add(
+                                            ShareEvent(
+                                              message: shareMessage,
+                                              subject: shareSubject,
+                                              objectKey: rankingKey,
+                                            ),
                                           );
-                                        } else {
-                                          shareMessage = lang(context)
-                                              .messageSharePlayedLeaderBody(
-                                            userState.username!,
-                                            turnRecordedModel.point,
-                                            turnRecordedModel.recordedTime
-                                                .formatClient(),
-                                          );
-                                          shareSubject = lang(context)
-                                              .messageSharePlayedLeaderSubjectWithUsername(
-                                            userState.username!,
-                                          );
-                                          // Share.share(
-                                          //   lang(context).messageSharePlayedLeaderBody(
-                                          //     userState.username ??
-                                          //         lang(context).anonymous,
-                                          //     turnRecordedModel.point,
-                                          //     turnRecordedModel.recordedTime
-                                          //         .formatClient(),
-                                          //   ),
-                                          // );
-                                        }
-                                        turnRecordedBloc.add(
-                                          ShareEvent(
-                                            message: shareMessage,
-                                            subject: shareSubject,
-                                            objectKey: rankingKey,
-                                          ),
-                                        );
-                                      },
-                                      icon: const Icon(Icons.share),
-                                      label: const Text('Share'),
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 24, vertical: 12),
+                                        },
+                                        iconData: Icons.share,
+                                        text: 'Share',
+                                        buttonSize: ButtonSize.small,
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

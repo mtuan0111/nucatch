@@ -1,0 +1,313 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  FLUTTER_VERSION: "3.24.5"
+  ANDROID_COMPILE_SDK: "34"
+  ANDROID_BUILD_TOOLS: "34.0.0"
+  ANDROID_SDK_TOOLS: "9477386"
+
+# Cache configuration
+.cache_template:
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .pub-cache/
+      - android/.gradle/
+      - ios/Pods/
+
+# Flutter setup
+.flutter_setup:
+  before_script:
+    - git clone https://github.com/flutter/flutter.git -b stable --depth 1
+    - export PATH="$PATH:`pwd`/flutter/bin"
+    - export PUB_CACHE=`pwd`/.pub-cache
+    - flutter --version
+    - flutter pub get
+
+# ============================================
+# TEST STAGE
+# ============================================
+
+analyze:
+  stage: test
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  extends:
+    - .cache_template
+    - .flutter_setup
+  script:
+    - flutter analyze
+    - dart format --set-exit-if-changed .
+  only:
+    - utilize_fastlane
+    - merge_requests
+    - main
+    - master
+    - develop
+
+test:
+  stage: test
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  extends:
+    - .cache_template
+    - .flutter_setup
+  script:
+    - flutter test --coverage
+    - genhtml coverage/lcov.info -o coverage/html
+  coverage: '/lines......: \d+\.\d+%/'
+  artifacts:
+    paths:
+      - coverage/
+    expire_in: 30 days
+  only:
+    - utilize_fastlane
+    - merge_requests
+    - main
+    - master
+    - develop
+
+# ============================================
+# BUILD STAGE
+# ============================================
+
+build:android:debug:
+  stage: build
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  extends:
+    - .cache_template
+    - .flutter_setup
+  script:
+    - flutter build apk --debug
+  artifacts:
+    paths:
+      - build/app/outputs/apk/debug/app-debug.apk
+    expire_in: 7 days
+  only:
+    - utilize_fastlane
+    - merge_requests
+    - main
+    - master
+    - develop
+
+build:android:release:
+  stage: build
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  extends:
+    - .cache_template
+    - .flutter_setup
+  script:
+    # Decode keystore
+    - echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/key.jks
+    
+    # Create key.properties
+    - |
+      cat > android/key.properties << EOF
+      storePassword=$ANDROID_KEY_STORE_PASSWORD
+      keyPassword=$ANDROID_KEY_PASSWORD
+      keyAlias=$ANDROID_KEY_ALIAS
+      storeFile=key.jks
+      EOF
+    
+    # Build release
+    - flutter build appbundle --release
+    - flutter build apk --release
+    
+    # Clean up
+    - rm -f android/key.jks android/key.properties
+  artifacts:
+    paths:
+      - build/app/outputs/bundle/release/app-release.aab
+      - build/app/outputs/apk/release/app-release.apk
+    expire_in: 30 days
+  only:
+    - utilize_fastlane
+    - main
+    - master
+    - tags
+
+build:ios:
+  stage: build
+  tags:
+    - macos
+  extends:
+    - .cache_template
+    - .flutter_setup
+  script:
+    - cd ios && pod install && cd ..
+    - flutter build ios --release --no-codesign
+  artifacts:
+    paths:
+      - build/ios/
+    expire_in: 7 days
+  only:
+    - utilize_fastlane
+    - main
+    - master
+    - tags
+
+# ============================================
+# DEPLOY STAGE - ANDROID
+# ============================================
+
+deploy:android:internal:
+  stage: deploy
+  image: ruby:3.2
+  dependencies:
+    - build:android:release
+  before_script:
+    - gem install fastlane -NV
+    - cd android
+  script:
+    # Decode service account JSON
+    - echo "$PLAY_STORE_JSON_BASE64" | base64 -d > play-store-credentials.json
+    
+    # Deploy to internal track
+    - export SUPPLY_JSON_KEY=play-store-credentials.json
+    - bundle exec fastlane supply --track internal --aab ../build/app/outputs/bundle/release/app-release.aab --skip_upload_metadata --skip_upload_images --skip_upload_screenshots
+    
+    # Clean up
+    - rm -f play-store-credentials.json
+  only:
+    - utilize_fastlane
+    - main
+    - master
+  when: manual
+
+deploy:android:beta:
+  stage: deploy
+  image: ruby:3.2
+  dependencies:
+    - build:android:release
+  before_script:
+    - gem install fastlane -NV
+    - cd android
+  script:
+    - echo "$PLAY_STORE_JSON_BASE64" | base64 -d > play-store-credentials.json
+    - export SUPPLY_JSON_KEY=play-store-credentials.json
+    - bundle exec fastlane supply --track beta --aab ../build/app/outputs/bundle/release/app-release.aab --skip_upload_metadata --skip_upload_images --skip_upload_screenshots
+    - rm -f play-store-credentials.json
+  only:
+    - utilize_fastlane
+    - tags
+  when: manual
+
+deploy:android:production:
+  stage: deploy
+  image: ruby:3.2
+  dependencies:
+    - build:android:release
+  before_script:
+    - gem install fastlane -NV
+    - cd android
+  script:
+    - echo "$PLAY_STORE_JSON_BASE64" | base64 -d > play-store-credentials.json
+    - export SUPPLY_JSON_KEY=play-store-credentials.json
+    - fastlane release
+    - rm -f play-store-credentials.json
+  only:
+    - utilize_fastlane
+    - tags
+  when: manual
+  except:
+    - /^.*-beta$/
+
+# ============================================
+# DEPLOY STAGE - iOS
+# ============================================
+
+deploy:ios:testflight:
+  stage: deploy
+  tags:
+    - macos
+  dependencies:
+    - build:ios
+  before_script:
+    - gem install fastlane -NV
+    - cd ios
+  script:
+    # Import certificates
+    - echo "$IOS_CERTIFICATES_P12_BASE64" | base64 -d > /tmp/certs.p12
+    
+    # Create temporary keychain
+    - security create-keychain -p "$IOS_KEYCHAIN_PASSWORD" /tmp/build.keychain
+    - security default-keychain -s /tmp/build.keychain
+    - security unlock-keychain -p "$IOS_KEYCHAIN_PASSWORD" /tmp/build.keychain
+    - security set-keychain-settings -t 3600 -u /tmp/build.keychain
+    
+    # Import certificate
+    - security import /tmp/certs.p12 -k /tmp/build.keychain -P "$IOS_CERTIFICATES_PASSWORD" -T /usr/bin/codesign
+    - security set-key-partition-list -S "apple-tool:,apple:" -s -k "$IOS_KEYCHAIN_PASSWORD" /tmp/build.keychain
+    
+    # Import provisioning profile
+    - mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+    - echo "$IOS_PROVISIONING_PROFILE_BASE64" | base64 -d > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+    
+    # Configure API key
+    - mkdir -p ~/private_keys
+    - echo "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 -d > ~/private_keys/AuthKey_$APP_STORE_CONNECT_KEY_ID.p8
+    
+    # Deploy
+    - fastlane beta
+    
+    # Clean up
+    - security delete-keychain /tmp/build.keychain || true
+    - rm -f /tmp/certs.p12
+    - rm -rf ~/Library/MobileDevice/Provisioning\ Profiles/*
+    - rm -f ~/private_keys/AuthKey_*.p8
+  environment:
+    name: testflight
+  only:
+    - utilize_fastlane
+    - main
+    - master
+  when: manual
+
+deploy:ios:appstore:
+  stage: deploy
+  tags:
+    - macos
+  dependencies:
+    - build:ios
+  before_script:
+    - gem install fastlane -NV
+    - cd ios
+  script:
+    # Import certificates
+    - echo "$IOS_CERTIFICATES_P12_BASE64" | base64 -d > /tmp/certs.p12
+    
+    # Create temporary keychain
+    - security create-keychain -p "$IOS_KEYCHAIN_PASSWORD" /tmp/build.keychain
+    - security default-keychain -s /tmp/build.keychain
+    - security unlock-keychain -p "$IOS_KEYCHAIN_PASSWORD" /tmp/build.keychain
+    - security set-keychain-settings -t 3600 -u /tmp/build.keychain
+    
+    # Import certificate
+    - security import /tmp/certs.p12 -k /tmp/build.keychain -P "$IOS_CERTIFICATES_PASSWORD" -T /usr/bin/codesign
+    - security set-key-partition-list -S "apple-tool:,apple:" -s -k "$IOS_KEYCHAIN_PASSWORD" /tmp/build.keychain
+    
+    # Import provisioning profile
+    - mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+    - echo "$IOS_PROVISIONING_PROFILE_BASE64" | base64 -d > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+    
+    # Configure API key
+    - mkdir -p ~/private_keys
+    - echo "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 -d > ~/private_keys/AuthKey_$APP_STORE_CONNECT_KEY_ID.p8
+    
+    # Deploy
+    - fastlane release
+    
+    # Clean up
+    - security delete-keychain /tmp/build.keychain || true
+    - rm -f /tmp/certs.p12
+    - rm -rf ~/Library/MobileDevice/Provisioning\ Profiles/*
+    - rm -f ~/private_keys/AuthKey_*.p8
+  environment:
+    name: production
+  only:
+    - utilize_fastlane
+    - tags
+  when: manual
+  except:
+    - /^.*-beta$/

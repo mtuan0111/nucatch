@@ -155,22 +155,48 @@ class Wing extends StatelessWidget {
   Widget build(BuildContext context) {
     return Opacity(
       opacity: opacity,
-      child: Container(
-        margin: margin,
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: fillColor.getLighter().withValues(alpha: 0.7),
-          borderRadius: borderRadius ??
-              BorderRadius.vertical(bottom: Radius.circular(radiusCircle)),
-          boxShadow: [
-            BoxShadow(
-              color: fillColor.getDarker().withValues(alpha: 0.8),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          Container(
+            margin: margin,
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              color: fillColor.getLighter().withValues(alpha: 0.7),
+              borderRadius: borderRadius ??
+                  BorderRadius.vertical(bottom: Radius.circular(radiusCircle)),
+              boxShadow: [
+                BoxShadow(
+                  color: fillColor.getDarker().withValues(alpha: 0.8),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          Positioned(
+            child: Container(
+              margin: margin,
+              width: width / 3,
+              height: height * 1.2,
+              decoration: BoxDecoration(
+                color: fillColor.getLighter().withValues(alpha: 0.7),
+                borderRadius: borderRadius ??
+                    BorderRadius.vertical(
+                        bottom: Radius.circular(radiusCircle * 2)),
+                boxShadow: [
+                  BoxShadow(
+                    color: fillColor.getLighter().withValues(alpha: 0.8),
+                    blurRadius: 20,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -517,6 +543,7 @@ enum RoundedWithShapeAt {
   topRight,
   bottomLeft,
   bottomRight,
+  all,
 }
 
 class CustomElevatedButton extends StatefulWidget {
@@ -528,10 +555,12 @@ class CustomElevatedButton extends StatefulWidget {
   final IconData? iconData;
   final ButtonSize buttonSize;
   final RoundedWithShapeAt? shapeAt;
+  final double? buttonRadius;
   final double? minWidth;
   final double? minHeight;
   final Color? color;
   final Color? backgroundColor;
+  final bool? isActive;
   final LinearGradient? gradient;
   final TextDirection? textDirection;
 
@@ -545,10 +574,12 @@ class CustomElevatedButton extends StatefulWidget {
     this.iconData,
     this.buttonSize = ButtonSize.medium,
     this.shapeAt,
+    this.buttonRadius,
     this.minWidth,
     this.minHeight,
     this.color,
     this.backgroundColor,
+    this.isActive,
     this.gradient,
     this.textDirection,
   }) : super(key: key);
@@ -560,8 +591,20 @@ class CustomElevatedButton extends StatefulWidget {
 class _CustomElevatedButtonState extends State<CustomElevatedButton> {
   bool isPressed = false;
 
+  bool get isClickale => widget.onPressed != null;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   // Border effect constants similar to RankingSortingWidget
-  static const double _highlightBorderPadding = 4.0;
+  double get _highlightBorderPadding => isPressed ? 0 : 4.0;
   static const double _shadowBorderPadding = 2.0;
   static const double _shadowOpacity = 0.5;
 
@@ -593,9 +636,25 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
     }
   }
 
+  double get lightingSize {
+    switch (widget.buttonSize) {
+      case ButtonSize.smallest:
+        return 10;
+      case ButtonSize.small:
+        return 20;
+      case ButtonSize.medium:
+        return 30;
+      case ButtonSize.large:
+        return 40;
+      default:
+        return 30;
+    }
+  }
+
   BorderRadius getBorderRadius(RoundedWithShapeAt? shapeAt,
       {double adjustment = 0}) {
-    double adjustedRadius = LayoutConfig.layoutBorderRadius + adjustment;
+    double adjustedRadius =
+        (widget.buttonRadius ?? LayoutConfig.layoutBorderRadius) + adjustment;
     BorderRadius baseRadius = BorderRadius.only(
       topLeft: Radius.circular(adjustedRadius),
       topRight: Radius.circular(adjustedRadius),
@@ -619,6 +678,13 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
       case RoundedWithShapeAt.bottomRight:
         baseRadius = baseRadius.copyWith(
           bottomRight: Radius.circular(adjustedRadius / 5),
+        );
+      case RoundedWithShapeAt.all:
+        baseRadius = baseRadius.copyWith(
+          topLeft: Radius.circular(adjustedRadius),
+          topRight: Radius.circular(adjustedRadius),
+          bottomLeft: Radius.circular(adjustedRadius),
+          bottomRight: Radius.circular(adjustedRadius),
         );
       default:
         break;
@@ -724,76 +790,91 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
 
     Widget content = widget.child ?? row;
 
-    return IntrinsicWidth(child: content);
+    if (content is Row) {
+      return IntrinsicWidth(child: content);
+    }
+    return content;
   }
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = getBackgroundColor(context);
+    final backgroundColor = (widget.isActive ?? false)
+        ? getBackgroundColor(context).getLighter()
+        : getBackgroundColor(context);
     final darkerBackgroundColor = backgroundColor.getDarker();
     final borderRadiusValue = getBorderRadius(widget.shapeAt);
 
     return AnimatedOpacity(
       opacity: widget.opacity,
       duration: const Duration(milliseconds: 10),
-      child: AnimatedPadding(
+      child: AnimatedScale(
         duration: const Duration(milliseconds: 100),
-        padding: isPressed ? const EdgeInsets.all(5) : const EdgeInsets.all(0),
-        child: AnimatedScale(
-          duration: const Duration(milliseconds: 100),
-          scale: isPressed ? 0.9 : 1.0,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: widget.minWidth ?? 50,
-              minHeight: widget.minHeight ?? 50,
-            ),
-            child: Stack(
-              clipBehavior: Clip.none,
-              fit: StackFit.passthrough,
-              alignment: Alignment.center,
-              children: [
-                Positioned.fill(
-                  child: Container(
-                    // margin: const EdgeInsets.all(),
-                    decoration: BoxDecoration(
-                      // color: Colors.redAccent,
-                      gradient: widget.gradient ??
-                          LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [
-                              backgroundColor,
-                              darkerBackgroundColor,
-                            ],
-                          ),
+        scale: isPressed ? 1.0 : 1.0,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: widget.minWidth ?? 50,
+            minHeight: widget.minHeight ?? 50,
+          ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            fit: StackFit.passthrough,
+            alignment: Alignment.center,
+            children: [
+              Positioned.fill(
+                child: Container(
+                  // margin: const EdgeInsets.all(),
+                  decoration: BoxDecoration(
+                    // color: Colors.redAccent,
+                    gradient: widget.gradient?.getDarker() ??
+                        LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            backgroundColor.getDarker(),
+                            darkerBackgroundColor.getDarker().getDarker(),
+                          ],
+                        ),
 
-                      borderRadius: getBorderRadius(widget.shapeAt,
-                          adjustment: _highlightBorderPadding),
-                    ),
+                    borderRadius: getBorderRadius(widget.shapeAt,
+                        adjustment: _highlightBorderPadding),
                   ),
                 ),
-                Positioned.fill(
-                  child: Container(
-                    margin: EdgeInsets.all(_highlightBorderPadding),
-                    decoration: BoxDecoration(
-                      // color: Colors.redAccent,
-                      gradient: widget.gradient ??
-                          LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [
-                              backgroundColor,
-                              darkerBackgroundColor,
-                            ],
-                          ),
+              ),
 
-                      borderRadius: borderRadiusValue,
-                    ),
+              Positioned.fill(
+                child: Container(
+                  margin: EdgeInsets.only(
+                    // top: _highlightBorderPadding / 2,
+                    // right: _highlightBorderPadding / 2,
+                    bottom: _highlightBorderPadding,
+                    left: _highlightBorderPadding,
+                  ),
+                  decoration: BoxDecoration(
+                    // color: Colors.redAccent,
+                    gradient: widget.gradient ??
+                        LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            backgroundColor,
+                            darkerBackgroundColor,
+                          ],
+                        ),
+
+                    borderRadius: borderRadiusValue,
                   ),
                 ),
+              ),
 
-                // Outer container with shadow (base layer)
-                ElevatedButton(
+              // Outer container with shadow (base layer)
+              Container(
+                margin: EdgeInsets.only(
+                  // top: _highlightBorderPadding / 2,
+                  // right: _highlightBorderPadding / 2,
+                  bottom: _highlightBorderPadding,
+                  left: _highlightBorderPadding,
+                ),
+                child: ElevatedButton(
                   style: LayoutConfig.elevatedButtonStyle.copyWith(
                     backgroundColor: WidgetStateProperty.all(
                       Colors.transparent,
@@ -813,6 +894,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                   ),
                   onPressed: () {
                     if (widget.onPressed == null) return;
+
                     widget.onPressed?.call();
                     setState(
                       () {
@@ -830,55 +912,118 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                   },
                   child: children(context),
                 ),
-                // Top-right highlight border
+              ),
+              // Top-right highlight border
 
+              if (isClickale)
                 Positioned.fill(
                   child: IgnorePointer(
-                    child: Container(
-                      margin: EdgeInsets.all(_highlightBorderPadding),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                            width: 2,
-                            color: backgroundColor.getLighter(),
+                    child: Opacity(
+                      opacity: _shadowOpacity / 1.5,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 100),
+                        // margin: EdgeInsets.only(
+                        //   // top: _highlightBorderPadding / 2,
+                        //   // right: _highlightBorderPadding / 2,
+                        //   bottom: _highlightBorderPadding,
+                        //   left: _highlightBorderPadding,
+                        // ),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              width: isPressed
+                                  ? lightingSize / 10
+                                  : lightingSize / 10,
+                              color: backgroundColor.getLighter(),
+                            ),
+                            right: BorderSide(
+                              width: widget.buttonSize == ButtonSize.smallest
+                                  ? lightingSize / 10
+                                  : lightingSize / 10,
+                              color: backgroundColor.getLighter(),
+                            ),
                           ),
-                          right: BorderSide(
-                            width: 1,
-                            color: backgroundColor.getLighter(),
-                          ),
+                          borderRadius:
+                              isPressed ? borderRadiusValue : borderRadiusValue,
                         ),
-                        borderRadius: borderRadiusValue,
                       ),
                     ),
                   ),
                 ),
-                // Bottom-left shadow border
+              // Bottom-left shadow border
 
+              if (isClickale)
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: Opacity(
+                      opacity: _shadowOpacity / 2,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 100),
+                        margin: EdgeInsets.only(
+                          // top: _highlightBorderPadding / 2,
+                          // right: _highlightBorderPadding / 2,
+                          bottom: _highlightBorderPadding,
+                          left: _highlightBorderPadding,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              width:
+                                  isPressed ? lightingSize / 3 : lightingSize,
+                              color: backgroundColor.getLighter(),
+                            ),
+                            right: BorderSide(
+                              width: widget.buttonSize == ButtonSize.smallest
+                                  ? lightingSize / 3
+                                  : lightingSize / 3,
+                              color: backgroundColor.getLighter(),
+                            ),
+                          ),
+                          borderRadius:
+                              isPressed ? borderRadiusValue : borderRadiusValue,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              // Bottom-left shadow border
+
+              if (isClickale)
                 Positioned.fill(
                   child: IgnorePointer(
                     child: Opacity(
                       opacity: _shadowOpacity,
                       child: Container(
-                        // margin: EdgeInsets.all(_shadowBorderPadding),
+                        margin: EdgeInsets.only(
+                            // top: _highlightBorderPadding / 2,
+                            // right: _highlightBorderPadding / 2,
+                            // bottom: _highlightBorderPadding / 4,
+                            // left: _highlightBorderPadding / 4,
+                            ),
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
-                              width: 2,
-                              color: backgroundColor.getLighter(),
+                              width: widget.buttonSize == ButtonSize.smallest
+                                  ? lightingSize / 1
+                                  : lightingSize / 3,
+                              color: backgroundColor.getDarker().getDarker(),
                             ),
                             left: BorderSide(
-                              width: 3,
-                              color: backgroundColor.getLighter(),
+                              width: widget.buttonSize == ButtonSize.smallest
+                                  ? lightingSize / 2
+                                  : lightingSize / 5,
+                              color: backgroundColor.getDarker().getDarker(),
                             ),
                           ),
-                          borderRadius: borderRadiusValue,
+                          borderRadius: borderRadiusValue +
+                              BorderRadius.all(
+                                  Radius.circular(_shadowBorderPadding)),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+            ],
           ),
         ),
       ),
@@ -894,6 +1039,7 @@ class AnimatedButton extends StatefulWidget {
   final TextStyle? style;
   final VoidCallback onPressed;
   final bool? isEnable;
+  final bool? isActive;
   final RoundedWithShapeAt? shapeAt;
   final double? minWidth;
   final double? minHeight;
@@ -910,6 +1056,7 @@ class AnimatedButton extends StatefulWidget {
     this.buttonSize,
     required this.onPressed,
     this.isEnable,
+    this.isActive,
     this.shapeAt = RoundedWithShapeAt.topLeft,
     this.minWidth,
     this.minHeight,
@@ -993,6 +1140,7 @@ class _AnimatedButtonState extends State<AnimatedButton> {
           minHeight: minHeight,
           color: widget.color,
           backgroundColor: widget.backgroundColor,
+          isActive: widget.isActive,
           textDirection: widget.textDirection,
           onPressed: () {
             onPressed();

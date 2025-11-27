@@ -150,4 +150,27 @@ extension ColorCustome on Color {
     int a = (this.a * 255.0).round() & 0xff;
     return Color.fromARGB(a, r, g, b);
   }
+
+  Color getTheOpposite({double percent = 30}) {
+    int r = 255 - (((this.r * 255.0).round() & 0xff) * percent / 100).round();
+    int g = 255 - (((this.g * 255.0).round() & 0xff) * percent / 100).round();
+    int b = 255 - (((this.b * 255.0).round() & 0xff) * percent / 100).round();
+    int a = (this.a * 255.0).round() & 0xff;
+    return Color.fromARGB(a, r, g, b);
+  }
+}
+
+extension LinearGradientCustom on LinearGradient {
+  getDarker({int percentage = 50}) {
+    return LinearGradient(
+      begin: begin,
+      end: end,
+      colors: colors
+          .map((color) => color.getDarker(percentage: percentage))
+          .toList(),
+      stops: stops,
+      tileMode: tileMode,
+      transform: transform,
+    );
+  }
 }

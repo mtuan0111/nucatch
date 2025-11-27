@@ -121,6 +121,10 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                 Helper.getIconFromDifficulty(
                                     context, difficulty);
 
+                            Color difficultyColor =
+                                Helper.getColorIconFromDifficulty(
+                                    context, difficulty);
+
                             void onTap() {
                               turnBloc.add(
                                 SetDifficulty(
@@ -157,7 +161,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                             shapeAt:
                                                 RoundedWithShapeAt.topRight,
                                             backgroundColor: Colors.black54,
-                                            color: Colors.grey,
+                                            // color: difficultyColor,
                                           ),
                                           Positioned(
                                             top: -45,
@@ -170,7 +174,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                               shapeAt: RoundedWithShapeAt
                                                   .bottomRight,
                                               backgroundColor: Colors.grey,
-                                              color: Colors.black87,
+                                              // color: Colors.black87,
                                             ),
                                           ),
                                         ],
@@ -186,8 +190,8 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                     // text: textButton,
                                     iconData: difficultyIcon,
                                     shapeAt: RoundedWithShapeAt.topLeft,
-                                    backgroundColor: Colors.white70,
-                                    color: Colors.black87,
+                                    backgroundColor: difficultyColor,
+                                    // color: Colors.black87,
                                   ),
                                 ],
                               ),
