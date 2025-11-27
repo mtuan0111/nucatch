@@ -1,6 +1,33 @@
 # Nucatch with-bloc
 
+## 🔐 Firebase Anonymous Authentication
 
+This project now supports **Firebase Anonymous Authentication**, allowing users to seamlessly use the app without creating an account. Each user automatically receives a unique Firebase User ID that persists across app sessions.
+
+### Key Features
+- ✅ Automatic anonymous sign-in on app launch
+- ✅ Persistent user ID across sessions
+- ✅ Ready for account upgrade (email/phone/social providers)
+- ✅ Integrated with existing username system
+- ✅ Secure user data management
+
+### Quick Start
+
+1. **Enable Anonymous Auth in Firebase Console:**
+   - Go to [Firebase Console](https://console.firebase.google.com/)
+   - Navigate to **Authentication** → **Sign-in method**
+   - Enable **Anonymous** authentication
+
+2. **The app automatically handles:**
+   - User sign-in on first launch
+   - User ID persistence
+   - Session management
+
+### Documentation
+For detailed implementation guide, security considerations, and upgrade paths, see:
+- 📖 [FIREBASE_AUTH_SETUP.md](./FIREBASE_AUTH_SETUP.md) - Complete implementation guide
+
+---
 
 ## Getting started
 
@@ -678,3 +705,126 @@ feat: Implement cache management for Firebase data and add refresh functionality
     Flutter build for iOS
     ```flutter build ios --build-name=2.3.2 --build-number=54 --release```
 ---
+---
+## Released on: 23/11/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 51           | 2.3.3   |
+| iOS      | 55           | 2.3.3   |
+
+### Release note:
+ Refactor MenuAlert layout to use Column and improve RankingSortingWidget integration
+ Enhance RankingSortingWidget layout with improved padding and border adjustments
+ Update TurnRecordedListBloc and TurnRecordedServices to use RankingPeriod enum for period handling
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+    [Builded] Version 2.3.3 - 51 / 2.3.3 - 55 _ Improve app layout and user interface design
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Enhanced menu layout and ranking widget integration for better user experience.  
+        - Improved UI responsiveness and visual consistency.
+
+    - **Tiếng Việt:**  
+        - Nâng cao bố cục menu và tích hợp widget xếp hạng để trải nghiệm người dùng tốt hơn.  
+        - Cải thiện khả năng phản hồi giao diện và tính nhất quán hình ảnh.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.3.3 --build-number=51 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.3.3 --build-number=55 --release```
+---
+---
+## Released on: 25/11/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 52           | 2.3.4   |
+| iOS      | 56           | 2.3.4   |
+
+### Release note:
+feat: Implement Firebase Anonymous Authentication
+
+- Added `firebase_auth: ^6.1.1` dependency to `pubspec.yaml`
+- Created `AuthServices` class for handling authentication logic
+- Updated `UserModel` to include `firebaseUserId` and `isAnonymous` fields
+- Enhanced `UserServices` with `initializeAuth()` method for automatic anonymous sign-in
+- Integrated Firebase authentication into `UserBloc`
+- Added `FIREBASE_USER_ID` constant to `PreferencesKey` for user ID storage
+- Created `AuthDebugWidget` for development testing of authentication status
+- Updated macOS and Windows plugin registrants to include Firebase Auth
+- Comprehensive documentation added for setup and implementation
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+
+    [Builded] Version 2.3.4 - 52 / 2.3.4 - 56 _ Implement Firebase Anonymous Authentication
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Added seamless user authentication for enhanced app experience.  
+        - Improved user data management and session persistence.  
+        - Enhanced app stability and user identification features.
+
+    - **Tiếng Việt:**  
+        - Thêm xác thực người dùng liền mạch để nâng cao trải nghiệm ứng dụng.  
+        - Cải thiện quản lý dữ liệu người dùng và duy trì phiên làm việc.  
+        - Tăng cường tính ổn định ứng dụng và tính năng nhận dạng người dùng.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.3.4 --build-number=52 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.3.4 --build-number=56 --release```
+
+---
+
+---
+## Released on: 27/11/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 53           | 2.3.3   |
+| iOS      | 55           | 2.3.3   |
+
+### Release note:
+feat: Refactor AboutScreen to use CustomElevatedButton for improved UI consistency
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+    ```
+    [Builded] Version 2.3.3 - 53 / 2.3.3 - 55 _ Refactor AboutScreen to use CustomElevatedButton for improved UI consistency
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Enhanced About screen with improved button design.  
+        - Refined user interface for better visual consistency.
+
+    - **Tiếng Việt:**  
+        - Nâng cao màn hình Giới thiệu với thiết kế nút bấm được cải tiến.  
+        - Tinh chỉnh giao diện người dùng để nhất quán hơn về mặt hình ảnh.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.3.3 --build-number=53 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.3.3 --build-number=55 --release```
+    ```

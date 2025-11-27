@@ -1,10 +1,12 @@
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
 import 'package:nucatch/models/user_model.dart';
+import 'package:nucatch/services/auth_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserServices {
   SharedPreferences? _prefs;
+  final AuthServices _authServices = AuthServices();
 
   UserServices() {
     loadSharedPreferences();
@@ -15,13 +17,36 @@ class UserServices {
   }
 
   Future<UserState> getUserSession() async {
-    UserModel attempUser =
-        UserModel(username: _prefs!.getString(PreferencesKey.USERNAME));
+    // Get username from preferences
+    final username = _prefs?.getString(PreferencesKey.USERNAME);
 
-    return AuthenticatedUser(model: attempUser);
+    // Get Firebase user info
+    final firebaseUser = _authServices.currentUser;
+
+    UserModel userModel = UserModel(
+      username: username,
+      firebaseUserId: firebaseUser?.uid,
+      isAnonymous: firebaseUser?.isAnonymous ?? true,
+    );
+
+    return AuthenticatedUser(model: userModel);
   }
 
   Future<bool> saveUsername(String newUsername) async {
     return _prefs!.setString(PreferencesKey.USERNAME, newUsername);
+  }
+
+  /// Initialize anonymous authentication
+  Future<UserState> initializeAuth() async {
+    // Check if user is already signed in
+    if (!_authServices.isSignedIn()) {
+      // Sign in anonymously
+      final userCredential = await _authServices.signInAnonymously();
+      if (userCredential == null) {
+        return UnAuthenticatedUser();
+      }
+    }
+
+    return await getUserSession();
   }
 }

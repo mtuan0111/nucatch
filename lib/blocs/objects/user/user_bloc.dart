@@ -21,7 +21,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       UnAuthenticatedUser(),
     );
 
-    emitter(await _userServices.getUserSession());
+    // Initialize Firebase Anonymous Auth and get user session
+    emitter(await _userServices.initializeAuth());
   }
 
   Future<void> _onUsernameChanged(

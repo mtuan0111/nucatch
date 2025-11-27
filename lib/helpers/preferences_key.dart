@@ -2,6 +2,7 @@
 
 class PreferencesKey {
   static const USERNAME = "username";
+  static const FIREBASE_USER_ID = "firebase_user_id";
 
   static const NUMBER_OF_TOP_BOARD = "number_of_top_board";
   static const FONT_SIZE = "font_size";
@@ -16,4 +17,5 @@ class PreferencesKey {
   static const POINT = "point";
   static const RECORDED_TIME = "recorded_time";
   static const DIFFICULTY = "difficulty";
+  static const FIREBASE_USERID = "firebase_user_id";
 }

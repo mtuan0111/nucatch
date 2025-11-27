@@ -11,6 +11,7 @@ class TurnRecordedModel {
   final int point;
   final DateTime recordedTime;
   final Difficulty difficulty;
+  final String? firebaseUserId;
 
   TurnRecordedModel({
     required this.turnId,
@@ -18,6 +19,7 @@ class TurnRecordedModel {
     required this.point,
     required this.recordedTime,
     required this.difficulty,
+    this.firebaseUserId,
   });
 
   // DateTime get recordedTime => _recordedTime;
@@ -28,6 +30,7 @@ class TurnRecordedModel {
   //         point: json[PreferencesKey.POINT],
   //         recordedTime: DateTime.fromMicrosecondsSinceEpoch(
   //             int.tryParse(json[PreferencesKey.RECORDED_TIME]) ?? 0),
+  // Removed duplicate field declaration
   //       );
 
   factory TurnRecordedModel.fromJson(Map<String, dynamic> json) {
@@ -60,6 +63,8 @@ class TurnRecordedModel {
                     ) ??
                 Difficulty.values.first;
       }),
+      firebaseUserId: getValue<String?>(
+          PreferencesKey.FIREBASE_USERID, null, (v) => v?.toString()),
     );
   }
 
@@ -70,6 +75,7 @@ class TurnRecordedModel {
       PreferencesKey.POINT: point,
       PreferencesKey.RECORDED_TIME: recordedTime.millisecondsSinceEpoch,
       PreferencesKey.DIFFICULTY: difficulty.index,
+      PreferencesKey.FIREBASE_USERID: firebaseUserId,
     };
   }
 
