@@ -109,31 +109,39 @@ class _AboutScreenState extends State<AboutScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          lang(context).thankYou,
-                          style: LayoutConfig(context).titleSectionStyle(),
+                        CustomElevatedButton(
+                          shapeAt: RoundedWithShapeAt.topLeft,
+                          child: Text(
+                            lang(context).thankYou,
+                            style: LayoutConfig(context).titleSectionStyle(),
+                          ),
                         ),
                         const SizedBox(height: 10),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.solidHeart,
-                              color: Theme.of(context).primaryColor,
-                              size: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!
-                                  .fontSize,
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                "${lang(context).introductionContent}\n\n${lang(context).thankYouMessage}",
-                                style:
-                                    LayoutConfig(context).contentSectionStyle(),
+                        CustomElevatedButton(
+                          shapeAt: RoundedWithShapeAt.bottomRight,
+                          backgroundColor:
+                              Theme.of(context).secondaryHeaderColor,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.solidHeart,
+                                color: Theme.of(context).primaryColor,
+                                size: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .fontSize,
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  "${lang(context).introductionContent}\n\n${lang(context).thankYouMessage}",
+                                  style: LayoutConfig(context)
+                                      .contentSectionStyle(),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -149,56 +157,71 @@ class _AboutScreenState extends State<AboutScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          lang(context).authorName,
-                          style: LayoutConfig(context).titleSectionStyle(),
+                        CustomElevatedButton(
+                          shapeAt: RoundedWithShapeAt.topLeft,
+                          child: Text(
+                            lang(context).authorName,
+                            style: LayoutConfig(context).titleSectionStyle(),
+                          ),
                         ),
                         const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.user,
-                              color: Theme.of(context).primaryColor,
-                              size: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!
-                                  .fontSize,
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              "${lang(context).authorName}: ",
-                              style:
-                                  LayoutConfig(context).contentSectionStyle(),
-                            ),
-                            Text(
-                              "BOM",
-                              style: LayoutConfig(context).titleSectionStyle(),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.codeBranch,
-                              color: Theme.of(context).primaryColor,
-                              size: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!
-                                  .fontSize,
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              "${lang(context).version}: ",
-                              style:
-                                  LayoutConfig(context).contentSectionStyle(),
-                            ),
-                            Text(
-                              version ?? "N/A",
-                              style:
-                                  LayoutConfig(context).contentSectionStyle(),
-                            ),
-                          ],
+                        CustomElevatedButton(
+                          shapeAt: RoundedWithShapeAt.bottomRight,
+                          backgroundColor:
+                              Theme.of(context).secondaryHeaderColor,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.user,
+                                    color: Theme.of(context).primaryColor,
+                                    size: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge!
+                                        .fontSize,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    "${lang(context).authorName}: ",
+                                    style: LayoutConfig(context)
+                                        .contentSectionStyle(),
+                                  ),
+                                  Text(
+                                    "BOM",
+                                    style: LayoutConfig(context)
+                                        .titleSectionStyle(),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 5),
+                              Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.codeBranch,
+                                    color: Theme.of(context).primaryColor,
+                                    size: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge!
+                                        .fontSize,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    "${lang(context).version}: ",
+                                    style: LayoutConfig(context)
+                                        .contentSectionStyle(),
+                                  ),
+                                  Text(
+                                    version ?? "N/A",
+                                    style: LayoutConfig(context)
+                                        .contentSectionStyle(),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -214,31 +237,39 @@ class _AboutScreenState extends State<AboutScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          lang(context).connectWithUs,
-                          style: LayoutConfig(context).titleSectionStyle(),
+                        CustomElevatedButton(
+                          shapeAt: RoundedWithShapeAt.topLeft,
+                          child: Text(
+                            lang(context).connectWithUs,
+                            style: LayoutConfig(context).titleSectionStyle(),
+                          ),
                         ),
                         const SizedBox(height: 10),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.connectdevelop,
-                              color: Theme.of(context).primaryColor,
-                              size: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!
-                                  .fontSize,
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                lang(context).connectWithUsMessage,
-                                style:
-                                    LayoutConfig(context).contentSectionStyle(),
+                        CustomElevatedButton(
+                          shapeAt: RoundedWithShapeAt.bottomRight,
+                          backgroundColor:
+                              Theme.of(context).secondaryHeaderColor,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.connectdevelop,
+                                color: Theme.of(context).primaryColor,
+                                size: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .fontSize,
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  lang(context).connectWithUsMessage,
+                                  style: LayoutConfig(context)
+                                      .contentSectionStyle(),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 20),
                         Row(

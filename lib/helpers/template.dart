@@ -593,6 +593,8 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
 
   bool get isClickale => widget.onPressed != null;
 
+  bool get isShouldShowEffect => isPressed || widget.isActive == true;
+
   @override
   void initState() {
     super.initState();
@@ -798,7 +800,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = (widget.isActive ?? false)
+    final backgroundColor = (isShouldShowEffect)
         ? getBackgroundColor(context).getLighter()
         : getBackgroundColor(context);
     final darkerBackgroundColor = backgroundColor.getDarker();
