@@ -828,3 +828,40 @@ feat: Refactor AboutScreen to use CustomElevatedButton for improved UI consisten
     Flutter build for iOS
     ```flutter build ios --build-name=2.3.3 --build-number=55 --release```
     ```
+---
+## Released on: 29/11/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 54           | 2.4.1   |
+| iOS      | 56           | 2.4.1   |
+
+### Release note:
+feat: Improved UI consistency
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+    ```
+    [Builded] Version 2.4.1 - 54 / 2.4.1 - 56 _ Improved UI consistency
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Enhanced user interface for better visual consistency.  
+        - Improved overall app design and user experience.
+
+    - **Tiếng Việt:**  
+        - Nâng cao giao diện người dùng để nhất quán hơn về mặt hình ảnh.  
+        - Cải thiện thiết kế tổng thể và trải nghiệm người dùng của ứng dụng.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.4.1 --build-number=54 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.4.1 --build-number=56 --release```
+    ```
+    ---
