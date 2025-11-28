@@ -300,8 +300,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                               AppVersionStatus.checking
                                           ? null
                                           : () {
-                                              appVersionBloc.add(
-                                                  CheckForUpdateEvent());
+                                              appVersionBloc
+                                                  .add(CheckForUpdateEvent());
                                             },
                                       backgroundColor:
                                           Theme.of(context).primaryColor,
