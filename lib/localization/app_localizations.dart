@@ -573,6 +573,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Update'**
   String get update;
+
+  /// Button to check for app updates
+  ///
+  /// In en, this message translates to:
+  /// **'Check for Updates'**
+  String get checkForUpdates;
+
+  /// Section title for app updates
+  ///
+  /// In en, this message translates to:
+  /// **'App Updates'**
+  String get appUpdates;
+
+  /// Message prompting user to check for updates
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the button below to check for app updates.'**
+  String get tapToCheckUpdates;
+
+  /// Message while checking for updates
+  ///
+  /// In en, this message translates to:
+  /// **'Checking for updates...'**
+  String get checkingForUpdates;
+
+  /// Message when new version is available
+  ///
+  /// In en, this message translates to:
+  /// **'New version {version} is available! {forceMessage}'**
+  String newVersionAvailable(String version, String forceMessage);
+
+  /// Message for force update
+  ///
+  /// In en, this message translates to:
+  /// **'This update is required.'**
+  String get thisUpdateRequired;
+
+  /// Message when app is up to date
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re using the latest version!'**
+  String get usingLatestVersion;
+
+  /// Error message when update check fails
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to check for updates. {error}'**
+  String unableToCheckUpdates(String error);
+
+  /// Default error message
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again later.'**
+  String get tryAgainLater;
+
+  /// Message when user dismissed update
+  ///
+  /// In en, this message translates to:
+  /// **'Update available but postponed.'**
+  String get updatePostponed;
 }
 
 class _AppLocalizationsDelegate

@@ -158,6 +158,19 @@ extension ColorCustome on Color {
     int a = (this.a * 255.0).round() & 0xff;
     return Color.fromARGB(a, r, g, b);
   }
+
+  /// Returns a smart contrasting color based on the luminance of this color.
+  /// If this color is light (luminance > 0.5), returns a dark color from the theme.
+  /// If this color is dark (luminance <= 0.5), returns a light color from the theme.
+  Color getSmartColor(BuildContext context) {
+    final luminance = computeLuminance();
+    final theme = Theme.of(context);
+    // If background is light (luminance > 0.5), use dark/black text
+    // If background is dark (luminance <= 0.5), use scaffoldBackgroundColor (light) text
+    return luminance > 0.5
+        ? theme.colorScheme.onSurface
+        : theme.scaffoldBackgroundColor;
+  }
 }
 
 extension LinearGradientCustom on LinearGradient {

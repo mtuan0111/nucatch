@@ -27,7 +27,7 @@ Each document in the `app_versions` collection represents a version release for 
   "platform": "android",           // or "ios"
   "version_name": "1.2.0",         // Display version (e.g., "1.2.0")
   "build_number": "12",            // Build number as string (e.g., "12")
-  "release_message": "Bug fixes and performance improvements", // Optional release notes
+  "release_message": "<en>\nBug fixes and performance improvements\n</en>\n<vi>\nSửa lỗi và cải thiện hiệu suất\n</vi>", // Localized release notes
   "is_force_update": false,        // true = mandatory, false = optional
   "created_at": Timestamp,         // Auto-set on creation
   "updated_at": Timestamp          // Auto-set on update
@@ -39,10 +39,51 @@ Each document in the `app_versions` collection represents a version release for 
 - **platform** (string, required): `"android"` or `"ios"` - identifies the target platform
 - **version_name** (string, required): Human-readable version (e.g., "1.2.0", "2.0.0-beta")
 - **build_number** (string, required): Integer as string for version comparison (e.g., "12", "15")
-- **release_message** (string, optional): What's new in this release, shown in the dialog
+- **release_message** (string, optional): Localized release notes in multi-language format (see below)
 - **is_force_update** (bool, required): If `true`, users cannot dismiss the update dialog
 - **created_at** (timestamp): Document creation time
 - **updated_at** (timestamp): Last update time
+
+### Release Message Format (Localized)
+
+The `release_message` field supports multiple languages using a special XML-like format:
+
+```
+<country_code>
+Message in that language
+</country_code>
+<another_country_code>
+Message in another language
+</another_country_code>
+```
+
+**Format Rules:**
+- Each language is wrapped in `<country_code>` tags (e.g., `<en>`, `<vi>`, `<es>`, etc.)
+- The country code must match the app's locale language code
+- Content between tags is the localized message
+- If the format is invalid or the user's locale is not found, the "What's New" section won't be displayed
+- Returns `null` if the format doesn't match the pattern
+
+**Example:**
+```json
+{
+  "release_message": "<en>\n• Bug fixes\n• Performance improvements\n• New game modes\n</en>\n<vi>\n• Sửa lỗi\n• Cải thiện hiệu suất\n• Chế độ chơi mới\n</vi>"
+}
+```
+
+**How it works:**
+- English users (locale: `en` or `en_US`) see: "Bug fixes\nPerformance improvements\nNew game modes"
+- Vietnamese users (locale: `vi` or `vi_VN`) see: "Sửa lỗi\nCải thiện hiệu suất\nChế độ chơi mới"
+- Users with other locales see nothing if their language is not included
+
+**Single Language Example:**
+```json
+{
+  "release_message": "<en>\nCritical security update\n</en>"
+}
+```
+- Only English users will see the message
+- Other language users won't see the "What's New" section
 
 ### Firestore Rules Example
 
@@ -237,14 +278,14 @@ In Firebase Console > Firestore > `app_versions` collection:
   "platform": "android",
   "version_name": "1.3.0",
   "build_number": "13",
-  "release_message": "• New game modes\n• Bug fixes\n• Performance improvements",
+  "release_message": "<en>\n• New game modes\n• Bug fixes\n• Performance improvements\n</en>\n<vi>\n• Chế độ chơi mới\n• Sửa lỗi\n• Cải thiện hiệu suất\n</vi>",
   "is_force_update": false,
   "created_at": <auto>,
   "updated_at": <auto>
 }
 ```
 
-Result: Users with build number < 13 will see an optional update dialog.
+Result: Users with build number < 13 will see an optional update dialog with localized release notes.
 
 ### Example 2: Force Update for Critical Bug Fix
 
@@ -253,7 +294,7 @@ Result: Users with build number < 13 will see an optional update dialog.
   "platform": "android",
   "version_name": "1.2.1",
   "build_number": "11",
-  "release_message": "Critical security update. Please update immediately.",
+  "release_message": "<en>\nCritical security update. Please update immediately.\n</en>\n<vi>\nCập nhật bảo mật quan trọng. Vui lòng cập nhật ngay.\n</vi>",
   "is_force_update": true,
   "created_at": <auto>,
   "updated_at": <auto>
@@ -269,14 +310,14 @@ Result: Users cannot dismiss the dialog and must update to continue.
   "platform": "ios",
   "version_name": "2.0.0-beta",
   "build_number": "20",
-  "release_message": "Beta version with new features. Try it out!",
+  "release_message": "<en>\nBeta version with new features. Try it out!\n</en>\n<vi>\nPhiên bản Beta với tính năng mới. Hãy thử ngay!\n</vi>",
   "is_force_update": false,
   "created_at": <auto>,
   "updated_at": <auto>
 }
 ```
 
-Result: Only iOS users see this update.
+Result: Only iOS users see this update with localized messages.
 
 ### Example 4: Manual Check for Updates
 

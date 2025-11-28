@@ -704,17 +704,6 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
             );
   }
 
-  Color _getSmartColor(BuildContext context, Color backgroundColor) {
-    // Calculate luminance to determine if we need dark or light text
-    final luminance = backgroundColor.computeLuminance();
-    final theme = Theme.of(context);
-    // If background is light (luminance > 0.5), use dark/black text
-    // If background is dark (luminance <= 0.5), use scaffoldBackgroundColor (light) text
-    return luminance > 0.5
-        ? theme.colorScheme.onSurface
-        : theme.scaffoldBackgroundColor;
-  }
-
   Color getColor(BuildContext context) {
     if (widget.gradient != null) {
       return Theme.of(context).scaffoldBackgroundColor;
@@ -727,7 +716,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
     // Generate smart color based on background color contrast
     final backgroundColor =
         widget.backgroundColor ?? Theme.of(context).primaryColor;
-    return _getSmartColor(context, backgroundColor);
+    return backgroundColor.getSmartColor(context);
   }
 
   Color getPressedColor(BuildContext context) {

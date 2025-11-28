@@ -271,4 +271,39 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get update => 'Cập nhật';
+
+  @override
+  String get checkForUpdates => 'Kiểm tra cập nhật';
+
+  @override
+  String get appUpdates => 'Cập nhật ứng dụng';
+
+  @override
+  String get tapToCheckUpdates =>
+      'Nhấn vào nút bên dưới để kiểm tra cập nhật ứng dụng.';
+
+  @override
+  String get checkingForUpdates => 'Đang kiểm tra cập nhật...';
+
+  @override
+  String newVersionAvailable(String version, String forceMessage) {
+    return 'Phiên bản mới $version đã có! $forceMessage';
+  }
+
+  @override
+  String get thisUpdateRequired => 'Bản cập nhật này là bắt buộc.';
+
+  @override
+  String get usingLatestVersion => 'Bạn đang sử dụng phiên bản mới nhất!';
+
+  @override
+  String unableToCheckUpdates(String error) {
+    return 'Không thể kiểm tra cập nhật. $error';
+  }
+
+  @override
+  String get tryAgainLater => 'Vui lòng thử lại sau.';
+
+  @override
+  String get updatePostponed => 'Có bản cập nhật nhưng đã hoãn lại.';
 }

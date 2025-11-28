@@ -399,5 +399,62 @@
   "update": "Update",
   "@update": {
     "description": "Button to update app"
+  },
+  
+  "checkForUpdates": "Check for Updates",
+  "@checkForUpdates": {
+    "description": "Button to check for app updates"
+  },
+  "appUpdates": "App Updates",
+  "@appUpdates": {
+    "description": "Section title for app updates"
+  },
+  "tapToCheckUpdates": "Tap the button below to check for app updates.",
+  "@tapToCheckUpdates": {
+    "description": "Message prompting user to check for updates"
+  },
+  "checkingForUpdates": "Checking for updates...",
+  "@checkingForUpdates": {
+    "description": "Message while checking for updates"
+  },
+  "newVersionAvailable": "New version {version} is available! {forceMessage}",
+  "@newVersionAvailable": {
+    "description": "Message when new version is available",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.2.0"
+      },
+      "forceMessage": {
+        "type": "String",
+        "example": "This update is required."
+      }
+    }
+  },
+  "thisUpdateRequired": "This update is required.",
+  "@thisUpdateRequired": {
+    "description": "Message for force update"
+  },
+  "usingLatestVersion": "You're using the latest version!",
+  "@usingLatestVersion": {
+    "description": "Message when app is up to date"
+  },
+  "unableToCheckUpdates": "Unable to check for updates. {error}",
+  "@unableToCheckUpdates": {
+    "description": "Error message when update check fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Please try again later."
+      }
+    }
+  },
+  "tryAgainLater": "Please try again later.",
+  "@tryAgainLater": {
+    "description": "Default error message"
+  },
+  "updatePostponed": "Update available but postponed.",
+  "@updatePostponed": {
+    "description": "Message when user dismissed update"
   }
 }

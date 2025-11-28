@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/app_version/app_version_bloc.dart';
+import 'package:nucatch/blocs/app_version/app_version_event.dart';
+import 'package:nucatch/blocs/app_version/app_version_state.dart';
 import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
 import 'package:nucatch/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
@@ -31,7 +34,10 @@ class _AboutScreenState extends State<AboutScreen> {
   UserBloc get userBloc => context.read<UserBloc>();
   UserState get userState => userBloc.state;
 
+  AppVersionBloc get appVersionBloc => context.read<AppVersionBloc>();
+
   String? version;
+  String? buildNumber;
 
   String profileUrl = dotenv.env['PROFILE_URL']!;
   String privacyPolicyUrl = dotenv.env['PRIVACY_POLICY_URL']!;
@@ -45,6 +51,7 @@ class _AboutScreenState extends State<AboutScreen> {
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
       setState(() {
         version = packageInfo.version;
+        buildNumber = packageInfo.buildNumber;
       });
     });
   }
@@ -218,10 +225,116 @@ class _AboutScreenState extends State<AboutScreen> {
                                     style: LayoutConfig(context)
                                         .contentSectionStyle(),
                                   ),
+                                  if (buildNumber != null) ...[
+                                    Text(
+                                      " ($buildNumber)",
+                                      style: LayoutConfig(context)
+                                          .contentSectionStyle()
+                                          .copyWith(
+                                            fontSize: 12,
+                                            color: Theme.of(context).hintColor,
+                                          ),
+                                    ),
+                                  ],
                                 ],
                               )
                             ],
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: DeviceWrapper(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomElevatedButton(
+                          shapeAt: RoundedWithShapeAt.topLeft,
+                          child: Text(
+                            lang(context).appUpdates,
+                            style: LayoutConfig(context).titleSectionStyle(),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        BlocBuilder<AppVersionBloc, AppVersionState>(
+                          builder: (context, state) {
+                            return CustomElevatedButton(
+                              shapeAt: RoundedWithShapeAt.bottomRight,
+                              backgroundColor:
+                                  Theme.of(context).secondaryHeaderColor,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.circleInfo,
+                                        color: Theme.of(context).primaryColor,
+                                        size: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .fontSize,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Text(
+                                          _getUpdateStatusText(context, state),
+                                          style: LayoutConfig(context)
+                                              .contentSectionStyle(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Center(
+                                    child: CustomElevatedButton(
+                                      text: lang(context).checkForUpdates,
+                                      onPressed: state.status ==
+                                              AppVersionStatus.checking
+                                          ? null
+                                          : () {
+                                              appVersionBloc.add(
+                                                  CheckForUpdateEvent());
+                                            },
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor,
+                                      buttonSize: ButtonSize.small,
+                                      shapeAt: RoundedWithShapeAt.topLeft,
+                                      iconData: state.status ==
+                                              AppVersionStatus.checking
+                                          ? null
+                                          : FontAwesomeIcons.arrowsRotate,
+                                      child: state.status ==
+                                              AppVersionStatus.checking
+                                          ? SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  Theme.of(context)
+                                                      .scaffoldBackgroundColor,
+                                                ),
+                                              ),
+                                            )
+                                          : null,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -338,5 +451,27 @@ class _AboutScreenState extends State<AboutScreen> {
         ),
       ),
     );
+  }
+
+  String _getUpdateStatusText(BuildContext context, AppVersionState state) {
+    switch (state.status) {
+      case AppVersionStatus.initial:
+        return lang(context).tapToCheckUpdates;
+      case AppVersionStatus.checking:
+        return lang(context).checkingForUpdates;
+      case AppVersionStatus.updateAvailable:
+        return lang(context).newVersionAvailable(
+          state.availableVersion?.versionName ?? '',
+          state.isForceUpdate ? lang(context).thisUpdateRequired : '',
+        );
+      case AppVersionStatus.noUpdate:
+        return lang(context).usingLatestVersion;
+      case AppVersionStatus.error:
+        return lang(context).unableToCheckUpdates(
+          state.errorMessage ?? lang(context).tryAgainLater,
+        );
+      case AppVersionStatus.dismissed:
+        return lang(context).updatePostponed;
+    }
   }
 }

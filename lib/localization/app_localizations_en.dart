@@ -269,4 +269,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get update => 'Update';
+
+  @override
+  String get checkForUpdates => 'Check for Updates';
+
+  @override
+  String get appUpdates => 'App Updates';
+
+  @override
+  String get tapToCheckUpdates =>
+      'Tap the button below to check for app updates.';
+
+  @override
+  String get checkingForUpdates => 'Checking for updates...';
+
+  @override
+  String newVersionAvailable(String version, String forceMessage) {
+    return 'New version $version is available! $forceMessage';
+  }
+
+  @override
+  String get thisUpdateRequired => 'This update is required.';
+
+  @override
+  String get usingLatestVersion => 'You\'re using the latest version!';
+
+  @override
+  String unableToCheckUpdates(String error) {
+    return 'Unable to check for updates. $error';
+  }
+
+  @override
+  String get tryAgainLater => 'Please try again later.';
+
+  @override
+  String get updatePostponed => 'Update available but postponed.';
 }

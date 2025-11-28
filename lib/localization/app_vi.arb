@@ -397,5 +397,62 @@
   "update": "Cập nhật",
   "@update": {
     "description": "Nút cập nhật ứng dụng"
+  },
+  
+  "checkForUpdates": "Kiểm tra cập nhật",
+  "@checkForUpdates": {
+    "description": "Nút kiểm tra cập nhật ứng dụng"
+  },
+  "appUpdates": "Cập nhật ứng dụng",
+  "@appUpdates": {
+    "description": "Tiêu đề phần cập nhật ứng dụng"
+  },
+  "tapToCheckUpdates": "Nhấn vào nút bên dưới để kiểm tra cập nhật ứng dụng.",
+  "@tapToCheckUpdates": {
+    "description": "Thông báo nhắc người dùng kiểm tra cập nhật"
+  },
+  "checkingForUpdates": "Đang kiểm tra cập nhật...",
+  "@checkingForUpdates": {
+    "description": "Thông báo đang kiểm tra cập nhật"
+  },
+  "newVersionAvailable": "Phiên bản mới {version} đã có! {forceMessage}",
+  "@newVersionAvailable": {
+    "description": "Thông báo khi có phiên bản mới",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.2.0"
+      },
+      "forceMessage": {
+        "type": "String",
+        "example": "Bản cập nhật này là bắt buộc."
+      }
+    }
+  },
+  "thisUpdateRequired": "Bản cập nhật này là bắt buộc.",
+  "@thisUpdateRequired": {
+    "description": "Thông báo bắt buộc cập nhật"
+  },
+  "usingLatestVersion": "Bạn đang sử dụng phiên bản mới nhất!",
+  "@usingLatestVersion": {
+    "description": "Thông báo khi ứng dụng đã là bản mới nhất"
+  },
+  "unableToCheckUpdates": "Không thể kiểm tra cập nhật. {error}",
+  "@unableToCheckUpdates": {
+    "description": "Thông báo lỗi khi kiểm tra cập nhật thất bại",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Vui lòng thử lại sau."
+      }
+    }
+  },
+  "tryAgainLater": "Vui lòng thử lại sau.",
+  "@tryAgainLater": {
+    "description": "Thông báo lỗi mặc định"
+  },
+  "updatePostponed": "Có bản cập nhật nhưng đã hoãn lại.",
+  "@updatePostponed": {
+    "description": "Thông báo khi người dùng từ chối cập nhật"
   }
 }

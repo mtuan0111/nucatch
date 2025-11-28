@@ -47,6 +47,32 @@ class AppVersionModel {
     return int.tryParse(buildNumber) ?? 0;
   }
 
+  /// Extracts the localized release message based on the country code.
+  /// Expected format: "<en>Message</en><vi>Tin nhắn</vi>"
+  /// Returns null if the format is invalid or the locale is not found.
+  String? getLocalizedReleaseMessage(String locale) {
+    if (releaseMessage == null || releaseMessage!.isEmpty) {
+      return null;
+    }
+
+    // Extract the language code (e.g., "en" from "en" or "en_US")
+    final languageCode = locale.split('_').first;
+
+    // Pattern to match: <code>content</code>
+    final pattern = RegExp(
+      '<$languageCode>\\s*([\\s\\S]*?)\\s*</$languageCode>',
+      multiLine: true,
+    );
+
+    final match = pattern.firstMatch(releaseMessage!);
+    if (match != null && match.groupCount >= 1) {
+      return match.group(1)?.trim();
+    }
+
+    // If format doesn't match or locale not found, return null
+    return null;
+  }
+
   AppVersionModel copyWith({
     String? platform,
     String? versionName,

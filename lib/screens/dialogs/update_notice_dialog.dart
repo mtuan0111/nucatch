@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
 import 'package:nucatch/models/app_version_model.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -43,6 +44,10 @@ class UpdateNoticeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get the current locale
+    final locale = Localizations.localeOf(context).toString();
+    final localizedMessage = versionInfo.getLocalizedReleaseMessage(locale);
+
     return WillPopScope(
       onWillPop: () async => !isForceUpdate,
       child: AlertTemplate(
@@ -65,8 +70,7 @@ class UpdateNoticeDialog extends StatelessWidget {
                 lang(context).newVersion,
                 versionInfo.versionName,
               ),
-              if (versionInfo.releaseMessage != null &&
-                  versionInfo.releaseMessage!.isNotEmpty) ...[
+              if (localizedMessage != null) ...[
                 const SizedBox(height: 16),
                 Text(
                   lang(context).whatsNew,
@@ -77,7 +81,7 @@ class UpdateNoticeDialog extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  versionInfo.releaseMessage!,
+                  localizedMessage,
                   style: LayoutConfig(context).contentSectionStyle().copyWith(
                         color: Colors.black,
                       ),
@@ -85,21 +89,22 @@ class UpdateNoticeDialog extends StatelessWidget {
               ],
               if (isForceUpdate) ...[
                 const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.orange.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: Colors.orange.withValues(alpha: 0.3),
-                    ),
-                  ),
+                CustomElevatedButton(
+                  backgroundColor: Colors.orangeAccent,
+                  // padding: const EdgeInsets.all(12),
+                  // decoration: BoxDecoration(
+                  //   color: Colors.orange.withValues(alpha: 0.1),
+                  //   borderRadius: BorderRadius.circular(8),
+                  //   border: Border.all(
+                  //     color: Colors.orange.withValues(alpha: 0.3),
+                  //   ),
+                  // ),
                   child: Row(
                     children: [
                       const Icon(
                         Icons.error_outline,
-                        color: Colors.orange,
-                        size: 20,
+                        color: Colors.white,
+                        // size: 20,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
@@ -108,8 +113,8 @@ class UpdateNoticeDialog extends StatelessWidget {
                           style: LayoutConfig(context)
                               .contentSectionStyle()
                               .copyWith(
-                                color: Colors.orange[800],
-                                fontSize: 12,
+                                color: Colors.white,
+                                // fontSize: 12,
                               ),
                         ),
                       ),
@@ -123,7 +128,6 @@ class UpdateNoticeDialog extends StatelessWidget {
         possitiveButtonLabel:
             isForceUpdate ? lang(context).updateNow : lang(context).update,
         onPossitiveButtonPressed: () {
-          Navigator.of(context).pop();
           _launchStore();
         },
         negativeButtonLabel: !isForceUpdate ? lang(context).later : null,

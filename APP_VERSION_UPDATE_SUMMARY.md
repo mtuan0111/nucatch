@@ -84,8 +84,9 @@ A comprehensive app version update notification system has been successfully imp
 ### ✅ Firestore Integration
 - Cloud-based version management
 - Platform-specific versions (Android/iOS)
-- Support for release notes
+- Support for **localized** release notes (multi-language)
 - Timestamp tracking
+- XML-like format for language-specific messages
 
 ### ✅ Force Update Support
 - Mandatory updates cannot be dismissed
@@ -130,12 +131,20 @@ A comprehensive app version update notification system has been successfully imp
   "platform": "android" | "ios",
   "version_name": "1.2.0",
   "build_number": "12",
-  "release_message": "Release notes...",
+  "release_message": "<en>\nRelease notes in English\n</en>\n<vi>\nGhi chú phát hành bằng tiếng Việt\n</vi>",
   "is_force_update": true | false,
   "created_at": Timestamp,
   "updated_at": Timestamp
 }
 ```
+
+### Localized Release Message Format
+
+The `release_message` uses a special XML-like format for multi-language support:
+- Format: `<country_code>Message</country_code>`
+- Example: `<en>English text</en><vi>Vietnamese text</vi>`
+- Automatically displays the message in the user's app language
+- Returns null if format is invalid or user's locale not found
 
 ## Usage Flow
 
@@ -181,30 +190,35 @@ All required dependencies are already in `pubspec.yaml`:
 ## Testing
 
 ### Test Force Update
-```json
-{
-  "platform": "android",
-  "version_name": "2.0.0",
-  "build_number": "20",
-  "is_force_update": true,
-  "release_message": "Critical update required"
-}
-```
-
-Expected: Dialog cannot be dismissed, back button disabled
+1. Set current app build number to "10"
+2. Add Firestore document:
+   ```json
+   {
+     "platform": "android",
+     "build_number": "20",
+     "is_force_update": true,
+     "version_name": "2.0.0",
+     "release_message": "<en>\nCritical update required\n</en>\n<vi>\nYêu cầu cập nhật quan trọng\n</vi>"
+   }
+   ```
+3. Launch app
+4. Verify: Dialog cannot be dismissed, back button disabled, orange theme, localized message displayed
 
 ### Test Optional Update
-```json
-{
-  "platform": "android",
-  "version_name": "1.5.0",
-  "build_number": "15",
-  "is_force_update": false,
-  "release_message": "New features available"
-}
-```
 
-Expected: Dialog can be dismissed, "Later" button visible
+1. Set current app build number to "10"
+2. Add Firestore document:
+   ```json
+   {
+     "platform": "android",
+     "build_number": "12",
+     "is_force_update": false,
+     "version_name": "1.2.0",
+     "release_message": "<en>\nOptional update with new features\n</en>\n<vi>\nCập nhật tùy chọn với tính năng mới\n</vi>"
+   }
+   ```
+3. Launch app
+4. Verify: Dialog appears, "Later" button visible, can dismiss with back button, message shown in user's language
 
 ## Architecture Diagram
 
