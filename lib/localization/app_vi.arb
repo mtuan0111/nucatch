@@ -360,5 +360,42 @@
   "allTimeDescription": "Xếp hạng dựa trên các lượt chơi được ghi trong tất cả thời gian.",
   "@allTimeDescription": {
     "description": "Mô tả cho bảng xếp hạng tất cả thời gian"
+  },
+  
+  "updateRequired": "Yêu cầu cập nhật",
+  "@updateRequired": {
+    "description": "Tiêu đề cho hộp thoại bắt buộc cập nhật"
+  },
+  "updateAvailable": "Có bản cập nhật",
+  "@updateAvailable": {
+    "description": "Tiêu đề cho hộp thoại cập nhật tùy chọn"
+  },
+  "currentVersion": "Phiên bản hiện tại",
+  "@currentVersion": {
+    "description": "Nhãn cho phiên bản ứng dụng hiện tại"
+  },
+  "newVersion": "Phiên bản mới",
+  "@newVersion": {
+    "description": "Nhãn cho phiên bản có sẵn mới"
+  },
+  "whatsNew": "Có gì mới",
+  "@whatsNew": {
+    "description": "Nhãn cho phần ghi chú phát hành"
+  },
+  "forceUpdateMessage": "Bản cập nhật này là bắt buộc để tiếp tục sử dụng ứng dụng. Vui lòng cập nhật ngay.",
+  "@forceUpdateMessage": {
+    "description": "Thông báo yêu cầu bắt buộc cập nhật"
+  },
+  "later": "Để sau",
+  "@later": {
+    "description": "Nút hoãn cập nhật tùy chọn"
+  },
+  "updateNow": "Cập nhật ngay",
+  "@updateNow": {
+    "description": "Nút tiến hành cập nhật"
+  },
+  "update": "Cập nhật",
+  "@update": {
+    "description": "Nút cập nhật ứng dụng"
   }
 }

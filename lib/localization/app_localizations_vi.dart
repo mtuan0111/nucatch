@@ -243,4 +243,32 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get allTimeDescription =>
       'Xếp hạng dựa trên các lượt chơi được ghi trong tất cả thời gian.';
+
+  @override
+  String get updateRequired => 'Yêu cầu cập nhật';
+
+  @override
+  String get updateAvailable => 'Có bản cập nhật';
+
+  @override
+  String get currentVersion => 'Phiên bản hiện tại';
+
+  @override
+  String get newVersion => 'Phiên bản mới';
+
+  @override
+  String get whatsNew => 'Có gì mới';
+
+  @override
+  String get forceUpdateMessage =>
+      'Bản cập nhật này là bắt buộc để tiếp tục sử dụng ứng dụng. Vui lòng cập nhật ngay.';
+
+  @override
+  String get later => 'Để sau';
+
+  @override
+  String get updateNow => 'Cập nhật ngay';
+
+  @override
+  String get update => 'Cập nhật';
 }

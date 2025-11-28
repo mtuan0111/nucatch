@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nucatch/blocs/app_version/app_version_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/localization/app_localizations.dart';
 import 'package:nucatch/navs/menu_nav.dart';
+import 'package:nucatch/screens/wrappers/update_checker_wrapper.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nucatch/firebase_options.dart';
@@ -50,10 +52,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        return SettingBloc();
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => SettingBloc(),
+        ),
+        BlocProvider(
+          create: (context) => AppVersionBloc(),
+        ),
+      ],
       child: GestureDetector(
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
@@ -145,7 +152,9 @@ class _MyAppState extends State<MyApp> {
                       ],
                       child: Container(
                         decoration: LayoutConfig(context).gradientDecoration,
-                        child: const MenuNav(),
+                        child: const UpdateCheckerWrapper(
+                          child: MenuNav(),
+                        ),
                       ),
                     ),
                     themeMode: state.themeMode,

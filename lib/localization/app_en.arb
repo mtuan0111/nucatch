@@ -362,5 +362,42 @@
   "allTimeDescription": "Rankings based on all recorded turns.",
   "@allTimeDescription": {
     "description": "Description for all-time leaderboard"
+  },
+  
+  "updateRequired": "Update Required",
+  "@updateRequired": {
+    "description": "Title for force update dialog"
+  },
+  "updateAvailable": "Update Available",
+  "@updateAvailable": {
+    "description": "Title for optional update dialog"
+  },
+  "currentVersion": "Current Version",
+  "@currentVersion": {
+    "description": "Label for current app version"
+  },
+  "newVersion": "New Version",
+  "@newVersion": {
+    "description": "Label for new available version"
+  },
+  "whatsNew": "What's New",
+  "@whatsNew": {
+    "description": "Label for release notes section"
+  },
+  "forceUpdateMessage": "This update is required to continue using the app. Please update now.",
+  "@forceUpdateMessage": {
+    "description": "Message for force update requirement"
+  },
+  "later": "Later",
+  "@later": {
+    "description": "Button to postpone optional update"
+  },
+  "updateNow": "Update Now",
+  "@updateNow": {
+    "description": "Button to proceed with update"
+  },
+  "update": "Update",
+  "@update": {
+    "description": "Button to update app"
   }
 }

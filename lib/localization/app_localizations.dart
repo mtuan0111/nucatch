@@ -519,6 +519,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rankings based on all recorded turns.'**
   String get allTimeDescription;
+
+  /// Title for force update dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Update Required'**
+  String get updateRequired;
+
+  /// Title for optional update dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Update Available'**
+  String get updateAvailable;
+
+  /// Label for current app version
+  ///
+  /// In en, this message translates to:
+  /// **'Current Version'**
+  String get currentVersion;
+
+  /// Label for new available version
+  ///
+  /// In en, this message translates to:
+  /// **'New Version'**
+  String get newVersion;
+
+  /// Label for release notes section
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s New'**
+  String get whatsNew;
+
+  /// Message for force update requirement
+  ///
+  /// In en, this message translates to:
+  /// **'This update is required to continue using the app. Please update now.'**
+  String get forceUpdateMessage;
+
+  /// Button to postpone optional update
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get later;
+
+  /// Button to proceed with update
+  ///
+  /// In en, this message translates to:
+  /// **'Update Now'**
+  String get updateNow;
+
+  /// Button to update app
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
 }
 
 class _AppLocalizationsDelegate
