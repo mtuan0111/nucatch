@@ -225,17 +225,6 @@ class _AboutScreenState extends State<AboutScreen> {
                                     style: LayoutConfig(context)
                                         .contentSectionStyle(),
                                   ),
-                                  if (buildNumber != null) ...[
-                                    Text(
-                                      " ($buildNumber)",
-                                      style: LayoutConfig(context)
-                                          .contentSectionStyle()
-                                          .copyWith(
-                                            fontSize: 12,
-                                            color: Theme.of(context).hintColor,
-                                          ),
-                                    ),
-                                  ],
                                 ],
                               )
                             ],
