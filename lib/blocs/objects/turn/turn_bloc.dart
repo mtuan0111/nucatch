@@ -589,18 +589,22 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
-    bool insertSuccess =
-        await _turnedServices.addItemToFirebase(state.recordedItem!);
+    final results = await Future.wait([
+      _turnedServices.addItemToFirebase(state.recordedItem!),
+      _turnedServices.addItem(state.recordedItem!), // For backup locally
+    ]);
 
-    await _turnedServices.addItem(state.recordedItem!); //For backup locally
+    final insertSuccess = results[0];
+    final insertSuccessLocal = results[1];
+    final saveSuccess = insertSuccess || insertSuccessLocal;
 
     _audioBloc.add(PlaySaveSuccessAudio());
 
     emitter(
       state.copyWith(
         isLoading: false,
-        saveSuccess: insertSuccess,
-        message: insertSuccess ? 'save_success' : 'save_failed',
+        saveSuccess: saveSuccess,
+        message: saveSuccess ? 'save_success' : 'save_failed',
       ),
     );
 
