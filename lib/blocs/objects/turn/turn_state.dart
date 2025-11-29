@@ -135,7 +135,7 @@ class TurnState {
   double get tapTimerPercent {
     // log("Calculating tap timer percent: remaining $tapTimerRemaining / duration $tapTimerDuration");
     // Use a small epsilon to handle floating-point precision errors
-    const epsilon = 0.001;
+    const epsilon = 0.1;
     if (tapTimerRemaining <= epsilon) {
       return 0.0;
     }
