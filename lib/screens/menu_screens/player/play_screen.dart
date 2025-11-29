@@ -20,6 +20,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.d
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
 
@@ -113,6 +114,9 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 
   void _handleMenuButton() {
+    // Pause timer when menu opens
+    turnBloc.add(TapTimerPause());
+
     Helper.pressMainMenu(context).then((confirmedMenu) {
       if (confirmedMenu) {
         turnBloc.add(End(
@@ -123,6 +127,9 @@ class _PlayScreenState extends State<PlayScreen> {
             option: null,
           ),
         );
+      } else {
+        // Resume timer when menu closes
+        turnBloc.add(TapTimerResume());
       }
     });
   }
@@ -739,6 +746,61 @@ class _PlayScreenState extends State<PlayScreen> {
                               ),
                           ],
                         ),
+                      ),
+                      // Tap Timer Progress Bar
+
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: 20,
+                            child: Stack(
+                              clipBehavior: Clip.hardEdge,
+                              children: [
+                                Positioned.fill(
+                                  child: CustomElevatedButton(
+                                    shapeAt: RoundedWithShapeAt.all,
+                                    backgroundColor:
+                                        Theme.of(context).secondaryHeaderColor,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    if (turnState.status == TurnStatus.playing)
+                                      if (turnState.tapTimerPercent > 0)
+                                        Expanded(
+                                          flex:
+                                              turnState.tapTimerPercent.toInt(),
+                                          child: Builder(builder: (context) {
+                                            Color backgroundColor = turnState
+                                                        .tapTimerRemaining >
+                                                    tapTimerDuration / 2
+                                                ? Colors.green
+                                                : turnState.tapTimerRemaining >
+                                                        tapTimerDuration / 4
+                                                    ? Colors.orange
+                                                    : Colors.red;
+                                            return CustomElevatedButton(
+                                              shapeAt: RoundedWithShapeAt.all,
+                                              backgroundColor: backgroundColor,
+                                            );
+                                          }),
+                                        ),
+                                    Expanded(
+                                      flex: 100 -
+                                          turnState.tapTimerPercent.toInt(),
+                                      child: Opacity(
+                                        opacity: 0,
+                                        child: Container(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                        ],
                       ),
                       Expanded(
                         flex: 2,

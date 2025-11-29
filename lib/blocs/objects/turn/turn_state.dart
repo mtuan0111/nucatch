@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/models/turn_record_model.dart';
@@ -32,6 +34,9 @@ class TurnState {
   final String? message;
   final bool saveSuccess;
 
+  final double tapTimerRemaining; // Remaining time in seconds (0-20)
+  final bool isTimerPaused;
+
   const TurnState({
     this.level = 0,
     this.timesCorrect = 0,
@@ -47,6 +52,8 @@ class TurnState {
     this.isLoading = false,
     this.message,
     this.saveSuccess = false,
+    this.tapTimerRemaining = tapTimerDuration,
+    this.isTimerPaused = false,
   });
 
   TurnState copyWith({
@@ -64,6 +71,8 @@ class TurnState {
     bool? isLoading,
     String? message,
     bool? saveSuccess,
+    double? tapTimerRemaining,
+    bool? isTimerPaused,
   }) {
     return TurnState(
       level: level ?? this.level,
@@ -82,6 +91,8 @@ class TurnState {
       isLoading: isLoading ?? this.isLoading,
       message: message ?? this.message,
       saveSuccess: saveSuccess ?? this.saveSuccess,
+      tapTimerRemaining: tapTimerRemaining ?? this.tapTimerRemaining,
+      isTimerPaused: isTimerPaused ?? this.isTimerPaused,
     );
   }
 
@@ -120,6 +131,17 @@ class TurnState {
 
   bool get isAbleToLevelUp =>
       timesCorrect >= difficultyModel!.numberTurnEachLevel;
+
+  double get tapTimerPercent {
+    // log("Calculating tap timer percent: remaining $tapTimerRemaining / duration $tapTimerDuration");
+    // Use a small epsilon to handle floating-point precision errors
+    const epsilon = 0.001;
+    if (tapTimerRemaining <= epsilon) {
+      return 0.0;
+    }
+
+    return tapTimerRemaining / tapTimerDuration * 100;
+  }
 }
 
 // class InitialState extends TurnState {}

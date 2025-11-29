@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:nucatch/localization/app_localizations.dart';
 
 const diffShowLevelMilisecond = 250;
+const double tapTimerDuration = 60.0; // Seconds for each tap countdown
 
 const String timeDateClient = "dd/MM/yyyy hh:mm a";
 const String timeDateServer = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";

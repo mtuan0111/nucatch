@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
+import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
 import 'package:nucatch/models/turn_record_model.dart';
@@ -22,6 +24,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   final TurnRecordedServices _turnedServices = TurnRecordedServices();
   final AudioBloc _audioBloc;
   final VibrationBloc _vibrationBloc;
+  Timer? _tapTimer;
 
   TurnBloc(
     TurnState initialState, {
@@ -44,6 +47,48 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<End>(_onEnd);
     on<CountDownIntro>(_onCountDownIntro);
     on<ApplySetting>(_onApplySetting);
+    on<TapTimerTick>(_onTapTimerTick);
+    on<TapTimerTimeout>(_onTapTimerTimeout);
+    on<TapTimerPause>(_onTapTimerPause);
+    on<TapTimerResume>(_onTapTimerResume);
+    on<TapTimerReset>(_onTapTimerReset);
+  }
+
+  @override
+  Future<void> close() {
+    _tapTimer?.cancel();
+    return super.close();
+  }
+
+  void _startTapTimer() {
+    _tapTimer?.cancel();
+    const tickDuration = Duration(milliseconds: 100);
+    double remainingTime = tapTimerDuration;
+
+    _tapTimer = Timer.periodic(tickDuration, (timer) {
+      if (isClosed) {
+        timer.cancel();
+        return;
+      }
+
+      if (state.isTimerPaused) {
+        return; // Don't tick when paused
+      }
+
+      remainingTime -= tickDuration.inMilliseconds / 1000.0;
+
+      if (remainingTime <= 0) {
+        timer.cancel();
+        add(TapTimerTick(0));
+        add(TapTimerTimeout());
+      } else {
+        add(TapTimerTick(remainingTime));
+      }
+    });
+  }
+
+  void _stopTapTimer() {
+    _tapTimer?.cancel();
   }
 
   Future<void> _onTap(
@@ -63,6 +108,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     }
 
     _audioBloc.add(PlayTapAudio());
+
+    // Reset timer on each tap
+    _startTapTimer();
 
     if (event.keyValue == KeyboardOption.reset) {
       return;
@@ -114,6 +162,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     // When correct Checking is finish the turn or not
     if (state.isFinishTarget) {
+      _stopTapTimer();
       _vibrationBloc.add(VibrateShort());
 
       await _onAddPoint(AddPoint(), emitter);
@@ -182,9 +231,15 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
-    add(ShowExpect(
-      Duration(milliseconds: state.getTimeShowTarget),
-    ));
+    // add(ShowExpect(
+    //   Duration(milliseconds: state.getTimeShowTarget),
+    // ));
+
+    await _onShowExpect(
+        ShowExpect(Duration(milliseconds: state.getTimeShowTarget)), emitter);
+
+    // Start the tap timer when showing expect
+    _startTapTimer();
 
     // await Future.delayed(Duration(milliseconds: state.getTimeShowTarget));
 
@@ -331,6 +386,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (state.isLoading) {
       return;
     }
+
+    _stopTapTimer();
     await _onGeneratedRequiredString(GeneratedRequiredString(), emitter);
 
     emitter(
@@ -457,6 +514,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    _stopTapTimer();
     _vibrationBloc.add(VibrateLong());
 
     add(LostLife());
@@ -486,6 +544,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    _stopTapTimer();
     add(LostLife());
     _vibrationBloc.add(VibrateMultiple());
 
@@ -634,6 +693,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (state.isLoading) {
       return;
     }
+
+    _stopTapTimer();
+
     if (event.isCauseGameOver) {
       _audioBloc.add(PlayEndAudio());
     }
@@ -685,5 +747,85 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     _audioBloc.add(SetAudioVolume(volume: event.settingModel.vol / 10));
     _vibrationBloc
         .add(SetVibrationEnabled(enabled: event.settingModel.isVibrate));
+  }
+
+  void _onTapTimerTick(
+    TapTimerTick event,
+    Emitter<TurnState> emitter,
+  ) {
+    if (isClosed) return;
+    if (state.isLoading) return;
+
+    // Clamp to 0 if very close to prevent floating-point errors
+    final clampedTime = event.remainingTime < 0.01 ? 0.0 : event.remainingTime;
+
+    emitter(
+      state.copyWith(
+        tapTimerRemaining: clampedTime,
+      ),
+    );
+  }
+
+  Future<void> _onTapTimerTimeout(
+    TapTimerTimeout event,
+    Emitter<TurnState> emitter,
+  ) async {
+    if (isClosed) return;
+    if (state.isLoading) return;
+    if (!state.isAbleToTap) return;
+
+    _stopTapTimer();
+
+    await _onLostLife(LostLife(), emitter);
+
+    if (!state.isAbleToContinue) {
+      add(End());
+      return;
+    } else {
+      _audioBloc.add(PlayWrongAudio());
+      await Future.delayed(const Duration(milliseconds: 500));
+      add(SetLevel(level: state.level));
+    }
+  }
+
+  void _onTapTimerPause(
+    TapTimerPause event,
+    Emitter<TurnState> emitter,
+  ) {
+    if (isClosed) return;
+
+    emitter(
+      state.copyWith(
+        isTimerPaused: true,
+      ),
+    );
+  }
+
+  void _onTapTimerResume(
+    TapTimerResume event,
+    Emitter<TurnState> emitter,
+  ) {
+    if (isClosed) return;
+
+    emitter(
+      state.copyWith(
+        isTimerPaused: false,
+      ),
+    );
+  }
+
+  void _onTapTimerReset(
+    TapTimerReset event,
+    Emitter<TurnState> emitter,
+  ) {
+    if (isClosed) return;
+
+    _startTapTimer();
+    emitter(
+      state.copyWith(
+        tapTimerRemaining: tapTimerDuration,
+        isTimerPaused: false,
+      ),
+    );
   }
 }

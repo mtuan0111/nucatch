@@ -121,3 +121,16 @@ typedef ShowExpect = ExpectShown;
 typedef ResetNewNumber = NumberReset;
 typedef SaveRecorded = RecordSaved;
 typedef ApplySetting = SettingApplied;
+
+class TapTimerTick extends TurnEvent {
+  final double remainingTime;
+  TapTimerTick(this.remainingTime);
+}
+
+class TapTimerTimeout extends TurnEvent {}
+
+class TapTimerPause extends TurnEvent {}
+
+class TapTimerResume extends TurnEvent {}
+
+class TapTimerReset extends TurnEvent {}
