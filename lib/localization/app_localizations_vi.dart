@@ -306,4 +306,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get updatePostponed => 'Có bản cập nhật nhưng đã hoãn lại.';
+
+  @override
+  String tapTimerTooltip(
+      int totalSeconds, int halfSeconds, int quarterSeconds) {
+    return 'Bạn có $totalSeconds giây để chạm vào một số. Thanh đổi màu khi thời gian trôi qua: xanh lá (hơn $halfSeconds giây), cam ($quarterSeconds-$halfSeconds giây), đỏ (dưới $quarterSeconds giây).';
+  }
 }

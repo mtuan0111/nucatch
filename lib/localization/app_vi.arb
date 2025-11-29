@@ -454,5 +454,24 @@
   "updatePostponed": "Có bản cập nhật nhưng đã hoãn lại.",
   "@updatePostponed": {
     "description": "Thông báo khi người dùng từ chối cập nhật"
+  },
+  
+  "tapTimerTooltip": "Bạn có {totalSeconds} giây để chạm vào một số. Thanh đổi màu khi thời gian trôi qua: xanh lá (hơn {halfSeconds} giây), cam ({quarterSeconds}-{halfSeconds} giây), đỏ (dưới {quarterSeconds} giây).",
+  "@tapTimerTooltip": {
+    "description": "Chú thích giải thích thanh tiến trình thời gian chạm",
+    "placeholders": {
+      "totalSeconds": {
+        "type": "int",
+        "example": "20"
+      },
+      "halfSeconds": {
+        "type": "int",
+        "example": "10"
+      },
+      "quarterSeconds": {
+        "type": "int",
+        "example": "5"
+      }
+    }
   }
 }

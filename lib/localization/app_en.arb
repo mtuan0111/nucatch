@@ -456,5 +456,24 @@
   "updatePostponed": "Update available but postponed.",
   "@updatePostponed": {
     "description": "Message when user dismissed update"
+  },
+  
+  "tapTimerTooltip": "You have {totalSeconds} seconds to tap a number. The bar changes color as time runs out: green (more than {halfSeconds}s), orange ({quarterSeconds}-{halfSeconds}s), red (less than {quarterSeconds}s).",
+  "@tapTimerTooltip": {
+    "description": "Tooltip explaining the tap timer progress bar",
+    "placeholders": {
+      "totalSeconds": {
+        "type": "int",
+        "example": "20"
+      },
+      "halfSeconds": {
+        "type": "int",
+        "example": "10"
+      },
+      "quarterSeconds": {
+        "type": "int",
+        "example": "5"
+      }
+    }
   }
 }

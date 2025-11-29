@@ -304,4 +304,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updatePostponed => 'Update available but postponed.';
+
+  @override
+  String tapTimerTooltip(
+      int totalSeconds, int halfSeconds, int quarterSeconds) {
+    return 'You have $totalSeconds seconds to tap a number. The bar changes color as time runs out: green (more than ${halfSeconds}s), orange ($quarterSeconds-${halfSeconds}s), red (less than ${quarterSeconds}s).';
+  }
 }

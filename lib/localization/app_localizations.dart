@@ -633,6 +633,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Update available but postponed.'**
   String get updatePostponed;
+
+  /// Tooltip explaining the tap timer progress bar
+  ///
+  /// In en, this message translates to:
+  /// **'You have {totalSeconds} seconds to tap a number. The bar changes color as time runs out: green (more than {halfSeconds}s), orange ({quarterSeconds}-{halfSeconds}s), red (less than {quarterSeconds}s).'**
+  String tapTimerTooltip(int totalSeconds, int halfSeconds, int quarterSeconds);
 }
 
 class _AppLocalizationsDelegate
