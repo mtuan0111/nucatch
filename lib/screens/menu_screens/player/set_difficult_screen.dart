@@ -126,12 +126,20 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                     context, difficulty);
 
                             void onTap() {
+                              final playerNavCubit =
+                                  context.read<PlayerNavCubit>();
+                              final playMode = playerNavCubit.currentPlayMode;
+
                               turnBloc.add(
                                 SetDifficulty(
                                   difficulty: difficulty,
                                   onChanged: () {
                                     turnBloc.add(Start());
-                                    context.read<PlayerNavCubit>().showPlay();
+
+                                    // Both solo and combat mode start the game after difficulty is set
+                                    // In combat mode, the host has chosen the difficulty
+                                    // TODO: Send difficulty to guest player via Bluetooth
+                                    playerNavCubit.showPlay(playMode: playMode);
                                   },
                                 ),
                               );

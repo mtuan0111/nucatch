@@ -310,4 +310,58 @@ class AppLocalizationsEn extends AppLocalizations {
       int totalSeconds, int halfSeconds, int quarterSeconds) {
     return 'You have $totalSeconds seconds to tap a number. The bar changes color as time runs out: green (more than ${halfSeconds}s), orange ($quarterSeconds-${halfSeconds}s), red (less than ${quarterSeconds}s).';
   }
+
+  @override
+  String get selectPlayMode => 'Select Play Mode';
+
+  @override
+  String get soloMode => 'Solo Mode';
+
+  @override
+  String get soloModeDescription =>
+      'Play alone and challenge yourself to beat your high score';
+
+  @override
+  String get combatMode => 'Combat Mode';
+
+  @override
+  String get combatModeDescription =>
+      'Play with another player via Bluetooth connection and take turns';
+
+  @override
+  String get createRoom => 'Create Room';
+
+  @override
+  String get createRoomDescription =>
+      'Host a new game and wait for another player to join';
+
+  @override
+  String get joinRoom => 'Join Room';
+
+  @override
+  String get joinRoomDescription =>
+      'Enter a room code to join an existing game';
+
+  @override
+  String get hostRoom => 'Host Room';
+
+  @override
+  String get roomCode => 'Room Code';
+
+  @override
+  String get shareCodeWithPlayer => 'Share this code with another player';
+
+  @override
+  String get enterRoomCode => 'Enter Room Code';
+
+  @override
+  String get connect => 'Connect';
+
+  @override
+  String get searchingForPlayers => 'Searching for players...';
+
+  @override
+  String pairedWith(String playerName) {
+    return 'Paired with $playerName!';
+  }
 }

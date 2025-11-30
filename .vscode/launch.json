@@ -5,10 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "nucatch",
+            "name": "nucatch - android device - R7AX30C20KP",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main.dart"
+            "program": "lib/main.dart",
+            "deviceId": "R7AX30C20KP"
+        },
+        {
+            "name": "nucatch - android device - Flip 4",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "adb-R5CW51ALS7E-kX007p._adb-tls-connect._tcp"
+        },
+        {
+            "name": "nucatch - iphone device - Iphone 15",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "00008120-001245282131A01E"
         },
         {
             "name": "nucatch (profile mode)",

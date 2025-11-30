@@ -312,4 +312,57 @@ class AppLocalizationsVi extends AppLocalizations {
       int totalSeconds, int halfSeconds, int quarterSeconds) {
     return 'Bạn có $totalSeconds giây để chạm vào một số. Thanh đổi màu khi thời gian trôi qua: xanh lá (hơn $halfSeconds giây), cam ($quarterSeconds-$halfSeconds giây), đỏ (dưới $quarterSeconds giây).';
   }
+
+  @override
+  String get selectPlayMode => 'Chọn chế độ chơi';
+
+  @override
+  String get soloMode => 'Chơi đơn';
+
+  @override
+  String get soloModeDescription =>
+      'Chơi một mình và thử thách bản thân để đạt điểm cao nhất';
+
+  @override
+  String get combatMode => 'Chế độ đối kháng';
+
+  @override
+  String get combatModeDescription =>
+      'Chơi với người chơi khác qua kết nối Bluetooth và luân phiên';
+
+  @override
+  String get createRoom => 'Tạo phòng';
+
+  @override
+  String get createRoomDescription =>
+      'Tạo phòng mới và chờ người chơi khác tham gia';
+
+  @override
+  String get joinRoom => 'Tham gia phòng';
+
+  @override
+  String get joinRoomDescription => 'Nhập mã phòng để tham gia trận đấu';
+
+  @override
+  String get hostRoom => 'Phòng chủ';
+
+  @override
+  String get roomCode => 'Mã phòng';
+
+  @override
+  String get shareCodeWithPlayer => 'Chia sẻ mã này với người chơi khác';
+
+  @override
+  String get enterRoomCode => 'Nhập mã phòng';
+
+  @override
+  String get connect => 'Kết nối';
+
+  @override
+  String get searchingForPlayers => 'Đang tìm người chơi...';
+
+  @override
+  String pairedWith(String playerName) {
+    return 'Đã ghép đôi với $playerName!';
+  }
 }

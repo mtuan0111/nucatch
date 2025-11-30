@@ -639,6 +639,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You have {totalSeconds} seconds to tap a number. The bar changes color as time runs out: green (more than {halfSeconds}s), orange ({quarterSeconds}-{halfSeconds}s), red (less than {quarterSeconds}s).'**
   String tapTimerTooltip(int totalSeconds, int halfSeconds, int quarterSeconds);
+
+  /// Title for play mode selection screen
+  ///
+  /// In en, this message translates to:
+  /// **'Select Play Mode'**
+  String get selectPlayMode;
+
+  /// Title for solo play mode
+  ///
+  /// In en, this message translates to:
+  /// **'Solo Mode'**
+  String get soloMode;
+
+  /// Description for solo play mode
+  ///
+  /// In en, this message translates to:
+  /// **'Play alone and challenge yourself to beat your high score'**
+  String get soloModeDescription;
+
+  /// Title for combat/multiplayer play mode
+  ///
+  /// In en, this message translates to:
+  /// **'Combat Mode'**
+  String get combatMode;
+
+  /// Description for combat play mode
+  ///
+  /// In en, this message translates to:
+  /// **'Play with another player via Bluetooth connection and take turns'**
+  String get combatModeDescription;
+
+  /// Button to create a new game room
+  ///
+  /// In en, this message translates to:
+  /// **'Create Room'**
+  String get createRoom;
+
+  /// Description for create room option
+  ///
+  /// In en, this message translates to:
+  /// **'Host a new game and wait for another player to join'**
+  String get createRoomDescription;
+
+  /// Button to join an existing game room
+  ///
+  /// In en, this message translates to:
+  /// **'Join Room'**
+  String get joinRoom;
+
+  /// Description for join room option
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a room code to join an existing game'**
+  String get joinRoomDescription;
+
+  /// Title for host room screen
+  ///
+  /// In en, this message translates to:
+  /// **'Host Room'**
+  String get hostRoom;
+
+  /// Label for room code
+  ///
+  /// In en, this message translates to:
+  /// **'Room Code'**
+  String get roomCode;
+
+  /// Instruction to share room code
+  ///
+  /// In en, this message translates to:
+  /// **'Share this code with another player'**
+  String get shareCodeWithPlayer;
+
+  /// Label for entering room code
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Room Code'**
+  String get enterRoomCode;
+
+  /// Button to connect to a room
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get connect;
+
+  /// Status message while searching for players
+  ///
+  /// In en, this message translates to:
+  /// **'Searching for players...'**
+  String get searchingForPlayers;
+
+  /// Message when successfully paired with another player
+  ///
+  /// In en, this message translates to:
+  /// **'Paired with {playerName}!'**
+  String pairedWith(String playerName);
 }
 
 class _AppLocalizationsDelegate

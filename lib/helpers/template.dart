@@ -887,17 +887,21 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                     if (widget.onPressed == null) return;
 
                     widget.onPressed?.call();
-                    setState(
-                      () {
-                        isPressed = true;
-                      },
-                    );
+                    if (mounted) {
+                      setState(
+                        () {
+                          isPressed = true;
+                        },
+                      );
+                    }
                     Future.delayed(
                       const Duration(milliseconds: 100),
                       () {
-                        setState(() {
-                          isPressed = false;
-                        });
+                        if (mounted) {
+                          setState(() {
+                            isPressed = false;
+                          });
+                        }
                       },
                     );
                   },
@@ -1136,16 +1140,20 @@ class _AnimatedButtonState extends State<AnimatedButton> {
           onPressed: () {
             onPressed();
 
-            setState(() {
-              originalScale = 0.8;
-              milisecondDuation = 1000;
-            });
+            if (mounted) {
+              setState(() {
+                originalScale = 0.8;
+                milisecondDuation = 1000;
+              });
+            }
 
             Future.delayed(duration, () {
-              setState(() {
-                originalScale = 1;
-                milisecondDuation = 10;
-              });
+              if (mounted) {
+                setState(() {
+                  originalScale = 1;
+                  milisecondDuation = 10;
+                });
+              }
             });
           },
         ),

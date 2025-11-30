@@ -473,5 +473,76 @@
         "example": "5"
       }
     }
+  },
+  
+  "selectPlayMode": "Chọn chế độ chơi",
+  "@selectPlayMode": {
+    "description": "Tiêu đề màn hình chọn chế độ chơi"
+  },
+  "soloMode": "Chơi đơn",
+  "@soloMode": {
+    "description": "Tiêu đề chế độ chơi đơn"
+  },
+  "soloModeDescription": "Chơi một mình và thử thách bản thân để đạt điểm cao nhất",
+  "@soloModeDescription": {
+    "description": "Mô tả chế độ chơi đơn"
+  },
+  "combatMode": "Chế độ đối kháng",
+  "@combatMode": {
+    "description": "Tiêu đề chế độ chơi đối kháng/nhiều người"
+  },
+  "combatModeDescription": "Chơi với người chơi khác qua kết nối Bluetooth và luân phiên",
+  "@combatModeDescription": {
+    "description": "Mô tả chế độ chơi đối kháng"
+  },
+  "createRoom": "Tạo phòng",
+  "@createRoom": {
+    "description": "Nút tạo phòng chơi mới"
+  },
+  "createRoomDescription": "Tạo phòng mới và chờ người chơi khác tham gia",
+  "@createRoomDescription": {
+    "description": "Mô tả tùy chọn tạo phòng"
+  },
+  "joinRoom": "Tham gia phòng",
+  "@joinRoom": {
+    "description": "Nút tham gia phòng chơi hiện có"
+  },
+  "joinRoomDescription": "Nhập mã phòng để tham gia trận đấu",
+  "@joinRoomDescription": {
+    "description": "Mô tả tùy chọn tham gia phòng"
+  },
+  "hostRoom": "Phòng chủ",
+  "@hostRoom": {
+    "description": "Tiêu đề màn hình phòng chủ"
+  },
+  "roomCode": "Mã phòng",
+  "@roomCode": {
+    "description": "Nhãn cho mã phòng"
+  },
+  "shareCodeWithPlayer": "Chia sẻ mã này với người chơi khác",
+  "@shareCodeWithPlayer": {
+    "description": "Hướng dẫn chia sẻ mã phòng"
+  },
+  "enterRoomCode": "Nhập mã phòng",
+  "@enterRoomCode": {
+    "description": "Nhãn cho việc nhập mã phòng"
+  },
+  "connect": "Kết nối",
+  "@connect": {
+    "description": "Nút kết nối đến phòng"
+  },
+  "searchingForPlayers": "Đang tìm người chơi...",
+  "@searchingForPlayers": {
+    "description": "Thông báo trạng thái khi đang tìm người chơi"
+  },
+  "pairedWith": "Đã ghép đôi với {playerName}!",
+  "@pairedWith": {
+    "description": "Thông báo khi ghép đôi thành công với người chơi khác",
+    "placeholders": {
+      "playerName": {
+        "type": "String",
+        "example": "Người chơi 2"
+      }
+    }
   }
 }

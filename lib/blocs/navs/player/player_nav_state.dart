@@ -1,5 +1,11 @@
 abstract class PlayerNavState {}
 
+enum PlayMode {
+  solo,
+  combat,
+}
+
+// Belong to Solo
 enum Difficulty {
   easy,
   medium,
@@ -9,14 +15,29 @@ enum Difficulty {
 
 class PlayerNavInitial extends PlayerNavState {}
 
-class PlayingState extends PlayerNavState {}
+class SelectPlayModeState extends PlayerNavState {}
+
+class CombatModeSetupState extends PlayerNavState {}
+
+class PairingRoomState extends PlayerNavState {
+  final bool isHost;
+  final String? roomCode;
+
+  PairingRoomState({required this.isHost, this.roomCode});
+}
+
+class PlayingState extends PlayerNavState {
+  final PlayMode playMode;
+
+  PlayingState({this.playMode = PlayMode.solo});
+}
 
 class GameOverState extends PlayerNavState {}
 
 class SetDifficultyState extends PlayerNavState {
-  // final Difficulty difficulty;
+  final PlayMode playMode;
 
-  SetDifficultyState();
+  SetDifficultyState({this.playMode = PlayMode.solo});
 }
 
 class DifficultyModel {

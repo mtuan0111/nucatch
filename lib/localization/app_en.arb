@@ -475,5 +475,76 @@
         "example": "5"
       }
     }
+  },
+  
+  "selectPlayMode": "Select Play Mode",
+  "@selectPlayMode": {
+    "description": "Title for play mode selection screen"
+  },
+  "soloMode": "Solo Mode",
+  "@soloMode": {
+    "description": "Title for solo play mode"
+  },
+  "soloModeDescription": "Play alone and challenge yourself to beat your high score",
+  "@soloModeDescription": {
+    "description": "Description for solo play mode"
+  },
+  "combatMode": "Combat Mode",
+  "@combatMode": {
+    "description": "Title for combat/multiplayer play mode"
+  },
+  "combatModeDescription": "Play with another player via Bluetooth connection and take turns",
+  "@combatModeDescription": {
+    "description": "Description for combat play mode"
+  },
+  "createRoom": "Create Room",
+  "@createRoom": {
+    "description": "Button to create a new game room"
+  },
+  "createRoomDescription": "Host a new game and wait for another player to join",
+  "@createRoomDescription": {
+    "description": "Description for create room option"
+  },
+  "joinRoom": "Join Room",
+  "@joinRoom": {
+    "description": "Button to join an existing game room"
+  },
+  "joinRoomDescription": "Enter a room code to join an existing game",
+  "@joinRoomDescription": {
+    "description": "Description for join room option"
+  },
+  "hostRoom": "Host Room",
+  "@hostRoom": {
+    "description": "Title for host room screen"
+  },
+  "roomCode": "Room Code",
+  "@roomCode": {
+    "description": "Label for room code"
+  },
+  "shareCodeWithPlayer": "Share this code with another player",
+  "@shareCodeWithPlayer": {
+    "description": "Instruction to share room code"
+  },
+  "enterRoomCode": "Enter Room Code",
+  "@enterRoomCode": {
+    "description": "Label for entering room code"
+  },
+  "connect": "Connect",
+  "@connect": {
+    "description": "Button to connect to a room"
+  },
+  "searchingForPlayers": "Searching for players...",
+  "@searchingForPlayers": {
+    "description": "Status message while searching for players"
+  },
+  "pairedWith": "Paired with {playerName}!",
+  "@pairedWith": {
+    "description": "Message when successfully paired with another player",
+    "placeholders": {
+      "playerName": {
+        "type": "String",
+        "example": "Player 2"
+      }
+    }
   }
 }
