@@ -394,4 +394,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openSettings => 'Open Settings';
+
+  @override
+  String get yourTurn => 'Your Turn';
+
+  @override
+  String get opponentTurn => 'Opponent\'s Turn';
+
+  @override
+  String get waitingForOpponent => 'Waiting for opponent...';
+
+  @override
+  String get watchingOpponent => 'Watch your opponent';
+
+  @override
+  String get youWin => 'You Win!';
+
+  @override
+  String get youLose => 'You Lose!';
+
+  @override
+  String get opponentDisconnected => 'Opponent Disconnected';
+
+  @override
+  String get opponentRanOutOfLives => 'Opponent ran out of lives';
+
+  @override
+  String get youRanOutOfLives => 'You ran out of lives';
 }

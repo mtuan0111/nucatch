@@ -789,6 +789,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open Settings'**
   String get openSettings;
+
+  /// Indicates it's the player's turn in combat mode
+  ///
+  /// In en, this message translates to:
+  /// **'Your Turn'**
+  String get yourTurn;
+
+  /// Indicates it's the opponent's turn in combat mode
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent\'s Turn'**
+  String get opponentTurn;
+
+  /// Status message while waiting for opponent's move
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for opponent...'**
+  String get waitingForOpponent;
+
+  /// Instruction to watch opponent's moves
+  ///
+  /// In en, this message translates to:
+  /// **'Watch your opponent'**
+  String get watchingOpponent;
+
+  /// Victory message in combat mode
+  ///
+  /// In en, this message translates to:
+  /// **'You Win!'**
+  String get youWin;
+
+  /// Defeat message in combat mode
+  ///
+  /// In en, this message translates to:
+  /// **'You Lose!'**
+  String get youLose;
+
+  /// Message when opponent disconnects
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent Disconnected'**
+  String get opponentDisconnected;
+
+  /// Reason for winning when opponent loses all lives
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent ran out of lives'**
+  String get opponentRanOutOfLives;
+
+  /// Reason for losing when player loses all lives
+  ///
+  /// In en, this message translates to:
+  /// **'You ran out of lives'**
+  String get youRanOutOfLives;
 }
 
 class _AppLocalizationsDelegate

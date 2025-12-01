@@ -582,5 +582,42 @@
   "openSettings": "Open Settings",
   "@openSettings": {
     "description": "Button to open app settings"
+  },
+
+  "yourTurn": "Your Turn",
+  "@yourTurn": {
+    "description": "Indicates it's the player's turn in combat mode"
+  },
+  "opponentTurn": "Opponent's Turn",
+  "@opponentTurn": {
+    "description": "Indicates it's the opponent's turn in combat mode"
+  },
+  "waitingForOpponent": "Waiting for opponent...",
+  "@waitingForOpponent": {
+    "description": "Status message while waiting for opponent's move"
+  },
+  "watchingOpponent": "Watch your opponent",
+  "@watchingOpponent": {
+    "description": "Instruction to watch opponent's moves"
+  },
+  "youWin": "You Win!",
+  "@youWin": {
+    "description": "Victory message in combat mode"
+  },
+  "youLose": "You Lose!",
+  "@youLose": {
+    "description": "Defeat message in combat mode"
+  },
+  "opponentDisconnected": "Opponent Disconnected",
+  "@opponentDisconnected": {
+    "description": "Message when opponent disconnects"
+  },
+  "opponentRanOutOfLives": "Opponent ran out of lives",
+  "@opponentRanOutOfLives": {
+    "description": "Reason for winning when opponent loses all lives"
+  },
+  "youRanOutOfLives": "You ran out of lives",
+  "@youRanOutOfLives": {
+    "description": "Reason for losing when player loses all lives"
   }
 }

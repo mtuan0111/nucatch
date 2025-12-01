@@ -395,4 +395,31 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get openSettings => 'Mở cài đặt';
+
+  @override
+  String get yourTurn => 'Lượt của bạn';
+
+  @override
+  String get opponentTurn => 'Lượt đối thủ';
+
+  @override
+  String get waitingForOpponent => 'Đang chờ đối thủ...';
+
+  @override
+  String get watchingOpponent => 'Theo dõi đối thủ';
+
+  @override
+  String get youWin => 'Bạn thắng!';
+
+  @override
+  String get youLose => 'Bạn thua!';
+
+  @override
+  String get opponentDisconnected => 'Đối thủ đã ngắt kết nối';
+
+  @override
+  String get opponentRanOutOfLives => 'Đối thủ đã hết mạng';
+
+  @override
+  String get youRanOutOfLives => 'Bạn đã hết mạng';
 }

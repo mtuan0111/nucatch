@@ -7,12 +7,14 @@ import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
 import 'package:nucatch/blocs/objects/audio/audio_event.dart';
+import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
 import 'package:nucatch/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
+import 'package:nucatch/services/bluetooth_service.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
@@ -102,6 +104,11 @@ class _MenuNavState extends State<MenuNav> {
 
                                 // ..showSetDifficulty(),
                                 ),
+                            BlocProvider(
+                              create: (context) => CombatBloc(
+                                bluetoothService: BluetoothService(),
+                              ),
+                            ),
                           ],
                           child: const PlayerNav(),
                         ),

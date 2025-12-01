@@ -580,5 +580,42 @@
   "openSettings": "Mở cài đặt",
   "@openSettings": {
     "description": "Nút mở cài đặt ứng dụng"
+  },
+
+  "yourTurn": "Lượt của bạn",
+  "@yourTurn": {
+    "description": "Thông báo đến lượt người chơi trong chế độ đối kháng"
+  },
+  "opponentTurn": "Lượt đối thủ",
+  "@opponentTurn": {
+    "description": "Thông báo đến lượt đối thủ trong chế độ đối kháng"
+  },
+  "waitingForOpponent": "Đang chờ đối thủ...",
+  "@waitingForOpponent": {
+    "description": "Thông báo trạng thái khi chờ nước đi của đối thủ"
+  },
+  "watchingOpponent": "Theo dõi đối thủ",
+  "@watchingOpponent": {
+    "description": "Hướng dẫn theo dõi nước đi của đối thủ"
+  },
+  "youWin": "Bạn thắng!",
+  "@youWin": {
+    "description": "Thông báo chiến thắng trong chế độ đối kháng"
+  },
+  "youLose": "Bạn thua!",
+  "@youLose": {
+    "description": "Thông báo thất bại trong chế độ đối kháng"
+  },
+  "opponentDisconnected": "Đối thủ đã ngắt kết nối",
+  "@opponentDisconnected": {
+    "description": "Thông báo khi đối thủ ngắt kết nối"
+  },
+  "opponentRanOutOfLives": "Đối thủ đã hết mạng",
+  "@opponentRanOutOfLives": {
+    "description": "Lý do thắng khi đối thủ hết mạng"
+  },
+  "youRanOutOfLives": "Bạn đã hết mạng",
+  "@youRanOutOfLives": {
+    "description": "Lý do thua khi người chơi hết mạng"
   }
 }

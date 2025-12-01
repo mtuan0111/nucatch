@@ -11,6 +11,7 @@ import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_mode_setup_screen.dart';
+import 'package:nucatch/screens/menu_screens/player/combat_play_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/gameover_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/pairing_room_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
@@ -90,9 +91,11 @@ class _PlayerNavState extends State<PlayerNav> {
                     MaterialPage(
                       child: PopScope(
                         canPop: true,
-                        child: PlayScreen(
-                          title: menuArray(context)[MenuOption.start]!['text']!,
-                        ),
+                        child: state.playMode == PlayMode.combat
+                          ? const CombatPlayScreen()
+                          : PlayScreen(
+                              title: menuArray(context)[MenuOption.start]!['text']!,
+                            ),
                       ),
                     ),
                   if (state is GameOverState) ...[

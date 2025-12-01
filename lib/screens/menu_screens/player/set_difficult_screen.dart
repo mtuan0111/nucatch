@@ -5,6 +5,9 @@ import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
+import 'package:nucatch/blocs/objects/combat/combat_event.dart';
+import 'package:nucatch/services/bluetooth_service.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
@@ -130,19 +133,34 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                   context.read<PlayerNavCubit>();
                               final playMode = playerNavCubit.currentPlayMode;
 
-                              turnBloc.add(
-                                SetDifficulty(
-                                  difficulty: difficulty,
-                                  onChanged: () {
-                                    turnBloc.add(Start());
-
-                                    // Both solo and combat mode start the game after difficulty is set
-                                    // In combat mode, the host has chosen the difficulty
-                                    // TODO: Send difficulty to guest player via Bluetooth
-                                    playerNavCubit.showPlay(playMode: playMode);
-                                  },
-                                ),
-                              );
+                              if (playMode == PlayMode.combat) {
+                                // Combat mode: Start the combat game with selected difficulty
+                                final combatBloc = context.read<CombatBloc>();
+                                final bluetoothService = context.read<BluetoothService>();
+                                
+                                // First initialize the combat game with host/guest status
+                                combatBloc.add(CombatGameStarted(
+                                  difficulty: difficulty, 
+                                  isHost: bluetoothService.isHost
+                                ));
+                                
+                                // Then handle difficulty selection (will send to opponent if host)
+                                combatBloc.add(DifficultySelected(difficulty: difficulty));
+                                
+                                // Navigate to play screen with combat mode
+                                playerNavCubit.showPlay(playMode: playMode);
+                              } else {
+                                // Solo mode: Use existing logic
+                                turnBloc.add(
+                                  SetDifficulty(
+                                    difficulty: difficulty,
+                                    onChanged: () {
+                                      turnBloc.add(Start());
+                                      playerNavCubit.showPlay(playMode: playMode);
+                                    },
+                                  ),
+                                );
+                              }
                             }
 
                             return GestureDetector(
