@@ -546,5 +546,41 @@
         "example": "Player 2"
       }
     }
+  },
+  "bluetoothPermissionRequired": "Bluetooth Permission Required",
+  "@bluetoothPermissionRequired": {
+    "description": "Title for Bluetooth permission dialog"
+  },
+  "bluetoothPermissionMessage": "Combat Mode requires Bluetooth permissions to connect with other players. Please grant Bluetooth permissions in your device settings.",
+  "@bluetoothPermissionMessage": {
+    "description": "Message explaining why Bluetooth permission is needed"
+  },
+  "bluetoothPermissionPermanentlyDeniedMessage": "Bluetooth permissions were previously denied. To use Combat Mode, you need to enable Bluetooth permissions in your device settings.\n\nPlease go to Settings > NuCatch > Permissions and enable Bluetooth.",
+  "@bluetoothPermissionPermanentlyDeniedMessage": {
+    "description": "Message when Bluetooth permission is permanently denied"
+  },
+  "bluetoothDisabled": "Bluetooth Disabled",
+  "@bluetoothDisabled": {
+    "description": "Title for Bluetooth disabled dialog"
+  },
+  "bluetoothDisabledMessage": "Combat Mode requires Bluetooth to be enabled. Please enable Bluetooth in your device settings.",
+  "@bluetoothDisabledMessage": {
+    "description": "Message when Bluetooth is disabled"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button label"
+  },
+  "grantPermission": "Grant Permission",
+  "@grantPermission": {
+    "description": "Button to grant permission"
+  },
+  "checkAgain": "Check Again",
+  "@checkAgain": {
+    "description": "Button to check again"
+  },
+  "openSettings": "Open Settings",
+  "@openSettings": {
+    "description": "Button to open app settings"
   }
 }

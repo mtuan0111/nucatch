@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_ble_peripheral/flutter_ble_peripheral.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart' as permission_handler;
+import 'package:permission_handler/permission_handler.dart' show Permission;
 
 class BluetoothService {
   static final BluetoothService _instance = BluetoothService._internal();
@@ -90,13 +91,29 @@ class BluetoothService {
         return bluetooth.isGranted && location.isGranted;
       }
     } else if (Platform.isIOS) {
+      // On iOS 13+, Bluetooth permission is granted automatically when Bluetooth APIs are used
+      // There's no separate permission dialog. Just check if Bluetooth is available.
+      // The permission_handler's bluetooth permission doesn't work the same way on iOS
       final bluetooth = await Permission.bluetooth.status;
-      return bluetooth.isGranted;
+      print('[BluetoothService] iOS Bluetooth permission status: $bluetooth');
+      
+      // On iOS, if status is denied, it means the user hasn't used Bluetooth yet
+      // or the Info.plist keys are missing. Return true to allow the app to proceed
+      // and trigger the automatic permission when using Bluetooth APIs
+      if (bluetooth.isDenied || bluetooth.isLimited || bluetooth.isGranted || bluetooth.isProvisional) {
+        print('[BluetoothService] iOS: Bluetooth available (status: $bluetooth)');
+        return true;
+      }
+      
+      // Only return false if permanently denied
+      print('[BluetoothService] iOS: Bluetooth not available (status: $bluetooth)');
+      return !bluetooth.isPermanentlyDenied;
     }
     return false;
   }
 
   /// Request Bluetooth permissions
+  /// Returns true if permissions granted, false otherwise
   Future<bool> requestPermissions() async {
     if (Platform.isAndroid) {
       // Android 12+ requires different permissions
@@ -123,10 +140,59 @@ class BluetoothService {
         return bluetooth.isGranted && location.isGranted;
       }
     } else if (Platform.isIOS) {
-      final bluetooth = await Permission.bluetooth.request();
-      return bluetooth.isGranted;
+      // On iOS, Bluetooth permission is granted automatically when the app uses Bluetooth APIs
+      // We don't need to explicitly request it. Just check the current status.
+      print('[BluetoothService] iOS: Checking Bluetooth availability...');
+      final bluetooth = await Permission.bluetooth.status;
+      print('[BluetoothService] iOS Bluetooth permission status: $bluetooth');
+      
+      // On iOS, return true unless permanently denied
+      // The actual permission will be granted when we start using Bluetooth
+      if (bluetooth.isPermanentlyDenied) {
+        print('[BluetoothService] iOS: Bluetooth permanently denied');
+        return false;
+      }
+      
+      print('[BluetoothService] iOS: Bluetooth available, will be granted when used');
+      return true;
     }
     return false;
+  }
+
+  /// Check if Bluetooth permissions are permanently denied
+  Future<bool> isPermissionPermanentlyDenied() async {
+    if (Platform.isAndroid) {
+      if (Platform.version.contains('12') ||
+          Platform.version.contains('13') ||
+          Platform.version.contains('14') ||
+          Platform.version.contains('15')) {
+        final bluetoothScan = await Permission.bluetoothScan.status;
+        final bluetoothConnect = await Permission.bluetoothConnect.status;
+        final bluetoothAdvertise = await Permission.bluetoothAdvertise.status;
+        final location = await Permission.locationWhenInUse.status;
+
+        return bluetoothScan.isPermanentlyDenied ||
+            bluetoothConnect.isPermanentlyDenied ||
+            bluetoothAdvertise.isPermanentlyDenied ||
+            location.isPermanentlyDenied;
+      } else {
+        final bluetooth = await Permission.bluetooth.status;
+        final location = await Permission.locationWhenInUse.status;
+
+        return bluetooth.isPermanentlyDenied || location.isPermanentlyDenied;
+      }
+    } else if (Platform.isIOS) {
+      final bluetooth = await Permission.bluetooth.status;
+      print('[BluetoothService] iOS Bluetooth permission permanently denied check: ${bluetooth.isPermanentlyDenied}, status: $bluetooth');
+      return bluetooth.isPermanentlyDenied;
+    }
+    return false;
+  }
+
+  /// Open app settings to allow user to manually grant permissions
+  /// Use this when permissions are permanently denied
+  Future<bool> openAppSettings() async {
+    return await permission_handler.openAppSettings();
   }
 
   /// Turn on Bluetooth (Android only)

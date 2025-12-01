@@ -12,6 +12,13 @@
             "deviceId": "R7AX30C20KP"
         },
         {
+            "name": "nucatch - android device - Flip 4 - cable",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "R5CW51ALS7E"
+        },
+        {
             "name": "nucatch - android device - Flip 4",
             "request": "launch",
             "type": "dart",

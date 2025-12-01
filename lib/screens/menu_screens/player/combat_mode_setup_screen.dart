@@ -34,7 +34,10 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
   Widget build(BuildContext context) {
     return BlocListener<BluetoothBloc, BluetoothState>(
       listener: (context, state) {
+        print(
+            '[CombatModeSetupScreen] Bloc state changed: ${state.runtimeType}');
         if (state is BluetoothErrorState) {
+          print('[CombatModeSetupScreen] Error: ${state.errorMessage}');
           setState(() => _isProcessing = false);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -42,15 +45,23 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
               backgroundColor: Colors.red,
             ),
           );
-        } else if (state is BluetoothPermissionDeniedState) {
+        } else if (state is BluetoothPermissionPermanentlyDeniedState) {
+          print('[CombatModeSetupScreen] Permanently denied');
           setState(() => _isProcessing = false);
-          _showPermissionDeniedDialog(context);
+          _showPermissionPermanentlyDeniedDialog(context);
+        } else if (state is BluetoothPermissionDeniedState) {
+          print('[CombatModeSetupScreen] Permission denied');
+          setState(() => _isProcessing = false);
+          _showPermissionPermanentlyDeniedDialog(context);
+          // _showPermissionDeniedDialog(context);
         } else if (state is BluetoothDisabledState) {
+          print('[CombatModeSetupScreen] Bluetooth disabled');
           setState(() => _isProcessing = false);
           _showBluetoothDisabledDialog(context);
         } else if (state is BluetoothReadyState &&
             state.permissionsGranted &&
             _isProcessing) {
+          print('[CombatModeSetupScreen] Ready and processing, navigating...');
           // Permissions were just granted, proceed with navigation
           setState(() => _isProcessing = false);
           // Use a small delay to ensure dialog is dismissed
@@ -143,18 +154,15 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Bluetooth Permission Required'),
-        content: const Text(
-          'Combat Mode requires Bluetooth permissions to connect with other players. '
-          'Please grant Bluetooth permissions in your device settings.',
-        ),
+        title: Text(lang(context).bluetoothPermissionRequired),
+        content: Text(lang(context).bluetoothPermissionMessage),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(dialogContext).pop(); // Close dialog
               context.read<MenuBloc>().add(ShowMenu()); // Go back to main menu
             },
-            child: const Text('Cancel'),
+            child: Text(lang(context).cancel),
           ),
           TextButton(
             onPressed: () {
@@ -164,7 +172,7 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                   .read<BluetoothBloc>()
                   .add(BluetoothRequestPermissionsEvent());
             },
-            child: const Text('Grant Permission'),
+            child: Text(lang(context).grantPermission),
           ),
         ],
       ),
@@ -175,18 +183,15 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Bluetooth Disabled'),
-        content: const Text(
-          'Combat Mode requires Bluetooth to be enabled. '
-          'Please enable Bluetooth in your device settings.',
-        ),
+        title: Text(lang(context).bluetoothDisabled),
+        content: Text(lang(context).bluetoothDisabledMessage),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(dialogContext).pop(); // Close dialog
               context.read<MenuBloc>().add(ShowMenu()); // Go back to main menu
             },
-            child: const Text('Cancel'),
+            child: Text(lang(context).cancel),
           ),
           TextButton(
             onPressed: () {
@@ -196,7 +201,35 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                   .read<BluetoothBloc>()
                   .add(BluetoothCheckPermissionsEvent());
             },
-            child: const Text('Check Again'),
+            child: Text(lang(context).checkAgain),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPermissionPermanentlyDeniedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(lang(context).bluetoothPermissionRequired),
+        content:
+            Text(lang(context).bluetoothPermissionPermanentlyDeniedMessage),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(); // Close dialog
+              context.read<MenuBloc>().add(ShowMenu()); // Go back to main menu
+            },
+            child: Text(lang(context).cancel),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              // Open app settings
+              context.read<BluetoothBloc>().add(BluetoothOpenSettingsEvent());
+            },
+            child: Text(lang(context).openSettings),
           ),
         ],
       ),

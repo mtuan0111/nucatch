@@ -365,4 +365,34 @@ class AppLocalizationsVi extends AppLocalizations {
   String pairedWith(String playerName) {
     return 'Đã ghép đôi với $playerName!';
   }
+
+  @override
+  String get bluetoothPermissionRequired => 'Yêu cầu quyền Bluetooth';
+
+  @override
+  String get bluetoothPermissionMessage =>
+      'Chế độ đối kháng cần quyền Bluetooth để kết nối với người chơi khác. Vui lòng cấp quyền Bluetooth trong cài đặt thiết bị.';
+
+  @override
+  String get bluetoothPermissionPermanentlyDeniedMessage =>
+      'Quyền Bluetooth đã bị từ chối trước đó. Để sử dụng Chế độ đối kháng, bạn cần bật quyền Bluetooth trong cài đặt thiết bị.\n\nVui lòng vào Cài đặt > NuCatch > Quyền và bật Bluetooth.';
+
+  @override
+  String get bluetoothDisabled => 'Bluetooth đã tắt';
+
+  @override
+  String get bluetoothDisabledMessage =>
+      'Chế độ đối kháng yêu cầu Bluetooth phải được bật. Vui lòng bật Bluetooth trong cài đặt thiết bị.';
+
+  @override
+  String get cancel => 'Hủy';
+
+  @override
+  String get grantPermission => 'Cấp quyền';
+
+  @override
+  String get checkAgain => 'Kiểm tra lại';
+
+  @override
+  String get openSettings => 'Mở cài đặt';
 }

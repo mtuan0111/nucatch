@@ -735,6 +735,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Paired with {playerName}!'**
   String pairedWith(String playerName);
+
+  /// Title for Bluetooth permission dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth Permission Required'**
+  String get bluetoothPermissionRequired;
+
+  /// Message explaining why Bluetooth permission is needed
+  ///
+  /// In en, this message translates to:
+  /// **'Combat Mode requires Bluetooth permissions to connect with other players. Please grant Bluetooth permissions in your device settings.'**
+  String get bluetoothPermissionMessage;
+
+  /// Message when Bluetooth permission is permanently denied
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth permissions were previously denied. To use Combat Mode, you need to enable Bluetooth permissions in your device settings.\n\nPlease go to Settings > NuCatch > Permissions and enable Bluetooth.'**
+  String get bluetoothPermissionPermanentlyDeniedMessage;
+
+  /// Title for Bluetooth disabled dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth Disabled'**
+  String get bluetoothDisabled;
+
+  /// Message when Bluetooth is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Combat Mode requires Bluetooth to be enabled. Please enable Bluetooth in your device settings.'**
+  String get bluetoothDisabledMessage;
+
+  /// Cancel button label
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Button to grant permission
+  ///
+  /// In en, this message translates to:
+  /// **'Grant Permission'**
+  String get grantPermission;
+
+  /// Button to check again
+  ///
+  /// In en, this message translates to:
+  /// **'Check Again'**
+  String get checkAgain;
+
+  /// Button to open app settings
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get openSettings;
 }
 
 class _AppLocalizationsDelegate

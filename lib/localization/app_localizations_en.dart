@@ -364,4 +364,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String pairedWith(String playerName) {
     return 'Paired with $playerName!';
   }
+
+  @override
+  String get bluetoothPermissionRequired => 'Bluetooth Permission Required';
+
+  @override
+  String get bluetoothPermissionMessage =>
+      'Combat Mode requires Bluetooth permissions to connect with other players. Please grant Bluetooth permissions in your device settings.';
+
+  @override
+  String get bluetoothPermissionPermanentlyDeniedMessage =>
+      'Bluetooth permissions were previously denied. To use Combat Mode, you need to enable Bluetooth permissions in your device settings.\n\nPlease go to Settings > NuCatch > Permissions and enable Bluetooth.';
+
+  @override
+  String get bluetoothDisabled => 'Bluetooth Disabled';
+
+  @override
+  String get bluetoothDisabledMessage =>
+      'Combat Mode requires Bluetooth to be enabled. Please enable Bluetooth in your device settings.';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get grantPermission => 'Grant Permission';
+
+  @override
+  String get checkAgain => 'Check Again';
+
+  @override
+  String get openSettings => 'Open Settings';
 }

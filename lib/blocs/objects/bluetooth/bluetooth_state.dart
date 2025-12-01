@@ -29,6 +29,11 @@ class BluetoothPermissionDeniedState extends BluetoothState {
       : super(errorMessage: errorMessage);
 }
 
+class BluetoothPermissionPermanentlyDeniedState extends BluetoothState {
+  const BluetoothPermissionPermanentlyDeniedState({String? errorMessage})
+      : super(errorMessage: errorMessage);
+}
+
 class BluetoothDisabledState extends BluetoothState {
   const BluetoothDisabledState();
 }

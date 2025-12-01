@@ -53,3 +53,5 @@ class BluetoothMessageReceivedEvent extends BluetoothEvent {
 
   BluetoothMessageReceivedEvent(this.message);
 }
+
+class BluetoothOpenSettingsEvent extends BluetoothEvent {}

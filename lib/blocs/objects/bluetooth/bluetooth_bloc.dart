@@ -28,6 +28,7 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
     on<BluetoothDeviceDiscoveredEvent>(_onDeviceDiscovered);
     on<BluetoothConnectionStateChangedEvent>(_onConnectionStateChanged);
     on<BluetoothMessageReceivedEvent>(_onMessageReceived);
+    on<BluetoothOpenSettingsEvent>(_onOpenSettings);
 
     // Subscribe to service streams
     _setupSubscriptions();
@@ -65,10 +66,12 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
     BluetoothCheckPermissionsEvent event,
     Emitter<BluetoothState> emit,
   ) async {
+    print('[BluetoothBloc] Checking permissions...');
     emit(const BluetoothPermissionCheckingState());
 
     final isSupported = await _bluetoothService.isBluetoothSupported();
     if (!isSupported) {
+      print('[BluetoothBloc] Bluetooth not supported');
       emit(const BluetoothErrorState(
         errorMessage: 'Bluetooth is not supported on this device',
       ));
@@ -76,14 +79,17 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
     }
 
     final isEnabled = await _bluetoothService.isBluetoothEnabled();
+    print('[BluetoothBloc] Bluetooth enabled: $isEnabled');
 
     if (!isEnabled) {
+      print('[BluetoothBloc] Emitting BluetoothDisabledState');
       emit(const BluetoothDisabledState());
       return;
     }
 
     // Check if we already have permissions
     final hasPermissions = await _bluetoothService.hasPermissions();
+    print('[BluetoothBloc] Has permissions: $hasPermissions');
 
     emit(BluetoothReadyState(
       permissionsGranted: hasPermissions,
@@ -95,16 +101,37 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
     BluetoothRequestPermissionsEvent event,
     Emitter<BluetoothState> emit,
   ) async {
+    print('[BluetoothBloc] Requesting permissions...');
+    // First check if permissions are permanently denied
+    final isPermanentlyDenied =
+        await _bluetoothService.isPermissionPermanentlyDenied();
+    print('[BluetoothBloc] Permanently denied: $isPermanentlyDenied');
+
+    if (isPermanentlyDenied) {
+      print(
+          '[BluetoothBloc] Emitting BluetoothPermissionPermanentlyDeniedState');
+      emit(
+        BluetoothPermissionPermanentlyDeniedState(
+          errorMessage:
+              'Bluetooth permissions were denied. Please enable them in Settings to use Combat Mode.',
+        ),
+      );
+      return;
+    }
+
     final hasPermissions = await _bluetoothService.requestPermissions();
+    print('[BluetoothBloc] Permissions granted: $hasPermissions');
     final isEnabled = await _bluetoothService.isBluetoothEnabled();
 
     if (!hasPermissions) {
-      emit(const BluetoothPermissionDeniedState(
+      print('[BluetoothBloc] Emitting BluetoothPermissionDeniedState');
+      emit(BluetoothPermissionDeniedState(
         errorMessage: 'Bluetooth permissions are required for combat mode',
       ));
       return;
     }
 
+    print('[BluetoothBloc] Emitting BluetoothReadyState');
     emit(BluetoothReadyState(
       permissionsGranted: hasPermissions,
       isBluetoothEnabled: isEnabled,
@@ -253,6 +280,13 @@ class BluetoothBloc extends Bloc<BluetoothEvent, BluetoothState> {
   ) {
     // Handle incoming game messages
     // This can be extended to update game state based on message type
+  }
+
+  Future<void> _onOpenSettings(
+    BluetoothOpenSettingsEvent event,
+    Emitter<BluetoothState> emit,
+  ) async {
+    await _bluetoothService.openAppSettings();
   }
 
   @override

@@ -544,5 +544,41 @@
         "example": "Người chơi 2"
       }
     }
+  },
+  "bluetoothPermissionRequired": "Yêu cầu quyền Bluetooth",
+  "@bluetoothPermissionRequired": {
+    "description": "Tiêu đề hộp thoại yêu cầu quyền Bluetooth"
+  },
+  "bluetoothPermissionMessage": "Chế độ đối kháng cần quyền Bluetooth để kết nối với người chơi khác. Vui lòng cấp quyền Bluetooth trong cài đặt thiết bị.",
+  "@bluetoothPermissionMessage": {
+    "description": "Thông báo giải thích tại sao cần quyền Bluetooth"
+  },
+  "bluetoothPermissionPermanentlyDeniedMessage": "Quyền Bluetooth đã bị từ chối trước đó. Để sử dụng Chế độ đối kháng, bạn cần bật quyền Bluetooth trong cài đặt thiết bị.\n\nVui lòng vào Cài đặt > NuCatch > Quyền và bật Bluetooth.",
+  "@bluetoothPermissionPermanentlyDeniedMessage": {
+    "description": "Thông báo khi quyền Bluetooth bị từ chối vĩnh viễn"
+  },
+  "bluetoothDisabled": "Bluetooth đã tắt",
+  "@bluetoothDisabled": {
+    "description": "Tiêu đề hộp thoại Bluetooth đã tắt"
+  },
+  "bluetoothDisabledMessage": "Chế độ đối kháng yêu cầu Bluetooth phải được bật. Vui lòng bật Bluetooth trong cài đặt thiết bị.",
+  "@bluetoothDisabledMessage": {
+    "description": "Thông báo khi Bluetooth đã tắt"
+  },
+  "cancel": "Hủy",
+  "@cancel": {
+    "description": "Nhãn nút hủy"
+  },
+  "grantPermission": "Cấp quyền",
+  "@grantPermission": {
+    "description": "Nút cấp quyền"
+  },
+  "checkAgain": "Kiểm tra lại",
+  "@checkAgain": {
+    "description": "Nút kiểm tra lại"
+  },
+  "openSettings": "Mở cài đặt",
+  "@openSettings": {
+    "description": "Nút mở cài đặt ứng dụng"
   }
 }
