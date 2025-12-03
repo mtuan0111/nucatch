@@ -7,7 +7,6 @@ import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
-import 'package:nucatch/services/bluetooth_service.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
@@ -134,19 +133,19 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                               final playMode = playerNavCubit.currentPlayMode;
 
                               if (playMode == PlayMode.combat) {
-                                // Combat mode: Start the combat game with selected difficulty
+                                // Combat mode: Initialize and send difficulty selection
                                 final combatBloc = context.read<CombatBloc>();
-                                final bluetoothService = context.read<BluetoothService>();
-                                
-                                // First initialize the combat game with host/guest status
+
+                                // Initialize combat game with host/guest status and difficulty
                                 combatBloc.add(CombatGameStarted(
-                                  difficulty: difficulty, 
-                                  isHost: bluetoothService.isHost
+                                  difficulty: difficulty,
+                                  isHost: combatBloc.isHost,
                                 ));
-                                
-                                // Then handle difficulty selection (will send to opponent if host)
-                                combatBloc.add(DifficultySelected(difficulty: difficulty));
-                                
+
+                                // Send difficulty selected event (will notify opponent via Firestore)
+                                combatBloc.add(
+                                    DifficultySelected(difficulty: difficulty));
+
                                 // Navigate to play screen with combat mode
                                 playerNavCubit.showPlay(playMode: playMode);
                               } else {
@@ -156,7 +155,8 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                     difficulty: difficulty,
                                     onChanged: () {
                                       turnBloc.add(Start());
-                                      playerNavCubit.showPlay(playMode: playMode);
+                                      playerNavCubit.showPlay(
+                                          playMode: playMode);
                                     },
                                   ),
                                 );

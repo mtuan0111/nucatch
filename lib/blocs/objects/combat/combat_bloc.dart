@@ -10,6 +10,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   final CombatRoomService _roomService;
   StreamSubscription? _messageSubscription;
 
+  // Expose isHost status from room service
+  bool get isHost => _roomService.isHost;
+
   CombatBloc({required CombatRoomService roomService})
       : _roomService = roomService,
         super(const CombatState()) {

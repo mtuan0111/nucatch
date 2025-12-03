@@ -78,7 +78,7 @@ class _PlayerNavState extends State<PlayerNav> {
                     ),
                   if (state is PairingRoomState)
                     MaterialPage(
-                      child: PairingRoomScreenV2(
+                      child: PairingRoomScreen(
                         isHost: state.isHost,
                         roomCode: state.roomCode,
                       ),

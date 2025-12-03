@@ -1,15 +1,17 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart' as fbp;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
-import 'package:nucatch/blocs/objects/bluetooth/bluetooth_bloc.dart';
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/services/bluetooth_proximity_service.dart';
+import 'package:nucatch/services/combat_room_service.dart';
 
+/// New pairing room screen that uses Firestore for data + BLE for proximity
 class PairingRoomScreen extends StatefulWidget {
   final bool isHost;
   final String? roomCode;
@@ -26,256 +28,266 @@ class PairingRoomScreen extends StatefulWidget {
 
 class _PairingRoomScreenState extends State<PairingRoomScreen> {
   final TextEditingController _passcodeController = TextEditingController();
-  bool _isPaired = false;
-  String? _pairedPlayerName;
-  bool _isSearching = false;
-  List<fbp.ScanResult> _discoveredDevices = [];
-  BluetoothBloc? _bluetoothBloc;
+  final CombatRoomService _roomService = CombatRoomService();
+  final BluetoothProximityService _proximityService =
+      BluetoothProximityService();
+
+  String? _myPlayerId;
+  RoomState _roomState = RoomState.waiting;
+  List<ProximityDevice> _nearbyDevices = [];
+  bool _isProximityActive = false;
+  StreamSubscription? _roomStateSubscription;
+  StreamSubscription? _proximitySubscription;
 
   @override
   void initState() {
     super.initState();
-    if (widget.isHost) {
-      // Host starts advertising
-      _startListeningForConnections();
-    }
-  }
+    _myPlayerId = _generatePlayerId();
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Save reference to BluetoothBloc for use in dispose()
-    _bluetoothBloc = context.read<BluetoothBloc>();
+    if (widget.isHost && widget.roomCode != null) {
+      _createRoom();
+    }
+
+    // Listen to room state
+    _roomStateSubscription = _roomService.roomStateStream.listen((state) {
+      setState(() {
+        _roomState = state;
+      });
+
+      // Handle state transitions
+      if (state == RoomState.bothReady) {
+        _showBothReadyDialog();
+      } else if (state == RoomState.playing) {
+        _handleGameStarted();
+      } else if (state == RoomState.deleted) {
+        _handleRoomDeleted();
+      }
+    });
+
+    // Listen to proximity
+    _proximitySubscription =
+        _proximityService.nearbyDevicesStream.listen((devices) {
+      setState(() {
+        _nearbyDevices = devices;
+      });
+    });
   }
 
   @override
   void dispose() {
     _passcodeController.dispose();
-    // Disconnect Bluetooth if connected using saved reference
-    _bluetoothBloc?.add(BluetoothDisconnectEvent());
+    _roomStateSubscription?.cancel();
+    _proximitySubscription?.cancel();
+    _proximityService.stopAdvertising();
+    _proximityService.stopScanning();
+
+    // Only leave room if game hasn't started yet
+    // (if playing/ended, room should persist for the game session)
+    if (_roomState != RoomState.playing && _roomState != RoomState.ended) {
+      _roomService.leaveRoom();
+    }
+
     super.dispose();
   }
 
-  void _startListeningForConnections() {
-    setState(() {
-      _isSearching = true;
-    });
-
-    // Start Bluetooth hosting
-    if (widget.roomCode != null) {
-      context.read<BluetoothBloc>().add(
-            BluetoothStartHostingEvent(widget.roomCode!),
-          );
-    }
+  String _generatePlayerId() {
+    return 'player_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(1000)}';
   }
 
-  void _connectToRoom() {
-    if (_passcodeController.text.isEmpty ||
-        _passcodeController.text.length != 3) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a valid 3-digit room code'),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return;
-    }
+  Future<void> _createRoom() async {
+    try {
+      await _roomService.createRoom(widget.roomCode!, _myPlayerId!);
 
-    setState(() {
-      _isSearching = true;
-    });
+      // Start BLE advertising for proximity
+      await _proximityService.startAdvertising(widget.roomCode!);
 
-    // Start scanning for the specific room code
-    context.read<BluetoothBloc>().add(
-          BluetoothStartScanningEvent(
-            roomCodeFilter: _passcodeController.text,
-          ),
-        );
-  }
-
-  void _rescanRoom() {
-    if (_passcodeController.text.isEmpty ||
-        _passcodeController.text.length != 3) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a valid 3-digit room code'),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return;
-    }
-
-    // Stop current scan
-    context.read<BluetoothBloc>().add(BluetoothStopScanningEvent());
-
-    // Wait a bit and restart scan
-    Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
-        _isSearching = true;
+        _isProximityActive = true;
       });
 
-      // Start scanning again for the specific room code
-      context.read<BluetoothBloc>().add(
-            BluetoothStartScanningEvent(
-              roomCodeFilter: _passcodeController.text,
-            ),
-          );
-    });
+      print('✅ Room created: ${widget.roomCode}');
+    } catch (e) {
+      _showError('Failed to create room: $e');
+    }
   }
 
-  void _startGame() {
-    // Only host can start the game
-    if (!widget.isHost || !_isPaired) {
+  Future<void> _joinRoom() async {
+    final roomCode = _passcodeController.text;
+
+    if (roomCode.isEmpty || roomCode.length != 3) {
+      _showError('Please enter a valid 3-digit room code');
       return;
     }
 
-    // Navigate to difficulty selection (host chooses for both players)
-    context.read<PlayerNavCubit>().showSetDifficulty(playMode: PlayMode.combat);
+    try {
+      // Join Firestore room
+      await _roomService.joinRoom(roomCode, _myPlayerId!);
+
+      // Start BLE scanning for proximity check
+      await _proximityService.startScanning(roomCode);
+
+      setState(() {
+        _isProximityActive = true;
+      });
+
+      print('✅ Joined room: $roomCode');
+    } catch (e) {
+      _showError('Failed to join room: $e');
+    }
+  }
+
+  Future<void> _setReady() async {
+    try {
+      await _roomService.setPlayerReady();
+      print('✅ Player marked as ready');
+    } catch (e) {
+      _showError('Failed to set ready: $e');
+    }
+  }
+
+  void _showBothReadyDialog() {
+    if (widget.isHost) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          title: const Text('Both Players Ready!'),
+          content: const Text('Start the game?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _startGame();
+              },
+              child: const Text('Start Game'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  void _handleRoomDeleted() {
+    _showError('Room was deleted by host');
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        context.read<MenuBloc>().add(ShowMenu());
+      }
+    });
+  }
+
+  void _handleGameStarted() {
+    print('🎮 [Pairing] Game started, navigating to difficulty screen');
+    if (mounted) {
+      context
+          .read<PlayerNavCubit>()
+          .showSetDifficulty(playMode: PlayMode.combat);
+    }
+  }
+
+  Future<void> _startGame() async {
+    if (!widget.isHost) return;
+
+    try {
+      await _roomService.startGame();
+
+      // Navigate to difficulty selection
+      if (mounted) {
+        context
+            .read<PlayerNavCubit>()
+            .showSetDifficulty(playMode: PlayMode.combat);
+      }
+    } catch (e) {
+      _showError('Failed to start game: $e');
+    }
+  }
+
+  void _showError(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  String _getRoomStateText() {
+    switch (_roomState) {
+      case RoomState.waiting:
+        return 'Waiting for opponent...';
+      case RoomState.guestJoined:
+        return 'Opponent joined!';
+      case RoomState.bothReady:
+        return 'Both players ready!';
+      case RoomState.playing:
+        return 'Game in progress';
+      case RoomState.ended:
+        return 'Game ended';
+      case RoomState.deleted:
+        return 'Room deleted';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<BluetoothBloc, BluetoothState>(
-      listener: (context, state) {
-        if (state is BluetoothConnectedState) {
-          setState(() {
-            _isPaired = true;
-            _pairedPlayerName = state.peerName;
-            _isSearching = false;
-          });
-        } else if (state is BluetoothScanningState) {
-          // Update discovered devices list
-          setState(() {
-            _discoveredDevices = state.discoveredDevices;
-          });
-        } else if (state is BluetoothHostingState) {
-          // Hosting started successfully
-          setState(() {
-            _isSearching = true;
-          });
-        } else if (state is BluetoothErrorState) {
-          setState(() {
-            _isSearching = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage ?? 'Bluetooth error occurred'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        } else if (state is BluetoothDisconnectedState) {
-          setState(() {
-            _isPaired = false;
-            _pairedPlayerName = null;
-            _isSearching = false;
-          });
-
-          if (state.reason != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Disconnected: ${state.reason}'),
-                backgroundColor: Colors.orange,
-              ),
-            );
-          }
-        }
-      },
-      child: Scaffold(
-        body: Container(
-          decoration: LayoutConfig(context).gradientDecoration,
-          child: SafeArea(
-            child: DeviceWrapper(
-              child: Column(
-                children: [
-                  // Header
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      widget.isHost
-                          ? lang(context).hostRoom
-                          : lang(context).joinRoom,
-                      style: LayoutConfig(context).titleSectionStyle(),
-                    ),
-                  ),
-
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (widget.isHost) ...[
-                            // Host view: Show room code
-                            _buildHostView(),
-                          ] else ...[
-                            // Guest view: Enter room code
-                            _buildGuestView(),
-                          ],
-
-                          const SizedBox(height: 40),
-
-                          // Connection status
-                          if (_isSearching) ...[
-                            const CircularProgressIndicator(),
-                            const SizedBox(height: 20),
-                            Text(
-                              lang(context).searchingForPlayers,
-                              style:
-                                  LayoutConfig(context).contentSectionStyle(),
-                            ),
-                          ] else if (_isPaired) ...[
-                            Icon(
-                              FontAwesomeIcons.circleCheck,
-                              size: 60,
-                              color: Colors.green,
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              lang(context)
-                                  .pairedWith(_pairedPlayerName ?? "Player"),
-                              style: LayoutConfig(context).titleSectionStyle(),
-                              textAlign: TextAlign.center,
-                            ),
-                            if (widget.isHost) ...[
-                              const SizedBox(height: 30),
-                              CustomElevatedButton(
-                                text: lang(context).start,
-                                shapeAt: RoundedWithShapeAt.all,
-                                backgroundColor: Colors.green,
-                                onPressed: _startGame,
-                              ),
-                            ] else ...[
-                              const SizedBox(height: 20),
-                              Text(
-                                'Waiting for host to start...',
-                                style:
-                                    LayoutConfig(context).contentSectionStyle(),
-                                textAlign: TextAlign.center,
-                              ),
-                              // TODO: Listen for Bluetooth message from host to start game
-                              // When host chooses difficulty and starts, guest should receive
-                              // a message and navigate directly to play screen
-                            ],
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  // Back Button
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: CustomElevatedButton(
-                      text: lang(context).mainMenu,
-                      shapeAt: RoundedWithShapeAt.all,
-                      onPressed: () {
-                        context.read<MenuBloc>().add(ShowMenu());
+    return Scaffold(
+      body: Container(
+        decoration: LayoutConfig(context).gradientDecoration,
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Header
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const FaIcon(FontAwesomeIcons.arrowLeft),
+                      onPressed: () async {
+                        // Leave room before navigating back
+                        await _roomService.leaveRoom();
+                        if (mounted) {
+                          context.read<MenuBloc>().add(ShowMenu());
+                        }
                       },
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: Text(
+                        widget.isHost ? 'Host Room' : 'Join Room',
+                        style: LayoutConfig(context).titleSectionStyle(),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(width: 48), // Balance the back button
+                  ],
+                ),
               ),
-            ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (widget.isHost) ...[
+                        _buildHostView(),
+                      ] else ...[
+                        _buildGuestView(),
+                      ],
+                      const SizedBox(height: 40),
+                      _buildProximityIndicator(),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -286,51 +298,68 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
     return Column(
       children: [
         Text(
-          lang(context).roomCode,
-          style: LayoutConfig(context).contentSectionStyle(),
+          'Room Code',
+          style: LayoutConfig(context).titleSectionStyle(),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withOpacity(0.1),
             borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.5),
-              width: 2,
-            ),
           ),
           child: Text(
-            widget.roomCode ?? "---",
-            style: LayoutConfig(context).displaySmallStyle().copyWith(
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 8,
-                ),
+            widget.roomCode ?? '---',
+            style: const TextStyle(
+              fontSize: 48,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 8,
+            ),
           ),
         ),
         const SizedBox(height: 20),
         Text(
-          lang(context).shareCodeWithPlayer,
-          style: LayoutConfig(context).contentSectionStyle(),
-          textAlign: TextAlign.center,
+          _getRoomStateText(),
+          style: TextStyle(
+            fontSize: 18,
+            color:
+                _roomState == RoomState.bothReady ? Colors.green : Colors.white,
+          ),
         ),
+        if (_roomState == RoomState.guestJoined ||
+            _roomState == RoomState.bothReady) ...[
+          const SizedBox(height: 20),
+          ElevatedButton.icon(
+            onPressed: _roomState == RoomState.guestJoined ? _setReady : null,
+            icon: const FaIcon(FontAwesomeIcons.check),
+            label: const Text('Ready'),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+            ),
+          ),
+        ],
+        if (_roomState == RoomState.bothReady && widget.isHost) ...[
+          const SizedBox(height: 20),
+          ElevatedButton.icon(
+            onPressed: _startGame,
+            icon: const FaIcon(FontAwesomeIcons.play),
+            label: const Text('Start Game'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+            ),
+          ),
+        ],
       ],
     );
   }
 
   Widget _buildGuestView() {
-    if (_isPaired) {
-      // Already connected - status shown in main view
-      return Container();
-    }
-
     return Column(
       children: [
-        // Room Code Input
         Text(
-          lang(context).enterRoomCode,
-          style: LayoutConfig(context).contentSectionStyle(),
+          'Enter Room Code',
+          style: LayoutConfig(context).titleSectionStyle(),
         ),
         const SizedBox(height: 20),
         SizedBox(
@@ -338,154 +367,54 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
           child: TextField(
             controller: _passcodeController,
             keyboardType: TextInputType.number,
-            maxLength: 3,
             textAlign: TextAlign.center,
-            style: LayoutConfig(context).displaySmallStyle().copyWith(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 8,
-                ),
+            maxLength: 3,
+            style: const TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 8,
+            ),
             decoration: InputDecoration(
-              counterText: "",
+              counterText: '',
+              hintText: '---',
               filled: true,
-              fillColor: Colors.white.withOpacity(0.2),
+              fillColor: Colors.white.withOpacity(0.1),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(
-                  color: Colors.white.withOpacity(0.5),
-                  width: 2,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(
-                  color: Colors.white.withOpacity(0.5),
-                  width: 2,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: const BorderSide(
-                  color: Colors.white,
-                  width: 2,
-                ),
+                borderSide: BorderSide.none,
               ),
             ),
           ),
         ),
         const SizedBox(height: 30),
-        if (!_isSearching)
-          CustomElevatedButton(
-            text: lang(context).connect,
-            shapeAt: RoundedWithShapeAt.all,
-            backgroundColor: Colors.blue,
-            onPressed: _connectToRoom,
-          )
-        else ...[
-          // Searching indicator
-          const CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ElevatedButton.icon(
+          onPressed: _roomState == RoomState.waiting ? _joinRoom : null,
+          icon: const FaIcon(FontAwesomeIcons.rightToBracket),
+          label: const Text('Join Room'),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
           ),
+        ),
+        if (_roomState != RoomState.waiting) ...[
           const SizedBox(height: 20),
           Text(
-            'Searching for "NuCatch-${_passcodeController.text}"...',
-            style: LayoutConfig(context).contentSectionStyle(),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 10),
-          Text(
-            'Looking for devices advertising room ${_passcodeController.text}',
-            style: LayoutConfig(context).contentSectionStyle().copyWith(
-                  fontSize: 12,
-                  color: Colors.white70,
-                ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          // Re-scan button
-          TextButton.icon(
-            onPressed: _rescanRoom,
-            icon: const FaIcon(
-              FontAwesomeIcons.rotate,
-              size: 20,
-              color: Colors.white,
-            ),
-            label: Text(
-              'Scan Again',
-              style: LayoutConfig(context).contentSectionStyle(),
+            _getRoomStateText(),
+            style: TextStyle(
+              fontSize: 18,
+              color: _roomState == RoomState.bothReady
+                  ? Colors.green
+                  : Colors.white,
             ),
           ),
-          const SizedBox(height: 20),
-          // Device list
-          if (_discoveredDevices.isNotEmpty) ...[
-            Text(
-              'Found ${_discoveredDevices.length} matching device(s):',
-              style: LayoutConfig(context).contentSectionStyle().copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.greenAccent,
-                  ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              constraints: const BoxConstraints(maxHeight: 200),
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: _discoveredDevices.length,
-                itemBuilder: (context, index) {
-                  final device = _discoveredDevices[index];
-                  final deviceName = device.device.platformName.isNotEmpty
-                      ? device.device.platformName
-                      : device.device.remoteId.toString();
-                  final advName = device.advertisementData.advName;
-                  final displayName = advName.isNotEmpty ? advName : deviceName;
-                  final rssi = device.rssi;
-
-                  return Card(
-                    color: Colors.white.withOpacity(0.2),
-                    margin: const EdgeInsets.symmetric(vertical: 4),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.bluetooth,
-                        color: _getSignalColor(rssi),
-                      ),
-                      title: Text(
-                        displayName,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (advName.isNotEmpty && advName != deviceName)
-                            Text(
-                              'Device: $deviceName',
-                              style: const TextStyle(
-                                color: Colors.white60,
-                                fontSize: 11,
-                              ),
-                            ),
-                          Text(
-                            'Signal: $rssi dBm',
-                            style: const TextStyle(color: Colors.white70),
-                          ),
-                        ],
-                      ),
-                      trailing: ElevatedButton(
-                        onPressed: () {
-                          context.read<BluetoothBloc>().add(
-                                BluetoothConnectEvent(device.device),
-                              );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                        ),
-                        child: const Text('Connect'),
-                      ),
-                    ),
-                  );
-                },
+          if (_roomState == RoomState.guestJoined) ...[
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: _setReady,
+              icon: const FaIcon(FontAwesomeIcons.check),
+              label: const Text('Ready'),
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
               ),
             ),
           ],
@@ -494,9 +423,51 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
     );
   }
 
-  Color _getSignalColor(int rssi) {
-    if (rssi >= -50) return Colors.green;
-    if (rssi >= -70) return Colors.orange;
-    return Colors.red;
+  Widget _buildProximityIndicator() {
+    if (!_isProximityActive) {
+      return const SizedBox.shrink();
+    }
+
+    final nearbyCount = _nearbyDevices.where((d) => d.isNearby).length;
+
+    return Column(
+      children: [
+        const Divider(),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              FontAwesomeIcons.bluetooth,
+              color: nearbyCount > 0 ? Colors.blue : Colors.grey,
+              size: 20,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              nearbyCount > 0
+                  ? 'Opponent nearby ($nearbyCount device${nearbyCount > 1 ? 's' : ''})'
+                  : 'No nearby devices',
+              style: TextStyle(
+                color: nearbyCount > 0 ? Colors.blue : Colors.grey,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+        if (_nearbyDevices.isNotEmpty) ...[
+          const SizedBox(height: 10),
+          ..._nearbyDevices.map((device) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Text(
+                  '${device.name} (${device.rssi} dBm)',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: device.isNearby ? Colors.green : Colors.orange,
+                  ),
+                ),
+              )),
+        ],
+      ],
+    );
   }
 }
