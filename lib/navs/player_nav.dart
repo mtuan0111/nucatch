@@ -13,7 +13,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_mode_setup_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_play_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/gameover_screen.dart';
-import 'package:nucatch/screens/menu_screens/player/pairing_room_screen.dart';
+import 'package:nucatch/screens/menu_screens/player/pairing_room_screen_v2.dart';
 import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/select_play_mode_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/set_difficult_screen.dart';
@@ -78,7 +78,7 @@ class _PlayerNavState extends State<PlayerNav> {
                     ),
                   if (state is PairingRoomState)
                     MaterialPage(
-                      child: PairingRoomScreen(
+                      child: PairingRoomScreenV2(
                         isHost: state.isHost,
                         roomCode: state.roomCode,
                       ),
@@ -92,10 +92,11 @@ class _PlayerNavState extends State<PlayerNav> {
                       child: PopScope(
                         canPop: true,
                         child: state.playMode == PlayMode.combat
-                          ? const CombatPlayScreen()
-                          : PlayScreen(
-                              title: menuArray(context)[MenuOption.start]!['text']!,
-                            ),
+                            ? const CombatPlayScreen()
+                            : PlayScreen(
+                                title: menuArray(
+                                    context)[MenuOption.start]!['text']!,
+                              ),
                       ),
                     ),
                   if (state is GameOverState) ...[

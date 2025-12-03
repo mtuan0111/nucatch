@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/models/turn_record_model.dart';
