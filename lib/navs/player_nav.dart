@@ -13,7 +13,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_mode_setup_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_play_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/gameover_screen.dart';
-import 'package:nucatch/screens/menu_screens/player/pairing_room_screen_v2.dart';
+import 'package:nucatch/screens/menu_screens/player/pairing_room_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/select_play_mode_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/set_difficult_screen.dart';

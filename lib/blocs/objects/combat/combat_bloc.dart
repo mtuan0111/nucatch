@@ -18,6 +18,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         super(const CombatState()) {
     on<CombatGameStarted>(_onCombatGameStarted);
     on<TurnStarted>(_onTurnStarted);
+    on<TurnReceived>(_onTurnReceived);
     on<TurnCompleted>(_onTurnCompleted);
     on<OpponentMoveReceived>(_onOpponentMoveReceived);
     on<GameEnded>(_onGameEnded);
@@ -41,6 +42,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     print('🎮 [Combat] Received message: $data');
 
     try {
+      // Ignore messages sent by myself
+      final senderId = data['senderId'] as String?;
+      if (senderId == _roomService.playerId) {
+        return;
+      }
+
       final type = data['type'] as String;
 
       switch (type) {
@@ -56,8 +63,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           }
           break;
         case 'turn_start':
-          final isMyTurn = data['isHostTurn'] != state.isHost;
-          add(TurnStarted(isMyTurn: isMyTurn));
+          final isMyTurn = data['isHostTurn'] == state.isHost;
+          final requirement = data['requirement'] as String;
+          final expect = data['expect'] as String;
+          add(TurnReceived(
+            isMyTurn: isMyTurn,
+            requirement: requirement,
+            expect: expect,
+          ));
           break;
         case 'move_completed':
           add(OpponentMoveReceived(
@@ -131,8 +144,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       });
     }
 
-    // Start the game
-    add(TurnStarted(isMyTurn: state.isHost));
+    // Note: Turn start is handled by _onCombatGameStarted for host
+    // Guest will receive turn_start message from host
   }
 
   Future<void> _onTurnStarted(
@@ -155,13 +168,29 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       status: CombatStatus.playing,
     ));
 
-    // Send turn start message
+    // Send turn start message to opponent
     await _sendMessage({
       'type': 'turn_start',
       'isHostTurn': state.isHost ? event.isMyTurn : !event.isMyTurn,
       'requirement': requirement,
       'expect': expect,
     });
+  }
+
+  Future<void> _onTurnReceived(
+    TurnReceived event,
+    Emitter<CombatState> emit,
+  ) async {
+    // Receive challenge from opponent - NO new message sent
+    emit(state.copyWith(
+      isMyTurn: event.isMyTurn,
+      currentRequirement: event.requirement,
+      currentTarget: event.expect,
+      myInput: '',
+      opponentInput: null,
+      isWaitingForOpponent: false,
+      status: CombatStatus.playing,
+    ));
   }
 
   Map<String, String> _generateChallenge() {

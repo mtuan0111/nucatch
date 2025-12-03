@@ -63,3 +63,15 @@ class InputUpdated extends CombatEvent {
   
   InputUpdated({required this.input});
 }
+
+class TurnReceived extends CombatEvent {
+  final bool isMyTurn;
+  final String requirement;
+  final String expect;
+  
+  TurnReceived({
+    required this.isMyTurn,
+    required this.requirement,
+    required this.expect,
+  });
+}

@@ -7,6 +7,8 @@ import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
+import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/services/bluetooth_proximity_service.dart';
 import 'package:nucatch/services/combat_room_service.dart';
@@ -183,11 +185,21 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
   }
 
   void _handleGameStarted() {
-    print('🎮 [Pairing] Game started, navigating to difficulty screen');
+    print('🎮 [Pairing] Game started');
     if (mounted) {
-      context
-          .read<PlayerNavCubit>()
-          .showSetDifficulty(playMode: PlayMode.combat);
+      if (widget.isHost) {
+        // Host navigates to difficulty selection
+        print('🎮 [Pairing] Host navigating to difficulty screen');
+        context
+            .read<PlayerNavCubit>()
+            .showSetDifficulty(playMode: PlayMode.combat);
+      } else {
+        // Guest stays on pairing screen, waiting for difficulty
+        print('🎮 [Pairing] Guest waiting for host to select difficulty');
+        setState(() {
+          // UI will show "Waiting for host to select difficulty"
+        });
+      }
     }
   }
 
@@ -228,7 +240,9 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
       case RoomState.bothReady:
         return 'Both players ready!';
       case RoomState.playing:
-        return 'Game in progress';
+        return widget.isHost 
+            ? 'Game in progress' 
+            : 'Waiting for host to select difficulty...';
       case RoomState.ended:
         return 'Game ended';
       case RoomState.deleted:
@@ -238,8 +252,22 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+    return BlocListener<CombatBloc, CombatState>(
+      listener: (context, combatState) {
+        print('🎮 [Pairing] BlocListener - isHost: ${widget.isHost}, status: ${combatState.status}, difficultyModel: ${combatState.difficultyModel}');
+        
+        // Guest auto-navigates to play screen when difficulty is received
+        if (!widget.isHost && combatState.difficultyModel != null) {
+          // Navigate when status is starting OR playing (since turn starts immediately)
+          if (combatState.status == CombatStatus.starting || 
+              combatState.status == CombatStatus.playing) {
+            print('🎮 [Pairing] Guest received difficulty, navigating to play screen');
+            context.read<PlayerNavCubit>().showPlay(playMode: PlayMode.combat);
+          }
+        }
+      },
+      child: Scaffold(
+        body: Container(
         decoration: LayoutConfig(context).gradientDecoration,
         child: SafeArea(
           child: Column(
@@ -291,6 +319,7 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
           ),
         ),
       ),
+    ), // Close BlocListener
     );
   }
 
