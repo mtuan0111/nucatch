@@ -4,8 +4,19 @@ import 'package:nucatch/models/app_version_model.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppVersionServices {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late final FirebaseFirestore? _firestore;
   static const String collectionName = 'app_versions';
+  bool _isOfflineMode = false;
+
+  AppVersionServices() {
+    try {
+      _firestore = FirebaseFirestore.instance;
+    } catch (e) {
+      print('⚠️ Firestore not available (offline mode): $e');
+      _firestore = null;
+      _isOfflineMode = true;
+    }
+  }
 
   /// Get current platform name
   String getCurrentPlatform() {
@@ -28,8 +39,13 @@ class AppVersionServices {
     return int.tryParse(packageInfo.buildNumber) ?? 0;
   }
 
-  /// Fetch all versions for current platform from Firestore
+  /// Fetch all versions for current platform from Firestore (offline safe)
   Future<List<AppVersionModel>> fetchVersionsForPlatform() async {
+    if (_isOfflineMode || _firestore == null) {
+      print('📱 App version check skipped (offline mode)');
+      return []; // Return empty list in offline mode
+    }
+
     try {
       final platform = getCurrentPlatform();
       final querySnapshot = await _firestore
@@ -42,13 +58,20 @@ class AppVersionServices {
           .map((doc) => AppVersionModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
-      throw Exception('Failed to fetch app versions: $e');
+      print('⚠️ Failed to fetch app versions (falling back to offline): $e');
+      _isOfflineMode = true;
+      return []; // Return empty list on error
     }
   }
 
-  /// Check if update is available
+  /// Check if update is available (offline safe)
   /// Returns the version to update to, or null if no update available
   Future<AppVersionModel?> checkForUpdate() async {
+    if (_isOfflineMode) {
+      print('📱 Update check skipped (offline mode)');
+      return null; // No updates in offline mode
+    }
+
     try {
       final currentBuildNumber = await getCurrentBuildNumber();
       final versions = await fetchVersionsForPlatform();
@@ -79,7 +102,9 @@ class AppVersionServices {
 
       return null;
     } catch (e) {
-      throw Exception('Failed to check for updates: $e');
+      print('⚠️ Failed to check for updates (falling back to offline): $e');
+      _isOfflineMode = true;
+      return null;
     }
   }
 
@@ -90,13 +115,20 @@ class AppVersionServices {
     return remoteInt > currentInt;
   }
 
-  /// Get the latest version info
+  /// Get the latest version info (offline safe)
   Future<AppVersionModel?> getLatestVersion() async {
+    if (_isOfflineMode) {
+      print('📱 Latest version check skipped (offline mode)');
+      return null;
+    }
+
     try {
       final versions = await fetchVersionsForPlatform();
       return versions.isNotEmpty ? versions.first : null;
     } catch (e) {
-      throw Exception('Failed to get latest version: $e');
+      print('⚠️ Failed to get latest version (falling back to offline): $e');
+      _isOfflineMode = true;
+      return null;
     }
   }
 }

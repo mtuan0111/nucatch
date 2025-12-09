@@ -55,7 +55,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
   Widget build(BuildContext context) {
     final playerNavCubit = context.read<PlayerNavCubit>();
     final playMode = playerNavCubit.currentPlayMode;
-    
+
     // In combat mode, only host should see difficulty selection
     if (playMode == PlayMode.combat) {
       final combatBloc = context.read<CombatBloc>();
@@ -85,7 +85,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
         );
       }
     }
-    
+
     return Scaffold(
       body: Container(
         decoration: LayoutConfig(context).gradientDecoration,

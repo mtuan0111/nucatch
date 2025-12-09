@@ -4,16 +4,16 @@ import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/services/combat_room_service.dart';
+import 'package:nucatch/services/combat_ble_service.dart';
 
 class CombatBloc extends Bloc<CombatEvent, CombatState> {
-  final CombatRoomService _roomService;
+  final CombatBLEService _roomService;
   StreamSubscription? _messageSubscription;
 
   // Expose isHost status from room service
   bool get isHost => _roomService.isHost;
 
-  CombatBloc({required CombatRoomService roomService})
+  CombatBloc({required CombatBLEService roomService})
       : _roomService = roomService,
         super(const CombatState()) {
     on<CombatGameStarted>(_onCombatGameStarted);
@@ -26,7 +26,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<DifficultySelected>(_onDifficultySelected);
     on<InputUpdated>(_onInputUpdated);
 
-    // Listen to Firestore messages
+    // Listen to BLE messages
     _messageSubscription = _roomService.messageStream.listen((data) {
       _handleRoomMessage(data);
     });

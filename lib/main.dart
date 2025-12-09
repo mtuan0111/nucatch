@@ -21,9 +21,18 @@ import 'package:nucatch/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  
+  // Try to initialize Firebase, but continue without it if offline
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    print('✅ Firebase initialized successfully');
+  } catch (e) {
+    print('⚠️ Firebase initialization failed (offline mode): $e');
+    // Continue without Firebase - BLE-only mode will still work
+  }
+  
   // final settingsController = SettingsController(
   //   SettingsService(),
   // );
@@ -32,7 +41,12 @@ Future<void> main() async {
   // This prevents a sudden theme change when the app is first displayed.
   // await settingsController.loadSettings();
 
-  await dotenv.load(fileName: ".env");
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    print('⚠️ Failed to load .env file: $e');
+    // Continue without .env file
+  }
 
   runApp(const MyApp());
 }

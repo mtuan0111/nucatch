@@ -9,14 +9,23 @@ import 'package:path/path.dart';
 
 class TurnRecordedServices {
   Database? _database;
-  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  late final FirebaseFirestore? firebaseFirestore;
+  bool _isOfflineMode = false;
 
   // Cache for Firebase data with timestamps
   static final Map<String, List<TurnRecordedModel>?> _firebaseCache = {};
   static final Map<String, DateTime> _cacheTimestamps = {};
   static const Duration _cacheExpiration = Duration(hours: 1);
 
-  TurnRecordedServices();
+  TurnRecordedServices() {
+    try {
+      firebaseFirestore = FirebaseFirestore.instance;
+    } catch (e) {
+      print('⚠️ Firestore not available for turn services (offline mode): $e');
+      firebaseFirestore = null;
+      _isOfflineMode = true;
+    }
+  }
 
   // Check if cache is valid for a given key
   bool _isCacheValid(String key) {
@@ -178,8 +187,14 @@ class TurnRecordedServices {
       return cachedData;
     }
 
+    // Return empty list if in offline mode
+    if (_isOfflineMode || firebaseFirestore == null) {
+      print('📱 Turn records unavailable (offline mode)');
+      return [];
+    }
+
     // Fetch from Firebase if not cached
-    final querySnapshot = await firebaseFirestore
+    final querySnapshot = await firebaseFirestore!
         .collection('turn_records')
         .orderBy(PreferencesKey.POINT, descending: true)
         .orderBy(PreferencesKey.RECORDED_TIME)
@@ -218,8 +233,14 @@ class TurnRecordedServices {
     final startOfDayMillis = startOfDay.millisecondsSinceEpoch;
     final endOfDayMillis = endOfDay.millisecondsSinceEpoch;
 
+    // Return empty list if in offline mode
+    if (_isOfflineMode || firebaseFirestore == null) {
+      print('📱 Daily turn records unavailable (offline mode)');
+      return [];
+    }
+
     // Firebase stores recordedTime as milliseconds, so use integer milliseconds for comparison
-    final querySnapshot = await firebaseFirestore
+    final querySnapshot = await firebaseFirestore!
         .collection('turn_records')
         .where(PreferencesKey.RECORDED_TIME,
             isGreaterThanOrEqualTo: startOfDayMillis)
@@ -259,8 +280,14 @@ class TurnRecordedServices {
     // Ensure we use integer milliseconds for comparison
     final weekAgoMillis = weekAgo.millisecondsSinceEpoch;
 
+    // Return empty list if in offline mode
+    if (_isOfflineMode || firebaseFirestore == null) {
+      print('📱 Weekly turn records unavailable (offline mode)');
+      return [];
+    }
+
     // Firebase stores recordedTime as milliseconds, so use integer milliseconds for comparison
-    final querySnapshot = await firebaseFirestore
+    final querySnapshot = await firebaseFirestore!
         .collection('turn_records')
         .where(PreferencesKey.RECORDED_TIME,
             isGreaterThanOrEqualTo: weekAgoMillis)
@@ -368,8 +395,14 @@ class TurnRecordedServices {
   }
 
   Future<bool> addItemToFirebase(TurnRecordedModel item) async {
+    // Skip Firebase upload in offline mode
+    if (_isOfflineMode || firebaseFirestore == null) {
+      print('📱 Skipping Firebase upload (offline mode)');
+      return true; // Return success for offline mode
+    }
+
     try {
-      await firebaseFirestore.collection('turn_records').add(
+      await firebaseFirestore!.collection('turn_records').add(
             item.toJson(),
           );
 

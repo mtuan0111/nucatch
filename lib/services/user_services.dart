@@ -20,13 +20,25 @@ class UserServices {
     // Get username from preferences
     final username = _prefs?.getString(PreferencesKey.USERNAME);
 
-    // Get Firebase user info
-    final firebaseUser = _authServices.currentUser;
+    String? userId;
+    bool isAnonymous = true;
+    
+    if (_authServices.isOfflineMode) {
+      // Offline mode - use offline user ID
+      userId = _authServices.offlineUserId;
+      print('📱 User session (offline mode): $userId');
+    } else {
+      // Online mode - use Firebase user
+      final firebaseUser = _authServices.currentUser;
+      userId = firebaseUser?.uid;
+      isAnonymous = firebaseUser?.isAnonymous ?? true;
+      print('☁️ User session (online mode): $userId');
+    }
 
     UserModel userModel = UserModel(
       username: username,
-      firebaseUserId: firebaseUser?.uid,
-      isAnonymous: firebaseUser?.isAnonymous ?? true,
+      firebaseUserId: userId,
+      isAnonymous: isAnonymous,
     );
 
     return AuthenticatedUser(model: userModel);
@@ -36,14 +48,18 @@ class UserServices {
     return _prefs!.setString(PreferencesKey.USERNAME, newUsername);
   }
 
-  /// Initialize anonymous authentication
+  /// Initialize anonymous authentication (works offline)
   Future<UserState> initializeAuth() async {
     // Check if user is already signed in
     if (!_authServices.isSignedIn()) {
-      // Sign in anonymously
+      // Sign in anonymously (works in offline mode)
       final userCredential = await _authServices.signInAnonymously();
-      if (userCredential == null) {
-        return UnAuthenticatedUser();
+      
+      if (_authServices.isOfflineMode) {
+        print('✅ Authenticated in offline mode');
+      } else if (userCredential == null) {
+        print('⚠️ Authentication failed, falling back to offline mode');
+        // This should trigger offline mode in AuthServices
       }
     }
 
