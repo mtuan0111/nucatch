@@ -22,7 +22,7 @@ class UserServices {
 
     String? userId;
     bool isAnonymous = true;
-    
+
     if (_authServices.isOfflineMode) {
       // Offline mode - use offline user ID
       userId = _authServices.offlineUserId;
@@ -54,7 +54,7 @@ class UserServices {
     if (!_authServices.isSignedIn()) {
       // Sign in anonymously (works in offline mode)
       final userCredential = await _authServices.signInAnonymously();
-      
+
       if (_authServices.isOfflineMode) {
         print('✅ Authenticated in offline mode');
       } else if (userCredential == null) {

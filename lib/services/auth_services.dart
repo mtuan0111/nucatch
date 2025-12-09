@@ -52,7 +52,8 @@ class AuthServices {
   Future<UserCredential?> signInAnonymously() async {
     if (_isOfflineMode) {
       // Generate offline user ID
-      _offlineUserId = 'offline_${DateTime.now().millisecondsSinceEpoch}_${(DateTime.now().microsecond % 1000)}';
+      _offlineUserId =
+          'offline_${DateTime.now().millisecondsSinceEpoch}_${(DateTime.now().microsecond % 1000)}';
       await _prefs?.setString(
         PreferencesKey.FIREBASE_USER_ID,
         _offlineUserId!,
@@ -120,7 +121,7 @@ class AuthServices {
       debugPrint('Cannot link credential in offline mode');
       return null;
     }
-    
+
     try {
       final user = _auth?.currentUser;
       if (user != null && user.isAnonymous) {
@@ -144,7 +145,7 @@ class AuthServices {
       debugPrint('Deleted offline account');
       return true;
     }
-    
+
     try {
       final user = _auth?.currentUser;
       if (user != null) {

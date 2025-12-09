@@ -66,7 +66,7 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
+
     // Initialize Bluetooth only once after dependencies are ready
     if (!_hasInitialized) {
       _hasInitialized = true;
@@ -122,7 +122,7 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
     // Use addPostFrameCallback to ensure widget tree is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      
+
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -335,58 +335,58 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
 
   Widget _buildPairingView() {
     return Scaffold(
-        body: Container(
-          decoration: LayoutConfig(context).gradientDecoration,
-          child: SafeArea(
-            child: Column(
-              children: [
-                // Header
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
+      body: Container(
+        decoration: LayoutConfig(context).gradientDecoration,
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Header
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const FaIcon(FontAwesomeIcons.arrowLeft),
+                      onPressed: () async {
+                        // Leave room before navigating back
+                        await _roomService.leaveRoom();
+                        if (mounted) {
+                          context.read<MenuBloc>().add(ShowMenu());
+                        }
+                      },
+                    ),
+                    Expanded(
+                      child: Text(
+                        widget.isHost ? 'Host Room' : 'Join Room',
+                        style: LayoutConfig(context).titleSectionStyle(),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(width: 48), // Balance the back button
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      IconButton(
-                        icon: const FaIcon(FontAwesomeIcons.arrowLeft),
-                        onPressed: () async {
-                          // Leave room before navigating back
-                          await _roomService.leaveRoom();
-                          if (mounted) {
-                            context.read<MenuBloc>().add(ShowMenu());
-                          }
-                        },
-                      ),
-                      Expanded(
-                        child: Text(
-                          widget.isHost ? 'Host Room' : 'Join Room',
-                          style: LayoutConfig(context).titleSectionStyle(),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      const SizedBox(width: 48), // Balance the back button
+                      if (widget.isHost) ...[
+                        _buildHostView(),
+                      ] else ...[
+                        _buildGuestView(),
+                      ],
+                      const SizedBox(height: 40),
+                      _buildProximityIndicator(),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (widget.isHost) ...[
-                          _buildHostView(),
-                        ] else ...[
-                          _buildGuestView(),
-                        ],
-                        const SizedBox(height: 40),
-                        _buildProximityIndicator(),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 
@@ -567,7 +567,8 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                     children: [
                       // Turn indicator and scores row
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
                         child: Row(
                           children: [
                             // My info
@@ -579,8 +580,11 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                                     children: [
                                       Icon(
                                         Helper.getIconFromDifficulty(
-                                            context, combatState.difficultyModel?.difficulty),
-                                        color: Theme.of(context).scaffoldBackgroundColor,
+                                            context,
+                                            combatState
+                                                .difficultyModel?.difficulty),
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor,
                                         size: 14,
                                       ),
                                       const SizedBox(width: 5),
@@ -588,17 +592,20 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                                         'You',
                                         style: LayoutConfig(context)
                                             .contentSectionStyle()
-                                            .copyWith(fontWeight: FontWeight.bold),
+                                            .copyWith(
+                                                fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   ),
                                   Row(
                                     children: [
-                                      const Icon(FontAwesomeIcons.chartLine, size: 12),
+                                      const Icon(FontAwesomeIcons.chartLine,
+                                          size: 12),
                                       const SizedBox(width: 5),
                                       Text(
                                         '${combatState.myScore}',
-                                        style: LayoutConfig(context).contentSectionStyle(),
+                                        style: LayoutConfig(context)
+                                            .contentSectionStyle(),
                                       ),
                                     ],
                                   ),
@@ -608,7 +615,8 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                                       combatState.myLives,
                                       (_) => Icon(
                                         FontAwesomeIcons.solidStar,
-                                        color: Theme.of(context).scaffoldBackgroundColor,
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor,
                                         size: 12,
                                       ),
                                     ),
@@ -616,17 +624,23 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                                 ],
                               ),
                             ),
-                            
+
                             // Turn indicator
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
                               decoration: BoxDecoration(
-                                color: combatState.isMyTurn ? Colors.green : Colors.orange,
+                                color: combatState.isMyTurn
+                                    ? Colors.green
+                                    : Colors.orange,
                                 borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Colors.white, width: 2),
+                                border:
+                                    Border.all(color: Colors.white, width: 2),
                               ),
                               child: Text(
-                                combatState.isMyTurn ? "Your Turn" : "Opponent's Turn",
+                                combatState.isMyTurn
+                                    ? "Your Turn"
+                                    : "Opponent's Turn",
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -634,7 +648,7 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                                 ),
                               ),
                             ),
-                            
+
                             // Opponent info
                             Expanded(
                               child: Column(
@@ -649,11 +663,13 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      const Icon(FontAwesomeIcons.chartLine, size: 12),
+                                      const Icon(FontAwesomeIcons.chartLine,
+                                          size: 12),
                                       const SizedBox(width: 5),
                                       Text(
                                         '${combatState.opponentScore}',
-                                        style: LayoutConfig(context).contentSectionStyle(),
+                                        style: LayoutConfig(context)
+                                            .contentSectionStyle(),
                                       ),
                                     ],
                                   ),
@@ -663,7 +679,8 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                                       combatState.opponentLives,
                                       (_) => Icon(
                                         FontAwesomeIcons.solidStar,
-                                        color: Theme.of(context).scaffoldBackgroundColor,
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor,
                                         size: 12,
                                       ),
                                     ),
@@ -674,7 +691,7 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                           ],
                         ),
                       ),
-                      
+
                       // Challenge display (reusing play_screen style)
                       Expanded(
                         child: Center(
@@ -684,40 +701,52 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                               if (combatState.currentRequirement != null) ...[
                                 Text(
                                   'Solve:',
-                                  style: LayoutConfig(context).contentSectionStyle(),
+                                  style: LayoutConfig(context)
+                                      .contentSectionStyle(),
                                 ),
                                 const SizedBox(height: 20),
                                 Text(
                                   combatState.currentRequirement!,
-                                  style: LayoutConfig(context).displaySmallStyle(
-                                    isActiveShadow: true,
-                                  ).copyWith(fontSize: 48, fontWeight: FontWeight.bold),
+                                  style: LayoutConfig(context)
+                                      .displaySmallStyle(
+                                        isActiveShadow: true,
+                                      )
+                                      .copyWith(
+                                          fontSize: 48,
+                                          fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(height: 30),
                                 Text(
                                   'Answer:',
-                                  style: LayoutConfig(context).contentSectionStyle(),
+                                  style: LayoutConfig(context)
+                                      .contentSectionStyle(),
                                 ),
                                 const SizedBox(height: 10),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 15),
                                   decoration: BoxDecoration(
                                     color: Colors.white.withOpacity(0.2),
                                     borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(color: Colors.white.withOpacity(0.5), width: 2),
+                                    border: Border.all(
+                                        color: Colors.white.withOpacity(0.5),
+                                        width: 2),
                                   ),
                                   child: Text(
-                                    combatState.myInput.isEmpty ? '___' : combatState.myInput,
-                                    style: LayoutConfig(context).displaySmallStyle().copyWith(
-                                      fontSize: 36,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 4,
-                                    ),
+                                    combatState.myInput.isEmpty
+                                        ? '___'
+                                        : combatState.myInput,
+                                    style: LayoutConfig(context)
+                                        .displaySmallStyle()
+                                        .copyWith(
+                                          fontSize: 36,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 4,
+                                        ),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
                               ],
-                              
                               if (!combatState.isMyTurn)
                                 Padding(
                                   padding: const EdgeInsets.all(20),
@@ -725,10 +754,12 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                                     combatState.isWaitingForOpponent
                                         ? 'Waiting for opponent...'
                                         : 'Opponent is playing...',
-                                    style: LayoutConfig(context).contentSectionStyle().copyWith(
-                                      fontStyle: FontStyle.italic,
-                                      color: Colors.orange,
-                                    ),
+                                    style: LayoutConfig(context)
+                                        .contentSectionStyle()
+                                        .copyWith(
+                                          fontStyle: FontStyle.italic,
+                                          color: Colors.orange,
+                                        ),
                                   ),
                                 ),
                             ],
@@ -738,7 +769,7 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                     ],
                   ),
                 ),
-                
+
                 // Keyboard (reused from play_screen)
                 if (combatState.canTap && combatState.isMyTurn)
                   Expanded(
@@ -773,7 +804,7 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
             if (idx < keys.length) {
               final e = keys[idx];
               Widget button;
-              
+
               if (e.key == KeyboardOption.reset) {
                 button = AnimatedButton(
                   context,
@@ -799,10 +830,11 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                   text: e.value.toString(),
                   style: LayoutConfig(context).boldedStyle,
                   isEnable: combatState.canTap && combatState.isMyTurn,
-                  onPressed: () => _handleCombatTap(e.value.toString(), combatState),
+                  onPressed: () =>
+                      _handleCombatTap(e.value.toString(), combatState),
                 );
               }
-              
+
               cell = SizedBox(
                 width: buttonWidth - buttonSpacing,
                 height: buttonHeight - buttonSpacing,
@@ -814,7 +846,7 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
                 height: buttonHeight - buttonSpacing,
               );
             }
-            
+
             if (c < columns - 1) {
               rowChildren.add(Padding(
                 padding: const EdgeInsets.only(right: tableGap),
@@ -824,7 +856,7 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
               rowChildren.add(cell);
             }
           }
-          
+
           tableRows.add(TableRow(children: rowChildren));
           if (r < rows - 1) {
             tableRows.add(
@@ -837,7 +869,7 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
             );
           }
         }
-        
+
         return Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: tableRows,
@@ -852,7 +884,7 @@ class _PairingRoomScreenState extends State<PairingRoomScreen> {
     final combatBloc = context.read<CombatBloc>();
     final newInput = combatState.myInput + input;
     final pointsEarned = combatState.difficultyModel?.pointEachTurn ?? 1;
-    
+
     if (newInput == combatState.currentTarget) {
       // Correct answer
       combatBloc.add(TurnCompleted(

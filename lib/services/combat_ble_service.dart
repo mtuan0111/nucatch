@@ -30,7 +30,7 @@ class CombatBLEService {
   String? get currentRoomCode => _currentRoomCode;
   String? get playerId => _playerId;
   bool get isHost => _isHost;
-  
+
   /// Check if device is bonded (for authentication troubleshooting)
   Future<bool> isBonded() async {
     return await _bleService.isBonded();
@@ -102,7 +102,7 @@ class CombatBLEService {
         if (state.toString().contains('connected')) {
           print('✅ [BLE Room] Connected!');
           _roomStateController.add(RoomState.guestJoined);
-          
+
           // Send join notification
           sendMessage({
             'type': 'guest_joined',

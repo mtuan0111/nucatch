@@ -21,7 +21,7 @@ import 'package:nucatch/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Try to initialize Firebase, but continue without it if offline
   try {
     await Firebase.initializeApp(
@@ -32,7 +32,7 @@ Future<void> main() async {
     print('⚠️ Firebase initialization failed (offline mode): $e');
     // Continue without Firebase - BLE-only mode will still work
   }
-  
+
   // final settingsController = SettingsController(
   //   SettingsService(),
   // );

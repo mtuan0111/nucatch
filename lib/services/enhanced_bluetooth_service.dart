@@ -9,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart' show Permission;
 /// Enhanced Bluetooth service that works around Android BLE peripheral limitations
 /// Uses mutual scanning approach - both devices advertise in scan response data
 class EnhancedBluetoothService {
-  static final EnhancedBluetoothService _instance = 
+  static final EnhancedBluetoothService _instance =
       EnhancedBluetoothService._internal();
   factory EnhancedBluetoothService() => _instance;
   EnhancedBluetoothService._internal();
@@ -23,7 +23,7 @@ class EnhancedBluetoothService {
   StreamSubscription? _scanSubscription;
   StreamSubscription? _deviceStateSubscription;
   StreamSubscription? _characteristicSubscription;
-  
+
   // Write queue to prevent write busy errors
   final List<String> _writeQueue = [];
   bool _isWriting = false;
@@ -176,7 +176,8 @@ class EnhancedBluetoothService {
     _discoveredDevices.clear();
     _isScanning = true;
 
-    print('🔍 [Enhanced BT] Starting mutual scanning for room: $_currentRoomCode');
+    print(
+        '🔍 [Enhanced BT] Starting mutual scanning for room: $_currentRoomCode');
     print('🔍 [Enhanced BT] Role: ${_isHost ? "Host" : "Guest"}');
     print('🔍 [Enhanced BT] Player ID: $_playerId');
 
@@ -190,7 +191,6 @@ class EnhancedBluetoothService {
       _scanSubscription = FlutterBluePlus.scanResults.listen((results) {
         _processScanResults(results);
       });
-
     } catch (e) {
       print('❌ [Enhanced BT] Failed to start scanning: $e');
       _isScanning = false;
@@ -200,7 +200,7 @@ class EnhancedBluetoothService {
 
   void _processScanResults(List<ScanResult> results) {
     if (results.isEmpty) return;
-    
+
     print('🔍 [Enhanced BT] Processing ${results.length} scan results...');
     _discoveredDevices.clear();
 
@@ -211,7 +211,8 @@ class EnhancedBluetoothService {
       final advName = result.advertisementData.advName;
 
       // More aggressive matching - look for any connectable device for now
-      if (result.rssi > -80) { // Only consider devices with reasonable signal
+      if (result.rssi > -80) {
+        // Only consider devices with reasonable signal
         print('📱 [Enhanced BT] Found nearby device:');
         print('   Device Name: $deviceName');
         print('   Advertisement Name: $advName');
@@ -222,7 +223,9 @@ class EnhancedBluetoothService {
         _discoveredDevices.add(result);
 
         // Try to connect to any reasonably strong device for testing
-        if (!isConnected && result.advertisementData.connectable && result.rssi > -70) {
+        if (!isConnected &&
+            result.advertisementData.connectable &&
+            result.rssi > -70) {
           print('🎯 [Enhanced BT] Attempting connection to nearby device');
           _attemptConnection(result.device);
         }
@@ -233,14 +236,13 @@ class EnhancedBluetoothService {
     _discoveredDevicesController.add(List.from(_discoveredDevices));
   }
 
-
-
   Future<void> _attemptConnection(BluetoothDevice device) async {
     if (isConnected) return;
 
     try {
-      print('🔗 [Enhanced BT] Attempting connection to: ${device.platformName}');
-      
+      print(
+          '🔗 [Enhanced BT] Attempting connection to: ${device.platformName}');
+
       await FlutterBluePlus.stopScan();
       _isScanning = false;
 
@@ -279,10 +281,9 @@ class EnhancedBluetoothService {
       await _setupCommunication(device);
 
       print('✅ [Enhanced BT] Successfully connected to ${device.platformName}');
-
     } catch (e) {
       print('❌ [Enhanced BT] Connection failed: $e');
-      
+
       // Retry scanning if connection fails
       if (!_isScanning) {
         await _startMutualScanning();
@@ -298,25 +299,32 @@ class EnhancedBluetoothService {
 
     // Look for a writable characteristic
     for (var service in services) {
-      print('🔍 [Enhanced BT] Checking service ${service.uuid} with ${service.characteristics.length} characteristics');
+      print(
+          '🔍 [Enhanced BT] Checking service ${service.uuid} with ${service.characteristics.length} characteristics');
       for (var characteristic in service.characteristics) {
-        print('🔍 [Enhanced BT] Characteristic ${characteristic.uuid}: write=${characteristic.properties.write}, notify=${characteristic.properties.notify}');
+        print(
+            '🔍 [Enhanced BT] Characteristic ${characteristic.uuid}: write=${characteristic.properties.write}, notify=${characteristic.properties.notify}');
         if (characteristic.properties.write) {
-          print('✅ [Enhanced BT] Found writable characteristic: ${characteristic.uuid}');
+          print(
+              '✅ [Enhanced BT] Found writable characteristic: ${characteristic.uuid}');
           _characteristic = characteristic;
 
           // Enable notifications if supported
           if (characteristic.properties.notify) {
             try {
               try {
-                await characteristic.setNotifyValue(true).timeout(const Duration(seconds: 5));
+                await characteristic
+                    .setNotifyValue(true)
+                    .timeout(const Duration(seconds: 5));
                 print('✅ [Enhanced BT] Notifications enabled');
               } on TimeoutException {
-                print('⚠️ [Enhanced BT] Notification setup timed out, continuing without notifications');
+                print(
+                    '⚠️ [Enhanced BT] Notification setup timed out, continuing without notifications');
               }
 
               // Listen for messages
-              _characteristicSubscription = characteristic.lastValueStream.listen((value) {
+              _characteristicSubscription =
+                  characteristic.lastValueStream.listen((value) {
                 if (value.isNotEmpty) {
                   final message = utf8.decode(value);
                   print('📨 [Enhanced BT] Received: $message');
@@ -331,7 +339,7 @@ class EnhancedBluetoothService {
 
           // Small delay before sending handshake to avoid write busy
           await Future.delayed(const Duration(milliseconds: 500));
-          
+
           // Send connection handshake
           await _sendHandshake();
           return;
@@ -362,29 +370,31 @@ class EnhancedBluetoothService {
 
   /// Send a message to the connected device
   Future<bool> sendMessage(String message) async {
-    print('📝 [Enhanced BT] Attempting to send message: ${message.substring(0, message.length.clamp(0, 50))}...');
-    
+    print(
+        '📝 [Enhanced BT] Attempting to send message: ${message.substring(0, message.length.clamp(0, 50))}...');
+
     if (_characteristic == null) {
       print('❌ [Enhanced BT] No characteristic available for sending');
       return false;
     }
-    
+
     if (_connectedDevice == null) {
       print('❌ [Enhanced BT] No connected device available for sending');
       return false;
     }
-    
-    print('✅ [Enhanced BT] Adding message to write queue (queue size: ${_writeQueue.length})');
+
+    print(
+        '✅ [Enhanced BT] Adding message to write queue (queue size: ${_writeQueue.length})');
 
     // Add to write queue
     _writeQueue.add(message);
-    
+
     // Process queue if not already processing
     if (!_isWriting) {
       print('🔄 [Enhanced BT] Processing write queue immediately');
       return await _processWriteQueue();
     }
-    
+
     print('⏳ [Enhanced BT] Message queued for later processing');
     return true; // Queued for sending
   }
@@ -395,44 +405,50 @@ class EnhancedBluetoothService {
       print('⚠️ [Enhanced BT] Write queue already processing');
       return false;
     }
-    
+
     if (_writeQueue.isEmpty) {
       print('⚠️ [Enhanced BT] Write queue is empty');
       return false;
     }
-    
+
     if (_characteristic == null) {
       print('❌ [Enhanced BT] No characteristic available for writing');
       return false;
     }
-    
-    print('🔄 [Enhanced BT] Starting write queue processing (${_writeQueue.length} messages)');
+
+    print(
+        '🔄 [Enhanced BT] Starting write queue processing (${_writeQueue.length} messages)');
     _isWriting = true;
     bool allSuccessful = true;
-    
+
     while (_writeQueue.isNotEmpty) {
       final message = _writeQueue.removeAt(0);
-      print('📝 [Enhanced BT] Processing message: ${message.substring(0, message.length.clamp(0, 50))}...');
-      
+      print(
+          '📝 [Enhanced BT] Processing message: ${message.substring(0, message.length.clamp(0, 50))}...');
+
       try {
         final bytes = utf8.encode(message);
         print('📏 [Enhanced BT] Message encoded to ${bytes.length} bytes');
-        
+
         // Split into chunks if needed
         const maxChunkSize = 512;
         final totalChunks = (bytes.length / maxChunkSize).ceil();
-        
+
         for (var i = 0; i < bytes.length; i += maxChunkSize) {
-          final end = (i + maxChunkSize < bytes.length) ? i + maxChunkSize : bytes.length;
+          final end = (i + maxChunkSize < bytes.length)
+              ? i + maxChunkSize
+              : bytes.length;
           final chunk = bytes.sublist(i, end);
           final chunkIndex = (i / maxChunkSize).floor() + 1;
-          
-          print('📦 [Enhanced BT] Writing chunk $chunkIndex/$totalChunks (${chunk.length} bytes)');
+
+          print(
+              '📦 [Enhanced BT] Writing chunk $chunkIndex/$totalChunks (${chunk.length} bytes)');
           await _characteristic!.write(chunk, withoutResponse: false);
         }
-        
-        print('📤 [Enhanced BT] Successfully sent message: ${message.length} bytes');
-        
+
+        print(
+            '📤 [Enhanced BT] Successfully sent message: ${message.length} bytes');
+
         // Small delay between writes to prevent busy errors
         if (_writeQueue.isNotEmpty) {
           await Future.delayed(const Duration(milliseconds: 200));
@@ -440,10 +456,12 @@ class EnhancedBluetoothService {
       } catch (e) {
         print('❌ [Enhanced BT] Failed to send message: $e');
         print('🔍 [Enhanced BT] Error type: ${e.runtimeType}');
-        
+
         // Handle authentication error specifically
-        if (e.toString().contains('GATT_INSUFFICIENT_AUTHENTICATION') || e.toString().contains('authentication')) {
-          print('🔐 [Enhanced BT] Authentication required, attempting to create bond...');
+        if (e.toString().contains('GATT_INSUFFICIENT_AUTHENTICATION') ||
+            e.toString().contains('authentication')) {
+          print(
+              '🔐 [Enhanced BT] Authentication required, attempting to create bond...');
           try {
             if (_connectedDevice != null) {
               await _connectedDevice!.createBond();
@@ -454,45 +472,54 @@ class EnhancedBluetoothService {
             print('⚠️ [Enhanced BT] Bonding failed: $bondError');
           }
         }
-        
+
         // Retry once after delay
         print('🔄 [Enhanced BT] Retrying after delay...');
         await Future.delayed(const Duration(milliseconds: 1000));
         try {
           final bytes = utf8.encode(message);
-          
+
           // Try different write strategies
           bool writeSuccessful = false;
-          
+
           // Strategy 1: Try with response (more secure)
           try {
             const maxChunkSize = 512;
             for (var i = 0; i < bytes.length; i += maxChunkSize) {
-              final end = (i + maxChunkSize < bytes.length) ? i + maxChunkSize : bytes.length;
+              final end = (i + maxChunkSize < bytes.length)
+                  ? i + maxChunkSize
+                  : bytes.length;
               final chunk = bytes.sublist(i, end);
               await _characteristic!.write(chunk, withoutResponse: false);
             }
             writeSuccessful = true;
-            print('📤 [Enhanced BT] Retry successful with response: ${message.length} bytes');
+            print(
+                '📤 [Enhanced BT] Retry successful with response: ${message.length} bytes');
           } catch (responseError) {
-            print('⚠️ [Enhanced BT] Write with response failed: $responseError');
-            
+            print(
+                '⚠️ [Enhanced BT] Write with response failed: $responseError');
+
             // Strategy 2: Try without response (less secure but may work)
             try {
               const maxChunkSize = 20; // Smaller chunks for without response
               for (var i = 0; i < bytes.length; i += maxChunkSize) {
-                final end = (i + maxChunkSize < bytes.length) ? i + maxChunkSize : bytes.length;
+                final end = (i + maxChunkSize < bytes.length)
+                    ? i + maxChunkSize
+                    : bytes.length;
                 final chunk = bytes.sublist(i, end);
                 await _characteristic!.write(chunk, withoutResponse: true);
-                await Future.delayed(const Duration(milliseconds: 50)); // Small delay between chunks
+                await Future.delayed(const Duration(
+                    milliseconds: 50)); // Small delay between chunks
               }
               writeSuccessful = true;
-              print('📤 [Enhanced BT] Retry successful without response: ${message.length} bytes');
+              print(
+                  '📤 [Enhanced BT] Retry successful without response: ${message.length} bytes');
             } catch (noResponseError) {
-              print('❌ [Enhanced BT] Write without response also failed: $noResponseError');
+              print(
+                  '❌ [Enhanced BT] Write without response also failed: $noResponseError');
             }
           }
-          
+
           if (!writeSuccessful) {
             allSuccessful = false;
           }
@@ -503,9 +530,10 @@ class EnhancedBluetoothService {
         }
       }
     }
-    
+
     _isWriting = false;
-    print('✅ [Enhanced BT] Write queue processing completed. Success: $allSuccessful');
+    print(
+        '✅ [Enhanced BT] Write queue processing completed. Success: $allSuccessful');
     return allSuccessful;
   }
 
