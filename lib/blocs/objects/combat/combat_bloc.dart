@@ -4,16 +4,16 @@ import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/services/combat_ble_service.dart';
+import 'package:nucatch/services/combat_nearby_service.dart';
 
 class CombatBloc extends Bloc<CombatEvent, CombatState> {
-  final CombatBLEService _roomService;
+  final CombatNearbyService _roomService;
   StreamSubscription? _messageSubscription;
 
   // Expose isHost status from room service
   bool get isHost => _roomService.isHost;
 
-  CombatBloc({required CombatBLEService roomService})
+  CombatBloc({required CombatNearbyService roomService})
       : _roomService = roomService,
         super(const CombatState()) {
     on<CombatGameStarted>(_onCombatGameStarted);

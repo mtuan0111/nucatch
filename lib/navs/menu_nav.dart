@@ -14,7 +14,7 @@ import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
-import 'package:nucatch/services/combat_ble_service.dart';
+import 'package:nucatch/services/combat_nearby_service.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
@@ -106,7 +106,7 @@ class _MenuNavState extends State<MenuNav> {
                                 ),
                             BlocProvider(
                               create: (context) => CombatBloc(
-                                roomService: CombatBLEService(),
+                                roomService: CombatNearbyService(),
                               ),
                             ),
                           ],

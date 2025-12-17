@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
-import 'package:nucatch/blocs/objects/bluetooth/bluetooth_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
@@ -13,7 +12,6 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_mode_setup_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_play_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/gameover_screen.dart';
-import 'package:nucatch/screens/menu_screens/player/pairing_room_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/select_play_mode_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/set_difficult_screen.dart';
@@ -31,9 +29,7 @@ class _PlayerNavState extends State<PlayerNav> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => BluetoothBloc(),
-      child: BlocBuilder<PlayerNavCubit, PlayerNavState>(
+    return BlocBuilder<PlayerNavCubit, PlayerNavState>(
         builder: (context, state) {
           return BlocListener<TurnBloc, TurnState>(
             listenWhen: (previous, current) {
@@ -76,13 +72,6 @@ class _PlayerNavState extends State<PlayerNav> {
                     const MaterialPage(
                       child: CombatModeSetupScreen(),
                     ),
-                  if (state is PairingRoomState)
-                    MaterialPage(
-                      child: PairingRoomScreen(
-                        isHost: state.isHost,
-                        roomCode: state.roomCode,
-                      ),
-                    ),
                   if (state is SetDifficultyState)
                     const MaterialPage(
                       child: SetDifficultScreen(),
@@ -117,7 +106,6 @@ class _PlayerNavState extends State<PlayerNav> {
             ),
           );
         },
-      ),
-    );
+      );
   }
 }

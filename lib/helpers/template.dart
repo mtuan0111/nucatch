@@ -648,8 +648,6 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
         return 30;
       case ButtonSize.large:
         return 40;
-      default:
-        return 30;
     }
   }
 
@@ -989,7 +987,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                     child: Opacity(
                       opacity: _shadowOpacity,
                       child: Container(
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                             // top: _highlightBorderPadding / 2,
                             // right: _highlightBorderPadding / 2,
                             // bottom: _highlightBorderPadding / 4,
@@ -1011,7 +1009,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                             ),
                           ),
                           borderRadius: borderRadiusValue +
-                              BorderRadius.all(
+                              const BorderRadius.all(
                                   Radius.circular(_shadowBorderPadding)),
                         ),
                       ),

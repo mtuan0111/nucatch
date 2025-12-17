@@ -3,41 +3,88 @@
 ## Overview
 Combat Mode is a multiplayer game mode for NuCatch where two players compete in real-time by solving math challenges. Players take turns answering questions based on the selected difficulty level, earning points for correct answers and losing lives for incorrect ones. The first player to run out of lives loses the game.
 
+**Key Features:**
+- **Pure P2P Connection**: Works completely offline using Nearby Connections API
+- **Automatic Encryption**: Built-in security via Google Play Services
+- **Separate UI Flows**: Distinct screens for host (advertiser) and guest (discoverer)
+- **Real-time State Sync**: Instant feedback and notifications via Nearby payload messages
+- **Simplified Architecture**: No manual GATT, service discovery, or bonding required
+
 ## Architecture
 
 ### Technology Stack
-- **Bluetooth Communication**: Uses `flutter_blue_plus` for BLE scanning/connection and `flutter_ble_peripheral` for advertising
+- **P2P Communication**: 
+  - `nearby_connections` package (replaces `flutter_blue_plus` and `flutter_ble_peripheral`)
+  - Google Play Services for connection management
+  - Strategy: `P2P_STAR` for direct one-to-one connections
 - **State Management**: BLoC pattern with `CombatBloc`, `CombatState`, and `CombatEvent`
-- **Message Protocol**: JSON-based message exchange over Bluetooth GATT characteristics
+- **Message Protocol**: JSON-based message exchange over Nearby Connections payload
+- **Service Architecture**: 
+  - `CombatNearbyService` - Handles advertising, discovery, connection setup, and message routing
+
+### Security and Reliability
+- **Connection**: Managed entirely by Google Play Services/Nearby Connections
+- **Transport**: Automatically handles WiFi/BLE/Audio as underlying transports
+- **Encryption**: Connections are automatically encrypted by the Nearby Connections API
+- **Offline Capable**: Pure P2P, works completely offline
 
 ## Game Flow
 
 ### 1. Connection Phase
 ```
-Host Device                          Guest Device
-    |                                     |
-    | Start Advertising (Room Code)      |
-    |------------------------------------>|
-    |                                     | Start Scanning
-    |                                     |---> Discover Host
-    |                                     |
-    |<----------------------------------- | Connect Request
-    | Accept Connection                   |
-    |------------------------------------>|
-    |         Connected (BLE GATT)        |
+Host Device (Advertiser)                   Guest Device (Discoverer)
+    |                                           |
+    | Press "Create Room"                       | Press "Join Room"
+    | Start Advertising (Endpoint: HostName)    | Start Discovery
+    | Show: "Waiting for opponent..."           | Show: "Scanning for rooms..."
+    |                                           |
+    |                                           | Discover Host Endpoint
+    |<----------------------------------------- | Request Connection (Endpoint ID)
+    |                                           |
+    | Receive Connection Request                |
+    | (onConnectionInitiated)                   |
+    | Show: "Opponent wants to connect!"        | Show: "Connection requested."
+    | Accept Connection                         | Accept Connection
+    |------------------------------------------>|
+    |                                           | Connection Established
+    | Connection Established                    | (onConnectionResult)
+    | (onConnectionResult)                      |
+    |                                           |
+    |<----------------------------------------- | Send: guest_joined
+    | Show: "Opponent joined!"                  |
+    | Update UI: guestJoined state              | Update UI: guestJoined state
 ```
 
-### 2. Setup Phase
+### 2. Ready Phase
 ```
-Host                                 Guest
-    |                                     |
-    | Select Difficulty                   | 
-    | (Easy/Medium/Hard/Extreme)          |
-    |                                     |
-    | Send: difficulty_selected           |
-    |------------------------------------>|
-    |                                     | Initialize Game
-    | Initialize Game                     |
+Host                                      Guest
+    |                                           |
+    |                                           | Press "Ready" button
+    |<----------------------------------------- | Send: player_ready
+    | Show: "Opponent Ready!" dialog            |
+    | Button changes to "Ready!"                |
+    |                                           |
+    | Press "Ready" button                      |
+    | Send: player_ready                        |
+    |------------------------------------------>| 
+    |                                           | Both ready detected!
+    | Both ready detected!                      |
+    | Show: "Both Players Ready!" dialog        | Show: "Both Players Ready!" dialog
+    | Auto-navigate to difficulty selection     | Wait for host
+```
+
+### 3. Difficulty Selection Phase
+```
+Host                                      Guest
+    |                                           |
+    | Select Difficulty Screen                  |
+    | Choose: Easy/Medium/Hard/Extreme          |
+    |                                           |
+    | Send: difficulty_selected + game_started  |
+    |------------------------------------------>|
+    |                                           | Receive difficulty
+    | Navigate to Combat Play                   | Navigate to Combat Play
+    | Initialize game state                     | Initialize game state
 ```
 
 ### 3. Game Loop
@@ -133,22 +180,102 @@ Current Player                       Opponent
 ## Message Protocol
 
 ### Message Format
-All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000ffe1-0000-1000-8000-00805f9b34fb`
+All messages are JSON objects sent over Nearby Connections payload with automatic metadata:
+- **Sender ID**: Automatically added to all messages
+- **Timestamp**: Added for message ordering
+- **Delivery**: Sent as UTF-8 encoded bytes via `Payload.fromBytes()`
+- **Reliability**: Nearby Connections handles retry and delivery confirmation
 
-### Message Types
+### Delivery Mechanism
+**Sending Messages**:
+```dart
+nearby_connections.sendPayload(
+  endpointId, 
+  Payload.fromBytes(utf8.encode(jsonMessage))
+)
+```
 
-#### 1. difficulty_selected
+**Receiving Messages**:
+```dart
+nearby_connections.onPayloadReceived(
+  (endpointId, payload) {
+    final message = utf8.decode(payload.bytes);
+    final json = jsonDecode(message);
+    // Handle message
+  }
+)
+```
+
+### Room Management Messages
+
+#### 1. guest_joined
+**Sent by**: Guest (after connection established)  
+**Received by**: Host  
+**Purpose**: Notify host that guest successfully connected
+```json
+{
+  "type": "guest_joined",
+  "guestId": "player_1234567890_123",
+  "senderId": "player_1234567890_123",
+  "timestamp": 1733812345678
+}
+```
+**Note**: Nearby Connections handles delivery reliability automatically
+
+#### 2. player_ready
+**Sent by**: Either player  
+**Received by**: Opponent  
+**Purpose**: Signal that player pressed the Ready button
+```json
+{
+  "type": "player_ready",
+  "senderId": "player_1234567890_123",
+  "timestamp": 1733812345678
+}
+```
+**Host Behavior**: Shows "Opponent Ready!" dialog
+**Both Ready**: Triggers `RoomState.bothReady` → Auto-navigate to difficulty
+
+#### 3. game_started
+**Sent by**: Host  
+**Received by**: Guest  
+**Purpose**: Notify game is starting and host is selecting difficulty
+```json
+{
+  "type": "game_started",
+  "senderId": "player_1234567890_456",
+  "timestamp": 1733812345678
+}
+```
+
+#### 4. opponent_left
+**Sent by**: Either player (on disconnect)  
+**Received by**: Opponent  
+**Purpose**: Clean disconnection notification
+```json
+{
+  "type": "opponent_left",
+  "senderId": "player_1234567890_123",
+  "timestamp": 1733812345678
+}
+```
+
+### Game Play Messages
+
+#### 5. difficulty_selected
 **Sent by**: Host  
 **Received by**: Guest  
 **Purpose**: Inform guest of selected difficulty
 ```json
 {
   "type": "difficulty_selected",
-  "difficulty": "Difficulty.medium"
+  "difficulty": "Difficulty.medium",
+  "senderId": "player_1234567890_456",
+  "timestamp": 1733812345678
 }
 ```
 
-#### 2. turn_start
+#### 6. turn_start
 **Sent by**: Current active player  
 **Received by**: Waiting player  
 **Purpose**: Signal start of turn with challenge
@@ -157,11 +284,13 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
   "type": "turn_start",
   "isHostTurn": true,
   "requirement": "25 + 17",
-  "expect": "42"
+  "expect": "42",
+  "senderId": "player_1234567890_456",
+  "timestamp": 1733812345678
 }
 ```
 
-#### 3. move_completed
+#### 7. move_completed
 **Sent by**: Player who just finished turn  
 **Received by**: Opponent  
 **Purpose**: Send turn results
@@ -171,11 +300,13 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
   "input": "42",
   "correct": true,
   "score": 10,
-  "lives": 3
+  "lives": 3,
+  "senderId": "player_1234567890_123",
+  "timestamp": 1733812345678
 }
 ```
 
-#### 4. game_ended
+#### 8. game_ended
 **Sent by**: Player who determined game end  
 **Received by**: Opponent  
 **Purpose**: Signal game completion
@@ -183,7 +314,9 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
 {
   "type": "game_ended",
   "isWinner": true,
-  "reason": "opponent_lives_out"
+  "reason": "opponent_lives_out",
+  "senderId": "player_1234567890_456",
+  "timestamp": 1733812345678
 }
 ```
 
@@ -192,7 +325,7 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
 - `my_lives_out`: Current player ran out of lives
 - `opponent_disconnected`: Opponent disconnected
 
-#### 5. opponent_disconnected
+#### 9. opponent_disconnected
 **Sent by**: System (detected internally)  
 **Received by**: Remaining player  
 **Purpose**: Handle unexpected disconnection
@@ -202,54 +335,132 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
 }
 ```
 
-## Bluetooth Implementation
+## Nearby Connections Implementation
 
-### Host Role
+### CombatNearbyService Architecture
 
-#### Advertising
-- **Service UUID**: Generated from room code (e.g., room 477 → `000001dd-0000-1000-8000-00805f9b34fb`)
-- **Local Name**: `NuCatch-{roomCode}` (e.g., "NuCatch-477")
-- **Manufacturer Data**: Room code as UTF-8 bytes
-- **Manufacturer ID**: `0x004C` (Apple compatibility)
-- **TX Power**: High (maximum range)
-- **Advertising Mode**: Balanced (visibility + battery)
-- **Connectable**: Yes
-- **Timeout**: None (indefinite)
+#### Single-Layer Service Design
+**CombatNearbyService** manages the complete Nearby Connections lifecycle:
+- Advertising and discovery
+- Connection request handling
+- Message serialization/deserialization
+- Room state tracking (waiting → guestJoined → bothReady → playing → ended)
+- Player ready state management
+- Game lifecycle coordination
+
+#### Core Methods
+
+| Method | Role | Description |
+|--------|------|-------------|
+| `startAdvertising(hostName)` | Host | Starts advertising presence with endpoint name |
+| `startDiscovery(guestName)` | Guest | Starts scanning for nearby endpoints |
+| `requestConnection(endpointId)` | Guest | Sends connection request to discovered host |
+| `acceptConnection(endpointId)` | Both | Accepts the connection handshake |
+| `sendPayload(endpointId, message)` | Both | Sends JSON message as UTF-8 bytes payload |
+| `onConnectionInitiated` | Callback | Handles incoming connection requests |
+| `onConnectionResult` | Callback | Handles connection success/failure |
+| `onPayloadReceived` | Callback | Handles incoming game messages |
+| `disconnectFromEndpoint(endpointId)` | Both | Cleanly disconnects (sends opponent_left) |
+
+### Host Role (HostRoomScreen)
+
+#### Room Creation Flow
+1. **Initialize Nearby Connections**
+   - Check Google Play Services availability (Android)
+   - Request permissions (BLUETOOTH, LOCATION, NEARBY_DEVICES)
+   - Initialize Nearby Connections API
+   
+2. **Create Room**
+   - Generate host endpoint name (e.g., "NuCatch-Host")
+   - Display waiting message
+   - Show notification: "🎮 Waiting for opponent..."
+
+3. **Start Advertising**
+   ```dart
+   await nearbyService.startAdvertising(
+     userNickname: "Player1",
+     strategy: Strategy.P2P_STAR,
+   );
+   ```
+   - Strategy: `P2P_STAR` for one-to-one connection
+   - Service ID: Unique identifier for NuCatch app
+   - Automatically handles underlying transport (WiFi/BLE/Audio)
+
+#### Connection Handling
+- **Connection Request**: Receive via `onConnectionInitiated` callback
+- **Auto-Accept**: Automatically accept first connection request
+- **Connection Result**: Confirm via `onConnectionResult` callback
+- **Handshake**: Receive `guest_joined` message to confirm ready state
 
 #### Responsibilities
-- Start BLE advertising with room code
-- Accept incoming connections from guests
-- Select and broadcast difficulty level
-- Generate challenges for each turn
-- Start first turn
+- Start advertising and wait for discoverer
+- Accept connection requests
+- Track guest ready state
+- Navigate to difficulty selection when both ready
+- Start game and broadcast difficulty
 
-### Guest Role
+### Guest Role (JoinRoomScreen)
 
-#### Scanning
-- **Service Filter**: Temporarily disabled (scans all devices for debugging)
-- **Timeout**: 30 seconds
-- **Fine Location**: Required (Android)
+#### Room Joining Flow
+1. **Initialize Nearby Connections**
+   - Same permission and API initialization as host
+   
+2. **Start Discovery**
+   ```dart
+   await nearbyService.startDiscovery(
+     userNickname: "Player2",
+     strategy: Strategy.P2P_STAR,
+   );
+   ```
+   - Scan for nearby endpoints with matching Service ID
+   - Display discovered endpoints in UI
+   
+3. **Request Connection**
+   ```dart
+   await nearbyService.requestConnection(
+     userNickname: "Player2",
+     endpointId: discoveredEndpointId,
+   );
+   ```
+   - Select host from discovered endpoints
+   - Send connection request
+   - Wait for host acceptance
 
-#### Discovery Matching (Priority Order)
-1. **Perfect Match**: Device name contains "NuCatch-{roomCode}"
-2. **Good Match**: Service UUID + Manufacturer data both match
-3. **Risky Match**: Service UUID only (accepted with warning)
-4. **Rejected**: Manufacturer data only (too risky)
+#### Post-Connection
+- **Connection Established**: Confirmed via `onConnectionResult`
+- **Send guest_joined message**: Notify host of successful connection
+- **Wait for host to press Ready**
+- **Press Ready when prepared**
+- **Wait for host to start game**
 
 #### Responsibilities
-- Scan for host advertising the room code
-- Connect to host device
+- Discover nearby hosts
+- Request connection to selected host
+- Send ready signal
 - Wait for difficulty selection
-- Participate in turn-based gameplay
+- Participate in gameplay
 
 ### Connection Details
-- **Protocol**: BLE GATT (Generic Attribute Profile)
-- **Service UUID**: Custom per room code
-- **Characteristic UUID**: `0000ffe1-0000-1000-8000-00805f9b34fb`
-- **Characteristic Properties**: Read, Write, Notify
-- **MTU**: Default BLE MTU (typically 23-512 bytes)
-- **Connection Timeout**: 2-6 seconds (with retry logic)
-- **Retry Strategy**: 3 attempts with increasing timeouts (4s, 5s, 6s)
+
+#### Security & Encryption
+- **Automatic Encryption**: All connections encrypted by Nearby Connections API
+- **Token-based Auth**: Connection tokens exchanged during handshake
+- **Secure Channel**: Google Play Services manages secure communication
+- **No Manual Bonding**: No need for device pairing
+
+#### Message Delivery
+- **Payload Type**: `Payload.fromBytes()` for JSON messages
+- **Encoding**: UTF-8 string encoding
+- **Max Size**: Up to 32KB per payload (well beyond our needs)
+- **Reliability**: Automatic retry and delivery confirmation
+- **Ordering**: Messages delivered in order sent
+
+#### Connection Parameters
+- **Strategy**: `P2P_STAR` (one-to-one)
+- **Service ID**: App-specific identifier (e.g., "com.nucatch.combat")
+- **Timeout**: Managed by Nearby Connections (typically 30-60s)
+- **Keep-Alive**: Automatic connection monitoring
+- **Reconnection**: Can be implemented at app level if needed
 
 ## Turn Mechanics
 
@@ -304,29 +515,75 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
 
 ## Screen Components
 
-### Header
-- **My Info**: Score, Lives (left side)
+### Host Room Screen (host_room_screen.dart)
+- **Header**: "Host Room" title with back button
+- **Room Code Display**: Large, centered 3-digit code
+- **Status Text**: Dynamic messages based on room state
+  - Waiting: "Waiting for opponent to join..."
+  - Guest Joined: "Opponent joined! Press Ready when both players are ready."
+  - Both Ready: "✅ Both players ready! Starting game..."
+- **Ready Button**: 
+  - Appears when guest joins
+  - Changes to green "Ready!" indicator after tap
+  - Shows opponent ready notification when guest presses Ready
+- **Connection Status**: Nearby Connections state indicator at bottom
+- **Dialogs**:
+  - "Opponent Ready!" when guest becomes ready
+  - "Both Players Ready!" when both ready (auto-dismiss 2s)
+
+### Join Room Screen (join_room_screen.dart)
+- **Header**: "Join Room" title with back button
+- **Endpoint List**: 
+  - Displays discovered nearby endpoints
+  - Shows endpoint names and connection status
+  - Tap to select host
+- **Connect Button**: 
+  - Enabled when endpoint selected
+  - Disabled after connection established
+- **Status Text**: Dynamic messages based on connection state
+  - Scanning: "Scanning for nearby rooms..."
+  - Found: "Found X room(s). Select one to join."
+  - Connecting: "Connecting to room..."
+  - Connected: "Connected! Press Ready when you're prepared to play."
+  - Both Ready: "✅ Both players ready! Waiting for host to start..."
+  - Playing: "⏳ Waiting for host to select difficulty..."
+- **Ready Button**: 
+  - Appears after connection
+  - Changes to green "Ready!" indicator after tap
+- **Connection Status**: Nearby Connections state indicator at bottom
+- **Dialogs**:
+  - "Both Players Ready!" when both ready (auto-dismiss 2s)
+
+### Combat Play Screen (Shared)
+#### Header
+- **My Info**: Score, Lives (left side) with difficulty icon
 - **Turn Indicator**: Visual indicator of whose turn (center)
+  - Green: "Your Turn"
+  - Orange: "Opponent's Turn"
 - **Opponent Info**: Score, Lives (right side)
 
-### Game Area
+#### Game Area
 - **Challenge Display**: Shows `currentRequirement` (e.g., "25 + 17")
-- **Answer Input**: Shows current input with placeholder underscores
+- **Answer Input**: Shows current input in styled container
+  - Placeholder: "___"
+  - Letter spacing for readability
 - **Status Messages**: 
   - "Waiting for opponent..." when opponent is playing
-  - "Your turn!" when player should input
-  - "Watching opponent..." when spectating
+  - "Opponent is playing..." when spectating
 
-### Controls
+#### Controls
 - **Number Keyboard**: 0-9 buttons (3×4 grid)
-- Only visible when `canTap` is true
+- **Special Buttons**:
+  - Reset (disabled in combat)
+  - Main Menu (with confirmation dialog)
+- Only visible when `canTap` is true and it's player's turn
 - Each tap appends number to input
 
-### Game End Screen
+#### Game End Screen
 - **Winner Icon**: Trophy (gold) or sad face (grey)
 - **Result Text**: "You Win!" or "You Lose!"
 - **Reason Text**: Explanation of why game ended
-- **Return Button**: Navigate back to play mode selection
+- **Return Button**: Navigate back to menu
 
 ## Events
 
@@ -368,11 +625,12 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
 
 ## Error Handling
 
-### Bluetooth Errors
-- **Connection timeout**: Retry 3 times with increasing timeouts
-- **Disconnection during game**: Declare disconnected player as loser
+### Nearby Connections Errors
+- **Connection timeout**: Handled automatically by Nearby Connections API
+- **Disconnection during game**: Detect via `onDisconnected` callback, declare disconnected player as loser
 - **Message parsing error**: Log and ignore malformed messages
-- **Advertising failure**: Restart advertising with verification
+- **Advertising/Discovery failure**: Retry with exponential backoff
+- **Google Play Services unavailable**: Show error message and graceful degradation
 
 ### Game Logic Errors
 - **Invalid input**: Ignore non-numeric input
@@ -381,11 +639,11 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
 
 ## Performance Considerations
 
-### Bluetooth Optimization
-- Use balanced advertising mode (good visibility + battery)
-- High TX power for maximum range
-- No advertising timeout (indefinite)
-- Efficient JSON message format
+### Nearby Connections Optimization
+- Strategy `P2P_STAR` optimized for one-to-one connections
+- Automatic transport selection (WiFi Direct > BLE > Audio)
+- Efficient JSON message format (keep payloads small)
+- Connection keep-alive handled automatically
 
 ### State Updates
 - Minimal state changes per turn
@@ -423,18 +681,22 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
 ## Dependencies
 
 ### Flutter Packages
-- `flutter_blue_plus: ^1.36.8` - BLE scanning and connection
-- `flutter_ble_peripheral` - BLE advertising (host mode)
+- `nearby_connections: [latest]` - Nearby Connections API (replaces flutter_blue_plus and flutter_ble_peripheral)
 - `flutter_bloc` - State management
-- `permission_handler` - Bluetooth and location permissions
+- `permission_handler` - Location and Nearby Devices permissions
 
 ### Platform Requirements
-- **Android**: API 21+ (Lollipop), BLE support
-- **iOS**: iOS 13+, BLE support
-- **Permissions**: 
-  - Android 12+: BLUETOOTH_SCAN, BLUETOOTH_CONNECT, BLUETOOTH_ADVERTISE, LOCATION
-  - Android <12: BLUETOOTH, LOCATION
-  - iOS: Bluetooth (auto-granted)
+- **Android**: 
+  - API 21+ (Lollipop)
+  - Google Play Services required
+  - **Permissions**: 
+    - Android 12+: `BLUETOOTH_SCAN`, `BLUETOOTH_CONNECT`, `BLUETOOTH_ADVERTISE`, `ACCESS_FINE_LOCATION`, `NEARBY_WIFI_DEVICES`
+    - Android <12: `BLUETOOTH`, `BLUETOOTH_ADMIN`, `ACCESS_FINE_LOCATION`, `CHANGE_WIFI_STATE`
+- **iOS**: 
+  - iOS 13+
+  - Nearby Connections uses WiFi/BLE frameworks
+  - **Permissions**: Location (When In Use), Bluetooth (auto-granted)
+  - **Note**: Ensure `nearby_connections` package iOS compatibility
 
 ## Testing Scenarios
 
@@ -447,11 +709,13 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
 - [ ] Message serialization/deserialization
 
 ### Integration Tests
-- [ ] Bluetooth connection flow
+- [ ] Nearby Connections initialization
 - [ ] Host advertising and guest discovery
-- [ ] Message exchange between devices
+- [ ] Connection request/accept flow
+- [ ] Message exchange between endpoints
 - [ ] Turn switching mechanism
 - [ ] Game end scenarios
+- [ ] Disconnection handling
 
 ### Manual Testing
 - [ ] Two devices connect successfully
@@ -465,43 +729,91 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
 - [ ] Keyboard input works correctly
 - [ ] Game end screen displays correctly
 
+## Recent Improvements (December 2025)
+
+### Completed Enhancements
+1. ✅ **Migrated to Nearby Connections API**
+   - Replaced BLE stack with Google's Nearby Connections
+   - Eliminated manual GATT, service discovery, and bonding
+   - Simplified connection flow with advertising/discovery pattern
+   - Automatic encryption and reliability
+
+2. ✅ **Separated Host and Guest Screens**
+   - Created `HostRoomScreen` for advertising
+   - Created `JoinRoomScreen` for discovery
+   - Clearer UX with advertiser/discoverer roles
+
+3. ✅ **Streamlined Connection Process**
+   - No room codes needed (proximity-based discovery)
+   - Automatic connection handshake
+   - Built-in retry and delivery confirmation
+   - Simplified message sending via payloads
+
+4. ✅ **Ready State Management**
+   - Visual feedback when Ready button pressed
+   - "Opponent Ready!" notification for host
+   - "Both Players Ready!" dialog for both players
+   - Automatic navigation to difficulty selection
+
+5. ✅ **Improved UI Feedback**
+   - Advertising/Discovery status indicators
+   - Guest joined notification
+   - Status messages for all connection states
+   - ScrollView to prevent overflow errors
+
+6. ✅ **Robust Message Handling**
+   - JSON payload serialization/deserialization
+   - Proper state transitions
+   - Room state enum tracking
+   - Cleanup on disconnect
+
 ## Known Issues
 
 ### Current Limitations
-1. **BLE Name Override**: Android doesn't always use `localName` from advertising data
-   - Workaround: Match by service UUID + manufacturer data
-   - Impact: Multiple devices with same room code may cause confusion
+1. **Google Play Services Dependency**: Android requires Google Play Services
+   - Impact: Won't work on devices without Play Services (e.g., some Chinese ROMs)
+   - TODO: Consider fallback to pure BLE for compatibility
 
-2. **Service Filter Disabled**: Currently scanning all BLE devices
-   - Reason: Debugging visibility issues
-   - Impact: May discover many irrelevant devices
-   - TODO: Re-enable after confirming host visibility
+2. **No Reconnection Logic**: Disconnection ends game immediately
+   - Impact: Temporary connection drops cause game loss
+   - TODO: Add brief reconnection window (30s)
 
-3. **Host Status Hardcoded**: CombatPlayScreen assumes host=true
-   - TODO: Pass host status from pairing screen via navigation
+3. **Multiple Nearby Rooms**: May discover multiple hosts if many games nearby
+   - Impact: Guest must select correct host from list
+   - Workaround: Display endpoint names clearly in UI
 
-4. **No Reconnection Logic**: Disconnection ends game immediately
-   - TODO: Add brief reconnection window
-
-5. **No Input Validation**: Assumes all keyboard input is valid
+4. **No Input Validation**: Assumes all keyboard input is valid
+   - Impact: Potential edge cases with malformed input
    - TODO: Add input sanitization
 
-### Bug Reports
-- Guest device may not see host advertising with service UUID filter enabled
-- Both devices may appear as "BOM's A05s" instead of "NuCatch-{code}"
-- Connection timeouts occur even when devices are nearby
+5. **No Turn Timeout**: Players can take unlimited time
+   - Impact: Game can stall if player doesn't respond
+   - TODO: Add 30-60s turn timer
+
+6. **No Anti-Cheat**: Moves not validated on both devices
+   - Impact: Potential for manipulation
+   - TODO: Add peer validation
+
+### Resolved Issues (via Nearby Connections)
+- ✅ BLE service discovery complexity → Eliminated by Nearby Connections
+- ✅ GATT authentication errors → No longer applicable
+- ✅ Manual bonding required → Automatic encryption
+- ✅ Characteristic setup delays → Simplified payload API
+- ✅ UI overflow errors → Fixed with SingleChildScrollView
+- ✅ Ready button state feedback → Added visual state changes
 
 ## Glossary
 
-- **BLE**: Bluetooth Low Energy
-- **GATT**: Generic Attribute Profile (BLE communication protocol)
-- **UUID**: Universally Unique Identifier
-- **MTU**: Maximum Transmission Unit
-- **TX Power**: Transmission power (signal strength)
-- **Advertising**: Broadcasting BLE presence for discovery
-- **Scanning**: Searching for BLE devices
-- **Host**: Player who creates the room and advertises
-- **Guest**: Player who joins by scanning and connecting
+- **Nearby Connections**: Google's API for P2P data exchange over WiFi/BLE/Audio
+- **Endpoint**: A device/peer in the Nearby Connections network
+- **Endpoint ID**: Unique identifier for a connected peer
+- **Advertising**: Broadcasting presence for discovery (Host role)
+- **Discovery**: Searching for nearby endpoints (Guest role)
+- **Strategy**: Connection topology (P2P_STAR for one-to-one)
+- **Payload**: Data package sent between endpoints
+- **Service ID**: App-specific identifier for Nearby Connections
+- **Host/Advertiser**: Player who creates the room and advertises
+- **Guest/Discoverer**: Player who joins by discovering and connecting
 - **Turn**: One player's opportunity to solve a challenge
 - **Challenge**: Math problem presented to player
 - **Requirement**: The question text (e.g., "25 + 17")
@@ -509,8 +821,58 @@ All messages are JSON objects sent over BLE GATT characteristic with UUID: `0000
 - **Lives**: Number of mistakes allowed before losing
 - **Level**: Difficulty progression based on score
 
+## File Structure
+
+```
+lib/
+├── screens/
+│   └── menu_screens/
+│       └── player/
+│           ├── host_room_screen.dart      # Host advertising UI
+│           ├── join_room_screen.dart      # Guest discovery UI
+│           └── pairing_room_screen.dart   # Legacy BLE screen (deprecated)
+├── services/
+│   ├── combat_nearby_service.dart        # Nearby Connections management
+│   ├── combat_ble_service.dart           # Legacy BLE service (deprecated)
+│   └── enhanced_bluetooth_service.dart   # Legacy BLE service (deprecated)
+├── blocs/
+│   └── objects/
+│       └── combat/
+│           ├── combat_bloc.dart          # Combat game state management
+│           ├── combat_event.dart         # Combat events
+│           └── combat_state.dart         # Combat state
+└── models/
+    └── difficulty_model.dart             # Difficulty configurations
+```
+
 ---
 
-**Version**: 1.0  
-**Last Updated**: December 2, 2025  
-**Status**: Implementation in Progress
+**Version**: 3.0  
+**Last Updated**: December 11, 2025  
+**Status**: Architecture Migration to Nearby Connections
+
+## Changelog
+
+### Version 3.0 (December 11, 2025)
+- **MAJOR**: Migrated from BLE to Google Nearby Connections API
+- Removed manual GATT, service discovery, and bonding complexity
+- Simplified connection flow with advertising/discovery pattern
+- Automatic encryption and message delivery reliability
+- Updated architecture to use `CombatNearbyService`
+- Removed room codes (proximity-based discovery)
+- Updated dependencies and permissions
+
+### Version 2.0 (December 10, 2025)
+- Separated host and guest into dedicated screens
+- Added automatic BLE device bonding
+- Implemented delayed guest join message with retry
+- Added ready state notifications and dialogs
+- Fixed UI overflow issues
+- Enhanced error handling and logging
+
+### Version 1.0 (December 2, 2025)
+- Initial combat mode implementation
+- Basic BLE connection
+- Turn-based gameplay
+- Difficulty selection
+- Score and lives tracking

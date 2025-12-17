@@ -47,14 +47,18 @@
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>NuCatch needs location access to discover and connect with nearby players for Combat Mode using Google Nearby Connections.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>NuCatch needs location access to enable multiplayer Combat Mode with nearby players.</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>NuCatch needs Bluetooth to connect with other players for multiplayer Combat Mode. This allows you to play against friends nearby.</string>
+	<string>NuCatch uses Bluetooth and Wi-Fi to connect with nearby players for multiplayer Combat Mode via Google Nearby Connections.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>NuCatch needs Bluetooth to enable multiplayer Combat Mode with nearby players. This allows your device to be discovered by other players.</string>
+	<string>NuCatch uses Bluetooth to enable multiplayer Combat Mode with nearby players via Google Nearby Connections.</string>
 	<key>NSBluetoothWhileInUseUsageDescription</key>
-	<string>NuCatch uses Bluetooth while the app is active to connect with nearby players for multiplayer Combat Mode.</string>
+	<string>NuCatch uses Bluetooth while active to connect with nearby players for Combat Mode.</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>NuCatch uses local network to discover nearby players for Combat Mode.</string>
+	<string>NuCatch uses local network to discover nearby players for Combat Mode via Google Nearby Connections.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_nucatch._tcp</string>
