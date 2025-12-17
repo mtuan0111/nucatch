@@ -70,6 +70,9 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       print('🔗 [Host] Connection state: $state');
     });
 
+    // Reset combat state for fresh start
+    context.read<CombatBloc>().add(CombatReset());
+
     // Initialize on next frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeNearby();
@@ -281,9 +284,6 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
         print(
             '📤 [Host] Initializing combat game and navigating to play screen');
 
-        // Pop the HostRoomScreen first (since it was pushed via Navigator.push)
-        Navigator.of(context).pop();
-
         // Initialize combat game with Easy difficulty (default)
         final combatBloc = context.read<CombatBloc>();
         combatBloc.add(CombatGameStarted(
@@ -291,10 +291,11 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
           isHost: true,
         ));
 
-        // Send difficulty to guest
+        // Send difficulty to guest (this will also start the first turn)
         combatBloc.add(DifficultySelected(difficulty: Difficulty.easy));
 
-        // Navigate directly to play screen
+        // Pop the HostRoomScreen and navigate to play screen
+        Navigator.of(context).pop();
         context.read<PlayerNavCubit>().showPlay(playMode: PlayMode.combat);
       }
     } catch (e) {

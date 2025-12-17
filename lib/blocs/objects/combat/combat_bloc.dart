@@ -25,6 +25,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<OpponentDisconnected>(_onOpponentDisconnected);
     on<DifficultySelected>(_onDifficultySelected);
     on<InputUpdated>(_onInputUpdated);
+    on<CombatReset>(_onCombatReset);
 
     // Listen to BLE messages
     _messageSubscription = _roomService.messageStream.listen((data) {
@@ -63,9 +64,13 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           }
           break;
         case 'turn_start':
-          final isMyTurn = data['isHostTurn'] == state.isHost;
+          // Use _roomService.isHost instead of state.isHost to avoid race condition
+          // where state might not be updated yet when message arrives
+          final isMyTurn = data['isHostTurn'] == _roomService.isHost;
           final requirement = data['requirement'] as String;
           final expect = data['expect'] as String;
+          print(
+              '🎮 [Combat] turn_start received - isHostTurn: ${data['isHostTurn']}, _roomService.isHost: ${_roomService.isHost}, calculated isMyTurn: $isMyTurn');
           add(TurnReceived(
             isMyTurn: isMyTurn,
             requirement: requirement,
@@ -81,9 +86,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           ));
           break;
         case 'game_ended':
+          // Don't send message back - this prevents infinite loop
           add(GameEnded(
             isWinner: !data['isWinner'], // Opponent sends their win status
             reason: data['reason'],
+            sendMessage: false, // Don't echo the message back
           ));
           break;
         case 'opponent_disconnected':
@@ -108,6 +115,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatGameStarted event,
     Emitter<CombatState> emit,
   ) async {
+    print(
+        '🎮 [Combat] CombatGameStarted - event.isHost: ${event.isHost}, current state.isHost: ${state.isHost}');
+
+    // Completely reset state for fresh game
     emit(state.copyWith(
       isHost: event.isHost,
       difficultyModel: DifficultyModel.models[event.difficulty],
@@ -117,12 +128,21 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       opponentLives: 3,
       myScore: 0,
       opponentScore: 0,
+      isWinner: null, // Reset win/loss status
+      gameEndReason: null, // Reset game end reason
+      isMyTurn: false, // Reset turn state
+      currentRequirement: null, // Clear previous challenge
+      currentTarget: null, // Clear previous target
+      myInput: '', // Clear input
+      opponentInput: null, // Clear opponent input
+      isWaitingForOpponent: false, // Reset waiting state
     ));
 
-    if (event.isHost) {
-      // Host starts first turn
-      add(TurnStarted(isMyTurn: true));
-    }
+    print(
+        '🎮 [Combat] After CombatGameStarted - state.isHost: ${state.isHost}');
+
+    // Turn will be started after difficulty is selected
+    // This ensures both players are ready before the first turn
   }
 
   Future<void> _onDifficultySelected(
@@ -136,22 +156,29 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       status: CombatStatus.starting,
     ));
 
-    // Send difficulty to opponent if host
+    // Only HOST triggers the first turn
+    // Host goes first (isMyTurn: true for host)
     if (state.isHost) {
       await _sendMessage({
         'type': 'difficulty_selected',
         'difficulty': event.difficulty.toString(),
       });
-    }
 
-    // Note: Turn start is handled by _onCombatGameStarted for host
-    // Guest will receive turn_start message from host
+      // Host starts their own turn first
+      // The turn_start message will be sent to guest in _onTurnStarted
+      print('🎮 [Host] Starting my turn first (host goes first)');
+      add(TurnStarted(isMyTurn: true));
+    }
+    // Guest does NOT trigger turn here - waits for turn_start message from host
   }
 
   Future<void> _onTurnStarted(
     TurnStarted event,
     Emitter<CombatState> emit,
   ) async {
+    print(
+        '🎮 [Combat] TurnStarted - isHost: ${state.isHost}, isMyTurn: ${event.isMyTurn}');
+
     // Generate new challenge based on difficulty and level
     final challenge = _generateChallenge();
     final requirement =
@@ -169,9 +196,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     ));
 
     // Send turn start message to opponent
+    final isHostTurn = state.isHost ? event.isMyTurn : !event.isMyTurn;
+    print('🎮 [Combat] Sending turn_start - isHostTurn: $isHostTurn');
+
     await _sendMessage({
       'type': 'turn_start',
-      'isHostTurn': state.isHost ? event.isMyTurn : !event.isMyTurn,
+      'isHostTurn': isHostTurn,
       'requirement': requirement,
       'expect': expect,
     });
@@ -181,6 +211,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     TurnReceived event,
     Emitter<CombatState> emit,
   ) async {
+    print(
+        '🎮 [Combat] TurnReceived - isHost: ${state.isHost}, isMyTurn: ${event.isMyTurn}');
+
     // Receive challenge from opponent - NO new message sent
     emit(state.copyWith(
       isMyTurn: event.isMyTurn,
@@ -281,12 +314,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       isGameActive: false,
     ));
 
-    // Send game ended message
-    await _sendMessage({
-      'type': 'game_ended',
-      'isWinner': event.isWinner,
-      'reason': event.reason,
-    });
+    // Only send game ended message if this is a local game end (not from opponent)
+    if (event.sendMessage) {
+      await _sendMessage({
+        'type': 'game_ended',
+        'isWinner': event.isWinner,
+        'reason': event.reason,
+      });
+    }
   }
 
   Future<void> _onOpponentDisconnected(
@@ -309,5 +344,15 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     if (!state.isMyTurn || !state.canTap) return;
 
     emit(state.copyWith(myInput: event.input));
+  }
+
+  void _onCombatReset(
+    CombatReset event,
+    Emitter<CombatState> emit,
+  ) {
+    print('🔄 [Combat] Resetting combat state');
+
+    // Reset to initial state
+    emit(const CombatState());
   }
 }

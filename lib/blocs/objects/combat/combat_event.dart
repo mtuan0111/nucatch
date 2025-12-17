@@ -47,8 +47,13 @@ class GameEnded extends CombatEvent {
   final bool isWinner;
   final String
       reason; // "opponent_lives_out", "my_lives_out", "opponent_disconnected"
+  final bool sendMessage; // Whether to send game_ended message to opponent
 
-  GameEnded({required this.isWinner, required this.reason});
+  GameEnded({
+    required this.isWinner,
+    required this.reason,
+    this.sendMessage = true, // Default to true for backward compatibility
+  });
 }
 
 class OpponentDisconnected extends CombatEvent {}
@@ -76,3 +81,5 @@ class TurnReceived extends CombatEvent {
     required this.expect,
   });
 }
+
+class CombatReset extends CombatEvent {}

@@ -18,37 +18,27 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   @override
   void initState() {
     super.initState();
-    
-    // Determine if this player is the host based on bluetooth connection info
-    // We'll need to get this info from the previous pairing screen
-    // For now, let's assume host status - this would normally come from navigation params
-    final isHost = true; // TODO: Pass this from navigation
-    
-    // Start combat game
-    final combatBloc = context.read<CombatBloc>();
-    if (combatBloc.state.difficultyModel != null) {
-      combatBloc.add(CombatGameStarted(
-        difficulty: combatBloc.state.difficultyModel!.difficulty, 
-        isHost: isHost,
-      ));
-    }
+
+    // Game is already initialized by host/guest before navigating here
+    // No need to call CombatGameStarted again
   }
 
   void _handleTap(String input) {
     final combatBloc = context.read<CombatBloc>();
     final combatState = combatBloc.state;
-    
+
     if (!combatState.canTap) return;
-    
+
     final newInput = combatState.myInput + input;
     final isCorrect = newInput == combatState.currentTarget;
-    
+
     if (isCorrect) {
       // Turn completed successfully
       combatBloc.add(TurnCompleted(
         wasCorrect: true,
         playerInput: newInput,
-        pointsScored: combatState.myScore + (combatState.difficultyModel?.pointEachTurn ?? 1),
+        pointsScored: combatState.myScore +
+            (combatState.difficultyModel?.pointEachTurn ?? 1),
         livesRemaining: combatState.myLives,
       ));
     } else if (newInput.length == combatState.currentTarget?.length) {
@@ -78,12 +68,12 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   children: [
                     // Header with turn info and scores
                     _buildHeader(combatState),
-                    
+
                     // Game area
                     Expanded(
                       child: _buildGameArea(combatState),
                     ),
-                    
+
                     // Controls
                     if (combatState.canTap) _buildKeyboard(),
                   ],
@@ -108,7 +98,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               children: [
                 Text(
                   'You',
-                  style: LayoutConfig(context).titleSectionStyle().copyWith(fontSize: 16),
+                  style: LayoutConfig(context)
+                      .titleSectionStyle()
+                      .copyWith(fontSize: 16),
                 ),
                 Text(
                   'Score: ${combatState.myScore}',
@@ -121,7 +113,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               ],
             ),
           ),
-          
+
           // Turn indicator
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -130,16 +122,16 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              combatState.isMyTurn 
-                ? lang(context).yourTurn
-                : lang(context).opponentTurn,
+              combatState.isMyTurn
+                  ? lang(context).yourTurn
+                  : lang(context).opponentTurn,
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          
+
           // Opponent info
           Expanded(
             child: Column(
@@ -147,7 +139,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               children: [
                 Text(
                   'Opponent',
-                  style: LayoutConfig(context).titleSectionStyle().copyWith(fontSize: 16),
+                  style: LayoutConfig(context)
+                      .titleSectionStyle()
+                      .copyWith(fontSize: 16),
                 ),
                 Text(
                   'Score: ${combatState.opponentScore}',
@@ -169,7 +163,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     if (combatState.hasGameEnded) {
       return _buildGameEndScreen(combatState);
     }
-    
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -183,14 +177,16 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             const SizedBox(height: 20),
             Text(
               combatState.currentRequirement!,
-              style: LayoutConfig(context).displaySmallStyle(
-                isActiveShadow: true,
-                isItalic: false,
-              ).copyWith(fontSize: 48),
+              style: LayoutConfig(context)
+                  .displaySmallStyle(
+                    isActiveShadow: true,
+                    isItalic: false,
+                  )
+                  .copyWith(fontSize: 48),
             ),
             const SizedBox(height: 30),
           ],
-          
+
           // Input area
           if (combatState.currentTarget != null) ...[
             Text(
@@ -209,31 +205,33 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                 ),
               ),
               child: Text(
-                combatState.myInput.isEmpty ? '_' * combatState.currentTarget!.length : combatState.myInput,
+                combatState.myInput.isEmpty
+                    ? '_' * combatState.currentTarget!.length
+                    : combatState.myInput,
                 style: LayoutConfig(context).displaySmallStyle().copyWith(
-                  fontSize: 36,
-                  letterSpacing: 4,
-                ),
+                      fontSize: 36,
+                      letterSpacing: 4,
+                    ),
               ),
             ),
           ],
-          
+
           const SizedBox(height: 30),
-          
+
           // Status messages
           if (combatState.isWaitingForOpponent)
             Text(
               lang(context).waitingForOpponent,
               style: LayoutConfig(context).contentSectionStyle().copyWith(
-                color: Colors.yellow,
-              ),
+                    color: Colors.yellow,
+                  ),
             )
           else if (combatState.isOpponentActive)
             Text(
               lang(context).watchingOpponent,
               style: LayoutConfig(context).contentSectionStyle().copyWith(
-                color: Colors.orange,
-              ),
+                    color: Colors.orange,
+                  ),
             ),
         ],
       ),
@@ -242,7 +240,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
   Widget _buildGameEndScreen(CombatState combatState) {
     final isWinner = combatState.isWinner ?? false;
-    
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -255,12 +253,14 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           const SizedBox(height: 20),
           Text(
             isWinner ? lang(context).youWin : lang(context).youLose,
-            style: LayoutConfig(context).displaySmallStyle(
-              isActiveShadow: true,
-            ).copyWith(
-              fontSize: 48,
-              color: isWinner ? Colors.green : Colors.red,
-            ),
+            style: LayoutConfig(context)
+                .displaySmallStyle(
+                  isActiveShadow: true,
+                )
+                .copyWith(
+                  fontSize: 48,
+                  color: isWinner ? Colors.green : Colors.red,
+                ),
           ),
           const SizedBox(height: 20),
           Text(
@@ -273,6 +273,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             text: 'Return to Menu',
             shapeAt: RoundedWithShapeAt.all,
             onPressed: () {
+              // Reset combat state for fresh start next time
+              context.read<CombatBloc>().add(CombatReset());
+
+              // Navigate to menu
               context.read<PlayerNavCubit>().showSelectPlayMode();
             },
           ),
@@ -280,7 +284,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       ),
     );
   }
-  
+
   String _getGameEndReason(String? reason) {
     switch (reason) {
       case 'opponent_lives_out':
