@@ -203,13 +203,15 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   }
 
   void _showOpponentReadyDialog() {
+    bool dialogDismissed = false;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
 
       showDialog(
         context: context,
         barrierDismissible: true,
-        builder: (context) => AlertDialog(
+        builder: (dialogContext) => AlertDialog(
           title: const Row(
             children: [
               Icon(Icons.check_circle_outline, color: Colors.blue, size: 32),
@@ -234,7 +236,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                dialogDismissed = true;
+                Navigator.of(dialogContext).pop();
               },
               child: const Text('OK'),
             ),
@@ -242,8 +245,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         ),
       );
 
+      // Auto-dismiss after 3 seconds if not manually dismissed
       Future.delayed(const Duration(seconds: 3), () {
-        if (mounted) {
+        if (mounted && !dialogDismissed) {
+          dialogDismissed = true;
           Navigator.of(context, rootNavigator: true).pop();
         }
       });
