@@ -397,11 +397,14 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                 ),
                               ),
                             const SizedBox(width: 10),
-                            Text(
-                              _getRoomStateText(),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
+                            Flexible(
+                              child: Text(
+                                _getRoomStateText(),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ],

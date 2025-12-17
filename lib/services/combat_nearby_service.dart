@@ -97,14 +97,17 @@ class CombatNearbyService {
       if (androidVersion >= 33) {
         final nearbyWifiStatus = await Permission.nearbyWifiDevices.request();
         if (!nearbyWifiStatus.isGranted) {
-          print('⚠️ [Nearby] Nearby WiFi devices permission denied, may affect connectivity');
+          print(
+              '⚠️ [Nearby] Nearby WiFi devices permission denied, may affect connectivity');
         }
       }
 
       // Check if location service is enabled
-      final locationServiceEnabled = await Permission.location.serviceStatus.isEnabled;
+      final locationServiceEnabled =
+          await Permission.location.serviceStatus.isEnabled;
       if (!locationServiceEnabled) {
-        print('⚠️ [Nearby] Location service is disabled - connections may be unstable');
+        print(
+            '⚠️ [Nearby] Location service is disabled - connections may be unstable');
         // Note: User must manually enable location in settings
       }
 
@@ -116,8 +119,44 @@ class CombatNearbyService {
     }
   }
 
+  /// Reset the service state (useful after hot reload or before starting new session)
+  Future<void> reset() async {
+    print('🔄 [Nearby] Resetting service state...');
+
+    try {
+      // Stop all active sessions first
+      await stopAdvertising();
+      await stopDiscovery();
+
+      // Use stopAllEndpoints for thorough cleanup
+      // This disconnects ALL endpoints, ensuring no stale connections
+      try {
+        await Nearby().stopAllEndpoints();
+        print('✅ [Nearby] All endpoints stopped');
+      } catch (e) {
+        print('⚠️ [Nearby] Error stopping all endpoints: $e');
+      }
+
+      // Reset all state
+      _connectedEndpointId = null;
+      _isReady = false;
+      _opponentReady = false;
+      _discoveredEndpoints.clear();
+
+      // Small delay to let Nearby Connections fully reset
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      print('✅ [Nearby] Service reset complete');
+    } catch (e) {
+      print('⚠️ [Nearby] Error during reset: $e');
+    }
+  }
+
   /// Start advertising as host
   Future<void> startAdvertising(String hostName, String hostId) async {
+    // Reset any previous state first
+    await reset();
+
     _myEndpointName = hostName;
     _playerId = hostId;
     _isHost = true;
@@ -147,6 +186,9 @@ class CombatNearbyService {
 
   /// Start discovery as guest
   Future<void> startDiscovery(String guestName, String guestId) async {
+    // Reset any previous state first
+    await reset();
+
     _myEndpointName = guestName;
     _playerId = guestId;
     _isHost = false;
