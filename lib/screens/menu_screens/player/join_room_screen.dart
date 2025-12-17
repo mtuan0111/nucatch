@@ -39,7 +39,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   void initState() {
     super.initState();
     _myPlayerId = _generatePlayerId();
-    _myEndpointName = 'Guest-${Random().nextInt(9999).toString().padLeft(4, '0')}';
+    _myEndpointName =
+        'Guest-${Random().nextInt(9999).toString().padLeft(4, '0')}';
 
     // Listen to room state
     _roomStateSubscription = _nearbyService.roomStateStream.listen((state) {
@@ -69,7 +70,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     });
 
     // Listen to connection state
-    _connectionStateSubscription = _nearbyService.connectionStateStream.listen((state) {
+    _connectionStateSubscription =
+        _nearbyService.connectionStateStream.listen((state) {
       print('🔗 [Guest] Connection state: $state');
     });
 
@@ -90,7 +92,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
       final initialized = await _nearbyService.initialize();
       if (!initialized) {
-        _showError('Failed to initialize Nearby Connections. Please grant location permissions.');
+        _showError(
+            'Failed to initialize Nearby Connections. Please grant location permissions.');
         return;
       }
 
@@ -165,7 +168,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     }
   }
 
-  Future<void> _connectToEndpoint(String endpointId, String endpointName) async {
+  Future<void> _connectToEndpoint(
+      String endpointId, String endpointName) async {
     try {
       print('🤝 [Guest] Connecting to: $endpointName ($endpointId)');
 
@@ -327,9 +331,19 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   Widget build(BuildContext context) {
     return BlocListener<CombatBloc, CombatState>(
       listener: (context, combatState) {
-        // Guest auto-navigates when difficulty and turn are ready
+        // Guest auto-navigates when difficulty is received and game is starting
+        // Status will be 'starting' after receiving difficulty from host
+        // It won't reach 'playing' until receiving the first turn_start message
         if (combatState.difficultyModel != null &&
-            combatState.status == CombatStatus.playing) {
+            (combatState.status == CombatStatus.starting ||
+                combatState.status == CombatStatus.playing)) {
+          print(
+              '🎮 [Guest] Navigating to play screen with difficulty: ${combatState.difficultyModel?.difficulty}');
+
+          // Pop the JoinRoomScreen first
+          Navigator.of(context).pop();
+
+          // Navigate to play screen
           context.read<PlayerNavCubit>().showPlay(playMode: PlayMode.combat);
         }
       },
@@ -407,7 +421,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                     padding: const EdgeInsets.all(16.0),
                                     child: Row(
                                       children: [
-                                        const Icon(Icons.radar, color: Colors.blue),
+                                        const Icon(Icons.radar,
+                                            color: Colors.blue),
                                         const SizedBox(width: 8),
                                         Text(
                                           'Available Hosts (${_discoveredEndpoints.length})',
@@ -424,7 +439,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                     child: ListView.builder(
                                       itemCount: _discoveredEndpoints.length,
                                       itemBuilder: (context, index) {
-                                        final entry = _discoveredEndpoints.entries
+                                        final entry = _discoveredEndpoints
+                                            .entries
                                             .elementAt(index);
                                         final endpointId = entry.key;
                                         final endpointName = entry.value;
@@ -532,7 +548,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                     if (!_myPlayerReady)
                                       ElevatedButton.icon(
                                         onPressed: _setReady,
-                                        icon: const FaIcon(FontAwesomeIcons.check),
+                                        icon: const FaIcon(
+                                            FontAwesomeIcons.check),
                                         label: const Text('Ready'),
                                         style: ElevatedButton.styleFrom(
                                           padding: const EdgeInsets.symmetric(
@@ -545,7 +562,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                             horizontal: 40, vertical: 15),
                                         decoration: BoxDecoration(
                                           color: Colors.green.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(25),
+                                          borderRadius:
+                                              BorderRadius.circular(25),
                                           border: Border.all(
                                               color: Colors.green, width: 2),
                                         ),
