@@ -1,0 +1,36 @@
+import 'package:flutter/material.dart';
+import 'particle_system.dart';
+import 'screen_shake_controller.dart';
+
+/// Main controller for game animation triggers
+/// Provides three main animation events:
+/// - onAddPoint: Small firework burst
+/// - onGainLife: Large celebratory explosion
+/// - onLostLife: Screen shake effect
+class GameAnimationTriggers {
+  final ParticleOverlayController particleController;
+  final ScreenShakeController shakeController;
+
+  GameAnimationTriggers({
+    required this.particleController,
+    required this.shakeController,
+  });
+
+  /// Trigger small firework effect when points are scored
+  /// Position should be in screen coordinates (e.g., score counter position)
+  void onAddPoint(Offset position) {
+    particleController.triggerSmallBurst(position);
+  }
+
+  /// Trigger large explosion when life is gained
+  /// Position should be in screen coordinates (e.g., heart icon or screen center)
+  void onGainLife(Offset position) {
+    particleController.triggerConfetti(position);
+  }
+
+  /// Trigger screen shake when life is lost
+  /// Intensity: 0.0 (no shake) to 1.0 (maximum shake)
+  void onLostLife([double intensity = 0.8]) {
+    shakeController.shake(intensity);
+  }
+}

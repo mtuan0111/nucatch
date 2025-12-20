@@ -635,6 +635,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       const TurnState().copyWith(
         countDown: event.seconds,
         status: TurnStatus.intro,
+        point: 0,
         difficultyModel:
             state.difficultyModel ?? DifficultyModel.getModel(Difficulty.easy),
       ),
