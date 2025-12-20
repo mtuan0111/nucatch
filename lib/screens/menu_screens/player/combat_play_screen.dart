@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
@@ -21,38 +23,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
     // Game is already initialized by host/guest before navigating here
     // No need to call CombatGameStarted again
-  }
-
-  void _handleTap(String input) {
-    final combatBloc = context.read<CombatBloc>();
-    final combatState = combatBloc.state;
-
-    if (!combatState.canTap) return;
-
-    final newInput = combatState.myInput + input;
-    final isCorrect = newInput == combatState.currentTarget;
-
-    if (isCorrect) {
-      // Turn completed successfully
-      combatBloc.add(TurnCompleted(
-        wasCorrect: true,
-        playerInput: newInput,
-        pointsScored: combatState.myScore +
-            (combatState.difficultyModel?.pointEachTurn ?? 1),
-        livesRemaining: combatState.myLives,
-      ));
-    } else if (newInput.length == combatState.currentTarget?.length) {
-      // Turn completed but wrong answer
-      combatBloc.add(TurnCompleted(
-        wasCorrect: false,
-        playerInput: newInput,
-        pointsScored: combatState.myScore,
-        livesRemaining: combatState.myLives - 1,
-      ));
-    } else {
-      // Still typing, update input
-      combatBloc.add(InputUpdated(input: newInput));
-    }
   }
 
   @override
@@ -103,11 +73,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       .copyWith(fontSize: 16),
                 ),
                 Text(
-                  'Score: ${combatState.myScore}',
+                  'Score: ${combatState.point}',
                   style: LayoutConfig(context).contentSectionStyle(),
                 ),
                 Text(
-                  'Lives: ${combatState.myLives}',
+                  'Lives: ${combatState.lifeRemaining}',
                   style: LayoutConfig(context).contentSectionStyle(),
                 ),
               ],
@@ -169,14 +139,14 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // Challenge text
-          if (combatState.currentRequirement != null) ...[
+          if (combatState.requirementString != null) ...[
             Text(
               'Solve:',
               style: LayoutConfig(context).contentSectionStyle(),
             ),
             const SizedBox(height: 20),
             Text(
-              combatState.currentRequirement!,
+              combatState.requirementString!,
               style: LayoutConfig(context)
                   .displaySmallStyle(
                     isActiveShadow: true,
@@ -188,7 +158,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           ],
 
           // Input area
-          if (combatState.currentTarget != null) ...[
+          if (combatState.expect != null) ...[
             Text(
               'Answer:',
               style: LayoutConfig(context).contentSectionStyle(),
@@ -205,9 +175,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                 ),
               ),
               child: Text(
-                combatState.myInput.isEmpty
-                    ? '_' * combatState.currentTarget!.length
-                    : combatState.myInput,
+                combatState.typing.isEmpty
+                    ? '_' * combatState.expect!.length
+                    : combatState.typing,
                 style: LayoutConfig(context).displaySmallStyle().copyWith(
                       fontSize: 36,
                       letterSpacing: 4,
@@ -273,10 +243,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             text: 'Return to Menu',
             shapeAt: RoundedWithShapeAt.all,
             onPressed: () {
-              // Reset combat state for fresh start next time
-              context.read<CombatBloc>().add(CombatReset());
-
-              // Navigate to menu
+              // Just navigate to menu - game state will be reset on next game start
               context.read<PlayerNavCubit>().showSelectPlayMode();
             },
           ),
@@ -303,7 +270,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       padding: const EdgeInsets.all(20),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+          final keys = keyboardArray.entries.toList();
           const columns = 3;
           const rows = 4;
           final buttonWidth = constraints.maxWidth / columns;
@@ -317,15 +284,46 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               int idx = r * columns + c;
               Widget cell;
               if (idx < keys.length) {
-                final key = keys[idx];
+                final e = keys[idx];
+                Widget button;
+                if (e.key == KeyboardOption.reset) {
+                  button = AnimatedButton(
+                    context,
+                    iconData: FontAwesomeIcons.arrowsRotate,
+                    isEnable: context.watch<CombatBloc>().state.isAbleToReset &&
+                        context.watch<CombatBloc>().state.canTap,
+                    onPressed: () {
+                      context.read<CombatBloc>().add(
+                            CombatNumberReset(
+                                duration: const Duration(milliseconds: 200)),
+                          );
+                    },
+                  );
+                } else if (e.key == KeyboardOption.mainMenu) {
+                  button = AnimatedButton(
+                    context,
+                    iconData: FontAwesomeIcons.bars,
+                    onPressed: () {
+                      // Handle menu button - maybe show dialog to end game
+                    },
+                  );
+                } else {
+                  button = AnimatedButton(
+                    context,
+                    text: e.value.toString(),
+                    style: LayoutConfig(context).boldedStyle,
+                    isEnable: context.watch<CombatBloc>().state.canTap,
+                    onPressed: () {
+                      context.read<CombatBloc>().add(
+                            CombatPlayerTapped(keyValue: e.key),
+                          );
+                    },
+                  );
+                }
                 cell = SizedBox(
                   width: buttonWidth - buttonSpacing,
                   height: buttonHeight - buttonSpacing,
-                  child: CustomElevatedButton(
-                    text: key,
-                    shapeAt: RoundedWithShapeAt.all,
-                    onPressed: () => _handleTap(key),
-                  ),
+                  child: button,
                 );
               } else {
                 cell = SizedBox(

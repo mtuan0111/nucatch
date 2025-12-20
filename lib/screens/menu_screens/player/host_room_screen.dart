@@ -70,8 +70,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       print('🔗 [Host] Connection state: $state');
     });
 
-    // Reset combat state for fresh start
-    context.read<CombatBloc>().add(CombatReset());
+    // CombatGameStarted will reset state when game starts
 
     // Initialize on next frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -292,7 +291,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
         ));
 
         // Send difficulty to guest (this will also start the first turn)
-        combatBloc.add(DifficultySelected(difficulty: Difficulty.easy));
+        combatBloc.add(CombatDifficultyChanged(difficulty: Difficulty.easy));
 
         // Pop the HostRoomScreen and navigate to play screen
         Navigator.of(context).pop();

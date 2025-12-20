@@ -81,8 +81,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       _handleIncomingMessage(message);
     });
 
-    // Reset combat state for fresh start
-    context.read<CombatBloc>().add(CombatReset());
+    // CombatGameStarted will reset state when game starts
 
     // Initialize on next frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -344,8 +343,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         // Status will be 'starting' after receiving difficulty from host
         // It won't reach 'playing' until receiving the first turn_start message
         if (combatState.difficultyModel != null &&
-            (combatState.status == CombatStatus.starting ||
-                combatState.status == CombatStatus.playing)) {
+            (combatState.combatStatus == CombatStatus.starting ||
+                combatState.combatStatus == CombatStatus.playing)) {
           print(
               '🎮 [Guest] Navigating to play screen with difficulty: ${combatState.difficultyModel?.difficulty}');
 

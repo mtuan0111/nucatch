@@ -30,82 +30,82 @@ class _PlayerNavState extends State<PlayerNav> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PlayerNavCubit, PlayerNavState>(
-        builder: (context, state) {
-          return BlocListener<TurnBloc, TurnState>(
-            listenWhen: (previous, current) {
-              // Only listen when saveSuccess state changes and we have a message
-              return previous.saveSuccess != current.saveSuccess &&
-                  current.message != null;
-            },
-            listener: (context, state) {
-              // Show toast based on save result
-              if (state.message == 'save_success') {
-                Fluttertoast.showToast(
-                  msg: lang(context).insertedSuccess,
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                );
-              } else if (state.message == 'save_failed') {
-                Fluttertoast.showToast(
-                  msg: lang(context).insertedFailed,
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                );
-              }
-            },
-            child: PopScope(
-              canPop: false,
-              child: Navigator(
-                onPopPage: (route, result) {
-                  return false;
-                },
-                // onDidRemovePage: (page) {
-                //   if (page is MaterialPage) {
-                //     return context.read<MenuBloc>().add(ShowMenu());
-                //   }
-                // },
-                pages: [
+      builder: (context, state) {
+        return BlocListener<TurnBloc, TurnState>(
+          listenWhen: (previous, current) {
+            // Only listen when saveSuccess state changes and we have a message
+            return previous.saveSuccess != current.saveSuccess &&
+                current.message != null;
+          },
+          listener: (context, state) {
+            // Show toast based on save result
+            if (state.message == 'save_success') {
+              Fluttertoast.showToast(
+                msg: lang(context).insertedSuccess,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+              );
+            } else if (state.message == 'save_failed') {
+              Fluttertoast.showToast(
+                msg: lang(context).insertedFailed,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+              );
+            }
+          },
+          child: PopScope(
+            canPop: false,
+            child: Navigator(
+              onPopPage: (route, result) {
+                return false;
+              },
+              // onDidRemovePage: (page) {
+              //   if (page is MaterialPage) {
+              //     return context.read<MenuBloc>().add(ShowMenu());
+              //   }
+              // },
+              pages: [
+                const MaterialPage(
+                  child: SelectPlayModeScreen(),
+                ),
+                if (state is CombatModeSetupState)
                   const MaterialPage(
-                    child: SelectPlayModeScreen(),
+                    child: CombatModeSetupScreen(),
                   ),
-                  if (state is CombatModeSetupState)
-                    const MaterialPage(
-                      child: CombatModeSetupScreen(),
+                if (state is SetDifficultyState)
+                  const MaterialPage(
+                    child: SetDifficultScreen(),
+                  ),
+                if (state is PlayingState)
+                  MaterialPage(
+                    child: PopScope(
+                      canPop: true,
+                      child: state.playMode == PlayMode.combat
+                          ? const CombatPlayScreen()
+                          : PlayScreen(
+                              title: menuArray(
+                                  context)[MenuOption.start]!['text']!,
+                            ),
                     ),
-                  if (state is SetDifficultyState)
-                    const MaterialPage(
-                      child: SetDifficultScreen(),
+                  ),
+                if (state is GameOverState) ...[
+                  MaterialPage(
+                    child: PopScope(
+                      canPop: true,
+                      child: PlayScreen(
+                          title:
+                              menuArray(context)[MenuOption.start]!['text']!),
                     ),
-                  if (state is PlayingState)
-                    MaterialPage(
-                      child: PopScope(
-                        canPop: true,
-                        child: state.playMode == PlayMode.combat
-                            ? const CombatPlayScreen()
-                            : PlayScreen(
-                                title: menuArray(
-                                    context)[MenuOption.start]!['text']!,
-                              ),
-                      ),
-                    ),
-                  if (state is GameOverState) ...[
-                    MaterialPage(
-                      child: PopScope(
-                        canPop: true,
-                        child: PlayScreen(
-                            title:
-                                menuArray(context)[MenuOption.start]!['text']!),
-                      ),
-                    ),
-                    const MaterialPage(
-                      child: GameOverScreen(),
-                    ),
-                  ],
+                  ),
+                  const MaterialPage(
+                    child: GameOverScreen(),
+                  ),
                 ],
-              ),
+              ],
             ),
-          );
-        },
-      );
+          ),
+        );
+      },
+    );
   }
 }

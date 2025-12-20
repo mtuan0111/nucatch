@@ -1,41 +1,133 @@
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 
 abstract class CombatEvent {}
 
+// ===== Core Game Events (matching TurnEvent) =====
+
 class CombatGameStarted extends CombatEvent {
+  final int seconds;
   final Difficulty difficulty;
   final bool isHost;
 
-  CombatGameStarted({required this.difficulty, required this.isHost});
-}
-
-class TurnStarted extends CombatEvent {
-  final bool isMyTurn;
-
-  TurnStarted({required this.isMyTurn});
-}
-
-class TurnCompleted extends CombatEvent {
-  final bool wasCorrect;
-  final String playerInput;
-  final int pointsScored;
-  final int livesRemaining;
-
-  TurnCompleted({
-    required this.wasCorrect,
-    required this.playerInput,
-    required this.pointsScored,
-    required this.livesRemaining,
+  CombatGameStarted({
+    this.seconds = 4,
+    required this.difficulty,
+    required this.isHost,
   });
 }
 
-class OpponentMoveReceived extends CombatEvent {
+class CombatGameEnded extends CombatEvent {
+  final bool isCauseGameOver;
+  final bool isWinner;
+  final String reason;
+  final bool sendMessage;
+
+  CombatGameEnded({
+    this.isCauseGameOver = true,
+    required this.isWinner,
+    required this.reason,
+    this.sendMessage = true,
+  });
+}
+
+class CombatPlayerTapped extends CombatEvent {
+  final KeyboardOption keyValue;
+
+  CombatPlayerTapped({required this.keyValue});
+}
+
+class CombatLevelChanged extends CombatEvent {
+  final int level;
+
+  CombatLevelChanged({required this.level});
+}
+
+class CombatDifficultyChanged extends CombatEvent {
+  final Difficulty difficulty;
+  final void Function()? onChanged;
+
+  CombatDifficultyChanged({
+    required this.difficulty,
+    this.onChanged,
+  });
+}
+
+class CombatLifeLost extends CombatEvent {
+  final int lifeRemaining;
+
+  CombatLifeLost({this.lifeRemaining = 1});
+}
+
+class CombatPointAdded extends CombatEvent {}
+
+class CombatLifeGained extends CombatEvent {
+  final int lifeGained;
+
+  CombatLifeGained({this.lifeGained = 1});
+}
+
+class CombatRequiredStringGenerated extends CombatEvent {}
+
+class CombatExpectShown extends CombatEvent {
+  final Duration duration;
+
+  CombatExpectShown(this.duration);
+}
+
+class CombatNumberReset extends CombatEvent {
+  final Duration duration;
+
+  CombatNumberReset({required this.duration});
+}
+
+class CombatRecordSaved extends CombatEvent {
+  final void Function()? callback;
+
+  CombatRecordSaved({this.callback});
+}
+
+class CombatTapTimerTick extends CombatEvent {
+  final double remainingTime;
+
+  CombatTapTimerTick(this.remainingTime);
+}
+
+class CombatTapTimerTimeout extends CombatEvent {}
+
+class CombatTapTimerPause extends CombatEvent {}
+
+class CombatTapTimerResume extends CombatEvent {}
+
+class CombatTapTimerReset extends CombatEvent {}
+
+// ===== Combat-Specific Network Events =====
+
+class CombatTurnStarted extends CombatEvent {
+  final bool isMyTurn;
+
+  CombatTurnStarted({required this.isMyTurn});
+}
+
+class CombatTurnReceived extends CombatEvent {
+  final bool isMyTurn;
+  final String requirement;
+  final String expect;
+
+  CombatTurnReceived({
+    required this.isMyTurn,
+    required this.requirement,
+    required this.expect,
+  });
+}
+
+class CombatOpponentMoveReceived extends CombatEvent {
   final String opponentInput;
   final bool wasOpponentCorrect;
   final int opponentScore;
   final int opponentLives;
 
-  OpponentMoveReceived({
+  CombatOpponentMoveReceived({
     required this.opponentInput,
     required this.wasOpponentCorrect,
     required this.opponentScore,
@@ -43,43 +135,14 @@ class OpponentMoveReceived extends CombatEvent {
   });
 }
 
-class GameEnded extends CombatEvent {
-  final bool isWinner;
-  final String
-      reason; // "opponent_lives_out", "my_lives_out", "opponent_disconnected"
-  final bool sendMessage; // Whether to send game_ended message to opponent
+class CombatOpponentDisconnected extends CombatEvent {}
 
-  GameEnded({
-    required this.isWinner,
-    required this.reason,
-    this.sendMessage = true, // Default to true for backward compatibility
-  });
-}
-
-class OpponentDisconnected extends CombatEvent {}
-
-class DifficultySelected extends CombatEvent {
-  final Difficulty difficulty;
-
-  DifficultySelected({required this.difficulty});
-}
-
-class InputUpdated extends CombatEvent {
-  final String input;
-
-  InputUpdated({required this.input});
-}
-
-class TurnReceived extends CombatEvent {
-  final bool isMyTurn;
-  final String requirement;
-  final String expect;
-
-  TurnReceived({
-    required this.isMyTurn,
-    required this.requirement,
-    required this.expect,
-  });
-}
-
-class CombatReset extends CombatEvent {}
+// ===== Legacy aliases for backward compatibility =====
+typedef TurnStarted = CombatTurnStarted;
+typedef TurnReceived = CombatTurnReceived;
+typedef OpponentMoveReceived = CombatOpponentMoveReceived;
+typedef OpponentDisconnected = CombatOpponentDisconnected;
+typedef GameEnded = CombatGameEnded;
+typedef DifficultySelected = CombatDifficultyChanged;
+typedef InputUpdated = CombatPlayerTapped; // Map to tap event
+typedef CombatReset = CombatGameStarted; // Reset by restarting

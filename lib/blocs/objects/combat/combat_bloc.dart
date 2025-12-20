@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
+import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/services/combat_nearby_service.dart';
 
@@ -17,15 +21,19 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       : _roomService = roomService,
         super(const CombatState()) {
     on<CombatGameStarted>(_onCombatGameStarted);
-    on<TurnStarted>(_onTurnStarted);
-    on<TurnReceived>(_onTurnReceived);
-    on<TurnCompleted>(_onTurnCompleted);
-    on<OpponentMoveReceived>(_onOpponentMoveReceived);
-    on<GameEnded>(_onGameEnded);
-    on<OpponentDisconnected>(_onOpponentDisconnected);
-    on<DifficultySelected>(_onDifficultySelected);
-    on<InputUpdated>(_onInputUpdated);
-    on<CombatReset>(_onCombatReset);
+    on<CombatPlayerTapped>(_onTap);
+    on<CombatTurnStarted>(_onTurnStarted);
+    on<CombatTurnReceived>(_onTurnReceived);
+    on<CombatOpponentMoveReceived>(_onOpponentMoveReceived);
+    on<CombatGameEnded>(_onGameEnded);
+    on<CombatOpponentDisconnected>(_onOpponentDisconnected);
+    on<CombatDifficultyChanged>(_onDifficultySelected);
+    on<CombatLevelChanged>(_onSetLevel);
+    on<CombatLifeLost>(_onLostLife);
+    on<CombatPointAdded>(_onAddPoint);
+    on<CombatRequiredStringGenerated>(_onGeneratedRequiredString);
+    on<CombatExpectShown>(_onShowExpect);
+    on<CombatNumberReset>(_onResetNewNumber);
 
     // Listen to BLE messages
     _messageSubscription = _roomService.messageStream.listen((data) {
@@ -60,7 +68,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
             // Initialize combat game for guest first
             add(CombatGameStarted(difficulty: difficulty, isHost: false));
             // Then handle difficulty selection
-            add(DifficultySelected(difficulty: difficulty));
+            add(CombatDifficultyChanged(difficulty: difficulty));
           }
           break;
         case 'turn_start':
@@ -71,14 +79,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           final expect = data['expect'] as String;
           print(
               '🎮 [Combat] turn_start received - isHostTurn: ${data['isHostTurn']}, _roomService.isHost: ${_roomService.isHost}, calculated isMyTurn: $isMyTurn');
-          add(TurnReceived(
+          add(CombatTurnReceived(
             isMyTurn: isMyTurn,
             requirement: requirement,
             expect: expect,
           ));
           break;
         case 'move_completed':
-          add(OpponentMoveReceived(
+          add(CombatOpponentMoveReceived(
             opponentInput: data['input'],
             wasOpponentCorrect: data['correct'],
             opponentScore: data['score'],
@@ -87,14 +95,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           break;
         case 'game_ended':
           // Don't send message back - this prevents infinite loop
-          add(GameEnded(
+          add(CombatGameEnded(
             isWinner: !data['isWinner'], // Opponent sends their win status
             reason: data['reason'],
             sendMessage: false, // Don't echo the message back
           ));
           break;
         case 'opponent_disconnected':
-          add(OpponentDisconnected());
+          add(CombatOpponentDisconnected());
           break;
       }
     } catch (e) {
@@ -122,18 +130,18 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(state.copyWith(
       isHost: event.isHost,
       difficultyModel: DifficultyModel.models[event.difficulty],
-      status: event.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting,
+      combatStatus: event.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting,
       isGameActive: true,
-      myLives: 3,
+      lifeRemaining: 3,
       opponentLives: 3,
-      myScore: 0,
+      point: 0,
       opponentScore: 0,
       isWinner: null, // Reset win/loss status
       gameEndReason: null, // Reset game end reason
       isMyTurn: false, // Reset turn state
-      currentRequirement: null, // Clear previous challenge
-      currentTarget: null, // Clear previous target
-      myInput: '', // Clear input
+      requirementString: null, // Clear previous challenge
+      expect: null, // Clear previous target
+      typing: '', // Clear input
       opponentInput: null, // Clear opponent input
       isWaitingForOpponent: false, // Reset waiting state
     ));
@@ -146,14 +154,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   }
 
   Future<void> _onDifficultySelected(
-    DifficultySelected event,
+    CombatDifficultyChanged event,
     Emitter<CombatState> emit,
   ) async {
     final difficultyModel = DifficultyModel.models[event.difficulty]!;
 
     emit(state.copyWith(
       difficultyModel: difficultyModel,
-      status: CombatStatus.starting,
+      combatStatus: CombatStatus.starting,
     ));
 
     // Only HOST triggers the first turn
@@ -167,13 +175,13 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       // Host starts their own turn first
       // The turn_start message will be sent to guest in _onTurnStarted
       print('🎮 [Host] Starting my turn first (host goes first)');
-      add(TurnStarted(isMyTurn: true));
+      add(CombatTurnStarted(isMyTurn: true));
     }
     // Guest does NOT trigger turn here - waits for turn_start message from host
   }
 
   Future<void> _onTurnStarted(
-    TurnStarted event,
+    CombatTurnStarted event,
     Emitter<CombatState> emit,
   ) async {
     print(
@@ -187,12 +195,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     emit(state.copyWith(
       isMyTurn: event.isMyTurn,
-      currentRequirement: requirement,
-      currentTarget: expect,
-      myInput: '',
+      requirementString: requirement,
+      expect: expect,
+      typing: '',
       opponentInput: null,
       isWaitingForOpponent: false,
-      status: CombatStatus.playing,
+      combatStatus: CombatStatus.playing,
     ));
 
     // Send turn start message to opponent
@@ -208,7 +216,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   }
 
   Future<void> _onTurnReceived(
-    TurnReceived event,
+    CombatTurnReceived event,
     Emitter<CombatState> emit,
   ) async {
     print(
@@ -217,12 +225,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // Receive challenge from opponent - NO new message sent
     emit(state.copyWith(
       isMyTurn: event.isMyTurn,
-      currentRequirement: event.requirement,
-      currentTarget: event.expect,
-      myInput: '',
+      requirementString: event.requirement,
+      expect: event.expect,
+      typing: '',
       opponentInput: null,
       isWaitingForOpponent: false,
-      status: CombatStatus.playing,
+      combatStatus: CombatStatus.playing,
     ));
   }
 
@@ -232,7 +240,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
 
     // Use the same generation logic as solo mode
-    final level = (state.myScore ~/ state.difficultyModel!.pointEachTurn) + 1;
+    final level = (state.point ~/ state.difficultyModel!.pointEachTurn) + 1;
 
     switch (state.difficultyModel!.difficulty) {
       case Difficulty.easy:
@@ -247,43 +255,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
   }
 
-  Future<void> _onTurnCompleted(
-    TurnCompleted event,
-    Emitter<CombatState> emit,
-  ) async {
-    final newScore = event.wasCorrect
-        ? state.myScore + (state.difficultyModel?.pointEachTurn ?? 1)
-        : state.myScore;
-
-    final newLives = event.wasCorrect ? state.myLives : state.myLives - 1;
-
-    emit(state.copyWith(
-      myScore: newScore,
-      myLives: newLives,
-      isWaitingForOpponent: true,
-    ));
-
-    // Send move to opponent
-    await _sendMessage({
-      'type': 'move_completed',
-      'input': event.playerInput,
-      'correct': event.wasCorrect,
-      'score': newScore,
-      'lives': newLives,
-    });
-
-    // Check if game ended
-    if (newLives <= 0) {
-      add(GameEnded(isWinner: false, reason: 'my_lives_out'));
-      return;
-    }
-
-    // Start opponent's turn
-    add(TurnStarted(isMyTurn: false));
-  }
-
   Future<void> _onOpponentMoveReceived(
-    OpponentMoveReceived event,
+    CombatOpponentMoveReceived event,
     Emitter<CombatState> emit,
   ) async {
     emit(state.copyWith(
@@ -295,20 +268,20 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Check if opponent lost
     if (event.opponentLives <= 0) {
-      add(GameEnded(isWinner: true, reason: 'opponent_lives_out'));
+      add(CombatGameEnded(isWinner: true, reason: 'opponent_lives_out'));
       return;
     }
 
     // Start my turn
-    add(TurnStarted(isMyTurn: true));
+    add(CombatTurnStarted(isMyTurn: true));
   }
 
   Future<void> _onGameEnded(
-    GameEnded event,
+    CombatGameEnded event,
     Emitter<CombatState> emit,
   ) async {
     emit(state.copyWith(
-      status: CombatStatus.ended,
+      combatStatus: CombatStatus.ended,
       isWinner: event.isWinner,
       gameEndReason: event.reason,
       isGameActive: false,
@@ -325,34 +298,247 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   }
 
   Future<void> _onOpponentDisconnected(
-    OpponentDisconnected event,
+    CombatOpponentDisconnected event,
     Emitter<CombatState> emit,
   ) async {
     emit(state.copyWith(
-      status: CombatStatus.ended,
+      combatStatus: CombatStatus.ended,
       isWinner: true,
       gameEndReason: 'opponent_disconnected',
       isGameActive: false,
     ));
   }
 
-  Future<void> _onInputUpdated(
-    InputUpdated event,
+  Future<void> _onTap(
+    CombatPlayerTapped event,
     Emitter<CombatState> emit,
   ) async {
-    // Only update input if it's the player's turn
-    if (!state.isMyTurn || !state.canTap) return;
+    if (!state.isMyTurn || !state.canTap) {
+      return;
+    }
 
-    emit(state.copyWith(myInput: event.input));
+    if (event.keyValue == KeyboardOption.reset) {
+      return;
+    }
+
+    if (event.keyValue == KeyboardOption.mainMenu) {
+      return;
+    }
+
+    if (state.lifeRemaining < 0) {
+      return;
+    }
+
+    if (state.expect == null || state.expect!.isEmpty) {
+      return;
+    }
+
+    // Check if tap is correct or not
+    String keyValue = keyboardArray[event.keyValue].toString();
+    if (state.expect == null || state.expect!.isEmpty) {
+      return;
+    }
+
+    if (keyValue == state.expect![state.currentTypingIndex]) {
+      await _onMarkCorrectTap(
+        event.keyValue,
+        emit,
+      );
+    } else {
+      await _onMarkWrongTap(emit);
+      if (!state.isAbleToContinue) {
+        return;
+      }
+    }
+
+    // When correct, check if turn is finished
+    if (state.isFinishTarget) {
+      await _onAddPoint(CombatPointAdded(), emit);
+
+      // Prepare for next turn - opponent's turn
+      await Future.delayed(const Duration(milliseconds: 1000));
+
+      final newScore = state.point;
+      final newLives = state.lifeRemaining;
+
+      // Send move to opponent
+      await _sendMessage({
+        'type': 'move_completed',
+        'input': state.typing,
+        'correct': true,
+        'score': newScore,
+        'lives': newLives,
+      });
+
+      // Check if game ended
+      if (newLives <= 0) {
+        add(CombatGameEnded(isWinner: false, reason: 'my_lives_out'));
+        return;
+      }
+
+      // Start opponent's turn
+      add(CombatTurnStarted(isMyTurn: false));
+    }
   }
 
-  void _onCombatReset(
-    CombatReset event,
+  Future<void> _onMarkCorrectTap(
+    KeyboardOption keyValue,
     Emitter<CombatState> emit,
-  ) {
-    print('🔄 [Combat] Resetting combat state');
+  ) async {
+    emit(
+      state.copyWith(
+          typing: "${state.typing}${keyboardArray[keyValue].toString()}"),
+    );
+  }
 
-    // Reset to initial state
-    emit(const CombatState());
+  Future<void> _onMarkWrongTap(
+    Emitter<CombatState> emit,
+  ) async {
+    add(CombatLifeLost());
+
+    if (!state.isAbleToContinue) {
+      add(CombatGameEnded(isWinner: false, reason: 'my_lives_out'));
+      return;
+    }
+  }
+
+  Future<void> _onSetLevel(
+    CombatLevelChanged event,
+    Emitter<CombatState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        status: TurnStatus.playing,
+        expect: "",
+      ),
+    );
+
+    emit(
+      state.copyWith(
+        level: event.level,
+        timesCorrect: state.level != event.level ? 0 : null,
+        typing: "",
+      ),
+    );
+
+    await _onShowExpect(
+        CombatExpectShown(Duration(milliseconds: state.getTimeShowTarget)),
+        emit);
+  }
+
+  Future<void> _onLostLife(
+    CombatLifeLost event,
+    Emitter<CombatState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        lifeRemaining: state.lifeRemaining - 1,
+      ),
+    );
+
+    if (!state.isAbleToContinue) {
+      add(CombatGameEnded(isWinner: false, reason: 'my_lives_out'));
+    }
+  }
+
+  Future<void> _onAddPoint(
+    CombatPointAdded event,
+    Emitter<CombatState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        point: state.point + state.difficultyModel!.pointEachTurn,
+      ),
+    );
+  }
+
+  Future<String> _onGeneratedRequiredString(
+    CombatRequiredStringGenerated event,
+    Emitter<CombatState> emit,
+  ) async {
+    String requiredString;
+    late String expectString;
+
+    switch (state.difficultyModel?.difficulty ?? Difficulty.easy) {
+      case Difficulty.medium:
+        Map<String, String> result =
+            Helper().randomCalculatorWithPlusMinus(state.level);
+        expectString = result['expect']!;
+        requiredString = result['expression']!;
+        break;
+      case Difficulty.hard:
+        Map<String, String> result =
+            Helper().randomCalculatorWithMulDiv(state.level);
+        expectString = result['expect']!;
+        requiredString = result['expression']!;
+        break;
+      case Difficulty.extreme:
+        final rand = Random();
+        final choice = rand.nextInt(3);
+        if (choice == 0) {
+          var result = Helper().randomCalculatorWithPlusMinus(state.level + 2);
+          expectString = result['expect']!;
+          requiredString = result['expression']!;
+        } else if (choice == 1) {
+          expectString = Helper().generateRandomNumber(state.level + 5);
+          requiredString = expectString;
+        } else {
+          var result = Helper().randomCalculatorWithMulDiv(state.level + 2);
+          expectString = result['expect']!;
+          requiredString = result['expression']!;
+        }
+        break;
+      case Difficulty.easy:
+        expectString = Helper().generateRandomNumber(state.level + 2);
+        requiredString = expectString;
+        break;
+    }
+
+    emit(
+      state.copyWith(
+        requirementString: requiredString,
+        expect: expectString,
+      ),
+    );
+    return requiredString;
+  }
+
+  Future<void> _onShowExpect(
+    CombatExpectShown event,
+    Emitter<CombatState> emit,
+  ) async {
+    await _onGeneratedRequiredString(CombatRequiredStringGenerated(), emit);
+
+    emit(
+      state.copyWith(
+        status: TurnStatus.initial,
+      ),
+    );
+
+    await Future.delayed(event.duration, () {});
+
+    emit(
+      state.copyWith(
+        status: TurnStatus.playing,
+      ),
+    );
+  }
+
+  Future<void> _onResetNewNumber(
+    CombatNumberReset event,
+    Emitter<CombatState> emit,
+  ) async {
+    if (!state.isAbleToReset) {
+      return;
+    }
+
+    add(CombatLifeLost());
+
+    await Future.delayed(
+        Duration(milliseconds: event.duration.inMilliseconds + 500));
+    await _onSetLevel(
+      CombatLevelChanged(level: state.level),
+      emit,
+    );
   }
 }

@@ -1021,41 +1021,45 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 
   // Animation event handler
-  int? _lastPoint;
-  int? _lastLife;
+  int? _prevPointForAnimation;
+  int? _prevLifeForAnimation;
 
   void _handleAnimationEvents(BuildContext context, TurnState state) {
-    // Initialize tracking variables on first call
-    if (state.point == 0) {
-      _lastPoint = 0;
-    }
-    if (state.lifeRemaining == 0) {
-      _lastLife = 0;
-    }
+    // Track point changes using same pattern as life changes
+    final wasPointIncreased =
+        _prevPointForAnimation != null && state.point > _prevPointForAnimation!;
 
-    _lastPoint ??= state.point;
-    _lastLife ??= state.lifeRemaining;
+    // Track life changes using same pattern as existing life animation
+    final wasLifeIncreasedForAnimation = _prevLifeForAnimation != null &&
+        state.lifeRemaining > _prevLifeForAnimation!;
+    final wasLifeDecreasedForAnimation = _prevLifeForAnimation != null &&
+        state.lifeRemaining < _prevLifeForAnimation!;
 
-    // Check for point increase
-    dev.log("point: ${state.point}");
-    dev.log("lastPoint: ${_lastPoint}");
-    if (state.point > _lastPoint!) {
+    // Trigger point animation
+    if (wasPointIncreased) {
       final scorePosition = _getWidgetPosition(_scoreKey);
       _animationKey.currentState?.triggers.onAddPoint(scorePosition);
-      _lastPoint = state.point;
     }
 
-    // Check for life increase
-    if (state.lifeRemaining > _lastLife!) {
+    // Trigger life gain animation
+    if (wasLifeIncreasedForAnimation) {
       final heartPosition = _getWidgetPosition(_heartKey);
       _animationKey.currentState?.triggers.onGainLife(heartPosition);
-      _lastLife = state.lifeRemaining;
     }
 
-    // Check for life decrease
-    if (state.lifeRemaining < _lastLife!) {
+    // Trigger life loss animation
+    if (wasLifeDecreasedForAnimation) {
       _animationKey.currentState?.triggers.onLostLife(0.8);
-      _lastLife = state.lifeRemaining;
+    }
+
+    // Update previous values for next comparison
+    if (_prevPointForAnimation == null ||
+        state.point != _prevPointForAnimation) {
+      _prevPointForAnimation = state.point;
+    }
+    if (_prevLifeForAnimation == null ||
+        state.lifeRemaining != _prevLifeForAnimation) {
+      _prevLifeForAnimation = state.lifeRemaining;
     }
   }
 
