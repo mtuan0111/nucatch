@@ -7,21 +7,21 @@ class CombatState extends TurnState {
   final bool isHost;
   final bool isMyTurn;
   final bool isGameActive;
-  
+
   // Opponent state
   final int opponentScore;
   final int opponentLives;
-  
+
   // Current turn info
   final String myInput;
   final String? opponentInput;
   final bool isWaitingForOpponent;
-  
+
   // Game status
   final CombatStatus combatStatus;
   final bool? isWinner; // null = ongoing, true = won, false = lost
   final String? gameEndReason;
-  
+
   const CombatState({
     // Combat-specific parameters
     this.isHost = false,
@@ -53,7 +53,7 @@ class CombatState extends TurnState {
     super.tapTimerRemaining = 20.0,
     super.isTimerPaused = false,
   });
-  
+
   @override
   CombatState copyWith({
     // Combat-specific parameters
@@ -118,13 +118,13 @@ class CombatState extends TurnState {
       isTimerPaused: isTimerPaused ?? this.isTimerPaused,
     );
   }
-  
+
   // Combat-specific computed properties
   bool get canTap => isMyTurn && isGameActive && expect != null;
   bool get isComplete => myInput == expect;
   bool get hasGameEnded => isWinner != null;
   bool get isOpponentActive => !isMyTurn && isGameActive;
-  
+
   // Convenience getters for clarity
   int get myScore => point;
   int get myLives => lifeRemaining;
@@ -133,9 +133,9 @@ class CombatState extends TurnState {
 }
 
 enum CombatStatus {
-  waiting,        // Waiting for game to start
-  hostSelecting,  // Host is selecting difficulty  
-  starting,       // Game is starting (countdown)
-  playing,        // Game in progress
-  ended,          // Game finished
+  waiting, // Waiting for game to start
+  hostSelecting, // Host is selecting difficulty
+  starting, // Game is starting (countdown)
+  playing, // Game in progress
+  ended, // Game finished
 }

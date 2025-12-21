@@ -126,24 +126,16 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     print(
         '🎮 [Combat] CombatGameStarted - event.isHost: ${event.isHost}, current state.isHost: ${state.isHost}');
 
-    // Completely reset state for fresh game
-    emit(state.copyWith(
+    emit(CombatState(
       isHost: event.isHost,
       difficultyModel: DifficultyModel.models[event.difficulty],
-      combatStatus: event.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting,
+      combatStatus:
+          event.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting,
       isGameActive: true,
       lifeRemaining: 3,
       opponentLives: 3,
       point: 0,
       opponentScore: 0,
-      isWinner: null, // Reset win/loss status
-      gameEndReason: null, // Reset game end reason
-      isMyTurn: false, // Reset turn state
-      requirementString: null, // Clear previous challenge
-      expect: null, // Clear previous target
-      typing: '', // Clear input
-      opponentInput: null, // Clear opponent input
-      isWaitingForOpponent: false, // Reset waiting state
     ));
 
     print(
@@ -195,6 +187,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     emit(state.copyWith(
       isMyTurn: event.isMyTurn,
+      isWinner: null,
       requirementString: requirement,
       expect: expect,
       typing: '',
