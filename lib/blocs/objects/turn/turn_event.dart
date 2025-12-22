@@ -4,53 +4,53 @@ import 'package:nucatch/models/setting_model.dart';
 
 abstract class TurnEvent {}
 
-class CountDownIntroStarted extends TurnEvent {
+class CountDownIntro extends TurnEvent {
   int seconds;
-  CountDownIntroStarted({
+  CountDownIntro({
     required this.seconds,
   });
 }
 
-class GameStarted extends TurnEvent {
+class Start extends TurnEvent {
   // Marking the status transform from initial status to playing status
   int seconds;
 
-  GameStarted({
+  Start({
     this.seconds = 4,
   });
 }
 
-class GameEnded extends TurnEvent {
+class End extends TurnEvent {
   final bool isCauseGameOver;
 
-  GameEnded({
+  End({
     this.isCauseGameOver = true,
   });
 }
 
-class PlayerTapped extends TurnEvent {
+class Tap extends TurnEvent {
   final KeyboardOption keyValue;
 
-  PlayerTapped({
+  Tap({
     required this.keyValue,
   });
 }
 
-class LevelChanged extends TurnEvent {
+class SetLevel extends TurnEvent {
   final int level;
   final int addPoint;
 
-  LevelChanged({
+  SetLevel({
     required this.level,
     this.addPoint = 1,
   });
 }
 
-class DifficultyChanged extends TurnEvent {
+class SetDifficulty extends TurnEvent {
   final Difficulty difficulty;
   final void Function()? onChanged;
 
-  DifficultyChanged({
+  SetDifficulty({
     required this.difficulty,
     this.onChanged,
   });
@@ -64,63 +64,63 @@ class LifeLost extends TurnEvent {
   });
 }
 
-class PointAdded extends TurnEvent {
-  PointAdded();
+class AddPoint extends TurnEvent {
+  AddPoint();
 }
 
-class LifeGained extends TurnEvent {
+class GainLife extends TurnEvent {
   final int lifeGained;
 
-  LifeGained({this.lifeGained = 1});
+  GainLife({this.lifeGained = 1});
 }
 
-class RequiredStringGenerated extends TurnEvent {
-  RequiredStringGenerated();
+class GeneratedRequiredString extends TurnEvent {
+  GeneratedRequiredString();
 }
 
-class ExpectShown extends TurnEvent {
+class ShowExpect extends TurnEvent {
   final Duration duration;
 
-  ExpectShown(this.duration);
+  ShowExpect(this.duration);
 }
 
-class NumberReset extends TurnEvent {
+class ResetNewNumber extends TurnEvent {
   Duration duration;
-  NumberReset({
+  ResetNewNumber({
     required this.duration,
   });
 }
 
-class RecordSaved extends TurnEvent {
+class SaveRecorded extends TurnEvent {
   final void Function()? callback;
 
-  RecordSaved({this.callback});
+  SaveRecorded({this.callback});
 }
 
-class SettingApplied extends TurnEvent {
+class ApplySetting extends TurnEvent {
   final SettingModel settingModel;
 
-  SettingApplied({
+  ApplySetting({
     required this.settingModel,
   });
 }
 
 // Legacy event aliases for backward compatibility
 // These should be gradually replaced in the codebase
-typedef CountDownIntro = CountDownIntroStarted;
-typedef Start = GameStarted;
-typedef End = GameEnded;
-typedef Tap = PlayerTapped;
-typedef SetLevel = LevelChanged;
-typedef SetDifficulty = DifficultyChanged;
-typedef LostLife = LifeLost;
-typedef AddPoint = PointAdded;
-typedef GainLife = LifeGained;
-typedef GeneratedRequiredString = RequiredStringGenerated;
-typedef ShowExpect = ExpectShown;
-typedef ResetNewNumber = NumberReset;
-typedef SaveRecorded = RecordSaved;
-typedef ApplySetting = SettingApplied;
+// typedef CountDownIntro = CountDownIntro;
+// typedef Start = Start;
+// typedef End = End;
+// typedef Tap = Tap;
+// typedef SetLevel = SetLevel;
+// typedef SetDifficulty = SetDifficulty;
+// typedef LifeLost = LifeLost;
+// typedef AddPoint = AddPoint;
+// typedef GainLife = GainLife;
+// typedef GeneratedRequiredString = GeneratedRequiredString;
+// typedef ShowExpect = ExpectShown;
+// typedef ResetNewNumber = ResetNewNumber;
+// typedef SaveRecorded = SaveRecorded;
+// typedef ApplySetting = ApplySetting;
 
 class TapTimerTick extends TurnEvent {
   final double remainingTime;

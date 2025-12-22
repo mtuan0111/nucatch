@@ -135,6 +135,7 @@ class CombatState extends TurnState {
 enum CombatStatus {
   waiting, // Waiting for game to start
   hostSelecting, // Host is selecting difficulty
+  intro, // Countdown before game starts
   starting, // Game is starting (countdown)
   playing, // Game in progress
   ended, // Game finished

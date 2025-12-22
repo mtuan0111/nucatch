@@ -20,20 +20,20 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   CombatBloc({required CombatNearbyService roomService})
       : _roomService = roomService,
         super(const CombatState()) {
+    on<CombatTap>(_onCombatTap);
+    on<CombatAddPoint>(_onCombatAddPoint);
+    on<CombatLostLife>(_onCombatLostLife);
     on<CombatGameStarted>(_onCombatGameStarted);
-    on<CombatPlayerTapped>(_onTap);
-    on<CombatTurnStarted>(_onTurnStarted);
-    on<CombatTurnReceived>(_onTurnReceived);
-    on<CombatOpponentMoveReceived>(_onOpponentMoveReceived);
-    on<CombatGameEnded>(_onGameEnded);
-    on<CombatOpponentDisconnected>(_onOpponentDisconnected);
-    on<CombatDifficultyChanged>(_onDifficultySelected);
-    on<CombatLevelChanged>(_onSetLevel);
-    on<CombatLifeLost>(_onLostLife);
-    on<CombatPointAdded>(_onAddPoint);
-    on<CombatRequiredStringGenerated>(_onGeneratedRequiredString);
-    on<CombatExpectShown>(_onShowExpect);
-    on<CombatNumberReset>(_onResetNewNumber);
+    on<CombatTurnStarted>(_onCombatTurnStarted);
+    on<CombatTurnReceived>(_onCombatTurnReceived);
+    on<CombatOpponentMoveReceived>(_onCombatOpponentMoveReceived);
+    on<CombatGameEnded>(_onCombatGameEnded);
+    on<CombatOpponentDisconnected>(_onCombatOpponentDisconnected);
+    on<CombatDifficultyChanged>(_onCombatDifficultySelected);
+    on<CombatLevelChanged>(_CombatonSetLevel);
+    on<CombatRequiredStringGenerated>(_onCombatGeneratedRequiredString);
+    on<CombatExpectShown>(_onCombatShowExpect);
+    on<CombatNumberReset>(_onCombatResetNewNumber);
 
     // Listen to BLE messages
     _messageSubscription = _roomService.messageStream.listen((data) {
@@ -145,7 +145,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // This ensures both players are ready before the first turn
   }
 
-  Future<void> _onDifficultySelected(
+  Future<void> _onCombatDifficultySelected(
     CombatDifficultyChanged event,
     Emitter<CombatState> emit,
   ) async {
@@ -172,10 +172,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // Guest does NOT trigger turn here - waits for turn_start message from host
   }
 
-  Future<void> _onTurnStarted(
+  Future<void> _onCombatTurnStarted(
     CombatTurnStarted event,
     Emitter<CombatState> emit,
   ) async {
+    emit(state.copyWith(
+      combatStatus: CombatStatus.intro,
+    ));
+
     print(
         '🎮 [Combat] TurnStarted - isHost: ${state.isHost}, isMyTurn: ${event.isMyTurn}');
 
@@ -208,7 +212,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     });
   }
 
-  Future<void> _onTurnReceived(
+  Future<void> _onCombatTurnReceived(
     CombatTurnReceived event,
     Emitter<CombatState> emit,
   ) async {
@@ -248,7 +252,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
   }
 
-  Future<void> _onOpponentMoveReceived(
+  Future<void> _onCombatOpponentMoveReceived(
     CombatOpponentMoveReceived event,
     Emitter<CombatState> emit,
   ) async {
@@ -269,7 +273,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     add(CombatTurnStarted(isMyTurn: true));
   }
 
-  Future<void> _onGameEnded(
+  Future<void> _onCombatGameEnded(
     CombatGameEnded event,
     Emitter<CombatState> emit,
   ) async {
@@ -290,7 +294,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
   }
 
-  Future<void> _onOpponentDisconnected(
+  Future<void> _onCombatOpponentDisconnected(
     CombatOpponentDisconnected event,
     Emitter<CombatState> emit,
   ) async {
@@ -302,8 +306,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     ));
   }
 
-  Future<void> _onTap(
-    CombatPlayerTapped event,
+  Future<void> _onCombatTap(
+    CombatTap event,
     Emitter<CombatState> emit,
   ) async {
     if (!state.isMyTurn || !state.canTap) {
@@ -346,7 +350,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // When correct, check if turn is finished
     if (state.isFinishTarget) {
-      await _onAddPoint(CombatPointAdded(), emit);
+      await _onCombatAddPoint(CombatAddPoint(), emit);
 
       // Prepare for next turn - opponent's turn
       await Future.delayed(const Duration(milliseconds: 1000));
@@ -387,7 +391,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   Future<void> _onMarkWrongTap(
     Emitter<CombatState> emit,
   ) async {
-    add(CombatLifeLost());
+    add(CombatLostLife());
 
     if (!state.isAbleToContinue) {
       add(CombatGameEnded(isWinner: false, reason: 'my_lives_out'));
@@ -395,7 +399,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
   }
 
-  Future<void> _onSetLevel(
+  Future<void> _CombatonSetLevel(
     CombatLevelChanged event,
     Emitter<CombatState> emit,
   ) async {
@@ -414,13 +418,13 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       ),
     );
 
-    await _onShowExpect(
+    await _onCombatShowExpect(
         CombatExpectShown(Duration(milliseconds: state.getTimeShowTarget)),
         emit);
   }
 
-  Future<void> _onLostLife(
-    CombatLifeLost event,
+  Future<void> _onCombatLostLife(
+    CombatLostLife event,
     Emitter<CombatState> emit,
   ) async {
     emit(
@@ -434,8 +438,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
   }
 
-  Future<void> _onAddPoint(
-    CombatPointAdded event,
+  Future<void> _onCombatAddPoint(
+    CombatAddPoint event,
     Emitter<CombatState> emit,
   ) async {
     emit(
@@ -445,7 +449,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     );
   }
 
-  Future<String> _onGeneratedRequiredString(
+  Future<String> _onCombatGeneratedRequiredString(
     CombatRequiredStringGenerated event,
     Emitter<CombatState> emit,
   ) async {
@@ -496,11 +500,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     return requiredString;
   }
 
-  Future<void> _onShowExpect(
+  Future<void> _onCombatShowExpect(
     CombatExpectShown event,
     Emitter<CombatState> emit,
   ) async {
-    await _onGeneratedRequiredString(CombatRequiredStringGenerated(), emit);
+    await _onCombatGeneratedRequiredString(
+        CombatRequiredStringGenerated(), emit);
 
     emit(
       state.copyWith(
@@ -517,7 +522,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     );
   }
 
-  Future<void> _onResetNewNumber(
+  Future<void> _onCombatResetNewNumber(
     CombatNumberReset event,
     Emitter<CombatState> emit,
   ) async {
@@ -525,11 +530,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       return;
     }
 
-    add(CombatLifeLost());
+    add(CombatLostLife());
 
     await Future.delayed(
         Duration(milliseconds: event.duration.inMilliseconds + 500));
-    await _onSetLevel(
+    await _CombatonSetLevel(
       CombatLevelChanged(level: state.level),
       emit,
     );

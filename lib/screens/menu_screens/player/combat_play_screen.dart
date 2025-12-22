@@ -9,10 +9,12 @@ import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
+import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/helpers/animations/animated_game_wrapper.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:timer_count_down/timer_count_down.dart';
 
 class CombatPlayScreen extends StatefulWidget {
   const CombatPlayScreen({super.key});
@@ -59,6 +61,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
     // Initialize life animation tracking
     final combatBloc = context.read<CombatBloc>();
+
+    combatBloc.add(CombatLostLife(
+      lifeRemaining: combatBloc.state.lifeRemaining,
+    ));
+
     _currentLifeRemaining = combatBloc.state.lifeRemaining;
     wasLifeDecreased = false;
     wasLifeIncreased = false;
@@ -126,6 +133,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // My info
           Expanded(
@@ -141,9 +149,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       size: Theme.of(context).textTheme.bodyLarge!.fontSize,
                     ),
                     const SizedBox(width: 5),
-                    Text(
-                      '${lang(context).level}: ${combatState.levelAndTimeCorrect}',
-                      style: LayoutConfig(context).contentSectionStyle(),
+                    Expanded(
+                      child: Text(
+                        '${lang(context).level}: ${combatState.levelAndTimeCorrect}',
+                        style: LayoutConfig(context).contentSectionStyle(),
+                      ),
                     ),
                   ],
                 ),
@@ -156,31 +166,32 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       size: Theme.of(context).textTheme.bodyLarge!.fontSize,
                     ),
                     const SizedBox(width: 5),
-                    Text(
-                      '${lang(context).score}: ${combatState.point}',
-                      style: LayoutConfig(context).contentSectionStyle(),
+                    Expanded(
+                      child: Text(
+                        '${lang(context).score}: ${combatState.point}',
+                        style: LayoutConfig(context).contentSectionStyle(),
+                      ),
                     ),
                   ],
                 ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: combatState.isMyTurn ? Colors.green : Colors.orange,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    combatState.isMyTurn
+                        ? lang(context).yourTurn
+                        : lang(context).opponentTurn,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ],
-            ),
-          ),
-
-          // Turn indicator
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: combatState.isMyTurn ? Colors.green : Colors.orange,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              combatState.isMyTurn
-                  ? lang(context).yourTurn
-                  : lang(context).opponentTurn,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
             ),
           ),
 
@@ -199,10 +210,28 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   '${lang(context).score}: ${combatState.opponentScore}',
                   style: LayoutConfig(context).contentSectionStyle(),
                 ),
-                Text(
-                  '❤️ ${combatState.opponentLives}',
-                  style: LayoutConfig(context).contentSectionStyle(),
+
+                Wrap(
+                  spacing: 0,
+                  children: List.generate(
+                    combatState.opponentLives,
+                    (index) => SizedBox(
+                      width:
+                          (Theme.of(context).textTheme.titleLarge!.fontSize ??
+                              20.0),
+                      height:
+                          (Theme.of(context).textTheme.titleLarge!.fontSize ??
+                              20.0),
+                      child: Icon(
+                        FontAwesomeIcons.solidStar,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        size: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                      ),
+                    ),
+                  ),
                 ),
+
+                // Turn indicator
               ],
             ),
           ),
@@ -299,6 +328,167 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   }
 
   Widget _buildGameArea(CombatState combatState) {
+    // Show countdown intro animation
+    if (combatState.status == CombatStatus.intro) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (!context.read<CombatBloc>().isClosed)
+            Builder(
+              builder: (widgetContext) {
+                // Capture localized strings using the widget context
+                final readyText = "${lang(widgetContext).ready}!!";
+                final goText = lang(widgetContext).go;
+
+                return Countdown(
+                  seconds: combatState.countDown,
+                  interval: const Duration(milliseconds: 10),
+                  build: (BuildContext context, double time) {
+                    // Calculate progress within current second (0.0 to 1.0)
+                    final secondProgress = time - time.floor();
+
+                    Gradient getCountdownGradient(double time) {
+                      if (time >= 3) {
+                        return LinearGradient(
+                          colors: [
+                            Colors.green.shade300,
+                            Colors.green.shade700
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        );
+                      }
+                      if (time >= 2) {
+                        return LinearGradient(
+                          colors: [Colors.blue.shade300, Colors.blue.shade700],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        );
+                      }
+                      if (time >= 1) {
+                        return LinearGradient(
+                          colors: [
+                            Colors.orange.shade300,
+                            Colors.orange.shade700
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        );
+                      }
+                      return LinearGradient(
+                        colors: [Colors.red.shade300, Colors.red.shade700],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      );
+                    }
+
+                    return AnimatedScale(
+                      duration: const Duration(milliseconds: 500),
+                      scale: time > 0.5 ? 1.0 : 5,
+                      curve: Curves.easeOutQuart,
+                      child: AnimatedOpacity(
+                        duration: const Duration(milliseconds: 500),
+                        opacity: time > 0.5 ? 1.0 : 0.0,
+                        curve: Curves.easeOutQuart,
+                        child: Container(
+                          width: 140,
+                          height: 140,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: getCountdownGradient(time),
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Positioned.fill(
+                                child: CustomElevatedButton(
+                                    buttonRadius: 1000,
+                                    shapeAt: RoundedWithShapeAt.all,
+                                    gradient: LinearGradient(
+                                        colors:
+                                            getCountdownGradient(time).colors)),
+                              ),
+                              // Circular progress indicator
+                              SizedBox(
+                                width: 120,
+                                height: 120,
+                                child: Stack(
+                                  children: [
+                                    Positioned.fill(
+                                      child: CircularProgressIndicator(
+                                        value: secondProgress,
+                                        strokeWidth: 8,
+                                        backgroundColor:
+                                            Colors.white.withOpacity(0.3),
+                                        valueColor:
+                                            const AlwaysStoppedAnimation<Color>(
+                                          Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // Text content
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (time >= 1)
+                                    AnimatedDefaultTextStyle(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      style: LayoutConfig(context)
+                                          .displaySmallStyle()
+                                          .copyWith(
+                                            fontSize: 40,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                      child: Text(
+                                        time.truncate().toString(),
+                                      ),
+                                    ),
+                                  if (time >= 1)
+                                    AnimatedDefaultTextStyle(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      style: LayoutConfig(context)
+                                          .titleSectionStyle(isItalic: true)
+                                          .copyWith(
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                      child: Text(readyText),
+                                    )
+                                  else
+                                    AnimatedDefaultTextStyle(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      style: LayoutConfig(context)
+                                          .titleSectionStyle(isItalic: true)
+                                          .copyWith(
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                      child: Text(goText),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  onFinished: () {},
+                );
+              },
+            ),
+        ],
+      );
+    }
+
     // Show requirement string (what to memorize/solve)
     if (combatState.isShowExpect && combatState.requirementString != null) {
       return Center(
@@ -332,35 +522,56 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       );
     }
 
-    // Show typing area (user input)
+    // Show typing area with animations (user input)
     if (combatState.isTimeForTyping && combatState.expect != null) {
       return Center(
         child: Wrap(
           children: List.generate(
             combatState.expect!.length,
             (index) {
-              String? inputted;
-              if (index < combatState.typing.length) {
-                inputted = combatState.typing[index];
-              }
+              double hide = combatState.isTypingNotEmpty &&
+                      index < combatState.typing.length
+                  ? 1
+                  : 0;
 
+              String inputted = combatState.expect![index];
               return SizedBox(
                 width: (boldedStyleFont(
-                            numberOfCharactor: combatState.expect!.length)
+                            numberOfCharactor:
+                                combatState.requirementString!.length)
                         .fontSize! *
                     0.65),
                 child: Column(
                   children: [
-                    Text(
-                      inputted ?? "_",
-                      textAlign: TextAlign.center,
-                      style: boldedStyleFont(
-                        numberOfCharactor: combatState.expect!.length,
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 200),
+                      opacity: hide,
+                      child: AnimatedOpacity(
+                        curve: Curves.easeOutQuart,
+                        opacity: combatState.isFinishTarget ? 0 : 1,
+                        duration: const Duration(milliseconds: 400),
+                        child: AnimatedScale(
+                          curve: Curves.easeOutQuart,
+                          scale: combatState.isFinishTarget ? 2 : 1,
+                          duration: const Duration(milliseconds: 400),
+                          child: Text(
+                            inputted,
+                            textAlign: TextAlign.center,
+                            style: boldedStyleFont(
+                              numberOfCharactor:
+                                  combatState.requirementString!.length,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                    Icon(
-                      FontAwesomeIcons.minus,
-                      color: Theme.of(context).scaffoldBackgroundColor,
+                    AnimatedOpacity(
+                      opacity: (hide == 0) ? 1 : 0,
+                      duration: const Duration(milliseconds: 200),
+                      child: Icon(
+                        FontAwesomeIcons.minus,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
                     ),
                   ],
                 ),
@@ -505,7 +716,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     isEnable: combatState.canTap,
                     onPressed: () {
                       context.read<CombatBloc>().add(
-                            CombatPlayerTapped(keyValue: e.key),
+                            CombatTap(keyValue: e.key),
                           );
                     },
                   );

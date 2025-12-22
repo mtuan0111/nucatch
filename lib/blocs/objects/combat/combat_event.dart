@@ -31,10 +31,10 @@ class CombatGameEnded extends CombatEvent {
   });
 }
 
-class CombatPlayerTapped extends CombatEvent {
+class CombatTap extends CombatEvent {
   final KeyboardOption keyValue;
 
-  CombatPlayerTapped({required this.keyValue});
+  CombatTap({required this.keyValue});
 }
 
 class CombatLevelChanged extends CombatEvent {
@@ -53,13 +53,15 @@ class CombatDifficultyChanged extends CombatEvent {
   });
 }
 
-class CombatLifeLost extends CombatEvent {
+class CombatLostLife extends CombatEvent {
   final int lifeRemaining;
 
-  CombatLifeLost({this.lifeRemaining = 1});
+  CombatLostLife({this.lifeRemaining = 1});
 }
 
-class CombatPointAdded extends CombatEvent {}
+class CombatAddPoint extends CombatEvent {
+  CombatAddPoint();
+}
 
 class CombatLifeGained extends CombatEvent {
   final int lifeGained;
@@ -144,5 +146,5 @@ typedef OpponentMoveReceived = CombatOpponentMoveReceived;
 typedef OpponentDisconnected = CombatOpponentDisconnected;
 typedef GameEnded = CombatGameEnded;
 typedef DifficultySelected = CombatDifficultyChanged;
-typedef InputUpdated = CombatPlayerTapped; // Map to tap event
+typedef InputUpdated = CombatTap; // Map to tap event
 typedef CombatReset = CombatGameStarted; // Reset by restarting

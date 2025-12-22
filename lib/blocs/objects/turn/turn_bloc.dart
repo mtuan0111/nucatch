@@ -35,7 +35,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         super(initialState) {
     on<Tap>(_onTap);
     on<AddPoint>(_onAddPoint);
-    on<LostLife>(_onLostLife);
+    on<LifeLost>(_onLostLife);
     on<GainLife>(_onGainLife);
     on<ShowExpect>(_onShowExpect);
     on<SetLevel>(_onSetLevel);
@@ -247,7 +247,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   }
 
   Future<void> _onLostLife(
-    LostLife event,
+    LifeLost event,
     Emitter<TurnState> emitter,
   ) async {
     if (isClosed) {
@@ -517,7 +517,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     _stopTapTimer();
     _vibrationBloc.add(VibrateLong());
 
-    add(LostLife());
+    add(LifeLost());
 
     if (!state.isAbleToContinue) {
       add(End());
@@ -545,7 +545,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     }
 
     _stopTapTimer();
-    add(LostLife());
+    add(LifeLost());
     _vibrationBloc.add(VibrateMultiple());
 
     await Future.delayed(
@@ -781,7 +781,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     _stopTapTimer();
 
-    await _onLostLife(LostLife(), emitter);
+    await _onLostLife(LifeLost(), emitter);
 
     if (!state.isAbleToContinue) {
       add(End());
