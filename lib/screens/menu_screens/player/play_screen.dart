@@ -810,6 +810,7 @@ class _PlayScreenState extends State<PlayScreen> {
 
                                             String inputted =
                                                 turnState.expect![index];
+
                                             return SizedBox(
                                               width: (boldedStyleFont(
                                                           numberOfCharactor:
@@ -818,59 +819,118 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                   .length)
                                                       .fontSize! *
                                                   0.65),
-                                              child: Column(
-                                                children: [
-                                                  AnimatedOpacity(
-                                                    duration: const Duration(
-                                                        milliseconds: 200),
-                                                    opacity: hide,
-                                                    child: AnimatedOpacity(
-                                                      curve:
-                                                          Curves.easeOutQuart,
-                                                      opacity: turnState
-                                                              .isFinishTarget
-                                                          ? 0
-                                                          : 1,
-                                                      duration: const Duration(
-                                                          milliseconds: 400),
-                                                      child: AnimatedScale(
-                                                        curve:
-                                                            Curves.easeOutQuart,
-                                                        scale: turnState
-                                                                .isFinishTarget
-                                                            ? 2
-                                                            : 1,
+                                              child: Builder(
+                                                builder: (context) {
+                                                  // Trigger firework when finished
+                                                  if (turnState
+                                                          .isFinishTarget &&
+                                                      hide == 1) {
+                                                    WidgetsBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) {
+                                                      final RenderBox?
+                                                          renderBox =
+                                                          context.findRenderObject()
+                                                              as RenderBox?;
+                                                      if (renderBox != null) {
+                                                        final position =
+                                                            renderBox
+                                                                .localToGlobal(
+                                                                    Offset
+                                                                        .zero);
+                                                        final size =
+                                                            renderBox.size;
+                                                        final center = position +
+                                                            Offset(
+                                                                size.width / 2,
+                                                                size.height /
+                                                                    2);
+
+                                                        // Delay each firework slightly for cascading effect
+                                                        Future.delayed(
+                                                            Duration(
+                                                                milliseconds:
+                                                                    index * 50),
+                                                            () {
+                                                          if (mounted &&
+                                                              _animationKey
+                                                                      .currentState !=
+                                                                  null) {
+                                                            _animationKey
+                                                                .currentState!
+                                                                .triggers
+                                                                .onAddPoint(
+                                                                    center);
+                                                          }
+                                                        });
+                                                      }
+                                                    });
+                                                  }
+
+                                                  return Column(
+                                                    children: [
+                                                      AnimatedOpacity(
                                                         duration:
                                                             const Duration(
                                                                 milliseconds:
-                                                                    400),
-                                                        child: Text(
-                                                          inputted,
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style:
-                                                              boldedStyleFont(
-                                                            numberOfCharactor:
-                                                                turnState
-                                                                    .requirementString!
-                                                                    .length,
+                                                                    200),
+                                                        opacity: hide,
+                                                        child: AnimatedOpacity(
+                                                          curve: Curves
+                                                              .easeOutQuart,
+                                                          opacity: turnState
+                                                                  .isFinishTarget
+                                                              ? 0
+                                                              : 1,
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      400),
+                                                          child: AnimatedScale(
+                                                            curve: Curves
+                                                                .easeOutQuart,
+                                                            scale: turnState
+                                                                    .isFinishTarget
+                                                                ? 2
+                                                                : 1,
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        400),
+                                                            child: Text(
+                                                              inputted,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style:
+                                                                  boldedStyleFont(
+                                                                numberOfCharactor:
+                                                                    turnState
+                                                                        .requirementString!
+                                                                        .length,
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  AnimatedOpacity(
-                                                    opacity:
-                                                        (hide == 0) ? 1 : 0,
-                                                    duration: const Duration(
-                                                        milliseconds: 200),
-                                                    child: Icon(
-                                                      FontAwesomeIcons.minus,
-                                                      color: Theme.of(context)
-                                                          .scaffoldBackgroundColor,
-                                                    ),
-                                                  ),
-                                                ],
+                                                      AnimatedOpacity(
+                                                        opacity:
+                                                            (hide == 0) ? 1 : 0,
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                        child: Icon(
+                                                          FontAwesomeIcons
+                                                              .minus,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .scaffoldBackgroundColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
                                               ),
                                             );
                                           },

@@ -535,45 +535,73 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   : 0;
 
               String inputted = combatState.expect![index];
+
               return SizedBox(
                 width: (boldedStyleFont(
                             numberOfCharactor:
                                 combatState.requirementString!.length)
                         .fontSize! *
                     0.65),
-                child: Column(
-                  children: [
-                    AnimatedOpacity(
-                      duration: const Duration(milliseconds: 200),
-                      opacity: hide,
-                      child: AnimatedOpacity(
-                        curve: Curves.easeOutQuart,
-                        opacity: combatState.isFinishTarget ? 0 : 1,
-                        duration: const Duration(milliseconds: 400),
-                        child: AnimatedScale(
-                          curve: Curves.easeOutQuart,
-                          scale: combatState.isFinishTarget ? 2 : 1,
-                          duration: const Duration(milliseconds: 400),
-                          child: Text(
-                            inputted,
-                            textAlign: TextAlign.center,
-                            style: boldedStyleFont(
-                              numberOfCharactor:
-                                  combatState.requirementString!.length,
+                child: Builder(
+                  builder: (context) {
+                    // Trigger firework animation at character position when finished
+                    if (combatState.isFinishTarget && hide == 1) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        final RenderBox? renderBox =
+                            context.findRenderObject() as RenderBox?;
+                        if (renderBox != null) {
+                          final position = renderBox.localToGlobal(Offset.zero);
+                          final size = renderBox.size;
+                          final center = position +
+                              Offset(size.width / 2, size.height / 2);
+
+                          // Trigger firework with cascading delay
+                          Future.delayed(Duration(milliseconds: index * 50),
+                              () {
+                            if (mounted && _animationKey.currentState != null) {
+                              _animationKey.currentState!.triggers
+                                  .onAddPoint(center);
+                            }
+                          });
+                        }
+                      });
+                    }
+
+                    return Column(
+                      children: [
+                        AnimatedOpacity(
+                          duration: const Duration(milliseconds: 200),
+                          opacity: hide,
+                          child: AnimatedOpacity(
+                            curve: Curves.easeOutQuart,
+                            opacity: combatState.isFinishTarget ? 0 : 1,
+                            duration: const Duration(milliseconds: 400),
+                            child: AnimatedScale(
+                              curve: Curves.easeOutQuart,
+                              scale: combatState.isFinishTarget ? 2 : 1,
+                              duration: const Duration(milliseconds: 400),
+                              child: Text(
+                                inputted,
+                                textAlign: TextAlign.center,
+                                style: boldedStyleFont(
+                                  numberOfCharactor:
+                                      combatState.requirementString!.length,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    AnimatedOpacity(
-                      opacity: (hide == 0) ? 1 : 0,
-                      duration: const Duration(milliseconds: 200),
-                      child: Icon(
-                        FontAwesomeIcons.minus,
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                      ),
-                    ),
-                  ],
+                        AnimatedOpacity(
+                          opacity: (hide == 0) ? 1 : 0,
+                          duration: const Duration(milliseconds: 200),
+                          child: Icon(
+                            FontAwesomeIcons.minus,
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               );
             },

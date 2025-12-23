@@ -126,8 +126,9 @@ class ParticleOverlayController {
   }
 
   /// Trigger a small burst at position
-  void triggerSmallBurst(Offset position) {
-    trigger(ParticleFactory.createSmallBurst(position: position));
+  void triggerSmallBurst(Offset position, {List<Color>? colors}) {
+    trigger(
+        ParticleFactory.createSmallBurst(position: position, colors: colors));
   }
 
   /// Trigger a large explosion at position

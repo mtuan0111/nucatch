@@ -18,8 +18,10 @@ class GameAnimationTriggers {
 
   /// Trigger small firework effect when points are scored
   /// Position should be in screen coordinates (e.g., score counter position)
-  void onAddPoint(Offset position) {
-    particleController.triggerSmallBurst(position);
+  void onAddPoint(Offset position, {List<Color>? colors}) {
+    particleController.triggerSmallBurst(position, colors: colors);
+    // Add light screen shake for impact
+    shakeController.shake(0.3);
   }
 
   /// Trigger large explosion when life is gained

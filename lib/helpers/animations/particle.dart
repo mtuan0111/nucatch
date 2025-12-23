@@ -95,16 +95,25 @@ class ParticleFactory {
   static List<Particle> createSmallBurst({
     required Offset position,
     int count = 6,
+    List<Color>? colors,
   }) {
     final particles = <Particle>[];
-    final colors = [
-      Colors.yellow,
-      Colors.orange,
-      Colors.amber,
-    ];
+    // Randomize particle count: 60% to 140% of specified count
+    final actualCount = (count * (0.6 + _random.nextDouble() * 0.8)).round();
+    final defaultColors = colors ??
+        [
+          const Color(0xFFFF6B6B), // Warm red
+          const Color(0xFFFF8E53), // Warm orange
+          const Color(0xFFFFA726), // Light orange
+          const Color(0xFFFFD54F), // Warm yellow
+          const Color(0xFFFF7043), // Deep orange
+          const Color(0xFFFF5252), // Bright red
+          const Color(0xFFFFAB91), // Light coral
+          const Color(0xFFFFE082), // Warm gold
+        ];
 
-    for (int i = 0; i < count; i++) {
-      final angle = (i / count) * 2 * pi + _random.nextDouble() * 0.5;
+    for (int i = 0; i < actualCount; i++) {
+      final angle = (i / actualCount) * 2 * pi + _random.nextDouble() * 0.5;
       final speed = 150.0 + _random.nextDouble() * 100.0;
 
       particles.add(Particle(
@@ -113,8 +122,8 @@ class ParticleFactory {
           cos(angle) * speed,
           sin(angle) * speed - 100, // Initial upward bias
         ),
-        color: colors[_random.nextInt(colors.length)],
-        size: 3.0 + _random.nextDouble() * 2.0,
+        color: defaultColors[_random.nextInt(defaultColors.length)],
+        size: 2.0 + _random.nextDouble() * 5.0, // Random sizes from 2.0 to 7.0
         maxLifetime: 0.6 + _random.nextDouble() * 0.2,
         rotationSpeed: (_random.nextDouble() - 0.5) * 10,
       ));
