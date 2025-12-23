@@ -128,20 +128,27 @@ class _MyAppState extends State<MyApp> {
                       textTheme: Theme.of(context).textTheme.apply(
                             fontSizeFactor: 0.5 + (state.fontSize / 20),
                             fontSizeDelta: 1 + (state.fontSize / 10),
-                            bodyColor:
-                                Theme.of(context).scaffoldBackgroundColor,
-
-                            // displayColor: Colors.white,
+                            bodyColor: Colors.white, // White text for better contrast
+                            displayColor: Colors.white, // White for display text
                           ),
                       colorScheme: ColorScheme.fromSeed(
-                        seedColor: Colors.green,
+                        seedColor: const Color(0xFFCC0000), // Christmas red
+                        primary: const Color(0xFFCC0000), // Christmas red
+                        secondary: const Color(0xFF0F7D3F), // Christmas green
+                        tertiary: const Color(0xFF1E5A8E), // Christmas blue
+                        brightness: Brightness.dark,
+                        onPrimary: Colors.white, // White text on red
+                        onSecondary: Colors.white, // White text on green
+                        onTertiary: Colors.white, // White text on blue
+                        surface: const Color(0xFF1E5A8E), // Blue surface
+                        onSurface: Colors.white, // White text on surface
                       ),
                       useMaterial3: true,
-                      primaryColor: const Color.fromARGB(255, 0, 174, 90),
-                      secondaryHeaderColor:
-                          const Color.fromARGB(255, 0, 51, 105),
-                      // scaffoldBackgroundColor: Colors.lightBlueAccent,
-
+                      primaryColor: const Color(0xFFCC0000), // Christmas red
+                      secondaryHeaderColor: const Color(0xFF1E5A8E), // Christmas blue
+                      cardColor: const Color(0xFF0F7D3F), // Christmas green for cards
+                      dividerColor: const Color(0xFFFFD700), // Gold dividers
+                      scaffoldBackgroundColor: Colors.white, // White background for contrast
                       // primaryTextTheme: Typography().white
                       // textTheme: Typography(platform: TargetPlatform.iOS).white,
                     ),

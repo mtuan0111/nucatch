@@ -902,3 +902,21 @@ feat: Improved UI consistency
     ```flutter build ios --build-name=2.4.2 --build-number=57 --release```
     ```
     ---
+---
+## Released on: 23/12/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 56           | 2.4.3   |
+| iOS      | 58           | 2.4.3   |
+
+### Release note:
+feat: Add the Christmas theme
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+    
