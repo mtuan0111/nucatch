@@ -128,8 +128,10 @@ class _MyAppState extends State<MyApp> {
                       textTheme: Theme.of(context).textTheme.apply(
                             fontSizeFactor: 0.5 + (state.fontSize / 20),
                             fontSizeDelta: 1 + (state.fontSize / 10),
-                            bodyColor: Colors.white, // White text for better contrast
-                            displayColor: Colors.white, // White for display text
+                            bodyColor:
+                                Colors.white, // White text for better contrast
+                            displayColor:
+                                Colors.white, // White for display text
                           ),
                       colorScheme: ColorScheme.fromSeed(
                         seedColor: const Color(0xFFCC0000), // Christmas red
@@ -145,10 +147,13 @@ class _MyAppState extends State<MyApp> {
                       ),
                       useMaterial3: true,
                       primaryColor: const Color(0xFFCC0000), // Christmas red
-                      secondaryHeaderColor: const Color(0xFF1E5A8E), // Christmas blue
-                      cardColor: const Color(0xFF0F7D3F), // Christmas green for cards
+                      secondaryHeaderColor:
+                          const Color(0xFF1E5A8E), // Christmas blue
+                      cardColor:
+                          const Color(0xFF0F7D3F), // Christmas green for cards
                       dividerColor: const Color(0xFFFFD700), // Gold dividers
-                      scaffoldBackgroundColor: Colors.white, // White background for contrast
+                      scaffoldBackgroundColor:
+                          Colors.white, // White background for contrast
                       // primaryTextTheme: Typography().white
                       // textTheme: Typography(platform: TargetPlatform.iOS).white,
                     ),

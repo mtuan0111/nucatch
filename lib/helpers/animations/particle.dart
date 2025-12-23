@@ -108,27 +108,28 @@ class ParticleFactory {
     final particles = <Particle>[];
     // Randomize particle count: 60% to 140% of specified count
     final actualCount = (count * (0.6 + _random.nextDouble() * 0.8)).round();
-    final defaultColors = colors ?? (ChristmasTheme.enabled
-        ? [
-            const Color(0xFFFF0000), // Christmas red
-            const Color(0xFF00FF00), // Christmas green
-            const Color(0xFFFFD700), // Gold
-            const Color(0xFFFFFFFF), // White
-            const Color(0xFFFF6B6B), // Light red
-            const Color(0xFF90EE90), // Light green
-            const Color(0xFFFFE082), // Warm gold
-            const Color(0xFFC0C0C0), // Silver
-          ]
-        : [
-            const Color(0xFFFF6B6B), // Warm red
-            const Color(0xFFFF8E53), // Warm orange
-            const Color(0xFFFFA726), // Light orange
-            const Color(0xFFFFD54F), // Warm yellow
-            const Color(0xFFFF7043), // Deep orange
-            const Color(0xFFFF5252), // Bright red
-            const Color(0xFFFFAB91), // Light coral
-            const Color(0xFFFFE082), // Warm gold
-          ]);
+    final defaultColors = colors ??
+        (ChristmasTheme.enabled
+            ? [
+                const Color(0xFFFF0000), // Christmas red
+                const Color(0xFF00FF00), // Christmas green
+                const Color(0xFFFFD700), // Gold
+                const Color(0xFFFFFFFF), // White
+                const Color(0xFFFF6B6B), // Light red
+                const Color(0xFF90EE90), // Light green
+                const Color(0xFFFFE082), // Warm gold
+                const Color(0xFFC0C0C0), // Silver
+              ]
+            : [
+                const Color(0xFFFF6B6B), // Warm red
+                const Color(0xFFFF8E53), // Warm orange
+                const Color(0xFFFFA726), // Light orange
+                const Color(0xFFFFD54F), // Warm yellow
+                const Color(0xFFFF7043), // Deep orange
+                const Color(0xFFFF5252), // Bright red
+                const Color(0xFFFFAB91), // Light coral
+                const Color(0xFFFFE082), // Warm gold
+              ]);
 
     for (int i = 0; i < actualCount; i++) {
       final angle = (i / actualCount) * 2 * pi + _random.nextDouble() * 0.5;
@@ -238,7 +239,7 @@ class ParticleFactory {
       // Random position across screen width and above screen
       final startX = _random.nextDouble() * screenSize.width;
       final startY = -_random.nextDouble() * screenSize.height;
-      
+
       // Slow downward and slight horizontal drift
       final horizontalDrift = (_random.nextDouble() - 0.5) * 20;
 

@@ -919,4 +919,23 @@ feat: Add the Christmas theme
     Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
 
 
-    
+    ```
+    [Builded] Version 2.4.3 - 56 / 2.4.3 - 58 _ Add the Christmas theme
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Added festive Christmas theme for a joyful holiday experience.  
+        - Enhanced visual design with seasonal decorations and colors.
+
+    - **Tiếng Việt:**  
+        - Thêm chủ đề Giáng sinh lễ hội cho trải nghiệm ngày lễ vui vẻ.  
+        - Nâng cao thiết kế hình ảnh với trang trí và màu sắc theo mùa.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.4.3 --build-number=56 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.4.3 --build-number=58 --release```
+    ```
+    ---

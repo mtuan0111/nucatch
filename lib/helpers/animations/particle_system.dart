@@ -70,7 +70,7 @@ class _ParticleOverlayState extends State<ParticleOverlay>
 
     // Listen to controller events
     widget.controller._addParticlesCallback = _addParticles;
-    
+
     // Start snow if Christmas theme is enabled
     if (ChristmasTheme.enabled) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -89,8 +89,9 @@ class _ParticleOverlayState extends State<ParticleOverlay>
   void _startSnow() {
     // Add initial snow particles
     final screenSize = MediaQuery.of(context).size;
-    _snowSystem.addParticles(ParticleFactory.createSnow(screenSize: screenSize, count: 30));
-    
+    _snowSystem.addParticles(
+        ParticleFactory.createSnow(screenSize: screenSize, count: 30));
+
     if (!_animationController.isAnimating) {
       _animationController.repeat();
     }
@@ -108,23 +109,27 @@ class _ParticleOverlayState extends State<ParticleOverlay>
   void _onAnimationTick() {
     setState(() {
       _particleSystem.update();
-      
+
       // Update snow system for Christmas theme
       if (ChristmasTheme.enabled) {
         _snowSystem.update();
-        
+
         // Replenish snow particles when they fall off screen
         final screenSize = MediaQuery.of(context).size;
-        _snowSystem.particles.removeWhere((p) => p.position.dy > screenSize.height + 50);
-        
+        _snowSystem.particles
+            .removeWhere((p) => p.position.dy > screenSize.height + 50);
+
         // Add new snow particles periodically to maintain count
         if (_snowSystem.particles.length < 20) {
-          _snowSystem.addParticles(ParticleFactory.createSnow(screenSize: screenSize, count: 5));
+          _snowSystem.addParticles(
+              ParticleFactory.createSnow(screenSize: screenSize, count: 5));
         }
       }
 
       // Stop animation when no particles remain (only if Christmas theme is disabled)
-      if (!ChristmasTheme.enabled && _particleSystem.isEmpty && _snowSystem.isEmpty) {
+      if (!ChristmasTheme.enabled &&
+          _particleSystem.isEmpty &&
+          _snowSystem.isEmpty) {
         _animationController.stop();
       }
     });
