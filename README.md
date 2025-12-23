@@ -883,7 +883,7 @@ feat: Improved UI consistency
 
 
     ```
-    [Builded] Version 2.4.1 - 54 / 2.4.1 - 56 _ Improved UI consistency
+    [Builded] Version 2.4.2 - 55 / 2.4.2 - 57 _ Improved UI consistency
 
     **Store notices / What's new / Summary:**
 
@@ -896,9 +896,9 @@ feat: Improved UI consistency
         - Cải thiện thiết kế tổng thể và trải nghiệm người dùng của ứng dụng.
 
     Flutter build for Android
-    ```flutter build appbundle --build-name=2.4.1 --build-number=54 --release```
+    ```flutter build appbundle --build-name=2.4.2 --build-number=55 --release```
 
     Flutter build for iOS
-    ```flutter build ios --build-name=2.4.1 --build-number=56 --release```
+    ```flutter build ios --build-name=2.4.2 --build-number=57 --release```
     ```
     ---
