@@ -1,10 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-
-/// Christmas theme configuration
-class ChristmasTheme {
-  static bool enabled = true; // Christmas theme enabled by default
-}
+import 'package:nucatch/helpers/theme_config.dart';
 
 /// Represents a single particle in a particle effect
 class Particle {
@@ -108,28 +104,7 @@ class ParticleFactory {
     final particles = <Particle>[];
     // Randomize particle count: 60% to 140% of specified count
     final actualCount = (count * (0.6 + _random.nextDouble() * 0.8)).round();
-    final defaultColors = colors ??
-        (ChristmasTheme.enabled
-            ? [
-                const Color(0xFFFF0000), // Christmas red
-                const Color(0xFF00FF00), // Christmas green
-                const Color(0xFFFFD700), // Gold
-                const Color(0xFFFFFFFF), // White
-                const Color(0xFFFF6B6B), // Light red
-                const Color(0xFF90EE90), // Light green
-                const Color(0xFFFFE082), // Warm gold
-                const Color(0xFFC0C0C0), // Silver
-              ]
-            : [
-                const Color(0xFFFF6B6B), // Warm red
-                const Color(0xFFFF8E53), // Warm orange
-                const Color(0xFFFFA726), // Light orange
-                const Color(0xFFFFD54F), // Warm yellow
-                const Color(0xFFFF7043), // Deep orange
-                const Color(0xFFFF5252), // Bright red
-                const Color(0xFFFFAB91), // Light coral
-                const Color(0xFFFFE082), // Warm gold
-              ]);
+    final defaultColors = colors ?? SeasonalTheme.config.fireworkColors;
 
     for (int i = 0; i < actualCount; i++) {
       final angle = (i / actualCount) * 2 * pi + _random.nextDouble() * 0.5;
@@ -222,18 +197,13 @@ class ParticleFactory {
     return particles;
   }
 
-  /// Create snow particles for Christmas theme
+  /// Create snow particles for seasonal themes
   static List<Particle> createSnow({
     required Size screenSize,
     int count = 30,
   }) {
     final particles = <Particle>[];
-    final snowColors = [
-      Colors.white,
-      Colors.white.withOpacity(0.9),
-      Colors.white.withOpacity(0.7),
-      const Color(0xFFE0F7FF), // Very light blue
-    ];
+    final snowColors = SeasonalTheme.config.getSnowColors();
 
     for (int i = 0; i < count; i++) {
       // Random position across screen width and above screen

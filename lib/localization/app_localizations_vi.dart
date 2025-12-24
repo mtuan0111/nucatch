@@ -422,4 +422,77 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get youRanOutOfLives => 'Bạn đã hết mạng';
+
+  @override
+  String holidayNotification(String holidayName, String greeting) {
+    return 'Hôm nay là $holidayName, $greeting';
+  }
+
+  @override
+  String get holidayNewYear => 'Tết Dương lịch';
+
+  @override
+  String get greetingNewYear => 'Chúc mừng năm mới!';
+
+  @override
+  String get holidayLunarNewYear => 'Tết Nguyên đán';
+
+  @override
+  String get greetingLunarNewYear => 'Chúc mừng năm mới! Vạn sự như ý!';
+
+  @override
+  String get holidayValentine => 'Ngày Lễ Tình Nhân';
+
+  @override
+  String get greetingValentine => 'Chúc mừng ngày lễ tình nhân!';
+
+  @override
+  String get holidayHoli => 'Lễ hội Holi';
+
+  @override
+  String get greetingHoli => 'होली की शुभकामनाएं! (Holi Ki Shubhkamnayein!)';
+
+  @override
+  String get holidayEaster => 'Lễ Phục Sinh';
+
+  @override
+  String get greetingEaster => 'Chúc mừng Lễ Phục Sinh!';
+
+  @override
+  String get holidayPride => 'Tháng Tự Hào';
+
+  @override
+  String get greetingPride =>
+      'Tháng Tự Hào Vui Vẻ! Tình Yêu Là Tình Yêu! 🏳️‍🌈';
+
+  @override
+  String get holidayHalloween => 'Lễ Halloween';
+
+  @override
+  String get greetingHalloween => 'Chúc mừng Halloween!';
+
+  @override
+  String get holidayDiwali => 'Lễ hội Diwali';
+
+  @override
+  String get greetingDiwali =>
+      'दीपावली की शुभकामनाएं! (Deepavali Ki Shubhkamnayein!)';
+
+  @override
+  String get holidayHanukkah => 'Lễ Hanukkah';
+
+  @override
+  String get greetingHanukkah => 'חג חנוכה שמח! (Chag Hanukkah Sameach!)';
+
+  @override
+  String get holidayChristmas => 'Lễ Giáng Sinh';
+
+  @override
+  String get greetingChristmas => 'Chúc mừng Giáng Sinh!';
+
+  @override
+  String get holidayKwanzaa => 'Lễ Kwanzaa';
+
+  @override
+  String get greetingKwanzaa => 'Habari Gani!';
 }

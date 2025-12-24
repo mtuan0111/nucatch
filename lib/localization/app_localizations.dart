@@ -843,6 +843,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You ran out of lives'**
   String get youRanOutOfLives;
+
+  /// Holiday event notification with greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Today is {holidayName}, {greeting}'**
+  String holidayNotification(String holidayName, String greeting);
+
+  /// New Year holiday name
+  ///
+  /// In en, this message translates to:
+  /// **'New Year'**
+  String get holidayNewYear;
+
+  /// New Year greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Happy New Year!'**
+  String get greetingNewYear;
+
+  /// Lunar New Year holiday name
+  ///
+  /// In en, this message translates to:
+  /// **'Lunar New Year'**
+  String get holidayLunarNewYear;
+
+  /// Lunar New Year greeting in Chinese
+  ///
+  /// In en, this message translates to:
+  /// **'新年快乐! (Xīn Nián Kuài Lè!)'**
+  String get greetingLunarNewYear;
+
+  /// Valentine's Day holiday name
+  ///
+  /// In en, this message translates to:
+  /// **'Valentine\'s Day'**
+  String get holidayValentine;
+
+  /// Valentine's Day greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Happy Valentine\'s Day!'**
+  String get greetingValentine;
+
+  /// Holi holiday name
+  ///
+  /// In en, this message translates to:
+  /// **'Holi'**
+  String get holidayHoli;
+
+  /// Holi greeting in Hindi
+  ///
+  /// In en, this message translates to:
+  /// **'होली की शुभकामनाएं! (Holi Ki Shubhkamnayein!)'**
+  String get greetingHoli;
+
+  /// Easter holiday name
+  ///
+  /// In en, this message translates to:
+  /// **'Easter'**
+  String get holidayEaster;
+
+  /// Easter greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Happy Easter!'**
+  String get greetingEaster;
+
+  /// Pride Month name
+  ///
+  /// In en, this message translates to:
+  /// **'Pride Month'**
+  String get holidayPride;
+
+  /// Pride Month greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Happy Pride! Love is Love! 🏳️‍🌈'**
+  String get greetingPride;
+
+  /// Halloween holiday name
+  ///
+  /// In en, this message translates to:
+  /// **'Halloween'**
+  String get holidayHalloween;
+
+  /// Halloween greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Happy Halloween!'**
+  String get greetingHalloween;
+
+  /// Diwali holiday name
+  ///
+  /// In en, this message translates to:
+  /// **'Diwali'**
+  String get holidayDiwali;
+
+  /// Diwali greeting in Hindi
+  ///
+  /// In en, this message translates to:
+  /// **'दीपावली की शुभकामनाएं! (Deepavali Ki Shubhkamnayein!)'**
+  String get greetingDiwali;
+
+  /// Hanukkah holiday name
+  ///
+  /// In en, this message translates to:
+  /// **'Hanukkah'**
+  String get holidayHanukkah;
+
+  /// Hanukkah greeting in Hebrew
+  ///
+  /// In en, this message translates to:
+  /// **'חג חנוכה שמח! (Chag Hanukkah Sameach!)'**
+  String get greetingHanukkah;
+
+  /// Christmas holiday name
+  ///
+  /// In en, this message translates to:
+  /// **'Christmas'**
+  String get holidayChristmas;
+
+  /// Christmas greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Merry Christmas!'**
+  String get greetingChristmas;
+
+  /// Kwanzaa holiday name
+  ///
+  /// In en, this message translates to:
+  /// **'Kwanzaa'**
+  String get holidayKwanzaa;
+
+  /// Kwanzaa greeting in Swahili
+  ///
+  /// In en, this message translates to:
+  /// **'Habari Gani!'**
+  String get greetingKwanzaa;
 }
 
 class _AppLocalizationsDelegate

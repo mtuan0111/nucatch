@@ -619,5 +619,105 @@
   "youRanOutOfLives": "You ran out of lives",
   "@youRanOutOfLives": {
     "description": "Reason for losing when player loses all lives"
+  },
+  "holidayNotification": "Today is {holidayName}, {greeting}",
+  "@holidayNotification": {
+    "description": "Holiday event notification with greeting",
+    "placeholders": {
+      "holidayName": {
+        "type": "String"
+      },
+      "greeting": {
+        "type": "String"
+      }
+    }
+  },
+  "holidayNewYear": "New Year",
+  "@holidayNewYear": {
+    "description": "New Year holiday name"
+  },
+  "greetingNewYear": "Happy New Year!",
+  "@greetingNewYear": {
+    "description": "New Year greeting"
+  },
+  "holidayLunarNewYear": "Lunar New Year",
+  "@holidayLunarNewYear": {
+    "description": "Lunar New Year holiday name"
+  },
+  "greetingLunarNewYear": "新年快乐! (Xīn Nián Kuài Lè!)",
+  "@greetingLunarNewYear": {
+    "description": "Lunar New Year greeting in Chinese"
+  },
+  "holidayValentine": "Valentine's Day",
+  "@holidayValentine": {
+    "description": "Valentine's Day holiday name"
+  },
+  "greetingValentine": "Happy Valentine's Day!",
+  "@greetingValentine": {
+    "description": "Valentine's Day greeting"
+  },
+  "holidayHoli": "Holi",
+  "@holidayHoli": {
+    "description": "Holi holiday name"
+  },
+  "greetingHoli": "होली की शुभकामनाएं! (Holi Ki Shubhkamnayein!)",
+  "@greetingHoli": {
+    "description": "Holi greeting in Hindi"
+  },
+  "holidayEaster": "Easter",
+  "@holidayEaster": {
+    "description": "Easter holiday name"
+  },
+  "greetingEaster": "Happy Easter!",
+  "@greetingEaster": {
+    "description": "Easter greeting"
+  },
+  "holidayPride": "Pride Month",
+  "@holidayPride": {
+    "description": "Pride Month name"
+  },
+  "greetingPride": "Happy Pride! Love is Love! 🏳️‍🌈",
+  "@greetingPride": {
+    "description": "Pride Month greeting"
+  },
+  "holidayHalloween": "Halloween",
+  "@holidayHalloween": {
+    "description": "Halloween holiday name"
+  },
+  "greetingHalloween": "Happy Halloween!",
+  "@greetingHalloween": {
+    "description": "Halloween greeting"
+  },
+  "holidayDiwali": "Diwali",
+  "@holidayDiwali": {
+    "description": "Diwali holiday name"
+  },
+  "greetingDiwali": "दीपावली की शुभकामनाएं! (Deepavali Ki Shubhkamnayein!)",
+  "@greetingDiwali": {
+    "description": "Diwali greeting in Hindi"
+  },
+  "holidayHanukkah": "Hanukkah",
+  "@holidayHanukkah": {
+    "description": "Hanukkah holiday name"
+  },
+  "greetingHanukkah": "חג חנוכה שמח! (Chag Hanukkah Sameach!)",
+  "@greetingHanukkah": {
+    "description": "Hanukkah greeting in Hebrew"
+  },
+  "holidayChristmas": "Christmas",
+  "@holidayChristmas": {
+    "description": "Christmas holiday name"
+  },
+  "greetingChristmas": "Merry Christmas!",
+  "@greetingChristmas": {
+    "description": "Christmas greeting"
+  },
+  "holidayKwanzaa": "Kwanzaa",
+  "@holidayKwanzaa": {
+    "description": "Kwanzaa holiday name"
+  },
+  "greetingKwanzaa": "Habari Gani!",
+  "@greetingKwanzaa": {
+    "description": "Kwanzaa greeting in Swahili"
   }
 }

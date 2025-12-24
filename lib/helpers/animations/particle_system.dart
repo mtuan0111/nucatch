@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'particle.dart';
+import 'package:nucatch/helpers/theme_config.dart';
 
 /// Manages the lifecycle of particles for a single effect
 class ParticleSystem {
@@ -71,8 +72,8 @@ class _ParticleOverlayState extends State<ParticleOverlay>
     // Listen to controller events
     widget.controller._addParticlesCallback = _addParticles;
 
-    // Start snow if Christmas theme is enabled
-    if (ChristmasTheme.enabled) {
+    // Start snow if seasonal theme has snow enabled
+    if (SeasonalTheme.config.enableSnow) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _startSnow();
       });
@@ -110,8 +111,8 @@ class _ParticleOverlayState extends State<ParticleOverlay>
     setState(() {
       _particleSystem.update();
 
-      // Update snow system for Christmas theme
-      if (ChristmasTheme.enabled) {
+      // Update snow system for seasonal themes
+      if (SeasonalTheme.config.enableSnow) {
         _snowSystem.update();
 
         // Replenish snow particles when they fall off screen
@@ -126,8 +127,8 @@ class _ParticleOverlayState extends State<ParticleOverlay>
         }
       }
 
-      // Stop animation when no particles remain (only if Christmas theme is disabled)
-      if (!ChristmasTheme.enabled &&
+      // Stop animation when no particles remain (only if snow is disabled)
+      if (!SeasonalTheme.config.enableSnow &&
           _particleSystem.isEmpty &&
           _snowSystem.isEmpty) {
         _animationController.stop();
@@ -140,8 +141,8 @@ class _ParticleOverlayState extends State<ParticleOverlay>
     return Stack(
       children: [
         widget.child,
-        // Fog overlay for Christmas theme
-        if (ChristmasTheme.enabled)
+        // Fog overlay for seasonal themes
+        if (SeasonalTheme.config.enableFog)
           Positioned.fill(
             child: IgnorePointer(
               child: Container(
@@ -149,18 +150,14 @@ class _ParticleOverlayState extends State<ParticleOverlay>
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white.withOpacity(0.05),
-                      Colors.white.withOpacity(0.02),
-                      Colors.white.withOpacity(0.05),
-                    ],
+                    colors: SeasonalTheme.config.getFogColors(),
                   ),
                 ),
               ),
             ),
           ),
         // Snow particles (rendered behind regular particles)
-        if (ChristmasTheme.enabled && _snowSystem.particles.isNotEmpty)
+        if (SeasonalTheme.config.enableSnow && _snowSystem.particles.isNotEmpty)
           Positioned.fill(
             child: IgnorePointer(
               child: CustomPaint(

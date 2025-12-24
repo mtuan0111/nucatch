@@ -12,6 +12,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/theme_config.dart';
 import 'package:nucatch/localization/app_localizations.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 import 'package:nucatch/screens/wrappers/update_checker_wrapper.dart';
@@ -133,24 +134,11 @@ class _MyAppState extends State<MyApp> {
                             displayColor:
                                 Colors.white, // White for display text
                           ),
-                      colorScheme: ColorScheme.fromSeed(
-                        seedColor: const Color(0xFFCC0000), // Christmas red
-                        primary: const Color(0xFFCC0000), // Christmas red
-                        secondary: const Color(0xFF0F7D3F), // Christmas green
-                        tertiary: const Color(0xFF1E5A8E), // Christmas blue
-                        brightness: Brightness.dark,
-                        onPrimary: Colors.white, // White text on red
-                        onSecondary: Colors.white, // White text on green
-                        onTertiary: Colors.white, // White text on blue
-                        surface: const Color(0xFF1E5A8E), // Blue surface
-                        onSurface: Colors.white, // White text on surface
-                      ),
+                      colorScheme: SeasonalTheme.config.getColorScheme(),
                       useMaterial3: true,
-                      primaryColor: const Color(0xFFCC0000), // Christmas red
-                      secondaryHeaderColor:
-                          const Color(0xFF1E5A8E), // Christmas blue
-                      cardColor:
-                          const Color(0xFF0F7D3F), // Christmas green for cards
+                      primaryColor: SeasonalTheme.config.primaryColor,
+                      secondaryHeaderColor: SeasonalTheme.config.secondaryColor,
+                      cardColor: SeasonalTheme.config.cardColor ?? SeasonalTheme.config.tertiaryColor,
                       dividerColor: const Color(0xFFFFD700), // Gold dividers
                       scaffoldBackgroundColor:
                           Colors.white, // White background for contrast

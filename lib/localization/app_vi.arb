@@ -617,5 +617,105 @@
   "youRanOutOfLives": "Bạn đã hết mạng",
   "@youRanOutOfLives": {
     "description": "Lý do thua khi người chơi hết mạng"
+  },
+  "holidayNotification": "Hôm nay là {holidayName}, {greeting}",
+  "@holidayNotification": {
+    "description": "Thông báo sự kiện lễ hội với lời chúc",
+    "placeholders": {
+      "holidayName": {
+        "type": "String"
+      },
+      "greeting": {
+        "type": "String"
+      }
+    }
+  },
+  "holidayNewYear": "Tết Dương lịch",
+  "@holidayNewYear": {
+    "description": "Tên lễ hội Năm Mới"
+  },
+  "greetingNewYear": "Chúc mừng năm mới!",
+  "@greetingNewYear": {
+    "description": "Lời chúc Năm Mới"
+  },
+  "holidayLunarNewYear": "Tết Nguyên đán",
+  "@holidayLunarNewYear": {
+    "description": "Tên lễ hội Tết Nguyên đán"
+  },
+  "greetingLunarNewYear": "Chúc mừng năm mới! Vạn sự như ý!",
+  "@greetingLunarNewYear": {
+    "description": "Lời chúc Tết Nguyên đán bằng Tiếng Việt"
+  },
+  "holidayValentine": "Ngày Lễ Tình Nhân",
+  "@holidayValentine": {
+    "description": "Tên lễ hội Valentine"
+  },
+  "greetingValentine": "Chúc mừng ngày lễ tình nhân!",
+  "@greetingValentine": {
+    "description": "Lời chúc ngày Valentine"
+  },
+  "holidayHoli": "Lễ hội Holi",
+  "@holidayHoli": {
+    "description": "Tên lễ hội Holi"
+  },
+  "greetingHoli": "होली की शुभकामनाएं! (Holi Ki Shubhkamnayein!)",
+  "@greetingHoli": {
+    "description": "Lời chúc lễ hội Holi bằng tiếng Hindi"
+  },
+  "holidayEaster": "Lễ Phục Sinh",
+  "@holidayEaster": {
+    "description": "Tên lễ hội Phục Sinh"
+  },
+  "greetingEaster": "Chúc mừng Lễ Phục Sinh!",
+  "@greetingEaster": {
+    "description": "Lời chúc Lễ Phục Sinh"
+  },
+  "holidayPride": "Tháng Tự Hào",
+  "@holidayPride": {
+    "description": "Tên tháng Pride"
+  },
+  "greetingPride": "Tháng Tự Hào Vui Vẻ! Tình Yêu Là Tình Yêu! 🏳️‍🌈",
+  "@greetingPride": {
+    "description": "Lời chúc tháng Pride"
+  },
+  "holidayHalloween": "Lễ Halloween",
+  "@holidayHalloween": {
+    "description": "Tên lễ hội Halloween"
+  },
+  "greetingHalloween": "Chúc mừng Halloween!",
+  "@greetingHalloween": {
+    "description": "Lời chúc Halloween"
+  },
+  "holidayDiwali": "Lễ hội Diwali",
+  "@holidayDiwali": {
+    "description": "Tên lễ hội Diwali"
+  },
+  "greetingDiwali": "दीपावली की शुभकामनाएं! (Deepavali Ki Shubhkamnayein!)",
+  "@greetingDiwali": {
+    "description": "Lời chúc lễ hội Diwali bằng tiếng Hindi"
+  },
+  "holidayHanukkah": "Lễ Hanukkah",
+  "@holidayHanukkah": {
+    "description": "Tên lễ hội Hanukkah"
+  },
+  "greetingHanukkah": "חג חנוכה שמח! (Chag Hanukkah Sameach!)",
+  "@greetingHanukkah": {
+    "description": "Lời chúc lễ hội Hanukkah bằng tiếng Do Thái"
+  },
+  "holidayChristmas": "Lễ Giáng Sinh",
+  "@holidayChristmas": {
+    "description": "Tên lễ hội Giáng Sinh"
+  },
+  "greetingChristmas": "Chúc mừng Giáng Sinh!",
+  "@greetingChristmas": {
+    "description": "Lời chúc Giáng Sinh"
+  },
+  "holidayKwanzaa": "Lễ Kwanzaa",
+  "@holidayKwanzaa": {
+    "description": "Tên lễ hội Kwanzaa"
+  },
+  "greetingKwanzaa": "Habari Gani!",
+  "@greetingKwanzaa": {
+    "description": "Lời chúc lễ hội Kwanzaa bằng tiếng Swahili"
   }
 }

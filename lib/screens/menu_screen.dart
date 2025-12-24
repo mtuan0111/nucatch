@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../helpers/theme_config.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
@@ -72,6 +73,26 @@ class _MenuScreenState extends State<MenuScreen> {
                       ),
                     ),
                   ),
+                  if (SeasonalTheme.current != ThemeType.defaultTheme)
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 10,
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: Center(
+                          child: Text(
+                            _getHolidayMessage(context),
+                            style: LayoutConfig(context).titleSectionStyle().copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 20,
@@ -144,5 +165,69 @@ class _MenuScreenState extends State<MenuScreen> {
         );
       },
     );
+  }
+
+  String _getHolidayMessage(BuildContext context) {
+    final currentTheme = SeasonalTheme.current;
+    
+    switch (currentTheme) {
+      case ThemeType.newYear:
+        return lang(context).holidayNotification(
+          lang(context).holidayNewYear,
+          lang(context).greetingNewYear,
+        );
+      case ThemeType.lunarNewYear:
+        return lang(context).holidayNotification(
+          lang(context).holidayLunarNewYear,
+          lang(context).greetingLunarNewYear,
+        );
+      case ThemeType.valentine:
+        return lang(context).holidayNotification(
+          lang(context).holidayValentine,
+          lang(context).greetingValentine,
+        );
+      case ThemeType.holi:
+        return lang(context).holidayNotification(
+          lang(context).holidayHoli,
+          lang(context).greetingHoli,
+        );
+      case ThemeType.easter:
+        return lang(context).holidayNotification(
+          lang(context).holidayEaster,
+          lang(context).greetingEaster,
+        );
+      case ThemeType.pride:
+        return lang(context).holidayNotification(
+          lang(context).holidayPride,
+          lang(context).greetingPride,
+        );
+      case ThemeType.halloween:
+        return lang(context).holidayNotification(
+          lang(context).holidayHalloween,
+          lang(context).greetingHalloween,
+        );
+      case ThemeType.diwali:
+        return lang(context).holidayNotification(
+          lang(context).holidayDiwali,
+          lang(context).greetingDiwali,
+        );
+      case ThemeType.hanukkah:
+        return lang(context).holidayNotification(
+          lang(context).holidayHanukkah,
+          lang(context).greetingHanukkah,
+        );
+      case ThemeType.christmas:
+        return lang(context).holidayNotification(
+          lang(context).holidayChristmas,
+          lang(context).greetingChristmas,
+        );
+      case ThemeType.kwanzaa:
+        return lang(context).holidayNotification(
+          lang(context).holidayKwanzaa,
+          lang(context).greetingKwanzaa,
+        );
+      default:
+        return '';
+    }
   }
 }
