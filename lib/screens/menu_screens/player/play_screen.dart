@@ -84,7 +84,7 @@ class _PlayScreenState extends State<PlayScreen> {
       fontSize = 45;
     }
     return LayoutConfig(context).boldedStyle.copyWith(
-          color: Theme.of(context).scaffoldBackgroundColor,
+          color: Theme.of(context).colorScheme.onPrimary,
           fontSize: fontSize,
         );
   }
@@ -295,7 +295,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                                     turnState.difficultyModel
                                                         ?.difficulty),
                                                 color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
+                                                    .colorScheme
+                                                    .onPrimary,
                                                 size: Theme.of(context)
                                                     .textTheme
                                                     .bodyLarge!
@@ -336,7 +337,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                               Icon(
                                                 FontAwesomeIcons.chartLine,
                                                 color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
+                                                    .colorScheme
+                                                    .onPrimary,
                                                 size: Theme.of(context)
                                                     .textTheme
                                                     .bodyLarge!
@@ -686,8 +688,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                               40,
                                                                           fontWeight:
                                                                               FontWeight.bold,
-                                                                          color:
-                                                                              Colors.white,
+                                                                          color: Theme.of(context)
+                                                                              .colorScheme
+                                                                              .onPrimary,
                                                                         ),
                                                                     child: Text(
                                                                       time
@@ -708,8 +711,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                         .copyWith(
                                                                           fontSize:
                                                                               16,
-                                                                          color:
-                                                                              Colors.white,
+                                                                          color: Theme.of(context)
+                                                                              .colorScheme
+                                                                              .onPrimary,
                                                                         ),
                                                                     child: Text(
                                                                         readyText),
@@ -729,8 +733,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                               32,
                                                                           fontWeight:
                                                                               FontWeight.bold,
-                                                                          color:
-                                                                              Colors.white,
+                                                                          color: Theme.of(context)
+                                                                              .colorScheme
+                                                                              .onPrimary,
                                                                         ),
                                                                     child: Text(
                                                                         goText),
@@ -908,7 +913,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                     turnState
                                                                         .requirementString!
                                                                         .length,
-                                                              ),
+                                                              ).copyWith(
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .colorScheme
+                                                                          .onPrimary),
                                                             ),
                                                           ),
                                                         ),
@@ -923,9 +932,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                                         child: Icon(
                                                           FontAwesomeIcons
                                                               .minus,
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .scaffoldBackgroundColor,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onPrimary,
                                                         ),
                                                       ),
                                                     ],
@@ -1158,7 +1168,7 @@ class LifeStar extends StatelessWidget {
       height: (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0),
       child: Icon(
         FontAwesomeIcons.solidStar,
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).colorScheme.onPrimary,
         size: Theme.of(context).textTheme.titleLarge!.fontSize,
       ),
     );

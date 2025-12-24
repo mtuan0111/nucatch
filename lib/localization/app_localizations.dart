@@ -898,6 +898,18 @@ abstract class AppLocalizations {
   /// **'होली की शुभकामनाएं! (Holi Ki Shubhkamnayein!)'**
   String get greetingHoli;
 
+  /// Earth Day holiday name
+  ///
+  /// In en, this message translates to:
+  /// **'Earth Day'**
+  String get holidayEarthDay;
+
+  /// Earth Day greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Happy Earth Day! Protect our planet! 🌍'**
+  String get greetingEarthDay;
+
   /// Easter holiday name
   ///
   /// In en, this message translates to:

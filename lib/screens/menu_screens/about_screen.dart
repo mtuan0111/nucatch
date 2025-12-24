@@ -65,7 +65,7 @@ class _AboutScreenState extends State<AboutScreen> {
           child: CustomScrollView(
             slivers: [
               SliverAppBar(
-                foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 shadowColor: Colors.transparent,
                 backgroundColor: Colors.transparent,
                 pinned: true,
@@ -295,7 +295,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                       backgroundColor:
                                           Theme.of(context).primaryColor,
                                       color: Theme.of(context)
-                                          .scaffoldBackgroundColor,
+                                          .colorScheme
+                                          .onPrimary,
                                       buttonSize: ButtonSize.small,
                                       shapeAt: RoundedWithShapeAt.topLeft,
                                       iconData: state.status ==
@@ -313,7 +314,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                                     AlwaysStoppedAnimation<
                                                         Color>(
                                                   Theme.of(context)
-                                                      .scaffoldBackgroundColor,
+                                                      .colorScheme
+                                                      .onPrimary,
                                                 ),
                                               ),
                                             )

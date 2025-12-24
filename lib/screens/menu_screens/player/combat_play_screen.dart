@@ -50,7 +50,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       fontSize = 45;
     }
     return LayoutConfig(context).boldedStyle.copyWith(
-          color: Theme.of(context).scaffoldBackgroundColor,
+          color: Theme.of(context).colorScheme.onPrimary,
           fontSize: fontSize,
         );
   }
@@ -145,7 +145,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     Icon(
                       Helper.getIconFromDifficulty(
                           context, combatState.difficultyModel?.difficulty),
-                      color: Theme.of(context).scaffoldBackgroundColor,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: Theme.of(context).textTheme.bodyLarge!.fontSize,
                     ),
                     const SizedBox(width: 5),
@@ -162,7 +162,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   children: [
                     Icon(
                       FontAwesomeIcons.chartLine,
-                      color: Theme.of(context).scaffoldBackgroundColor,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: Theme.of(context).textTheme.bodyLarge!.fontSize,
                     ),
                     const SizedBox(width: 5),
@@ -185,8 +185,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     combatState.isMyTurn
                         ? lang(context).yourTurn
                         : lang(context).opponentTurn,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -224,7 +224,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                               20.0),
                       child: Icon(
                         FontAwesomeIcons.solidStar,
-                        color: Theme.of(context).scaffoldBackgroundColor,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         size: Theme.of(context).textTheme.bodyLarge!.fontSize,
                       ),
                     ),
@@ -418,11 +418,15 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                       child: CircularProgressIndicator(
                                         value: secondProgress,
                                         strokeWidth: 8,
-                                        backgroundColor:
-                                            Colors.white.withOpacity(0.3),
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary
+                                            .withOpacity(0.3),
                                         valueColor:
-                                            const AlwaysStoppedAnimation<Color>(
-                                          Colors.white,
+                                            AlwaysStoppedAnimation<Color>(
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
                                         ),
                                       ),
                                     ),
@@ -442,7 +446,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                           .copyWith(
                                             fontSize: 40,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
                                           ),
                                       child: Text(
                                         time.truncate().toString(),
@@ -456,7 +462,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                           .titleSectionStyle(isItalic: true)
                                           .copyWith(
                                             fontSize: 16,
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
                                           ),
                                       child: Text(readyText),
                                     )
@@ -469,7 +477,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                           .copyWith(
                                             fontSize: 32,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
                                           ),
                                       child: Text(goText),
                                     ),
@@ -596,7 +606,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                           duration: const Duration(milliseconds: 200),
                           child: Icon(
                             FontAwesomeIcons.minus,
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
                       ],
@@ -851,7 +861,7 @@ class LifeStar extends StatelessWidget {
       height: (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0),
       child: Icon(
         FontAwesomeIcons.solidStar,
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).colorScheme.onPrimary,
         size: Theme.of(context).textTheme.titleLarge!.fontSize,
       ),
     );

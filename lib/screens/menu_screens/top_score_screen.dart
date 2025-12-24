@@ -81,8 +81,7 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                 child: CustomScrollView(
                   slivers: [
                     SliverAppBar(
-                      foregroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       shadowColor: Colors.transparent,
                       backgroundColor: Colors.transparent,
                       pinned: true,

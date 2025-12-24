@@ -457,11 +457,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                         final endpointName = entry.value;
 
                                         return ListTile(
-                                          leading: const CircleAvatar(
+                                          leading: CircleAvatar(
                                             backgroundColor: Colors.blue,
                                             child: Icon(
                                               Icons.person,
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary,
                                             ),
                                           ),
                                           title: Text(
@@ -549,7 +551,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                       fontSize: 18,
                                       color: _roomState == RoomState.bothReady
                                           ? Colors.green
-                                          : Colors.white,
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),

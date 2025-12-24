@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nucatch/helpers/animations/screen_shake_controller.dart';
 import 'particle.dart';
 import 'package:nucatch/helpers/theme_config.dart';
 
@@ -15,13 +16,13 @@ class ParticleSystem {
     _startTime ??= DateTime.now();
   }
 
-  /// Update all particles based on elapsed time
-  void update() {
+  /// Update all particles based on elapsed time with optional wind force
+  void update({Offset windForce = Offset.zero}) {
     if (particles.isEmpty) return;
 
     // Update each particle (assuming ~60fps)
     for (final particle in particles) {
-      particle.update(0.016);
+      particle.update(0.016, windForce: windForce);
     }
 
     // Remove dead particles
@@ -42,11 +43,13 @@ class ParticleSystem {
 class ParticleOverlay extends StatefulWidget {
   final Widget child;
   final ParticleOverlayController controller;
+  final ScreenShakeController? shakeController;
 
   const ParticleOverlay({
     Key? key,
     required this.child,
     required this.controller,
+    this.shakeController,
   }) : super(key: key);
 
   @override
@@ -109,11 +112,14 @@ class _ParticleOverlayState extends State<ParticleOverlay>
 
   void _onAnimationTick() {
     setState(() {
-      _particleSystem.update();
+      // Get wind force from shake controller if available
+      final windForce = widget.shakeController?.getWindForce() ?? Offset.zero;
+
+      _particleSystem.update(windForce: windForce);
 
       // Update snow system for seasonal themes
       if (SeasonalTheme.config.enableSnow) {
-        _snowSystem.update();
+        _snowSystem.update(windForce: windForce);
 
         // Replenish snow particles when they fall off screen
         final screenSize = MediaQuery.of(context).size;
@@ -190,17 +196,30 @@ class ParticleOverlayController {
 
   /// Trigger a small burst at position
   void triggerSmallBurst(Offset position, {List<Color>? colors}) {
+    print('firework fire');
     trigger(
         ParticleFactory.createSmallBurst(position: position, colors: colors));
   }
 
   /// Trigger a large explosion at position
   void triggerLargeExplosion(Offset position) {
+    print('firework fire');
     trigger(ParticleFactory.createLargeExplosion(position: position));
   }
 
   /// Trigger confetti at position
   void triggerConfetti(Offset position) {
+    print('firework fire');
     trigger(ParticleFactory.createConfetti(position: position));
+  }
+
+  /// Trigger gold coin rain from position or across screen
+  void triggerGoldCoinRain(Size screenSize,
+      {Offset? position, int count = 15}) {
+    trigger(ParticleFactory.createGoldCoinRain(
+      screenSize: screenSize,
+      position: position,
+      count: count,
+    ));
   }
 }

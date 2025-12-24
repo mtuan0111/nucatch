@@ -664,6 +664,14 @@
   "@greetingHoli": {
     "description": "Holi greeting in Hindi"
   },
+  "holidayEarthDay": "Earth Day",
+  "@holidayEarthDay": {
+    "description": "Earth Day holiday name"
+  },
+  "greetingEarthDay": "Happy Earth Day! Protect our planet! 🌍",
+  "@greetingEarthDay": {
+    "description": "Earth Day greeting"
+  },
   "holidayEaster": "Easter",
   "@holidayEaster": {
     "description": "Easter holiday name"

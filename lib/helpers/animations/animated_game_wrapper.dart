@@ -52,6 +52,7 @@ class AnimatedGameWrapperState extends State<AnimatedGameWrapper> {
       controller: _shakeController,
       child: ParticleOverlay(
         controller: _particleController,
+        shakeController: _shakeController,
         child: widget.child,
       ),
     );
@@ -108,6 +109,7 @@ class _AnimatedGameWrapperBuilderState
       controller: _shakeController,
       child: ParticleOverlay(
         controller: _particleController,
+        shakeController: _shakeController,
         child: widget.builder(context, triggers),
       ),
     );

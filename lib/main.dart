@@ -138,7 +138,8 @@ class _MyAppState extends State<MyApp> {
                       useMaterial3: true,
                       primaryColor: SeasonalTheme.config.primaryColor,
                       secondaryHeaderColor: SeasonalTheme.config.secondaryColor,
-                      cardColor: SeasonalTheme.config.cardColor ?? SeasonalTheme.config.tertiaryColor,
+                      cardColor: SeasonalTheme.config.cardColor ??
+                          SeasonalTheme.config.tertiaryColor,
                       dividerColor: const Color(0xFFFFD700), // Gold dividers
                       scaffoldBackgroundColor:
                           Colors.white, // White background for contrast

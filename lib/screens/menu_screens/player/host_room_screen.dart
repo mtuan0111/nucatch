@@ -384,7 +384,10 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 30, vertical: 15),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimary
+                                .withOpacity(0.1),
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Text(
@@ -403,7 +406,10 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                             fontSize: 16,
                             color: _roomState == RoomState.bothReady
                                 ? Colors.green
-                                : Colors.white70,
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .onPrimary
+                                    .withOpacity(0.7),
                           ),
                           textAlign: TextAlign.center,
                         ),

@@ -453,6 +453,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get greetingHoli => 'होली की शुभकामनाएं! (Holi Ki Shubhkamnayein!)';
 
   @override
+  String get holidayEarthDay => 'Ngày Trái Đất';
+
+  @override
+  String get greetingEarthDay =>
+      'Chúc mừng Ngày Trái Đất! Bảo vệ hành tinh của chúng ta! 🌍';
+
+  @override
   String get holidayEaster => 'Lễ Phục Sinh';
 
   @override

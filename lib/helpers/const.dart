@@ -44,7 +44,7 @@ class LayoutConfig {
     String? fontFamily,
   }) =>
       Theme.of(context).textTheme.displaySmall!.copyWith(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).colorScheme.onPrimary,
         fontFamily: fontFamily,
         fontStyle: isItalic ? FontStyle.italic : null,
         fontWeight: FontWeight.bold,
@@ -76,7 +76,7 @@ class LayoutConfig {
     String? fontFamily,
   }) =>
       Theme.of(context).textTheme.titleLarge!.copyWith(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).colorScheme.onPrimary,
         fontFamily: fontFamily,
         fontStyle: isItalic ? FontStyle.italic : null,
         fontWeight: FontWeight.w600,
@@ -94,7 +94,7 @@ class LayoutConfig {
     String? fontFamily,
   }) =>
       Theme.of(context).textTheme.bodyLarge!.copyWith(
-            color: Theme.of(context).scaffoldBackgroundColor,
+            color: Theme.of(context).colorScheme.onPrimary,
             fontFamily: fontFamily,
           );
 
@@ -102,7 +102,7 @@ class LayoutConfig {
     String? fontFamily,
   }) =>
       Theme.of(context).textTheme.displaySmall!.copyWith(
-            color: Theme.of(context).scaffoldBackgroundColor,
+            color: Theme.of(context).colorScheme.onPrimary,
             fontFamily: "Dancing Script",
           );
 

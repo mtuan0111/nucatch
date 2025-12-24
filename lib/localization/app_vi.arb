@@ -662,6 +662,14 @@
   "@greetingHoli": {
     "description": "Lời chúc lễ hội Holi bằng tiếng Hindi"
   },
+  "holidayEarthDay": "Ngày Trái Đất",
+  "@holidayEarthDay": {
+    "description": "Tên ngày Trái Đất"
+  },
+  "greetingEarthDay": "Chúc mừng Ngày Trái Đất! Bảo vệ hành tinh của chúng ta! 🌍",
+  "@greetingEarthDay": {
+    "description": "Lời chúc Ngày Trái Đất"
+  },
   "holidayEaster": "Lễ Phục Sinh",
   "@holidayEaster": {
     "description": "Tên lễ hội Phục Sinh"

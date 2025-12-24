@@ -60,6 +60,23 @@ class ScreenShakeController {
 
   /// Check if currently shaking
   bool get isShaking => _trauma > 0.01;
+
+  /// Get current wind force (horizontal acceleration) based on shake intensity
+  /// Returns wind force in pixels/s² that pushes particles left/right
+  Offset getWindForce() {
+    if (_trauma <= 0.01) return Offset.zero;
+
+    final shake = _trauma * _trauma;
+    // Wind force correlates with shake intensity
+    // Stronger shakes = stronger wind
+    final windStrength = 800.0 * shake; // Base wind acceleration
+
+    // Wind direction changes randomly to match shake direction
+    return Offset(
+      windStrength * (_random.nextDouble() * 2 - 1),
+      0.0, // No vertical wind, only horizontal
+    );
+  }
 }
 
 /// Widget that applies screen shake to its child

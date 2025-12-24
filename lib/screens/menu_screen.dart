@@ -47,7 +47,7 @@ class _MenuScreenState extends State<MenuScreen> {
               child: CustomScrollView(
                 slivers: [
                   SliverAppBar(
-                    foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     backgroundColor: Colors.transparent,
                     shadowColor: Colors.transparent,
                     surfaceTintColor: Colors.transparent,
@@ -84,10 +84,12 @@ class _MenuScreenState extends State<MenuScreen> {
                         child: Center(
                           child: Text(
                             _getHolidayMessage(context),
-                            style: LayoutConfig(context).titleSectionStyle().copyWith(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            style: LayoutConfig(context)
+                                .titleSectionStyle()
+                                .copyWith(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -118,9 +120,9 @@ class _MenuScreenState extends State<MenuScreen> {
                                       fontStyle: FontStyle.italic,
                                     ),
                                 iconData: entry.value['icon'] as IconData,
-                                backgroundColor: Colors.white70,
+                                backgroundColor: Theme.of(context).primaryColor,
                                 // textDirection: TextDirection.rtl,
-                                color: Colors.black87,
+                                // color: Colors.black87,
                                 onPressed: () => menuBloc.add(
                                   SelectOption(
                                     option: entry.key,
@@ -147,6 +149,8 @@ class _MenuScreenState extends State<MenuScreen> {
                           children: [
                             Text(
                               "${lang(context).version}: ",
+                              style:
+                                  LayoutConfig(context).contentSectionStyle(),
                               // style: LayoutConfig(context).titleSectionStyle(),
                             ),
                             Text(
@@ -169,7 +173,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   String _getHolidayMessage(BuildContext context) {
     final currentTheme = SeasonalTheme.current;
-    
+
     switch (currentTheme) {
       case ThemeType.newYear:
         return lang(context).holidayNotification(
@@ -190,6 +194,11 @@ class _MenuScreenState extends State<MenuScreen> {
         return lang(context).holidayNotification(
           lang(context).holidayHoli,
           lang(context).greetingHoli,
+        );
+      case ThemeType.earthDay:
+        return lang(context).holidayNotification(
+          lang(context).holidayEarthDay,
+          lang(context).greetingEarthDay,
         );
       case ThemeType.easter:
         return lang(context).holidayNotification(

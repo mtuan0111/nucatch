@@ -43,7 +43,7 @@ class MenuAlert extends StatelessWidget {
           Text(
             "${lang(context).yourScoreIs}: $point",
             style: TextStyle(
-              color: Theme.of(context).secondaryHeaderColor,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
               fontWeight: FontWeight.bold,
             ),
@@ -52,7 +52,7 @@ class MenuAlert extends StatelessWidget {
           Text(
             "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, turnState.difficultyModel!.difficulty)}",
             style: TextStyle(
-              color: Theme.of(context).secondaryHeaderColor,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
               fontWeight: FontWeight.bold,
             ),
@@ -139,7 +139,7 @@ class AlertTemplate extends StatelessWidget {
     return CustomElevatedButton(
       text: possitiveButtonLabel ?? lang(context).yes,
       onPressed: onPossitiveButtonPressed ?? () => Navigator.of(context).pop(),
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: Theme.of(context).colorScheme.onPrimary,
       backgroundColor: Theme.of(context).primaryColor,
       buttonSize: ButtonSize.small,
       shapeAt: RoundedWithShapeAt.topLeft,
@@ -150,7 +150,7 @@ class AlertTemplate extends StatelessWidget {
     return CustomElevatedButton(
       text: negativeButtonLabel ?? lang(context).no,
       onPressed: onNegativeButtonPressed ?? () => Navigator.of(context).pop(),
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: Theme.of(context).colorScheme.onError,
       backgroundColor: Theme.of(context).colorScheme.error,
       buttonSize: ButtonSize.small,
       shapeAt: RoundedWithShapeAt.topRight,
@@ -267,7 +267,7 @@ class AlertTemplate extends StatelessWidget {
                               text: title,
                               buttonSize: ButtonSize.small,
                               shapeAt: RoundedWithShapeAt.topLeft,
-                              // color: Colors.black87,
+                              // color: Theme.of(context).colorScheme.onPrimary,
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
@@ -314,7 +314,9 @@ class AlertTemplate extends StatelessWidget {
                                     Text(
                                       message!,
                                       style: TextStyle(
-                                        color: Theme.of(context).hintColor,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
                                         fontSize: Theme.of(context)
                                             .textTheme
                                             .bodyMedium!

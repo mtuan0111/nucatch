@@ -106,7 +106,7 @@ class RankingInfoRow extends StatelessWidget {
         Icon(
           icon,
           size: Theme.of(context).textTheme.titleLarge?.fontSize,
-          color: Theme.of(context).scaffoldBackgroundColor,
+          color: Theme.of(context).colorScheme.onPrimary,
         ),
         const SizedBox(width: 5),
         Flexible(
@@ -249,9 +249,9 @@ class RankBadge extends StatelessWidget {
                 decoration: LayoutConfig(context).boxDecoration.copyWith(
                       border: Border.all(
                         width: 2,
-                        color: Theme.of(context).scaffoldBackgroundColor,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
-                      color: Theme.of(context).scaffoldBackgroundColor,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
               ),
             ),
@@ -264,7 +264,7 @@ class RankBadge extends StatelessWidget {
           //     decoration: LayoutConfig(context).boxDecoration.copyWith(
           //           border: Border.all(
           //             width: 2,
-          //             color: Theme.of(context).scaffoldBackgroundColor,
+          //             color: Theme.of(context).colorScheme.onPrimary,
           //           ),
           //         ),
           //   ),
@@ -490,7 +490,7 @@ class RankingSortingWidget extends StatelessWidget {
                   Text(
                     position.toString(),
                     style: LayoutConfig(context).boldedStyle.copyWith(
-                          color: theme.scaffoldBackgroundColor,
+                          color: theme.colorScheme.onPrimary,
                           fontWeight: FontWeight.w900,
                           fontSize: baseSize / 1.5,
                         ),
@@ -703,13 +703,12 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
   }
 
   Color getColor(BuildContext context) {
-    if (widget.gradient != null) {
-      return Theme.of(context).scaffoldBackgroundColor;
-    }
-
     if (widget.color != null) {
       return widget.color!;
     }
+    // if (widget.gradient != null) {
+    //   return Theme.of(context).colorScheme.onPrimary;
+    // }
 
     // Generate smart color based on background color contrast
     final backgroundColor =
@@ -1167,13 +1166,20 @@ class MainLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Hero(
+    final colorScheme = Theme.of(context).colorScheme;
+    return Hero(
       tag: "logo",
       // transitionOnUserGestures: true,
-      child: Image(
-        height: 160,
-        image: AssetImage("assets/images/main-logo.png"),
-        fit: BoxFit.contain,
+      child: ColorFiltered(
+        colorFilter: ColorFilter.mode(
+          colorScheme.onPrimary,
+          BlendMode.srcIn,
+        ),
+        child: const Image(
+          height: 160,
+          image: AssetImage("assets/images/main-logo.png"),
+          fit: BoxFit.contain,
+        ),
       ),
     );
   }

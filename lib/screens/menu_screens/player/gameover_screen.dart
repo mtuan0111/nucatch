@@ -67,7 +67,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     Text(
                       lang(context).gameOver,
                       style: LayoutConfig(context).boldedStyle.copyWith(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                       textAlign: TextAlign.center,
                     ),
@@ -78,8 +78,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                         child: Text(
                           turnState.requirementString ?? '',
                           style: LayoutConfig(context).boldedStyle.copyWith(
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor,
+                                color: Theme.of(context).colorScheme.onPrimary,
                                 fontSize: 24,
                               ),
                           textAlign: TextAlign.center,
@@ -95,14 +94,14 @@ class _GameOverScreenState extends State<GameOverScreen> {
                               .contentSectionStyle()
                               .copyWith(
                                 fontWeight: FontWeight.w500,
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.onPrimary,
                               ),
                         ),
                         const SizedBox(width: 8),
                         Text(
                           turnState.expect ?? '',
                           style: LayoutConfig(context).boldedStyle.copyWith(
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.onPrimary,
                               ),
                         ),
                       ],

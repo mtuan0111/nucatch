@@ -60,7 +60,7 @@ class _SettingScreenState extends State<SettingScreen> {
               child: CustomScrollView(
                 slivers: [
                   SliverAppBar(
-                    foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     shadowColor: Colors.transparent,
                     backgroundColor: Colors.transparent,
                     pinned: true,
@@ -142,11 +142,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 ),
                                               ),
                                               iconColor: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
+                                                  .colorScheme
+                                                  .onPrimary,
                                               fillColor: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
+                                                  .colorScheme
+                                                  .onPrimary,
                                               focusColor: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
+                                                  .colorScheme
+                                                  .onPrimary,
                                             ),
                                             style: LayoutConfig(context)
                                                 .titleSectionStyle(),
@@ -165,7 +168,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                               Icon(
                                                 FontAwesomeIcons.textWidth,
                                                 color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
+                                                    .colorScheme
+                                                    .onPrimary,
                                               ),
                                               const SizedBox(
                                                 width: 16,
@@ -225,7 +229,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                                             : FontAwesomeIcons
                                                                 .volumeXmark,
                                                 color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
+                                                    .colorScheme
+                                                    .onPrimary,
                                               ),
                                               const SizedBox(
                                                 width: 16,
@@ -270,7 +275,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                               Icon(
                                                 FontAwesomeIcons.waveSquare,
                                                 color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
+                                                    .colorScheme
+                                                    .onPrimary,
                                               ),
                                               const SizedBox(width: 16),
                                               Expanded(
@@ -305,7 +311,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                               Icon(
                                                 FontAwesomeIcons.ribbon,
                                                 color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
+                                                    .colorScheme
+                                                    .onPrimary,
                                               ),
                                               const SizedBox(
                                                 width: 16,
@@ -356,7 +363,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                               Icon(
                                                 FontAwesomeIcons.language,
                                                 color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
+                                                    .colorScheme
+                                                    .onPrimary,
                                               ),
                                               const SizedBox(
                                                 width: 16,
@@ -372,7 +380,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                                       lang(context).language,
                                                       style: LayoutConfig(
                                                               context)
-                                                          .titleSectionStyle(),
+                                                          .titleSectionStyle()
+                                                          .copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .onPrimary),
                                                     ),
                                                     DropdownButtonFormField<
                                                         String>(
@@ -385,7 +398,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                                                     String>(
                                                               value: lang.key,
                                                               child: Text(
-                                                                  lang.value),
+                                                                lang.value,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .onPrimary,
+                                                                ),
+                                                              ),
                                                             ),
                                                           )
                                                           .toList(),
@@ -408,12 +429,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                                                 .layoutBorderRadius,
                                                           ),
                                                         ),
-                                                        fillColor: Theme.of(
-                                                                context)
-                                                            .scaffoldBackgroundColor,
-                                                        focusColor: Theme.of(
-                                                                context)
-                                                            .scaffoldBackgroundColor,
+                                                        fillColor:
+                                                            Theme.of(context)
+                                                                .colorScheme
+                                                                .onPrimary,
+                                                        focusColor:
+                                                            Theme.of(context)
+                                                                .colorScheme
+                                                                .onPrimary,
                                                       ),
                                                       dropdownColor:
                                                           Theme.of(context)

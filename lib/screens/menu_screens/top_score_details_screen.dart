@@ -65,8 +65,7 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                 child: CustomScrollView(
                   slivers: [
                     SliverAppBar(
-                      foregroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       shadowColor: Colors.transparent,
                       backgroundColor: Colors.transparent,
                       pinned: true,
@@ -124,7 +123,7 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                 const SizedBox(height: 32),
                                 CustomElevatedButton(
                                   backgroundColor:
-                                      Theme.of(context).scaffoldBackgroundColor,
+                                      Theme.of(context).colorScheme.onPrimary,
                                   child: Padding(
                                     padding: const EdgeInsets.all(20.0),
                                     child: Column(

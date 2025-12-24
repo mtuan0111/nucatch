@@ -93,7 +93,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
           child: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 shadowColor: Colors.transparent,
                 backgroundColor: Colors.transparent,
                 pinned: true,
