@@ -196,20 +196,20 @@ class ParticleOverlayController {
 
   /// Trigger a small burst at position
   void triggerSmallBurst(Offset position, {List<Color>? colors}) {
-    print('firework fire');
+    print('firework fire 1');
     trigger(
         ParticleFactory.createSmallBurst(position: position, colors: colors));
   }
 
   /// Trigger a large explosion at position
   void triggerLargeExplosion(Offset position) {
-    print('firework fire');
+    print('firework fire 2');
     trigger(ParticleFactory.createLargeExplosion(position: position));
   }
 
   /// Trigger confetti at position
   void triggerConfetti(Offset position) {
-    print('firework fire');
+    print('firework fire 3');
     trigger(ParticleFactory.createConfetti(position: position));
   }
 

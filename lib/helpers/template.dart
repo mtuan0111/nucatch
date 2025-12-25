@@ -56,23 +56,19 @@ class RankingItem extends StatelessWidget {
                 RankingInfoRow(
                   icon: Icons.person,
                   text: playerName ?? lang(context).anonymous,
-                  style: LayoutConfig(context).titleSectionStyle(),
                 ),
                 RankingInfoRow(
                   icon: Icons.calendar_today,
                   text: createdAt.formatClient(),
-                  style: LayoutConfig(context).contentSectionStyle(),
                 ),
                 RankingInfoRow(
                   icon: Icons.star,
                   text: "${lang(context).score}: $turnedPoint",
-                  style: LayoutConfig(context).contentSectionStyle(),
                 ),
                 RankingInfoRow(
                   icon: Helper.getIconFromDifficulty(context, difficulty),
                   text:
                       "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, difficulty)}",
-                  style: LayoutConfig(context).contentSectionStyle(),
                 ),
               ],
             ),
@@ -89,13 +85,15 @@ class RankingInfoRow extends StatelessWidget {
     // super.key,
     required this.icon,
     required this.text,
-    required this.style,
+    this.style,
+    this.color,
     // required this.context,
   });
 
   final IconData icon;
   final String text;
-  final TextStyle style;
+  final TextStyle? style;
+  final Color? color;
   // final BuildContext context;
 
   @override
@@ -106,14 +104,17 @@ class RankingInfoRow extends StatelessWidget {
         Icon(
           icon,
           size: Theme.of(context).textTheme.titleLarge?.fontSize,
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: color ?? Theme.of(context).colorScheme.onSurface,
         ),
         const SizedBox(width: 5),
         Flexible(
           fit: FlexFit.loose,
           child: Text(
             text,
-            style: style,
+            style:
+                (style ?? LayoutConfig(context).contentSectionStyle()).copyWith(
+              color: color ?? Theme.of(context).colorScheme.onSurface,
+            ),
             overflow: TextOverflow.ellipsis,
             softWrap: true,
           ),
@@ -249,9 +250,9 @@ class RankBadge extends StatelessWidget {
                 decoration: LayoutConfig(context).boxDecoration.copyWith(
                       border: Border.all(
                         width: 2,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                       ),
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                     ),
               ),
             ),
@@ -264,7 +265,7 @@ class RankBadge extends StatelessWidget {
           //     decoration: LayoutConfig(context).boxDecoration.copyWith(
           //           border: Border.all(
           //             width: 2,
-          //             color: Theme.of(context).colorScheme.onPrimary,
+          //             color: Theme.of(context).scaffoldBackgroundColor,
           //           ),
           //         ),
           //   ),
@@ -490,7 +491,7 @@ class RankingSortingWidget extends StatelessWidget {
                   Text(
                     position.toString(),
                     style: LayoutConfig(context).boldedStyle.copyWith(
-                          color: theme.colorScheme.onPrimary,
+                          color: theme.scaffoldBackgroundColor,
                           fontWeight: FontWeight.w900,
                           fontSize: baseSize / 1.5,
                         ),
@@ -703,12 +704,13 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
   }
 
   Color getColor(BuildContext context) {
+    if (widget.gradient != null) {
+      return Theme.of(context).scaffoldBackgroundColor;
+    }
+
     if (widget.color != null) {
       return widget.color!;
     }
-    // if (widget.gradient != null) {
-    //   return Theme.of(context).colorScheme.onPrimary;
-    // }
 
     // Generate smart color based on background color contrast
     final backgroundColor =
@@ -1172,7 +1174,7 @@ class MainLogo extends StatelessWidget {
       // transitionOnUserGestures: true,
       child: ColorFiltered(
         colorFilter: ColorFilter.mode(
-          colorScheme.onPrimary,
+          colorScheme.onSurface,
           BlendMode.srcIn,
         ),
         child: const Image(

@@ -22,7 +22,7 @@ import 'animations/particle.dart';
 /// - Card colors and UI elements
 class SeasonalTheme {
   /// Manual theme override - Set to null for automatic date-based switching
-  static ThemeType? _manualOverride = null;
+  static ThemeType? _manualOverride = ThemeType.newYear;
 
   /// Current active theme - Automatically determined by date or manual override
   static ThemeType get current {
@@ -41,28 +41,10 @@ class SeasonalTheme {
       return ThemeType.newYear;
     }
 
-    // Lunar New Year: Variable date based on lunar calendar
-    // Typically late January to mid-February
-    // Check for upcoming years - activate 1 day before, end 7 days after
-    final year = now.year;
-    final lunarNewYearDates = {
-      2025: DateTime(2025, 1, 29),
-      2026: DateTime(2026, 2, 17),
-      2027: DateTime(2027, 2, 6),
-      2028: DateTime(2028, 1, 26),
-      2029: DateTime(2029, 2, 13),
-      2030: DateTime(2030, 2, 3),
-    };
-
-    if (lunarNewYearDates.containsKey(year)) {
-      final lunarDate = lunarNewYearDates[year]!;
-      final startDate = lunarDate.subtract(const Duration(days: 1));
-      final endDate = lunarDate.add(const Duration(days: 7));
-
-      if (now.isAfter(startDate.subtract(const Duration(days: 1))) &&
-          now.isBefore(endDate.add(const Duration(days: 1)))) {
-        return ThemeType.lunarNewYear;
-      }
+    // Lunar New Year: Variable (typically late Jan - early Feb)
+    // 2025: Jan 29, activate Jan 28, end Feb 5
+    if ((month == 1 && day >= 28) || (month == 2 && day <= 5)) {
+      return ThemeType.lunarNewYear;
     }
 
     // Valentine's Day: Feb 14 (activate Feb 13, end Feb 15)

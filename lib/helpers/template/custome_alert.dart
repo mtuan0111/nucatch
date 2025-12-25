@@ -267,7 +267,7 @@ class AlertTemplate extends StatelessWidget {
                               text: title,
                               buttonSize: ButtonSize.small,
                               shapeAt: RoundedWithShapeAt.topLeft,
-                              // color: Theme.of(context).colorScheme.onPrimary,
+                              color: Theme.of(context).colorScheme.onPrimary,
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,

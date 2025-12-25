@@ -98,9 +98,9 @@ class UpdateNoticeDialog extends StatelessWidget {
                   // ),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.error_outline,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: Colors.white,
                         // size: 20,
                       ),
                       const SizedBox(width: 8),
@@ -110,7 +110,7 @@ class UpdateNoticeDialog extends StatelessWidget {
                           style: LayoutConfig(context)
                               .contentSectionStyle()
                               .copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
+                                color: Colors.white,
                                 // fontSize: 12,
                               ),
                         ),

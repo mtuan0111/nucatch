@@ -84,7 +84,7 @@ class _PlayScreenState extends State<PlayScreen> {
       fontSize = 45;
     }
     return LayoutConfig(context).boldedStyle.copyWith(
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: Theme.of(context).colorScheme.onSurface,
           fontSize: fontSize,
         );
   }
@@ -688,9 +688,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                               40,
                                                                           fontWeight:
                                                                               FontWeight.bold,
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .onPrimary,
+                                                                          color:
+                                                                              Colors.white,
                                                                         ),
                                                                     child: Text(
                                                                       time
@@ -711,9 +710,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                         .copyWith(
                                                                           fontSize:
                                                                               16,
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .onPrimary,
+                                                                          color:
+                                                                              Colors.white,
                                                                         ),
                                                                     child: Text(
                                                                         readyText),
@@ -733,9 +731,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                               32,
                                                                           fontWeight:
                                                                               FontWeight.bold,
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .onPrimary,
+                                                                          color:
+                                                                              Colors.white,
                                                                         ),
                                                                     child: Text(
                                                                         goText),
@@ -913,11 +910,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                     turnState
                                                                         .requirementString!
                                                                         .length,
-                                                              ).copyWith(
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .colorScheme
-                                                                          .onPrimary),
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
