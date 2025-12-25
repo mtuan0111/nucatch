@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:lunar/calendar/Lunar.dart';
+import 'package:lunar/calendar/Solar.dart';
 import 'animations/particle.dart';
 
 /// Seasonal theme configuration for the app
@@ -22,12 +24,64 @@ import 'animations/particle.dart';
 /// - Card colors and UI elements
 class SeasonalTheme {
   /// Manual theme override - Set to null for automatic date-based switching
-  static ThemeType? _manualOverride = ThemeType.newYear;
+  static ThemeType? _manualOverride = null;
 
   /// Current active theme - Automatically determined by date or manual override
   static ThemeType get current {
     if (_manualOverride != null) return _manualOverride!;
     return _getThemeByDate();
+  }
+
+  /// Check if current date is within Lunar New Year period
+  /// Lunar New Year (Spring Festival) is on the 1st day of 1st lunar month
+  /// Theme activates 1 day before and ends 7 days after
+  static bool _isLunarNewYearPeriod(DateTime date) {
+    try {
+      // Get current lunar date
+      final solar = Solar.fromDate(date);
+      final lunar = solar.getLunar();
+
+      // Get Lunar New Year date for current year (1st day of 1st month)
+      final lunarNewYear = Lunar.fromYmd(date.year, 1, 1);
+      final lunarNewYearSolar = lunarNewYear.getSolar();
+      final lunarNewYearDate = DateTime(
+        lunarNewYearSolar.getYear(),
+        lunarNewYearSolar.getMonth(),
+        lunarNewYearSolar.getDay(),
+      );
+
+      // Check previous year's Lunar New Year (in case we're in early January)
+      final prevYearLunarNewYear = Lunar.fromYmd(date.year - 1, 1, 1);
+      final prevYearSolar = prevYearLunarNewYear.getSolar();
+      final prevYearDate = DateTime(
+        prevYearSolar.getYear(),
+        prevYearSolar.getMonth(),
+        prevYearSolar.getDay(),
+      );
+
+      // Activate 1 day before and end 7 days after
+      final currentYearStart =
+          lunarNewYearDate.subtract(const Duration(days: 1));
+      final currentYearEnd = lunarNewYearDate.add(const Duration(days: 7));
+
+      final prevYearStart = prevYearDate.subtract(const Duration(days: 1));
+      final prevYearEnd = prevYearDate.add(const Duration(days: 7));
+
+      // Check if date falls within either period
+      return (date.isAfter(currentYearStart) &&
+              date.isBefore(currentYearEnd)) ||
+          (date.isAfter(prevYearStart) && date.isBefore(prevYearEnd)) ||
+          date.isAtSameMomentAs(currentYearStart) ||
+          date.isAtSameMomentAs(currentYearEnd) ||
+          date.isAtSameMomentAs(prevYearStart) ||
+          date.isAtSameMomentAs(prevYearEnd);
+    } catch (e) {
+      // Fallback to approximate dates if lunar calculation fails
+      // Typical range: late January to early February
+      final month = date.month;
+      final day = date.day;
+      return (month == 1 && day >= 20) || (month == 2 && day <= 10);
+    }
   }
 
   /// Determine theme based on current date
@@ -42,8 +96,9 @@ class SeasonalTheme {
     }
 
     // Lunar New Year: Variable (typically late Jan - early Feb)
-    // 2025: Jan 29, activate Jan 28, end Feb 5
-    if ((month == 1 && day >= 28) || (month == 2 && day <= 5)) {
+    // Dynamically calculated based on lunar calendar
+    // Activates 1 day before and ends 7 days after Lunar New Year's Day
+    if (_isLunarNewYearPeriod(now)) {
       return ThemeType.lunarNewYear;
     }
 
