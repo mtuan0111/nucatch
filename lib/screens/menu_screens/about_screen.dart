@@ -109,333 +109,409 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 20,
+                  horizontal: 20,
+                  vertical: 10,
                 ),
                 sliver: SliverToBoxAdapter(
                   child: DeviceWrapper(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomElevatedButton(
-                          shapeAt: RoundedWithShapeAt.topLeft,
-                          child: Text(
-                            lang(context).thankYou,
-                            style: LayoutConfig(context).titleSectionStyle(),
-                          ),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.1),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(
+                              LayoutConfig.layoutBorderRadius / 5),
+                          topRight:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
+                          bottomLeft:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
+                          bottomRight:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
                         ),
-                        const SizedBox(height: 10),
-                        CustomElevatedButton(
-                          shapeAt: RoundedWithShapeAt.bottomRight,
-                          backgroundColor:
-                              Theme.of(context).secondaryHeaderColor,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        border: Border.all(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onPrimary
+                              .withOpacity(0.2),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
                               Icon(
                                 FontAwesomeIcons.solidHeart,
-                                color: Theme.of(context).primaryColor,
-                                size: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .fontSize,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                size: 24,
                               ),
-                              const SizedBox(width: 10),
+                              const SizedBox(width: 12),
                               Expanded(
                                 child: Text(
-                                  "${lang(context).introductionContent}\n\n${lang(context).thankYouMessage}",
+                                  lang(context).thankYou,
                                   style: LayoutConfig(context)
-                                      .contentSectionStyle(),
+                                      .titleSectionStyle()
+                                      .copyWith(fontSize: 20),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 16),
+                          Text(
+                            lang(context).introductionContent,
+                            style: LayoutConfig(context).contentSectionStyle(),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            lang(context).thankYouMessage,
+                            style: LayoutConfig(context)
+                                .contentSectionStyle()
+                                .copyWith(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 20,
+                  horizontal: 20,
+                  vertical: 10,
                 ),
                 sliver: SliverToBoxAdapter(
                   child: DeviceWrapper(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomElevatedButton(
-                          shapeAt: RoundedWithShapeAt.topLeft,
-                          child: Text(
-                            lang(context).authorName,
-                            style: LayoutConfig(context).titleSectionStyle(),
-                          ),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.1),
+                        borderRadius: BorderRadius.only(
+                          topLeft:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
+                          topRight:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
+                          bottomLeft:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
+                          bottomRight: Radius.circular(
+                              LayoutConfig.layoutBorderRadius / 5),
                         ),
-                        const SizedBox(height: 10),
-                        CustomElevatedButton(
-                          shapeAt: RoundedWithShapeAt.bottomRight,
-                          backgroundColor:
-                              Theme.of(context).secondaryHeaderColor,
-                          child: Column(
+                        border: Border.all(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onPrimary
+                              .withOpacity(0.2),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.circleInfo,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                size: 24,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                lang(context).authorName,
+                                style: LayoutConfig(context)
+                                    .titleSectionStyle()
+                                    .copyWith(fontSize: 20),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          _buildInfoRow(
+                            context,
+                            FontAwesomeIcons.user,
+                            lang(context).authorName,
+                            "BOM",
+                          ),
+                          const SizedBox(height: 12),
+                          _buildInfoRow(
+                            context,
+                            FontAwesomeIcons.codeBranch,
+                            lang(context).version,
+                            version ?? "N/A",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: DeviceWrapper(
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.1),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(
+                              LayoutConfig.layoutBorderRadius / 5),
+                          topRight:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
+                          bottomLeft:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
+                          bottomRight:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
+                        ),
+                        border: Border.all(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onPrimary
+                              .withOpacity(0.2),
+                        ),
+                      ),
+                      child: BlocBuilder<AppVersionBloc, AppVersionState>(
+                        builder: (context, state) {
+                          return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Row(
                                 children: [
                                   Icon(
-                                    FontAwesomeIcons.user,
-                                    color: Theme.of(context).primaryColor,
-                                    size: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .fontSize,
+                                    FontAwesomeIcons.arrowsRotate,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    size: 24,
                                   ),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    "${lang(context).authorName}: ",
-                                    style: LayoutConfig(context)
-                                        .contentSectionStyle(),
-                                  ),
-                                  Text(
-                                    "BOM",
-                                    style: LayoutConfig(context)
-                                        .titleSectionStyle(),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      lang(context).appUpdates,
+                                      style: LayoutConfig(context)
+                                          .titleSectionStyle()
+                                          .copyWith(fontSize: 20),
+                                    ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.codeBranch,
-                                    color: Theme.of(context).primaryColor,
-                                    size: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .fontSize,
+                              const SizedBox(height: 16),
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.1),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(12),
+                                    topRight: Radius.circular(12),
+                                    bottomLeft: Radius.circular(12),
+                                    bottomRight: Radius.circular(12 / 5),
                                   ),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    "${lang(context).version}: ",
-                                    style: LayoutConfig(context)
-                                        .contentSectionStyle(),
-                                  ),
-                                  Text(
-                                    version ?? "N/A",
-                                    style: LayoutConfig(context)
-                                        .contentSectionStyle(),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                ),
-                sliver: SliverToBoxAdapter(
-                  child: DeviceWrapper(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomElevatedButton(
-                          shapeAt: RoundedWithShapeAt.topLeft,
-                          child: Text(
-                            lang(context).appUpdates,
-                            style: LayoutConfig(context).titleSectionStyle(),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        BlocBuilder<AppVersionBloc, AppVersionState>(
-                          builder: (context, state) {
-                            return CustomElevatedButton(
-                              shapeAt: RoundedWithShapeAt.bottomRight,
-                              backgroundColor:
-                                  Theme.of(context).secondaryHeaderColor,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        FontAwesomeIcons.circleInfo,
-                                        color: Theme.of(context).primaryColor,
-                                        size: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge!
-                                            .fontSize,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      _getStatusIcon(state.status),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        _getUpdateStatusText(context, state),
+                                        style: LayoutConfig(context)
+                                            .contentSectionStyle(),
                                       ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: Text(
-                                          _getUpdateStatusText(context, state),
-                                          style: LayoutConfig(context)
-                                              .contentSectionStyle(),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Center(
-                                    child: CustomElevatedButton(
-                                      text: lang(context).checkForUpdates,
-                                      onPressed: state.status ==
-                                              AppVersionStatus.checking
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Center(
+                                child: ElevatedButton.icon(
+                                  onPressed:
+                                      state.status == AppVersionStatus.checking
                                           ? null
                                           : () {
                                               appVersionBloc
                                                   .add(CheckForUpdateEvent());
                                             },
-                                      backgroundColor:
-                                          Theme.of(context).primaryColor,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary,
-                                      buttonSize: ButtonSize.small,
-                                      shapeAt: RoundedWithShapeAt.topLeft,
-                                      iconData: state.status ==
-                                              AppVersionStatus.checking
-                                          ? null
-                                          : FontAwesomeIcons.arrowsRotate,
-                                      child: state.status ==
-                                              AppVersionStatus.checking
-                                          ? SizedBox(
-                                              width: 20,
-                                              height: 20,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                        Color>(
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .onPrimary,
-                                                ),
-                                              ),
-                                            )
-                                          : null,
+                                  icon: state.status ==
+                                          AppVersionStatus.checking
+                                      ? SizedBox(
+                                          width: 16,
+                                          height: 16,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary,
+                                            ),
+                                          ),
+                                        )
+                                      : Icon(
+                                          FontAwesomeIcons.arrowsRotate,
+                                          size: 16,
+                                        ),
+                                  label: Text(
+                                    lang(context).checkForUpdates,
+                                    style: LayoutConfig(context)
+                                        .contentSectionStyle()
+                                        .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
+                                        ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).primaryColor,
+                                    foregroundColor:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 24,
+                                      vertical: 12,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(12 / 5),
+                                        topRight: Radius.circular(12),
+                                        bottomLeft: Radius.circular(12),
+                                        bottomRight: Radius.circular(12),
+                                      ),
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                            );
-                          },
-                        ),
-                      ],
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
               ),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 20,
+                  horizontal: 20,
+                  vertical: 10,
                 ),
                 sliver: SliverToBoxAdapter(
                   child: DeviceWrapper(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomElevatedButton(
-                          shapeAt: RoundedWithShapeAt.topLeft,
-                          child: Text(
-                            lang(context).connectWithUs,
-                            style: LayoutConfig(context).titleSectionStyle(),
-                          ),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.1),
+                        borderRadius: BorderRadius.only(
+                          topLeft:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
+                          topRight:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
+                          bottomLeft:
+                              Radius.circular(LayoutConfig.layoutBorderRadius),
+                          bottomRight: Radius.circular(
+                              LayoutConfig.layoutBorderRadius / 5),
                         ),
-                        const SizedBox(height: 10),
-                        CustomElevatedButton(
-                          shapeAt: RoundedWithShapeAt.bottomRight,
-                          backgroundColor:
-                              Theme.of(context).secondaryHeaderColor,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        border: Border.all(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onPrimary
+                              .withOpacity(0.2),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
                               Icon(
-                                FontAwesomeIcons.connectdevelop,
-                                color: Theme.of(context).primaryColor,
-                                size: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .fontSize,
+                                FontAwesomeIcons.shareNodes,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                size: 24,
                               ),
-                              const SizedBox(width: 10),
+                              const SizedBox(width: 12),
                               Expanded(
                                 child: Text(
-                                  lang(context).connectWithUsMessage,
+                                  lang(context).connectWithUs,
                                   style: LayoutConfig(context)
-                                      .contentSectionStyle(),
+                                      .titleSectionStyle()
+                                      .copyWith(fontSize: 20),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                if (userState.username == null) {
-                                  Share.share(
-                                    lang(context).messageShareIntro(
-                                      dotenv.env['PROFILE_URL']!,
-                                    ),
-                                  );
-                                } else {
-                                  Share.share(
-                                    lang(context).messageShareIntroWIthUsername(
-                                      userState.username ??
-                                          lang(context).anonymous,
-                                      dotenv.env['PROFILE_URL']!,
-                                    ),
-                                  );
-                                }
-                              },
-                              icon: Icon(
-                                FontAwesomeIcons.shareNodes,
-                                color: Theme.of(context).primaryColor,
+                          const SizedBox(height: 16),
+                          Text(
+                            lang(context).connectWithUsMessage,
+                            style: LayoutConfig(context).contentSectionStyle(),
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildSocialButton(
+                                context,
+                                icon: FontAwesomeIcons.shareNodes,
+                                label: 'Share',
+                                onTap: () {
+                                  if (userState.username == null) {
+                                    Share.share(
+                                      lang(context).messageShareIntro(
+                                        dotenv.env['PROFILE_URL']!,
+                                      ),
+                                    );
+                                  } else {
+                                    Share.share(
+                                      lang(context)
+                                          .messageShareIntroWIthUsername(
+                                        userState.username ??
+                                            lang(context).anonymous,
+                                        dotenv.env['PROFILE_URL']!,
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                Helper.launchURL(facebookUrl,
-                                    fallbackUrl: facebookUrl);
-                              },
-                              icon: Icon(
-                                FontAwesomeIcons.facebookF,
-                                color: Theme.of(context).primaryColor,
+                              _buildSocialButton(
+                                context,
+                                icon: FontAwesomeIcons.facebookF,
+                                label: 'Facebook',
+                                onTap: () {
+                                  Helper.launchURL(facebookUrl,
+                                      fallbackUrl: facebookUrl);
+                                },
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                Helper.launchURL(privacyPolicyUrl);
-                              },
-                              icon: Icon(
-                                FontAwesomeIcons.shieldHalved,
-                                color: Theme.of(context).primaryColor,
+                              _buildSocialButton(
+                                context,
+                                icon: FontAwesomeIcons.shieldHalved,
+                                label: 'Privacy',
+                                onTap: () {
+                                  Helper.launchURL(privacyPolicyUrl);
+                                },
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                Helper.launchURL("mailto:$email");
-                              },
-                              icon: Icon(
-                                FontAwesomeIcons.envelope,
-                                color: Theme.of(context).primaryColor,
+                              _buildSocialButton(
+                                context,
+                                icon: FontAwesomeIcons.envelope,
+                                label: 'Email',
+                                onTap: () {
+                                  Helper.launchURL("mailto:$email");
+                                },
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
+              ),
+              const SliverPadding(
+                padding: EdgeInsets.only(bottom: 20),
               ),
             ],
           ),
@@ -464,5 +540,112 @@ class _AboutScreenState extends State<AboutScreen> {
       case AppVersionStatus.dismissed:
         return lang(context).updatePostponed;
     }
+  }
+
+  IconData _getStatusIcon(AppVersionStatus status) {
+    switch (status) {
+      case AppVersionStatus.checking:
+        return FontAwesomeIcons.spinner;
+      case AppVersionStatus.updateAvailable:
+        return FontAwesomeIcons.arrowUp;
+      case AppVersionStatus.noUpdate:
+        return FontAwesomeIcons.circleCheck;
+      case AppVersionStatus.error:
+        return FontAwesomeIcons.circleExclamation;
+      default:
+        return FontAwesomeIcons.circleInfo;
+    }
+  }
+
+  Color _getStatusColor(BuildContext context, AppVersionStatus status) {
+    switch (status) {
+      case AppVersionStatus.updateAvailable:
+        return Colors.orange;
+      case AppVersionStatus.noUpdate:
+        return Colors.green;
+      case AppVersionStatus.error:
+        return Colors.red;
+      default:
+        return Theme.of(context).primaryColor;
+    }
+  }
+
+  Widget _buildInfoRow(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String value,
+  ) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          color: Theme.of(context).colorScheme.onPrimary,
+          size: 18,
+        ),
+        const SizedBox(width: 12),
+        Text(
+          "$label: ",
+          style: LayoutConfig(context).contentSectionStyle(),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: LayoutConfig(context).contentSectionStyle().copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSocialButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(12 / 5),
+        topRight: Radius.circular(12),
+        bottomLeft: Radius.circular(12),
+        bottomRight: Radius.circular(12),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(12 / 5),
+            topRight: Radius.circular(12),
+            bottomLeft: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: Theme.of(context).colorScheme.onPrimary,
+              size: 24,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: LayoutConfig(context).contentSectionStyle().copyWith(
+                    fontSize: 10,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
