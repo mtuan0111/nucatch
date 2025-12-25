@@ -39,7 +39,7 @@ class SeasonalTheme {
     try {
       // Get current lunar date
       final solar = Solar.fromDate(date);
-      final lunar = solar.getLunar();
+      solar.getLunar(); // Validate lunar date can be calculated
 
       // Get Lunar New Year date for current year (1st day of 1st month)
       final lunarNewYear = Lunar.fromYmd(date.year, 1, 1);
