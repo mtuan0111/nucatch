@@ -207,70 +207,100 @@ class _PlayScreenState extends State<PlayScreen> {
                                           ),
                                           child: SizedBox(
                                             height: 20,
-                                            child: Stack(
-                                              clipBehavior: Clip.hardEdge,
-                                              children: [
-                                                Positioned.fill(
-                                                  child: CustomElevatedButton(
-                                                    shapeAt:
-                                                        RoundedWithShapeAt.all,
-                                                    backgroundColor: Theme.of(
-                                                            context)
-                                                        .secondaryHeaderColor,
-                                                  ),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    if (turnState.status ==
-                                                        TurnStatus.playing)
-                                                      if (turnState
-                                                              .tapTimerPercent >
-                                                          0)
-                                                        Expanded(
-                                                          flex: turnState
-                                                              .tapTimerPercent
-                                                              .toInt(),
-                                                          child: Builder(
-                                                              builder:
-                                                                  (context) {
-                                                            Color backgroundColor = turnState
-                                                                        .tapTimerRemaining >
-                                                                    tapTimerDuration /
-                                                                        2
-                                                                ? Theme.of(
-                                                                        context)
-                                                                    .primaryColor
-                                                                : turnState.tapTimerRemaining >
-                                                                        tapTimerDuration /
-                                                                            4
-                                                                    ? Colors
-                                                                        .orange
-                                                                    : Colors
-                                                                        .red;
-                                                            return CustomElevatedButton(
-                                                              onPressed: () {},
+                                            child: turnState.status ==
+                                                    TurnStatus.playing
+                                                ? Countdown(
+                                                    seconds: turnState
+                                                        .tapTimerRemaining
+                                                        .toInt(),
+                                                    interval: const Duration(
+                                                        milliseconds: 100),
+                                                    build:
+                                                        (BuildContext context,
+                                                            double time) {
+                                                      // Calculate percentage (0-100)
+                                                      final percent = (time /
+                                                              tapTimerDuration *
+                                                              100)
+                                                          // .clamp(0, 100)
+                                                          .toInt();
+
+                                                      // Determine color based on remaining time
+                                                      Color backgroundColor = time >
+                                                              tapTimerDuration /
+                                                                  2
+                                                          ? Theme.of(context)
+                                                              .primaryColor
+                                                          : time >
+                                                                  tapTimerDuration /
+                                                                      4
+                                                              ? Colors.orange
+                                                              : Colors.red;
+
+                                                      return Stack(
+                                                        clipBehavior:
+                                                            Clip.hardEdge,
+                                                        children: [
+                                                          Positioned.fill(
+                                                            child:
+                                                                CustomElevatedButton(
                                                               shapeAt:
                                                                   RoundedWithShapeAt
                                                                       .all,
                                                               backgroundColor:
-                                                                  backgroundColor,
-                                                            );
-                                                          }),
+                                                                  Theme.of(
+                                                                          context)
+                                                                      .secondaryHeaderColor,
+                                                            ),
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              if (percent > 0)
+                                                                Expanded(
+                                                                  flex: percent,
+                                                                  child:
+                                                                      CustomElevatedButton(
+                                                                    onPressed:
+                                                                        () {},
+                                                                    shapeAt:
+                                                                        RoundedWithShapeAt
+                                                                            .all,
+                                                                    backgroundColor:
+                                                                        backgroundColor,
+                                                                  ),
+                                                                ),
+                                                              Expanded(
+                                                                flex: 100 -
+                                                                    percent,
+                                                                child: Opacity(
+                                                                  opacity: 0,
+                                                                  child:
+                                                                      Container(),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                    onFinished: () {},
+                                                  )
+                                                : Stack(
+                                                    clipBehavior: Clip.hardEdge,
+                                                    children: [
+                                                      Positioned.fill(
+                                                        child:
+                                                            CustomElevatedButton(
+                                                          shapeAt:
+                                                              RoundedWithShapeAt
+                                                                  .all,
+                                                          backgroundColor: Theme
+                                                                  .of(context)
+                                                              .secondaryHeaderColor,
                                                         ),
-                                                    Expanded(
-                                                      flex: 100 -
-                                                          turnState
-                                                              .tapTimerPercent
-                                                              .toInt(),
-                                                      child: Opacity(
-                                                        opacity: 0,
-                                                        child: Container(),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                                                    ],
+                                                  ),
                                           ),
                                         );
                                       },

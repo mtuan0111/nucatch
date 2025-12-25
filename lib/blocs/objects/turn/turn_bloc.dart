@@ -82,7 +82,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         add(TapTimerTick(0));
         add(TapTimerTimeout());
       } else {
-        add(TapTimerTick(remainingTime));
+        // add(TapTimerTick(remainingTime));
       }
     });
   }
@@ -228,6 +228,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         //     : state.lifeRemaining + event.addPoint,
         // expect: Helper().generateRandomNumber(event.level + 2),
         typing: "",
+        tapTimerRemaining: tapTimerDuration,
       ),
     );
 

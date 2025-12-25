@@ -704,12 +704,11 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
   }
 
   Color getColor(BuildContext context) {
-    if (widget.gradient != null) {
-      return Theme.of(context).scaffoldBackgroundColor;
-    }
-
     if (widget.color != null) {
       return widget.color!;
+    }
+    if (widget.gradient != null) {
+      return Theme.of(context).scaffoldBackgroundColor;
     }
 
     // Generate smart color based on background color contrast

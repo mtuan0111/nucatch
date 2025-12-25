@@ -26,8 +26,8 @@ class GameAnimationTriggers {
 
   /// Trigger large explosion when life is gained
   /// Position should be in screen coordinates (e.g., heart icon or screen center)
-  void onGainLife(Offset position) {
-    particleController.triggerConfetti(position);
+  void onGainLife(Offset position, {List<Color>? colors}) {
+    particleController.triggerConfetti(position, colors: colors);
   }
 
   /// Trigger screen shake when life is lost

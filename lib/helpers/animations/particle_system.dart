@@ -202,15 +202,16 @@ class ParticleOverlayController {
   }
 
   /// Trigger a large explosion at position
-  void triggerLargeExplosion(Offset position) {
+  void triggerLargeExplosion(Offset position, {List<Color>? colors}) {
     print('firework fire 2');
-    trigger(ParticleFactory.createLargeExplosion(position: position));
+    trigger(ParticleFactory.createLargeExplosion(
+        position: position, colors: colors));
   }
 
   /// Trigger confetti at position
-  void triggerConfetti(Offset position) {
+  void triggerConfetti(Offset position, {List<Color>? colors}) {
     print('firework fire 3');
-    trigger(ParticleFactory.createConfetti(position: position));
+    trigger(ParticleFactory.createConfetti(position: position, colors: colors));
   }
 
   /// Trigger gold coin rain from position or across screen

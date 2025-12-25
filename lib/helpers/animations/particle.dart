@@ -1047,16 +1047,10 @@ class ParticleFactory {
   static List<Particle> createLargeExplosion({
     required Offset position,
     int count = 18,
+    List<Color>? colors,
   }) {
     final particles = <Particle>[];
-    final colors = [
-      Colors.pink,
-      Colors.purple,
-      Colors.blue,
-      Colors.cyan,
-      Colors.yellow,
-      Colors.orange,
-    ];
+    final defaultColors = colors ?? SeasonalTheme.config.fireworkColors;
 
     for (int i = 0; i < count; i++) {
       final angle = (i / count) * 2 * pi + _random.nextDouble() * 0.3;
@@ -1068,7 +1062,7 @@ class ParticleFactory {
           cos(angle) * speed,
           sin(angle) * speed - 150, // Strong upward bias
         ),
-        color: colors[_random.nextInt(colors.length)],
+        color: defaultColors[_random.nextInt(defaultColors.length)],
         size: 4.0 + _random.nextDouble() * 3.0,
         maxLifetime: 1.0 + _random.nextDouble() * 0.5,
         rotationSpeed: (_random.nextDouble() - 0.5) * 15,
@@ -1082,17 +1076,10 @@ class ParticleFactory {
   static List<Particle> createConfetti({
     required Offset position,
     int count = 20,
+    List<Color>? colors,
   }) {
     final particles = <Particle>[];
-    final colors = [
-      Colors.red,
-      Colors.pink,
-      Colors.purple,
-      Colors.blue,
-      Colors.green,
-      Colors.yellow,
-      Colors.orange,
-    ];
+    final defaultColors = colors ?? SeasonalTheme.config.fireworkColors;
 
     for (int i = 0; i < count; i++) {
       final angle = (i / count) * 2 * pi + _random.nextDouble() * 0.4;
@@ -1104,7 +1091,7 @@ class ParticleFactory {
           cos(angle) * speed,
           sin(angle) * speed - 200, // Very strong upward bias
         ),
-        color: colors[_random.nextInt(colors.length)],
+        color: defaultColors[_random.nextInt(defaultColors.length)],
         size: 5.0 + _random.nextDouble() * 3.0,
         maxLifetime: 1.5 + _random.nextDouble() * 0.5,
         rotationSpeed: (_random.nextDouble() - 0.5) * 20,
