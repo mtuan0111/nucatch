@@ -975,3 +975,40 @@ feat: Add the Season theme
     Flutter build for iOS
     ```flutter build ios --build-name=2.4.4 --build-number=59 --release```
     ```
+---
+## Released on: 25/12/2025
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 58           | 2.4.5   |
+| iOS      | 60           | 2.4.5   |
+
+### Release note:
+feat: Add the Season theme
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+    ```
+    [Builded] Version 2.4.5 - 58 / 2.4.5 - 60 _ Add the Season theme
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Added seasonal theme for enhanced visual experience.  
+        - Improved app design with dynamic theme options.
+
+    - **Tiếng Việt:**  
+        - Thêm chủ đề theo mùa để nâng cao trải nghiệm hình ảnh.  
+        - Cải thiện thiết kế ứng dụng với các tùy chọn chủ đề linh hoạt.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.4.5 --build-number=58 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.4.5 --build-number=60 --release```
+    ```
+    ---

@@ -43,7 +43,7 @@ class MenuAlert extends StatelessWidget {
           Text(
             "${lang(context).yourScoreIs}: $point",
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
+              // color: Theme.of(context).colorScheme.onSurface,
               fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
               fontWeight: FontWeight.bold,
             ),
@@ -52,7 +52,7 @@ class MenuAlert extends StatelessWidget {
           Text(
             "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, turnState.difficultyModel!.difficulty)}",
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
+              // color: Theme.of(context).colorScheme.onSurface,
               fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
               fontWeight: FontWeight.bold,
             ),
@@ -314,9 +314,9 @@ class AlertTemplate extends StatelessWidget {
                                     Text(
                                       message!,
                                       style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
+                                        // color: Theme.of(context)
+                                        //     .colorScheme
+                                        //     .onSurfaceVariant,
                                         fontSize: Theme.of(context)
                                             .textTheme
                                             .bodyMedium!
