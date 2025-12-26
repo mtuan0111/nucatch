@@ -735,6 +735,18 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                       time
                                                                           .truncate()
                                                                           .toString(),
+                                                                      style: LayoutConfig(
+                                                                              context)
+                                                                          .titleSectionStyle(
+                                                                              isItalic: true)
+                                                                          .copyWith(
+                                                                            fontSize:
+                                                                                kFontSize3XL,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color:
+                                                                                Theme.of(context).scaffoldBackgroundColor,
+                                                                          ),
                                                                     ),
                                                                   ),
                                                                 if (time >= 1)
@@ -750,12 +762,17 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                         .copyWith(
                                                                           fontSize:
                                                                               kFontSizeM,
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .onSurface,
+                                                                          color:
+                                                                              Theme.of(context).scaffoldBackgroundColor,
                                                                         ),
                                                                     child: Text(
-                                                                        readyText),
+                                                                        readyText,
+                                                                        style: LayoutConfig(context)
+                                                                            .titleSectionStyle(isItalic: true)
+                                                                            .copyWith(
+                                                                              fontSize: kFontSizeM,
+                                                                              color: Theme.of(context).scaffoldBackgroundColor,
+                                                                            )),
                                                                   )
                                                                 else
                                                                   AnimatedDefaultTextStyle(
@@ -772,12 +789,18 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                               kFontSize2XL,
                                                                           fontWeight:
                                                                               FontWeight.bold,
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .onSurface,
+                                                                          color:
+                                                                              Theme.of(context).scaffoldBackgroundColor,
                                                                         ),
                                                                     child: Text(
-                                                                        goText),
+                                                                        goText,
+                                                                        style: LayoutConfig(context)
+                                                                            .titleSectionStyle(isItalic: true)
+                                                                            .copyWith(
+                                                                              fontSize: kFontSize2XL,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Theme.of(context).scaffoldBackgroundColor,
+                                                                            )),
                                                                   ),
                                                               ],
                                                             ),
