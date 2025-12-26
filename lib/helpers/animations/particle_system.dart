@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nucatch/helpers/animations/screen_shake_controller.dart';
 import 'particle.dart';
 import 'package:nucatch/helpers/theme_config.dart';
+import 'animation_constants.dart';
 
 /// Manages the lifecycle of particles for a single effect
 class ParticleSystem {
@@ -22,7 +23,7 @@ class ParticleSystem {
 
     // Update each particle (assuming ~60fps)
     for (final particle in particles) {
-      particle.update(0.016, windForce: windForce);
+      particle.update(kParticleUpdateDelta, windForce: windForce);
     }
 
     // Remove dead particles
@@ -69,7 +70,7 @@ class _ParticleOverlayState extends State<ParticleOverlay>
     // Create animation controller for continuous updates
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 10),
+      duration: kParticleAnimationDuration,
     )..addListener(_onAnimationTick);
 
     // Listen to controller events
@@ -93,8 +94,8 @@ class _ParticleOverlayState extends State<ParticleOverlay>
   void _startSnow() {
     // Add initial snow particles
     final screenSize = MediaQuery.of(context).size;
-    _snowSystem.addParticles(
-        ParticleFactory.createSnow(screenSize: screenSize, count: 30));
+    _snowSystem.addParticles(ParticleFactory.createSnow(
+        screenSize: screenSize, count: kSnowInitialCount));
 
     if (!_animationController.isAnimating) {
       _animationController.repeat();
@@ -123,13 +124,13 @@ class _ParticleOverlayState extends State<ParticleOverlay>
 
         // Replenish snow particles when they fall off screen
         final screenSize = MediaQuery.of(context).size;
-        _snowSystem.particles
-            .removeWhere((p) => p.position.dy > screenSize.height + 50);
+        _snowSystem.particles.removeWhere(
+            (p) => p.position.dy > screenSize.height + kSnowRemovalOffset);
 
         // Add new snow particles periodically to maintain count
-        if (_snowSystem.particles.length < 20) {
-          _snowSystem.addParticles(
-              ParticleFactory.createSnow(screenSize: screenSize, count: 5));
+        if (_snowSystem.particles.length < kSnowMinimumCount) {
+          _snowSystem.addParticles(ParticleFactory.createSnow(
+              screenSize: screenSize, count: kSnowReplenishCount));
         }
       }
 
@@ -196,21 +197,18 @@ class ParticleOverlayController {
 
   /// Trigger a small burst at position
   void triggerSmallBurst(Offset position, {List<Color>? colors}) {
-    print('firework fire 1');
     trigger(
         ParticleFactory.createSmallBurst(position: position, colors: colors));
   }
 
   /// Trigger a large explosion at position
   void triggerLargeExplosion(Offset position, {List<Color>? colors}) {
-    print('firework fire 2');
     trigger(ParticleFactory.createLargeExplosion(
         position: position, colors: colors));
   }
 
   /// Trigger confetti at position
   void triggerConfetti(Offset position, {List<Color>? colors}) {
-    print('firework fire 3');
     trigger(ParticleFactory.createConfetti(position: position, colors: colors));
   }
 

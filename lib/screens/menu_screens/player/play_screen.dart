@@ -23,6 +23,7 @@ import 'package:nucatch/helpers/animations/animated_game_wrapper.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 
 import 'package:timer_count_down/timer_count_down.dart';
 
@@ -39,9 +40,10 @@ class PlayScreen extends StatefulWidget {
 
 class _PlayScreenState extends State<PlayScreen> {
   String get screenTitle => widget.title;
-  double get screenWidth => max(MediaQuery.of(context).size.width, 600);
+  double get screenWidth =>
+      max(MediaQuery.of(context).size.width, kMinScreenWidth);
 
-  double get buttonSpace => 20;
+  double get buttonSpace => kSpaceXL;
   String inputtedValue = "";
 
   late bool wasLifeIncreased;
@@ -75,13 +77,13 @@ class _PlayScreenState extends State<PlayScreen> {
     double fontSize = 50;
 
     if (numberOfCharactor >= 10) {
-      fontSize = 24;
+      fontSize = kFontSizeXL;
     } else if (numberOfCharactor >= 8) {
-      fontSize = 32;
+      fontSize = kFontSize2XL;
     } else if (numberOfCharactor >= 6) {
-      fontSize = 40;
+      fontSize = kFontSize3XL;
     } else if (numberOfCharactor >= 4) {
-      fontSize = 45;
+      fontSize = kFontSize4XL;
     }
     return LayoutConfig(context).boldedStyle.copyWith(
           color: Theme.of(context).colorScheme.onSurface,
@@ -206,7 +208,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                             quarterSeconds,
                                           ),
                                           child: SizedBox(
-                                            height: 20,
+                                            height: kTimerBarHeight,
                                             child: turnState.status ==
                                                     TurnStatus.playing
                                                 ? Countdown(
@@ -305,7 +307,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                         );
                                       },
                                     ),
-                                    const SizedBox(height: 10),
+                                    const SizedBox(height: kSpaceM),
                                   ],
                                 ),
                                 Row(
@@ -332,7 +334,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                     .bodyLarge!
                                                     .fontSize,
                                               ),
-                                              const SizedBox(width: 5),
+                                              const SizedBox(width: kSpaceS),
                                               Text.rich(
                                                 TextSpan(
                                                   children: [
@@ -374,7 +376,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                     .bodyLarge!
                                                     .fontSize,
                                               ),
-                                              const SizedBox(width: 5),
+                                              const SizedBox(width: kSpaceS),
                                               Text(
                                                 "${lang(context).score}: ",
                                                 style: LayoutConfig(context)
@@ -467,7 +469,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                         child: Center(
                                           child: Wrap(
                                             key: _heartKey,
-                                            spacing: 00,
+                                            spacing: kLifeStarSpacing,
                                             children: List.generate(
                                               _currentLifeRemaining,
                                               (index) {
@@ -644,8 +646,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                                       curve:
                                                           Curves.easeOutQuart,
                                                       child: Container(
-                                                        width: 140,
-                                                        height: 140,
+                                                        width:
+                                                            kCountdownCircleSize,
+                                                        height:
+                                                            kCountdownCircleSize,
                                                         decoration:
                                                             BoxDecoration(
                                                           shape:
@@ -661,7 +665,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                             Positioned.fill(
                                                               child: CustomElevatedButton(
                                                                   buttonRadius:
-                                                                      1000,
+                                                                      kBorderRadiusCircular,
                                                                   shapeAt:
                                                                       RoundedWithShapeAt
                                                                           .all,
@@ -672,8 +676,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                                             ),
                                                             // Circular progress indicator - completes once per second
                                                             SizedBox(
-                                                              width: 120,
-                                                              height: 120,
+                                                              width:
+                                                                  kCountdownCircleInnerSize,
+                                                              height:
+                                                                  kCountdownCircleInnerSize,
                                                               child: Stack(
                                                                 children: [
                                                                   Positioned
@@ -683,7 +689,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                       value:
                                                                           secondProgress,
                                                                       strokeWidth:
-                                                                          8,
+                                                                          kProgressStrokeWidth,
                                                                       backgroundColor: Colors
                                                                           .white
                                                                           .withOpacity(
@@ -715,7 +721,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                         .displaySmallStyle()
                                                                         .copyWith(
                                                                           fontSize:
-                                                                              40,
+                                                                              kFontSize3XL,
                                                                           fontWeight:
                                                                               FontWeight.bold,
                                                                           color:
@@ -739,7 +745,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                                 true)
                                                                         .copyWith(
                                                                           fontSize:
-                                                                              16,
+                                                                              kFontSizeM,
                                                                           color:
                                                                               Colors.white,
                                                                         ),
@@ -758,7 +764,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                                 true)
                                                                         .copyWith(
                                                                           fontSize:
-                                                                              32,
+                                                                              kFontSize2XL,
                                                                           fontWeight:
                                                                               FontWeight.bold,
                                                                           color:

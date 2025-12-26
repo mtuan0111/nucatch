@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'animation_constants.dart';
 
 /// Controller for screen shake effect using damped harmonic oscillator
 class ScreenShakeController {
@@ -11,7 +12,7 @@ class ScreenShakeController {
   void initialize(TickerProvider vsync) {
     _controller = AnimationController(
       vsync: vsync,
-      duration: const Duration(milliseconds: 500),
+      duration: kShakeDuration,
     )..addListener(_onTick);
   }
 
@@ -21,7 +22,7 @@ class ScreenShakeController {
   }
 
   /// Trigger a screen shake with given intensity (0.0 to 1.0)
-  void shake([double intensity = 0.8]) {
+  void shake([double intensity = kShakeDefaultIntensity]) {
     _trauma = (intensity).clamp(0.0, 1.0);
     _controller?.forward(from: 0.0);
   }
@@ -34,13 +35,13 @@ class ScreenShakeController {
 
   /// Get current shake offset using damped harmonic oscillator
   Offset getShakeOffset() {
-    if (_trauma <= 0.01) return Offset.zero;
+    if (_trauma <= kShakeMinTrauma) return Offset.zero;
 
     // Shake amount is trauma squared for more dramatic effect
     final shake = _trauma * _trauma;
 
     // Use perlin-like noise for more natural shake
-    final maxOffset = 20.0 * shake;
+    final maxOffset = kShakeMaxOffset * shake;
 
     return Offset(
       maxOffset * (_random.nextDouble() * 2 - 1),
@@ -50,26 +51,26 @@ class ScreenShakeController {
 
   /// Get current rotation shake (in radians)
   double getShakeRotation() {
-    if (_trauma <= 0.01) return 0.0;
+    if (_trauma <= kShakeMinTrauma) return 0.0;
 
     final shake = _trauma * _trauma;
-    final maxRotation = 0.05 * shake; // ~3 degrees max
+    final maxRotation = kShakeMaxRotation * shake; // ~3 degrees max
 
     return maxRotation * (_random.nextDouble() * 2 - 1);
   }
 
   /// Check if currently shaking
-  bool get isShaking => _trauma > 0.01;
+  bool get isShaking => _trauma > kShakeMinTrauma;
 
   /// Get current wind force (horizontal acceleration) based on shake intensity
   /// Returns wind force in pixels/s² that pushes particles left/right
   Offset getWindForce() {
-    if (_trauma <= 0.01) return Offset.zero;
+    if (_trauma <= kShakeMinTrauma) return Offset.zero;
 
     final shake = _trauma * _trauma;
     // Wind force correlates with shake intensity
     // Stronger shakes = stronger wind
-    final windStrength = 800.0 * shake; // Base wind acceleration
+    final windStrength = kShakeWindStrength * shake; // Base wind acceleration
 
     // Wind direction changes randomly to match shake direction
     return Offset(

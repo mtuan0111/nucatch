@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:nucatch/helpers/theme_config.dart';
+import 'animation_constants.dart';
 
 /// Shape types for particles
 enum ParticleShape {
@@ -103,7 +104,9 @@ class Particle {
     if (windForce != Offset.zero) {
       // Wind sensitivity: lighter particles (lower gravity) are pushed more
       // Heavy particles resist wind better
-      final windSensitivity = 1.0 - (physics.gravity / 500.0).clamp(0.0, 0.95);
+      final windSensitivity = 1.0 -
+          (physics.gravity / kWindSensitivityDivisor)
+              .clamp(0.0, kWindSensitivityMax);
       velocity = Offset(
         velocity.dx + (windForce.dx * windSensitivity * dt),
         velocity.dy,
@@ -118,7 +121,8 @@ class Particle {
 
     // Apply horizontal drift/sway for light materials
     if (physics.sway > 0) {
-      final swayForce = sin(position.dy * 0.05 + rotation) * physics.sway;
+      final swayForce =
+          sin(position.dy * kSwayFrequency + rotation) * physics.sway;
       velocity = Offset(
         velocity.dx + swayForce * dt,
         velocity.dy,
@@ -143,104 +147,175 @@ class Particle {
     switch (shape) {
       // Very light - float and drift heavily
       case ParticleShape.feather:
-        return ParticlePhysics(
-            gravity: 15.0, drag: 0.98, sway: 50.0, rotationMultiplier: 0.5);
+        return const ParticlePhysics(
+            gravity: kGravityVeryLight,
+            drag: kDragMediumHigh,
+            sway: kSwayVeryHigh,
+            rotationMultiplier: kRotationMultiplierVeryLow);
       case ParticleShape.rosePetal:
-        return ParticlePhysics(
-            gravity: 20.0, drag: 0.97, sway: 40.0, rotationMultiplier: 0.8);
+        return const ParticlePhysics(
+            gravity: 20.0,
+            drag: kDragMedium,
+            sway: kSwayHigh,
+            rotationMultiplier: kRotationMultiplierMedium);
       case ParticleShape.paperCrane:
-        return ParticlePhysics(
-            gravity: 25.0, drag: 0.96, sway: 35.0, rotationMultiplier: 0.6);
+        return const ParticlePhysics(
+            gravity: 25.0,
+            drag: kDragMediumLow,
+            sway: kSwayMediumHigh,
+            rotationMultiplier: kRotationMultiplierLow);
 
       // Light - gentle fall with drift
       case ParticleShape.snowflake:
       case ParticleShape.ribbon:
       case ParticleShape.pastelRibbon:
-        return ParticlePhysics(
-            gravity: 30.0, drag: 0.95, sway: 30.0, rotationMultiplier: 0.7);
+        return const ParticlePhysics(
+            gravity: kGravityLight,
+            drag: kDragLow,
+            sway: kSwayMedium,
+            rotationMultiplier: kRotationMultiplierMediumLow);
       case ParticleShape.confetti:
-        return ParticlePhysics(
-            gravity: 40.0, drag: 0.94, sway: 25.0, rotationMultiplier: 1.5);
+        return const ParticlePhysics(
+            gravity: 40.0,
+            drag: kDragVeryLow,
+            sway: kSwayMediumLow,
+            rotationMultiplier: kRotationMultiplierHigh);
       case ParticleShape.glitter:
       case ParticleShape.champagneBubble:
-        return ParticlePhysics(
-            gravity: 35.0, drag: 0.95, sway: 20.0, rotationMultiplier: 2.0);
+        return const ParticlePhysics(
+            gravity: 35.0,
+            drag: kDragLow,
+            sway: kSwayLow,
+            rotationMultiplier: kRotationMultiplierVeryHigh);
 
       // Medium-light - moderate fall with some drift
       case ParticleShape.leaf:
       case ParticleShape.mangoLeaf:
       case ParticleShape.mapleLeaf:
-        return ParticlePhysics(
-            gravity: 50.0, drag: 0.93, sway: 35.0, rotationMultiplier: 1.2);
+        return const ParticlePhysics(
+            gravity: kGravityMediumLight,
+            drag: kDragMedium,
+            sway: kSwayMediumHigh,
+            rotationMultiplier: kRotationMultiplierMediumHigh);
       case ParticleShape.vine:
-        return ParticlePhysics(
-            gravity: 45.0, drag: 0.94, sway: 30.0, rotationMultiplier: 0.4);
+        return const ParticlePhysics(
+            gravity: 45.0,
+            drag: kDragVeryLow,
+            sway: kSwayMedium,
+            rotationMultiplier: 0.4);
       case ParticleShape.bunting:
-        return ParticlePhysics(
-            gravity: 55.0, drag: 0.92, sway: 20.0, rotationMultiplier: 0.8);
+        return const ParticlePhysics(
+            gravity: 55.0,
+            drag: 0.92,
+            sway: kSwayLow,
+            rotationMultiplier: kRotationMultiplierMedium);
 
       // Medium - steady fall
       case ParticleShape.heart:
       case ParticleShape.paintedEgg:
       case ParticleShape.paperLantern:
       case ParticleShape.marigold:
-        return ParticlePhysics(
-            gravity: 80.0, drag: 0.98, sway: 10.0, rotationMultiplier: 0.5);
+        return const ParticlePhysics(
+            gravity: kGravityMedium,
+            drag: kDragMediumHigh,
+            sway: kSwayVeryLow,
+            rotationMultiplier: kRotationMultiplierVeryLow);
       case ParticleShape.redEnvelope:
-        return ParticlePhysics(
-            gravity: 90.0, drag: 0.96, sway: 15.0, rotationMultiplier: 0.6);
+        return const ParticlePhysics(
+            gravity: 90.0,
+            drag: kDragMediumLow,
+            sway: 15.0,
+            rotationMultiplier: kRotationMultiplierLow);
       case ParticleShape.chineseKnot:
-        return ParticlePhysics(
-            gravity: 85.0, drag: 0.97, sway: 12.0, rotationMultiplier: 1.0);
+        return const ParticlePhysics(
+            gravity: 85.0,
+            drag: kDragMedium,
+            sway: 12.0,
+            rotationMultiplier: kRotationMultiplierDefault);
 
       // Medium-heavy - deliberate fall
       case ParticleShape.ghost:
-        return ParticlePhysics(
-            gravity: 40.0, drag: 0.96, sway: 20.0, rotationMultiplier: 0.3);
+        return const ParticlePhysics(
+            gravity: 40.0,
+            drag: kDragMediumLow,
+            sway: kSwayLow,
+            rotationMultiplier: kRotationMultiplierMinimal);
       case ParticleShape.cobweb:
-        return ParticlePhysics(
-            gravity: 25.0, drag: 0.95, sway: 25.0, rotationMultiplier: 0.2);
+        return const ParticlePhysics(
+            gravity: 25.0,
+            drag: kDragLow,
+            sway: kSwayMediumLow,
+            rotationMultiplier: 0.2);
       case ParticleShape.raindrop:
-        return ParticlePhysics(
-            gravity: 200.0, drag: 0.99, sway: 5.0, rotationMultiplier: 0.0);
+        return const ParticlePhysics(
+            gravity: 200.0,
+            drag: kDragHigh,
+            sway: kSwayMinimal,
+            rotationMultiplier: kRotationMultiplierNone);
       case ParticleShape.icicle:
-        return ParticlePhysics(
-            gravity: 180.0, drag: 0.99, sway: 2.0, rotationMultiplier: 0.3);
+        return const ParticlePhysics(
+            gravity: 180.0,
+            drag: kDragHigh,
+            sway: 2.0,
+            rotationMultiplier: kRotationMultiplierMinimal);
 
       // Heavy - fast fall
       case ParticleShape.spider:
-        return ParticlePhysics(
-            gravity: 120.0, drag: 0.97, sway: 8.0, rotationMultiplier: 0.8);
+        return const ParticlePhysics(
+            gravity: kGravityMediumHeavy,
+            drag: kDragMedium,
+            sway: 8.0,
+            rotationMultiplier: kRotationMultiplierMedium);
       case ParticleShape.bat:
-        return ParticlePhysics(
-            gravity: 100.0, drag: 0.96, sway: 15.0, rotationMultiplier: 0.4);
+        return const ParticlePhysics(
+            gravity: 100.0,
+            drag: kDragMediumLow,
+            sway: 15.0,
+            rotationMultiplier: 0.4);
       case ParticleShape.seed:
       case ParticleShape.acorn:
-        return ParticlePhysics(
-            gravity: 150.0, drag: 0.98, sway: 5.0, rotationMultiplier: 1.0);
+        return const ParticlePhysics(
+            gravity: kGravityHeavy,
+            drag: kDragMediumHigh,
+            sway: kSwayMinimal,
+            rotationMultiplier: kRotationMultiplierDefault);
       case ParticleShape.cupidArrow:
-        return ParticlePhysics(
-            gravity: 160.0, drag: 0.99, sway: 3.0, rotationMultiplier: 0.2);
+        return const ParticlePhysics(
+            gravity: 160.0,
+            drag: kDragHigh,
+            sway: 3.0,
+            rotationMultiplier: 0.2);
 
       // Very heavy - rapid fall
       case ParticleShape.ornament:
       case ParticleShape.goldCoin:
-        return ParticlePhysics(
-            gravity: 250.0, drag: 0.99, sway: 2.0, rotationMultiplier: 0.5);
+        return const ParticlePhysics(
+            gravity: kGravityVeryHeavy,
+            drag: kDragHigh,
+            sway: 2.0,
+            rotationMultiplier: kRotationMultiplierVeryLow);
       case ParticleShape.horseshoe:
-        return ParticlePhysics(
-            gravity: 300.0, drag: 0.99, sway: 1.0, rotationMultiplier: 0.3);
+        return const ParticlePhysics(
+            gravity: 300.0,
+            drag: kDragHigh,
+            sway: 1.0,
+            rotationMultiplier: kRotationMultiplierMinimal);
 
       // Glowing/floating - special behavior
       case ParticleShape.fairyLight:
-        return ParticlePhysics(
-            gravity: 20.0, drag: 0.94, sway: 40.0, rotationMultiplier: 0.1);
+        return const ParticlePhysics(
+            gravity: 20.0,
+            drag: kDragVeryLow,
+            sway: kSwayHigh,
+            rotationMultiplier: 0.1);
 
       // Default/Circle - standard firework physics
       case ParticleShape.circle:
-      default:
-        return ParticlePhysics(
-            gravity: 500.0, drag: 0.98, sway: 0.0, rotationMultiplier: 1.0);
+        return const ParticlePhysics(
+            gravity: kGravityDefault,
+            drag: kDragMediumHigh,
+            sway: kSwayNone,
+            rotationMultiplier: kRotationMultiplierDefault);
     }
   }
 
@@ -390,15 +465,16 @@ class ParticlePainter extends CustomPainter {
     // Glow effect for more visual impact
     if (paint.color.a > 0.5) {
       final glowPaint = Paint()
-        ..color = paint.color.withValues(alpha: paint.color.a * 0.3)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
-      canvas.drawCircle(Offset.zero, size * 1.5, glowPaint);
+        ..color = paint.color
+            .withValues(alpha: paint.color.a * kGlowOpacityMultiplier)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, kGlowBlurRadius);
+      canvas.drawCircle(Offset.zero, size * kGlowSizeMultiplier, glowPaint);
     }
   }
 
   void _drawHeart(Canvas canvas, double size, Paint paint) {
     final path = Path();
-    final scale = size / 10.0;
+    final scale = size / kParticleShapeScaleDivisor;
 
     // Heart shape using bezier curves
     path.moveTo(0, 3 * scale);
@@ -511,11 +587,14 @@ class ParticlePainter extends CustomPainter {
   }
 
   void _drawConfetti(Canvas canvas, double size, Paint paint) {
-    final scale = size / 10.0;
+    final scale = size / kParticleShapeScaleDivisor;
 
     // Small rectangle (confetti piece)
     canvas.drawRect(
-      Rect.fromCenter(center: Offset.zero, width: 4 * scale, height: 6 * scale),
+      Rect.fromCenter(
+          center: Offset.zero,
+          width: kConfettiWidth * scale,
+          height: kConfettiHeight * scale),
       paint,
     );
   }
@@ -570,13 +649,13 @@ class ParticlePainter extends CustomPainter {
 
     // Coin body with gradient shine
     final rect = Rect.fromCircle(center: Offset.zero, radius: 8 * scale);
-    final gradient = RadialGradient(
+    const gradient = RadialGradient(
       colors: [
-        const Color(0xFFFFD700), // Bright gold center
-        const Color(0xFFFFA500), // Orange-gold mid
-        const Color(0xFFDAA520), // Dark gold edge
+        Color(0xFFFFD700), // Bright gold center
+        Color(0xFFFFA500), // Orange-gold mid
+        Color(0xFFDAA520), // Dark gold edge
       ],
-      stops: const [0.3, 0.7, 1.0],
+      stops: [0.3, 0.7, 1.0],
     );
     final gradientPaint = Paint()
       ..shader = gradient.createShader(rect)
@@ -1015,28 +1094,39 @@ class ParticleFactory {
   /// Create a small burst of particles (for point scoring)
   static List<Particle> createSmallBurst({
     required Offset position,
-    int count = 6,
+    int count = kSmallBurstDefaultCount,
     List<Color>? colors,
   }) {
     final particles = <Particle>[];
     // Randomize particle count: 60% to 140% of specified count
-    final actualCount = (count * (0.6 + _random.nextDouble() * 0.8)).round();
+    final actualCount = (count *
+            (kSmallBurstCountMin +
+                _random.nextDouble() *
+                    (kSmallBurstCountMax - kSmallBurstCountMin)))
+        .round();
     final defaultColors = colors ?? SeasonalTheme.config.fireworkColors;
 
     for (int i = 0; i < actualCount; i++) {
-      final angle = (i / actualCount) * 2 * pi + _random.nextDouble() * 0.5;
-      final speed = 150.0 + _random.nextDouble() * 100.0;
+      final angle = (i / actualCount) * 2 * pi +
+          _random.nextDouble() * kSmallBurstAngleVariation;
+      final speed = kSmallBurstMinSpeed +
+          _random.nextDouble() * (kSmallBurstMaxSpeed - kSmallBurstMinSpeed);
 
       particles.add(Particle(
         position: position,
         velocity: Offset(
           cos(angle) * speed,
-          sin(angle) * speed - 100, // Initial upward bias
+          sin(angle) * speed + kSmallBurstUpwardBias, // Initial upward bias
         ),
         color: defaultColors[_random.nextInt(defaultColors.length)],
-        size: 3.0 + _random.nextDouble() * 6.0, // Larger particles: 3-9 pixels
-        maxLifetime: 0.6 + _random.nextDouble() * 0.2,
-        rotationSpeed: (_random.nextDouble() - 0.5) * 10,
+        size: kSmallBurstMinSize +
+            _random.nextDouble() *
+                (kSmallBurstMaxSize -
+                    kSmallBurstMinSize), // Larger particles: 3-9 pixels
+        maxLifetime: kSmallBurstMinLifetime +
+            _random.nextDouble() *
+                (kSmallBurstMaxLifetime - kSmallBurstMinLifetime),
+        rotationSpeed: (_random.nextDouble() - 0.5) * kSmallBurstRotationSpeed,
       ));
     }
 
@@ -1046,26 +1136,34 @@ class ParticleFactory {
   /// Create a large explosion of particles (for gaining life)
   static List<Particle> createLargeExplosion({
     required Offset position,
-    int count = 18,
+    int count = kLargeExplosionDefaultCount,
     List<Color>? colors,
   }) {
     final particles = <Particle>[];
     final defaultColors = colors ?? SeasonalTheme.config.fireworkColors;
 
     for (int i = 0; i < count; i++) {
-      final angle = (i / count) * 2 * pi + _random.nextDouble() * 0.3;
-      final speed = 200.0 + _random.nextDouble() * 150.0;
+      final angle = (i / count) * 2 * pi +
+          _random.nextDouble() * kLargeExplosionAngleVariation;
+      final speed = kLargeExplosionMinSpeed +
+          _random.nextDouble() *
+              (kLargeExplosionMaxSpeed - kLargeExplosionMinSpeed);
 
       particles.add(Particle(
         position: position,
         velocity: Offset(
           cos(angle) * speed,
-          sin(angle) * speed - 150, // Strong upward bias
+          sin(angle) * speed + kLargeExplosionUpwardBias, // Strong upward bias
         ),
         color: defaultColors[_random.nextInt(defaultColors.length)],
-        size: 4.0 + _random.nextDouble() * 3.0,
-        maxLifetime: 1.0 + _random.nextDouble() * 0.5,
-        rotationSpeed: (_random.nextDouble() - 0.5) * 15,
+        size: kLargeExplosionMinSize +
+            _random.nextDouble() *
+                (kLargeExplosionMaxSize - kLargeExplosionMinSize),
+        maxLifetime: kLargeExplosionMinLifetime +
+            _random.nextDouble() *
+                (kLargeExplosionMaxLifetime - kLargeExplosionMinLifetime),
+        rotationSpeed:
+            (_random.nextDouble() - 0.5) * kLargeExplosionRotationSpeed,
       ));
     }
 
@@ -1075,26 +1173,31 @@ class ParticleFactory {
   /// Create confetti-style particles with slower fall
   static List<Particle> createConfetti({
     required Offset position,
-    int count = 20,
+    int count = kConfettiDefaultCount,
     List<Color>? colors,
   }) {
     final particles = <Particle>[];
     final defaultColors = colors ?? SeasonalTheme.config.fireworkColors;
 
     for (int i = 0; i < count; i++) {
-      final angle = (i / count) * 2 * pi + _random.nextDouble() * 0.4;
-      final speed = 250.0 + _random.nextDouble() * 100.0;
+      final angle =
+          (i / count) * 2 * pi + _random.nextDouble() * kConfettiAngleVariation;
+      final speed = kConfettiMinSpeed +
+          _random.nextDouble() * (kConfettiMaxSpeed - kConfettiMinSpeed);
 
       particles.add(Particle(
         position: position,
         velocity: Offset(
           cos(angle) * speed,
-          sin(angle) * speed - 200, // Very strong upward bias
+          sin(angle) * speed + kConfettiUpwardBias, // Very strong upward bias
         ),
         color: defaultColors[_random.nextInt(defaultColors.length)],
-        size: 5.0 + _random.nextDouble() * 3.0,
-        maxLifetime: 1.5 + _random.nextDouble() * 0.5,
-        rotationSpeed: (_random.nextDouble() - 0.5) * 20,
+        size: kConfettiMinSize +
+            _random.nextDouble() * (kConfettiMaxSize - kConfettiMinSize),
+        maxLifetime: kConfettiMinLifetime +
+            _random.nextDouble() *
+                (kConfettiMaxLifetime - kConfettiMinLifetime),
+        rotationSpeed: (_random.nextDouble() - 0.5) * kConfettiRotationSpeed,
       ));
     }
 
@@ -1104,7 +1207,7 @@ class ParticleFactory {
   /// Create snow particles for seasonal themes
   static List<Particle> createSnow({
     required Size screenSize,
-    int count = 30,
+    int count = kSnowInitialCount,
   }) {
     final particles = <Particle>[];
     final snowColors = SeasonalTheme.config.getSnowColors();
@@ -1116,15 +1219,24 @@ class ParticleFactory {
       final startY = -_random.nextDouble() * screenSize.height;
 
       // Slow downward and slight horizontal drift
-      final horizontalDrift = (_random.nextDouble() - 0.5) * 20;
+      final horizontalDrift =
+          (_random.nextDouble() - 0.5) * kSnowHorizontalDriftRange;
 
       particles.add(Particle(
         position: Offset(startX, startY),
-        velocity: Offset(horizontalDrift, 20.0 + _random.nextDouble() * 30.0),
+        velocity: Offset(
+            horizontalDrift,
+            kSnowMinVerticalSpeed +
+                _random.nextDouble() *
+                    (kSnowMaxVerticalSpeed - kSnowMinVerticalSpeed)),
         color: snowColors[_random.nextInt(snowColors.length)],
-        size: 4.0 + _random.nextDouble() * 6.0, // Larger particles: 4-10 pixels
-        maxLifetime: 10.0 + _random.nextDouble() * 5.0, // Long lifetime
-        rotationSpeed: (_random.nextDouble() - 0.5) * 2,
+        size: kSnowMinSize +
+            _random.nextDouble() *
+                (kSnowMaxSize - kSnowMinSize), // Larger particles: 4-10 pixels
+        maxLifetime: kSnowMinLifetime +
+            _random.nextDouble() *
+                (kSnowMaxLifetime - kSnowMinLifetime), // Long lifetime
+        rotationSpeed: (_random.nextDouble() - 0.5) * kSnowRotationSpeed,
         isSnow: true,
         shape: particleShape,
       ));
@@ -1136,7 +1248,7 @@ class ParticleFactory {
   /// Create gold coin particles that drop down with glowing effect
   static List<Particle> createGoldCoinRain({
     required Size screenSize,
-    int count = 15,
+    int count = kGoldCoinDefaultCount,
     Offset? position,
   }) {
     final particles = <Particle>[];
@@ -1149,23 +1261,34 @@ class ParticleFactory {
     for (int i = 0; i < count; i++) {
       // If position provided, spawn around it; otherwise random across screen
       final startX = position != null
-          ? position.dx + (_random.nextDouble() - 0.5) * 100
+          ? position.dx + (_random.nextDouble() - 0.5) * kGoldCoinSpawnSpread
           : _random.nextDouble() * screenSize.width;
       final startY = position != null
-          ? position.dy - 50 - _random.nextDouble() * 100
-          : -_random.nextDouble() * 100;
+          ? position.dy -
+              kGoldCoinSpawnHeight -
+              _random.nextDouble() * kGoldCoinSpawnSpread
+          : -_random.nextDouble() * kGoldCoinSpawnSpread;
 
       // Downward velocity with slight spread
-      final horizontalVelocity = (_random.nextDouble() - 0.5) * 50;
-      final verticalVelocity = 50.0 + _random.nextDouble() * 100.0;
+      final horizontalVelocity =
+          (_random.nextDouble() - 0.5) * kGoldCoinHorizontalRange;
+      final verticalVelocity = kGoldCoinMinVerticalSpeed +
+          _random.nextDouble() *
+              (kGoldCoinMaxVerticalSpeed - kGoldCoinMinVerticalSpeed);
 
       particles.add(Particle(
         position: Offset(startX, startY),
         velocity: Offset(horizontalVelocity, verticalVelocity),
         color: goldColors[_random.nextInt(goldColors.length)],
-        size: 6.0 + _random.nextDouble() * 8.0, // Larger coins: 6-14 pixels
-        maxLifetime: 3.0 + _random.nextDouble() * 2.0,
-        rotationSpeed: (_random.nextDouble() - 0.5) * 8, // Spinning coins
+        size: kGoldCoinMinSize +
+            _random.nextDouble() *
+                (kGoldCoinMaxSize -
+                    kGoldCoinMinSize), // Larger coins: 6-14 pixels
+        maxLifetime: kGoldCoinMinLifetime +
+            _random.nextDouble() *
+                (kGoldCoinMaxLifetime - kGoldCoinMinLifetime),
+        rotationSpeed: (_random.nextDouble() - 0.5) *
+            kGoldCoinRotationSpeed, // Spinning coins
         isSnow: false,
         shape: ParticleShape.goldCoin,
       ));

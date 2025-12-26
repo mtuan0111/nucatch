@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'particle_system.dart';
 import 'screen_shake_controller.dart';
+import 'animation_constants.dart';
 
 /// Main controller for game animation triggers
 /// Provides three main animation events:
@@ -21,7 +22,7 @@ class GameAnimationTriggers {
   void onAddPoint(Offset position, {List<Color>? colors}) {
     particleController.triggerSmallBurst(position, colors: colors);
     // Add light screen shake for impact
-    shakeController.shake(0.3);
+    shakeController.shake(kShakeLightIntensity);
   }
 
   /// Trigger large explosion when life is gained
@@ -32,7 +33,7 @@ class GameAnimationTriggers {
 
   /// Trigger screen shake when life is lost
   /// Intensity: 0.0 (no shake) to 1.0 (maximum shake)
-  void onLostLife([double intensity = 0.8]) {
+  void onLostLife([double intensity = kShakeDefaultIntensity]) {
     shakeController.shake(intensity);
   }
 }
