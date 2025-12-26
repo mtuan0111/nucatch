@@ -185,10 +185,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     combatState.isMyTurn
                         ? lang(context).yourTurn
                         : lang(context).opponentTurn,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: LayoutConfig(context).boldSubtitleStyle(),
                   ),
                 ),
               ],

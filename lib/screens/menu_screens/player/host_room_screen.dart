@@ -196,15 +196,15 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
               Text('Opponent Ready!'),
             ],
           ),
-          content: const Column(
+          content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 '✅ Your opponent is ready!',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: LayoutConfig(context).boldSubtitleStyle(),
               ),
-              SizedBox(height: 8),
-              Text(
+              const SizedBox(height: 8),
+              const Text(
                 'Press Ready when you\'re prepared to start.',
                 textAlign: TextAlign.center,
               ),
@@ -239,8 +239,8 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => const AlertDialog(
-        title: Row(
+      builder: (context) => AlertDialog(
+        title: const Row(
           children: [
             Icon(Icons.check_circle, color: Colors.green, size: 32),
             SizedBox(width: 12),
@@ -252,10 +252,10 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
           children: [
             Text(
               '🚀 Game is starting...',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: LayoutConfig(context).largeBoldStyle(),
             ),
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               'Proceeding to difficulty selection...',
               textAlign: TextAlign.center,
             ),
@@ -389,18 +389,15 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                           ),
                           child: Text(
                             _myEndpointName ?? 'Unknown',
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 2,
+                            style: LayoutConfig(context).displaySmallStyle(
+                              fontFamily: 'monospace',
                             ),
                           ),
                         ),
                         const SizedBox(height: 30),
                         Text(
                           _getRoomStateText(),
-                          style: TextStyle(
-                            fontSize: 16,
+                          style: LayoutConfig(context).subtitleStyle(
                             color: _roomState == RoomState.bothReady
                                 ? Colors.green
                                 : Colors.white70,
@@ -430,18 +427,17 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                                 border:
                                     Border.all(color: Colors.green, width: 2),
                               ),
-                              child: const Row(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(FontAwesomeIcons.check,
+                                  const Icon(FontAwesomeIcons.check,
                                       color: Colors.green, size: 16),
-                                  SizedBox(width: 8),
+                                  const SizedBox(width: 8),
                                   Text(
                                     'Ready!',
-                                    style: TextStyle(
+                                    style:
+                                        LayoutConfig(context).boldSubtitleStyle(
                                       color: Colors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
                                     ),
                                   ),
                                 ],
@@ -469,11 +465,11 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                                   _nearbyService.isConnected
                                       ? 'Connected via Nearby'
                                       : 'Advertising...',
-                                  style: TextStyle(
+                                  style:
+                                      LayoutConfig(context).secondaryTextStyle(
                                     color: _nearbyService.isConnected
                                         ? Colors.green
                                         : Colors.orange,
-                                    fontSize: 14,
                                   ),
                                 ),
                               ],

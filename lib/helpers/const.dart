@@ -106,6 +106,63 @@ class LayoutConfig {
             fontFamily: "Dancing Script",
           );
 
+  TextStyle subtitleStyle({
+    Color? color,
+    String? fontFamily,
+  }) =>
+      Theme.of(context).textTheme.bodyLarge!.copyWith(
+            color: color ?? Theme.of(context).colorScheme.onPrimary,
+            fontFamily: fontFamily,
+            fontWeight: FontWeight.w500,
+          );
+
+  TextStyle boldSubtitleStyle({
+    Color? color,
+    String? fontFamily,
+  }) =>
+      Theme.of(context).textTheme.bodyLarge!.copyWith(
+            color: color ?? Theme.of(context).colorScheme.onPrimary,
+            fontFamily: fontFamily,
+            fontWeight: FontWeight.bold,
+          );
+
+  TextStyle largeBoldStyle({
+    Color? color,
+    String? fontFamily,
+  }) =>
+      Theme.of(context).textTheme.titleMedium!.copyWith(
+            color: color ?? Theme.of(context).colorScheme.onPrimary,
+            fontFamily: fontFamily,
+            fontWeight: FontWeight.bold,
+          );
+
+  TextStyle captionStyle({
+    Color? color,
+    String? fontFamily,
+  }) =>
+      Theme.of(context).textTheme.bodySmall!.copyWith(
+            color: color ?? Theme.of(context).colorScheme.onPrimary,
+            fontFamily: fontFamily,
+          );
+
+  TextStyle secondaryTextStyle({
+    Color? color,
+    String? fontFamily,
+  }) =>
+      Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: color ?? Theme.of(context).colorScheme.onSurfaceVariant,
+            fontFamily: fontFamily,
+          );
+
+  TextStyle hintTextStyle({
+    Color? color,
+    String? fontFamily,
+  }) =>
+      Theme.of(context).textTheme.bodySmall!.copyWith(
+            color: color ?? Theme.of(context).colorScheme.onSurfaceVariant,
+            fontFamily: fontFamily,
+          );
+
   static ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(

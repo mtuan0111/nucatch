@@ -42,20 +42,12 @@ class MenuAlert extends StatelessWidget {
           if (rank != null) const SizedBox(height: 20),
           Text(
             "${lang(context).yourScoreIs}: $point",
-            style: TextStyle(
-              // color: Theme.of(context).colorScheme.onSurface,
-              fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
-              fontWeight: FontWeight.bold,
-            ),
+            style: LayoutConfig(context).contentSectionStyle(),
             textAlign: TextAlign.center,
           ),
           Text(
             "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, turnState.difficultyModel!.difficulty)}",
-            style: TextStyle(
-              // color: Theme.of(context).colorScheme.onSurface,
-              fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
-              fontWeight: FontWeight.bold,
-            ),
+            style: LayoutConfig(context).contentSectionStyle(),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
@@ -313,15 +305,8 @@ class AlertTemplate extends StatelessWidget {
                                   if (message != null)
                                     Text(
                                       message!,
-                                      style: TextStyle(
-                                        // color: Theme.of(context)
-                                        //     .colorScheme
-                                        //     .onSurfaceVariant,
-                                        fontSize: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .fontSize,
-                                      ),
+                                      style: LayoutConfig(context)
+                                          .contentSectionStyle(),
                                       textAlign: TextAlign.center,
                                     ),
                                 ],

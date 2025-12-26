@@ -222,15 +222,15 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
               Text('Host Ready!'),
             ],
           ),
-          content: const Column(
+          content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 '✅ The host is ready!',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: LayoutConfig(context).boldSubtitleStyle(),
               ),
-              SizedBox(height: 8),
-              Text(
+              const SizedBox(height: 8),
+              const Text(
                 'Press Ready when you\'re prepared to start.',
                 textAlign: TextAlign.center,
               ),
@@ -265,8 +265,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const AlertDialog(
-          title: Row(
+        builder: (context) => AlertDialog(
+          title: const Row(
             children: [
               Icon(Icons.check_circle, color: Colors.green, size: 32),
               SizedBox(width: 12),
@@ -278,10 +278,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
             children: [
               Text(
                 '🚀 Game is starting...',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: LayoutConfig(context).largeBoldStyle(),
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Waiting for host to select difficulty...',
                 textAlign: TextAlign.center,
               ),
@@ -437,10 +437,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                         const SizedBox(width: 8),
                                         Text(
                                           'Available Hosts (${_discoveredEndpoints.length})',
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          style: LayoutConfig(context)
+                                              .largeBoldStyle(),
                                         ),
                                       ],
                                     ),
@@ -468,17 +466,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                           ),
                                           title: Text(
                                             endpointName,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                            ),
+                                            style: LayoutConfig(context)
+                                                .boldSubtitleStyle(),
                                           ),
                                           subtitle: Text(
                                             'Tap to connect',
-                                            style: TextStyle(
-                                              color: Colors.grey[600],
-                                              fontSize: 12,
-                                            ),
+                                            style: LayoutConfig(context)
+                                                .hintTextStyle(),
                                           ),
                                           trailing: const Icon(
                                             Icons.arrow_forward_ios,
@@ -511,8 +505,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                   const SizedBox(height: 20),
                                   Text(
                                     'No hosts found nearby',
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                    style: LayoutConfig(context).largeBoldStyle(
                                       color: Colors.grey[600],
                                     ),
                                   ),
@@ -520,8 +513,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                   Text(
                                     'Make sure a friend is hosting\nand both devices are close together',
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 14,
+                                    style: LayoutConfig(context)
+                                        .secondaryTextStyle(
                                       color: Colors.grey[500],
                                     ),
                                   ),
@@ -547,8 +540,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                   const SizedBox(height: 20),
                                   Text(
                                     _getRoomStateText(),
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                    style: LayoutConfig(context).largeBoldStyle(
                                       color: _roomState == RoomState.bothReady
                                           ? Colors.green
                                           : Theme.of(context)
@@ -582,18 +574,17 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                           border: Border.all(
                                               color: Colors.green, width: 2),
                                         ),
-                                        child: const Row(
+                                        child: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Icon(FontAwesomeIcons.check,
+                                            const Icon(FontAwesomeIcons.check,
                                                 color: Colors.green, size: 16),
-                                            SizedBox(width: 8),
+                                            const SizedBox(width: 8),
                                             Text(
                                               'Ready!',
-                                              style: TextStyle(
+                                              style: LayoutConfig(context)
+                                                  .boldSubtitleStyle(
                                                 color: Colors.green,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
                                               ),
                                             ),
                                           ],
@@ -630,13 +621,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                       : _isDiscovering
                                           ? 'Discovering...'
                                           : 'Not discovering',
-                                  style: TextStyle(
+                                  style:
+                                      LayoutConfig(context).secondaryTextStyle(
                                     color: _nearbyService.isConnected
                                         ? Colors.green
                                         : _isDiscovering
                                             ? Colors.orange
                                             : Colors.grey,
-                                    fontSize: 14,
                                   ),
                                 ),
                               ],

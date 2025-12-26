@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/services/auth_services.dart';
 
 /// Debug widget to verify Firebase Anonymous Authentication
@@ -89,12 +90,9 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
+          Text(
             '🔐 Auth Debug',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
+            style: LayoutConfig(context).boldSubtitleStyle(),
           ),
           const SizedBox(height: 8),
           Text('Status: $_status'),
@@ -102,7 +100,7 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
             const SizedBox(height: 4),
             Text(
               'User ID: ${_userId!.substring(0, 8)}...',
-              style: const TextStyle(fontSize: 12),
+              style: LayoutConfig(context).captionStyle(),
             ),
             const SizedBox(height: 4),
             Text('Anonymous: $_isAnonymous'),
@@ -117,7 +115,8 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
-                child: const Text('Refresh', style: TextStyle(fontSize: 12)),
+                child: Text('Refresh',
+                    style: LayoutConfig(context).captionStyle()),
               ),
               const SizedBox(width: 8),
               ElevatedButton(
@@ -126,7 +125,8 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
-                child: const Text('Sign In', style: TextStyle(fontSize: 12)),
+                child: Text('Sign In',
+                    style: LayoutConfig(context).captionStyle()),
               ),
               const SizedBox(width: 8),
               ElevatedButton(
@@ -135,7 +135,8 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
-                child: const Text('Sign Out', style: TextStyle(fontSize: 12)),
+                child: Text('Sign Out',
+                    style: LayoutConfig(context).captionStyle()),
               ),
             ],
           ),
