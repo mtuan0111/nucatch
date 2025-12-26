@@ -690,15 +690,18 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                           secondProgress,
                                                                       strokeWidth:
                                                                           kProgressStrokeWidth,
-                                                                      backgroundColor: Colors
-                                                                          .white
+                                                                      backgroundColor: Theme.of(
+                                                                              context)
+                                                                          .colorScheme
+                                                                          .onSurface
                                                                           .withOpacity(
                                                                               0.3),
                                                                       valueColor:
-                                                                          const AlwaysStoppedAnimation<
+                                                                          AlwaysStoppedAnimation<
                                                                               Color>(
-                                                                        Colors
-                                                                            .white,
+                                                                        Theme.of(context)
+                                                                            .colorScheme
+                                                                            .onSurface,
                                                                       ),
                                                                     ),
                                                                   ),
@@ -724,8 +727,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                               kFontSize3XL,
                                                                           fontWeight:
                                                                               FontWeight.bold,
-                                                                          color:
-                                                                              Colors.white,
+                                                                          color: Theme.of(context)
+                                                                              .colorScheme
+                                                                              .onSurface,
                                                                         ),
                                                                     child: Text(
                                                                       time
@@ -746,8 +750,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                         .copyWith(
                                                                           fontSize:
                                                                               kFontSizeM,
-                                                                          color:
-                                                                              Colors.white,
+                                                                          color: Theme.of(context)
+                                                                              .colorScheme
+                                                                              .onSurface,
                                                                         ),
                                                                     child: Text(
                                                                         readyText),
@@ -767,8 +772,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                               kFontSize2XL,
                                                                           fontWeight:
                                                                               FontWeight.bold,
-                                                                          color:
-                                                                              Colors.white,
+                                                                          color: Theme.of(context)
+                                                                              .colorScheme
+                                                                              .onSurface,
                                                                         ),
                                                                     child: Text(
                                                                         goText),
@@ -815,7 +821,10 @@ class _PlayScreenState extends State<PlayScreen> {
                                                           turnState
                                                               .requirementString!
                                                               .length,
-                                                    ),
+                                                    ).copyWith(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onPrimary),
                                                   ),
                                                   // if (turnState.expect ==
                                                   //     turnState.requirementString)
@@ -946,7 +955,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                     turnState
                                                                         .requirementString!
                                                                         .length,
-                                                              ),
+                                                              ).copyWith(
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .colorScheme
+                                                                          .onPrimary),
                                                             ),
                                                           ),
                                                         ),

@@ -24,7 +24,7 @@ import 'animations/particle.dart';
 /// - Card colors and UI elements
 class SeasonalTheme {
   /// Manual theme override - Set to null for automatic date-based switching
-  static ThemeType? _manualOverride = ThemeType.easter;
+  static ThemeType? _manualOverride = ThemeType.lunarNewYear;
 
   /// Current active theme - Automatically determined by date or manual override
   static ThemeType get current {

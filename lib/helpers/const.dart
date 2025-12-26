@@ -91,10 +91,11 @@ class LayoutConfig {
       );
 
   TextStyle contentSectionStyle({
+    Color? color,
     String? fontFamily,
   }) =>
       Theme.of(context).textTheme.bodyLarge!.copyWith(
-            color: Theme.of(context).colorScheme.onPrimary,
+            color: color ?? Theme.of(context).colorScheme.onPrimary,
             fontFamily: fontFamily,
           );
 

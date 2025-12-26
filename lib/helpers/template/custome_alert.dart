@@ -42,12 +42,14 @@ class MenuAlert extends StatelessWidget {
           if (rank != null) const SizedBox(height: 20),
           Text(
             "${lang(context).yourScoreIs}: $point",
-            style: LayoutConfig(context).contentSectionStyle(),
+            style: LayoutConfig(context).contentSectionStyle(
+                color: Theme.of(context).colorScheme.onSurface),
             textAlign: TextAlign.center,
           ),
           Text(
             "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, turnState.difficultyModel!.difficulty)}",
-            style: LayoutConfig(context).contentSectionStyle(),
+            style: LayoutConfig(context).contentSectionStyle(
+                color: Theme.of(context).colorScheme.onSurface),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
@@ -306,7 +308,10 @@ class AlertTemplate extends StatelessWidget {
                                     Text(
                                       message!,
                                       style: LayoutConfig(context)
-                                          .contentSectionStyle(),
+                                          .contentSectionStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface),
                                       textAlign: TextAlign.center,
                                     ),
                                 ],

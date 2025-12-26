@@ -74,17 +74,18 @@ class UpdateNoticeDialog extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   lang(context).whatsNew,
-                  style: LayoutConfig(context).contentSectionStyle().copyWith(
+                  style: LayoutConfig(context)
+                      .contentSectionStyle(
+                          color: Theme.of(context).colorScheme.onSurface)
+                      .copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   localizedMessage,
-                  style: LayoutConfig(context).contentSectionStyle().copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+                  style: LayoutConfig(context).contentSectionStyle(
+                      color: Theme.of(context).colorScheme.onSurface),
                 ),
               ],
               if (isForceUpdate) ...[
@@ -103,19 +104,16 @@ class UpdateNoticeDialog extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.error_outline,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                         // size: 20,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           lang(context).forceUpdateMessage,
-                          style: LayoutConfig(context)
-                              .contentSectionStyle()
-                              .copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                // fontSize: 12,
-                              ),
+                          style: LayoutConfig(context).contentSectionStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                         ),
                       ),
                     ],
@@ -147,16 +145,17 @@ class UpdateNoticeDialog extends StatelessWidget {
       children: [
         Text(
           label,
-          style: LayoutConfig(context).contentSectionStyle().copyWith(
+          style: LayoutConfig(context)
+              .contentSectionStyle(
+                  color: Theme.of(context).colorScheme.onSurface)
+              .copyWith(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onPrimary,
               ),
         ),
         Text(
           value,
-          style: LayoutConfig(context).contentSectionStyle().copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+          style: LayoutConfig(context).contentSectionStyle(
+              color: Theme.of(context).colorScheme.onSurface),
         ),
       ],
     );
