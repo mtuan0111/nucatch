@@ -76,7 +76,7 @@ class UpdateNoticeDialog extends StatelessWidget {
                   lang(context).whatsNew,
                   style: LayoutConfig(context).contentSectionStyle().copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                 ),
                 const SizedBox(height: 8),
@@ -149,7 +149,7 @@ class UpdateNoticeDialog extends StatelessWidget {
           label,
           style: LayoutConfig(context).contentSectionStyle().copyWith(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
         ),
         Text(

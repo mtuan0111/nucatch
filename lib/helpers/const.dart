@@ -94,7 +94,7 @@ class LayoutConfig {
     String? fontFamily,
   }) =>
       Theme.of(context).textTheme.bodyLarge!.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
+            color: Theme.of(context).colorScheme.onPrimary,
             fontFamily: fontFamily,
           );
 
@@ -102,7 +102,7 @@ class LayoutConfig {
     String? fontFamily,
   }) =>
       Theme.of(context).textTheme.displaySmall!.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
+            color: Theme.of(context).colorScheme.onPrimary,
             fontFamily: "Dancing Script",
           );
 

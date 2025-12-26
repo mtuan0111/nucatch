@@ -104,17 +104,14 @@ class RankingInfoRow extends StatelessWidget {
         Icon(
           icon,
           size: Theme.of(context).textTheme.titleLarge?.fontSize,
-          color: color ?? Theme.of(context).colorScheme.onSurface,
+          color: color ?? Theme.of(context).colorScheme.onPrimary,
         ),
         const SizedBox(width: 5),
         Flexible(
           fit: FlexFit.loose,
           child: Text(
             text,
-            style:
-                (style ?? LayoutConfig(context).contentSectionStyle()).copyWith(
-              color: color ?? Theme.of(context).colorScheme.onSurface,
-            ),
+            style: (style ?? LayoutConfig(context).contentSectionStyle()),
             overflow: TextOverflow.ellipsis,
             softWrap: true,
           ),

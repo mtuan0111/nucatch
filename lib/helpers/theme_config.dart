@@ -24,7 +24,7 @@ import 'animations/particle.dart';
 /// - Card colors and UI elements
 class SeasonalTheme {
   /// Manual theme override - Set to null for automatic date-based switching
-  static ThemeType? _manualOverride = null;
+  static ThemeType? _manualOverride = ThemeType.easter;
 
   /// Current active theme - Automatically determined by date or manual override
   static ThemeType get current {
@@ -165,8 +165,9 @@ class SeasonalTheme {
   static final Map<ThemeType, ThemeConfig> _themes = {
     ThemeType.defaultTheme: ThemeConfig(
       name: 'Default',
-      primaryColor: const Color(0xFF00AE5A), // Green
-      secondaryColor: const Color(0xFF003369), // Navy blue
+      primaryColor: const Color(0xFF00C853), // Bright green (adjusted)
+      secondaryColor:
+          const Color(0xFF00B0FF), // Bright blue (adjusted to match brightness)
       tertiaryColor: const Color(0xFF00AE5A), // Green
       fireworkColors: [
         const Color(0xFFFF6B6B), // Warm red
@@ -183,10 +184,11 @@ class SeasonalTheme {
     ),
     ThemeType.newYear: ThemeConfig(
       name: 'New Year',
-      primaryColor: const Color(0xFFFFD700), // Gold
-      secondaryColor: const Color(0xFFC0C0C0), // Silver
+      primaryColor: const Color(0xFFFFD54F), // Light gold (adjusted)
+      secondaryColor: const Color(
+          0xFFEEEEEE), // Very light gray (adjusted to match brightness)
       tertiaryColor: const Color(0xFFFFFFFF), // White
-      cardColor: const Color(0xFFC0C0C0), // Silver for cards
+      cardColor: const Color(0xFFE0E0E0), // Light silver for cards
       fireworkColors: [
         const Color(0xFFFFD700), // Gold
         const Color(0xFFC0C0C0), // Silver
@@ -203,9 +205,10 @@ class SeasonalTheme {
     ),
     ThemeType.lunarNewYear: ThemeConfig(
       name: 'Lunar New Year',
-      primaryColor: const Color(0xFFD4001D), // Lucky red
-      secondaryColor: const Color(0xFFFFD700), // Gold
-      tertiaryColor: const Color(0xFFDC143C), // Crimson
+      primaryColor: const Color(0xFFFF5252), // Bright red (adjusted)
+      secondaryColor:
+          const Color(0xFFFFCA28), // Bright gold (adjusted to match brightness)
+      tertiaryColor: const Color(0xFFFF6B6B), // Light red
       cardColor: const Color(0xFFFFD700), // Gold for cards
       fireworkColors: [
         const Color(0xFFFF0000), // Red
@@ -234,10 +237,11 @@ class SeasonalTheme {
     ),
     ThemeType.valentine: ThemeConfig(
       name: 'Valentine',
-      primaryColor: const Color(0xFFFF1744), // Bright pink/red
-      secondaryColor: const Color(0xFFE91E63), // Pink
+      primaryColor: const Color(0xFFFF4081), // Bright pink (adjusted)
+      secondaryColor: const Color(
+          0xFFFF6090), // Bright pink 2 (adjusted to match brightness)
       tertiaryColor: const Color(0xFFF48FB1), // Light pink
-      cardColor: const Color(0xFFE91E63), // Pink for cards
+      cardColor: const Color(0xFFFF80AB), // Light pink for cards
       fireworkColors: [
         const Color(0xFFFF1744), // Bright pink/red
         const Color(0xFFE91E63), // Pink
@@ -265,10 +269,11 @@ class SeasonalTheme {
     ),
     ThemeType.holi: ThemeConfig(
       name: 'Holi',
-      primaryColor: const Color(0xFFFF1493), // Deep pink
-      secondaryColor: const Color(0xFF00CED1), // Turquoise
+      primaryColor: const Color(0xFFFF6090), // Bright pink (adjusted)
+      secondaryColor:
+          const Color(0xFF4DD0E1), // Bright cyan (adjusted to match brightness)
       tertiaryColor: const Color(0xFFFFD700), // Gold
-      cardColor: const Color(0xFF9B59B6), // Purple for cards
+      cardColor: const Color(0xFFBA68C8), // Light purple for cards
       fireworkColors: [
         const Color(0xFFFF1493), // Deep pink
         const Color(0xFF00CED1), // Turquoise
@@ -289,8 +294,9 @@ class SeasonalTheme {
     ),
     ThemeType.easter: ThemeConfig(
       name: 'Easter',
-      primaryColor: const Color(0xFF9370DB), // Medium purple
-      secondaryColor: const Color(0xFFFFEB3B), // Yellow
+      primaryColor: const Color(0xFFCE93D8), // Light purple (adjusted)
+      secondaryColor: const Color(
+          0xFFFFF176), // Light yellow (adjusted to match brightness)
       tertiaryColor: const Color(0xFFE6E6FA), // Lavender
       cardColor: const Color(0xFFE6E6FA), // Lavender for cards
       fireworkColors: [
@@ -313,10 +319,11 @@ class SeasonalTheme {
     ),
     ThemeType.earthDay: ThemeConfig(
       name: 'Earth Day',
-      primaryColor: const Color(0xFF228B22), // Forest green
-      secondaryColor: const Color(0xFF8FBC8F), // Dark sea green
+      primaryColor: const Color(0xFF66BB6A), // Bright green (adjusted)
+      secondaryColor:
+          const Color(0xFF81C784), // Light green (adjusted to match brightness)
       tertiaryColor: const Color(0xFF90EE90), // Light green
-      cardColor: const Color(0xFF8FBC8F), // Dark sea green for cards
+      cardColor: const Color(0xFF81C784), // Light green for cards
       fireworkColors: [
         const Color(0xFF228B22), // Forest green
         const Color(0xFF32CD32), // Lime green
@@ -344,8 +351,9 @@ class SeasonalTheme {
     ),
     ThemeType.pride: ThemeConfig(
       name: 'Pride',
-      primaryColor: const Color(0xFFE40303), // Red
-      secondaryColor: const Color(0xFF0000FF), // Blue
+      primaryColor: const Color(0xFFFF5252), // Bright red (adjusted)
+      secondaryColor:
+          const Color(0xFF42A5F5), // Bright blue (adjusted to match brightness)
       tertiaryColor: const Color(0xFFFF8C00), // Orange
       cardColor: const Color(0xFF9B59B6), // Purple for cards
       fireworkColors: [
@@ -363,10 +371,11 @@ class SeasonalTheme {
     ),
     ThemeType.halloween: ThemeConfig(
       name: 'Halloween',
-      primaryColor: const Color(0xFFFF6600), // Orange
-      secondaryColor: const Color(0xFF2C0056), // Deep purple
-      tertiaryColor: const Color(0xFF000000), // Black
-      cardColor: const Color(0xFF2C0056), // Deep purple for cards
+      primaryColor: const Color(0xFFFF9800), // Bright orange (adjusted)
+      secondaryColor: const Color(
+          0xFFAB47BC), // Bright purple (adjusted to match brightness)
+      tertiaryColor: const Color(0xFF424242), // Dark gray (adjusted from black)
+      cardColor: const Color(0xFF9C27B0), // Bright purple for cards
       fireworkColors: [
         const Color(0xFFFF6600), // Orange
         const Color(0xFF9B30FF), // Purple
@@ -393,10 +402,11 @@ class SeasonalTheme {
     ),
     ThemeType.diwali: ThemeConfig(
       name: 'Diwali',
-      primaryColor: const Color(0xFFFFD700), // Gold
-      secondaryColor: const Color(0xFFFF1493), // Magenta
-      tertiaryColor: const Color(0xFFDC143C), // Crimson
-      cardColor: const Color(0xFFFF1493), // Magenta for cards
+      primaryColor: const Color(0xFFFFCA28), // Bright gold (adjusted)
+      secondaryColor:
+          const Color(0xFFFF6090), // Bright pink (adjusted to match brightness)
+      tertiaryColor: const Color(0xFFFF5252), // Bright red
+      cardColor: const Color(0xFFFF6090), // Bright magenta for cards
       fireworkColors: [
         const Color(0xFFFFD700), // Gold
         const Color(0xFFFF1493), // Magenta
@@ -423,10 +433,11 @@ class SeasonalTheme {
     ),
     ThemeType.hanukkah: ThemeConfig(
       name: 'Hanukkah',
-      primaryColor: const Color(0xFF0047AB), // Cobalt blue
-      secondaryColor: const Color(0xFFFFFFFF), // White
+      primaryColor: const Color(0xFF42A5F5), // Bright blue (adjusted)
+      secondaryColor: const Color(
+          0xFFEEEEEE), // Very light gray (adjusted to match brightness)
       tertiaryColor: const Color(0xFFC0C0C0), // Silver
-      cardColor: const Color(0xFF0047AB), // Blue for cards
+      cardColor: const Color(0xFF42A5F5), // Bright blue for cards
       fireworkColors: [
         const Color(0xFF0047AB), // Cobalt blue
         const Color(0xFFFFFFFF), // White
@@ -453,10 +464,11 @@ class SeasonalTheme {
     ),
     ThemeType.christmas: ThemeConfig(
       name: 'Christmas',
-      primaryColor: const Color(0xFFCC0000), // Christmas red
-      secondaryColor: const Color(0xFF1E5A8E), // Christmas blue
-      tertiaryColor: const Color(0xFF0F7D3F), // Christmas green
-      cardColor: const Color(0xFF0F7D3F), // Christmas green for cards
+      primaryColor: const Color(0xFFEF5350), // Bright red (adjusted)
+      secondaryColor: const Color(
+          0xFF66BB6A), // Bright green (adjusted to match brightness)
+      tertiaryColor: const Color(0xFFFFD700), // Gold
+      cardColor: const Color(0xFF66BB6A), // Bright green for cards
       fireworkColors: [
         const Color(0xFFFF0000), // Christmas red
         const Color(0xFF00FF00), // Christmas green
@@ -479,10 +491,11 @@ class SeasonalTheme {
     ),
     ThemeType.kwanzaa: ThemeConfig(
       name: 'Kwanzaa',
-      primaryColor: const Color(0xFF000000), // Black (People)
-      secondaryColor: const Color(0xFFDC143C), // Red (Struggle)
-      tertiaryColor: const Color(0xFF228B22), // Green (Future)
-      cardColor: const Color(0xFF228B22), // Green for cards
+      primaryColor: const Color(0xFF616161), // Medium gray (adjusted)
+      secondaryColor:
+          const Color(0xFFEF5350), // Bright red (adjusted to match brightness)
+      tertiaryColor: const Color(0xFF66BB6A), // Bright green (adjusted)
+      cardColor: const Color(0xFF66BB6A), // Bright green for cards
       fireworkColors: [
         const Color(0xFF000000), // Black
         const Color(0xFFDC143C), // Red
@@ -573,7 +586,7 @@ class ThemeConfig {
   }
 
   /// Calculate relative luminance and determine if color is light or dark
-  /// Returns white text for dark backgrounds, black text for light backgrounds
+  /// Returns dark text for bright backgrounds, white text for dark backgrounds
   Color _getContrastingTextColor(Color backgroundColor) {
     // Calculate relative luminance (WCAG formula)
     // Note: r, g, b properties return values from 0.0 to 1.0
@@ -588,13 +601,15 @@ class ThemeConfig {
 
     final luminance = 0.2126 * rLinear + 0.7152 * gLinear + 0.0722 * bLinear;
 
-    // Use WCAG AA standard: luminance > 0.4 is considered light enough for dark text
-    // This provides better contrast especially for colors like gold, yellow, light gray
-    // For very light colors (luminance > 0.7), use very dark text (almost black)
-    if (luminance > 0.7) {
-      return Colors.black87; // Very dark text for very light backgrounds
-    } else if (luminance > 0.4) {
-      return Colors.black; // Dark text for light backgrounds
+    // WCAG AA standard for contrast:
+    // - Very light colors (luminance > 0.6): use very dark text (almost black)
+    // - Light colors (luminance > 0.35): use dark text (black)
+    // - Dark colors (luminance <= 0.35): use white text
+    // Adjusted thresholds to ensure bright theme colors get dark text
+    if (luminance > 0.6) {
+      return Colors.black87; // Very dark text for very bright backgrounds
+    } else if (luminance > 0.35) {
+      return Colors.black; // Dark text for bright backgrounds
     } else {
       return Colors.white; // White text for dark backgrounds
     }
@@ -614,7 +629,8 @@ class ThemeConfig {
     final luminance = 0.2126 * rLinear + 0.7152 * gLinear + 0.0722 * bLinear;
 
     // Use same threshold as text color for consistency
-    return luminance > 0.4 ? Brightness.light : Brightness.dark;
+    // luminance > 0.35 = light theme, <= 0.35 = dark theme
+    return luminance > 0.35 ? Brightness.light : Brightness.dark;
   }
 
   /// Get fog gradient colors
