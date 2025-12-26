@@ -76,12 +76,15 @@ class UpdateNoticeDialog extends StatelessWidget {
                   lang(context).whatsNew,
                   style: LayoutConfig(context).contentSectionStyle().copyWith(
                         fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   localizedMessage,
-                  style: LayoutConfig(context).contentSectionStyle(),
+                  style: LayoutConfig(context).contentSectionStyle().copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                 ),
               ],
               if (isForceUpdate) ...[
@@ -98,9 +101,9 @@ class UpdateNoticeDialog extends StatelessWidget {
                   // ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.error_outline,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         // size: 20,
                       ),
                       const SizedBox(width: 8),
@@ -110,7 +113,7 @@ class UpdateNoticeDialog extends StatelessWidget {
                           style: LayoutConfig(context)
                               .contentSectionStyle()
                               .copyWith(
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.onPrimary,
                                 // fontSize: 12,
                               ),
                         ),
@@ -146,11 +149,14 @@ class UpdateNoticeDialog extends StatelessWidget {
           label,
           style: LayoutConfig(context).contentSectionStyle().copyWith(
                 fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
               ),
         ),
         Text(
           value,
-          style: LayoutConfig(context).contentSectionStyle(),
+          style: LayoutConfig(context).contentSectionStyle().copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
         ),
       ],
     );

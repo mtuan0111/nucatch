@@ -451,8 +451,11 @@ class _AboutScreenState extends State<AboutScreen> {
                             style: LayoutConfig(context).contentSectionStyle(),
                           ),
                           const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          Wrap(
+                            // mainAxisAlignment: MainAxisAlignment.,
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            spacing: 5,
+                            runSpacing: 10,
                             children: [
                               _buildSocialButton(
                                 context,
@@ -606,46 +609,54 @@ class _AboutScreenState extends State<AboutScreen> {
     required String label,
     required VoidCallback onTap,
   }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(12 / 5),
-        topRight: Radius.circular(12),
-        bottomLeft: Radius.circular(12),
-        bottomRight: Radius.circular(12),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12 / 5),
-            topRight: Radius.circular(12),
-            bottomLeft: Radius.circular(12),
-            bottomRight: Radius.circular(12),
-          ),
-          border: Border.all(
-            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: Theme.of(context).colorScheme.onPrimary,
-              size: 24,
+    return Row(
+      children: [
+        Expanded(
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12 / 5),
+              topRight: Radius.circular(12),
+              bottomLeft: Radius.circular(12),
+              bottomRight: Radius.circular(12),
             ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: LayoutConfig(context).contentSectionStyle().copyWith(
-                    fontSize: 10,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12 / 5),
+                  topRight: Radius.circular(12),
+                  bottomLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
+                ),
+                border: Border.all(
+                  color:
+                      Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    icon,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    size: 24,
                   ),
+                  const SizedBox(width: 4),
+                  Text(
+                    label,
+                    style: LayoutConfig(context).contentSectionStyle().copyWith(
+                          fontSize: 10,
+                        ),
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
