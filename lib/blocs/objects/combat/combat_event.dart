@@ -137,6 +137,12 @@ class CombatOpponentMoveReceived extends CombatEvent {
   });
 }
 
+class CombatOpponentTypingUpdate extends CombatEvent {
+  final String currentInput;
+
+  CombatOpponentTypingUpdate({required this.currentInput});
+}
+
 class CombatOpponentDisconnected extends CombatEvent {}
 
 // ===== Legacy aliases for backward compatibility =====

@@ -9,7 +9,6 @@ import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
-import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/helpers/animations/animated_game_wrapper.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
@@ -324,7 +323,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
   Widget _buildGameArea(CombatState combatState) {
     // Show countdown intro animation
-    if (combatState.status == CombatStatus.intro) {
+    if (combatState.combatStatus == CombatStatus.intro) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

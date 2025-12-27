@@ -4,7 +4,7 @@ import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
-import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
 import 'package:nucatch/blocs/objects/audio/audio_event.dart';
@@ -110,6 +110,8 @@ class _MenuNavState extends State<MenuNav> {
                             BlocProvider(
                               create: (context) => CombatBloc(
                                 roomService: CombatNearbyService(),
+                                audioBloc: context.read<AudioBloc>(),
+                                vibrationBloc: context.read<VibrationBloc>(),
                               ),
                             ),
                           ],

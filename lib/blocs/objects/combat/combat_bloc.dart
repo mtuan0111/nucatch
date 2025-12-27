@@ -2,23 +2,33 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
+import 'package:nucatch/blocs/objects/audio/audio_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
-import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
+import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/services/combat_nearby_service.dart';
 
 class CombatBloc extends Bloc<CombatEvent, CombatState> {
   final CombatNearbyService _roomService;
+  final AudioBloc _audioBloc;
+  final VibrationBloc _vibrationBloc;
   StreamSubscription? _messageSubscription;
 
   // Expose isHost status from room service
   bool get isHost => _roomService.isHost;
 
-  CombatBloc({required CombatNearbyService roomService})
-      : _roomService = roomService,
+  CombatBloc({
+    required CombatNearbyService roomService,
+    required AudioBloc audioBloc,
+    required VibrationBloc vibrationBloc,
+  })  : _roomService = roomService,
+        _audioBloc = audioBloc,
+        _vibrationBloc = vibrationBloc,
         super(const CombatState()) {
     on<CombatTap>(_onCombatTap);
     on<CombatAddPoint>(_onCombatAddPoint);
@@ -27,10 +37,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatTurnStarted>(_onCombatTurnStarted);
     on<CombatTurnReceived>(_onCombatTurnReceived);
     on<CombatOpponentMoveReceived>(_onCombatOpponentMoveReceived);
+    on<CombatOpponentTypingUpdate>(_onCombatOpponentTypingUpdate);
     on<CombatGameEnded>(_onCombatGameEnded);
     on<CombatOpponentDisconnected>(_onCombatOpponentDisconnected);
     on<CombatDifficultyChanged>(_onCombatDifficultySelected);
-    on<CombatLevelChanged>(_CombatonSetLevel);
+    on<CombatLevelChanged>(_onCombatSetLevel);
     on<CombatRequiredStringGenerated>(_onCombatGeneratedRequiredString);
     on<CombatExpectShown>(_onCombatShowExpect);
     on<CombatNumberReset>(_onCombatResetNewNumber);
@@ -88,8 +99,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         case 'typing_update':
           // Real-time typing progress from opponent
           if (!state.isMyTurn) {
-            emit(state.copyWith(
-              opponentInput: data['currentInput'],
+            add(CombatOpponentTypingUpdate(
+              currentInput: data['currentInput'],
             ));
           }
           break;
@@ -226,8 +237,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     });
 
     // Calculate show time based on level (similar to solo mode)
-    final level =
-        (state.point ~/ (state.difficultyModel?.pointEachTurn ?? 1)) + 1;
+    final level = state.level;
     final diffShowLevelMilisecond = 100; // Increase by 100ms per level
     final showTime = 1000 + level * diffShowLevelMilisecond;
 
@@ -262,8 +272,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     ));
 
     // Calculate show time based on level (similar to solo mode)
-    final level =
-        (state.point ~/ (state.difficultyModel?.pointEachTurn ?? 1)) + 1;
+    final level = state.level;
     final diffShowLevelMilisecond = 100; // Increase by 100ms per level
     final showTime = 1000 + level * diffShowLevelMilisecond;
 
@@ -341,6 +350,15 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Start my turn
     add(CombatTurnStarted(isMyTurn: true));
+  }
+
+  Future<void> _onCombatOpponentTypingUpdate(
+    CombatOpponentTypingUpdate event,
+    Emitter<CombatState> emit,
+  ) async {
+    emit(state.copyWith(
+      opponentInput: event.currentInput,
+    ));
   }
 
   Future<void> _onCombatGameEnded(
@@ -421,30 +439,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // When correct, check if turn is finished
     if (state.isFinishTarget) {
       await _onCombatAddPoint(CombatAddPoint(), emit);
-
-      // Prepare for next turn - opponent's turn
-      await Future.delayed(const Duration(milliseconds: 1000));
-
-      final newScore = state.point;
-      final newLives = state.lifeRemaining;
-
-      // Send move to opponent
-      await _sendMessage({
-        'type': 'move_completed',
-        'input': state.typing,
-        'correct': true,
-        'score': newScore,
-        'lives': newLives,
-      });
-
-      // Check if game ended
-      if (newLives <= 0) {
-        add(CombatGameEnded(isWinner: false, reason: 'my_lives_out'));
-        return;
-      }
-
-      // Start opponent's turn
-      add(CombatTurnStarted(isMyTurn: false));
+      // Note: Level progression and audio handled in _onCombatAddPoint
+      // Next turn will be triggered by CombatLevelChanged event
     }
   }
 
@@ -476,7 +472,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
   }
 
-  Future<void> _CombatonSetLevel(
+  Future<void> _onCombatSetLevel(
     CombatLevelChanged event,
     Emitter<CombatState> emit,
   ) async {
@@ -494,6 +490,18 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         typing: "",
       ),
     );
+
+    // Send move completion to opponent
+    final newScore = state.point;
+    final newLives = state.lifeRemaining;
+
+    await _sendMessage({
+      'type': 'move_completed',
+      'input': state.typing,
+      'correct': true,
+      'score': newScore,
+      'lives': newLives,
+    });
 
     await _onCombatShowExpect(
         CombatExpectShown(Duration(milliseconds: state.getTimeShowTarget)),
@@ -519,11 +527,44 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatAddPoint event,
     Emitter<CombatState> emit,
   ) async {
+    _vibrationBloc.add(VibrateShort());
+
     emit(
       state.copyWith(
         point: state.point + state.difficultyModel!.pointEachTurn,
       ),
     );
+
+    // Increment timesCorrect and add life bonus (every 3 correct turns)
+    emit(
+      state.copyWith(
+        timesCorrect: state.timesCorrect + 1,
+        lifeRemaining: state.timesCorrect >= 2
+            ? state.lifeRemaining + 1
+            : state.lifeRemaining,
+      ),
+    );
+
+    // Play sound based on whether leveling up
+    if (state.isAbleToLevelUp) {
+      _audioBloc.add(PlayCorrectUpAudio());
+    } else {
+      _audioBloc.add(PlayCorrectAudio());
+    }
+
+    await Future.delayed(const Duration(milliseconds: 1000));
+    if (isClosed) return;
+
+    // Check if player should level up
+    if (state.isAbleToLevelUp) {
+      add(CombatLevelChanged(
+        level: state.level + 1,
+      ));
+    } else {
+      add(CombatLevelChanged(
+        level: state.level,
+      ));
+    }
   }
 
   Future<String> _onCombatGeneratedRequiredString(
@@ -611,7 +652,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     await Future.delayed(
         Duration(milliseconds: event.duration.inMilliseconds + 500));
-    await _CombatonSetLevel(
+    await _onCombatSetLevel(
       CombatLevelChanged(level: state.level),
       emit,
     );
