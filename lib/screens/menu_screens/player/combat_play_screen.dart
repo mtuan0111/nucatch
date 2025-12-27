@@ -25,7 +25,8 @@ class CombatPlayScreen extends StatefulWidget {
 }
 
 class _CombatPlayScreenState extends State<CombatPlayScreen> {
-  double get screenWidth => max(MediaQuery.of(context).size.width, kMinScreenWidth);
+  double get screenWidth =>
+      max(MediaQuery.of(context).size.width, kMinScreenWidth);
 
   late bool wasLifeIncreased;
   late bool wasLifeDecreased;
@@ -663,7 +664,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             ),
             const SizedBox(height: kSpaceXL),
             // Show opponent's typing progress if available
-            if (combatState.opponentInput != null && combatState.opponentInput!.isNotEmpty)
+            if (combatState.opponentInput != null &&
+                combatState.opponentInput!.isNotEmpty)
               Wrap(
                 children: List.generate(
                   combatState.expect!.length,

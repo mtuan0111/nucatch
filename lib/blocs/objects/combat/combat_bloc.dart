@@ -226,13 +226,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     });
 
     // Calculate show time based on level (similar to solo mode)
-    final level = (state.point ~/ (state.difficultyModel?.pointEachTurn ?? 1)) + 1;
+    final level =
+        (state.point ~/ (state.difficultyModel?.pointEachTurn ?? 1)) + 1;
     final diffShowLevelMilisecond = 100; // Increase by 100ms per level
     final showTime = 1000 + level * diffShowLevelMilisecond;
 
     // Wait for the show time, then transition to typing mode
     await Future.delayed(Duration(milliseconds: showTime));
-    
+
     if (isClosed) return;
 
     emit(state.copyWith(
@@ -261,13 +262,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     ));
 
     // Calculate show time based on level (similar to solo mode)
-    final level = (state.point ~/ (state.difficultyModel?.pointEachTurn ?? 1)) + 1;
+    final level =
+        (state.point ~/ (state.difficultyModel?.pointEachTurn ?? 1)) + 1;
     final diffShowLevelMilisecond = 100; // Increase by 100ms per level
     final showTime = 1000 + level * diffShowLevelMilisecond;
 
     // Wait for the show time, then transition to typing mode
     await Future.delayed(Duration(milliseconds: showTime));
-    
+
     if (isClosed) return;
 
     emit(state.copyWith(
@@ -301,7 +303,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         if (choice == 0) {
           // Plus/minus calculation with higher level
           final result = Helper().randomCalculatorWithPlusMinus(level + 2);
-          return {'requirement': result['expression']!, 'expect': result['expect']!};
+          return {
+            'requirement': result['expression']!,
+            'expect': result['expect']!
+          };
         } else if (choice == 1) {
           // Generate a random number with higher level
           final randomNum = Helper().generateRandomNumber(level + 5);
@@ -309,7 +314,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         } else {
           // Multiplication/division calculation with higher level
           final result = Helper().randomCalculatorWithMulDiv(level + 2);
-          return {'requirement': result['expression']!, 'expect': result['expect']!};
+          return {
+            'requirement': result['expression']!,
+            'expect': result['expect']!
+          };
         }
     }
   }
@@ -445,7 +453,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     Emitter<CombatState> emit,
   ) async {
     final newTyping = "${state.typing}${keyboardArray[keyValue].toString()}";
-    
+
     emit(
       state.copyWith(typing: newTyping),
     );
