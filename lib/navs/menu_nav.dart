@@ -100,9 +100,9 @@ class _MenuNavState extends State<MenuNav> {
                               ,
                             ),
                             BlocProvider<PlayerNavCubit>(create: (context) {
-                              return PlayerNavCubit()
-                                // ..showSelectPlayMode()
-                                ..selectPlayMode(PlayMode.solo);
+                              return PlayerNavCubit()..showSelectPlayMode()
+                                  // ..selectPlayMode(PlayMode.solo)
+                                  ;
                             }
 
                                 // ..showSetDifficulty(),

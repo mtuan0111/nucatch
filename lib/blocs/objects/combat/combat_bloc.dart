@@ -85,6 +85,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
             expect: expect,
           ));
           break;
+        case 'typing_update':
+          // Real-time typing progress from opponent
+          if (!state.isMyTurn) {
+            emit(state.copyWith(
+              opponentInput: data['currentInput'],
+            ));
+          }
+          break;
         case 'move_completed':
           add(CombatOpponentMoveReceived(
             opponentInput: data['input'],
@@ -153,33 +161,36 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     emit(state.copyWith(
       difficultyModel: difficultyModel,
-      combatStatus: CombatStatus.starting,
+      combatStatus: CombatStatus.intro,
+      countDown: 4, // Start countdown at 4 (will show 3-2-1-GO)
     ));
 
-    // Only HOST triggers the first turn
-    // Host goes first (isMyTurn: true for host)
+    // Only HOST sends the difficulty selection message
     if (state.isHost) {
       await _sendMessage({
         'type': 'difficulty_selected',
         'difficulty': event.difficulty.toString(),
       });
+    }
 
-      // Host starts their own turn first
-      // The turn_start message will be sent to guest in _onTurnStarted
+    // Wait for countdown to finish (4 seconds)
+    for (int i = 4; i > 0; i--) {
+      await Future.delayed(const Duration(seconds: 1));
+      if (isClosed) return;
+    }
+
+    // After countdown, host starts their turn first
+    if (state.isHost) {
       print('🎮 [Host] Starting my turn first (host goes first)');
       add(CombatTurnStarted(isMyTurn: true));
     }
-    // Guest does NOT trigger turn here - waits for turn_start message from host
+    // Guest waits for turn_start message from host
   }
 
   Future<void> _onCombatTurnStarted(
     CombatTurnStarted event,
     Emitter<CombatState> emit,
   ) async {
-    emit(state.copyWith(
-      combatStatus: CombatStatus.intro,
-    ));
-
     print(
         '🎮 [Combat] TurnStarted - isHost: ${state.isHost}, isMyTurn: ${event.isMyTurn}');
 
@@ -189,6 +200,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         challenge['requirement']!; // What players see (e.g., "25 + 17")
     final expect = challenge['expect']!; // What players type (e.g., "42")
 
+    // First, set to initial status to show the requirement
     emit(state.copyWith(
       isMyTurn: event.isMyTurn,
       isWinner: null,
@@ -198,6 +210,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       opponentInput: null,
       isWaitingForOpponent: false,
       combatStatus: CombatStatus.playing,
+      status: TurnStatus.initial, // Show requirement first
+      countDown: 0, // Reset countdown when turn starts
     ));
 
     // Send turn start message to opponent
@@ -210,6 +224,20 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       'requirement': requirement,
       'expect': expect,
     });
+
+    // Calculate show time based on level (similar to solo mode)
+    final level = (state.point ~/ (state.difficultyModel?.pointEachTurn ?? 1)) + 1;
+    final diffShowLevelMilisecond = 100; // Increase by 100ms per level
+    final showTime = 1000 + level * diffShowLevelMilisecond;
+
+    // Wait for the show time, then transition to typing mode
+    await Future.delayed(Duration(milliseconds: showTime));
+    
+    if (isClosed) return;
+
+    emit(state.copyWith(
+      status: TurnStatus.playing, // Now allow typing
+    ));
   }
 
   Future<void> _onCombatTurnReceived(
@@ -220,6 +248,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         '🎮 [Combat] TurnReceived - isHost: ${state.isHost}, isMyTurn: ${event.isMyTurn}');
 
     // Receive challenge from opponent - NO new message sent
+    // First, set to initial status to show the requirement
     emit(state.copyWith(
       isMyTurn: event.isMyTurn,
       requirementString: event.requirement,
@@ -228,6 +257,21 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       opponentInput: null,
       isWaitingForOpponent: false,
       combatStatus: CombatStatus.playing,
+      status: TurnStatus.initial, // Show requirement first
+    ));
+
+    // Calculate show time based on level (similar to solo mode)
+    final level = (state.point ~/ (state.difficultyModel?.pointEachTurn ?? 1)) + 1;
+    final diffShowLevelMilisecond = 100; // Increase by 100ms per level
+    final showTime = 1000 + level * diffShowLevelMilisecond;
+
+    // Wait for the show time, then transition to typing mode
+    await Future.delayed(Duration(milliseconds: showTime));
+    
+    if (isClosed) return;
+
+    emit(state.copyWith(
+      status: TurnStatus.playing, // Now allow typing
     ));
   }
 
@@ -236,19 +280,37 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       return {'requirement': '123', 'expect': '123'};
     }
 
-    // Use the same generation logic as solo mode
-    final level = (state.point ~/ state.difficultyModel!.pointEachTurn) + 1;
+    // Use the same generation logic as solo mode - based on current level
+    final level = state.level;
 
     switch (state.difficultyModel!.difficulty) {
       case Difficulty.easy:
+        // Generate a random number for easy difficulty
         final randomNum = Helper().generateRandomNumber(level + 2);
         return {'requirement': randomNum, 'expect': randomNum};
       case Difficulty.medium:
+        // Generate a plus/minus calculation expression for medium difficulty
         return Helper().randomCalculatorWithPlusMinus(level);
       case Difficulty.hard:
+        // Generate a multiplication/division calculation expression for hard difficulty
         return Helper().randomCalculatorWithMulDiv(level);
       case Difficulty.extreme:
-        return Helper().randomCalculatorWithMulDiv(level + 1);
+        // For extreme difficulty, randomly choose between different generators
+        final rand = Random();
+        final choice = rand.nextInt(3);
+        if (choice == 0) {
+          // Plus/minus calculation with higher level
+          final result = Helper().randomCalculatorWithPlusMinus(level + 2);
+          return {'requirement': result['expression']!, 'expect': result['expect']!};
+        } else if (choice == 1) {
+          // Generate a random number with higher level
+          final randomNum = Helper().generateRandomNumber(level + 5);
+          return {'requirement': randomNum, 'expect': randomNum};
+        } else {
+          // Multiplication/division calculation with higher level
+          final result = Helper().randomCalculatorWithMulDiv(level + 2);
+          return {'requirement': result['expression']!, 'expect': result['expect']!};
+        }
     }
   }
 
@@ -382,10 +444,17 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     KeyboardOption keyValue,
     Emitter<CombatState> emit,
   ) async {
+    final newTyping = "${state.typing}${keyboardArray[keyValue].toString()}";
+    
     emit(
-      state.copyWith(
-          typing: "${state.typing}${keyboardArray[keyValue].toString()}"),
+      state.copyWith(typing: newTyping),
     );
+
+    // Send real-time typing update to opponent
+    await _sendMessage({
+      'type': 'typing_update',
+      'currentInput': newTyping,
+    });
   }
 
   Future<void> _onMarkWrongTap(

@@ -14,6 +14,7 @@ import 'package:nucatch/helpers/animations/animated_game_wrapper.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
 class CombatPlayScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class CombatPlayScreen extends StatefulWidget {
 }
 
 class _CombatPlayScreenState extends State<CombatPlayScreen> {
-  double get screenWidth => max(MediaQuery.of(context).size.width, 600);
+  double get screenWidth => max(MediaQuery.of(context).size.width, kMinScreenWidth);
 
   late bool wasLifeIncreased;
   late bool wasLifeDecreased;
@@ -41,13 +42,13 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     double fontSize = 50;
 
     if (numberOfCharactor >= 10) {
-      fontSize = 24;
+      fontSize = kFontSizeXL;
     } else if (numberOfCharactor >= 8) {
-      fontSize = 32;
+      fontSize = kFontSize2XL;
     } else if (numberOfCharactor >= 6) {
-      fontSize = 40;
+      fontSize = kFontSize3XL;
     } else if (numberOfCharactor >= 4) {
-      fontSize = 45;
+      fontSize = kFontSize4XL;
     }
     return LayoutConfig(context).boldedStyle.copyWith(
           color: Theme.of(context).colorScheme.onPrimary,
@@ -61,10 +62,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
     // Initialize life animation tracking
     final combatBloc = context.read<CombatBloc>();
-
-    combatBloc.add(CombatLostLife(
-      lifeRemaining: combatBloc.state.lifeRemaining,
-    ));
 
     _currentLifeRemaining = combatBloc.state.lifeRemaining;
     wasLifeDecreased = false;
@@ -388,8 +385,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                         opacity: time > 0.5 ? 1.0 : 0.0,
                         curve: Curves.easeOutQuart,
                         child: Container(
-                          width: 140,
-                          height: 140,
+                          width: kCountdownCircleSize,
+                          height: kCountdownCircleSize,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             gradient: getCountdownGradient(time),
@@ -399,7 +396,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                             children: [
                               Positioned.fill(
                                 child: CustomElevatedButton(
-                                    buttonRadius: 1000,
+                                    buttonRadius: kBorderRadiusCircular,
                                     shapeAt: RoundedWithShapeAt.all,
                                     gradient: LinearGradient(
                                         colors:
@@ -407,14 +404,14 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                               ),
                               // Circular progress indicator
                               SizedBox(
-                                width: 120,
-                                height: 120,
+                                width: kCountdownCircleInnerSize,
+                                height: kCountdownCircleInnerSize,
                                 child: Stack(
                                   children: [
                                     Positioned.fill(
                                       child: CircularProgressIndicator(
                                         value: secondProgress,
-                                        strokeWidth: 8,
+                                        strokeWidth: kProgressStrokeWidth,
                                         backgroundColor: Theme.of(context)
                                             .colorScheme
                                             .onPrimary
@@ -441,7 +438,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                       style: LayoutConfig(context)
                                           .displaySmallStyle()
                                           .copyWith(
-                                            fontSize: 40,
+                                            fontSize: kFontSize3XL,
                                             fontWeight: FontWeight.bold,
                                             color: Theme.of(context)
                                                 .colorScheme
@@ -458,7 +455,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                       style: LayoutConfig(context)
                                           .titleSectionStyle(isItalic: true)
                                           .copyWith(
-                                            fontSize: 16,
+                                            fontSize: kFontSizeM,
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .onPrimary,
@@ -472,7 +469,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                       style: LayoutConfig(context)
                                           .titleSectionStyle(isItalic: true)
                                           .copyWith(
-                                            fontSize: 32,
+                                            fontSize: kFontSize2XL,
                                             fontWeight: FontWeight.bold,
                                             color: Theme.of(context)
                                                 .colorScheme
@@ -617,27 +614,152 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       );
     }
 
-    // Waiting/watching opponent
-    if (combatState.isWaitingForOpponent) {
-      return Center(
-        child: Text(
-          lang(context).waitingForOpponent,
-          style: LayoutConfig(context).contentSectionStyle().copyWith(
-                color: Colors.yellow,
-                fontSize: 24,
+    // Waiting/watching opponent - show mirror view
+    if (combatState.isOpponentActive) {
+      // Show the opponent's challenge and progress as a mirror
+      if (combatState.requirementString != null && combatState.expect != null) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              lang(context).watchingOpponent,
+              style: LayoutConfig(context).contentSectionStyle().copyWith(
+                    color: Colors.orange,
+                    fontSize: kFontSizeL,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: kSpace4XL),
+            // Show opponent's challenge (mirrored)
+            Wrap(
+              children: List.generate(
+                combatState.requirementString!.length,
+                (index) {
+                  String char = combatState.requirementString![index];
+                  return SizedBox(
+                    width: (boldedStyleFont(
+                                numberOfCharactor:
+                                    combatState.requirementString!.length)
+                            .fontSize! *
+                        0.65),
+                    child: Column(
+                      children: [
+                        Opacity(
+                          opacity: 0.6, // Dimmed to show it's opponent's
+                          child: Text(
+                            char,
+                            textAlign: TextAlign.center,
+                            style: boldedStyleFont(
+                              numberOfCharactor:
+                                  combatState.requirementString!.length,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
+            ),
+            const SizedBox(height: kSpaceXL),
+            // Show opponent's typing progress if available
+            if (combatState.opponentInput != null && combatState.opponentInput!.isNotEmpty)
+              Wrap(
+                children: List.generate(
+                  combatState.expect!.length,
+                  (index) {
+                    double hide = combatState.opponentInput != null &&
+                            index < combatState.opponentInput!.length
+                        ? 1
+                        : 0;
+
+                    String inputted = combatState.expect![index];
+
+                    return SizedBox(
+                      width: (boldedStyleFont(
+                                  numberOfCharactor:
+                                      combatState.requirementString!.length)
+                              .fontSize! *
+                          0.65),
+                      child: Column(
+                        children: [
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 200),
+                            opacity: hide * 0.6, // Dimmed
+                            child: Text(
+                              inputted,
+                              textAlign: TextAlign.center,
+                              style: boldedStyleFont(
+                                numberOfCharactor:
+                                    combatState.requirementString!.length,
+                              ),
+                            ),
+                          ),
+                          AnimatedOpacity(
+                            opacity: (hide == 0) ? 0.6 : 0,
+                            duration: const Duration(milliseconds: 200),
+                            child: Icon(
+                              FontAwesomeIcons.minus,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              )
+            else
+              // Show waiting indicator if no input yet
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+          ],
+        );
+      }
+
+      // Fallback if no challenge data
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+            const SizedBox(height: kSpaceXL),
+            Text(
+              lang(context).watchingOpponent,
+              style: LayoutConfig(context).contentSectionStyle().copyWith(
+                    color: Colors.orange,
+                    fontSize: kFontSizeXL,
+                  ),
+            ),
+          ],
         ),
       );
     }
 
-    if (combatState.isOpponentActive) {
+    // Waiting for opponent to finish their move
+    if (combatState.isWaitingForOpponent) {
       return Center(
-        child: Text(
-          lang(context).watchingOpponent,
-          style: LayoutConfig(context).contentSectionStyle().copyWith(
-                color: Colors.orange,
-                fontSize: 24,
-              ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+            const SizedBox(height: kSpaceXL),
+            Text(
+              lang(context).waitingForOpponent,
+              style: LayoutConfig(context).contentSectionStyle().copyWith(
+                    color: Colors.yellow,
+                    fontSize: kFontSizeXL,
+                  ),
+            ),
+          ],
         ),
       );
     }
@@ -654,10 +776,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
         children: [
           Icon(
             isWinner ? Icons.emoji_events : Icons.sentiment_dissatisfied,
-            size: 100,
+            size: kContainerSizeS,
             color: isWinner ? const Color(0xFFFFD700) : Colors.grey,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: kSpaceXL),
           Text(
             isWinner ? lang(context).youWin : lang(context).youLose,
             style: LayoutConfig(context)
@@ -665,17 +787,17 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   isActiveShadow: true,
                 )
                 .copyWith(
-                  fontSize: 48,
+                  fontSize: kFontSize4XL + 3,
                   color: isWinner ? Colors.green : Colors.red,
                 ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: kSpaceXL),
           Text(
             _getGameEndReason(combatState.gameEndReason),
             style: LayoutConfig(context).contentSectionStyle(),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: kSpace4XL),
           CustomElevatedButton(
             text: 'Return to Menu',
             shapeAt: RoundedWithShapeAt.all,
@@ -712,7 +834,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           const rows = 4;
           final buttonWidth = constraints.maxWidth / columns;
           final buttonHeight = 80.0;
-          const buttonSpacing = 10.0;
+          const buttonSpacing = kSpaceM;
 
           List<TableRow> tableRows = [];
           for (int r = 0; r < rows; r++) {
