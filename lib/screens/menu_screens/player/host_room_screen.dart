@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
@@ -28,6 +29,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
   RoomState _roomState = RoomState.waiting;
   bool _isInitialized = false;
   bool _myPlayerReady = false;
+  bool _guestPlayerReady = false;
   StreamSubscription? _roomStateSubscription;
   StreamSubscription? _messageSubscription;
   StreamSubscription? _connectionStateSubscription;
@@ -118,8 +120,13 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
     final messageType = message['type'];
 
-    if (messageType == 'player_ready' && !_myPlayerReady) {
-      _showOpponentReadyDialog();
+    if (messageType == 'player_ready') {
+      setState(() {
+        _guestPlayerReady = true;
+      });
+      if (!_myPlayerReady) {
+        _showOpponentReadyDialog();
+      }
     }
   }
 
@@ -293,9 +300,8 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
         // Send difficulty to guest (this will also start the first turn)
         combatBloc.add(CombatDifficultyChanged(difficulty: Difficulty.easy));
 
-        // Pop the HostRoomScreen and navigate to play screen
-        Navigator.of(context).pop();
-        context.read<PlayerNavCubit>().showPlay(playMode: PlayMode.combat);
+        // Navigate to play screen using CombatNavCubit
+        context.read<CombatNavCubit>().showPlaying();
       }
     } catch (e) {
       print('❌ [Host] Failed to start game: $e');
@@ -404,8 +410,25 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
+
                         if (_roomState == RoomState.guestJoined ||
                             _roomState == RoomState.bothReady) ...[
+                          const SizedBox(height: 30),
+                          // Ready status indicators
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _buildReadyIndicator(
+                                label: lang(context).you,
+                                isReady: _myPlayerReady,
+                              ),
+                              const SizedBox(width: 48),
+                              _buildReadyIndicator(
+                                label: lang(context).opponent,
+                                isReady: _guestPlayerReady,
+                              ),
+                            ],
+                          ),
                           const SizedBox(height: 30),
                           if (!_myPlayerReady)
                             ElevatedButton.icon(
@@ -415,32 +438,6 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                               style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 40, vertical: 15),
-                              ),
-                            )
-                          else
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 40, vertical: 15),
-                              decoration: BoxDecoration(
-                                color: Colors.green.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(25),
-                                border:
-                                    Border.all(color: Colors.green, width: 2),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(FontAwesomeIcons.check,
-                                      color: Colors.green, size: 16),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    'Ready!',
-                                    style:
-                                        LayoutConfig(context).boldSubtitleStyle(
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
                         ],
@@ -485,6 +482,44 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildReadyIndicator({
+    required String label,
+    required bool isReady,
+  }) {
+    return Column(
+      children: [
+        Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isReady ? Colors.green : Colors.grey.withOpacity(0.3),
+            border: Border.all(
+              color: isReady ? Colors.green : Colors.grey,
+              width: 3,
+            ),
+          ),
+          child: Icon(
+            isReady ? Icons.check : Icons.hourglass_empty,
+            size: 40,
+            color: isReady ? Colors.white : Colors.grey,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          label,
+          style: LayoutConfig(context).contentSectionStyle(),
+        ),
+        Text(
+          isReady ? lang(context).ready : lang(context).waiting,
+          style: LayoutConfig(context).contentSectionStyle(
+            color: isReady ? Colors.green : Colors.grey,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,31 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/screens/menu_screens/player/host_room_screen.dart';
-import 'package:nucatch/screens/menu_screens/player/join_room_screen.dart';
 
 /// Combat Mode Setup Screen - Choose to host or join a room
 class CombatModeSetupScreen extends StatelessWidget {
   const CombatModeSetupScreen({super.key});
 
   void _navigateToHostRoom(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const HostRoomScreen(),
-      ),
-    );
+    context.read<CombatNavCubit>().showHostRoom();
   }
 
   void _navigateToJoinRoom(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const JoinRoomScreen(),
-      ),
-    );
+    context.read<CombatNavCubit>().showJoinRoom();
   }
 
   @override

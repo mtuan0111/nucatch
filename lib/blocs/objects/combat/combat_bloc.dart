@@ -42,6 +42,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatOpponentTypingUpdate>(_onCombatOpponentTypingUpdate);
     on<CombatGameEnded>(_onCombatGameEnded);
     on<CombatOpponentDisconnected>(_onCombatOpponentDisconnected);
+    on<CombatRestartRequested>(_onCombatRestartRequested);
+    on<CombatRestartReady>(_onCombatRestartReady);
+    on<CombatRestartReadyReceived>(_onCombatRestartReadyReceived);
     on<CombatDifficultyChanged>(_onCombatDifficultySelected);
     on<CombatLevelChanged>(_onCombatSetLevel);
     on<CombatRequiredStringGenerated>(_onCombatGeneratedRequiredString);
@@ -123,6 +126,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
             isWinner: !data['isWinner'], // Opponent sends their win status
             reason: data['reason'],
             sendMessage: false, // Don't echo the message back
+          ));
+          break;
+        case 'restart_requested':
+          add(CombatRestartRequested());
+          break;
+        case 'restart_ready':
+          add(CombatRestartReadyReceived(
+            opponentReady: data['isReady'] as bool,
           ));
           break;
         case 'opponent_disconnected':
@@ -403,6 +414,87 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       isWinner: true,
       gameEndReason: 'opponent_disconnected',
       isGameActive: false,
+    ));
+  }
+
+  Future<void> _onCombatRestartRequested(
+    CombatRestartRequested event,
+    Emitter<CombatState> emit,
+  ) async {
+    print('🔄 [Combat] Restart requested');
+    emit(state.copyWith(
+      isRestartRequested: true,
+      isPlayerReady: false,
+      isOpponentReady: false,
+    ));
+
+    // Notify opponent
+    await _sendMessage({
+      'type': 'restart_requested',
+    });
+  }
+
+  Future<void> _onCombatRestartReady(
+    CombatRestartReady event,
+    Emitter<CombatState> emit,
+  ) async {
+    print('🔄 [Combat] Player ready: ${event.isReady}');
+    emit(state.copyWith(
+      isPlayerReady: event.isReady,
+    ));
+
+    // Send ready status to opponent
+    await _sendMessage({
+      'type': 'restart_ready',
+      'isReady': event.isReady,
+    });
+
+    // Check if both players are ready
+    if (event.isReady && state.isOpponentReady) {
+      await _restartGame(emit);
+    }
+  }
+
+  Future<void> _onCombatRestartReadyReceived(
+    CombatRestartReadyReceived event,
+    Emitter<CombatState> emit,
+  ) async {
+    print('🔄 [Combat] Opponent ready: ${event.opponentReady}');
+    emit(state.copyWith(
+      isOpponentReady: event.opponentReady,
+    ));
+
+    // Check if both players are ready
+    if (state.isPlayerReady && event.opponentReady) {
+      await _restartGame(emit);
+    }
+  }
+
+  Future<void> _restartGame(Emitter<CombatState> emit) async {
+    print('🔄 [Combat] Both players ready - restarting game');
+
+    // Reset to difficulty selection state
+    emit(state.copyWith(
+      combatStatus:
+          state.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting,
+      isWinner: null,
+      gameEndReason: null,
+      isRestartRequested: false,
+      isPlayerReady: false,
+      isOpponentReady: false,
+      isGameActive: false,
+      level: 0,
+      timesCorrect: 0,
+      point: 0,
+      lifeRemaining: 3,
+      opponentScore: 0,
+      opponentLives: 3,
+      requirementString: null,
+      expect: null,
+      typing: '',
+      opponentInput: null,
+      isMyTurn: false,
+      isWaitingForOpponent: false,
     ));
   }
 

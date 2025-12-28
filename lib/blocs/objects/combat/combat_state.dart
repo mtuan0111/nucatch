@@ -22,6 +22,11 @@ class CombatState extends TurnState {
   final bool? isWinner; // null = ongoing, true = won, false = lost
   final String? gameEndReason;
 
+  // Restart state
+  final bool isRestartRequested;
+  final bool isPlayerReady;
+  final bool isOpponentReady;
+
   const CombatState({
     // Combat-specific parameters
     this.isHost = false,
@@ -35,6 +40,9 @@ class CombatState extends TurnState {
     this.combatStatus = CombatStatus.waiting,
     this.isWinner,
     this.gameEndReason,
+    this.isRestartRequested = false,
+    this.isPlayerReady = false,
+    this.isOpponentReady = false,
     // TurnState parameters
     super.level = 0,
     super.timesCorrect = 0,
@@ -68,6 +76,9 @@ class CombatState extends TurnState {
     CombatStatus? combatStatus,
     bool? isWinner,
     String? gameEndReason,
+    bool? isRestartRequested,
+    bool? isPlayerReady,
+    bool? isOpponentReady,
     // TurnState parameters
     int? level,
     int? timesCorrect,
@@ -99,6 +110,9 @@ class CombatState extends TurnState {
       combatStatus: combatStatus ?? this.combatStatus,
       isWinner: isWinner ?? this.isWinner,
       gameEndReason: gameEndReason ?? this.gameEndReason,
+      isRestartRequested: isRestartRequested ?? this.isRestartRequested,
+      isPlayerReady: isPlayerReady ?? this.isPlayerReady,
+      isOpponentReady: isOpponentReady ?? this.isOpponentReady,
       // TurnState
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
@@ -29,6 +30,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   bool _isInitialized = false;
   bool _isDiscovering = false;
   bool _myPlayerReady = false;
+  bool _hostPlayerReady = false;
   Map<String, String> _discoveredEndpoints = {}; // endpointId -> endpointName
   StreamSubscription? _roomStateSubscription;
   StreamSubscription? _messageSubscription;
@@ -130,8 +132,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
     final messageType = message['type'];
 
-    if (messageType == 'player_ready' && !_myPlayerReady) {
-      _showOpponentReadyDialog();
+    if (messageType == 'player_ready') {
+      setState(() {
+        _hostPlayerReady = true;
+      });
+      if (!_myPlayerReady) {
+        _showOpponentReadyDialog();
+      }
     }
   }
 
@@ -347,11 +354,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
           print(
               '🎮 [Guest] Navigating to play screen with difficulty: ${combatState.difficultyModel?.difficulty}');
 
-          // Pop the JoinRoomScreen first
-          Navigator.of(context).pop();
-
-          // Navigate to play screen
-          context.read<PlayerNavCubit>().showPlay(playMode: PlayMode.combat);
+          // Navigate to play screen using CombatNavCubit
+          context.read<CombatNavCubit>().showPlaying();
         }
       },
       child: Scaffold(
@@ -551,6 +555,23 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                   if (_roomState == RoomState.guestJoined ||
                                       _roomState == RoomState.bothReady) ...[
                                     const SizedBox(height: 30),
+                                    // Ready status indicators
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        _buildReadyIndicator(
+                                          label: lang(context).you,
+                                          isReady: _myPlayerReady,
+                                        ),
+                                        const SizedBox(width: 48),
+                                        _buildReadyIndicator(
+                                          label: lang(context).opponent,
+                                          isReady: _hostPlayerReady,
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 30),
                                     if (!_myPlayerReady)
                                       ElevatedButton.icon(
                                         onPressed: _setReady,
@@ -560,33 +581,6 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                         style: ElevatedButton.styleFrom(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 40, vertical: 15),
-                                        ),
-                                      )
-                                    else
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 40, vertical: 15),
-                                        decoration: BoxDecoration(
-                                          color: Colors.green.withOpacity(0.2),
-                                          borderRadius:
-                                              BorderRadius.circular(25),
-                                          border: Border.all(
-                                              color: Colors.green, width: 2),
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const Icon(FontAwesomeIcons.check,
-                                                color: Colors.green, size: 16),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              'Ready!',
-                                              style: LayoutConfig(context)
-                                                  .boldSubtitleStyle(
-                                                color: Colors.green,
-                                              ),
-                                            ),
-                                          ],
                                         ),
                                       ),
                                   ],
@@ -642,6 +636,44 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildReadyIndicator({
+    required String label,
+    required bool isReady,
+  }) {
+    return Column(
+      children: [
+        Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isReady ? Colors.green : Colors.grey.withOpacity(0.3),
+            border: Border.all(
+              color: isReady ? Colors.green : Colors.grey,
+              width: 3,
+            ),
+          ),
+          child: Icon(
+            isReady ? Icons.check : Icons.hourglass_empty,
+            size: 40,
+            color: isReady ? Colors.white : Colors.grey,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          label,
+          style: LayoutConfig(context).contentSectionStyle(),
+        ),
+        Text(
+          isReady ? lang(context).ready : lang(context).waiting,
+          style: LayoutConfig(context).contentSectionStyle(
+            color: isReady ? Colors.green : Colors.grey,
+          ),
+        ),
+      ],
     );
   }
 }

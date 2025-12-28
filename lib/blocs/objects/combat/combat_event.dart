@@ -145,6 +145,20 @@ class CombatOpponentTypingUpdate extends CombatEvent {
 
 class CombatOpponentDisconnected extends CombatEvent {}
 
+class CombatRestartRequested extends CombatEvent {}
+
+class CombatRestartReady extends CombatEvent {
+  final bool isReady;
+
+  CombatRestartReady({required this.isReady});
+}
+
+class CombatRestartReadyReceived extends CombatEvent {
+  final bool opponentReady;
+
+  CombatRestartReadyReceived({required this.opponentReady});
+}
+
 // ===== Legacy aliases for backward compatibility =====
 typedef TurnStarted = CombatTurnStarted;
 typedef TurnReceived = CombatTurnReceived;

@@ -766,7 +766,7 @@ abstract class AppLocalizations {
   /// **'Combat Mode requires Bluetooth to be enabled. Please enable Bluetooth in your device settings.'**
   String get bluetoothDisabledMessage;
 
-  /// Cancel button label
+  /// Button to cancel action
   ///
   /// In en, this message translates to:
   /// **'Cancel'**
@@ -993,6 +993,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Habari Gani!'**
   String get greetingKwanzaa;
+
+  /// Button to restart the game
+  ///
+  /// In en, this message translates to:
+  /// **'Play Again'**
+  String get playAgain;
+
+  /// Button to return to main menu
+  ///
+  /// In en, this message translates to:
+  /// **'Return to Menu'**
+  String get returnToMenu;
+
+  /// Question asking if player is ready to restart the match
+  ///
+  /// In en, this message translates to:
+  /// **'Do you ready for restart?'**
+  String get doYouReadyForRestart;
+
+  /// Button label when player is ready and wants to cancel
+  ///
+  /// In en, this message translates to:
+  /// **'Not Ready'**
+  String get notReady;
+
+  /// Label for current player
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get you;
+
+  /// Label for opponent player
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent'**
+  String get opponent;
+
+  /// Waiting status text
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get waiting;
 }
 
 class _AppLocalizationsDelegate

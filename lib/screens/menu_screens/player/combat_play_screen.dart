@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
@@ -73,173 +74,184 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     return AnimatedGameWrapper(
       key: _animationKey,
       child: BlocListener<CombatBloc, CombatState>(
-        listener: _handleAnimationEvents,
-        child: Scaffold(
-          body: BlocBuilder<CombatBloc, CombatState>(
-            builder: (context, combatState) {
-              if (combatState.hasGameEnded) {
+        listenWhen: (previous, current) {
+          // Navigate to end game screen when game ends
+          if (!previous.hasGameEnded && current.hasGameEnded) {
+            return true;
+          }
+          return false;
+        },
+        listener: (context, state) {
+          if (state.hasGameEnded) {
+            context.read<CombatNavCubit>().showEndGame();
+          }
+        },
+        child: BlocListener<CombatBloc, CombatState>(
+          listener: _handleAnimationEvents,
+          child: Scaffold(
+            body: BlocBuilder<CombatBloc, CombatState>(
+              buildWhen: (previous, current) {
+                // Always rebuild to ensure UI updates
+                return true;
+              },
+              builder: (context, combatState) {
                 return Container(
                   decoration: LayoutConfig(context).gradientDecoration,
                   child: SafeArea(
                     child: DeviceWrapper(
-                      child: _buildGameEndScreen(combatState),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              children: [
+                                // Tap timer countdown bar
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Builder(
+                                      builder: (context) {
+                                        // Calculate time values using the same formulas
+                                        final totalSeconds =
+                                            tapTimerDuration.toInt();
+                                        final halfSeconds =
+                                            (tapTimerDuration / 2).toInt();
+                                        final quarterSeconds =
+                                            (tapTimerDuration / 4).toInt();
+
+                                        return Tooltip(
+                                          message:
+                                              lang(context).tapTimerTooltip(
+                                            totalSeconds,
+                                            halfSeconds,
+                                            quarterSeconds,
+                                          ),
+                                          child: SizedBox(
+                                            height: kTimerBarHeight,
+                                            child: combatState.combatStatus ==
+                                                    CombatStatus.playing
+                                                ? Countdown(
+                                                    seconds: combatState
+                                                        .tapTimerRemaining
+                                                        .toInt(),
+                                                    interval: const Duration(
+                                                        milliseconds: 100),
+                                                    build:
+                                                        (BuildContext context,
+                                                            double time) {
+                                                      // Calculate percentage (0-100)
+                                                      final percent = (time /
+                                                              tapTimerDuration *
+                                                              100)
+                                                          .toInt();
+
+                                                      // Determine color based on remaining time
+                                                      Color backgroundColor = time >
+                                                              tapTimerDuration /
+                                                                  2
+                                                          ? Theme.of(context)
+                                                              .primaryColor
+                                                          : time >
+                                                                  tapTimerDuration /
+                                                                      4
+                                                              ? Colors.orange
+                                                              : Colors.red;
+
+                                                      return Stack(
+                                                        clipBehavior:
+                                                            Clip.hardEdge,
+                                                        children: [
+                                                          Positioned.fill(
+                                                            child:
+                                                                CustomElevatedButton(
+                                                              shapeAt:
+                                                                  RoundedWithShapeAt
+                                                                      .all,
+                                                              backgroundColor:
+                                                                  Theme.of(
+                                                                          context)
+                                                                      .secondaryHeaderColor,
+                                                            ),
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              if (percent > 0)
+                                                                Expanded(
+                                                                  flex: percent,
+                                                                  child:
+                                                                      CustomElevatedButton(
+                                                                    onPressed:
+                                                                        () {},
+                                                                    shapeAt:
+                                                                        RoundedWithShapeAt
+                                                                            .all,
+                                                                    backgroundColor:
+                                                                        backgroundColor,
+                                                                  ),
+                                                                ),
+                                                              Expanded(
+                                                                flex: 100 -
+                                                                    percent,
+                                                                child: Opacity(
+                                                                  opacity: 0,
+                                                                  child:
+                                                                      Container(),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                    onFinished: () {},
+                                                  )
+                                                : Stack(
+                                                    clipBehavior: Clip.hardEdge,
+                                                    children: [
+                                                      Positioned.fill(
+                                                        child:
+                                                            CustomElevatedButton(
+                                                          shapeAt:
+                                                              RoundedWithShapeAt
+                                                                  .all,
+                                                          backgroundColor: Theme
+                                                                  .of(context)
+                                                              .secondaryHeaderColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: kSpaceS),
+                                  ],
+                                ),
+
+                                // Combat header with scores and turn indicator
+                                _buildCombatHeader(combatState),
+
+                                // Life display with animation
+                                _buildLifeDisplay(combatState),
+
+                                // Game area - shows challenge or typing
+                                Expanded(
+                                  child: _buildGameArea(combatState),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Keyboard
+                          if (combatState.canTap) _buildKeyboard(combatState),
+                        ],
+                      ),
                     ),
                   ),
                 );
-              }
-
-              return Container(
-                decoration: LayoutConfig(context).gradientDecoration,
-                child: SafeArea(
-                  child: DeviceWrapper(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Column(
-                            children: [
-                              // Tap timer countdown bar
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Builder(
-                                    builder: (context) {
-                                      // Calculate time values using the same formulas
-                                      final totalSeconds =
-                                          tapTimerDuration.toInt();
-                                      final halfSeconds =
-                                          (tapTimerDuration / 2).toInt();
-                                      final quarterSeconds =
-                                          (tapTimerDuration / 4).toInt();
-
-                                      return Tooltip(
-                                        message: lang(context).tapTimerTooltip(
-                                          totalSeconds,
-                                          halfSeconds,
-                                          quarterSeconds,
-                                        ),
-                                        child: SizedBox(
-                                          height: kTimerBarHeight,
-                                          child: combatState.combatStatus ==
-                                                  CombatStatus.playing
-                                              ? Countdown(
-                                                  seconds: combatState
-                                                      .tapTimerRemaining
-                                                      .toInt(),
-                                                  interval: const Duration(
-                                                      milliseconds: 100),
-                                                  build: (BuildContext context,
-                                                      double time) {
-                                                    // Calculate percentage (0-100)
-                                                    final percent = (time /
-                                                            tapTimerDuration *
-                                                            100)
-                                                        .toInt();
-
-                                                    // Determine color based on remaining time
-                                                    Color backgroundColor = time >
-                                                            tapTimerDuration / 2
-                                                        ? Theme.of(context)
-                                                            .primaryColor
-                                                        : time >
-                                                                tapTimerDuration /
-                                                                    4
-                                                            ? Colors.orange
-                                                            : Colors.red;
-
-                                                    return Stack(
-                                                      clipBehavior:
-                                                          Clip.hardEdge,
-                                                      children: [
-                                                        Positioned.fill(
-                                                          child:
-                                                              CustomElevatedButton(
-                                                            shapeAt:
-                                                                RoundedWithShapeAt
-                                                                    .all,
-                                                            backgroundColor: Theme
-                                                                    .of(context)
-                                                                .secondaryHeaderColor,
-                                                          ),
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            if (percent > 0)
-                                                              Expanded(
-                                                                flex: percent,
-                                                                child:
-                                                                    CustomElevatedButton(
-                                                                  onPressed:
-                                                                      () {},
-                                                                  shapeAt:
-                                                                      RoundedWithShapeAt
-                                                                          .all,
-                                                                  backgroundColor:
-                                                                      backgroundColor,
-                                                                ),
-                                                              ),
-                                                            Expanded(
-                                                              flex:
-                                                                  100 - percent,
-                                                              child: Opacity(
-                                                                opacity: 0,
-                                                                child:
-                                                                    Container(),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                  onFinished: () {},
-                                                )
-                                              : Stack(
-                                                  clipBehavior: Clip.hardEdge,
-                                                  children: [
-                                                    Positioned.fill(
-                                                      child:
-                                                          CustomElevatedButton(
-                                                        shapeAt:
-                                                            RoundedWithShapeAt
-                                                                .all,
-                                                        backgroundColor: Theme
-                                                                .of(context)
-                                                            .secondaryHeaderColor,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  const SizedBox(height: kSpaceS),
-                                ],
-                              ),
-
-                              // Combat header with scores and turn indicator
-                              _buildCombatHeader(combatState),
-
-                              // Life display with animation
-                              _buildLifeDisplay(combatState),
-
-                              // Game area - shows challenge or typing
-                              Expanded(
-                                child: _buildGameArea(combatState),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Keyboard
-                        if (combatState.canTap) _buildKeyboard(combatState),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
+              },
+            ),
           ),
         ),
       ),
@@ -886,63 +898,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     }
 
     return const SizedBox.shrink();
-  }
-
-  Widget _buildGameEndScreen(CombatState combatState) {
-    final isWinner = combatState.isWinner ?? false;
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            isWinner ? Icons.emoji_events : Icons.sentiment_dissatisfied,
-            size: kContainerSizeS,
-            color: isWinner ? const Color(0xFFFFD700) : Colors.grey,
-          ),
-          const SizedBox(height: kSpaceXL),
-          Text(
-            isWinner ? lang(context).youWin : lang(context).youLose,
-            style: LayoutConfig(context)
-                .displaySmallStyle(
-                  isActiveShadow: true,
-                )
-                .copyWith(
-                  fontSize: kFontSize4XL + 3,
-                  color: isWinner ? Colors.green : Colors.red,
-                ),
-          ),
-          const SizedBox(height: kSpaceXL),
-          Text(
-            _getGameEndReason(combatState.gameEndReason),
-            style: LayoutConfig(context).contentSectionStyle(),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: kSpace4XL),
-          CustomElevatedButton(
-            text: 'Return to Menu',
-            shapeAt: RoundedWithShapeAt.all,
-            onPressed: () {
-              // Just navigate to menu - game state will be reset on next game start
-              context.read<PlayerNavCubit>().showSelectPlayMode();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _getGameEndReason(String? reason) {
-    switch (reason) {
-      case 'opponent_lives_out':
-        return lang(context).opponentRanOutOfLives;
-      case 'my_lives_out':
-        return lang(context).youRanOutOfLives;
-      case 'opponent_disconnected':
-        return lang(context).opponentDisconnected;
-      default:
-        return '';
-    }
   }
 
   Widget _buildKeyboard(CombatState combatState) {

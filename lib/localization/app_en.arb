@@ -727,5 +727,37 @@
   "greetingKwanzaa": "Habari Gani!",
   "@greetingKwanzaa": {
     "description": "Kwanzaa greeting in Swahili"
+  },
+  "playAgain": "Play Again",
+  "@playAgain": {
+    "description": "Button to restart the game"
+  },
+  "returnToMenu": "Return to Menu",
+  "@returnToMenu": {
+    "description": "Button to return to main menu"
+  },
+  "doYouReadyForRestart": "Do you ready for restart?",
+  "@doYouReadyForRestart": {
+    "description": "Question asking if player is ready to restart the match"
+  },
+  "notReady": "Not Ready",
+  "@notReady": {
+    "description": "Button label when player is ready and wants to cancel"
+  },
+  "you": "You",
+  "@you": {
+    "description": "Label for current player"
+  },
+  "opponent": "Opponent",
+  "@opponent": {
+    "description": "Label for opponent player"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Button to cancel action"
+  },
+  "waiting": "Waiting",
+  "@waiting": {
+    "description": "Waiting status text"
   }
 }

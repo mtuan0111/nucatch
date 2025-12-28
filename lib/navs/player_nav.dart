@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
@@ -9,8 +10,7 @@ import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/screens/menu_screens/player/combat_mode_setup_screen.dart';
-import 'package:nucatch/screens/menu_screens/player/combat_play_screen.dart';
+import 'package:nucatch/navs/combat_nav.dart';
 import 'package:nucatch/screens/menu_screens/player/gameover_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/select_play_mode_screen.dart';
@@ -70,7 +70,7 @@ class _PlayerNavState extends State<PlayerNav> {
                 ),
                 if (state is CombatModeSetupState)
                   const MaterialPage(
-                    child: CombatModeSetupScreen(),
+                    child: CombatNav(),
                   ),
                 if (state is SetDifficultyState)
                   const MaterialPage(
@@ -81,7 +81,7 @@ class _PlayerNavState extends State<PlayerNav> {
                     child: PopScope(
                       canPop: true,
                       child: state.playMode == PlayMode.combat
-                          ? const CombatPlayScreen()
+                          ? const CombatNav()
                           : PlayScreen(
                               title: menuArray(
                                   context)[MenuOption.start]!['text']!,

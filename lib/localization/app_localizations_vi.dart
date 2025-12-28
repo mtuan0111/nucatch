@@ -502,4 +502,25 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get greetingKwanzaa => 'Habari Gani!';
+
+  @override
+  String get playAgain => 'Chơi lại';
+
+  @override
+  String get returnToMenu => 'Về menu';
+
+  @override
+  String get doYouReadyForRestart => 'Bạn sẵn sàng chơi lại chưa?';
+
+  @override
+  String get notReady => 'Chưa sẵn sàng';
+
+  @override
+  String get you => 'Bạn';
+
+  @override
+  String get opponent => 'Đối thủ';
+
+  @override
+  String get waiting => 'Đang chờ';
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
@@ -107,6 +108,9 @@ class _MenuNavState extends State<MenuNav> {
 
                                 // ..showSetDifficulty(),
                                 ),
+                            BlocProvider(
+                              create: (context) => CombatNavCubit(),
+                            ),
                             BlocProvider(
                               create: (context) => CombatBloc(
                                 roomService: CombatNearbyService(),

@@ -725,5 +725,37 @@
   "greetingKwanzaa": "Habari Gani!",
   "@greetingKwanzaa": {
     "description": "Lời chúc lễ hội Kwanzaa bằng tiếng Swahili"
+  },
+  "playAgain": "Chơi lại",
+  "@playAgain": {
+    "description": "Nút để bắt đầu lại trò chơi"
+  },
+  "returnToMenu": "Về menu",
+  "@returnToMenu": {
+    "description": "Nút quay về menu chính"
+  },
+  "doYouReadyForRestart": "Bạn sẵn sàng chơi lại chưa?",
+  "@doYouReadyForRestart": {
+    "description": "Câu hỏi xác nhận người chơi sẵn sàng chơi lại"
+  },
+  "notReady": "Chưa sẵn sàng",
+  "@notReady": {
+    "description": "Nhãn nút khi người chơi muốn hủy trạng thái sẵn sàng"
+  },
+  "you": "Bạn",
+  "@you": {
+    "description": "Nhãn cho người chơi hiện tại"
+  },
+  "opponent": "Đối thủ",
+  "@opponent": {
+    "description": "Nhãn cho đối thủ"
+  },
+  "cancel": "Hủy",
+  "@cancel": {
+    "description": "Nút để hủy hành động"
+  },
+  "waiting": "Đang chờ",
+  "@waiting": {
+    "description": "Trạng thái đang chờ"
   }
 }

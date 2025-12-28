@@ -45,6 +45,8 @@ class CombatNearbyService {
   bool get isHost => _isHost;
   String? get connectedEndpointId => _connectedEndpointId;
   bool get isConnected => _connectedEndpointId != null;
+  bool get isReady => _isReady;
+  bool get opponentReady => _opponentReady;
 
   /// Initialize and request necessary permissions
   Future<bool> initialize() async {

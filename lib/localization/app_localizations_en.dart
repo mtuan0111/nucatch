@@ -499,4 +499,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get greetingKwanzaa => 'Habari Gani!';
+
+  @override
+  String get playAgain => 'Play Again';
+
+  @override
+  String get returnToMenu => 'Return to Menu';
+
+  @override
+  String get doYouReadyForRestart => 'Do you ready for restart?';
+
+  @override
+  String get notReady => 'Not Ready';
+
+  @override
+  String get you => 'You';
+
+  @override
+  String get opponent => 'Opponent';
+
+  @override
+  String get waiting => 'Waiting';
 }
