@@ -10,6 +10,7 @@ import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
+import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/services/combat_nearby_service.dart';
 
@@ -18,6 +19,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   final AudioBloc _audioBloc;
   final VibrationBloc _vibrationBloc;
   StreamSubscription? _messageSubscription;
+  Timer? _tapTimer;
 
   // Expose isHost status from room service
   bool get isHost => _roomService.isHost;
@@ -45,6 +47,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatRequiredStringGenerated>(_onCombatGeneratedRequiredString);
     on<CombatExpectShown>(_onCombatShowExpect);
     on<CombatNumberReset>(_onCombatResetNewNumber);
+    on<CombatTapTimerTick>(_onCombatTapTimerTick);
+    on<CombatTapTimerTimeout>(_onCombatTapTimerTimeout);
 
     // Listen to BLE messages
     _messageSubscription = _roomService.messageStream.listen((data) {
@@ -55,6 +59,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   @override
   Future<void> close() {
     _messageSubscription?.cancel();
+    _tapTimer?.cancel();
     return super.close();
   }
 
@@ -151,6 +156,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       combatStatus:
           event.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting,
       isGameActive: true,
+      level: 1, // Start from level 1 like solo mode
       lifeRemaining: 3,
       opponentLives: 3,
       point: 0,
@@ -249,6 +255,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(state.copyWith(
       status: TurnStatus.playing, // Now allow typing
     ));
+
+    // Start tap timer when typing begins
+    _startTapTimer();
   }
 
   Future<void> _onCombatTurnReceived(
@@ -284,6 +293,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(state.copyWith(
       status: TurnStatus.playing, // Now allow typing
     ));
+
+    // Start tap timer when typing begins
+    _startTapTimer();
   }
 
   Map<String, String> _generateChallenge() {
@@ -438,6 +450,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // When correct, check if turn is finished
     if (state.isFinishTarget) {
+      _stopTapTimer(); // Stop timer on completion
       await _onCombatAddPoint(CombatAddPoint(), emit);
       // Note: Level progression and audio handled in _onCombatAddPoint
       // Next turn will be triggered by CombatLevelChanged event
@@ -464,6 +477,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   Future<void> _onMarkWrongTap(
     Emitter<CombatState> emit,
   ) async {
+    _stopTapTimer(); // Stop timer on wrong tap
     add(CombatLostLife());
 
     if (!state.isAbleToContinue) {
@@ -488,6 +502,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         level: event.level,
         timesCorrect: state.level != event.level ? 0 : null,
         typing: "",
+        tapTimerRemaining: tapTimerDuration, // Reset timer on level change
       ),
     );
 
@@ -622,6 +637,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatExpectShown event,
     Emitter<CombatState> emit,
   ) async {
+    _stopTapTimer(); // Stop timer while showing new challenge
+
     await _onCombatGeneratedRequiredString(
         CombatRequiredStringGenerated(), emit);
 
@@ -638,6 +655,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         status: TurnStatus.playing,
       ),
     );
+
+    // Start timer after showing challenge
+    _startTapTimer();
   }
 
   Future<void> _onCombatResetNewNumber(
@@ -656,5 +676,85 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       CombatLevelChanged(level: state.level),
       emit,
     );
+  }
+
+  // ===== Tap Timer Methods =====
+
+  void _startTapTimer() {
+    _tapTimer?.cancel();
+    const tickDuration = Duration(milliseconds: 100);
+    double remainingTime = tapTimerDuration;
+
+    _tapTimer = Timer.periodic(tickDuration, (timer) {
+      if (isClosed) {
+        timer.cancel();
+        return;
+      }
+
+      remainingTime -= tickDuration.inMilliseconds / 1000.0;
+
+      if (remainingTime <= 0) {
+        timer.cancel();
+        add(CombatTapTimerTick(0));
+        add(CombatTapTimerTimeout());
+      } else {
+        add(CombatTapTimerTick(remainingTime));
+      }
+    });
+  }
+
+  void _stopTapTimer() {
+    _tapTimer?.cancel();
+  }
+
+  void _onCombatTapTimerTick(
+    CombatTapTimerTick event,
+    Emitter<CombatState> emit,
+  ) {
+    if (isClosed) return;
+
+    final clampedTime = event.remainingTime < 0.01 ? 0.0 : event.remainingTime;
+
+    emit(
+      state.copyWith(
+        tapTimerRemaining: clampedTime,
+      ),
+    );
+  }
+
+  Future<void> _onCombatTapTimerTimeout(
+    CombatTapTimerTimeout event,
+    Emitter<CombatState> emit,
+  ) async {
+    if (isClosed) return;
+    if (!state.canTap) return;
+
+    _stopTapTimer();
+
+    // Lose a life
+    add(CombatLostLife());
+
+    if (!state.isAbleToContinue) {
+      add(CombatGameEnded(isWinner: false, reason: 'timeout'));
+      return;
+    } else {
+      _audioBloc.add(PlayWrongAudio());
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      // Send timeout notification to opponent
+      await _sendMessage({
+        'type': 'move_completed',
+        'input': '',
+        'correct': false,
+        'score': state.point,
+        'lives': state.lifeRemaining,
+      });
+
+      // Wait for opponent to finish their turn
+      emit(state.copyWith(
+        isWaitingForOpponent: true,
+        isMyTurn: false,
+      ));
+    }
   }
 }

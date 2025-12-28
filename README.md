@@ -1017,7 +1017,7 @@ feat: Add the Season theme
 ### Version:
 | Platform | Build Number | Version |
 |----------|--------------|---------|
-| Android  | 59           | 2.4.6   |
+| Android  | 60           | 2.4.6   |
 | iOS      | 61           | 2.4.6   |
 
 ### Release note:
@@ -1029,7 +1029,7 @@ feat: Improve UI UX
     Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
 
 
-[Builded] Version 2.4.6 - 59 / 2.4.6 - 61 _ Improve UI UX
+[Builded] Version 2.4.6 - 60 / 2.4.6 - 61 _ Improve UI UX
 
 **Store notices / What's new / Summary:**
 
@@ -1042,7 +1042,7 @@ feat: Improve UI UX
     - Nâng cao thiết kế và khả năng sử dụng tổng thể của ứng dụng.
 
     Flutter build for Android
-    ```flutter build appbundle --build-name=2.4.6 --build-number=59 --release```
+    ```flutter build appbundle --build-name=2.4.6 --build-number=60 --release```
 
     Flutter build for iOS
     ```flutter build ios --build-name=2.4.6 --build-number=61 --release```

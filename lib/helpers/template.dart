@@ -1170,7 +1170,7 @@ class MainLogo extends StatelessWidget {
       // transitionOnUserGestures: true,
       child: ColorFiltered(
         colorFilter: ColorFilter.mode(
-          colorScheme.onSurface,
+          colorScheme.onPrimary,
           BlendMode.srcIn,
         ),
         child: const Image(
