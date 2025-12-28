@@ -426,6 +426,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                           await Future.delayed(
                             const Duration(milliseconds: 300),
                           ).then((_) {
+                            if (!mounted) return;
                             wasLifeDecreased = false;
                             shouldAnimateRemove = false;
                             setState(() {

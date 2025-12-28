@@ -72,21 +72,25 @@ class CombatGameEndScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomElevatedButton(
-                text: lang(context).playAgain,
-                shapeAt: RoundedWithShapeAt.all,
-                onPressed: () {
-                  context.read<CombatBloc>().add(CombatRestartRequested());
-                },
+              Flexible(
+                child: CustomElevatedButton(
+                  text: lang(context).playAgain,
+                  shapeAt: RoundedWithShapeAt.all,
+                  onPressed: () {
+                    context.read<CombatBloc>().add(CombatRestartRequested());
+                  },
+                ),
               ),
               const SizedBox(width: kSpaceXL),
-              CustomElevatedButton(
-                text: lang(context).returnToMenu,
-                shapeAt: RoundedWithShapeAt.all,
-                backgroundColor: Colors.grey,
-                onPressed: () {
-                  context.read<PlayerNavCubit>().showSelectPlayMode();
-                },
+              Flexible(
+                child: CustomElevatedButton(
+                  text: lang(context).returnToMenu,
+                  shapeAt: RoundedWithShapeAt.all,
+                  backgroundColor: Colors.grey,
+                  onPressed: () {
+                    context.read<PlayerNavCubit>().showSelectPlayMode();
+                  },
+                ),
               ),
             ],
           ),
