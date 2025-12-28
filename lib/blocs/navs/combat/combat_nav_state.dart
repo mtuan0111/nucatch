@@ -19,3 +19,6 @@ class CombatPlayingState extends CombatNavState {}
 
 /// Game ended
 class CombatEndGameState extends CombatNavState {}
+
+/// Restart confirmation screen
+class CombatRestartConfirmationState extends CombatNavState {}

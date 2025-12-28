@@ -5,6 +5,7 @@ import 'package:nucatch/blocs/navs/combat/combat_nav_state.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_game_end_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_mode_setup_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_play_screen.dart';
+import 'package:nucatch/screens/menu_screens/player/combat_restart_confirmation_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/host_room_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/join_room_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/set_difficult_screen.dart';
@@ -41,6 +42,10 @@ class CombatNav extends StatelessWidget {
             // End game screen
             if (state is CombatEndGameState)
               const MaterialPage(child: CombatGameEndScreen()),
+
+            // Restart confirmation screen
+            if (state is CombatRestartConfirmationState)
+              const MaterialPage(child: CombatRestartConfirmationScreen()),
           ],
           onPopPage: (route, result) {
             if (!route.didPop(result)) {
@@ -55,7 +60,8 @@ class CombatNav extends StatelessWidget {
             } else if (currentState is CombatSetDifficultyState) {
               context.read<CombatNavCubit>().showHostRoom();
             } else if (currentState is CombatPlayingState ||
-                currentState is CombatEndGameState) {
+                currentState is CombatEndGameState ||
+                currentState is CombatRestartConfirmationState) {
               context.read<CombatNavCubit>().showSetup();
             }
 

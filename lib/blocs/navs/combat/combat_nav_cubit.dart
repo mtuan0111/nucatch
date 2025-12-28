@@ -22,6 +22,9 @@ class CombatNavCubit extends Cubit<CombatNavState> {
   /// Navigate to end game screen
   void showEndGame() => emit(CombatEndGameState());
 
+  /// Navigate to restart confirmation screen
+  void showRestartConfirmation() => emit(CombatRestartConfirmationState());
+
   /// Reset to initial state
   void reset() => emit(CombatNavInitial());
 }
