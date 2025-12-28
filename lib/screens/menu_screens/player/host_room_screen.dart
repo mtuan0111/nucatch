@@ -230,6 +230,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       );
 
       // Auto-dismiss after 3 seconds if not manually dismissed
+      // Auto-dismiss after 3 seconds if not manually dismissed
       Future.delayed(const Duration(seconds: 3), () {
         if (mounted && !dialogDismissed) {
           dialogDismissed = true;
@@ -272,12 +273,11 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
     );
 
     // Wait for 2 seconds to let user see the message
-    await Future.delayed(const Duration(seconds: 2));
-
-    // Dismiss the dialog
-    if (mounted) {
-      Navigator.of(context, rootNavigator: true).pop();
-    }
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        Navigator.of(context, rootNavigator: true).pop();
+      }
+    });
   }
 
   Future<void> _startGameAndNavigate() async {
@@ -291,6 +291,8 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
             '📤 [Host] Initializing combat game and navigating to play screen');
 
         // Initialize combat game with Easy difficulty (default)
+        return context.read<CombatNavCubit>().showSetDifficulty();
+
         final combatBloc = context.read<CombatBloc>();
         combatBloc.add(CombatGameStarted(
           difficulty: Difficulty.easy,

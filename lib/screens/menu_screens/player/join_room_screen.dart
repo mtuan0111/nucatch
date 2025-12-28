@@ -217,7 +217,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
 
-      showDialog(
+      dynamic dialogObject = showDialog(
         context: context,
         barrierDismissible: true,
         builder: (dialogContext) => AlertDialog(
@@ -258,7 +258,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       Future.delayed(const Duration(seconds: 3), () {
         if (mounted && !dialogDismissed) {
           dialogDismissed = true;
-          Navigator.of(context, rootNavigator: true).pop();
+          Navigator.of(dialogObject, rootNavigator: true).pop();
         }
       });
     });

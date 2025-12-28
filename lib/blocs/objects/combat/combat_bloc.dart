@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lunar/calendar/Fu.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
 import 'package:nucatch/blocs/objects/audio/audio_event.dart';
@@ -224,9 +225,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Generate new challenge based on difficulty and level
     final challenge = _generateChallenge();
+    await Future.delayed(const Duration(milliseconds: 500)); // Slight delay
     final requirement =
-        challenge['requirement']!; // What players see (e.g., "25 + 17")
-    final expect = challenge['expect']!; // What players type (e.g., "42")
+        challenge['requirement'] ?? ""; // What players see (e.g., "25 + 17")
+    final expect = challenge['expect'] ?? ""; // What players type (e.g., "42")
 
     // First, set to initial status to show the requirement
     emit(state.copyWith(
