@@ -189,7 +189,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
   void _showOpponentReadyDialog() {
     bool dialogDismissed = false;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
 
       showDialog(
@@ -228,15 +228,6 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
           ],
         ),
       );
-
-      // Auto-dismiss after 3 seconds if not manually dismissed
-      // Auto-dismiss after 3 seconds if not manually dismissed
-      await Future.delayed(const Duration(seconds: 3), () {
-        if (mounted && !dialogDismissed) {
-          dialogDismissed = true;
-          Navigator.of(context, rootNavigator: true).pop();
-        }
-      });
     });
   }
 

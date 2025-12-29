@@ -215,7 +215,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   void _showOpponentReadyDialog() {
     bool dialogDismissed = false;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
 
       dynamic dialogObject = showDialog(
@@ -254,14 +254,6 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
           ],
         ),
       );
-
-      // Auto-dismiss after 3 seconds if not manually dismissed
-      await Future.delayed(const Duration(seconds: 3), () {
-        if (mounted && !dialogDismissed) {
-          dialogDismissed = true;
-          Navigator.of(dialogObject, rootNavigator: true).pop();
-        }
-      });
     });
   }
 

@@ -74,20 +74,20 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     return AnimatedGameWrapper(
       key: _animationKey,
       child: BlocListener<CombatBloc, CombatState>(
-        listenWhen: (previous, current) {
-          // Navigate to end game screen when game ends
-          if (!previous.hasGameEnded && current.hasGameEnded) {
-            return true;
-          }
-          return false;
-        },
-        listener: (context, state) {
-          if (state.hasGameEnded) {
-            context.read<CombatNavCubit>().showEndGame();
-          }
-        },
+        listener: _handleAnimationEvents,
         child: BlocListener<CombatBloc, CombatState>(
-          listener: _handleAnimationEvents,
+          listenWhen: (previous, current) {
+            // Navigate to end game screen when game ends
+            if (!previous.hasGameEnded && current.hasGameEnded) {
+              return true;
+            }
+            return false;
+          },
+          listener: (context, state) {
+            if (state.hasGameEnded) {
+              context.read<CombatNavCubit>().showEndGame();
+            }
+          },
           child: Scaffold(
             body: BlocBuilder<CombatBloc, CombatState>(
               buildWhen: (previous, current) {
@@ -225,7 +225,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                         );
                                       },
                                     ),
-                                    const SizedBox(height: kSpaceS),
+                                    const SizedBox(height: kSpaceM),
                                   ],
                                 ),
 
@@ -244,7 +244,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                           ),
 
                           // Keyboard
-                          if (combatState.canTap) _buildKeyboard(combatState),
+                          _buildKeyboard(combatState),
                         ],
                       ),
                     ),
@@ -269,7 +269,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Icon(
                       Helper.getIconFromDifficulty(
@@ -277,32 +278,48 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       color: Theme.of(context).colorScheme.onPrimary,
                       size: Theme.of(context).textTheme.bodyLarge!.fontSize,
                     ),
-                    const SizedBox(width: 5),
-                    Expanded(
-                      child: Text(
-                        '${lang(context).level}: ${combatState.levelAndTimeCorrect}',
-                        style: LayoutConfig(context).contentSectionStyle(),
+                    const SizedBox(width: kSpaceS),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "${lang(context).level}: ",
+                            style: LayoutConfig(context)
+                                .contentSectionStyle()
+                                .copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: combatState.levelAndTimeCorrect,
+                            style: LayoutConfig(context).contentSectionStyle(),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-                Row(
+                Wrap(
                   key: _scoreKey,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Icon(
                       FontAwesomeIcons.chartLine,
                       color: Theme.of(context).colorScheme.onPrimary,
                       size: Theme.of(context).textTheme.bodyLarge!.fontSize,
                     ),
-                    const SizedBox(width: 5),
-                    Expanded(
-                      child: Text(
-                        '${lang(context).score}: ${combatState.point}',
-                        style: LayoutConfig(context).contentSectionStyle(),
-                      ),
+                    const SizedBox(width: kSpaceS),
+                    Text(
+                      "${lang(context).score}: ",
+                      style: LayoutConfig(context)
+                          .contentSectionStyle()
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "${combatState.point}",
+                      style: LayoutConfig(context).contentSectionStyle(),
                     ),
                   ],
                 ),
+                const SizedBox(height: kSpaceS),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -332,13 +349,25 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       .contentSectionStyle()
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  '${lang(context).score}: ${combatState.opponentScore}',
-                  style: LayoutConfig(context).contentSectionStyle(),
-                ),
-
+                const SizedBox(height: kSpaceS),
                 Wrap(
-                  spacing: 0,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text(
+                      "${lang(context).score}: ",
+                      style: LayoutConfig(context)
+                          .contentSectionStyle()
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "${combatState.opponentScore}",
+                      style: LayoutConfig(context).contentSectionStyle(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: kSpaceS),
+                Wrap(
+                  spacing: kLifeStarSpacing,
                   children: List.generate(
                     combatState.opponentLives,
                     (index) => SizedBox(
@@ -356,8 +385,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     ),
                   ),
                 ),
-
-                // Turn indicator
               ],
             ),
           ),
@@ -394,7 +421,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             child: Center(
               child: Wrap(
                 key: _heartKey,
-                spacing: 0,
+                spacing: kLifeStarSpacing,
                 children: List.generate(
                   _currentLifeRemaining,
                   (index) {
@@ -460,168 +487,214 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (!context.read<CombatBloc>().isClosed)
-            Builder(
-              builder: (widgetContext) {
-                // Capture localized strings using the widget context
-                final readyText = "${lang(widgetContext).ready}!!";
-                final goText = lang(widgetContext).go;
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (!context.read<CombatBloc>().isClosed)
+                  Builder(
+                    builder: (widgetContext) {
+                      // Capture localized strings using the widget context
+                      final readyText = "${lang(widgetContext).ready}!!";
+                      final goText = lang(widgetContext).go;
 
-                return Countdown(
-                  seconds: combatState.countDown,
-                  interval: const Duration(milliseconds: 10),
-                  build: (BuildContext context, double time) {
-                    // Calculate progress within current second (0.0 to 1.0)
-                    final secondProgress = time - time.floor();
+                      return Countdown(
+                        seconds: combatState.countDown,
+                        interval: const Duration(milliseconds: 10),
+                        build: (BuildContext context, double time) {
+                          // Calculate progress within current second (0.0 to 1.0)
+                          final secondProgress = time - time.floor();
 
-                    Gradient getCountdownGradient(double time) {
-                      if (time >= 3) {
-                        return LinearGradient(
-                          colors: [
-                            Colors.green.shade300,
-                            Colors.green.shade700
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        );
-                      }
-                      if (time >= 2) {
-                        return LinearGradient(
-                          colors: [Colors.blue.shade300, Colors.blue.shade700],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        );
-                      }
-                      if (time >= 1) {
-                        return LinearGradient(
-                          colors: [
-                            Colors.orange.shade300,
-                            Colors.orange.shade700
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        );
-                      }
-                      return LinearGradient(
-                        colors: [Colors.red.shade300, Colors.red.shade700],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      );
-                    }
+                          Gradient getCountdownGradient(double time) {
+                            if (time >= 3) {
+                              return LinearGradient(
+                                colors: [
+                                  Colors.green.shade300,
+                                  Colors.green.shade700
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              );
+                            }
+                            if (time >= 2) {
+                              return LinearGradient(
+                                colors: [
+                                  Colors.blue.shade300,
+                                  Colors.blue.shade700
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              );
+                            }
+                            if (time >= 1) {
+                              return LinearGradient(
+                                colors: [
+                                  Colors.orange.shade300,
+                                  Colors.orange.shade700
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              );
+                            }
+                            return LinearGradient(
+                              colors: [
+                                Colors.red.shade300,
+                                Colors.red.shade700
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            );
+                          }
 
-                    return AnimatedScale(
-                      duration: const Duration(milliseconds: 500),
-                      scale: time > 0.5 ? 1.0 : 5,
-                      curve: Curves.easeOutQuart,
-                      child: AnimatedOpacity(
-                        duration: const Duration(milliseconds: 500),
-                        opacity: time > 0.5 ? 1.0 : 0.0,
-                        curve: Curves.easeOutQuart,
-                        child: Container(
-                          width: kCountdownCircleSize,
-                          height: kCountdownCircleSize,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: getCountdownGradient(time),
-                          ),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Positioned.fill(
-                                child: CustomElevatedButton(
-                                    buttonRadius: kBorderRadiusCircular,
-                                    shapeAt: RoundedWithShapeAt.all,
-                                    gradient: LinearGradient(
-                                        colors:
-                                            getCountdownGradient(time).colors)),
-                              ),
-                              // Circular progress indicator
-                              SizedBox(
-                                width: kCountdownCircleInnerSize,
-                                height: kCountdownCircleInnerSize,
+                          return AnimatedScale(
+                            duration: const Duration(milliseconds: 500),
+                            scale: time > 0.5 ? 1.0 : 5,
+                            curve: Curves.easeOutQuart,
+                            child: AnimatedOpacity(
+                              duration: const Duration(milliseconds: 500),
+                              opacity: time > 0.5 ? 1.0 : 0.0,
+                              curve: Curves.easeOutQuart,
+                              child: Container(
+                                width: kCountdownCircleSize,
+                                height: kCountdownCircleSize,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: getCountdownGradient(time),
+                                ),
                                 child: Stack(
+                                  alignment: Alignment.center,
                                   children: [
                                     Positioned.fill(
-                                      child: CircularProgressIndicator(
-                                        value: secondProgress,
-                                        strokeWidth: kProgressStrokeWidth,
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary
-                                            .withOpacity(0.3),
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                          Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                        ),
+                                      child: CustomElevatedButton(
+                                          buttonRadius: kBorderRadiusCircular,
+                                          shapeAt: RoundedWithShapeAt.all,
+                                          gradient: LinearGradient(
+                                              colors: getCountdownGradient(time)
+                                                  .colors)),
+                                    ),
+                                    // Circular progress indicator
+                                    SizedBox(
+                                      width: kCountdownCircleInnerSize,
+                                      height: kCountdownCircleInnerSize,
+                                      child: Stack(
+                                        children: [
+                                          Positioned.fill(
+                                            child: CircularProgressIndicator(
+                                              value: secondProgress,
+                                              strokeWidth: kProgressStrokeWidth,
+                                              backgroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface
+                                                  .withOpacity(0.3),
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
+                                    ),
+                                    // Text content
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        if (time >= 1)
+                                          AnimatedDefaultTextStyle(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            style: LayoutConfig(context)
+                                                .displaySmallStyle()
+                                                .copyWith(
+                                                  fontSize: kFontSize3XL,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface,
+                                                ),
+                                            child: Text(
+                                              time.truncate().toString(),
+                                              style: LayoutConfig(context)
+                                                  .titleSectionStyle(
+                                                      isItalic: true)
+                                                  .copyWith(
+                                                    fontSize: kFontSize3XL,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context)
+                                                        .scaffoldBackgroundColor,
+                                                  ),
+                                            ),
+                                          ),
+                                        if (time >= 1)
+                                          AnimatedDefaultTextStyle(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            style: LayoutConfig(context)
+                                                .titleSectionStyle(
+                                                    isItalic: true)
+                                                .copyWith(
+                                                  fontSize: kFontSizeM,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface,
+                                                ),
+                                            child: Text(
+                                              readyText,
+                                              style: LayoutConfig(context)
+                                                  .titleSectionStyle(
+                                                      isItalic: true)
+                                                  .copyWith(
+                                                    fontSize: kFontSizeM,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context)
+                                                        .scaffoldBackgroundColor,
+                                                  ),
+                                            ),
+                                          )
+                                        else
+                                          AnimatedDefaultTextStyle(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            style: LayoutConfig(context)
+                                                .titleSectionStyle(
+                                                    isItalic: true)
+                                                .copyWith(
+                                                  fontSize: kFontSize2XL,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface,
+                                                ),
+                                            child: Text(
+                                              goText,
+                                              style: LayoutConfig(context)
+                                                  .titleSectionStyle(
+                                                      isItalic: true)
+                                                  .copyWith(
+                                                    fontSize: kFontSize2XL,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context)
+                                                        .scaffoldBackgroundColor,
+                                                  ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ),
-                              // Text content
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  if (time >= 1)
-                                    AnimatedDefaultTextStyle(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      style: LayoutConfig(context)
-                                          .displaySmallStyle()
-                                          .copyWith(
-                                            fontSize: kFontSize3XL,
-                                            fontWeight: FontWeight.bold,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary,
-                                          ),
-                                      child: Text(
-                                        time.truncate().toString(),
-                                      ),
-                                    ),
-                                  if (time >= 1)
-                                    AnimatedDefaultTextStyle(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      style: LayoutConfig(context)
-                                          .titleSectionStyle(isItalic: true)
-                                          .copyWith(
-                                            fontSize: kFontSizeM,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary,
-                                          ),
-                                      child: Text(readyText),
-                                    )
-                                  else
-                                    AnimatedDefaultTextStyle(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      style: LayoutConfig(context)
-                                          .titleSectionStyle(isItalic: true)
-                                          .copyWith(
-                                            fontSize: kFontSize2XL,
-                                            fontWeight: FontWeight.bold,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary,
-                                          ),
-                                      child: Text(goText),
-                                    ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  onFinished: () {},
-                );
-              },
+                            ),
+                          );
+                        },
+                        onFinished: () {},
+                      );
+                    },
+                  ),
+              ],
             ),
+          ),
         ],
       );
     }
@@ -848,7 +921,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
           ],
@@ -861,7 +934,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             const SizedBox(height: kSpaceXL),
             Text(
@@ -883,7 +956,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             const SizedBox(height: kSpaceXL),
             Text(
@@ -902,16 +975,17 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   }
 
   Widget _buildKeyboard(CombatState combatState) {
-    return Container(
-      padding: const EdgeInsets.all(20),
+    return Expanded(
+      flex: 1,
       child: LayoutBuilder(
         builder: (context, constraints) {
           final keys = keyboardArray.entries.toList();
           const columns = 3;
           const rows = 4;
           final buttonWidth = constraints.maxWidth / columns;
-          final buttonHeight = 80.0;
-          const buttonSpacing = kSpaceM;
+          final buttonHeight = constraints.maxHeight / rows;
+          const buttonSpacing = 20.0;
+          const tableGap = 10.0;
 
           List<TableRow> tableRows = [];
           for (int r = 0; r < rows; r++) {
@@ -961,17 +1035,51 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   child: button,
                 );
               } else {
-                cell = SizedBox(
-                  width: buttonWidth - buttonSpacing,
-                  height: buttonHeight - buttonSpacing,
+                cell = Padding(
+                  padding: const EdgeInsets.all(buttonSpacing / 2),
+                  child: SizedBox(
+                    width: buttonWidth - buttonSpacing,
+                    height: buttonHeight - buttonSpacing,
+                  ),
                 );
               }
-              rowChildren.add(cell);
+              // Add gap to the right except for last column
+              if (c < columns - 1) {
+                rowChildren.add(Padding(
+                  padding: const EdgeInsets.only(right: tableGap),
+                  child: cell,
+                ));
+              } else {
+                rowChildren.add(cell);
+              }
             }
-            tableRows.add(TableRow(children: rowChildren));
+            // Add gap to the bottom except for last row
+            if (r < rows - 1) {
+              tableRows.add(
+                TableRow(
+                  children: rowChildren,
+                ),
+              );
+              // Add a gap row
+              tableRows.add(
+                TableRow(
+                  children: List.generate(
+                    columns,
+                    (_) => const SizedBox(height: tableGap),
+                  ),
+                ),
+              );
+            } else {
+              tableRows.add(
+                TableRow(
+                  children: rowChildren,
+                ),
+              );
+            }
           }
 
           return Table(
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: tableRows,
           );
         },
