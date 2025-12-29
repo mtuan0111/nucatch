@@ -243,7 +243,6 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
   Future<void> _showBothReadyDialog() async {
     if (!mounted) return;
 
-    // Show dialog without awaiting (non-blocking)
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -264,7 +263,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
             ),
             const SizedBox(height: 16),
             const Text(
-              'Proceeding to difficulty selection...',
+              'Waiting for host to select difficulty...',
               textAlign: TextAlign.center,
             ),
           ],
@@ -272,8 +271,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       ),
     );
 
-    // Wait for 2 seconds to let user see the message
-    Future.delayed(const Duration(seconds: 2), () {
+    await Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         Navigator.of(context, rootNavigator: true).pop();
       }

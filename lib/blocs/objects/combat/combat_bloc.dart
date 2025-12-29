@@ -86,7 +86,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
               (d) => d.toString() == data['difficulty'],
             );
             // Initialize combat game for guest first
-            add(CombatGameStarted(difficulty: difficulty, isHost: false));
+            add(CombatGameStarted(
+              difficulty: difficulty,
+              isHost: false,
+              combatStatus: CombatStatus.intro,
+            ));
             // Then handle difficulty selection
             add(CombatDifficultyChanged(difficulty: difficulty));
           }
@@ -165,8 +169,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(CombatState(
       isHost: event.isHost,
       difficultyModel: DifficultyModel.models[event.difficulty],
-      combatStatus:
-          event.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting,
+      combatStatus: event.combatStatus ??
+          (event.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting),
       isGameActive: true,
       level: 1, // Start from level 1 like solo mode
       lifeRemaining: 3,

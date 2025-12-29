@@ -1,5 +1,6 @@
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 
 abstract class CombatEvent {}
 
@@ -9,11 +10,13 @@ class CombatGameStarted extends CombatEvent {
   final int seconds;
   final Difficulty difficulty;
   final bool isHost;
+  final CombatStatus? combatStatus;
 
   CombatGameStarted({
     this.seconds = 4,
     required this.difficulty,
     required this.isHost,
+    this.combatStatus,
   });
 }
 

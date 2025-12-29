@@ -45,7 +45,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         'Guest-${Random().nextInt(9999).toString().padLeft(4, '0')}';
 
     // Listen to room state
-    _roomStateSubscription = _nearbyService.roomStateStream.listen((state) {
+    _roomStateSubscription =
+        _nearbyService.roomStateStream.listen((state) async {
       if (!mounted) return;
 
       setState(() {
@@ -55,7 +56,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       // Handle state transitions
       if (state == RoomState.bothReady) {
         print('🚀 [Guest] Both players ready!');
-        _showBothReadyDialog();
+        await _showBothReadyDialog();
       } else if (state == RoomState.playing) {
         _handleGameStarted();
       }
@@ -264,43 +265,41 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     });
   }
 
-  void _showBothReadyDialog() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
+  Future<void> _showBothReadyDialog() async {
+    if (!mounted) return;
 
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          title: const Row(
-            children: [
-              Icon(Icons.check_circle, color: Colors.green, size: 32),
-              SizedBox(width: 12),
-              Text('Both Players Ready!'),
-            ],
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '🚀 Game is starting...',
-                style: LayoutConfig(context).largeBoldStyle(),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Waiting for host to select difficulty...',
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.check_circle, color: Colors.green, size: 32),
+            SizedBox(width: 12),
+            Text('Both Players Ready!'),
+          ],
         ),
-      );
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '🚀 Game is starting...',
+              style: LayoutConfig(context).largeBoldStyle(),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Waiting for host to select difficulty...',
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
 
-      Future.delayed(const Duration(seconds: 2), () {
-        if (mounted) {
-          Navigator.of(context, rootNavigator: true).pop();
-        }
-      });
+    await Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        Navigator.of(context, rootNavigator: true).pop();
+      }
     });
   }
 
@@ -349,8 +348,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         // Status will be 'starting' after receiving difficulty from host
         // It won't reach 'playing' until receiving the first turn_start message
         if (combatState.difficultyModel != null &&
-            (combatState.combatStatus == CombatStatus.starting ||
-                combatState.combatStatus == CombatStatus.playing)) {
+            (combatState.combatStatus == CombatStatus.playing ||
+                combatState.combatStatus == CombatStatus.intro)) {
           print(
               '🎮 [Guest] Navigating to play screen with difficulty: ${combatState.difficultyModel?.difficulty}');
 
