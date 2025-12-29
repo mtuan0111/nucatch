@@ -420,6 +420,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get opponentRanOutOfLives => 'Opponent ran out of lives';
 
   @override
+  String get opponentGaveUp => 'Your opponent gave up';
+
+  @override
+  String get confirmEndCombat =>
+      'Are you sure you want to end this game? Your opponent will win.';
+
+  @override
   String get youRanOutOfLives => 'You ran out of lives';
 
   @override

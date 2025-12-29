@@ -421,6 +421,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get opponentRanOutOfLives => 'Đối thủ đã hết mạng';
 
   @override
+  String get opponentGaveUp => 'Đối thủ của bạn đã bỏ cuộc';
+
+  @override
+  String get confirmEndCombat =>
+      'Bạn có chắc chắn muốn kết thúc trò chơi này? Đối thủ của bạn sẽ thắng.';
+
+  @override
   String get youRanOutOfLives => 'Bạn đã hết mạng';
 
   @override

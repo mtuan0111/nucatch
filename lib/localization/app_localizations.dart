@@ -838,6 +838,18 @@ abstract class AppLocalizations {
   /// **'Opponent ran out of lives'**
   String get opponentRanOutOfLives;
 
+  /// Reason for winning when opponent gives up
+  ///
+  /// In en, this message translates to:
+  /// **'Your opponent gave up'**
+  String get opponentGaveUp;
+
+  /// Confirmation message for ending combat game
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to end this game? Your opponent will win.'**
+  String get confirmEndCombat;
+
   /// Reason for losing when player loses all lives
   ///
   /// In en, this message translates to:

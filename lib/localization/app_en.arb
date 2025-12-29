@@ -616,6 +616,14 @@
   "@opponentRanOutOfLives": {
     "description": "Reason for winning when opponent loses all lives"
   },
+  "opponentGaveUp": "Your opponent gave up",
+  "@opponentGaveUp": {
+    "description": "Reason for winning when opponent gives up"
+  },
+  "confirmEndCombat": "Are you sure you want to end this game? Your opponent will win.",
+  "@confirmEndCombat": {
+    "description": "Confirmation message for ending combat game"
+  },
   "youRanOutOfLives": "You ran out of lives",
   "@youRanOutOfLives": {
     "description": "Reason for losing when player loses all lives"

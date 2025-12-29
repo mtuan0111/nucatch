@@ -14,6 +14,7 @@ import 'package:nucatch/helpers/animations/animated_game_wrapper.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/template/custome_alert.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
@@ -1013,7 +1014,32 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     context,
                     iconData: FontAwesomeIcons.bars,
                     onPressed: () {
-                      // Handle menu - maybe show end game dialog
+                      // Show confirmation dialog
+                      showDialog<bool>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (dialogContext) => AlertTemplate(
+                          title: lang(dialogContext).mainMenu,
+                          message: lang(dialogContext).confirmEndCombat,
+                          possitiveButtonLabel: lang(dialogContext).yes,
+                          onPossitiveButtonPressed: () =>
+                              Navigator.of(dialogContext).pop(true),
+                          negativeButtonLabel: lang(dialogContext).no,
+                          onNegativeButtonPressed: () =>
+                              Navigator.of(dialogContext).pop(false),
+                        ),
+                      ).then((confirmed) {
+                        if (confirmed == true) {
+                          // End game with opponent winning
+                          context.read<CombatBloc>().add(
+                                CombatGameEnded(
+                                  isWinner: false,
+                                  reason: lang(context).opponentGaveUp,
+                                  sendMessage: true,
+                                ),
+                              );
+                        }
+                      });
                     },
                   );
                 } else {

@@ -614,6 +614,14 @@
   "@opponentRanOutOfLives": {
     "description": "Lý do thắng khi đối thủ hết mạng"
   },
+  "opponentGaveUp": "Đối thủ của bạn đã bỏ cuộc",
+  "@opponentGaveUp": {
+    "description": "Lý do thắng khi đối thủ bỏ cuộc"
+  },
+  "confirmEndCombat": "Bạn có chắc chắn muốn kết thúc trò chơi này? Đối thủ của bạn sẽ thắng.",
+  "@confirmEndCombat": {
+    "description": "Thông báo xác nhận kết thúc trò chơi combat"
+  },
   "youRanOutOfLives": "Bạn đã hết mạng",
   "@youRanOutOfLives": {
     "description": "Lý do thua khi người chơi hết mạng"
