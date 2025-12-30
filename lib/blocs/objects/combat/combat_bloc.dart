@@ -230,7 +230,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         '🎮 [Combat] TurnStarted - isHost: ${state.isHost}, isMyTurn: ${event.isMyTurn}');
 
     // Generate new challenge based on difficulty and level using event handler
-    await _onCombatGeneratedRequiredString(CombatRequiredStringGenerated(), emit);
+    await _onCombatGeneratedRequiredString(
+        CombatRequiredStringGenerated(), emit);
     await Future.delayed(const Duration(milliseconds: 500)); // Slight delay
     final requirement = state.requirementString ?? "";
     final expect = state.expect ?? "";
