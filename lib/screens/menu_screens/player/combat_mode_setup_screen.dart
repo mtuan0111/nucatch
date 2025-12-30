@@ -81,20 +81,20 @@ class CombatModeSetupScreen extends StatelessWidget {
                       children: [
                         // Create Room Button
                         _ActionCard(
-                            title: lang(context).createRoom,
-                            description: lang(context).createRoomDescription,
-                            icon: FontAwesomeIcons.userPlus,
-                            color: Colors.blue,
-                            onTap: () => _navigateToHostRoom(context),
-                          ),
-                          const SizedBox(height: 30),
-                          // Join Room Button
-                          _ActionCard(
-                            title: lang(context).joinRoom,
-                            description: lang(context).joinRoomDescription,
-                            icon: FontAwesomeIcons.rightToBracket,
-                            color: Colors.green,
-                            onTap: () => _navigateToJoinRoom(context),
+                          title: lang(context).createRoom,
+                          description: lang(context).createRoomDescription,
+                          icon: FontAwesomeIcons.userPlus,
+                          color: Colors.blue,
+                          onTap: () => _navigateToHostRoom(context),
+                        ),
+                        const SizedBox(height: 30),
+                        // Join Room Button
+                        _ActionCard(
+                          title: lang(context).joinRoom,
+                          description: lang(context).joinRoomDescription,
+                          icon: FontAwesomeIcons.rightToBracket,
+                          color: Colors.green,
+                          onTap: () => _navigateToJoinRoom(context),
                         ),
                       ],
                     ),

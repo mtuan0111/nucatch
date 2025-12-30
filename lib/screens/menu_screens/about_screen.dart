@@ -602,7 +602,8 @@ class _AboutScreenState extends State<AboutScreen> {
           child: CustomElevatedButton(
             onPressed: onTap,
             shapeAt: RoundedWithShapeAt.all,
-            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
+            backgroundColor:
+                Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Row(
