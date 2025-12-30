@@ -162,6 +162,8 @@ class CombatRestartReadyReceived extends CombatEvent {
   CombatRestartReadyReceived({required this.opponentReady});
 }
 
+class CombatBlocReset extends CombatEvent {}
+
 // ===== Legacy aliases for backward compatibility =====
 typedef TurnStarted = CombatTurnStarted;
 typedef TurnReceived = CombatTurnReceived;

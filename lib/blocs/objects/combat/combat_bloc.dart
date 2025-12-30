@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lunar/calendar/Fu.dart';
@@ -53,6 +54,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatNumberReset>(_onCombatResetNewNumber);
     on<CombatTapTimerTick>(_onCombatTapTimerTick);
     on<CombatTapTimerTimeout>(_onCombatTapTimerTimeout);
+    on<CombatBlocReset>(_onCombatBlocReset);
 
     // Listen to BLE messages
     _messageSubscription = _roomService.messageStream.listen((data) {
@@ -586,16 +588,16 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
   Future<void> _onCombatSetLevel(
     CombatLevelChanged event,
-    Emitter<CombatState> emit,
+    Emitter<CombatState> emitter,
   ) async {
-    emit(
+    emitter(
       state.copyWith(
         status: TurnStatus.playing,
         expect: "",
       ),
     );
 
-    emit(
+    emitter(
       state.copyWith(
         level: event.level,
         timesCorrect: state.level != event.level ? 0 : null,
@@ -618,7 +620,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     await _onCombatShowExpect(
         CombatExpectShown(Duration(milliseconds: state.getTimeShowTarget)),
-        emit);
+        emitter);
+
+    // Start timer after showing challenge
+    _startTapTimer();
   }
 
   Future<void> _onCombatLostLife(
@@ -722,6 +727,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         break;
     }
 
+    developer.log(
+        '🎮 [Combat] Generated requiredString: $requiredString, expectString: $expectString');
     emit(
       state.copyWith(
         requirementString: requiredString,
@@ -735,6 +742,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatExpectShown event,
     Emitter<CombatState> emit,
   ) async {
+    if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
+      return;
+    }
+
     _stopTapTimer(); // Stop timer while showing new challenge
 
     await _onCombatGeneratedRequiredString(
@@ -746,16 +761,24 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       ),
     );
 
-    await Future.delayed(event.duration, () {});
+    await Future.delayed(
+      event.duration,
+      () {},
+    );
+
+    if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
+      return;
+    }
 
     emit(
       state.copyWith(
         status: TurnStatus.playing,
       ),
     );
-
-    // Start timer after showing challenge
-    _startTapTimer();
   }
 
   Future<void> _onCombatResetNewNumber(
@@ -854,5 +877,22 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         isMyTurn: false,
       ));
     }
+  }
+
+  // Reset bloc to fresh initial state
+  Future<void> _onCombatBlocReset(
+    CombatBlocReset event,
+    Emitter<CombatState> emit,
+  ) async {
+    print('🔄 [Combat] Resetting CombatBloc to initial state');
+
+    // Cancel any active timers
+    _tapTimer?.cancel();
+    _tapTimer = null;
+
+    // Reset to fresh initial state
+    emit(const CombatState());
+
+    print('✅ [Combat] CombatBloc reset complete');
   }
 }

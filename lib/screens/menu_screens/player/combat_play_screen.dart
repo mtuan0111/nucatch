@@ -701,7 +701,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     }
 
     // Show requirement string (what to memorize/solve)
-    if (combatState.isShowExpect && combatState.requirementString != null) {
+    if (combatState.isShowExpect) {
       return Center(
         child: Wrap(
           children: List.generate(
