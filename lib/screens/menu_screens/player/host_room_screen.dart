@@ -11,6 +11,7 @@ import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/services/combat_nearby_service.dart';
 
 /// Host room screen for advertising via Nearby Connections
@@ -422,13 +423,20 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                           ),
                           const SizedBox(height: 30),
                           if (!_myPlayerReady)
-                            ElevatedButton.icon(
+                            CustomElevatedButton(
                               onPressed: _setReady,
-                              icon: const FaIcon(FontAwesomeIcons.check),
-                              label: const Text('Ready'),
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 15),
+                              shapeAt: RoundedWithShapeAt.all,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const FaIcon(FontAwesomeIcons.check),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    lang(context).ready,
+                                    style: LayoutConfig(context)
+                                        .boldSubtitleStyle(),
+                                  ),
+                                ],
                               ),
                             ),
                         ],

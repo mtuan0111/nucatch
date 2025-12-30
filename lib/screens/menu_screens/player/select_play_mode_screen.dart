@@ -30,40 +30,43 @@ class SelectPlayModeScreen extends StatelessWidget {
                 ),
 
                 Expanded(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Solo Mode Card
-                          _PlayModeCard(
-                            title: lang(context).soloMode,
-                            description: lang(context).soloModeDescription,
-                            icon: FontAwesomeIcons.user,
-                            color: Colors.blue,
-                            onTap: () {
-                              context
-                                  .read<PlayerNavCubit>()
-                                  .selectPlayMode(PlayMode.solo);
-                            },
-                          ),
+                  child: SingleChildScrollView(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Solo Mode Card
+                            _PlayModeCard(
+                              title: lang(context).soloMode,
+                              description: lang(context).soloModeDescription,
+                              icon: FontAwesomeIcons.user,
+                              color: Colors.blue,
+                              onTap: () {
+                                context
+                                    .read<PlayerNavCubit>()
+                                    .selectPlayMode(PlayMode.solo);
+                              },
+                            ),
 
-                          const SizedBox(height: 30),
+                            const SizedBox(height: 30),
 
-                          // Combat Mode Card
-                          _PlayModeCard(
-                            title: lang(context).combatMode,
-                            description: lang(context).combatModeDescription,
-                            icon: FontAwesomeIcons.userGroup,
-                            color: Colors.orange,
-                            onTap: () {
-                              context
-                                  .read<PlayerNavCubit>()
-                                  .selectPlayMode(PlayMode.combat);
-                            },
-                          ),
-                        ],
+                            // Combat Mode Card
+                            _PlayModeCard(
+                              title: lang(context).combatMode,
+                              description: lang(context).combatModeDescription,
+                              icon: FontAwesomeIcons.userGroup,
+                              color: Colors.orange,
+                              onTap: () {
+                                context
+                                    .read<PlayerNavCubit>()
+                                    .selectPlayMode(PlayMode.combat);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -106,20 +109,12 @@ class _PlayModeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        width: double.infinity,
+    return CustomElevatedButton(
+      onPressed: onTap,
+      shapeAt: RoundedWithShapeAt.all,
+      backgroundColor: color.withOpacity(0.2),
+      child: Padding(
         padding: const EdgeInsets.all(24.0),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: color.withOpacity(0.5),
-            width: 2,
-          ),
-        ),
         child: Column(
           children: [
             Icon(
@@ -130,6 +125,7 @@ class _PlayModeCard extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               title,
+              textAlign: TextAlign.center,
               style: LayoutConfig(context).titleSectionStyle().copyWith(
                     color: color,
                     fontSize: 24,

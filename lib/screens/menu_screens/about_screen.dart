@@ -560,19 +560,6 @@ class _AboutScreenState extends State<AboutScreen> {
     }
   }
 
-  Color _getStatusColor(BuildContext context, AppVersionStatus status) {
-    switch (status) {
-      case AppVersionStatus.updateAvailable:
-        return Colors.orange;
-      case AppVersionStatus.noUpdate:
-        return Colors.green;
-      case AppVersionStatus.error:
-        return Colors.red;
-      default:
-        return Theme.of(context).primaryColor;
-    }
-  }
-
   Widget _buildInfoRow(
     BuildContext context,
     IconData icon,
@@ -612,29 +599,12 @@ class _AboutScreenState extends State<AboutScreen> {
     return Row(
       children: [
         Expanded(
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12 / 5),
-              topRight: Radius.circular(12),
-              bottomLeft: Radius.circular(12),
-              bottomRight: Radius.circular(12),
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12 / 5),
-                  topRight: Radius.circular(12),
-                  bottomLeft: Radius.circular(12),
-                  bottomRight: Radius.circular(12),
-                ),
-                border: Border.all(
-                  color:
-                      Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
-                ),
-              ),
+          child: CustomElevatedButton(
+            onPressed: onTap,
+            shapeAt: RoundedWithShapeAt.all,
+            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,

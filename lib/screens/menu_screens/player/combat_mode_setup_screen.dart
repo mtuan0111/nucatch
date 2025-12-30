@@ -25,41 +25,62 @@ class CombatModeSetupScreen extends StatelessWidget {
       body: Container(
         decoration: LayoutConfig(context).gradientDecoration,
         child: SafeArea(
-          child: DeviceWrapper(
-            child: Column(
-              children: [
-                // Header
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: const FaIcon(FontAwesomeIcons.arrowLeft),
-                        onPressed: () {
-                          context.read<MenuBloc>().add(ShowMenu());
-                        },
-                      ),
-                      Expanded(
-                        child: Text(
-                          lang(context).combatMode,
-                          style: LayoutConfig(context).titleSectionStyle(),
-                          textAlign: TextAlign.center,
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                shadowColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
+                pinned: true,
+                stretch: true,
+                flexibleSpace: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    final double appBarHeight = constraints.biggest.height;
+                    final bool isCollapsed = appBarHeight <=
+                        kToolbarHeight + MediaQuery.of(context).padding.top;
+
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      color: isCollapsed
+                          ? Theme.of(context).primaryColor
+                          : Colors.transparent,
+                      child: FlexibleSpaceBar(
+                        centerTitle: true,
+                        titlePadding: EdgeInsets.zero,
+                        title: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            lang(context).combatMode,
+                            textAlign: TextAlign.center,
+                            style: LayoutConfig(context).displaySmallStyle(
+                              isActiveShadow: true,
+                              isItalic: true,
+                            ),
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 48),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-
-                Expanded(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Create Room Button
-                          _ActionCard(
+                leading: IconButton(
+                  onPressed: () {
+                    context.read<MenuBloc>().add(ShowMenu());
+                  },
+                  icon: const Icon(FontAwesomeIcons.chevronLeft),
+                ),
+                expandedHeight: 100,
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: DeviceWrapper(
+                    child: Column(
+                      children: [
+                        // Create Room Button
+                        _ActionCard(
                             title: lang(context).createRoom,
                             description: lang(context).createRoomDescription,
                             icon: FontAwesomeIcons.userPlus,
@@ -74,14 +95,13 @@ class CombatModeSetupScreen extends StatelessWidget {
                             icon: FontAwesomeIcons.rightToBracket,
                             color: Colors.green,
                             onTap: () => _navigateToJoinRoom(context),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -106,20 +126,12 @@ class _ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        width: double.infinity,
+    return CustomElevatedButton(
+      onPressed: onTap,
+      shapeAt: RoundedWithShapeAt.all,
+      backgroundColor: color.withOpacity(0.2),
+      child: Padding(
         padding: const EdgeInsets.all(24.0),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: color.withOpacity(0.5),
-            width: 2,
-          ),
-        ),
         child: Column(
           children: [
             Icon(
@@ -130,6 +142,7 @@ class _ActionCard extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               title,
+              textAlign: TextAlign.center,
               style: LayoutConfig(context).titleSectionStyle().copyWith(
                     color: color,
                     fontSize: 24,

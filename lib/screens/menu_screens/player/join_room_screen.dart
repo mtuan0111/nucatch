@@ -11,6 +11,7 @@ import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/services/combat_nearby_service.dart';
 
 /// Guest room screen for discovering and joining Nearby Connections combat rooms
@@ -353,276 +354,288 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         body: Container(
           decoration: LayoutConfig(context).gradientDecoration,
           child: SafeArea(
-            child: Column(
-              children: [
-                // Header
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: const FaIcon(FontAwesomeIcons.arrowLeft),
-                        onPressed: () async {
-                          await _nearbyService.stopDiscovery();
-                          await _nearbyService.disconnect();
-                          if (mounted) {
-                            context.read<MenuBloc>().add(ShowMenu());
-                          }
-                        },
-                      ),
-                      Expanded(
-                        child: Text(
-                          'Join Room',
-                          style: LayoutConfig(context).titleSectionStyle(),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      const SizedBox(width: 48),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
+            child: DeviceWrapper(
+              child: Column(
+                children: [
+                  // Header
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
                       children: [
-                        // Discovery Status
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (_isDiscovering)
-                              const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              ),
-                            const SizedBox(width: 10),
-                            Flexible(
-                              child: Text(
-                                _getRoomStateText(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
+                        IconButton(
+                          icon: const FaIcon(FontAwesomeIcons.arrowLeft),
+                          onPressed: () async {
+                            await _nearbyService.stopDiscovery();
+                            await _nearbyService.disconnect();
+                            if (mounted) {
+                              context.read<MenuBloc>().add(ShowMenu());
+                            }
+                          },
                         ),
-                        const SizedBox(height: 20),
-
-                        // Discovered Hosts List
-                        if (_roomState == RoomState.waiting &&
-                            _discoveredEndpoints.isNotEmpty)
-                          Expanded(
-                            child: Card(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Row(
-                                      children: [
-                                        const Icon(Icons.radar,
-                                            color: Colors.blue),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          'Available Hosts (${_discoveredEndpoints.length})',
-                                          style: LayoutConfig(context)
-                                              .largeBoldStyle(),
-                                        ),
-                                      ],
-                                    ),
+                        Expanded(
+                          child: Text(
+                            'Join Room',
+                            style: LayoutConfig(context).titleSectionStyle(),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(width: 48),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          // Discovery Status
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (_isDiscovering)
+                                const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
                                   ),
-                                  const Divider(height: 1),
-                                  Expanded(
-                                    child: ListView.builder(
-                                      itemCount: _discoveredEndpoints.length,
-                                      itemBuilder: (context, index) {
-                                        final entry = _discoveredEndpoints
-                                            .entries
-                                            .elementAt(index);
-                                        final endpointId = entry.key;
-                                        final endpointName = entry.value;
+                                ),
+                              const SizedBox(width: 10),
+                              Flexible(
+                                child: Text(
+                                  _getRoomStateText(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
 
-                                        return ListTile(
-                                          leading: CircleAvatar(
-                                            backgroundColor: Colors.blue,
-                                            child: Icon(
-                                              Icons.person,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimary,
+                          // Discovered Hosts List
+                          if (_roomState == RoomState.waiting &&
+                              _discoveredEndpoints.isNotEmpty)
+                            Expanded(
+                              child: Card(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.radar,
+                                              color: Colors.blue),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            'Available Hosts (${_discoveredEndpoints.length})',
+                                            style: LayoutConfig(context)
+                                                .largeBoldStyle(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const Divider(height: 1),
+                                    Expanded(
+                                      child: ListView.builder(
+                                        itemCount: _discoveredEndpoints.length,
+                                        itemBuilder: (context, index) {
+                                          final entry = _discoveredEndpoints
+                                              .entries
+                                              .elementAt(index);
+                                          final endpointId = entry.key;
+                                          final endpointName = entry.value;
+
+                                          return ListTile(
+                                            leading: CircleAvatar(
+                                              backgroundColor: Colors.blue,
+                                              child: Icon(
+                                                Icons.person,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary,
+                                              ),
                                             ),
-                                          ),
-                                          title: Text(
-                                            endpointName,
-                                            style: LayoutConfig(context)
-                                                .boldSubtitleStyle(),
-                                          ),
-                                          subtitle: Text(
-                                            'Tap to connect',
-                                            style: LayoutConfig(context)
-                                                .hintTextStyle(),
-                                          ),
-                                          trailing: const Icon(
-                                            Icons.arrow_forward_ios,
-                                            size: 16,
-                                          ),
-                                          onTap: () => _connectToEndpoint(
-                                              endpointId, endpointName),
-                                        );
-                                      },
+                                            title: Text(
+                                              endpointName,
+                                              style: LayoutConfig(context)
+                                                  .boldSubtitleStyle(),
+                                            ),
+                                            subtitle: Text(
+                                              'Tap to connect',
+                                              style: LayoutConfig(context)
+                                                  .hintTextStyle(),
+                                            ),
+                                            trailing: const Icon(
+                                              Icons.arrow_forward_ios,
+                                              size: 16,
+                                            ),
+                                            onTap: () => _connectToEndpoint(
+                                                endpointId, endpointName),
+                                          );
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
 
-                        // Empty State
-                        if (_roomState == RoomState.waiting &&
-                            _discoveredEndpoints.isEmpty)
-                          Expanded(
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.search_off,
-                                    size: 80,
-                                    color: Colors.grey[400],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Text(
-                                    'No hosts found nearby',
-                                    style: LayoutConfig(context).largeBoldStyle(
-                                      color: Colors.grey[600],
+                          // Empty State
+                          if (_roomState == RoomState.waiting &&
+                              _discoveredEndpoints.isEmpty)
+                            Expanded(
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.search_off,
+                                      size: 80,
+                                      color: Colors.grey[400],
                                     ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    'Make sure a friend is hosting\nand both devices are close together',
-                                    textAlign: TextAlign.center,
-                                    style: LayoutConfig(context)
-                                        .secondaryTextStyle(
-                                      color: Colors.grey[500],
+                                    const SizedBox(height: 20),
+                                    Text(
+                                      'No hosts found nearby',
+                                      style:
+                                          LayoutConfig(context).largeBoldStyle(
+                                        color: Colors.grey[600],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'Make sure a friend is hosting\nand both devices are close together',
+                                      textAlign: TextAlign.center,
+                                      style: LayoutConfig(context)
+                                          .secondaryTextStyle(
+                                        color: Colors.grey[500],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
 
-                        // Connected State
-                        if (_roomState != RoomState.waiting)
-                          Expanded(
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.check_circle,
-                                    size: 80,
-                                    color: _roomState == RoomState.bothReady
-                                        ? Colors.green
-                                        : Colors.blue,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Text(
-                                    _getRoomStateText(),
-                                    style: LayoutConfig(context).largeBoldStyle(
+                          // Connected State
+                          if (_roomState != RoomState.waiting)
+                            Expanded(
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.check_circle,
+                                      size: 80,
                                       color: _roomState == RoomState.bothReady
                                           ? Colors.green
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
+                                          : Colors.blue,
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  if (_roomState == RoomState.guestJoined ||
-                                      _roomState == RoomState.bothReady) ...[
-                                    const SizedBox(height: 30),
-                                    // Ready status indicators
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        _buildReadyIndicator(
-                                          label: lang(context).you,
-                                          isReady: _myPlayerReady,
-                                        ),
-                                        const SizedBox(width: 48),
-                                        _buildReadyIndicator(
-                                          label: lang(context).opponent,
-                                          isReady: _hostPlayerReady,
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 30),
-                                    if (!_myPlayerReady)
-                                      ElevatedButton.icon(
-                                        onPressed: _setReady,
-                                        icon: const FaIcon(
-                                            FontAwesomeIcons.check),
-                                        label: const Text('Ready'),
-                                        style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 40, vertical: 15),
-                                        ),
+                                    const SizedBox(height: 20),
+                                    Text(
+                                      _getRoomStateText(),
+                                      style:
+                                          LayoutConfig(context).largeBoldStyle(
+                                        color: _roomState == RoomState.bothReady
+                                            ? Colors.green
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
                                       ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    if (_roomState == RoomState.guestJoined ||
+                                        _roomState == RoomState.bothReady) ...[
+                                      const SizedBox(height: 30),
+                                      // Ready status indicators
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          _buildReadyIndicator(
+                                            label: lang(context).you,
+                                            isReady: _myPlayerReady,
+                                          ),
+                                          const SizedBox(width: 48),
+                                          _buildReadyIndicator(
+                                            label: lang(context).opponent,
+                                            isReady: _hostPlayerReady,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 30),
+                                      if (!_myPlayerReady)
+                                        CustomElevatedButton(
+                                          onPressed: _setReady,
+                                          shapeAt: RoundedWithShapeAt.all,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const FaIcon(
+                                                  FontAwesomeIcons.check),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                lang(context).ready,
+                                                style: LayoutConfig(context)
+                                                    .boldSubtitleStyle(),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                    ],
                                   ],
-                                ],
+                                ),
                               ),
                             ),
-                          ),
 
-                        const SizedBox(height: 20),
-                        // Connection Status Indicator
-                        Column(
-                          children: [
-                            const Divider(),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.settings_input_antenna,
-                                  color: _nearbyService.isConnected
-                                      ? Colors.green
-                                      : _isDiscovering
-                                          ? Colors.orange
-                                          : Colors.grey,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  _nearbyService.isConnected
-                                      ? 'Connected via Nearby'
-                                      : _isDiscovering
-                                          ? 'Discovering...'
-                                          : 'Not discovering',
-                                  style:
-                                      LayoutConfig(context).secondaryTextStyle(
+                          const SizedBox(height: 20),
+                          // Connection Status Indicator
+                          Column(
+                            children: [
+                              const Divider(),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.settings_input_antenna,
                                     color: _nearbyService.isConnected
                                         ? Colors.green
                                         : _isDiscovering
                                             ? Colors.orange
                                             : Colors.grey,
+                                    size: 20,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    _nearbyService.isConnected
+                                        ? 'Connected via Nearby'
+                                        : _isDiscovering
+                                            ? 'Discovering...'
+                                            : 'Not discovering',
+                                    style: LayoutConfig(context)
+                                        .secondaryTextStyle(
+                                      color: _nearbyService.isConnected
+                                          ? Colors.green
+                                          : _isDiscovering
+                                              ? Colors.orange
+                                              : Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
