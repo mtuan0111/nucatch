@@ -90,10 +90,10 @@ class CombatGameEndScreen extends StatelessWidget {
                   onPressed: () {
                     // Reset CombatBloc to fresh initial state
                     context.read<CombatBloc>().add(CombatBlocReset());
-                    
+
                     // Reset CombatNavCubit to initial state
                     context.read<CombatNavCubit>().reset();
-                    
+
                     // Navigate back to select play mode
                     context.read<PlayerNavCubit>().showSelectPlayMode();
                   },

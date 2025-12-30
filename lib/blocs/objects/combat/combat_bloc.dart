@@ -229,12 +229,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     print(
         '🎮 [Combat] TurnStarted - isHost: ${state.isHost}, isMyTurn: ${event.isMyTurn}');
 
-    // Generate new challenge based on difficulty and level
-    final challenge = _generateChallenge();
+    // Generate new challenge based on difficulty and level using event handler
+    await _onCombatGeneratedRequiredString(CombatRequiredStringGenerated(), emit);
     await Future.delayed(const Duration(milliseconds: 500)); // Slight delay
-    final requirement =
-        challenge['requirement'] ?? ""; // What players see (e.g., "25 + 17")
-    final expect = challenge['expect'] ?? ""; // What players type (e.g., "42")
+    final requirement = state.requirementString ?? "";
+    final expect = state.expect ?? "";
 
     // First, set to initial status to show the requirement
     emit(state.copyWith(
@@ -315,51 +314,6 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Start tap timer when typing begins
     _startTapTimer();
-  }
-
-  Map<String, String> _generateChallenge() {
-    if (state.difficultyModel == null) {
-      return {'requirement': '123', 'expect': '123'};
-    }
-
-    // Use the same generation logic as solo mode - based on current level
-    final level = state.level;
-
-    switch (state.difficultyModel!.difficulty) {
-      case Difficulty.easy:
-        // Generate a random number for easy difficulty
-        final randomNum = Helper().generateRandomNumber(level + 2);
-        return {'requirement': randomNum, 'expect': randomNum};
-      case Difficulty.medium:
-        // Generate a plus/minus calculation expression for medium difficulty
-        return Helper().randomCalculatorWithPlusMinus(level);
-      case Difficulty.hard:
-        // Generate a multiplication/division calculation expression for hard difficulty
-        return Helper().randomCalculatorWithMulDiv(level);
-      case Difficulty.extreme:
-        // For extreme difficulty, randomly choose between different generators
-        final rand = Random();
-        final choice = rand.nextInt(3);
-        if (choice == 0) {
-          // Plus/minus calculation with higher level
-          final result = Helper().randomCalculatorWithPlusMinus(level + 2);
-          return {
-            'requirement': result['expression']!,
-            'expect': result['expect']!
-          };
-        } else if (choice == 1) {
-          // Generate a random number with higher level
-          final randomNum = Helper().generateRandomNumber(level + 5);
-          return {'requirement': randomNum, 'expect': randomNum};
-        } else {
-          // Multiplication/division calculation with higher level
-          final result = Helper().randomCalculatorWithMulDiv(level + 2);
-          return {
-            'requirement': result['expression']!,
-            'expect': result['expect']!
-          };
-        }
-    }
   }
 
   Future<void> _onCombatOpponentMoveReceived(

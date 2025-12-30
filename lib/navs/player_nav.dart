@@ -36,14 +36,14 @@ class _PlayerNavState extends State<PlayerNav> {
               ),
 
               // Combat mode navigation
-              if (state is CombatModeSetupState || 
+              if (state is CombatModeSetupState ||
                   (state is PlayingState && state.playMode == PlayMode.combat))
                 const MaterialPage(
                   child: CombatNav(),
                 ),
 
               // Solo mode navigation
-              if (state is SetDifficultyState || 
+              if (state is SetDifficultyState ||
                   (state is PlayingState && state.playMode == PlayMode.solo) ||
                   state is GameOverState)
                 const MaterialPage(
