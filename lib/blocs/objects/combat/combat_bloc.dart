@@ -93,7 +93,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
               combatStatus: CombatStatus.intro,
             ));
             // Then handle difficulty selection
-            add(CombatDifficultyChanged(difficulty: difficulty));
+            // add(CombatDifficultyChanged(difficulty: difficulty));
           }
           break;
         case 'turn_start':
@@ -135,7 +135,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           ));
           break;
         case 'restart_requested':
-          add(CombatRestartRequested());
+          // add(CombatRestartRequested());
           break;
         case 'restart_ready':
           add(CombatRestartReadyReceived(
@@ -167,17 +167,20 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     print(
         '🎮 [Combat] CombatGameStarted - event.isHost: ${event.isHost}, current state.isHost: ${state.isHost}');
 
+    final combatStatus = event.combatStatus ??
+        (event.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting);
+
     emit(CombatState(
       isHost: event.isHost,
       difficultyModel: DifficultyModel.models[event.difficulty],
-      combatStatus: event.combatStatus ??
-          (event.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting),
+      combatStatus: combatStatus,
       isGameActive: true,
       level: 1, // Start from level 1 like solo mode
       lifeRemaining: 3,
       opponentLives: 3,
       point: 0,
       opponentScore: 0,
+      countDown: combatStatus == CombatStatus.intro ? 4 : 0, // Set countdown if intro status
     ));
 
     print(
@@ -247,6 +250,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       combatStatus: CombatStatus.playing,
       status: TurnStatus.initial, // Show requirement first
       countDown: 0, // Reset countdown when turn starts
+      isGameActive: true, // Mark game as active when turn starts
     ));
 
     // Send turn start message to opponent
@@ -433,19 +437,22 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   }
 
   Future<void> _restartGame(Emitter<CombatState> emit) async {
-    print('🔄 [Combat] Both players ready - restarting game');
+    print('🔄 [Combat] Both players ready - restarting game with countdown');
 
-    // Reset to difficulty selection state
+    // Save current difficulty to preserve it
+    final currentDifficulty = state.difficultyModel;
+
+    // First, reset the state with intro status and countdown
     emit(state.copyWith(
-      combatStatus:
-          state.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting,
+      combatStatus: CombatStatus.intro,
+      countDown: 4, // Start countdown at 4 (will show 3-2-1-GO)
       isWinner: null,
       gameEndReason: null,
       isRestartRequested: false,
       isPlayerReady: false,
       isOpponentReady: false,
       isGameActive: false,
-      level: 0,
+      level: 1, // Always start from level 1
       timesCorrect: 0,
       point: 0,
       lifeRemaining: 3,
@@ -457,7 +464,21 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       opponentInput: null,
       isMyTurn: false,
       isWaitingForOpponent: false,
+      difficultyModel: currentDifficulty, // Keep the same difficulty
     ));
+
+    // Wait for countdown to finish (4 seconds)
+    for (int i = 4; i > 0; i--) {
+      await Future.delayed(const Duration(seconds: 1));
+      if (isClosed) return;
+    }
+
+    // After countdown, host starts their turn first
+    if (state.isHost) {
+      print('🎮 [Host] Starting my turn first after restart (host goes first)');
+      add(CombatTurnStarted(isMyTurn: true));
+    }
+    // Guest waits for turn_start message from host
   }
 
   Future<void> _onCombatTap(

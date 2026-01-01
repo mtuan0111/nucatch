@@ -79,10 +79,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
         child: BlocListener<CombatBloc, CombatState>(
           listenWhen: (previous, current) {
             // Navigate to end game screen when game ends
-            if (!previous.hasGameEnded && current.hasGameEnded) {
-              return true;
-            }
-            return false;
+            // Check both hasGameEnded transition and combatStatus to handle restarts
+            final gameJustEnded = !previous.hasGameEnded && current.hasGameEnded;
+            final statusChangedToEnded = previous.combatStatus != CombatStatus.ended && 
+                                         current.combatStatus == CombatStatus.ended;
+            return gameJustEnded || statusChangedToEnded;
           },
           listener: (context, state) {
             if (state.hasGameEnded) {
