@@ -464,8 +464,8 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                               Expanded(
                                 child: Text(
                                   lang(context).distanceWarning,
-                                  style: LayoutConfig(context)
-                                      .secondaryTextStyle(
+                                  style:
+                                      LayoutConfig(context).secondaryTextStyle(
                                     color: Colors.orange,
                                   ),
                                 ),

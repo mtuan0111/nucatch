@@ -437,7 +437,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                 const SizedBox(width: 10),
                                 Text(
                                   lang(context).searchingForHosts,
-                                  style: LayoutConfig(context).titleSectionStyle(),
+                                  style:
+                                      LayoutConfig(context).titleSectionStyle(),
                                 ),
                               ],
                             )
