@@ -1059,6 +1059,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Opponent will take first turn'**
   String get opponentWillTakeFirst;
+
+  /// Snackbar message when host starts advertising the room
+  ///
+  /// In en, this message translates to:
+  /// **'🎮 Advertising room! Waiting for opponent...'**
+  String get advertisingRoomWaiting;
+
+  /// Snackbar message when opponent joins the room
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Opponent joined! Press Ready when you\'re prepared.'**
+  String get opponentJoinedReady;
+
+  /// Dialog title when opponent is ready
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent Ready!'**
+  String get opponentReady;
+
+  /// OK button label
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// Dialog title when both players are ready
+  ///
+  /// In en, this message translates to:
+  /// **'Both Players Ready!'**
+  String get bothPlayersReady;
+
+  /// Snackbar message when searching for hosts
+  ///
+  /// In en, this message translates to:
+  /// **'🔍 Searching for hosts...'**
+  String get searchingForHosts;
+
+  /// Snackbar message when connecting to a host
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting to {hostName}...'**
+  String connectingToHost(String hostName);
+
+  /// Dialog title when host is ready
+  ///
+  /// In en, this message translates to:
+  /// **'Host Ready!'**
+  String get hostReady;
+
+  /// Message in dialog when host is ready
+  ///
+  /// In en, this message translates to:
+  /// **'✅ The host is ready!'**
+  String get theHostIsReady;
+
+  /// Instruction to press ready button
+  ///
+  /// In en, this message translates to:
+  /// **'Press Ready when you\'re prepared to start.'**
+  String get pressReadyWhenPrepared;
+
+  /// Message in dialog when opponent is ready
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Your opponent is ready!'**
+  String get yourOpponentIsReady;
+
+  /// Message when game is about to start
+  ///
+  /// In en, this message translates to:
+  /// **'🚀 Game is starting...'**
+  String get gameIsStarting;
+
+  /// Message when waiting for host to choose difficulty
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for host to select difficulty...'**
+  String get waitingForHostToSelectDifficulty;
+
+  /// Error message when Nearby Connections fails to initialize
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to initialize Nearby Connections. Please grant location permissions.'**
+  String get failedToInitializeNearby;
+
+  /// Error message when trying to use Nearby before initialization
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby Connections is not initialized'**
+  String get nearbyNotInitialized;
+
+  /// Error message when advertising fails to start
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start advertising: {error}'**
+  String failedToStartAdvertising(String error);
+
+  /// Error message when setting ready status fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to set ready: {error}'**
+  String failedToSetReady(String error);
+
+  /// Error message when game fails to start
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start game: {error}'**
+  String failedToStartGame(String error);
+
+  /// Status message while waiting for opponent
+  ///
+  /// In en, this message translates to:
+  /// **'Advertising room...\nWaiting for opponent to discover and connect.'**
+  String get advertisingRoomStatus;
+
+  /// Status message when opponent connects
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent connected!\nPress Ready when both players are ready.'**
+  String get opponentConnectedStatus;
+
+  /// Status message when both players are ready
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Both players ready! Starting game...'**
+  String get bothPlayersReadyStatus;
+
+  /// Status message while setting up game
+  ///
+  /// In en, this message translates to:
+  /// **'🎮 Setting up game difficulty...'**
+  String get settingUpDifficulty;
+
+  /// Label showing host name
+  ///
+  /// In en, this message translates to:
+  /// **'Advertising as:'**
+  String get advertisingAs;
+
+  /// Status message when connected via Nearby Connections
+  ///
+  /// In en, this message translates to:
+  /// **'Connected via Nearby'**
+  String get connectedViaNearby;
+
+  /// Status message when advertising for connections
+  ///
+  /// In en, this message translates to:
+  /// **'Advertising...'**
+  String get advertising;
 }
 
 class _AppLocalizationsDelegate

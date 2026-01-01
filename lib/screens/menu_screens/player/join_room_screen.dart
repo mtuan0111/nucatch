@@ -164,10 +164,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('🔍 Searching for hosts...'),
+          SnackBar(
+            content: Text(lang(context).searchingForHosts),
             backgroundColor: Colors.blue,
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           ),
         );
       }
@@ -186,7 +186,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Connecting to $endpointName...'),
+          content: Text(lang(context).connectingToHost(endpointName)),
           backgroundColor: Colors.blue,
         ),
       );
@@ -223,23 +223,25 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         context: context,
         barrierDismissible: true,
         builder: (dialogContext) => AlertDialog(
-          title: const Row(
+          title: Row(
             children: [
-              Icon(Icons.check_circle_outline, color: Colors.blue, size: 32),
-              SizedBox(width: 12),
-              Text('Host Ready!'),
+              const Icon(Icons.check_circle_outline, color: Colors.blue, size: 32),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(lang(dialogContext).hostReady),
+              ),
             ],
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '✅ The host is ready!',
+                lang(dialogContext).theHostIsReady,
                 style: LayoutConfig(context).boldSubtitleStyle(),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Press Ready when you\'re prepared to start.',
+              Text(
+                lang(dialogContext).pressReadyWhenPrepared,
                 textAlign: TextAlign.center,
               ),
             ],
@@ -250,7 +252,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                 dialogDismissed = true;
                 Navigator.of(dialogContext).pop();
               },
-              child: const Text('OK'),
+              child: Text(lang(dialogContext).ok),
             ),
           ],
         ),
@@ -265,23 +267,25 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Row(
+        title: Row(
           children: [
-            Icon(Icons.check_circle, color: Colors.green, size: 32),
-            SizedBox(width: 12),
-            Text('Both Players Ready!'),
+            const Icon(Icons.check_circle, color: Colors.green, size: 32),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(lang(context).bothPlayersReady),
+            ),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '🚀 Game is starting...',
+              lang(context).gameIsStarting,
               style: LayoutConfig(context).largeBoldStyle(),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Waiting for host to select difficulty...',
+            Text(
+              lang(context).waitingForHostToSelectDifficulty,
               textAlign: TextAlign.center,
             ),
           ],

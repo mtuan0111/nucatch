@@ -87,8 +87,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
       final initialized = await _nearbyService.initialize();
       if (!initialized) {
-        _showError(
-            'Failed to initialize Nearby Connections. Please grant location permissions.');
+        _showError(lang(context).failedToInitializeNearby);
         return;
       }
 
@@ -137,7 +136,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
   Future<void> _startAdvertising() async {
     if (!_isInitialized) {
-      _showError('Nearby Connections is not initialized');
+      _showError(lang(context).nearbyNotInitialized);
       return;
     }
 
@@ -147,15 +146,15 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('🎮 Advertising room! Waiting for opponent...'),
+          SnackBar(
+            content: Text(lang(context).advertisingRoomWaiting),
             backgroundColor: Colors.blue,
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           ),
         );
       }
     } catch (e) {
-      _showError('Failed to start advertising: $e');
+      _showError(lang(context).failedToStartAdvertising(e.toString()));
     }
   }
 
@@ -171,7 +170,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       setState(() {
         _myPlayerReady = false;
       });
-      _showError('Failed to set ready: $e');
+      _showError(lang(context).failedToSetReady(e.toString()));
     }
   }
 
@@ -179,10 +178,10 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
     if (!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('✅ Opponent joined! Press Ready when you\'re prepared.'),
+      SnackBar(
+        content: Text(lang(context).opponentJoinedReady),
         backgroundColor: Colors.green,
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
       ),
     );
   }
@@ -197,23 +196,26 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
         context: context,
         barrierDismissible: true,
         builder: (dialogContext) => AlertDialog(
-          title: const Row(
+          title: Row(
             children: [
-              Icon(Icons.check_circle_outline, color: Colors.blue, size: 32),
-              SizedBox(width: 12),
-              Text('Opponent Ready!'),
+              const Icon(Icons.check_circle_outline,
+                  color: Colors.blue, size: 32),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(lang(dialogContext).opponentReady),
+              ),
             ],
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '✅ Your opponent is ready!',
+                lang(dialogContext).yourOpponentIsReady,
                 style: LayoutConfig(context).boldSubtitleStyle(),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Press Ready when you\'re prepared to start.',
+              Text(
+                lang(dialogContext).pressReadyWhenPrepared,
                 textAlign: TextAlign.center,
               ),
             ],
@@ -224,7 +226,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                 dialogDismissed = true;
                 Navigator.of(dialogContext).pop();
               },
-              child: const Text('OK'),
+              child: Text(lang(dialogContext).ok),
             ),
           ],
         ),
@@ -239,23 +241,25 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Row(
+        title: Row(
           children: [
-            Icon(Icons.check_circle, color: Colors.green, size: 32),
-            SizedBox(width: 12),
-            Text('Both Players Ready!'),
+            const Icon(Icons.check_circle, color: Colors.green, size: 32),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(lang(context).bothPlayersReady),
+            ),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '🚀 Game is starting...',
+              lang(context).gameIsStarting,
               style: LayoutConfig(context).largeBoldStyle(),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Waiting for host to select difficulty...',
+            Text(
+              lang(context).waitingForHostToSelectDifficulty,
               textAlign: TextAlign.center,
             ),
           ],
@@ -297,7 +301,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       }
     } catch (e) {
       print('❌ [Host] Failed to start game: $e');
-      _showError('Failed to start game: $e');
+      _showError(lang(context).failedToStartGame(e.toString()));
     }
   }
 
@@ -315,13 +319,13 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
   String _getRoomStateText() {
     switch (_roomState) {
       case RoomState.waiting:
-        return 'Advertising room...\nWaiting for opponent to discover and connect.';
+        return lang(context).advertisingRoomStatus;
       case RoomState.guestJoined:
-        return 'Opponent connected!\nPress Ready when both players are ready.';
+        return lang(context).opponentConnectedStatus;
       case RoomState.bothReady:
-        return '✅ Both players ready! Starting game...';
+        return lang(context).bothPlayersReadyStatus;
       case RoomState.playing:
-        return '🎮 Setting up game difficulty...';
+        return lang(context).settingUpDifficulty;
       default:
         return '';
     }
@@ -351,7 +355,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                     ),
                     Expanded(
                       child: Text(
-                        'Host Room',
+                        lang(context).hostRoom,
                         style: LayoutConfig(context).titleSectionStyle(),
                         textAlign: TextAlign.center,
                       ),
@@ -374,7 +378,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          'Advertising as:',
+                          lang(context).advertisingAs,
                           style: LayoutConfig(context).titleSectionStyle(),
                         ),
                         const SizedBox(height: 10),
@@ -455,8 +459,8 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                                 const SizedBox(width: 10),
                                 Text(
                                   _nearbyService.isConnected
-                                      ? 'Connected via Nearby'
-                                      : 'Advertising...',
+                                      ? lang(context).connectedViaNearby
+                                      : lang(context).advertising,
                                   style:
                                       LayoutConfig(context).secondaryTextStyle(
                                     color: _nearbyService.isConnected

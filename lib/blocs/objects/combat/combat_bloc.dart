@@ -306,6 +306,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       isWaitingForOpponent: false,
       combatStatus: CombatStatus.playing,
       status: TurnStatus.initial, // Show requirement first
+      isGameActive: true, // Mark game as active when turn received
     ));
 
     // Calculate show time based on level (similar to solo mode)

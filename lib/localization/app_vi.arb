@@ -765,5 +765,141 @@
   "waiting": "Đang chờ",
   "@waiting": {
     "description": "Trạng thái đang chờ"
+  },
+  "youWillTakeFirst": "Bạn sẽ đi lượt đầu tiên!",
+  "@youWillTakeFirst": {
+    "description": "Thông báo hiển thị trong lúc đếm ngược khi người chơi đi trước"
+  },
+  "opponentWillTakeFirst": "Đối thủ sẽ đi lượt đầu tiên",
+  "@opponentWillTakeFirst": {
+    "description": "Thông báo hiển thị trong lúc đếm ngược khi đối thủ đi trước"
+  },
+  "advertisingRoomWaiting": "🎮 Đang quảng bá phòng! Chờ đối thủ...",
+  "@advertisingRoomWaiting": {
+    "description": "Thông báo snackbar khi chủ phòng bắt đầu quảng bá phòng"
+  },
+  "opponentJoinedReady": "✅ Đối thủ đã tham gia! Nhấn Sẵn sàng khi bạn đã chuẩn bị.",
+  "@opponentJoinedReady": {
+    "description": "Thông báo snackbar khi đối thủ tham gia phòng"
+  },
+  "opponentReady": "Đối thủ sẵn sàng!",
+  "@opponentReady": {
+    "description": "Tiêu đề hộp thoại khi đối thủ đã sẵn sàng"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Nhãn nút OK"
+  },
+  "bothPlayersReady": "Cả hai người chơi đã sẵn sàng!",
+  "@bothPlayersReady": {
+    "description": "Tiêu đề hộp thoại khi cả hai người chơi đã sẵn sàng"
+  },
+  "searchingForHosts": "🔍 Đang tìm kiếm chủ phòng...",
+  "@searchingForHosts": {
+    "description": "Thông báo snackbar khi đang tìm kiếm chủ phòng"
+  },
+  "connectingToHost": "Đang kết nối với {hostName}...",
+  "@connectingToHost": {
+    "description": "Thông báo snackbar khi đang kết nối với chủ phòng",
+    "placeholders": {
+      "hostName": {
+        "type": "String",
+        "example": "Player1"
+      }
+    }
+  },
+  "hostReady": "Chủ phòng sẵn sàng!",
+  "@hostReady": {
+    "description": "Tiêu đề hộp thoại khi chủ phòng đã sẵn sàng"
+  },
+  "theHostIsReady": "✅ Chủ phòng đã sẵn sàng!",
+  "@theHostIsReady": {
+    "description": "Nội dung hộp thoại khi chủ phòng đã sẵn sàng"
+  },
+  "pressReadyWhenPrepared": "Nhấn Sẵn sàng khi bạn đã chuẩn bị xong.",
+  "@pressReadyWhenPrepared": {
+    "description": "Hướng dẫn nhấn nút sẵn sàng"
+  },
+  "yourOpponentIsReady": "✅ Đối thủ của bạn đã sẵn sàng!",
+  "@yourOpponentIsReady": {
+    "description": "Nội dung hộp thoại khi đối thủ đã sẵn sàng"
+  },
+  "gameIsStarting": "🚀 Trò chơi đang bắt đầu...",
+  "@gameIsStarting": {
+    "description": "Thông báo khi trò chơi sắp bắt đầu"
+  },
+  "waitingForHostToSelectDifficulty": "Đang chờ chủ phòng chọn độ khó...",
+  "@waitingForHostToSelectDifficulty": {
+    "description": "Thông báo khi đang chờ chủ phòng chọn độ khó"
+  },
+  "failedToInitializeNearby": "Không thể khởi tạo Kết nối Gần. Vui lòng cấp quyền truy cập vị trí.",
+  "@failedToInitializeNearby": {
+    "description": "Thông báo lỗi khi không thể khởi tạo Nearby Connections"
+  },
+  "nearbyNotInitialized": "Kết nối Gần chưa được khởi tạo",
+  "@nearbyNotInitialized": {
+    "description": "Thông báo lỗi khi cố sử dụng Nearby trước khi khởi tạo"
+  },
+  "failedToStartAdvertising": "Không thể bắt đầu quảng bá: {error}",
+  "@failedToStartAdvertising": {
+    "description": "Thông báo lỗi khi không thể bắt đầu quảng bá",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Quyền bị từ chối"
+      }
+    }
+  },
+  "failedToSetReady": "Không thể đặt trạng thái sẵn sàng: {error}",
+  "@failedToSetReady": {
+    "description": "Thông báo lỗi khi không thể đặt trạng thái sẵn sàng",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Mất kết nối"
+      }
+    }
+  },
+  "failedToStartGame": "Không thể bắt đầu trò chơi: {error}",
+  "@failedToStartGame": {
+    "description": "Thông báo lỗi khi trò chơi không thể bắt đầu",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Lỗi kết nối"
+      }
+    }
+  },
+  "advertisingRoomStatus": "Đang quảng bá phòng...\nChờ đối thủ tìm và kết nối.",
+  "@advertisingRoomStatus": {
+    "description": "Thông báo trạng thái khi đang chờ đối thủ"
+  },
+  "opponentConnectedStatus": "Đối thủ đã kết nối!\nNhấn Sẵn sàng khi cả hai người chơi đã chuẩn bị.",
+  "@opponentConnectedStatus": {
+    "description": "Thông báo trạng thái khi đối thủ kết nối"
+  },
+  "bothPlayersReadyStatus": "✅ Cả hai người chơi đã sẵn sàng! Đang bắt đầu trò chơi...",
+  "@bothPlayersReadyStatus": {
+    "description": "Thông báo trạng thái khi cả hai người chơi đã sẵn sàng"
+  },
+  "settingUpDifficulty": "🎮 Đang thiết lập độ khó...",
+  "@settingUpDifficulty": {
+    "description": "Thông báo trạng thái khi đang thiết lập trò chơi"
+  },
+  "hostRoom": "Phòng Chủ",
+  "@hostRoom": {
+    "description": "Tiêu đề màn hình phòng chủ"
+  },
+  "advertisingAs": "Đang quảng bá dưới tên:",
+  "@advertisingAs": {
+    "description": "Nhãn hiển thị tên chủ phòng"
+  },
+  "connectedViaNearby": "Đã kết nối qua Nearby",
+  "@connectedViaNearby": {
+    "description": "Thông báo trạng thái khi đã kết nối qua Nearby Connections"
+  },
+  "advertising": "Đang quảng bá...",
+  "@advertising": {
+    "description": "Thông báo trạng thái khi đang quảng bá kết nối"
   }
 }

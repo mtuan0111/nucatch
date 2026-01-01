@@ -533,4 +533,94 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get opponentWillTakeFirst => 'Opponent will take first turn';
+
+  @override
+  String get advertisingRoomWaiting =>
+      '🎮 Advertising room! Waiting for opponent...';
+
+  @override
+  String get opponentJoinedReady =>
+      '✅ Opponent joined! Press Ready when you\'re prepared.';
+
+  @override
+  String get opponentReady => 'Opponent Ready!';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get bothPlayersReady => 'Both Players Ready!';
+
+  @override
+  String get searchingForHosts => '🔍 Searching for hosts...';
+
+  @override
+  String connectingToHost(String hostName) {
+    return 'Connecting to $hostName...';
+  }
+
+  @override
+  String get hostReady => 'Host Ready!';
+
+  @override
+  String get theHostIsReady => '✅ The host is ready!';
+
+  @override
+  String get pressReadyWhenPrepared =>
+      'Press Ready when you\'re prepared to start.';
+
+  @override
+  String get yourOpponentIsReady => '✅ Your opponent is ready!';
+
+  @override
+  String get gameIsStarting => '🚀 Game is starting...';
+
+  @override
+  String get waitingForHostToSelectDifficulty =>
+      'Waiting for host to select difficulty...';
+
+  @override
+  String get failedToInitializeNearby =>
+      'Failed to initialize Nearby Connections. Please grant location permissions.';
+
+  @override
+  String get nearbyNotInitialized => 'Nearby Connections is not initialized';
+
+  @override
+  String failedToStartAdvertising(String error) {
+    return 'Failed to start advertising: $error';
+  }
+
+  @override
+  String failedToSetReady(String error) {
+    return 'Failed to set ready: $error';
+  }
+
+  @override
+  String failedToStartGame(String error) {
+    return 'Failed to start game: $error';
+  }
+
+  @override
+  String get advertisingRoomStatus =>
+      'Advertising room...\nWaiting for opponent to discover and connect.';
+
+  @override
+  String get opponentConnectedStatus =>
+      'Opponent connected!\nPress Ready when both players are ready.';
+
+  @override
+  String get bothPlayersReadyStatus => '✅ Both players ready! Starting game...';
+
+  @override
+  String get settingUpDifficulty => '🎮 Setting up game difficulty...';
+
+  @override
+  String get advertisingAs => 'Advertising as:';
+
+  @override
+  String get connectedViaNearby => 'Connected via Nearby';
+
+  @override
+  String get advertising => 'Advertising...';
 }

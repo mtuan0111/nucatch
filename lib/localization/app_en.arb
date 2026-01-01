@@ -775,5 +775,133 @@
   "opponentWillTakeFirst": "Opponent will take first turn",
   "@opponentWillTakeFirst": {
     "description": "Notice shown during countdown when opponent will go first"
+  },
+  "advertisingRoomWaiting": "🎮 Advertising room! Waiting for opponent...",
+  "@advertisingRoomWaiting": {
+    "description": "Snackbar message when host starts advertising the room"
+  },
+  "opponentJoinedReady": "✅ Opponent joined! Press Ready when you're prepared.",
+  "@opponentJoinedReady": {
+    "description": "Snackbar message when opponent joins the room"
+  },
+  "opponentReady": "Opponent Ready!",
+  "@opponentReady": {
+    "description": "Dialog title when opponent is ready"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button label"
+  },
+  "bothPlayersReady": "Both Players Ready!",
+  "@bothPlayersReady": {
+    "description": "Dialog title when both players are ready"
+  },
+  "searchingForHosts": "🔍 Searching for hosts...",
+  "@searchingForHosts": {
+    "description": "Snackbar message when searching for hosts"
+  },
+  "connectingToHost": "Connecting to {hostName}...",
+  "@connectingToHost": {
+    "description": "Snackbar message when connecting to a host",
+    "placeholders": {
+      "hostName": {
+        "type": "String",
+        "example": "Player1"
+      }
+    }
+  },
+  "hostReady": "Host Ready!",
+  "@hostReady": {
+    "description": "Dialog title when host is ready"
+  },
+  "theHostIsReady": "✅ The host is ready!",
+  "@theHostIsReady": {
+    "description": "Message in dialog when host is ready"
+  },
+  "pressReadyWhenPrepared": "Press Ready when you're prepared to start.",
+  "@pressReadyWhenPrepared": {
+    "description": "Instruction to press ready button"
+  },
+  "yourOpponentIsReady": "✅ Your opponent is ready!",
+  "@yourOpponentIsReady": {
+    "description": "Message in dialog when opponent is ready"
+  },
+  "gameIsStarting": "🚀 Game is starting...",
+  "@gameIsStarting": {
+    "description": "Message when game is about to start"
+  },
+  "waitingForHostToSelectDifficulty": "Waiting for host to select difficulty...",
+  "@waitingForHostToSelectDifficulty": {
+    "description": "Message when waiting for host to choose difficulty"
+  },
+  "failedToInitializeNearby": "Failed to initialize Nearby Connections. Please grant location permissions.",
+  "@failedToInitializeNearby": {
+    "description": "Error message when Nearby Connections fails to initialize"
+  },
+  "nearbyNotInitialized": "Nearby Connections is not initialized",
+  "@nearbyNotInitialized": {
+    "description": "Error message when trying to use Nearby before initialization"
+  },
+  "failedToStartAdvertising": "Failed to start advertising: {error}",
+  "@failedToStartAdvertising": {
+    "description": "Error message when advertising fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "failedToSetReady": "Failed to set ready: {error}",
+  "@failedToSetReady": {
+    "description": "Error message when setting ready status fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection lost"
+      }
+    }
+  },
+  "failedToStartGame": "Failed to start game: {error}",
+  "@failedToStartGame": {
+    "description": "Error message when game fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection error"
+      }
+    }
+  },
+  "advertisingRoomStatus": "Advertising room...\nWaiting for opponent to discover and connect.",
+  "@advertisingRoomStatus": {
+    "description": "Status message while waiting for opponent"
+  },
+  "opponentConnectedStatus": "Opponent connected!\nPress Ready when both players are ready.",
+  "@opponentConnectedStatus": {
+    "description": "Status message when opponent connects"
+  },
+  "bothPlayersReadyStatus": "✅ Both players ready! Starting game...",
+  "@bothPlayersReadyStatus": {
+    "description": "Status message when both players are ready"
+  },
+  "settingUpDifficulty": "🎮 Setting up game difficulty...",
+  "@settingUpDifficulty": {
+    "description": "Status message while setting up game"
+  },
+  "hostRoom": "Host Room",
+  "@hostRoom": {
+    "description": "Title for host room screen"
+  },
+  "advertisingAs": "Advertising as:",
+  "@advertisingAs": {
+    "description": "Label showing host name"
+  },
+  "connectedViaNearby": "Connected via Nearby",
+  "@connectedViaNearby": {
+    "description": "Status message when connected via Nearby Connections"
+  },
+  "advertising": "Advertising...",
+  "@advertising": {
+    "description": "Status message when advertising for connections"
   }
 }

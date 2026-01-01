@@ -344,7 +344,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get joinRoomDescription => 'Nhập mã phòng để tham gia trận đấu';
 
   @override
-  String get hostRoom => 'Phòng chủ';
+  String get hostRoom => 'Phòng Chủ';
 
   @override
   String get roomCode => 'Mã phòng';
@@ -532,8 +532,98 @@ class AppLocalizationsVi extends AppLocalizations {
   String get waiting => 'Đang chờ';
 
   @override
-  String get youWillTakeFirst => 'You will take first turn!';
+  String get youWillTakeFirst => 'Bạn sẽ đi lượt đầu tiên!';
 
   @override
-  String get opponentWillTakeFirst => 'Opponent will take first turn';
+  String get opponentWillTakeFirst => 'Đối thủ sẽ đi lượt đầu tiên';
+
+  @override
+  String get advertisingRoomWaiting => '🎮 Đang quảng bá phòng! Chờ đối thủ...';
+
+  @override
+  String get opponentJoinedReady =>
+      '✅ Đối thủ đã tham gia! Nhấn Sẵn sàng khi bạn đã chuẩn bị.';
+
+  @override
+  String get opponentReady => 'Đối thủ sẵn sàng!';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get bothPlayersReady => 'Cả hai người chơi đã sẵn sàng!';
+
+  @override
+  String get searchingForHosts => '🔍 Đang tìm kiếm chủ phòng...';
+
+  @override
+  String connectingToHost(String hostName) {
+    return 'Đang kết nối với $hostName...';
+  }
+
+  @override
+  String get hostReady => 'Chủ phòng sẵn sàng!';
+
+  @override
+  String get theHostIsReady => '✅ Chủ phòng đã sẵn sàng!';
+
+  @override
+  String get pressReadyWhenPrepared =>
+      'Nhấn Sẵn sàng khi bạn đã chuẩn bị xong.';
+
+  @override
+  String get yourOpponentIsReady => '✅ Đối thủ của bạn đã sẵn sàng!';
+
+  @override
+  String get gameIsStarting => '🚀 Trò chơi đang bắt đầu...';
+
+  @override
+  String get waitingForHostToSelectDifficulty =>
+      'Đang chờ chủ phòng chọn độ khó...';
+
+  @override
+  String get failedToInitializeNearby =>
+      'Không thể khởi tạo Kết nối Gần. Vui lòng cấp quyền truy cập vị trí.';
+
+  @override
+  String get nearbyNotInitialized => 'Kết nối Gần chưa được khởi tạo';
+
+  @override
+  String failedToStartAdvertising(String error) {
+    return 'Không thể bắt đầu quảng bá: $error';
+  }
+
+  @override
+  String failedToSetReady(String error) {
+    return 'Không thể đặt trạng thái sẵn sàng: $error';
+  }
+
+  @override
+  String failedToStartGame(String error) {
+    return 'Không thể bắt đầu trò chơi: $error';
+  }
+
+  @override
+  String get advertisingRoomStatus =>
+      'Đang quảng bá phòng...\nChờ đối thủ tìm và kết nối.';
+
+  @override
+  String get opponentConnectedStatus =>
+      'Đối thủ đã kết nối!\nNhấn Sẵn sàng khi cả hai người chơi đã chuẩn bị.';
+
+  @override
+  String get bothPlayersReadyStatus =>
+      '✅ Cả hai người chơi đã sẵn sàng! Đang bắt đầu trò chơi...';
+
+  @override
+  String get settingUpDifficulty => '🎮 Đang thiết lập độ khó...';
+
+  @override
+  String get advertisingAs => 'Đang quảng bá dưới tên:';
+
+  @override
+  String get connectedViaNearby => 'Đã kết nối qua Nearby';
+
+  @override
+  String get advertising => 'Đang quảng bá...';
 }

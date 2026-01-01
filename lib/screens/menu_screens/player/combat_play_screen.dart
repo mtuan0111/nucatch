@@ -37,6 +37,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   final GlobalKey<AnimatedGameWrapperState> _animationKey = GlobalKey();
   final GlobalKey _scoreKey = GlobalKey();
   final GlobalKey _heartKey = GlobalKey();
+  final GlobalKey _opponentScoreKey = GlobalKey();
 
   // Font size for challenge display
   TextStyle boldedStyleFont({int numberOfCharactor = 1}) {
@@ -352,13 +353,14 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  'Opponent',
+                  lang(context).opponent,
                   style: LayoutConfig(context)
                       .contentSectionStyle()
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: kSpaceS),
                 Wrap(
+                  key: _opponentScoreKey,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
@@ -1176,6 +1178,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   // Animation event handler
   int? _prevPointForAnimation;
   int? _prevLifeForAnimation;
+  int? _prevOpponentScoreForAnimation;
 
   void _handleAnimationEvents(BuildContext context, CombatState state) {
     // Track point changes
@@ -1188,10 +1191,20 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     final wasLifeDecreasedForAnimation = _prevLifeForAnimation != null &&
         state.lifeRemaining < _prevLifeForAnimation!;
 
+    // Track opponent score changes
+    final wasOpponentScoreIncreased = _prevOpponentScoreForAnimation != null &&
+        state.opponentScore > _prevOpponentScoreForAnimation!;
+
     // Trigger point animation
     if (wasPointIncreased) {
       final scorePosition = _getWidgetPosition(_scoreKey);
       _animationKey.currentState?.triggers.onAddPoint(scorePosition);
+    }
+
+    // Trigger opponent score animation (small firework)
+    if (wasOpponentScoreIncreased) {
+      final opponentScorePosition = _getWidgetPosition(_opponentScoreKey);
+      _animationKey.currentState?.triggers.onAddPoint(opponentScorePosition);
     }
 
     // Trigger life gain animation
@@ -1213,6 +1226,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     if (_prevLifeForAnimation == null ||
         state.lifeRemaining != _prevLifeForAnimation) {
       _prevLifeForAnimation = state.lifeRemaining;
+    }
+    if (_prevOpponentScoreForAnimation == null ||
+        state.opponentScore != _prevOpponentScoreForAnimation) {
+      _prevOpponentScoreForAnimation = state.opponentScore;
     }
   }
 
