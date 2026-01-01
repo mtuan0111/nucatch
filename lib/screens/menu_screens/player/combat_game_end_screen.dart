@@ -41,13 +41,17 @@ class CombatGameEndScreen extends StatelessWidget {
                               icon: const FaIcon(FontAwesomeIcons.arrowLeft),
                               onPressed: () {
                                 // Reset CombatBloc to fresh initial state
-                                context.read<CombatBloc>().add(CombatBlocReset());
+                                context
+                                    .read<CombatBloc>()
+                                    .add(CombatBlocReset());
 
                                 // Reset CombatNavCubit to initial state
                                 context.read<CombatNavCubit>().reset();
 
                                 // Navigate back to select play mode
-                                context.read<PlayerNavCubit>().showSelectPlayMode();
+                                context
+                                    .read<PlayerNavCubit>()
+                                    .showSelectPlayMode();
                               },
                             ),
                             Expanded(
@@ -55,7 +59,8 @@ class CombatGameEndScreen extends StatelessWidget {
                                 combatState.isWinner ?? false
                                     ? lang(context).youWin
                                     : lang(context).youLose,
-                                style: LayoutConfig(context).titleSectionStyle(),
+                                style:
+                                    LayoutConfig(context).titleSectionStyle(),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -92,7 +97,7 @@ class CombatGameEndScreen extends StatelessWidget {
             color: isWinner ? const Color(0xFFFFD700) : Colors.grey,
           ),
           const SizedBox(height: kSpaceXL),
-          
+
           // Game End Reason
           Text(
             _getGameEndReason(context, combatState.gameEndReason),
@@ -100,7 +105,7 @@ class CombatGameEndScreen extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: kSpace4XL),
-          
+
           // Ready indicators section
           if (combatState.isRestartRequested) ...[
             Row(
@@ -147,7 +152,7 @@ class CombatGameEndScreen extends StatelessWidget {
             ),
           ],
           const SizedBox(height: kSpace3XL),
-          
+
           // Return to menu button at bottom
           CustomElevatedButton(
             text: lang(context).returnToMenu,
