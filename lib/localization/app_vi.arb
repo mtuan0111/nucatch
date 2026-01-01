@@ -511,10 +511,6 @@
   "@joinRoomDescription": {
     "description": "Mô tả tùy chọn tham gia phòng"
   },
-  "hostRoom": "Phòng chủ",
-  "@hostRoom": {
-    "description": "Tiêu đề màn hình phòng chủ"
-  },
   "roomCode": "Mã phòng",
   "@roomCode": {
     "description": "Nhãn cho mã phòng"
@@ -564,10 +560,6 @@
   "bluetoothDisabledMessage": "Chế độ đối kháng yêu cầu Bluetooth phải được bật. Vui lòng bật Bluetooth trong cài đặt thiết bị.",
   "@bluetoothDisabledMessage": {
     "description": "Thông báo khi Bluetooth đã tắt"
-  },
-  "cancel": "Hủy",
-  "@cancel": {
-    "description": "Nhãn nút hủy"
   },
   "grantPermission": "Cấp quyền",
   "@grantPermission": {
@@ -690,7 +682,7 @@
   "@holidayPride": {
     "description": "Tên tháng Pride"
   },
-  "greetingPride": "Tháng Tự Hào Vui Vẻ! Tình Yêu Là Tình Yêu! 🏳️‍🌈",
+  "greetingPride": "Tháng Tự Hào Vui Vẻ! Tình Yêu Là Tình Yêu!",
   "@greetingPride": {
     "description": "Lời chúc tháng Pride"
   },
@@ -758,14 +750,6 @@
   "@opponent": {
     "description": "Nhãn cho đối thủ"
   },
-  "cancel": "Hủy",
-  "@cancel": {
-    "description": "Nút để hủy hành động"
-  },
-  "waiting": "Đang chờ",
-  "@waiting": {
-    "description": "Trạng thái đang chờ"
-  },
   "youWillTakeFirst": "Bạn sẽ đi lượt đầu tiên!",
   "@youWillTakeFirst": {
     "description": "Thông báo hiển thị trong lúc đếm ngược khi người chơi đi trước"
@@ -774,9 +758,9 @@
   "@opponentWillTakeFirst": {
     "description": "Thông báo hiển thị trong lúc đếm ngược khi đối thủ đi trước"
   },
-  "advertisingRoomWaiting": "🎮 Đang quảng bá phòng! Chờ đối thủ...",
+  "advertisingRoomWaiting": "Đang tạo kết nối phòng! Chờ đối thủ...",
   "@advertisingRoomWaiting": {
-    "description": "Thông báo snackbar khi chủ phòng bắt đầu quảng bá phòng"
+    "description": "Thông báo snackbar khi chủ phòng bắt đầu tạo kết nối phòng"
   },
   "opponentJoinedReady": "✅ Đối thủ đã tham gia! Nhấn Sẵn sàng khi bạn đã chuẩn bị.",
   "@opponentJoinedReady": {
@@ -840,9 +824,9 @@
   "@nearbyNotInitialized": {
     "description": "Thông báo lỗi khi cố sử dụng Nearby trước khi khởi tạo"
   },
-  "failedToStartAdvertising": "Không thể bắt đầu quảng bá: {error}",
+  "failedToStartAdvertising": "Không thể bắt đầu tạo kết nối: {error}",
   "@failedToStartAdvertising": {
-    "description": "Thông báo lỗi khi không thể bắt đầu quảng bá",
+    "description": "Thông báo lỗi khi không thể bắt đầu tạo kết nối",
     "placeholders": {
       "error": {
         "type": "String",
@@ -870,7 +854,7 @@
       }
     }
   },
-  "advertisingRoomStatus": "Đang quảng bá phòng...\nChờ đối thủ tìm và kết nối.",
+  "advertisingRoomStatus": "Đang tạo kết nối phòng...\nChờ đối thủ tìm và kết nối.",
   "@advertisingRoomStatus": {
     "description": "Thông báo trạng thái khi đang chờ đối thủ"
   },
@@ -882,15 +866,11 @@
   "@bothPlayersReadyStatus": {
     "description": "Thông báo trạng thái khi cả hai người chơi đã sẵn sàng"
   },
-  "settingUpDifficulty": "🎮 Đang thiết lập độ khó...",
+  "settingUpDifficulty": "Đang thiết lập độ khó...",
   "@settingUpDifficulty": {
     "description": "Thông báo trạng thái khi đang thiết lập trò chơi"
   },
-  "hostRoom": "Phòng Chủ",
-  "@hostRoom": {
-    "description": "Tiêu đề màn hình phòng chủ"
-  },
-  "advertisingAs": "Đang quảng bá dưới tên:",
+  "advertisingAs": "Đang tạo kết nối dưới tên:",
   "@advertisingAs": {
     "description": "Nhãn hiển thị tên chủ phòng"
   },
@@ -898,8 +878,8 @@
   "@connectedViaNearby": {
     "description": "Thông báo trạng thái khi đã kết nối qua Nearby Connections"
   },
-  "advertising": "Đang quảng bá...",
+  "advertising": "Đang tạo kết nối...",
   "@advertising": {
-    "description": "Thông báo trạng thái khi đang quảng bá kết nối"
+    "description": "Thông báo trạng thái khi đang tạo kết nối"
   }
 }

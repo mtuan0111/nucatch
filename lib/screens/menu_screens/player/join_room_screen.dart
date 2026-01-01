@@ -325,9 +325,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       case RoomState.guestJoined:
         return 'Connected! Press Ready when you\'re prepared to play.';
       case RoomState.bothReady:
-        return '✅ Both players ready! Waiting for host to start...';
+        return 'Both players ready! Waiting for host to start...';
       case RoomState.playing:
-        return '⏳ Waiting for host to select difficulty...';
+        return 'Waiting for host to select difficulty...';
       default:
         return '';
     }

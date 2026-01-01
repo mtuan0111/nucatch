@@ -476,8 +476,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get holidayPride => 'Tháng Tự Hào';
 
   @override
-  String get greetingPride =>
-      'Tháng Tự Hào Vui Vẻ! Tình Yêu Là Tình Yêu! 🏳️‍🌈';
+  String get greetingPride => 'Tháng Tự Hào Vui Vẻ! Tình Yêu Là Tình Yêu!';
 
   @override
   String get holidayHalloween => 'Lễ Halloween';
@@ -538,7 +537,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get opponentWillTakeFirst => 'Đối thủ sẽ đi lượt đầu tiên';
 
   @override
-  String get advertisingRoomWaiting => '🎮 Đang quảng bá phòng! Chờ đối thủ...';
+  String get advertisingRoomWaiting => 'Đang quảng bá phòng! Chờ đối thủ...';
 
   @override
   String get opponentJoinedReady =>
@@ -616,7 +615,7 @@ class AppLocalizationsVi extends AppLocalizations {
       '✅ Cả hai người chơi đã sẵn sàng! Đang bắt đầu trò chơi...';
 
   @override
-  String get settingUpDifficulty => '🎮 Đang thiết lập độ khó...';
+  String get settingUpDifficulty => 'Đang thiết lập độ khó...';
 
   @override
   String get advertisingAs => 'Đang quảng bá dưới tên:';

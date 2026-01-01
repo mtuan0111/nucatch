@@ -462,7 +462,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get holidayEarthDay => 'Earth Day';
 
   @override
-  String get greetingEarthDay => 'Happy Earth Day! Protect our planet! 🌍';
+  String get greetingEarthDay => 'Happy Earth Day! Protect our planet!';
 
   @override
   String get holidayEaster => 'Easter';
@@ -474,7 +474,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get holidayPride => 'Pride Month';
 
   @override
-  String get greetingPride => 'Happy Pride! Love is Love! 🏳️‍🌈';
+  String get greetingPride => 'Happy Pride! Love is Love!';
 
   @override
   String get holidayHalloween => 'Halloween';
@@ -536,7 +536,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get advertisingRoomWaiting =>
-      '🎮 Advertising room! Waiting for opponent...';
+      'Advertising room! Waiting for opponent...';
 
   @override
   String get opponentJoinedReady =>
@@ -613,7 +613,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bothPlayersReadyStatus => '✅ Both players ready! Starting game...';
 
   @override
-  String get settingUpDifficulty => '🎮 Setting up game difficulty...';
+  String get settingUpDifficulty => 'Setting up game difficulty...';
 
   @override
   String get advertisingAs => 'Advertising as:';

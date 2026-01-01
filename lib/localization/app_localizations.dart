@@ -919,7 +919,7 @@ abstract class AppLocalizations {
   /// Earth Day greeting
   ///
   /// In en, this message translates to:
-  /// **'Happy Earth Day! Protect our planet! 🌍'**
+  /// **'Happy Earth Day! Protect our planet!'**
   String get greetingEarthDay;
 
   /// Easter holiday name
@@ -943,7 +943,7 @@ abstract class AppLocalizations {
   /// Pride Month greeting
   ///
   /// In en, this message translates to:
-  /// **'Happy Pride! Love is Love! 🏳️‍🌈'**
+  /// **'Happy Pride! Love is Love!'**
   String get greetingPride;
 
   /// Halloween holiday name
@@ -1063,7 +1063,7 @@ abstract class AppLocalizations {
   /// Snackbar message when host starts advertising the room
   ///
   /// In en, this message translates to:
-  /// **'🎮 Advertising room! Waiting for opponent...'**
+  /// **'Advertising room! Waiting for opponent...'**
   String get advertisingRoomWaiting;
 
   /// Snackbar message when opponent joins the room
@@ -1189,7 +1189,7 @@ abstract class AppLocalizations {
   /// Status message while setting up game
   ///
   /// In en, this message translates to:
-  /// **'🎮 Setting up game difficulty...'**
+  /// **'Setting up game difficulty...'**
   String get settingUpDifficulty;
 
   /// Label showing host name

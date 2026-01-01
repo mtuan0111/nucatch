@@ -676,7 +676,7 @@
   "@holidayEarthDay": {
     "description": "Earth Day holiday name"
   },
-  "greetingEarthDay": "Happy Earth Day! Protect our planet! 🌍",
+  "greetingEarthDay": "Happy Earth Day! Protect our planet!",
   "@greetingEarthDay": {
     "description": "Earth Day greeting"
   },
@@ -692,7 +692,7 @@
   "@holidayPride": {
     "description": "Pride Month name"
   },
-  "greetingPride": "Happy Pride! Love is Love! 🏳️‍🌈",
+  "greetingPride": "Happy Pride! Love is Love!",
   "@greetingPride": {
     "description": "Pride Month greeting"
   },
@@ -776,7 +776,7 @@
   "@opponentWillTakeFirst": {
     "description": "Notice shown during countdown when opponent will go first"
   },
-  "advertisingRoomWaiting": "🎮 Advertising room! Waiting for opponent...",
+  "advertisingRoomWaiting": "Advertising room! Waiting for opponent...",
   "@advertisingRoomWaiting": {
     "description": "Snackbar message when host starts advertising the room"
   },
@@ -884,7 +884,7 @@
   "@bothPlayersReadyStatus": {
     "description": "Status message when both players are ready"
   },
-  "settingUpDifficulty": "🎮 Setting up game difficulty...",
+  "settingUpDifficulty": "Setting up game difficulty...",
   "@settingUpDifficulty": {
     "description": "Status message while setting up game"
   },
