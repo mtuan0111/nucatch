@@ -89,17 +89,30 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                       flexibleSpace: LayoutBuilder(
                         builder:
                             (BuildContext context, BoxConstraints constraints) {
-                          return FlexibleSpaceBar(
-                            centerTitle: true,
-                            titlePadding: EdgeInsets.zero,
-                            title: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Text(
-                                screenTitle,
-                                textAlign: TextAlign.center,
-                                style: LayoutConfig(context).displaySmallStyle(
-                                  isActiveShadow: true,
-                                  isItalic: true,
+                          final double appBarHeight =
+                              constraints.biggest.height;
+                          final bool isCollapsed = appBarHeight <=
+                              kToolbarHeight +
+                                  MediaQuery.of(context).padding.top;
+
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            color: isCollapsed
+                                ? Theme.of(context).primaryColor
+                                : Colors.transparent,
+                            child: FlexibleSpaceBar(
+                              centerTitle: true,
+                              titlePadding: EdgeInsets.zero,
+                              title: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  screenTitle,
+                                  textAlign: TextAlign.center,
+                                  style:
+                                      LayoutConfig(context).displaySmallStyle(
+                                    isActiveShadow: true,
+                                    isItalic: true,
+                                  ),
                                 ),
                               ),
                             ),

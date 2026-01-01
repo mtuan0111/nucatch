@@ -6,10 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
-import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
-import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
-import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
-import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/services/combat_nearby_service.dart';
@@ -187,8 +183,6 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
   }
 
   void _showOpponentReadyDialog() {
-    bool dialogDismissed = false;
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
 
@@ -223,7 +217,6 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                dialogDismissed = true;
                 Navigator.of(dialogContext).pop();
               },
               child: Text(lang(dialogContext).ok),
@@ -285,19 +278,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
             '📤 [Host] Initializing combat game and navigating to play screen');
 
         // Initialize combat game with Easy difficulty (default)
-        return context.read<CombatNavCubit>().showSetDifficulty();
-
-        final combatBloc = context.read<CombatBloc>();
-        combatBloc.add(CombatGameStarted(
-          difficulty: Difficulty.easy,
-          isHost: true,
-        ));
-
-        // Send difficulty to guest (this will also start the first turn)
-        combatBloc.add(CombatDifficultyChanged(difficulty: Difficulty.easy));
-
-        // Navigate to play screen using CombatNavCubit
-        context.read<CombatNavCubit>().showPlaying();
+        context.read<CombatNavCubit>().showSetDifficulty();
       }
     } catch (e) {
       print('❌ [Host] Failed to start game: $e');
@@ -337,36 +318,57 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       body: Container(
         decoration: LayoutConfig(context).gradientDecoration,
         child: SafeArea(
-          child: Column(
-            children: [
-              // Header
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const FaIcon(FontAwesomeIcons.arrowLeft),
-                      onPressed: () async {
-                        await _nearbyService.stopAdvertising();
-                        if (mounted) {
-                          context.read<MenuBloc>().add(ShowMenu());
-                        }
-                      },
-                    ),
-                    Expanded(
-                      child: Text(
-                        lang(context).hostRoom,
-                        style: LayoutConfig(context).titleSectionStyle(),
-                        textAlign: TextAlign.center,
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                shadowColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
+                pinned: true,
+                stretch: true,
+                flexibleSpace: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    final double appBarHeight = constraints.biggest.height;
+                    final bool isCollapsed = appBarHeight <=
+                        kToolbarHeight + MediaQuery.of(context).padding.top;
+
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      color: isCollapsed
+                          ? Theme.of(context).primaryColor
+                          : Colors.transparent,
+                      child: FlexibleSpaceBar(
+                        centerTitle: true,
+                        titlePadding: EdgeInsets.zero,
+                        title: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            lang(context).hostRoom,
+                            textAlign: TextAlign.center,
+                            style: LayoutConfig(context).displaySmallStyle(
+                              isActiveShadow: true,
+                              isItalic: true,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 48),
-                  ],
+                    );
+                  },
                 ),
+                leading: IconButton(
+                  onPressed: () async {
+                    await _nearbyService.stopAdvertising();
+                    if (mounted) {
+                      context.read<MenuBloc>().add(ShowMenu());
+                    }
+                  },
+                  icon: const Icon(FontAwesomeIcons.chevronLeft),
+                ),
+                expandedHeight: 100,
               ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(20),
+              SliverPadding(
+                padding: const EdgeInsets.all(20),
+                sliver: SliverToBoxAdapter(
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -6,8 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
-import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
-import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/const.dart';
@@ -214,18 +212,17 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   }
 
   void _showOpponentReadyDialog() {
-    bool dialogDismissed = false;
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
 
-      dynamic dialogObject = showDialog(
+      showDialog(
         context: context,
         barrierDismissible: true,
         builder: (dialogContext) => AlertDialog(
           title: Row(
             children: [
-              const Icon(Icons.check_circle_outline, color: Colors.blue, size: 32),
+              const Icon(Icons.check_circle_outline,
+                  color: Colors.blue, size: 32),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(lang(dialogContext).hostReady),
@@ -249,7 +246,6 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                dialogDismissed = true;
                 Navigator.of(dialogContext).pop();
               },
               child: Text(lang(dialogContext).ok),
@@ -358,38 +354,60 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         body: Container(
           decoration: LayoutConfig(context).gradientDecoration,
           child: SafeArea(
-            child: DeviceWrapper(
-              child: Column(
-                children: [
-                  // Header
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: const FaIcon(FontAwesomeIcons.arrowLeft),
-                          onPressed: () async {
-                            await _nearbyService.stopDiscovery();
-                            await _nearbyService.disconnect();
-                            if (mounted) {
-                              context.read<MenuBloc>().add(ShowMenu());
-                            }
-                          },
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Join Room',
-                            style: LayoutConfig(context).titleSectionStyle(),
-                            textAlign: TextAlign.center,
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  shadowColor: Colors.transparent,
+                  backgroundColor: Colors.transparent,
+                  pinned: true,
+                  stretch: true,
+                  flexibleSpace: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      final double appBarHeight = constraints.biggest.height;
+                      final bool isCollapsed = appBarHeight <=
+                          kToolbarHeight + MediaQuery.of(context).padding.top;
+
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        color: isCollapsed
+                            ? Theme.of(context).primaryColor
+                            : Colors.transparent,
+                        child: FlexibleSpaceBar(
+                          centerTitle: true,
+                          titlePadding: EdgeInsets.zero,
+                          title: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              lang(context).joinRoom,
+                              textAlign: TextAlign.center,
+                              style: LayoutConfig(context).displaySmallStyle(
+                                isActiveShadow: true,
+                                isItalic: true,
+                              ),
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 48),
-                      ],
-                    ),
+                      );
+                    },
                   ),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
+                  leading: IconButton(
+                    onPressed: () async {
+                      await _nearbyService.stopDiscovery();
+                      await _nearbyService.disconnect();
+                      if (mounted) {
+                        context.read<MenuBloc>().add(ShowMenu());
+                      }
+                    },
+                    icon: const Icon(FontAwesomeIcons.chevronLeft),
+                  ),
+                  expandedHeight: 100,
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.all(20),
+                  sliver: SliverToBoxAdapter(
+                    child: DeviceWrapper(
                       child: Column(
                         children: [
                           // Discovery Status
@@ -419,7 +437,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                           // Discovered Hosts List
                           if (_roomState == RoomState.waiting &&
                               _discoveredEndpoints.isNotEmpty)
-                            Expanded(
+                            SizedBox(
+                              height: 400,
                               child: Card(
                                 margin:
                                     const EdgeInsets.symmetric(vertical: 10),
@@ -442,8 +461,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                       ),
                                     ),
                                     const Divider(height: 1),
-                                    Expanded(
+                                    Flexible(
                                       child: ListView.builder(
+                                        shrinkWrap: true,
                                         itemCount: _discoveredEndpoints.length,
                                         itemBuilder: (context, index) {
                                           final entry = _discoveredEndpoints
@@ -490,7 +510,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                           // Empty State
                           if (_roomState == RoomState.waiting &&
                               _discoveredEndpoints.isEmpty)
-                            Expanded(
+                            SizedBox(
+                              height: 300,
                               child: Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -524,7 +545,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
                           // Connected State
                           if (_roomState != RoomState.waiting)
-                            Expanded(
+                            SizedBox(
+                              height: 400,
                               child: Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -629,8 +651,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
