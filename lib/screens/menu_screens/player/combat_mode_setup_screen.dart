@@ -94,7 +94,9 @@ class CombatModeSetupScreen extends StatelessWidget {
                                 color: Colors.blue,
                                 onTap: () {
                                   // Disabled - navigate back to select mode
-                                  context.read<PlayerNavCubit>().showSelectPlayMode();
+                                  context
+                                      .read<PlayerNavCubit>()
+                                      .showSelectPlayMode();
                                 },
                               ),
                             ),
@@ -104,12 +106,15 @@ class CombatModeSetupScreen extends StatelessWidget {
                                 OptionCard(
                                   context: context,
                                   title: lang(context).combatMode,
-                                  description: lang(context).combatModeDescription,
+                                  description:
+                                      lang(context).combatModeDescription,
                                   icon: FontAwesomeIcons.userGroup,
                                   color: Colors.orange,
                                   onTap: () {
                                     // Already selected - navigate back
-                                    context.read<PlayerNavCubit>().showSelectPlayMode();
+                                    context
+                                        .read<PlayerNavCubit>()
+                                        .showSelectPlayMode();
                                   },
                                 ),
                                 Positioned(
@@ -137,7 +142,7 @@ class CombatModeSetupScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            
+
                             // Divider to show hierarchy
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -145,19 +150,22 @@ class CombatModeSetupScreen extends StatelessWidget {
                                 children: [
                                   const Expanded(child: Divider(thickness: 2)),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
                                     child: Text(
                                       lang(context).combatMode,
-                                      style: LayoutConfig(context).titleSectionStyle().copyWith(
-                                        color: Colors.orange,
-                                      ),
+                                      style: LayoutConfig(context)
+                                          .titleSectionStyle()
+                                          .copyWith(
+                                            color: Colors.orange,
+                                          ),
                                     ),
                                   ),
                                   const Expanded(child: Divider(thickness: 2)),
                                 ],
                               ),
                             ),
-                            
+
                             // Sub-options for Combat Mode
                             Padding(
                               padding: const EdgeInsets.only(left: 20),
@@ -168,7 +176,8 @@ class CombatModeSetupScreen extends StatelessWidget {
                                   OptionCard(
                                     context: context,
                                     title: lang(context).createRoom,
-                                    description: lang(context).createRoomDescription,
+                                    description:
+                                        lang(context).createRoomDescription,
                                     icon: FontAwesomeIcons.userPlus,
                                     color: Colors.blue,
                                     onTap: () => _navigateToHostRoom(context),
@@ -177,7 +186,8 @@ class CombatModeSetupScreen extends StatelessWidget {
                                   OptionCard(
                                     context: context,
                                     title: lang(context).joinRoom,
-                                    description: lang(context).joinRoomDescription,
+                                    description:
+                                        lang(context).joinRoomDescription,
                                     icon: FontAwesomeIcons.rightToBracket,
                                     color: Colors.green,
                                     onTap: () => _navigateToJoinRoom(context),
