@@ -344,7 +344,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get joinRoomDescription => 'Nhập mã phòng để tham gia trận đấu';
 
   @override
-  String get hostRoom => 'Phòng Chủ';
+  String get hostRoom => 'Host Room';
 
   @override
   String get roomCode => 'Mã phòng';
@@ -385,7 +385,7 @@ class AppLocalizationsVi extends AppLocalizations {
       'Chế độ đối kháng yêu cầu Bluetooth phải được bật. Vui lòng bật Bluetooth trong cài đặt thiết bị.';
 
   @override
-  String get cancel => 'Hủy';
+  String get cancel => 'Cancel';
 
   @override
   String get grantPermission => 'Cấp quyền';
@@ -528,7 +528,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get opponent => 'Đối thủ';
 
   @override
-  String get waiting => 'Đang chờ';
+  String get waiting => 'Waiting';
 
   @override
   String get youWillTakeFirst => 'Bạn sẽ đi lượt đầu tiên!';
@@ -537,7 +537,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get opponentWillTakeFirst => 'Đối thủ sẽ đi lượt đầu tiên';
 
   @override
-  String get advertisingRoomWaiting => 'Đang quảng bá phòng! Chờ đối thủ...';
+  String get advertisingRoomWaiting => 'Đang tạo kết nối phòng! Chờ đối thủ...';
 
   @override
   String get opponentJoinedReady =>
@@ -589,7 +589,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String failedToStartAdvertising(String error) {
-    return 'Không thể bắt đầu quảng bá: $error';
+    return 'Không thể bắt đầu tạo kết nối: $error';
   }
 
   @override
@@ -604,7 +604,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get advertisingRoomStatus =>
-      'Đang quảng bá phòng...\nChờ đối thủ tìm và kết nối.';
+      'Đang tạo kết nối phòng...\nChờ đối thủ tìm và kết nối.';
 
   @override
   String get opponentConnectedStatus =>
@@ -618,11 +618,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingUpDifficulty => 'Đang thiết lập độ khó...';
 
   @override
-  String get advertisingAs => 'Đang quảng bá dưới tên:';
+  String get advertisingAs => 'Đang tạo kết nối dưới tên:';
 
   @override
   String get connectedViaNearby => 'Đã kết nối qua Nearby';
 
   @override
-  String get advertising => 'Đang quảng bá...';
+  String get advertising => 'Đang tạo kết nối...';
 }
