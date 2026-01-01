@@ -933,5 +933,9 @@
   "notDiscovering": "Not discovering",
   "@notDiscovering": {
     "description": "Status when not discovering"
+  },
+  "distanceWarning": "Make sure devices are within 10 meters distance",
+  "@distanceWarning": {
+    "description": "Warning about device proximity for Nearby Connections"
   }
 }

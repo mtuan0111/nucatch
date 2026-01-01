@@ -647,4 +647,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notDiscovering => 'Not discovering';
+
+  @override
+  String get distanceWarning =>
+      'Make sure devices are within 10 meters distance';
 }

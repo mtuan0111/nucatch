@@ -441,6 +441,39 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                             ),
                         ],
                         const SizedBox(height: 40),
+                        // Distance Warning
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.orange.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.orange.withOpacity(0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.info_outline,
+                                color: Colors.orange,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  lang(context).distanceWarning,
+                                  style: LayoutConfig(context)
+                                      .secondaryTextStyle(
+                                    color: Colors.orange,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
                         // Connection Status Indicator
                         Column(
                           children: [

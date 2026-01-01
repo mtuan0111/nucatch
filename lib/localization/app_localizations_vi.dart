@@ -649,4 +649,8 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get notDiscovering => 'Không tìm kiếm';
+
+  @override
+  String get distanceWarning =>
+      'Đảm bảo các thiết bị cách nhau trong vòng 10 mét';
 }

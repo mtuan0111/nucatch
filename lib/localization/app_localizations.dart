@@ -1251,6 +1251,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not discovering'**
   String get notDiscovering;
+
+  /// Warning about device proximity for Nearby Connections
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure devices are within 10 meters distance'**
+  String get distanceWarning;
 }
 
 class _AppLocalizationsDelegate

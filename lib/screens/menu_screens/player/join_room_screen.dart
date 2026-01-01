@@ -404,14 +404,29 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                 SliverPadding(
                   padding: const EdgeInsets.all(20),
                   sliver: SliverToBoxAdapter(
-                    child: DeviceWrapper(
+                    child: SingleChildScrollView(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // Discovery Status
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (_isDiscovering)
+                          // Icon
+                          Icon(
+                            _roomState == RoomState.waiting
+                                ? Icons.radar
+                                : _roomState == RoomState.bothReady
+                                    ? Icons.check_circle
+                                    : Icons.wifi_tethering,
+                            size: 80,
+                            color: _roomState == RoomState.bothReady
+                                ? Colors.green
+                                : Colors.blue,
+                          ),
+                          const SizedBox(height: 20),
+
+                          // Discovery/Connection Status
+                          if (_isDiscovering && _roomState == RoomState.waiting)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
                                 const SizedBox(
                                   width: 20,
                                   height: 20,
@@ -419,17 +434,20 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                     strokeWidth: 2,
                                   ),
                                 ),
-                              const SizedBox(width: 10),
-                              Flexible(
-                                child: Text(
-                                  _getRoomStateText(),
-                                  style: LayoutConfig(context).largeBoldStyle(),
-                                  textAlign: TextAlign.center,
+                                const SizedBox(width: 10),
+                                Text(
+                                  lang(context).searchingForHosts,
+                                  style: LayoutConfig(context).titleSectionStyle(),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
+                              ],
+                            )
+                          else
+                            Text(
+                              _getRoomStateText(),
+                              style: LayoutConfig(context).subtitleStyle(),
+                              textAlign: TextAlign.center,
+                            ),
+                          const SizedBox(height: 30),
 
                           // Discovered Hosts List
                           if (_roomState == RoomState.waiting &&
@@ -508,105 +526,106 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                           // Empty State
                           if (_roomState == RoomState.waiting &&
                               _discoveredEndpoints.isEmpty)
-                            SizedBox(
-                              height: 300,
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 40),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.search_off,
+                                    size: 80,
+                                    color: Colors.grey[400],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    lang(context).noHostsFoundNearby,
+                                    style: LayoutConfig(context).largeBoldStyle(
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    lang(context).makeSureFriendHosting,
+                                    textAlign: TextAlign.center,
+                                    style: LayoutConfig(context)
+                                        .secondaryTextStyle(
+                                      color: Colors.grey[500],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                          // Ready Status Indicators (when connected)
+                          if (_roomState == RoomState.guestJoined ||
+                              _roomState == RoomState.bothReady) ...[
+                            const SizedBox(height: 30),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _buildReadyIndicator(
+                                  label: lang(context).you,
+                                  isReady: _myPlayerReady,
+                                ),
+                                const SizedBox(width: 48),
+                                _buildReadyIndicator(
+                                  label: lang(context).opponent,
+                                  isReady: _hostPlayerReady,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 30),
+                            if (!_myPlayerReady)
+                              CustomElevatedButton(
+                                onPressed: _setReady,
+                                shapeAt: RoundedWithShapeAt.all,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(
-                                      Icons.search_off,
-                                      size: 80,
-                                      color: Colors.grey[400],
-                                    ),
-                                    const SizedBox(height: 20),
+                                    const FaIcon(FontAwesomeIcons.check),
+                                    const SizedBox(width: 8),
                                     Text(
-                                      lang(context).noHostsFoundNearby,
-                                      style:
-                                          LayoutConfig(context).largeBoldStyle(
-                                        color: Colors.grey[600],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      lang(context).makeSureFriendHosting,
-                                      textAlign: TextAlign.center,
+                                      lang(context).ready,
                                       style: LayoutConfig(context)
-                                          .secondaryTextStyle(
-                                        color: Colors.grey[500],
-                                      ),
+                                          .boldSubtitleStyle(),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
+                          ],
 
-                          // Connected State
-                          if (_roomState != RoomState.waiting)
-                            SizedBox(
-                              height: 400,
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.check_circle,
-                                      size: 80,
-                                      color: _roomState == RoomState.bothReady
-                                          ? Colors.green
-                                          : Colors.blue,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Text(
-                                      _getRoomStateText(),
-                                      style: LayoutConfig(context)
-                                          .largeBoldStyle(),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    if (_roomState == RoomState.guestJoined ||
-                                        _roomState == RoomState.bothReady) ...[
-                                      const SizedBox(height: 30),
-                                      // Ready status indicators
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          _buildReadyIndicator(
-                                            label: lang(context).you,
-                                            isReady: _myPlayerReady,
-                                          ),
-                                          const SizedBox(width: 48),
-                                          _buildReadyIndicator(
-                                            label: lang(context).opponent,
-                                            isReady: _hostPlayerReady,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 30),
-                                      if (!_myPlayerReady)
-                                        CustomElevatedButton(
-                                          onPressed: _setReady,
-                                          shapeAt: RoundedWithShapeAt.all,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const FaIcon(
-                                                  FontAwesomeIcons.check),
-                                              const SizedBox(width: 8),
-                                              Text(
-                                                lang(context).ready,
-                                                style: LayoutConfig(context)
-                                                    .boldSubtitleStyle(),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                    ],
-                                  ],
-                                ),
+                          const SizedBox(height: 40),
+                          // Distance Warning
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.orange.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Colors.orange.withOpacity(0.3),
+                                width: 1,
                               ),
                             ),
-
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.info_outline,
+                                  color: Colors.orange,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    lang(context).distanceWarning,
+                                    style: LayoutConfig(context)
+                                        .secondaryTextStyle(
+                                      color: Colors.orange,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           const SizedBox(height: 20),
                           // Connection Status Indicator
                           Column(

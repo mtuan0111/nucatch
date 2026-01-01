@@ -931,5 +931,9 @@
   "notDiscovering": "Không tìm kiếm",
   "@notDiscovering": {
     "description": "Trạng thái khi không tìm kiếm"
+  },
+  "distanceWarning": "Đảm bảo các thiết bị cách nhau trong vòng 10 mét",
+  "@distanceWarning": {
+    "description": "Cảnh báo về khoảng cách thiết bị cho Nearby Connections"
   }
 }
