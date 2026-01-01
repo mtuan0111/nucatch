@@ -92,7 +92,7 @@ class CombatModeSetupScreen extends StatelessWidget {
                                 title: lang(context).soloMode,
                                 description: lang(context).soloModeDescription,
                                 icon: FontAwesomeIcons.user,
-                                color: Colors.blue,
+                                color: Theme.of(context).colorScheme.primary,
                                 onTap: () {
                                   // Disabled - navigate back to select mode
                                   context
@@ -110,7 +110,7 @@ class CombatModeSetupScreen extends StatelessWidget {
                                   description:
                                       lang(context).combatModeDescription,
                                   icon: FontAwesomeIcons.userGroup,
-                                  color: Colors.orange,
+                                  color: Theme.of(context).colorScheme.error,
                                   onTap: () {
                                     // Already selected - navigate back
                                     context
@@ -124,11 +124,15 @@ class CombatModeSetupScreen extends StatelessWidget {
                                   child: Container(
                                     padding: const EdgeInsets.all(6),
                                     decoration: BoxDecoration(
-                                      color: Colors.orange,
+                                      color:
+                                          Theme.of(context).colorScheme.error,
                                       shape: BoxShape.circle,
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.orange.withOpacity(0.5),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .error
+                                              .withOpacity(0.5),
                                           blurRadius: 8,
                                           spreadRadius: 2,
                                         ),
@@ -158,7 +162,9 @@ class CombatModeSetupScreen extends StatelessWidget {
                                       style: LayoutConfig(context)
                                           .titleSectionStyle()
                                           .copyWith(
-                                            color: Colors.orange,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .error,
                                           ),
                                     ),
                                   ),
@@ -180,7 +186,8 @@ class CombatModeSetupScreen extends StatelessWidget {
                                     description:
                                         lang(context).createRoomDescription,
                                     icon: FontAwesomeIcons.userPlus,
-                                    color: Colors.blue,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
                                     onTap: () => _navigateToHostRoom(context),
                                   ),
                                   // Join Room Option
@@ -190,7 +197,8 @@ class CombatModeSetupScreen extends StatelessWidget {
                                     description:
                                         lang(context).joinRoomDescription,
                                     icon: FontAwesomeIcons.rightToBracket,
-                                    color: Colors.green,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
                                     onTap: () => _navigateToJoinRoom(context),
                                   ),
                                 ],

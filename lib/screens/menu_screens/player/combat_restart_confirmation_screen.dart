@@ -116,8 +116,8 @@ class CombatRestartConfirmationScreen extends StatelessWidget {
                                   : lang(context).ready,
                               shapeAt: RoundedWithShapeAt.all,
                               backgroundColor: combatState.isPlayerReady
-                                  ? Colors.orange
-                                  : Colors.green,
+                                  ? Theme.of(context).colorScheme.error
+                                  : Theme.of(context).colorScheme.tertiary,
                               onPressed: () {
                                 context.read<CombatBloc>().add(
                                       CombatRestartReady(
@@ -147,20 +147,29 @@ class CombatRestartConfirmationScreen extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 80,
-          height: 80,
+          width: kContainerSizeS,
+          height: kContainerSizeS,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: isReady ? Colors.green : Colors.grey.withOpacity(0.3),
+            color: isReady
+                ? Theme.of(context).colorScheme.tertiary.withOpacity(0.3)
+                : Theme.of(context)
+                    .colorScheme
+                    .onSurfaceVariant
+                    .withOpacity(0.3),
             border: Border.all(
-              color: isReady ? Colors.green : Colors.grey,
-              width: 3,
+              color: isReady
+                  ? Theme.of(context).colorScheme.tertiary
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
+              width: kStrokeWidthMedium,
             ),
           ),
           child: Icon(
             isReady ? Icons.check : Icons.hourglass_empty,
-            size: 40,
-            color: isReady ? Colors.white : Colors.grey,
+            size: kIconSizeL,
+            color: isReady
+                ? Theme.of(context).colorScheme.onTertiary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
         const SizedBox(height: kSpaceM),
@@ -171,7 +180,9 @@ class CombatRestartConfirmationScreen extends StatelessWidget {
         Text(
           isReady ? lang(context).ready : lang(context).waiting,
           style: LayoutConfig(context).contentSectionStyle(
-            color: isReady ? Colors.green : Colors.grey,
+            color: isReady
+                ? Theme.of(context).colorScheme.tertiary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
       ],

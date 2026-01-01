@@ -83,7 +83,7 @@ class SelectPlayModeScreen extends StatelessWidget {
                               title: lang(context).soloMode,
                               description: lang(context).soloModeDescription,
                               icon: FontAwesomeIcons.user,
-                              color: Colors.blue,
+                              color: Theme.of(context).colorScheme.primary,
                               onTap: () {
                                 context
                                     .read<PlayerNavCubit>()
@@ -96,7 +96,7 @@ class SelectPlayModeScreen extends StatelessWidget {
                               title: lang(context).combatMode,
                               description: lang(context).combatModeDescription,
                               icon: FontAwesomeIcons.userGroup,
-                              color: Colors.orange,
+                              color: Theme.of(context).colorScheme.error,
                               onTap: () {
                                 context
                                     .read<PlayerNavCubit>()

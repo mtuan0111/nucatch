@@ -292,10 +292,10 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.wifi_tethering,
                           size: 80,
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                         const SizedBox(height: kSpaceXL),
                         Text(

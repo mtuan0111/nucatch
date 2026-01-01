@@ -54,6 +54,14 @@
 - [ ] Ensure uniform layout and styling across configuration screens
 - [ ] Standardize button and card designs
 
+### 10. iOS Bluetooth Package Compatibility
+- [ ] Check nearby_connections package iOS compatibility
+- [ ] Verify Bluetooth permissions for iOS
+- [ ] Test Nearby Connections on iOS devices
+- [ ] Review iOS-specific Bluetooth limitations
+- [ ] Update documentation for iOS requirements
+
+
 # TODO List
 
 ## Combat Mode UI/UX Improvements
