@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
+import 'package:nucatch/helpers/combat_dialogs.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/services/combat_nearby_service.dart';
@@ -53,7 +54,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       // Handle state transitions
       if (state == RoomState.bothReady) {
         print('🚀 [Guest] Both players ready!');
-        await _showBothReadyDialog();
+        await CombatDialogs.showBothReadyDialog(context);
       } else if (state == RoomState.playing) {
         _handleGameStarted();
       }
@@ -134,7 +135,11 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         _hostPlayerReady = true;
       });
       if (!_myPlayerReady) {
-        _showOpponentReadyDialog();
+        CombatDialogs.showOpponentReadyDialog(
+          context,
+          title: lang(context).hostReady,
+          message: lang(context).theHostIsReady,
+        );
       }
     }
   }
@@ -206,91 +211,6 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       });
       _showError(lang(context).failedToSetReady(e.toString()));
     }
-  }
-
-  void _showOpponentReadyDialog() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (dialogContext) => AlertDialog(
-          title: Row(
-            children: [
-              const Icon(Icons.check_circle_outline,
-                  color: Colors.blue, size: 32),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(lang(dialogContext).hostReady),
-              ),
-            ],
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                lang(dialogContext).theHostIsReady,
-                style: LayoutConfig(context).boldSubtitleStyle(),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                lang(dialogContext).pressReadyWhenPrepared,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: Text(lang(dialogContext).ok),
-            ),
-          ],
-        ),
-      );
-    });
-  }
-
-  Future<void> _showBothReadyDialog() async {
-    if (!mounted) return;
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            const Icon(Icons.check_circle, color: Colors.green, size: 32),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(lang(context).bothPlayersReady),
-            ),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              lang(context).gameIsStarting,
-              style: LayoutConfig(context).largeBoldStyle(),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              lang(context).waitingForHostToSelectDifficulty,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-
-    await Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        Navigator.of(context, rootNavigator: true).pop();
-      }
-    });
   }
 
   void _handleGameStarted() {
