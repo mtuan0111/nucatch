@@ -137,6 +137,16 @@ class LayoutConfig {
             fontWeight: FontWeight.bold,
           );
 
+  TextStyle mediumBoldStyle({
+    Color? color,
+    String? fontFamily,
+  }) =>
+      Theme.of(context).textTheme.bodyLarge!.copyWith(
+            color: color ?? Theme.of(context).colorScheme.onPrimary,
+            fontFamily: fontFamily,
+            fontWeight: FontWeight.bold,
+          );
+
   TextStyle captionStyle({
     Color? color,
     String? fontFamily,

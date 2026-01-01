@@ -26,6 +26,7 @@ class CombatState extends TurnState {
   final bool isRestartRequested;
   final bool isPlayerReady;
   final bool isOpponentReady;
+  final bool? willStartFirst; // null = unknown, true = I start first, false = opponent starts first
 
   const CombatState({
     // Combat-specific parameters
@@ -43,6 +44,7 @@ class CombatState extends TurnState {
     this.isRestartRequested = true,
     this.isPlayerReady = false,
     this.isOpponentReady = false,
+    this.willStartFirst,
     // TurnState parameters
     super.level = 0,
     super.timesCorrect = 0,
@@ -79,6 +81,7 @@ class CombatState extends TurnState {
     bool? isRestartRequested,
     bool? isPlayerReady,
     bool? isOpponentReady,
+    bool? willStartFirst,
     // TurnState parameters
     int? level,
     int? timesCorrect,
@@ -113,6 +116,7 @@ class CombatState extends TurnState {
       isRestartRequested: isRestartRequested ?? this.isRestartRequested,
       isPlayerReady: isPlayerReady ?? this.isPlayerReady,
       isOpponentReady: isOpponentReady ?? this.isOpponentReady,
+      willStartFirst: willStartFirst ?? this.willStartFirst,
       // TurnState
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,

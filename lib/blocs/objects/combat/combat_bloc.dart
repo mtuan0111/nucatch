@@ -183,6 +183,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       countDown: combatStatus == CombatStatus.intro
           ? 4
           : 0, // Set countdown if intro status
+      willStartFirst: combatStatus == CombatStatus.intro
+          ? false // Guest (this player) does not start first in initial game
+          : null, // Unknown for other statuses
     ));
 
     print(
@@ -201,7 +204,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(state.copyWith(
       difficultyModel: difficultyModel,
       combatStatus: CombatStatus.intro,
-      countDown: 4, // Start countdown at 4 (will show 3-2-1-GO)
+      countDown: 6, // Start countdown at 6 (will show 5-4-3-2-1-GO)
+      willStartFirst: state.isHost, // Host always starts first in initial game
     ));
 
     // Only HOST sends the difficulty selection message
@@ -444,10 +448,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // Save current difficulty to preserve it
     final currentDifficulty = state.difficultyModel;
 
+    // Save who lost - they will start first in the next match
+    final iLost = state.isWinner == false;
+    print('🔄 [Combat] I lost previous match: $iLost, isHost: ${state.isHost}');
+
     // First, reset the state with intro status and countdown
     emit(state.copyWith(
       combatStatus: CombatStatus.intro,
-      countDown: 4, // Start countdown at 4 (will show 3-2-1-GO)
+      countDown: 6, // Start countdown at 6 (will show 5-4-3-2-1-GO)
       isWinner: null,
       gameEndReason: null,
       isRestartRequested: true,
@@ -467,6 +475,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       isMyTurn: false,
       isWaitingForOpponent: false,
       difficultyModel: currentDifficulty, // Keep the same difficulty
+      willStartFirst: iLost, // Set to true if I lost (I will start first)
     ));
 
     // Wait for countdown to finish (4 seconds)
@@ -475,11 +484,21 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       if (isClosed) return;
     }
 
-    // After countdown, host starts their turn first
+    // After countdown, the loser starts first
+    // If I'm the host
     if (state.isHost) {
-      print('🎮 [Host] Starting my turn first after restart (host goes first)');
-      add(CombatTurnStarted(isMyTurn: true));
+      if (iLost) {
+        // I lost, so I (host) start first
+        print('🎮 [Host] I lost previous match - starting my turn first');
+        add(CombatTurnStarted(isMyTurn: true));
+      } else {
+        // I won, so guest (opponent) starts first
+        print('🎮 [Host] I won previous match - guest starts first');
+        add(CombatTurnStarted(isMyTurn: false));
+      }
     }
+    // If I'm the guest, wait for turn_start message from host
+    // (Host will send the appropriate turn order based on who lost)
     // Guest waits for turn_start message from host
   }
 

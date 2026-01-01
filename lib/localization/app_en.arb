@@ -767,5 +767,13 @@
   "waiting": "Waiting",
   "@waiting": {
     "description": "Waiting status text"
+  },
+  "youWillTakeFirst": "You will take first turn!",
+  "@youWillTakeFirst": {
+    "description": "Notice shown during countdown when player will go first"
+  },
+  "opponentWillTakeFirst": "Opponent will take first turn",
+  "@opponentWillTakeFirst": {
+    "description": "Notice shown during countdown when opponent will go first"
   }
 }

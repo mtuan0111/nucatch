@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
-import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
@@ -324,18 +323,23 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   ],
                 ),
                 const SizedBox(height: kSpaceS),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: combatState.isMyTurn ? Colors.green : Colors.orange,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    combatState.isMyTurn
-                        ? lang(context).yourTurn
-                        : lang(context).opponentTurn,
-                    style: LayoutConfig(context).boldSubtitleStyle(),
+                Opacity(
+                  opacity:
+                      combatState.combatStatus != CombatStatus.intro ? 1 : 0,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color:
+                          combatState.isMyTurn ? Colors.green : Colors.orange,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      combatState.isMyTurn
+                          ? lang(context).yourTurn
+                          : lang(context).opponentTurn,
+                      style: LayoutConfig(context).boldSubtitleStyle(),
+                    ),
                   ),
                 ),
               ],
@@ -510,7 +514,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                           final secondProgress = time - time.floor();
 
                           Gradient getCountdownGradient(double time) {
-                            if (time >= 3) {
+                            if (time >= 5) {
                               return LinearGradient(
                                 colors: [
                                   Colors.green.shade300,
@@ -520,7 +524,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                 end: Alignment.bottomRight,
                               );
                             }
-                            if (time >= 2) {
+                            if (time >= 3) {
                               return LinearGradient(
                                 colors: [
                                   Colors.blue.shade300,
@@ -696,6 +700,59 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       );
                     },
                   ),
+                // Show turn order notice if available
+                if (combatState.willStartFirst != null) ...[
+                  const SizedBox(height: kSpaceL),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: kSpaceL,
+                      vertical: kSpaceS,
+                    ),
+                    decoration: BoxDecoration(
+                      color: combatState.willStartFirst!
+                          ? Colors.green.withOpacity(0.2)
+                          : Colors.orange.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: combatState.willStartFirst!
+                            ? Colors.green
+                            : Colors.orange,
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          combatState.willStartFirst!
+                              ? Icons.emoji_events
+                              : Icons.hourglass_bottom,
+                          color: combatState.willStartFirst!
+                              ? Colors.green
+                              : Colors.orange,
+                          size: kFontSizeL,
+                        ),
+                        const SizedBox(width: kSpaceS),
+                        Flexible(
+                          child: Text(
+                            combatState.willStartFirst!
+                                ? lang(context).youWillTakeFirst
+                                : lang(context).opponentWillTakeFirst,
+                            style: LayoutConfig(context)
+                                .mediumBoldStyle()
+                                .copyWith(
+                                  color: combatState.willStartFirst!
+                                      ? Colors.green
+                                      : Colors.orange,
+                                ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

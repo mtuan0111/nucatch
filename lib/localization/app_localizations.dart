@@ -1047,6 +1047,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Waiting'**
   String get waiting;
+
+  /// Notice shown during countdown when player will go first
+  ///
+  /// In en, this message translates to:
+  /// **'You will take first turn!'**
+  String get youWillTakeFirst;
+
+  /// Notice shown during countdown when opponent will go first
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent will take first turn'**
+  String get opponentWillTakeFirst;
 }
 
 class _AppLocalizationsDelegate

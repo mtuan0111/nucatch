@@ -527,4 +527,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get waiting => 'Waiting';
+
+  @override
+  String get youWillTakeFirst => 'You will take first turn!';
+
+  @override
+  String get opponentWillTakeFirst => 'Opponent will take first turn';
 }
