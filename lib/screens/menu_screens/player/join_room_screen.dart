@@ -404,10 +404,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                               Flexible(
                                 child: Text(
                                   _getRoomStateText(),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: LayoutConfig(context).largeBoldStyle(),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -538,14 +535,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                     const SizedBox(height: 20),
                                     Text(
                                       _getRoomStateText(),
-                                      style:
-                                          LayoutConfig(context).largeBoldStyle(
-                                        color: _roomState == RoomState.bothReady
-                                            ? Colors.green
-                                            : Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary,
-                                      ),
+                                      style: LayoutConfig(context)
+                                          .largeBoldStyle(),
                                       textAlign: TextAlign.center,
                                     ),
                                     if (_roomState == RoomState.guestJoined ||

@@ -395,11 +395,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                         const SizedBox(height: 30),
                         Text(
                           _getRoomStateText(),
-                          style: LayoutConfig(context).subtitleStyle(
-                            color: _roomState == RoomState.bothReady
-                                ? Colors.green
-                                : Colors.white70,
-                          ),
+                          style: LayoutConfig(context).subtitleStyle(),
                           textAlign: TextAlign.center,
                         ),
 

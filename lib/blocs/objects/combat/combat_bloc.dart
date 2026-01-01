@@ -572,9 +572,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       'lives': newLives,
     });
 
-    await _onCombatShowExpect(
-        CombatExpectShown(Duration(milliseconds: state.getTimeShowTarget)),
-        emitter);
+    // await _onCombatShowExpect(
+    //     CombatExpectShown(Duration(milliseconds: state.getTimeShowTarget)),
+    //     emitter);
 
     // Start timer after showing challenge
     _startTapTimer();
