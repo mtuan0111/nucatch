@@ -540,7 +540,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get opponentJoinedReady =>
-      '✅ Opponent joined! Press Ready when you\'re prepared.';
+      'Opponent joined! Press Ready when you\'re prepared.';
 
   @override
   String get opponentReady => 'Opponent Ready!';
@@ -552,7 +552,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bothPlayersReady => 'Both Players Ready!';
 
   @override
-  String get searchingForHosts => '🔍 Searching for hosts...';
+  String get searchingForHosts => 'Searching for hosts...';
 
   @override
   String connectingToHost(String hostName) {
@@ -573,7 +573,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yourOpponentIsReady => '✅ Your opponent is ready!';
 
   @override
-  String get gameIsStarting => '🚀 Game is starting...';
+  String get gameIsStarting => 'Game is starting...';
 
   @override
   String get waitingForHostToSelectDifficulty =>
@@ -610,7 +610,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Opponent connected!\nPress Ready when both players are ready.';
 
   @override
-  String get bothPlayersReadyStatus => '✅ Both players ready! Starting game...';
+  String get bothPlayersReadyStatus => 'Both players ready! Starting game...';
 
   @override
   String get settingUpDifficulty => 'Setting up game difficulty...';
@@ -623,4 +623,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get advertising => 'Advertising...';
+
+  @override
+  String get selectHostToConnect => 'Select a host to connect';
+
+  @override
+  String availableHosts(int count) {
+    return 'Available Hosts ($count)';
+  }
+
+  @override
+  String get tapToConnect => 'Tap to connect';
+
+  @override
+  String get noHostsFoundNearby => 'No hosts found nearby';
+
+  @override
+  String get makeSureFriendHosting =>
+      'Make sure a friend is hosting\nand both devices are close together';
+
+  @override
+  String get discovering => 'Discovering...';
+
+  @override
+  String get notDiscovering => 'Not discovering';
 }

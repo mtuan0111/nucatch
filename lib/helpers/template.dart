@@ -693,7 +693,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
 
   TextStyle getTextStyle(BuildContext context) {
     return widget.style ??
-        LayoutConfig(context).displaySmallStyle().copyWith(
+        Theme.of(context).textTheme.displayLarge!.copyWith(
               fontSize: getFontSize(context),
               color: getPressedColor(context),
               fontStyle: FontStyle.italic,

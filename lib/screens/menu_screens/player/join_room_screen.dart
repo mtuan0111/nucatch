@@ -96,8 +96,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
       final initialized = await _nearbyService.initialize();
       if (!initialized) {
-        _showError(
-            'Failed to initialize Nearby Connections. Please grant location permissions.');
+        _showError(lang(context).failedToInitializeNearby);
         return;
       }
 
@@ -148,7 +147,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
   Future<void> _startDiscovery() async {
     if (!_isInitialized) {
-      _showError('Nearby Connections is not initialized');
+      _showError(lang(context).nearbyNotInitialized);
       return;
     }
 
@@ -207,7 +206,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       setState(() {
         _myPlayerReady = false;
       });
-      _showError('Failed to set ready: $e');
+      _showError(lang(context).failedToSetReady(e.toString()));
     }
   }
 
@@ -320,14 +319,14 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     switch (_roomState) {
       case RoomState.waiting:
         return _discoveredEndpoints.isEmpty
-            ? 'Searching for hosts...'
-            : 'Select a host to connect';
+            ? lang(context).searchingForHosts
+            : lang(context).selectHostToConnect;
       case RoomState.guestJoined:
-        return 'Connected! Press Ready when you\'re prepared to play.';
+        return lang(context).pressReadyWhenPrepared;
       case RoomState.bothReady:
-        return 'Both players ready! Waiting for host to start...';
+        return lang(context).bothPlayersReadyStatus;
       case RoomState.playing:
-        return 'Waiting for host to select difficulty...';
+        return lang(context).waitingForHostToSelectDifficulty;
       default:
         return '';
     }
@@ -453,7 +452,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                               color: Colors.blue),
                                           const SizedBox(width: 8),
                                           Text(
-                                            'Available Hosts (${_discoveredEndpoints.length})',
+                                            lang(context).availableHosts(
+                                                _discoveredEndpoints.length),
                                             style: LayoutConfig(context)
                                                 .largeBoldStyle(),
                                           ),
@@ -488,7 +488,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                                   .boldSubtitleStyle(),
                                             ),
                                             subtitle: Text(
-                                              'Tap to connect',
+                                              lang(context).tapToConnect,
                                               style: LayoutConfig(context)
                                                   .hintTextStyle(),
                                             ),
@@ -523,7 +523,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                     ),
                                     const SizedBox(height: 20),
                                     Text(
-                                      'No hosts found nearby',
+                                      lang(context).noHostsFoundNearby,
                                       style:
                                           LayoutConfig(context).largeBoldStyle(
                                         color: Colors.grey[600],
@@ -531,7 +531,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
-                                      'Make sure a friend is hosting\nand both devices are close together',
+                                      lang(context).makeSureFriendHosting,
                                       textAlign: TextAlign.center,
                                       style: LayoutConfig(context)
                                           .secondaryTextStyle(
@@ -630,10 +630,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                   const SizedBox(width: 10),
                                   Text(
                                     _nearbyService.isConnected
-                                        ? 'Connected via Nearby'
+                                        ? lang(context).connectedViaNearby
                                         : _isDiscovering
-                                            ? 'Discovering...'
-                                            : 'Not discovering',
+                                            ? lang(context).discovering
+                                            : lang(context).notDiscovering,
                                     style: LayoutConfig(context)
                                         .secondaryTextStyle(
                                       color: _nearbyService.isConnected

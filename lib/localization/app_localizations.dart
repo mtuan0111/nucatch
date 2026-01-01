@@ -1069,7 +1069,7 @@ abstract class AppLocalizations {
   /// Snackbar message when opponent joins the room
   ///
   /// In en, this message translates to:
-  /// **'✅ Opponent joined! Press Ready when you\'re prepared.'**
+  /// **'Opponent joined! Press Ready when you\'re prepared.'**
   String get opponentJoinedReady;
 
   /// Dialog title when opponent is ready
@@ -1093,7 +1093,7 @@ abstract class AppLocalizations {
   /// Snackbar message when searching for hosts
   ///
   /// In en, this message translates to:
-  /// **'🔍 Searching for hosts...'**
+  /// **'Searching for hosts...'**
   String get searchingForHosts;
 
   /// Snackbar message when connecting to a host
@@ -1129,7 +1129,7 @@ abstract class AppLocalizations {
   /// Message when game is about to start
   ///
   /// In en, this message translates to:
-  /// **'🚀 Game is starting...'**
+  /// **'Game is starting...'**
   String get gameIsStarting;
 
   /// Message when waiting for host to choose difficulty
@@ -1183,7 +1183,7 @@ abstract class AppLocalizations {
   /// Status message when both players are ready
   ///
   /// In en, this message translates to:
-  /// **'✅ Both players ready! Starting game...'**
+  /// **'Both players ready! Starting game...'**
   String get bothPlayersReadyStatus;
 
   /// Status message while setting up game
@@ -1209,6 +1209,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Advertising...'**
   String get advertising;
+
+  /// Message when hosts are discovered
+  ///
+  /// In en, this message translates to:
+  /// **'Select a host to connect'**
+  String get selectHostToConnect;
+
+  /// Title showing number of discovered hosts
+  ///
+  /// In en, this message translates to:
+  /// **'Available Hosts ({count})'**
+  String availableHosts(int count);
+
+  /// Subtitle hint for host list items
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to connect'**
+  String get tapToConnect;
+
+  /// Empty state message when no hosts discovered
+  ///
+  /// In en, this message translates to:
+  /// **'No hosts found nearby'**
+  String get noHostsFoundNearby;
+
+  /// Helper text for no hosts found
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure a friend is hosting\nand both devices are close together'**
+  String get makeSureFriendHosting;
+
+  /// Status when discovering nearby devices
+  ///
+  /// In en, this message translates to:
+  /// **'Discovering...'**
+  String get discovering;
+
+  /// Status when not discovering
+  ///
+  /// In en, this message translates to:
+  /// **'Not discovering'**
+  String get notDiscovering;
 }
 
 class _AppLocalizationsDelegate

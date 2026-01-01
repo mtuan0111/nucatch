@@ -464,7 +464,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get greetingEarthDay =>
-      'Chúc mừng Ngày Trái Đất! Bảo vệ hành tinh của chúng ta! 🌍';
+      'Chúc mừng Ngày Trái Đất! Bảo vệ hành tinh của chúng ta!';
 
   @override
   String get holidayEaster => 'Lễ Phục Sinh';
@@ -541,7 +541,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get opponentJoinedReady =>
-      '✅ Đối thủ đã tham gia! Nhấn Sẵn sàng khi bạn đã chuẩn bị.';
+      'Đối thủ đã tham gia! Nhấn Sẵn sàng khi bạn đã chuẩn bị.';
 
   @override
   String get opponentReady => 'Đối thủ sẵn sàng!';
@@ -553,7 +553,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get bothPlayersReady => 'Cả hai người chơi đã sẵn sàng!';
 
   @override
-  String get searchingForHosts => '🔍 Đang tìm kiếm chủ phòng...';
+  String get searchingForHosts => 'Đang tìm kiếm chủ phòng...';
 
   @override
   String connectingToHost(String hostName) {
@@ -564,17 +564,17 @@ class AppLocalizationsVi extends AppLocalizations {
   String get hostReady => 'Chủ phòng sẵn sàng!';
 
   @override
-  String get theHostIsReady => '✅ Chủ phòng đã sẵn sàng!';
+  String get theHostIsReady => 'Chủ phòng đã sẵn sàng!';
 
   @override
   String get pressReadyWhenPrepared =>
       'Nhấn Sẵn sàng khi bạn đã chuẩn bị xong.';
 
   @override
-  String get yourOpponentIsReady => '✅ Đối thủ của bạn đã sẵn sàng!';
+  String get yourOpponentIsReady => 'Đối thủ của bạn đã sẵn sàng!';
 
   @override
-  String get gameIsStarting => '🚀 Trò chơi đang bắt đầu...';
+  String get gameIsStarting => 'Trò chơi đang bắt đầu...';
 
   @override
   String get waitingForHostToSelectDifficulty =>
@@ -612,7 +612,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get bothPlayersReadyStatus =>
-      '✅ Cả hai người chơi đã sẵn sàng! Đang bắt đầu trò chơi...';
+      'Cả hai người chơi đã sẵn sàng! Đang bắt đầu trò chơi...';
 
   @override
   String get settingUpDifficulty => 'Đang thiết lập độ khó...';
@@ -625,4 +625,28 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get advertising => 'Đang tạo kết nối...';
+
+  @override
+  String get selectHostToConnect => 'Chọn chủ phòng để kết nối';
+
+  @override
+  String availableHosts(int count) {
+    return 'Chủ phòng khả dụng ($count)';
+  }
+
+  @override
+  String get tapToConnect => 'Nhấn để kết nối';
+
+  @override
+  String get noHostsFoundNearby => 'Không tìm thấy chủ phòng gần đây';
+
+  @override
+  String get makeSureFriendHosting =>
+      'Đảm bảo bạn bè đang tạo phòng\nvà cả hai thiết bị gần nhau';
+
+  @override
+  String get discovering => 'Đang tìm kiếm...';
+
+  @override
+  String get notDiscovering => 'Không tìm kiếm';
 }

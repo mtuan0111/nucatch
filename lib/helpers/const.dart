@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/localization/app_localizations.dart';
 
 const diffShowLevelMilisecond = 250;
@@ -43,16 +44,19 @@ class LayoutConfig {
     bool isItalic = false,
     String? fontFamily,
   }) =>
-      Theme.of(context).textTheme.displaySmall!.copyWith(
+      Theme.of(context).textTheme.headlineLarge!.copyWith(
         color: Theme.of(context).colorScheme.onPrimary,
         fontFamily: fontFamily,
         fontStyle: isItalic ? FontStyle.italic : null,
         fontWeight: FontWeight.bold,
         shadows: [
           if (isActiveShadow)
-            const BoxShadow(
-              color: Colors.black54,
-              blurRadius: 0,
+            BoxShadow(
+              color: Theme.of(context)
+                  .colorScheme
+                  .onPrimary
+                  .getSmartColor(context),
+              blurRadius: 10,
               offset: Offset(-2, 4),
             )
         ],

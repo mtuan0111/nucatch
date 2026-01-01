@@ -666,7 +666,7 @@
   "@holidayEarthDay": {
     "description": "Tên ngày Trái Đất"
   },
-  "greetingEarthDay": "Chúc mừng Ngày Trái Đất! Bảo vệ hành tinh của chúng ta! 🌍",
+  "greetingEarthDay": "Chúc mừng Ngày Trái Đất! Bảo vệ hành tinh của chúng ta!",
   "@greetingEarthDay": {
     "description": "Lời chúc Ngày Trái Đất"
   },
@@ -762,7 +762,7 @@
   "@advertisingRoomWaiting": {
     "description": "Thông báo snackbar khi chủ phòng bắt đầu tạo kết nối phòng"
   },
-  "opponentJoinedReady": "✅ Đối thủ đã tham gia! Nhấn Sẵn sàng khi bạn đã chuẩn bị.",
+  "opponentJoinedReady": "Đối thủ đã tham gia! Nhấn Sẵn sàng khi bạn đã chuẩn bị.",
   "@opponentJoinedReady": {
     "description": "Thông báo snackbar khi đối thủ tham gia phòng"
   },
@@ -778,7 +778,7 @@
   "@bothPlayersReady": {
     "description": "Tiêu đề hộp thoại khi cả hai người chơi đã sẵn sàng"
   },
-  "searchingForHosts": "🔍 Đang tìm kiếm chủ phòng...",
+  "searchingForHosts": "Đang tìm kiếm chủ phòng...",
   "@searchingForHosts": {
     "description": "Thông báo snackbar khi đang tìm kiếm chủ phòng"
   },
@@ -796,7 +796,7 @@
   "@hostReady": {
     "description": "Tiêu đề hộp thoại khi chủ phòng đã sẵn sàng"
   },
-  "theHostIsReady": "✅ Chủ phòng đã sẵn sàng!",
+  "theHostIsReady": "Chủ phòng đã sẵn sàng!",
   "@theHostIsReady": {
     "description": "Nội dung hộp thoại khi chủ phòng đã sẵn sàng"
   },
@@ -804,11 +804,11 @@
   "@pressReadyWhenPrepared": {
     "description": "Hướng dẫn nhấn nút sẵn sàng"
   },
-  "yourOpponentIsReady": "✅ Đối thủ của bạn đã sẵn sàng!",
+  "yourOpponentIsReady": "Đối thủ của bạn đã sẵn sàng!",
   "@yourOpponentIsReady": {
     "description": "Nội dung hộp thoại khi đối thủ đã sẵn sàng"
   },
-  "gameIsStarting": "🚀 Trò chơi đang bắt đầu...",
+  "gameIsStarting": "Trò chơi đang bắt đầu...",
   "@gameIsStarting": {
     "description": "Thông báo khi trò chơi sắp bắt đầu"
   },
@@ -862,7 +862,7 @@
   "@opponentConnectedStatus": {
     "description": "Thông báo trạng thái khi đối thủ kết nối"
   },
-  "bothPlayersReadyStatus": "✅ Cả hai người chơi đã sẵn sàng! Đang bắt đầu trò chơi...",
+  "bothPlayersReadyStatus": "Cả hai người chơi đã sẵn sàng! Đang bắt đầu trò chơi...",
   "@bothPlayersReadyStatus": {
     "description": "Thông báo trạng thái khi cả hai người chơi đã sẵn sàng"
   },
@@ -881,5 +881,39 @@
   "advertising": "Đang tạo kết nối...",
   "@advertising": {
     "description": "Thông báo trạng thái khi đang tạo kết nối"
+  },
+  "selectHostToConnect": "Chọn chủ phòng để kết nối",
+  "@selectHostToConnect": {
+    "description": "Thông báo khi phát hiện được chủ phòng"
+  },
+  "availableHosts": "Chủ phòng khả dụng ({count})",
+  "@availableHosts": {
+    "description": "Tiêu đề hiển thị số lượng chủ phòng đã phát hiện",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "tapToConnect": "Nhấn để kết nối",
+  "@tapToConnect": {
+    "description": "Gợi ý phụ đề cho mục danh sách chủ phòng"
+  },
+  "noHostsFoundNearby": "Không tìm thấy chủ phòng gần đây",
+  "@noHostsFoundNearby": {
+    "description": "Thông báo trạng thái trống khi không phát hiện chủ phòng"
+  },
+  "makeSureFriendHosting": "Đảm bảo bạn bè đang tạo phòng\nvà cả hai thiết bị gần nhau",
+  "@makeSureFriendHosting": {
+    "description": "Văn bản trợ giúp khi không tìm thấy chủ phòng"
+  },
+  "discovering": "Đang tìm kiếm...",
+  "@discovering": {
+    "description": "Trạng thái khi đang tìm kiếm thiết bị gần đó"
+  },
+  "notDiscovering": "Không tìm kiếm",
+  "@notDiscovering": {
+    "description": "Trạng thái khi không tìm kiếm"
   }
 }

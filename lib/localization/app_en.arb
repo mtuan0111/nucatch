@@ -780,7 +780,7 @@
   "@advertisingRoomWaiting": {
     "description": "Snackbar message when host starts advertising the room"
   },
-  "opponentJoinedReady": "✅ Opponent joined! Press Ready when you're prepared.",
+  "opponentJoinedReady": "Opponent joined! Press Ready when you're prepared.",
   "@opponentJoinedReady": {
     "description": "Snackbar message when opponent joins the room"
   },
@@ -796,7 +796,7 @@
   "@bothPlayersReady": {
     "description": "Dialog title when both players are ready"
   },
-  "searchingForHosts": "🔍 Searching for hosts...",
+  "searchingForHosts": "Searching for hosts...",
   "@searchingForHosts": {
     "description": "Snackbar message when searching for hosts"
   },
@@ -826,7 +826,7 @@
   "@yourOpponentIsReady": {
     "description": "Message in dialog when opponent is ready"
   },
-  "gameIsStarting": "🚀 Game is starting...",
+  "gameIsStarting": "Game is starting...",
   "@gameIsStarting": {
     "description": "Message when game is about to start"
   },
@@ -880,7 +880,7 @@
   "@opponentConnectedStatus": {
     "description": "Status message when opponent connects"
   },
-  "bothPlayersReadyStatus": "✅ Both players ready! Starting game...",
+  "bothPlayersReadyStatus": "Both players ready! Starting game...",
   "@bothPlayersReadyStatus": {
     "description": "Status message when both players are ready"
   },
@@ -903,5 +903,39 @@
   "advertising": "Advertising...",
   "@advertising": {
     "description": "Status message when advertising for connections"
+  },
+  "selectHostToConnect": "Select a host to connect",
+  "@selectHostToConnect": {
+    "description": "Message when hosts are discovered"
+  },
+  "availableHosts": "Available Hosts ({count})",
+  "@availableHosts": {
+    "description": "Title showing number of discovered hosts",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "tapToConnect": "Tap to connect",
+  "@tapToConnect": {
+    "description": "Subtitle hint for host list items"
+  },
+  "noHostsFoundNearby": "No hosts found nearby",
+  "@noHostsFoundNearby": {
+    "description": "Empty state message when no hosts discovered"
+  },
+  "makeSureFriendHosting": "Make sure a friend is hosting\nand both devices are close together",
+  "@makeSureFriendHosting": {
+    "description": "Helper text for no hosts found"
+  },
+  "discovering": "Discovering...",
+  "@discovering": {
+    "description": "Status when discovering nearby devices"
+  },
+  "notDiscovering": "Not discovering",
+  "@notDiscovering": {
+    "description": "Status when not discovering"
   }
 }
