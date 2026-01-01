@@ -26,7 +26,8 @@ class CombatState extends TurnState {
   final bool isRestartRequested;
   final bool isPlayerReady;
   final bool isOpponentReady;
-  final bool? willStartFirst; // null = unknown, true = I start first, false = opponent starts first
+  final bool?
+      willStartFirst; // null = unknown, true = I start first, false = opponent starts first
 
   const CombatState({
     // Combat-specific parameters
