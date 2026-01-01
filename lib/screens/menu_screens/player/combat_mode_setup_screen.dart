@@ -70,92 +70,47 @@ class CombatModeSetupScreen extends StatelessWidget {
                 ),
                 expandedHeight: 100,
               ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 20,
+              DecoratedSliver(
+                decoration: const BoxDecoration(
+                  color: Colors.transparent,
                 ),
-                sliver: SliverToBoxAdapter(
-                  child: DeviceWrapper(
-                    child: Column(
-                      children: [
-                        // Create Room Button
-                        _ActionCard(
-                          title: lang(context).createRoom,
-                          description: lang(context).createRoomDescription,
-                          icon: FontAwesomeIcons.userPlus,
-                          color: Colors.blue,
-                          onTap: () => _navigateToHostRoom(context),
+                sliver: SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 50,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: SafeArea(
+                      child: DeviceWrapper(
+                        child: Column(
+                          spacing: 20,
+                          children: [
+                            // Create Room Option
+                            OptionCard(
+                              context: context,
+                              title: lang(context).createRoom,
+                              description: lang(context).createRoomDescription,
+                              icon: FontAwesomeIcons.userPlus,
+                              color: Colors.blue,
+                              onTap: () => _navigateToHostRoom(context),
+                            ),
+                            // Join Room Option
+                            OptionCard(
+                              context: context,
+                              title: lang(context).joinRoom,
+                              description: lang(context).joinRoomDescription,
+                              icon: FontAwesomeIcons.rightToBracket,
+                              color: Colors.green,
+                              onTap: () => _navigateToJoinRoom(context),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 30),
-                        // Join Room Button
-                        _ActionCard(
-                          title: lang(context).joinRoom,
-                          description: lang(context).joinRoomDescription,
-                          icon: FontAwesomeIcons.rightToBracket,
-                          color: Colors.green,
-                          onTap: () => _navigateToJoinRoom(context),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ActionCard extends StatelessWidget {
-  final String title;
-  final String description;
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _ActionCard({
-    required this.title,
-    required this.description,
-    required this.icon,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomElevatedButton(
-      onPressed: onTap,
-      shapeAt: RoundedWithShapeAt.all,
-      backgroundColor: color.withOpacity(0.2),
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              size: 60,
-              color: color,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: LayoutConfig(context).titleSectionStyle().copyWith(
-                    color: color,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              description,
-              textAlign: TextAlign.center,
-              style: LayoutConfig(context).contentSectionStyle(),
-            ),
-          ],
         ),
       ),
     );

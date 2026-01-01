@@ -1275,3 +1275,70 @@ class DeviceWrapper extends StatelessWidget {
     );
   }
 }
+
+/// Shared option card widget used across multiple selection screens
+/// (SelectPlayModeScreen, CombatModeSetupScreen, SetDifficultScreen)
+class OptionCard extends StatelessWidget {
+  final BuildContext context;
+  final String title;
+  final String description;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const OptionCard({
+    super.key,
+    required this.context,
+    required this.title,
+    required this.description,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  CustomElevatedButton(
+                    text: description,
+                    style: LayoutConfig(context).contentSectionStyle(),
+                    buttonSize: ButtonSize.smallest,
+                    shapeAt: RoundedWithShapeAt.topRight,
+                    backgroundColor: Colors.black54,
+                  ),
+                  Positioned(
+                    top: -45,
+                    right: 10,
+                    child: CustomElevatedButton(
+                      text: title,
+                      buttonSize: ButtonSize.small,
+                      shapeAt: RoundedWithShapeAt.bottomRight,
+                      backgroundColor: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          AnimatedButton(
+            context,
+            onPressed: onTap,
+            iconData: icon,
+            shapeAt: RoundedWithShapeAt.topLeft,
+            backgroundColor: color,
+          ),
+        ],
+      ),
+    );
+  }
+}

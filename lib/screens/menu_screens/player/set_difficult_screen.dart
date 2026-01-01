@@ -149,9 +149,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                     child: SafeArea(
                       child: DeviceWrapper(
                         child: Column(
-                          // crossAxisAlignment: WrapCrossAlignment.center,
                           spacing: buttonSpace,
-                          // runSpacing: buttonSpace,
                           children: Difficulty.values.map((difficulty) {
                             IconData difficultyIcon =
                                 Helper.getIconFromDifficulty(
@@ -197,64 +195,15 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                               }
                             }
 
-                            return GestureDetector(
-                              onTap: () {
-                                onTap();
-                              },
-                              child: Row(
-                                // mainAxisAlignment: MainAxisAlignment.center,
-                                // crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 40),
-                                      child: Stack(
-                                        clipBehavior: Clip.none,
-                                        children: [
-                                          CustomElevatedButton(
-                                            text: Helper
-                                                .getDescriptionFromDifficulty(
-                                                    context, difficulty),
-                                            style: LayoutConfig(context)
-                                                .contentSectionStyle(),
-                                            buttonSize: ButtonSize.smallest,
-                                            shapeAt:
-                                                RoundedWithShapeAt.topRight,
-                                            backgroundColor: Colors.black54,
-                                            // color: difficultyColor,
-                                          ),
-                                          Positioned(
-                                            top: -45,
-                                            right: 10,
-                                            child: CustomElevatedButton(
-                                              text:
-                                                  Helper.getTitleFromDifficulty(
-                                                      context, difficulty),
-                                              buttonSize: ButtonSize.small,
-                                              shapeAt: RoundedWithShapeAt
-                                                  .bottomRight,
-                                              backgroundColor: Colors.grey,
-                                              // color: Colors.black87,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  AnimatedButton(
-                                    context,
-                                    onPressed: () {
-                                      onTap();
-                                    },
-                                    // text: textButton,
-                                    iconData: difficultyIcon,
-                                    shapeAt: RoundedWithShapeAt.topLeft,
-                                    backgroundColor: difficultyColor,
-                                    // color: Colors.black87,
-                                  ),
-                                ],
-                              ),
+                            return OptionCard(
+                              context: context,
+                              title: Helper.getTitleFromDifficulty(
+                                  context, difficulty),
+                              description: Helper.getDescriptionFromDifficulty(
+                                  context, difficulty),
+                              icon: difficultyIcon,
+                              color: difficultyColor,
+                              onTap: onTap,
                             );
                           }).toList(),
                         ),

@@ -62,46 +62,48 @@ class SelectPlayModeScreen extends StatelessWidget {
                 ),
                 expandedHeight: 100,
               ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 20.0,
+              DecoratedSliver(
+                decoration: const BoxDecoration(
+                  color: Colors.transparent,
                 ),
-                sliver: SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height - 200,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Solo Mode Card
-                          _PlayModeCard(
-                            title: lang(context).soloMode,
-                            description: lang(context).soloModeDescription,
-                            icon: FontAwesomeIcons.user,
-                            color: Colors.blue,
-                            onTap: () {
-                              context
-                                  .read<PlayerNavCubit>()
-                                  .selectPlayMode(PlayMode.solo);
-                            },
-                          ),
-
-                          const SizedBox(height: 30),
-
-                          // Combat Mode Card
-                          _PlayModeCard(
-                            title: lang(context).combatMode,
-                            description: lang(context).combatModeDescription,
-                            icon: FontAwesomeIcons.userGroup,
-                            color: Colors.orange,
-                            onTap: () {
-                              context
-                                  .read<PlayerNavCubit>()
-                                  .selectPlayMode(PlayMode.combat);
-                            },
-                          ),
-                        ],
+                sliver: SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 50,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: SafeArea(
+                      child: DeviceWrapper(
+                        child: Column(
+                          spacing: 20,
+                          children: [
+                            // Solo Mode Option
+                            OptionCard(
+                              context: context,
+                              title: lang(context).soloMode,
+                              description: lang(context).soloModeDescription,
+                              icon: FontAwesomeIcons.user,
+                              color: Colors.blue,
+                              onTap: () {
+                                context
+                                    .read<PlayerNavCubit>()
+                                    .selectPlayMode(PlayMode.solo);
+                              },
+                            ),
+                            // Combat Mode Option
+                            OptionCard(
+                              context: context,
+                              title: lang(context).combatMode,
+                              description: lang(context).combatModeDescription,
+                              icon: FontAwesomeIcons.userGroup,
+                              color: Colors.orange,
+                              onTap: () {
+                                context
+                                    .read<PlayerNavCubit>()
+                                    .selectPlayMode(PlayMode.combat);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -109,59 +111,6 @@ class SelectPlayModeScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _PlayModeCard extends StatelessWidget {
-  final String title;
-  final String description;
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _PlayModeCard({
-    required this.title,
-    required this.description,
-    required this.icon,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomElevatedButton(
-      onPressed: onTap,
-      shapeAt: RoundedWithShapeAt.all,
-      backgroundColor: color.withOpacity(0.2),
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              size: 60,
-              color: color,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: LayoutConfig(context).titleSectionStyle().copyWith(
-                    color: color,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              description,
-              textAlign: TextAlign.center,
-              style: LayoutConfig(context).contentSectionStyle(),
-            ),
-          ],
         ),
       ),
     );
