@@ -42,7 +42,7 @@ class CombatRestartConfirmationScreen extends StatelessWidget {
                       centerTitle: true,
                       titlePadding: EdgeInsets.zero,
                       title: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(kPaddingM),
                         child: Text(
                           lang(context).doYouReadyForRestart,
                           textAlign: TextAlign.center,

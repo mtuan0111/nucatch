@@ -9,6 +9,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 
 class TopScoreScreen extends StatefulWidget {
@@ -104,7 +105,7 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                               centerTitle: true,
                               titlePadding: EdgeInsets.zero,
                               title: Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(kPaddingM),
                                 child: Text(
                                   screenTitle,
                                   textAlign: TextAlign.center,
@@ -137,7 +138,7 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                         child: SafeArea(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
+                                horizontal: kPaddingXL, vertical: kPaddingM),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -155,7 +156,7 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                                         _onTabChanged(RankingPeriod.daily),
                                   ),
                                 ),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: kSpaceM),
                                 Expanded(
                                   child: AnimatedButton(
                                     context,
@@ -170,7 +171,7 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                                         _onTabChanged(RankingPeriod.weekly),
                                   ),
                                 ),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: kSpaceM),
                                 Expanded(
                                   child: AnimatedButton(
                                     context,

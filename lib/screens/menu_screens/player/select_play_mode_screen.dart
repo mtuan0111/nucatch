@@ -7,6 +7,7 @@ import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 
 class SelectPlayModeScreen extends StatelessWidget {
   const SelectPlayModeScreen({super.key});
@@ -40,7 +41,7 @@ class SelectPlayModeScreen extends StatelessWidget {
                         centerTitle: true,
                         titlePadding: EdgeInsets.zero,
                         title: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(kPaddingM),
                           child: Text(
                             lang(context).selectPlayMode,
                             textAlign: TextAlign.center,

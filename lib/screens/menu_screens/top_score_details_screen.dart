@@ -11,6 +11,7 @@ import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -120,12 +121,12 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                   ranking: ranking,
                                   turnRecordedModel: turnRecordedModel,
                                 ),
-                                const SizedBox(height: 32),
+                                const SizedBox(height: kSpace3XL),
                                 CustomElevatedButton(
                                   backgroundColor:
                                       Theme.of(context).colorScheme.onPrimary,
                                   child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                                    padding: const EdgeInsets.all(kPaddingXL),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -141,7 +142,7 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                               ),
                                           textAlign: TextAlign.center,
                                         ),
-                                        const SizedBox(height: 10),
+                                        const SizedBox(height: kSpaceM),
                                         SizedBox(
                                           height: 180,
                                           width: 180,
@@ -166,7 +167,7 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: kSpace2XL),
                             Expanded(
                               child: Opacity(
                                 opacity: state.isCapturing ? 0.0 : 1.0,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../ui_constants.dart';
 import 'animated_game_wrapper.dart';
 
 /// Example integration of the animation system into Solo Playing Mode
@@ -27,7 +28,7 @@ class _AnimationExampleScreenState extends State<AnimationExampleScreen> {
     return AnimatedGameWrapper(
       key: _animationKey,
       child: Scaffold(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
         body: SafeArea(
           child: Column(
             children: [
@@ -58,9 +59,9 @@ class _AnimationExampleScreenState extends State<AnimationExampleScreen> {
             ),
             child: Text(
               'Score: $score',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: kFontSizeML,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -70,9 +71,9 @@ class _AnimationExampleScreenState extends State<AnimationExampleScreen> {
             key: _heartKey,
             children: List.generate(
               lives,
-              (index) => const Icon(
+              (index) => Icon(
                 Icons.favorite,
-                color: Colors.red,
+                color: Theme.of(context).colorScheme.error,
                 size: 30,
               ),
             ),
@@ -85,15 +86,15 @@ class _AnimationExampleScreenState extends State<AnimationExampleScreen> {
   Widget _buildControls() {
     return Column(
       children: [
-        const Text(
+        Text(
           'Test Animations',
           style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
+            color: Theme.of(context).colorScheme.onSurface,
+            fontSize: kFontSizeXL,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: kPaddingXL),
 
         // Test Small Firework
         ElevatedButton.icon(
@@ -101,11 +102,12 @@ class _AnimationExampleScreenState extends State<AnimationExampleScreen> {
           icon: const Icon(Icons.star),
           label: const Text('Add Point (Small Firework)'),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.amber[700],
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            padding: const EdgeInsets.symmetric(
+                horizontal: kSpace2XL, vertical: kSpaceML),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: kSpaceML),
 
         // Test Large Firework
         ElevatedButton.icon(
@@ -113,11 +115,12 @@ class _AnimationExampleScreenState extends State<AnimationExampleScreen> {
           icon: const Icon(Icons.favorite),
           label: const Text('Gain Life (Large Firework)'),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.pink[700],
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
+            padding: const EdgeInsets.symmetric(
+                horizontal: kSpace2XL, vertical: kSpaceML),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: kSpaceML),
 
         // Test Screen Shake
         ElevatedButton.icon(
@@ -125,8 +128,9 @@ class _AnimationExampleScreenState extends State<AnimationExampleScreen> {
           icon: const Icon(Icons.warning),
           label: const Text('Lost Life (Screen Shake)'),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red[700],
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            padding: const EdgeInsets.symmetric(
+                horizontal: kSpace2XL, vertical: kSpaceML),
           ),
         ),
       ],
@@ -191,16 +195,17 @@ class _AnimationExampleBuilderScreenState
     return AnimatedGameWrapperBuilder(
       builder: (context, triggers) {
         return Scaffold(
-          backgroundColor: Colors.grey[900],
+          backgroundColor:
+              Theme.of(context).colorScheme.surfaceContainerHighest,
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Score: $score',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 32,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: kFontSize2XL,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

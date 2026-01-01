@@ -5,6 +5,7 @@ import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 
 /// Combat Mode Setup Screen - Choose to host or join a room
 class CombatModeSetupScreen extends StatelessWidget {
@@ -151,7 +152,7 @@ class CombatModeSetupScreen extends StatelessWidget {
                                   const Expanded(child: Divider(thickness: 2)),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 16),
+                                        horizontal: kPaddingL),
                                     child: Text(
                                       lang(context).combatMode,
                                       style: LayoutConfig(context)
@@ -168,9 +169,9 @@ class CombatModeSetupScreen extends StatelessWidget {
 
                             // Sub-options for Combat Mode
                             Padding(
-                              padding: const EdgeInsets.only(left: 20),
+                              padding: const EdgeInsets.only(left: kPaddingXL),
                               child: Column(
-                                spacing: 20,
+                                spacing: kSpaceXL,
                                 children: [
                                   // Create Room Option
                                   OptionCard(

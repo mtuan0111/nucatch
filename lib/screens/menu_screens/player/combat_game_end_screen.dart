@@ -19,62 +19,84 @@ class CombatGameEndScreen extends StatelessWidget {
       body: Container(
         decoration: LayoutConfig(context).gradientDecoration,
         child: SafeArea(
-          child: DeviceWrapper(
-            child: BlocListener<CombatBloc, CombatState>(
-              listenWhen: (previous, current) =>
-                  previous.combatStatus != current.combatStatus &&
-                  current.combatStatus == CombatStatus.intro,
-              listener: (context, state) {
-                // Navigate to playing screen when restart countdown begins
-                context.read<CombatNavCubit>().showPlaying();
-              },
-              child: BlocBuilder<CombatBloc, CombatState>(
-                builder: (context, combatState) {
-                  return Column(
-                    children: [
-                      // Header
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: const FaIcon(FontAwesomeIcons.arrowLeft),
-                              onPressed: () {
-                                // Reset CombatBloc to fresh initial state
-                                context
-                                    .read<CombatBloc>()
-                                    .add(CombatBlocReset());
+          child: BlocListener<CombatBloc, CombatState>(
+            listenWhen: (previous, current) =>
+                previous.combatStatus != current.combatStatus &&
+                current.combatStatus == CombatStatus.intro,
+            listener: (context, state) {
+              // Navigate to playing screen when restart countdown begins
+              context.read<CombatNavCubit>().showPlaying();
+            },
+            child: BlocBuilder<CombatBloc, CombatState>(
+              builder: (context, combatState) {
+                final isWinner = combatState.isWinner ?? false;
 
-                                // Reset CombatNavCubit to initial state
-                                context.read<CombatNavCubit>().reset();
+                return CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      shadowColor: Colors.transparent,
+                      backgroundColor: Colors.transparent,
+                      pinned: true,
+                      stretch: true,
+                      flexibleSpace: LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          final double appBarHeight =
+                              constraints.biggest.height;
+                          final bool isCollapsed = appBarHeight <=
+                              kToolbarHeight +
+                                  MediaQuery.of(context).padding.top;
 
-                                // Navigate back to select play mode
-                                context
-                                    .read<PlayerNavCubit>()
-                                    .showSelectPlayMode();
-                              },
-                            ),
-                            Expanded(
-                              child: Text(
-                                combatState.isWinner ?? false
-                                    ? lang(context).youWin
-                                    : lang(context).youLose,
-                                style:
-                                    LayoutConfig(context).titleSectionStyle(),
-                                textAlign: TextAlign.center,
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            color: isCollapsed
+                                ? Theme.of(context).primaryColor
+                                : Colors.transparent,
+                            child: FlexibleSpaceBar(
+                              centerTitle: true,
+                              titlePadding: EdgeInsets.zero,
+                              title: Padding(
+                                padding: const EdgeInsets.all(kPaddingM),
+                                child: Text(
+                                  isWinner
+                                      ? lang(context).youWin
+                                      : lang(context).youLose,
+                                  textAlign: TextAlign.center,
+                                  style:
+                                      LayoutConfig(context).displaySmallStyle(
+                                    isActiveShadow: true,
+                                    isItalic: true,
+                                  ),
+                                ),
                               ),
                             ),
-                            const SizedBox(width: 48),
-                          ],
-                        ),
+                          );
+                        },
                       ),
-                      Expanded(
+                      leading: IconButton(
+                        onPressed: () {
+                          // Reset CombatBloc to fresh initial state
+                          context.read<CombatBloc>().add(CombatBlocReset());
+
+                          // Reset CombatNavCubit to initial state
+                          context.read<CombatNavCubit>().reset();
+
+                          // Navigate back to select play mode
+                          context.read<PlayerNavCubit>().showSelectPlayMode();
+                        },
+                        icon: const Icon(FontAwesomeIcons.chevronLeft),
+                      ),
+                      expandedHeight: 100,
+                    ),
+                    SliverToBoxAdapter(
+                      child: DeviceWrapper(
                         child: _buildGameEndScreen(context, combatState),
                       ),
-                    ],
-                  );
-                },
-              ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ),
@@ -86,7 +108,7 @@ class CombatGameEndScreen extends StatelessWidget {
     final isWinner = combatState.isWinner ?? false;
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(kPaddingXL),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -94,7 +116,9 @@ class CombatGameEndScreen extends StatelessWidget {
           Icon(
             isWinner ? Icons.emoji_events : Icons.sentiment_dissatisfied,
             size: kContainerSizeS,
-            color: isWinner ? const Color(0xFFFFD700) : Colors.grey,
+            color: isWinner
+                ? Theme.of(context).colorScheme.tertiary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
           const SizedBox(height: kSpaceXL),
 
@@ -131,8 +155,9 @@ class CombatGameEndScreen extends StatelessWidget {
                   : '${lang(context).ready} - ${lang(context).playAgain}',
               buttonSize: ButtonSize.small,
               shapeAt: RoundedWithShapeAt.topRight,
-              backgroundColor:
-                  combatState.isPlayerReady ? Colors.orange : Colors.green,
+              backgroundColor: combatState.isPlayerReady
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.tertiary,
               onPressed: () {
                 context.read<CombatBloc>().add(
                       CombatRestartReady(
@@ -158,7 +183,7 @@ class CombatGameEndScreen extends StatelessWidget {
             text: lang(context).returnToMenu,
             buttonSize: ButtonSize.small,
             shapeAt: RoundedWithShapeAt.bottomLeft,
-            backgroundColor: Colors.grey,
+            backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
             onPressed: () {
               // Reset CombatBloc to fresh initial state
               context.read<CombatBloc>().add(CombatBlocReset());
@@ -183,20 +208,29 @@ class CombatGameEndScreen extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 80,
-          height: 80,
+          width: kContainerSizeS,
+          height: kContainerSizeS,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: isReady ? Colors.green : Colors.grey.withOpacity(0.3),
+            color: isReady
+                ? Theme.of(context).colorScheme.tertiary.withOpacity(0.3)
+                : Theme.of(context)
+                    .colorScheme
+                    .onSurfaceVariant
+                    .withOpacity(0.3),
             border: Border.all(
-              color: isReady ? Colors.green : Colors.grey,
-              width: 3,
+              color: isReady
+                  ? Theme.of(context).colorScheme.tertiary
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
+              width: kStrokeWidthMedium,
             ),
           ),
           child: Icon(
             isReady ? Icons.check : Icons.hourglass_empty,
-            size: 40,
-            color: isReady ? Colors.white : Colors.grey,
+            size: kIconSizeL,
+            color: isReady
+                ? Theme.of(context).colorScheme.onTertiary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
         const SizedBox(height: kSpaceM),
@@ -207,7 +241,9 @@ class CombatGameEndScreen extends StatelessWidget {
         Text(
           isReady ? lang(context).ready : lang(context).waiting,
           style: LayoutConfig(context).contentSectionStyle(
-            color: isReady ? Colors.green : Colors.grey,
+            color: isReady
+                ? Theme.of(context).colorScheme.tertiary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
       ],

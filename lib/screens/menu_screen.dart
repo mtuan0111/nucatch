@@ -10,6 +10,7 @@ import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -87,7 +88,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             style: LayoutConfig(context)
                                 .titleSectionStyle()
                                 .copyWith(
-                                  fontSize: 16,
+                                  fontSize: kFontSizeM,
                                   fontWeight: FontWeight.w500,
                                 ),
                             textAlign: TextAlign.center,

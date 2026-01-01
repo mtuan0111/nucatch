@@ -7,6 +7,7 @@ import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/helpers/combat_dialogs.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/services/combat_nearby_service.dart';
 
 /// Host room screen for advertising via Nearby Connections
@@ -147,7 +148,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(lang(context).advertisingRoomWaiting),
-            backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             duration: const Duration(seconds: 3),
           ),
         );
@@ -179,7 +180,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(lang(context).opponentJoinedReady),
-        backgroundColor: Colors.green,
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
         duration: const Duration(seconds: 3),
       ),
     );
@@ -209,7 +210,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: Colors.red,
+          backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
     }
@@ -296,18 +297,18 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                           size: 80,
                           color: Colors.blue,
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: kSpaceXL),
                         Text(
                           lang(context).advertisingAs,
                           style: LayoutConfig(context).titleSectionStyle(),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: kSpaceM),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 15),
+                              horizontal: kPadding2XL, vertical: kPaddingML),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(kBorderRadiusL),
                           ),
                           child: Text(
                             _myEndpointName ?? 'Unknown',
@@ -316,7 +317,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: kSpace2XL),
                         Text(
                           _getRoomStateText(),
                           style: LayoutConfig(context).subtitleStyle(),
@@ -325,7 +326,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
                         if (_roomState == RoomState.guestJoined ||
                             _roomState == RoomState.bothReady) ...[
-                          const SizedBox(height: 30),
+                          const SizedBox(height: kSpace2XL),
                           // Ready status indicators
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -334,14 +335,14 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                                 label: lang(context).you,
                                 isReady: _myPlayerReady,
                               ),
-                              const SizedBox(width: 48),
+                              const SizedBox(width: kSpace4XL),
                               _buildReadyIndicator(
                                 label: lang(context).opponent,
                                 isReady: _guestPlayerReady,
                               ),
                             ],
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: kSpace2XL),
                           if (!_myPlayerReady)
                             CustomElevatedButton(
                               onPressed: _setReady,
@@ -350,7 +351,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   const FaIcon(FontAwesomeIcons.check),
-                                  const SizedBox(width: 8),
+                                  const SizedBox(width: kSpaceSM),
                                   Text(
                                     lang(context).ready,
                                     style: LayoutConfig(context)
@@ -360,56 +361,62 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                               ),
                             ),
                         ],
-                        const SizedBox(height: 40),
+                        const SizedBox(height: kSpace3XL),
                         // Distance Warning
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 12),
+                              horizontal: kPaddingXL, vertical: kPaddingML),
                           decoration: BoxDecoration(
-                            color: Colors.orange.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .error
+                                .withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(kBorderRadiusM),
                             border: Border.all(
-                              color: Colors.orange.withOpacity(0.3),
-                              width: 1,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .error
+                                  .withOpacity(0.3),
+                              width: kStrokeWidthThin,
                             ),
                           ),
                           child: Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.info_outline,
-                                color: Colors.orange,
-                                size: 20,
+                                color: Theme.of(context).colorScheme.error,
+                                size: kFontSizeXL,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: kSpaceML),
                               Expanded(
                                 child: Text(
                                   lang(context).distanceWarning,
                                   style:
                                       LayoutConfig(context).secondaryTextStyle(
-                                    color: Colors.orange,
+                                    color: Theme.of(context).colorScheme.error,
                                   ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: kSpaceXL),
                         // Connection Status Indicator
                         Column(
                           children: [
                             const Divider(),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: kSpaceM),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.settings_input_antenna,
                                   color: _nearbyService.isConnected
-                                      ? Colors.green
-                                      : Colors.orange,
-                                  size: 20,
+                                      ? Theme.of(context).colorScheme.tertiary
+                                      : Theme.of(context).colorScheme.error,
+                                  size: kFontSizeXL,
                                 ),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: kSpaceM),
                                 Text(
                                   _nearbyService.isConnected
                                       ? lang(context).connectedViaNearby
@@ -417,8 +424,8 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                                   style:
                                       LayoutConfig(context).secondaryTextStyle(
                                     color: _nearbyService.isConnected
-                                        ? Colors.green
-                                        : Colors.orange,
+                                        ? Theme.of(context).colorScheme.tertiary
+                                        : Theme.of(context).colorScheme.error,
                                   ),
                                 ),
                               ],
@@ -444,23 +451,32 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
     return Column(
       children: [
         Container(
-          width: 80,
-          height: 80,
+          width: kContainerSizeS,
+          height: kContainerSizeS,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: isReady ? Colors.green : Colors.grey.withOpacity(0.3),
+            color: isReady
+                ? Theme.of(context).colorScheme.tertiary.withOpacity(0.3)
+                : Theme.of(context)
+                    .colorScheme
+                    .onSurfaceVariant
+                    .withOpacity(0.3),
             border: Border.all(
-              color: isReady ? Colors.green : Colors.grey,
-              width: 3,
+              color: isReady
+                  ? Theme.of(context).colorScheme.tertiary
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
+              width: kStrokeWidthMedium,
             ),
           ),
           child: Icon(
             isReady ? Icons.check : Icons.hourglass_empty,
-            size: 40,
-            color: isReady ? Colors.white : Colors.grey,
+            size: kIconSizeL,
+            color: isReady
+                ? Theme.of(context).colorScheme.onTertiary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: kSpaceL),
         Text(
           label,
           style: LayoutConfig(context).contentSectionStyle(),
@@ -468,7 +484,9 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
         Text(
           isReady ? lang(context).ready : lang(context).waiting,
           style: LayoutConfig(context).contentSectionStyle(
-            color: isReady ? Colors.green : Colors.grey,
+            color: isReady
+                ? Theme.of(context).colorScheme.tertiary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
       ],

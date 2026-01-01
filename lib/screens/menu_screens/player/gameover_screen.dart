@@ -13,6 +13,8 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 
 class GameOverScreen extends StatefulWidget {
@@ -71,20 +73,21 @@ class _GameOverScreenState extends State<GameOverScreen> {
                           ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: kSpace3XL),
                     if (turnState.expect != turnState.requirementString)
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: kSpace2XL),
                         child: Text(
                           turnState.requirementString ?? '',
                           style: LayoutConfig(context).boldedStyle.copyWith(
                                 color: Theme.of(context).colorScheme.onPrimary,
-                                fontSize: 24,
+                                fontSize: kFontSizeXL,
                               ),
                           textAlign: TextAlign.center,
                         ),
                       ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: kSpaceL),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -97,7 +100,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                                 color: Theme.of(context).colorScheme.onPrimary,
                               ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: kSpaceS),
                         Text(
                           turnState.expect ?? '',
                           style: LayoutConfig(context).boldedStyle.copyWith(
@@ -107,7 +110,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                       ],
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: kSpaceXL,
                     ),
                     BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
                       builder: (context, state) {
@@ -129,7 +132,10 @@ class _GameOverScreenState extends State<GameOverScreen> {
                       },
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: kSpace4XL,
+                    ),
+                    const SizedBox(
+                      height: kSpaceXS,
                     ),
                     BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
                       builder: (context, state) {

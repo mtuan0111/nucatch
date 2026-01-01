@@ -4,6 +4,7 @@ import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
 
@@ -43,13 +44,13 @@ class MenuAlert extends StatelessWidget {
           Text(
             "${lang(context).yourScoreIs}: $point",
             style: LayoutConfig(context).contentSectionStyle(
-                color: Theme.of(context).colorScheme.onSurface),
+                color: Theme.of(context).colorScheme.primary.getDarker()),
             textAlign: TextAlign.center,
           ),
           Text(
             "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, turnState.difficultyModel!.difficulty)}",
             style: LayoutConfig(context).contentSectionStyle(
-                color: Theme.of(context).colorScheme.onSurface),
+                color: Theme.of(context).colorScheme.primary.getDarker()),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
@@ -311,7 +312,8 @@ class AlertTemplate extends StatelessWidget {
                                           .contentSectionStyle(
                                               color: Theme.of(context)
                                                   .colorScheme
-                                                  .onSurface),
+                                                  .primary
+                                                  .getDarker()),
                                       textAlign: TextAlign.center,
                                     ),
                                 ],

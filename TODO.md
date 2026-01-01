@@ -41,6 +41,19 @@
 - [ ] Apply consistent typography throughout the app
 - [ ] Update all text widgets to use standard styles
 - [ ] Document TextStyle usage guidelines
+
+### 8. Firework Animation Timing
+- [ ] Fix firework animation to not appear immediately on opponent's screen
+- [ ] Add delay to allow user to prepare for next turn
+- [ ] Notify user when it's their turn to play
+- [ ] Improve turn transition feedback
+
+### 9. Settings and About Screen Consistency
+- [ ] Update settings screen UI to match setdifficulty screen style
+- [ ] Apply consistent UI patterns to about screen
+- [ ] Ensure uniform layout and styling across configuration screens
+- [ ] Standardize button and card designs
+
 # TODO List
 
 ## Combat Mode UI/UX Improvements

@@ -165,9 +165,10 @@ class SeasonalTheme {
   static final Map<ThemeType, ThemeConfig> _themes = {
     ThemeType.defaultTheme: ThemeConfig(
       name: 'Default',
-      primaryColor: const Color(0xFF00C853), // Bright green (adjusted)
-      secondaryColor:
-          const Color(0xFF00B0FF), // Bright blue (adjusted to match brightness)
+      primaryColor:
+          const Color.fromARGB(255, 0, 174, 90), // Bright green (adjusted)
+      secondaryColor: const Color.fromARGB(
+          255, 0, 51, 105), // Bright blue (adjusted to match brightness)
       tertiaryColor: const Color(0xFF00AE5A), // Green
       fireworkColors: [
         const Color(0xFFFF6B6B), // Warm red

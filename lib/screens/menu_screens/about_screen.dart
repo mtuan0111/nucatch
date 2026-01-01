@@ -12,6 +12,7 @@ import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/models/setting_model.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
@@ -115,9 +116,12 @@ class _AboutScreenState extends State<AboutScreen> {
                 sliver: SliverToBoxAdapter(
                   child: DeviceWrapper(
                     child: Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(kPaddingXL),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surface
+                            .withOpacity(0.1),
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(
                               LayoutConfig.layoutBorderRadius / 5),
@@ -145,13 +149,13 @@ class _AboutScreenState extends State<AboutScreen> {
                                 color: Theme.of(context).colorScheme.onPrimary,
                                 size: 24,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: kSpaceML),
                               Expanded(
                                 child: Text(
                                   lang(context).thankYou,
                                   style: LayoutConfig(context)
                                       .titleSectionStyle()
-                                      .copyWith(fontSize: 20),
+                                      .copyWith(fontSize: kFontSizeL),
                                 ),
                               ),
                             ],
@@ -184,9 +188,12 @@ class _AboutScreenState extends State<AboutScreen> {
                 sliver: SliverToBoxAdapter(
                   child: DeviceWrapper(
                     child: Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(kPaddingXL),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surface
+                            .withOpacity(0.1),
                         borderRadius: BorderRadius.only(
                           topLeft:
                               Radius.circular(LayoutConfig.layoutBorderRadius),
@@ -214,12 +221,12 @@ class _AboutScreenState extends State<AboutScreen> {
                                 color: Theme.of(context).colorScheme.onPrimary,
                                 size: 24,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: kSpaceML),
                               Text(
                                 lang(context).authorName,
                                 style: LayoutConfig(context)
                                     .titleSectionStyle()
-                                    .copyWith(fontSize: 20),
+                                    .copyWith(fontSize: kFontSizeL),
                               ),
                             ],
                           ),
@@ -251,9 +258,12 @@ class _AboutScreenState extends State<AboutScreen> {
                 sliver: SliverToBoxAdapter(
                   child: DeviceWrapper(
                     child: Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(kPaddingXL),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surface
+                            .withOpacity(0.1),
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(
                               LayoutConfig.layoutBorderRadius / 5),
@@ -284,29 +294,30 @@ class _AboutScreenState extends State<AboutScreen> {
                                         Theme.of(context).colorScheme.onPrimary,
                                     size: 24,
                                   ),
-                                  const SizedBox(width: 12),
+                                  const SizedBox(width: kSpaceML),
                                   Expanded(
                                     child: Text(
                                       lang(context).appUpdates,
                                       style: LayoutConfig(context)
                                           .titleSectionStyle()
-                                          .copyWith(fontSize: 20),
+                                          .copyWith(fontSize: kFontSizeL),
                                     ),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 16),
                               Container(
-                                padding: const EdgeInsets.all(16),
+                                padding: const EdgeInsets.all(kPaddingL),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context)
                                       .primaryColor
                                       .withOpacity(0.1),
                                   borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(12),
-                                    topRight: Radius.circular(12),
-                                    bottomLeft: Radius.circular(12),
-                                    bottomRight: Radius.circular(12 / 5),
+                                    topLeft: Radius.circular(kBorderRadiusL),
+                                    topRight: Radius.circular(kBorderRadiusL),
+                                    bottomLeft: Radius.circular(kBorderRadiusL),
+                                    bottomRight:
+                                        Radius.circular(kBorderRadiusL / 5),
                                   ),
                                 ),
                                 child: Row(
@@ -374,15 +385,19 @@ class _AboutScreenState extends State<AboutScreen> {
                                     foregroundColor:
                                         Theme.of(context).colorScheme.onPrimary,
                                     padding: const EdgeInsets.symmetric(
-                                      horizontal: 24,
-                                      vertical: 12,
+                                      horizontal: kSpace2XL,
+                                      vertical: kSpaceML,
                                     ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(12 / 5),
-                                        topRight: Radius.circular(12),
-                                        bottomLeft: Radius.circular(12),
-                                        bottomRight: Radius.circular(12),
+                                        topLeft:
+                                            Radius.circular(kBorderRadiusL / 5),
+                                        topRight:
+                                            Radius.circular(kBorderRadiusL),
+                                        bottomLeft:
+                                            Radius.circular(kBorderRadiusL),
+                                        bottomRight:
+                                            Radius.circular(kBorderRadiusL),
                                       ),
                                     ),
                                   ),
@@ -404,9 +419,12 @@ class _AboutScreenState extends State<AboutScreen> {
                 sliver: SliverToBoxAdapter(
                   child: DeviceWrapper(
                     child: Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(kPaddingXL),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surface
+                            .withOpacity(0.1),
                         borderRadius: BorderRadius.only(
                           topLeft:
                               Radius.circular(LayoutConfig.layoutBorderRadius),
@@ -434,13 +452,13 @@ class _AboutScreenState extends State<AboutScreen> {
                                 color: Theme.of(context).colorScheme.onPrimary,
                                 size: 24,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: kSpaceML),
                               Expanded(
                                 child: Text(
                                   lang(context).connectWithUs,
                                   style: LayoutConfig(context)
                                       .titleSectionStyle()
-                                      .copyWith(fontSize: 20),
+                                      .copyWith(fontSize: kFontSizeL),
                                 ),
                               ),
                             ],
@@ -619,7 +637,7 @@ class _AboutScreenState extends State<AboutScreen> {
                   Text(
                     label,
                     style: LayoutConfig(context).contentSectionStyle().copyWith(
-                          fontSize: 10,
+                          fontSize: kFontSizeXS,
                         ),
                   ),
                 ],

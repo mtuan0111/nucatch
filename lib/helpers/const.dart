@@ -55,7 +55,8 @@ class LayoutConfig {
               color: Theme.of(context)
                   .colorScheme
                   .onPrimary
-                  .getSmartColor(context),
+                  .getTheOpposite()
+                  .withOpacity(0.6),
               blurRadius: 10,
               offset: Offset(-2, 4),
             )

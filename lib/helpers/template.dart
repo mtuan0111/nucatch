@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'dart:math' as math;
 
 import 'package:nucatch/helpers/extension.dart';
@@ -106,7 +107,7 @@ class RankingInfoRow extends StatelessWidget {
           size: Theme.of(context).textTheme.titleLarge?.fontSize,
           color: color ?? Theme.of(context).colorScheme.onPrimary,
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: kSpaceXS),
         Flexible(
           fit: FlexFit.loose,
           child: Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
 
 /// Shared dialog utilities for combat room screens
@@ -23,15 +24,18 @@ class CombatDialogs {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.check_circle_outline,
-                  color: Colors.blue, size: 48),
-              const SizedBox(height: 16),
+              Icon(
+                Icons.check_circle_outline,
+                color: Theme.of(context).colorScheme.primary,
+                size: kIconSizeXL,
+              ),
+              const SizedBox(height: kSpaceL),
               Text(
                 message,
                 style: LayoutConfig(context).boldSubtitleStyle(),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: kSpaceSM),
               Text(
                 lang(dialogContext).pressReadyWhenPrepared,
                 style: LayoutConfig(context).contentSectionStyle(
@@ -60,14 +64,18 @@ class CombatDialogs {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.check_circle, color: Colors.green, size: 48),
-            const SizedBox(height: 16),
+            Icon(
+              Icons.check_circle,
+              color: Theme.of(context).colorScheme.tertiary,
+              size: kIconSizeXL,
+            ),
+            const SizedBox(height: kSpaceL),
             Text(
               lang(context).gameIsStarting,
               style: LayoutConfig(context).largeBoldStyle(),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: kSpaceSM),
             Text(
               lang(context).waitingForHostToSelectDifficulty,
               style: LayoutConfig(context).contentSectionStyle(

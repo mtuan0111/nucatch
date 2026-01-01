@@ -982,7 +982,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             else
               // Show waiting indicator if no input yet
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(kPaddingXL),
                 child: CircularProgressIndicator(
                   color: Theme.of(context).colorScheme.onSurface,
                 ),

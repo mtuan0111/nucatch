@@ -19,6 +19,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 
 class SetDifficultScreen extends StatefulWidget {
   const SetDifficultScreen({super.key});
@@ -72,7 +73,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const CircularProgressIndicator(),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: kSpaceXL),
                     Text(
                       'Waiting for host to select difficulty...',
                       style: LayoutConfig(context).titleSectionStyle(),
@@ -114,7 +115,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                         centerTitle: true,
                         titlePadding: EdgeInsets.zero,
                         title: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(kPaddingM),
                           child: Text(
                             lang(context).difficultySetting,
                             textAlign: TextAlign.center,

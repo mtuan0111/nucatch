@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/services/auth_services.dart';
 
 /// Debug widget to verify Firebase Anonymous Authentication
@@ -79,11 +80,11 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(kPaddingL),
+      padding: const EdgeInsets.all(kPaddingL),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(kSpaceS),
         border: Border.all(color: Colors.grey.shade400),
       ),
       child: Column(
@@ -94,46 +95,46 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
             '🔐 Auth Debug',
             style: LayoutConfig(context).boldSubtitleStyle(),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: kSpaceS),
           Text('Status: $_status'),
           if (_userId != null) ...[
-            const SizedBox(height: 4),
+            const SizedBox(height: kSpaceXS),
             Text(
               'User ID: ${_userId!.substring(0, 8)}...',
               style: LayoutConfig(context).captionStyle(),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: kSpaceXS),
             Text('Anonymous: $_isAnonymous'),
           ],
-          const SizedBox(height: 12),
+          const SizedBox(height: kSpaceML),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               ElevatedButton(
                 onPressed: _checkAuthStatus,
                 style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kPaddingML, vertical: kPaddingSM),
                 ),
                 child: Text('Refresh',
                     style: LayoutConfig(context).captionStyle()),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: kSpaceS),
               ElevatedButton(
                 onPressed: _userId == null ? _signInAnonymously : null,
                 style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kPaddingML, vertical: kPaddingSM),
                 ),
                 child: Text('Sign In',
                     style: LayoutConfig(context).captionStyle()),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: kSpaceS),
               ElevatedButton(
                 onPressed: _userId != null ? _signOut : null,
                 style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kPaddingML, vertical: kPaddingSM),
                 ),
                 child: Text('Sign Out',
                     style: LayoutConfig(context).captionStyle()),

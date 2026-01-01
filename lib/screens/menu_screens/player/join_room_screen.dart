@@ -9,6 +9,7 @@ import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/combat_dialogs.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/services/combat_nearby_service.dart';
 
 /// Guest room screen for discovering and joining Nearby Connections combat rooms
@@ -166,7 +167,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(lang(context).searchingForHosts),
-            backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             duration: const Duration(seconds: 2),
           ),
         );
@@ -187,7 +188,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(lang(context).connectingToHost(endpointName)),
-          backgroundColor: Colors.blue,
+          backgroundColor: Theme.of(context).colorScheme.primary,
         ),
       );
 
@@ -227,7 +228,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: Colors.red,
+          backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
     }
@@ -335,12 +336,12 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                 : _roomState == RoomState.bothReady
                                     ? Icons.check_circle
                                     : Icons.wifi_tethering,
-                            size: 80,
+                            size: kContainerSizeS,
                             color: _roomState == RoomState.bothReady
-                                ? Colors.green
-                                : Colors.blue,
+                                ? Theme.of(context).colorScheme.tertiary
+                                : Theme.of(context).colorScheme.primary,
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: kSpaceXL),
 
                           // Discovery/Connection Status
                           if (_isDiscovering && _roomState == RoomState.waiting)
@@ -348,13 +349,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const SizedBox(
-                                  width: 20,
-                                  height: 20,
+                                  width: kFontSizeXL,
+                                  height: kFontSizeXL,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                   ),
                                 ),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: kSpaceM),
                                 Text(
                                   lang(context).searchingForHosts,
                                   style:
@@ -368,7 +369,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                               style: LayoutConfig(context).subtitleStyle(),
                               textAlign: TextAlign.center,
                             ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: kSpace2XL),
 
                           // Discovered Hosts List
                           if (_roomState == RoomState.waiting &&
@@ -385,9 +386,11 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                       padding: const EdgeInsets.all(16.0),
                                       child: Row(
                                         children: [
-                                          const Icon(Icons.radar,
-                                              color: Colors.blue),
-                                          const SizedBox(width: 8),
+                                          Icon(Icons.radar,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary),
+                                          const SizedBox(width: kSpaceSM),
                                           Text(
                                             lang(context).availableHosts(
                                                 _discoveredEndpoints.length),
@@ -411,7 +414,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
                                           return ListTile(
                                             leading: CircleAvatar(
-                                              backgroundColor: Colors.blue,
+                                              backgroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
                                               child: Icon(
                                                 Icons.person,
                                                 color: Theme.of(context)
@@ -431,7 +436,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                             ),
                                             trailing: const Icon(
                                               Icons.arrow_forward_ios,
-                                              size: 16,
+                                              size: kIconSizeS,
                                             ),
                                             onTap: () => _connectToEndpoint(
                                                 endpointId, endpointName),
@@ -453,23 +458,31 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                 children: [
                                   Icon(
                                     Icons.search_off,
-                                    size: 80,
-                                    color: Colors.grey[400],
+                                    size: kContainerSizeS,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant
+                                        .withOpacity(0.4),
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: kSpaceXL),
                                   Text(
                                     lang(context).noHostsFoundNearby,
                                     style: LayoutConfig(context).largeBoldStyle(
-                                      color: Colors.grey[600],
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
+                                  const SizedBox(height: kSpaceM),
                                   Text(
                                     lang(context).makeSureFriendHosting,
                                     textAlign: TextAlign.center,
                                     style: LayoutConfig(context)
                                         .secondaryTextStyle(
-                                      color: Colors.grey[500],
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant
+                                          .withOpacity(0.7),
                                     ),
                                   ),
                                 ],
@@ -479,7 +492,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                           // Ready Status Indicators (when connected)
                           if (_roomState == RoomState.guestJoined ||
                               _roomState == RoomState.bothReady) ...[
-                            const SizedBox(height: 30),
+                            const SizedBox(height: kSpace2XL),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -487,14 +500,14 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                   label: lang(context).you,
                                   isReady: _myPlayerReady,
                                 ),
-                                const SizedBox(width: 48),
+                                const SizedBox(width: kSpace4XL),
                                 _buildReadyIndicator(
                                   label: lang(context).opponent,
                                   isReady: _hostPlayerReady,
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 30),
+                            const SizedBox(height: kSpace2XL),
                             if (!_myPlayerReady)
                               CustomElevatedButton(
                                 onPressed: _setReady,
@@ -503,7 +516,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     const FaIcon(FontAwesomeIcons.check),
-                                    const SizedBox(width: 8),
+                                    const SizedBox(width: kSpaceS),
                                     Text(
                                       lang(context).ready,
                                       style: LayoutConfig(context)
@@ -514,58 +527,70 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                               ),
                           ],
 
-                          const SizedBox(height: 40),
+                          const SizedBox(height: kSpace3XL),
                           // Distance Warning
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 12),
+                                horizontal: kPaddingXL, vertical: kPaddingML),
                             decoration: BoxDecoration(
-                              color: Colors.orange.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(10),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .error
+                                  .withOpacity(0.1),
+                              borderRadius:
+                                  BorderRadius.circular(kBorderRadiusM),
                               border: Border.all(
-                                color: Colors.orange.withOpacity(0.3),
-                                width: 1,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .error
+                                    .withOpacity(0.3),
+                                width: kStrokeWidthThin,
                               ),
                             ),
                             child: Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.info_outline,
-                                  color: Colors.orange,
-                                  size: 20,
+                                  color: Theme.of(context).colorScheme.error,
+                                  size: kFontSizeXL,
                                 ),
-                                const SizedBox(width: 12),
+                                const SizedBox(width: kSpaceML),
                                 Expanded(
                                   child: Text(
                                     lang(context).distanceWarning,
                                     style: LayoutConfig(context)
                                         .secondaryTextStyle(
-                                      color: Colors.orange,
+                                      color:
+                                          Theme.of(context).colorScheme.error,
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: kSpaceXL),
                           // Connection Status Indicator
                           Column(
                             children: [
                               const Divider(),
-                              const SizedBox(height: 10),
+                              const SizedBox(height: kSpaceM),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     Icons.settings_input_antenna,
                                     color: _nearbyService.isConnected
-                                        ? Colors.green
+                                        ? Theme.of(context).colorScheme.tertiary
                                         : _isDiscovering
-                                            ? Colors.orange
-                                            : Colors.grey,
-                                    size: 20,
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .error
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .onSurfaceVariant,
+                                    size: kFontSizeXL,
                                   ),
-                                  const SizedBox(width: 10),
+                                  const SizedBox(width: kSpaceM),
                                   Text(
                                     _nearbyService.isConnected
                                         ? lang(context).connectedViaNearby
@@ -605,23 +630,32 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     return Column(
       children: [
         Container(
-          width: 80,
-          height: 80,
+          width: kContainerSizeS,
+          height: kContainerSizeS,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: isReady ? Colors.green : Colors.grey.withOpacity(0.3),
+            color: isReady
+                ? Theme.of(context).colorScheme.tertiary.withOpacity(0.3)
+                : Theme.of(context)
+                    .colorScheme
+                    .onSurfaceVariant
+                    .withOpacity(0.3),
             border: Border.all(
-              color: isReady ? Colors.green : Colors.grey,
-              width: 3,
+              color: isReady
+                  ? Theme.of(context).colorScheme.tertiary
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
+              width: kStrokeWidthMedium,
             ),
           ),
           child: Icon(
             isReady ? Icons.check : Icons.hourglass_empty,
-            size: 40,
-            color: isReady ? Colors.white : Colors.grey,
+            size: kIconSizeL,
+            color: isReady
+                ? Theme.of(context).colorScheme.onTertiary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: kSpaceL),
         Text(
           label,
           style: LayoutConfig(context).contentSectionStyle(),
@@ -629,7 +663,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         Text(
           isReady ? lang(context).ready : lang(context).waiting,
           style: LayoutConfig(context).contentSectionStyle(
-            color: isReady ? Colors.green : Colors.grey,
+            color: isReady
+                ? Theme.of(context).colorScheme.tertiary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
       ],
