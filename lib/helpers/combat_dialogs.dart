@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
 
@@ -26,20 +27,22 @@ class CombatDialogs {
             children: [
               Icon(
                 Icons.check_circle_outline,
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.primary.getDarker(),
                 size: kIconSizeXL,
               ),
               const SizedBox(height: kSpaceL),
               Text(
                 message,
-                style: LayoutConfig(context).boldSubtitleStyle(),
+                style: LayoutConfig(context).boldSubtitleStyle().copyWith(
+                      color: Theme.of(context).colorScheme.primary.getDarker(),
+                    ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: kSpaceSM),
               Text(
                 lang(dialogContext).pressReadyWhenPrepared,
                 style: LayoutConfig(context).contentSectionStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: Theme.of(context).colorScheme.primary.getDarker(),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -66,20 +69,21 @@ class CombatDialogs {
           children: [
             Icon(
               Icons.check_circle,
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Theme.of(context).colorScheme.primary.getDarker(),
               size: kIconSizeXL,
             ),
             const SizedBox(height: kSpaceL),
             Text(
               lang(context).gameIsStarting,
-              style: LayoutConfig(context).largeBoldStyle(),
+              style: LayoutConfig(context).largeBoldStyle().copyWith(
+                  color: Theme.of(context).colorScheme.primary.getDarker()),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: kSpaceSM),
             Text(
               lang(context).waitingForHostToSelectDifficulty,
               style: LayoutConfig(context).contentSectionStyle(
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.primary.getDarker(),
               ),
               textAlign: TextAlign.center,
             ),
