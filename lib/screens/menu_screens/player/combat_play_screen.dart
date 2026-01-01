@@ -80,9 +80,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           listenWhen: (previous, current) {
             // Navigate to end game screen when game ends
             // Check both hasGameEnded transition and combatStatus to handle restarts
-            final gameJustEnded = !previous.hasGameEnded && current.hasGameEnded;
-            final statusChangedToEnded = previous.combatStatus != CombatStatus.ended && 
-                                         current.combatStatus == CombatStatus.ended;
+            final gameJustEnded =
+                !previous.hasGameEnded && current.hasGameEnded;
+            final statusChangedToEnded =
+                previous.combatStatus != CombatStatus.ended &&
+                    current.combatStatus == CombatStatus.ended;
             return gameJustEnded || statusChangedToEnded;
           },
           listener: (context, state) {

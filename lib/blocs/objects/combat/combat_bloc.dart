@@ -180,7 +180,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       opponentLives: 3,
       point: 0,
       opponentScore: 0,
-      countDown: combatStatus == CombatStatus.intro ? 4 : 0, // Set countdown if intro status
+      countDown: combatStatus == CombatStatus.intro
+          ? 4
+          : 0, // Set countdown if intro status
     ));
 
     print(
@@ -448,7 +450,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       countDown: 4, // Start countdown at 4 (will show 3-2-1-GO)
       isWinner: null,
       gameEndReason: null,
-      isRestartRequested: false,
+      isRestartRequested: true,
       isPlayerReady: false,
       isOpponentReady: false,
       isGameActive: false,
