@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
@@ -29,7 +30,44 @@ class CombatGameEndScreen extends StatelessWidget {
               },
               child: BlocBuilder<CombatBloc, CombatState>(
                 builder: (context, combatState) {
-                  return _buildGameEndScreen(context, combatState);
+                  return Column(
+                    children: [
+                      // Header
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: const FaIcon(FontAwesomeIcons.arrowLeft),
+                              onPressed: () {
+                                // Reset CombatBloc to fresh initial state
+                                context.read<CombatBloc>().add(CombatBlocReset());
+
+                                // Reset CombatNavCubit to initial state
+                                context.read<CombatNavCubit>().reset();
+
+                                // Navigate back to select play mode
+                                context.read<PlayerNavCubit>().showSelectPlayMode();
+                              },
+                            ),
+                            Expanded(
+                              child: Text(
+                                combatState.isWinner ?? false
+                                    ? lang(context).youWin
+                                    : lang(context).youLose,
+                                style: LayoutConfig(context).titleSectionStyle(),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            const SizedBox(width: 48),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: _buildGameEndScreen(context, combatState),
+                      ),
+                    ],
+                  );
                 },
               ),
             ),
@@ -42,51 +80,27 @@ class CombatGameEndScreen extends StatelessWidget {
   Widget _buildGameEndScreen(BuildContext context, CombatState combatState) {
     final isWinner = combatState.isWinner ?? false;
 
-    return Center(
+    return Container(
+      padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // Result Icon
           Icon(
             isWinner ? Icons.emoji_events : Icons.sentiment_dissatisfied,
             size: kContainerSizeS,
             color: isWinner ? const Color(0xFFFFD700) : Colors.grey,
           ),
           const SizedBox(height: kSpaceXL),
-          Text(
-            isWinner ? lang(context).youWin : lang(context).youLose,
-            style: LayoutConfig(context)
-                .displaySmallStyle(
-                  isActiveShadow: true,
-                )
-                .copyWith(
-                  fontSize: kFontSize4XL + 3,
-                  color: isWinner ? Colors.green : Colors.red,
-                ),
-          ),
-          const SizedBox(height: kSpaceXL),
+          
+          // Game End Reason
           Text(
             _getGameEndReason(context, combatState.gameEndReason),
-            style: LayoutConfig(context).contentSectionStyle(),
+            style: LayoutConfig(context).largeBoldStyle(),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: kSpace4XL),
-          // Return to menu button
-          CustomElevatedButton(
-            text: lang(context).returnToMenu,
-            shapeAt: RoundedWithShapeAt.all,
-            backgroundColor: Colors.grey,
-            onPressed: () {
-              // Reset CombatBloc to fresh initial state
-              context.read<CombatBloc>().add(CombatBlocReset());
-
-              // Reset CombatNavCubit to initial state
-              context.read<CombatNavCubit>().reset();
-
-              // Navigate back to select play mode
-              context.read<PlayerNavCubit>().showSelectPlayMode();
-            },
-          ),
-          const SizedBox(height: kSpace4XL),
+          
           // Ready indicators section
           if (combatState.isRestartRequested) ...[
             Row(
@@ -109,8 +123,9 @@ class CombatGameEndScreen extends StatelessWidget {
             CustomElevatedButton(
               text: combatState.isPlayerReady
                   ? lang(context).notReady
-                  : lang(context).ready,
-              shapeAt: RoundedWithShapeAt.all,
+                  : '${lang(context).ready} - ${lang(context).playAgain}',
+              buttonSize: ButtonSize.small,
+              shapeAt: RoundedWithShapeAt.topRight,
               backgroundColor:
                   combatState.isPlayerReady ? Colors.orange : Colors.green,
               onPressed: () {
@@ -124,12 +139,32 @@ class CombatGameEndScreen extends StatelessWidget {
           ] else ...[
             CustomElevatedButton(
               text: lang(context).playAgain,
-              shapeAt: RoundedWithShapeAt.all,
+              buttonSize: ButtonSize.small,
+              shapeAt: RoundedWithShapeAt.topRight,
               onPressed: () {
                 context.read<CombatBloc>().add(CombatRestartRequested());
               },
             ),
           ],
+          const SizedBox(height: kSpace3XL),
+          
+          // Return to menu button at bottom
+          CustomElevatedButton(
+            text: lang(context).returnToMenu,
+            buttonSize: ButtonSize.small,
+            shapeAt: RoundedWithShapeAt.bottomLeft,
+            backgroundColor: Colors.grey,
+            onPressed: () {
+              // Reset CombatBloc to fresh initial state
+              context.read<CombatBloc>().add(CombatBlocReset());
+
+              // Reset CombatNavCubit to initial state
+              context.read<CombatNavCubit>().reset();
+
+              // Navigate back to select play mode
+              context.read<PlayerNavCubit>().showSelectPlayMode();
+            },
+          ),
         ],
       ),
     );

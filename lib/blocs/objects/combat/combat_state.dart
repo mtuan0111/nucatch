@@ -40,7 +40,7 @@ class CombatState extends TurnState {
     this.combatStatus = CombatStatus.waiting,
     this.isWinner,
     this.gameEndReason,
-    this.isRestartRequested = false,
+    this.isRestartRequested = true,
     this.isPlayerReady = false,
     this.isOpponentReady = false,
     // TurnState parameters
