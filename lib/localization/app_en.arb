@@ -888,10 +888,6 @@
   "@settingUpDifficulty": {
     "description": "Status message while setting up game"
   },
-  "hostRoom": "Host Room",
-  "@hostRoom": {
-    "description": "Title for host room screen"
-  },
   "advertisingAs": "Advertising as:",
   "@advertisingAs": {
     "description": "Label showing host name"

@@ -511,6 +511,10 @@
   "@joinRoomDescription": {
     "description": "Mô tả tùy chọn tham gia phòng"
   },
+  "hostRoom": "Phòng Chủ",
+  "@hostRoom": {
+    "description": "Tiêu đề màn hình phòng chủ"
+  },
   "roomCode": "Mã phòng",
   "@roomCode": {
     "description": "Nhãn cho mã phòng"
@@ -560,6 +564,10 @@
   "bluetoothDisabledMessage": "Chế độ đối kháng yêu cầu Bluetooth phải được bật. Vui lòng bật Bluetooth trong cài đặt thiết bị.",
   "@bluetoothDisabledMessage": {
     "description": "Thông báo khi Bluetooth đã tắt"
+  },
+  "cancel": "Hủy",
+  "@cancel": {
+    "description": "Nhãn nút hủy"
   },
   "grantPermission": "Cấp quyền",
   "@grantPermission": {
@@ -749,6 +757,14 @@
   "opponent": "Đối thủ",
   "@opponent": {
     "description": "Nhãn cho đối thủ"
+  },
+  "cancel": "Hủy",
+  "@cancel": {
+    "description": "Nút để hủy hành động"
+  },
+  "waiting": "Đang chờ",
+  "@waiting": {
+    "description": "Trạng thái đang chờ"
   },
   "youWillTakeFirst": "Bạn sẽ đi lượt đầu tiên!",
   "@youWillTakeFirst": {

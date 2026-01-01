@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
-import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/const.dart';
@@ -396,7 +394,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                       await _nearbyService.stopDiscovery();
                       await _nearbyService.disconnect();
                       if (mounted) {
-                        context.read<MenuBloc>().add(ShowMenu());
+                        context.read<CombatNavCubit>().showSetup();
                       }
                     },
                     icon: const Icon(FontAwesomeIcons.chevronLeft),

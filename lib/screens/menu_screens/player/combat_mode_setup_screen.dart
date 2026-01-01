@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
-import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_event.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
 
@@ -64,7 +63,7 @@ class CombatModeSetupScreen extends StatelessWidget {
                 ),
                 leading: IconButton(
                   onPressed: () {
-                    context.read<MenuBloc>().add(ShowMenu());
+                    context.read<PlayerNavCubit>().showSelectPlayMode();
                   },
                   icon: const Icon(FontAwesomeIcons.chevronLeft),
                 ),
@@ -84,23 +83,107 @@ class CombatModeSetupScreen extends StatelessWidget {
                         child: Column(
                           spacing: 20,
                           children: [
-                            // Create Room Option
-                            OptionCard(
-                              context: context,
-                              title: lang(context).createRoom,
-                              description: lang(context).createRoomDescription,
-                              icon: FontAwesomeIcons.userPlus,
-                              color: Colors.blue,
-                              onTap: () => _navigateToHostRoom(context),
+                            // Show parent selection context (disabled options)
+                            Opacity(
+                              opacity: 0.5,
+                              child: OptionCard(
+                                context: context,
+                                title: lang(context).soloMode,
+                                description: lang(context).soloModeDescription,
+                                icon: FontAwesomeIcons.user,
+                                color: Colors.blue,
+                                onTap: () {
+                                  // Disabled - navigate back to select mode
+                                  context.read<PlayerNavCubit>().showSelectPlayMode();
+                                },
+                              ),
                             ),
-                            // Join Room Option
-                            OptionCard(
-                              context: context,
-                              title: lang(context).joinRoom,
-                              description: lang(context).joinRoomDescription,
-                              icon: FontAwesomeIcons.rightToBracket,
-                              color: Colors.green,
-                              onTap: () => _navigateToJoinRoom(context),
+                            // Combat Mode - Selected/Marked
+                            Stack(
+                              children: [
+                                OptionCard(
+                                  context: context,
+                                  title: lang(context).combatMode,
+                                  description: lang(context).combatModeDescription,
+                                  icon: FontAwesomeIcons.userGroup,
+                                  color: Colors.orange,
+                                  onTap: () {
+                                    // Already selected - navigate back
+                                    context.read<PlayerNavCubit>().showSelectPlayMode();
+                                  },
+                                ),
+                                Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.orange,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.orange.withOpacity(0.5),
+                                          blurRadius: 8,
+                                          spreadRadius: 2,
+                                        ),
+                                      ],
+                                    ),
+                                    child: const Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            
+                            // Divider to show hierarchy
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Row(
+                                children: [
+                                  const Expanded(child: Divider(thickness: 2)),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                                    child: Text(
+                                      lang(context).combatMode,
+                                      style: LayoutConfig(context).titleSectionStyle().copyWith(
+                                        color: Colors.orange,
+                                      ),
+                                    ),
+                                  ),
+                                  const Expanded(child: Divider(thickness: 2)),
+                                ],
+                              ),
+                            ),
+                            
+                            // Sub-options for Combat Mode
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Column(
+                                spacing: 20,
+                                children: [
+                                  // Create Room Option
+                                  OptionCard(
+                                    context: context,
+                                    title: lang(context).createRoom,
+                                    description: lang(context).createRoomDescription,
+                                    icon: FontAwesomeIcons.userPlus,
+                                    color: Colors.blue,
+                                    onTap: () => _navigateToHostRoom(context),
+                                  ),
+                                  // Join Room Option
+                                  OptionCard(
+                                    context: context,
+                                    title: lang(context).joinRoom,
+                                    description: lang(context).joinRoomDescription,
+                                    icon: FontAwesomeIcons.rightToBracket,
+                                    color: Colors.green,
+                                    onTap: () => _navigateToJoinRoom(context),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

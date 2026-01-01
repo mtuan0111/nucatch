@@ -344,7 +344,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get joinRoomDescription => 'Nhập mã phòng để tham gia trận đấu';
 
   @override
-  String get hostRoom => 'Host Room';
+  String get hostRoom => 'Phòng Chủ';
 
   @override
   String get roomCode => 'Mã phòng';
@@ -385,7 +385,7 @@ class AppLocalizationsVi extends AppLocalizations {
       'Chế độ đối kháng yêu cầu Bluetooth phải được bật. Vui lòng bật Bluetooth trong cài đặt thiết bị.';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'Hủy';
 
   @override
   String get grantPermission => 'Cấp quyền';
@@ -528,7 +528,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get opponent => 'Đối thủ';
 
   @override
-  String get waiting => 'Waiting';
+  String get waiting => 'Đang chờ';
 
   @override
   String get youWillTakeFirst => 'Bạn sẽ đi lượt đầu tiên!';
