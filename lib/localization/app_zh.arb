@@ -1,0 +1,937 @@
+{
+  "@@locale": "zh",
+  "appTitle": "new_flutter_template",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcome": "欢迎!",
+  "@welcome": {
+    "description": "Welcome the user to the application",
+    "placeholders": {}
+  },
+  "welcomeUser": "欢迎 {username}!",
+  "@welcomeUser": {
+    "description": "Welcome the user to the application",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  "mainMenu": "主菜单",
+  "@mainMenu": {
+    "description": "Tiêu đề của trang chính"
+  },
+  "start": "开始",
+  "@start": {
+    "description": "Start button label"
+  },
+  "topScore": "最高分",
+  "@topScore": {
+    "description": "Label for the top score"
+  },
+  "setting": "设置",
+  "@setting": {
+    "description": "Settings menu label"
+  },
+  "about": "关于",
+  "@about": {
+    "description": "About menu label"
+  },
+  "exit": "退出",
+  "@exit": {
+    "description": "Exit button label"
+  },
+  "version": "版本",
+  "@version": {
+    "description": "The version label of the application"
+  },
+  "anonymous": "匿名",
+  "@anonymous": {
+    "description": "Label for anonymous user"
+  },
+  "level": "等级",
+  "@level": {
+    "description": "Label for game level"
+  },
+  "score": "分数",
+  "@score": {
+    "description": "Label for game score"
+  },
+  "ready": "准备",
+  "@ready": {
+    "description": "Ready status label"
+  },
+  "go": "开始!",
+  "@go": {
+    "description": "Go status label"
+  },
+  "gameOver": "游戏结束",
+  "@gameOver": {
+    "description": "Game over message"
+  },
+  
+  "difficultySetting": "难度设置",
+  "@difficultySetting": {
+    "description": "Label for difficulty setting in the game"
+  },
+
+  "difficulty": "难度",
+  "@difficulty": {
+    "description": "Difficulty level of the game"
+  },
+  
+  "easy": "简单",
+  "@easy": {
+    "description": "Easy difficulty level of the game"
+  },  
+  "medium": "中等",
+  "@medium": {
+    "description": "Medium difficulty level of the game"
+  },
+  "hard": "困难",
+  "@hard": {
+    "description": "Hard difficulty level of the game"
+  },
+  "veryHard": "非常困难",
+  "@veryHard": {
+    "description": "Very hard difficulty level of the game"
+  },
+  "extreme": "极限",
+  "@extreme": {
+    "description": "Extreme difficulty level of the game"
+  },
+  "selectDifficulty": "选择难度",
+  "@selectDifficulty": {
+    "description": "Prompt for user to select the game difficulty"
+  },
+  "selectLevel": "选择等级",
+  "@selectLevel": {
+    "description": "Prompt for user to select the game level"
+  },
+  "selectLevelMessage": "选择你想玩的等级。等级越高，难度越大。",
+  "@selectLevelMessage": {
+    "description": "Message guiding the user to select a level"
+  },
+
+  "yourScoreIs": "你当前的分数是",
+  "@yourScoreIs": {
+    "description": "Thông báo điểm số của người chơi"
+  },
+
+  "theCorrectIs": "正确答案是",
+  "@theCorrectIs": {
+    "description": "Message indicating the correct answer"
+  },
+  "name": "名字",
+  "@name": {
+    "description": "Label for name input"
+  },
+  "fontSize": "字体大小",
+  "@fontSize": {
+    "description": "Label for font size setting"
+  },
+  "volume": "音量",
+  "@volume": {
+    "description": "Label for volume setting"
+  },
+  "vibrate": "震动",
+  "@vibrate": {
+    "description": "Label for vibration setting"
+  },
+  "numberOfTopScores": "排行榜数量",
+  "@numberOfTopScores": {
+    "description": "Label for number of top scores setting"
+  },
+  "language": "语言",
+  "@language": {
+    "description": "Label for language setting"
+  },
+  "thankYou": "感谢游玩",
+  "@thankYou": {
+    "description": "Thank you message"
+  },
+  "thankYouMessage": "感谢游玩我们的游戏。希望你喜欢。如果你有任何反馈或建议，请告诉我们。",
+  "@thankYouMessage": {
+    "description": "Detailed thank you message"
+  },
+  "authorName": "作者",
+  "@authorName": {
+    "description": "Label for author name"
+  },
+  "connectWithUs": "联系我们",
+  "@connectWithUs": {
+    "description": "Label for connect with us section"
+  },
+  "connectWithUsMessage": "如果你有任何问题或反馈，请随时通过我们的社交媒体渠道联系我们。",
+  "@connectWithUsMessage": {
+    "description": "Message encouraging users to connect on social media"
+  },
+  "introductionContent": "NuCatch 是一款有趣且引人入胜的益智游戏，旨在提高你的记忆力和注意力。挑战自己在短时间内快速捕捉数字，帮助你记住 OTP、电话号码、生日等内容。享受体验并提升你的记忆力！",
+  "@introductionContent": {
+    "description": "Introduction content for the application"
+  },
+  "messageShareIntroWIthUsername": "与 {username} 一起加入 #NuCatch！现在在 {profileUrl} 探索它",
+  "@messageShareIntroWIthUsername": {
+    "description": "Message for sharing the app with username and profile URL",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      },
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "messageShareIntro": "现在在 {profileUrl} 探索 #NuCatch",
+  "@messageShareIntro": {
+    "description": "Message for sharing the app with profile URL",
+    "placeholders": {
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "messageSharePlayedLeaderSubject": "#NuCatch 体验",
+  "@messageSharePlayedLeaderSubject": {
+    "description": "Subject of the message for sharing the score",
+    "placeholders": {}
+  },
+
+  "messageSharePlayedLeaderSubjectWithUsername": "与 {username} 在 #NuCatch 的体验",
+  "@messageSharePlayedLeaderSubjectWithUsername": {
+    "description": "Subject of the message for sharing the score with username",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  
+
+  "messageSharePlayedLeaderBody": "{username} 在 {timeCreated} 获得了 {point} 分。快来和 {username} 一起加入 #NuCatch 吧！！",
+  "@messageSharePlayedLeaderBody": {
+    "description": "Message for sharing the score of a player",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      },
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
+  "messageSharePlayedLeaderBodyAnonymousBody": "一位玩家在 {timeCreated} 获得了 {point} 分。现在加入 #NuCatch！！",
+  "@messageSharePlayedLeaderBodyAnonymousBody": {
+    "description": "Message for sharing the score when username is not available",
+    "placeholders": {
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
+
+  "confirmExit": "你确定要退出吗？",
+  "@confirmExit": {
+    "description": "Warning when the user presses the exit button",
+    "placeholders": {}
+  },
+  "no": "不",
+  "@no": {
+    "description": "No button in the confirmation dialog",
+    "placeholders": {}
+  },
+  "yes": "是",
+  "@yes": {
+    "description": "Yes button in the confirmation dialog",
+    "placeholders": {}
+  },
+
+  "insertedSuccess": "成功记录你的回合",
+  "@insertedSuccess": {
+    "description": "Notification when data is added successfully",
+    "placeholders": {}
+  },
+  "insertedFailed": "记录你的回合失败",
+  "@insertedFailed": {
+    "description": "Notification when data addition fails",
+    "placeholders": {}
+  },
+
+  "scanQrToViewDetails": "扫描二维码查看详情",
+  "@scanQrToViewDetails": {
+    "description": "Instruction to scan QR code for details",
+    "placeholders": {}
+  },
+
+  "doYouWantToExit": "你想退出吗？",
+  "@doYouWantToExit": {
+    "description": "Prompt asking the user if they want to exit",
+    "placeholders": {}
+  },
+
+  "difficultyEasyDescription": "生成一个随机数，难度略有增加，适合简单的挑战。",
+  "@difficultyEasyDescription": {
+    "description": "Description for easy difficulty level logic"
+  },
+  "difficultyMediumDescription": "生成一个加减法计算表达式，难度适中。",
+  "@difficultyMediumDescription": {
+    "description": "Description for medium difficulty level logic"
+  },
+  "difficultyHardDescription": "创建一个乘除法计算表达式，难度较高。",
+  "@difficultyHardDescription": {
+    "description": "Description for hard difficulty level logic"
+  },
+  "difficultyExtremeDescription": "随机会生成复杂的加减法计算、更高等级的随机数或乘除法计算，带来最具挑战性的体验。",
+  "@difficultyExtremeDescription": {
+    "description": "Description for extreme difficulty level logic"
+  },
+
+  "difficultyEasyTitle": "简单模式",
+  "@difficultyEasyTitle": {
+    "description": "Title for easy difficulty mode"
+  },
+  "difficultyMediumTitle": "中等模式",
+  "@difficultyMediumTitle": {
+    "description": "Title for medium difficulty mode"
+  },
+  "difficultyHardTitle": "困难模式",
+  "@difficultyHardTitle": {
+    "description": "Title for hard difficulty mode"
+  },
+  "difficultyExtremeTitle": "极限模式",
+  "@difficultyExtremeTitle": {
+    "description": "Title for extreme difficulty mode"
+  },
+
+  "confirmChangeDifficulty": "你的回合将被重置。你确定要更改难度吗？",
+  "@confirmChangeDifficulty": {
+    "description": "Warning when the user changes the difficulty",
+    "placeholders": {}
+  },
+
+  "areYouSure": "你确定吗？",
+  "@areYouSure": {
+    "description": "Warning when the user performs an important action",
+    "placeholders": {}
+  },
+
+  "no_turn_yet": "暂无记录",
+  "@no_turn_yet": {
+    "description": "Notification when there are no turns yet",
+    "placeholders": {}
+  },
+    
+  "daily": "一天内",
+  "@daily": {
+    "description": "Daily leaderboard"
+  },
+  "dailyDescription": "基于今天记录的回合排名。",
+  "@dailyDescription": {
+    "description": "Description for daily leaderboard"
+  },
+
+  "weekly": "一周内", 
+  "@weekly": {
+    "description": "Weekly leaderboard"
+  },
+  "weeklyDescription": "基于过去 7 天记录的回合排名。",
+  "@weeklyDescription": {
+    "description": "Description for weekly leaderboard"
+  },
+  "allTime": "所有时间",
+  "@allTime": {
+    "description": "All-time leaderboard"
+  },
+  "allTimeDescription": "基于所有记录的回合排名。",
+  "@allTimeDescription": {
+    "description": "Description for all-time leaderboard"
+  },
+  
+  "updateRequired": "需要更新",
+  "@updateRequired": {
+    "description": "Title for force update dialog"
+  },
+  "updateAvailable": "可用更新",
+  "@updateAvailable": {
+    "description": "Title for optional update dialog"
+  },
+  "currentVersion": "当前版本",
+  "@currentVersion": {
+    "description": "Label for current app version"
+  },
+  "newVersion": "新版本",
+  "@newVersion": {
+    "description": "Label for new available version"
+  },
+  "whatsNew": "新内容",
+  "@whatsNew": {
+    "description": "Label for release notes section"
+  },
+  "forceUpdateMessage": "此更新是必需的，才能继续使用该应用程序。请立即更新。",
+  "@forceUpdateMessage": {
+    "description": "Message for force update requirement"
+  },
+  "later": "稍后",
+  "@later": {
+    "description": "Button to postpone optional update"
+  },
+  "updateNow": "立即更新",
+  "@updateNow": {
+    "description": "Button to proceed with update"
+  },
+  "update": "更新",
+  "@update": {
+    "description": "Button to update app"
+  },
+  
+  "checkForUpdates": "检查更新",
+  "@checkForUpdates": {
+    "description": "Button to check for app updates"
+  },
+  "appUpdates": "应用更新",
+  "@appUpdates": {
+    "description": "Section title for app updates"
+  },
+  "tapToCheckUpdates": "点击下面的按钮检查应用更新。",
+  "@tapToCheckUpdates": {
+    "description": "Message prompting user to check for updates"
+  },
+  "checkingForUpdates": "正在检查更新...",
+  "@checkingForUpdates": {
+    "description": "Message while checking for updates"
+  },
+  "newVersionAvailable": "新版本 {version} 可用！ {forceMessage}",
+  "@newVersionAvailable": {
+    "description": "Message when new version is available",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.2.0"
+      },
+      "forceMessage": {
+        "type": "String",
+        "example": "This update is required."
+      }
+    }
+  },
+  "thisUpdateRequired": "此更新是必需的。",
+  "@thisUpdateRequired": {
+    "description": "Message for force update"
+  },
+  "usingLatestVersion": "你正在使用最新版本！",
+  "@usingLatestVersion": {
+    "description": "Message when app is up to date"
+  },
+  "unableToCheckUpdates": "无法检查更新。 {error}",
+  "@unableToCheckUpdates": {
+    "description": "Error message when update check fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Please try again later."
+      }
+    }
+  },
+  "tryAgainLater": "请稍后再试。",
+  "@tryAgainLater": {
+    "description": "Default error message"
+  },
+  "updatePostponed": "更新可用但已推迟。",
+  "@updatePostponed": {
+    "description": "Message when user dismissed update"
+  },
+  
+  "tapTimerTooltip": "你有 {totalSeconds} 秒的时间点击一个数字。进度条会随着时间流逝改变颜色：绿色（超过 {halfSeconds}秒），橙色（{quarterSeconds}-{halfSeconds}秒），红色（少于 {quarterSeconds}秒）。",
+  "@tapTimerTooltip": {
+    "description": "Tooltip explaining the tap timer progress bar",
+    "placeholders": {
+      "totalSeconds": {
+        "type": "int",
+        "example": "20"
+      },
+      "halfSeconds": {
+        "type": "int",
+        "example": "10"
+      },
+      "quarterSeconds": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  
+  "selectPlayMode": "选择游戏模式",
+  "@selectPlayMode": {
+    "description": "Title for play mode selection screen"
+  },
+  "soloMode": "单人模式",
+  "@soloMode": {
+    "description": "Title for solo play mode"
+  },
+  "soloModeDescription": "独自游玩并挑战自己打破最高分",
+  "@soloModeDescription": {
+    "description": "Description for solo play mode"
+  },
+  "combatMode": "对战模式",
+  "@combatMode": {
+    "description": "Title for combat/multiplayer play mode"
+  },
+  "combatModeDescription": "通过蓝牙连接与另一位玩家一起游玩并轮流操作",
+  "@combatModeDescription": {
+    "description": "Description for combat play mode"
+  },
+  "createRoom": "创建房间",
+  "@createRoom": {
+    "description": "Button to create a new game room"
+  },
+  "createRoomDescription": "主持一个新游戏并等待另一位玩家加入",
+  "@createRoomDescription": {
+    "description": "Description for create room option"
+  },
+  "joinRoom": "加入房间",
+  "@joinRoom": {
+    "description": "Button to join an existing game room"
+  },
+  "joinRoomDescription": "输入房间代码以加入现有游戏",
+  "@joinRoomDescription": {
+    "description": "Description for join room option"
+  },
+  "hostRoom": "房主房间",
+  "@hostRoom": {
+    "description": "Title for host room screen"
+  },
+  "roomCode": "房间代码",
+  "@roomCode": {
+    "description": "Label for room code"
+  },
+  "shareCodeWithPlayer": "与另一位玩家分享此代码",
+  "@shareCodeWithPlayer": {
+    "description": "Instruction to share room code"
+  },
+  "enterRoomCode": "输入房间代码",
+  "@enterRoomCode": {
+    "description": "Label for entering room code"
+  },
+  "connect": "连接",
+  "@connect": {
+    "description": "Button to connect to a room"
+  },
+  "searchingForPlayers": "正在搜索玩家...",
+  "@searchingForPlayers": {
+    "description": "Status message while searching for players"
+  },
+  "pairedWith": "已与 {playerName} 配对！",
+  "@pairedWith": {
+    "description": "Message when successfully paired with another player",
+    "placeholders": {
+      "playerName": {
+        "type": "String",
+        "example": "Player 2"
+      }
+    }
+  },
+  "bluetoothPermissionRequired": "需要蓝牙权限",
+  "@bluetoothPermissionRequired": {
+    "description": "Title for Bluetooth permission dialog"
+  },
+  "bluetoothPermissionMessage": "对战模式需要蓝牙权限才能与其他玩家连接。请在设备设置中授予蓝牙权限。",
+  "@bluetoothPermissionMessage": {
+    "description": "Message explaining why Bluetooth permission is needed"
+  },
+  "bluetoothPermissionPermanentlyDeniedMessage": "蓝牙权限已被永久拒绝。要使用对战模式，你需要在设备设置中启用蓝牙权限。\n\n请前往设置 > NuCatch > 权限并启用蓝牙。",
+  "@bluetoothPermissionPermanentlyDeniedMessage": {
+    "description": "Message when Bluetooth permission is permanently denied"
+  },
+  "bluetoothDisabled": "蓝牙已禁用",
+  "@bluetoothDisabled": {
+    "description": "Title for Bluetooth disabled dialog"
+  },
+  "bluetoothDisabledMessage": "对战模式需要启用蓝牙。请在设备设置中启用蓝牙。",
+  "@bluetoothDisabledMessage": {
+    "description": "Message when Bluetooth is disabled"
+  },
+  "cancel": "取消",
+  "@cancel": {
+    "description": "Cancel button label"
+  },
+  "grantPermission": "授予权限",
+  "@grantPermission": {
+    "description": "Button to grant permission"
+  },
+  "checkAgain": "再次检查",
+  "@checkAgain": {
+    "description": "Button to check again"
+  },
+  "openSettings": "打开设置",
+  "@openSettings": {
+    "description": "Button to open app settings"
+  },
+
+  "yourTurn": "你的回合",
+  "@yourTurn": {
+    "description": "Indicates it's the player's turn in combat mode"
+  },
+  "opponentTurn": "对手的回合",
+  "@opponentTurn": {
+    "description": "Indicates it's the opponent's turn in combat mode"
+  },
+  "waitingForOpponent": "等待对手...",
+  "@waitingForOpponent": {
+    "description": "Status message while waiting for opponent's move"
+  },
+  "watchingOpponent": "观看你的对手",
+  "@watchingOpponent": {
+    "description": "Instruction to watch opponent's moves"
+  },
+  "youWin": "你赢了！",
+  "@youWin": {
+    "description": "Victory message in combat mode"
+  },
+  "youLose": "你输了！",
+  "@youLose": {
+    "description": "Defeat message in combat mode"
+  },
+  "opponentDisconnected": "对手已断开连接",
+  "@opponentDisconnected": {
+    "description": "Message when opponent disconnects"
+  },
+  "opponentRanOutOfLives": "对手耗尽了生命",
+  "@opponentRanOutOfLives": {
+    "description": "Reason for winning when opponent loses all lives"
+  },
+  "opponentGaveUp": "你的对手放弃了",
+  "@opponentGaveUp": {
+    "description": "Reason for winning when opponent gives up"
+  },
+  "confirmEndCombat": "你确定要结束这场游戏吗？你的对手将获胜。",
+  "@confirmEndCombat": {
+    "description": "Confirmation message for ending combat game"
+  },
+  "youRanOutOfLives": "你耗尽了生命",
+  "@youRanOutOfLives": {
+    "description": "Reason for losing when player loses all lives"
+  },
+  "holidayNotification": "今天是 {holidayName}, {greeting}",
+  "@holidayNotification": {
+    "description": "Holiday event notification with greeting",
+    "placeholders": {
+      "holidayName": {
+        "type": "String"
+      },
+      "greeting": {
+        "type": "String"
+      }
+    }
+  },
+  "holidayNewYear": "新年",
+  "@holidayNewYear": {
+    "description": "New Year holiday name"
+  },
+  "greetingNewYear": "新年快乐！",
+  "@greetingNewYear": {
+    "description": "New Year greeting"
+  },
+  "holidayLunarNewYear": "农历新年",
+  "@holidayLunarNewYear": {
+    "description": "Lunar New Year holiday name"
+  },
+  "greetingLunarNewYear": "新年快乐！ (Xīn Nián Kuài Lè!)",
+  "@greetingLunarNewYear": {
+    "description": "Lunar New Year greeting in Chinese"
+  },
+  "holidayValentine": "情人节",
+  "@holidayValentine": {
+    "description": "Valentine's Day holiday name"
+  },
+  "greetingValentine": "情人节快乐！",
+  "@greetingValentine": {
+    "description": "Valentine's Day greeting"
+  },
+  "holidayHoli": "胡里节",
+  "@holidayHoli": {
+    "description": "Holi holiday name"
+  },
+  "greetingHoli": "胡里节快乐！",
+  "@greetingHoli": {
+    "description": "Holi greeting in Hindi"
+  },
+  "holidayEarthDay": "地球日",
+  "@holidayEarthDay": {
+    "description": "Earth Day holiday name"
+  },
+  "greetingEarthDay": "地球日快乐！保护我们的星球！",
+  "@greetingEarthDay": {
+    "description": "Earth Day greeting"
+  },
+  "holidayEaster": "复活节",
+  "@holidayEaster": {
+    "description": "Easter holiday name"
+  },
+  "greetingEaster": "复活节快乐！",
+  "@greetingEaster": {
+    "description": "Easter greeting"
+  },
+  "holidayPride": "骄傲月",
+  "@holidayPride": {
+    "description": "Pride Month name"
+  },
+  "greetingPride": "骄傲月快乐！爱就是爱！",
+  "@greetingPride": {
+    "description": "Pride Month greeting"
+  },
+  "holidayHalloween": "万圣节",
+  "@holidayHalloween": {
+    "description": "Halloween holiday name"
+  },
+  "greetingHalloween": "万圣节快乐！",
+  "@greetingHalloween": {
+    "description": "Halloween greeting"
+  },
+  "holidayDiwali": "排灯节",
+  "@holidayDiwali": {
+    "description": "Diwali holiday name"
+  },
+  "greetingDiwali": "排灯节快乐！",
+  "@greetingDiwali": {
+    "description": "Diwali greeting in Hindi"
+  },
+  "holidayHanukkah": "光明节",
+  "@holidayHanukkah": {
+    "description": "Hanukkah holiday name"
+  },
+  "greetingHanukkah": "光明节快乐！ (Chag Hanukkah Sameach!)",
+  "@greetingHanukkah": {
+    "description": "Hanukkah greeting in Hebrew"
+  },
+  "holidayChristmas": "圣诞节",
+  "@holidayChristmas": {
+    "description": "Christmas holiday name"
+  },
+  "greetingChristmas": "圣诞快乐！",
+  "@greetingChristmas": {
+    "description": "Christmas greeting"
+  },
+  "holidayKwanzaa": "宽扎节",
+  "@holidayKwanzaa": {
+    "description": "Kwanzaa holiday name"
+  },
+  "greetingKwanzaa": "Habari Gani!",
+  "@greetingKwanzaa": {
+    "description": "Kwanzaa greeting in Swahili"
+  },
+  "playAgain": "再玩一次",
+  "@playAgain": {
+    "description": "Button to restart the game"
+  },
+  "returnToMenu": "返回菜单",
+  "@returnToMenu": {
+    "description": "Button to return to main menu"
+  },
+  "doYouReadyForRestart": "你准备好开始了吗？",
+  "@doYouReadyForRestart": {
+    "description": "Question asking if player is ready to restart the match"
+  },
+  "notReady": "未准备好",
+  "@notReady": {
+    "description": "Button label when player is ready and wants to cancel"
+  },
+  "you": "你",
+  "@you": {
+    "description": "Label for current player"
+  },
+  "opponent": "对手",
+  "@opponent": {
+    "description": "Label for opponent player"
+  },
+  "waiting": "等待中",
+  "@waiting": {
+    "description": "Waiting status text"
+  },
+  "youWillTakeFirst": "你将先行！",
+  "@youWillTakeFirst": {
+    "description": "Notice shown during countdown when player will go first"
+  },
+  "opponentWillTakeFirst": "对手将先行",
+  "@opponentWillTakeFirst": {
+    "description": "Notice shown during countdown when opponent will go first"
+  },
+  "advertisingRoomWaiting": "房间广播中！等待对手...",
+  "@advertisingRoomWaiting": {
+    "description": "Snackbar message when host starts advertising the room"
+  },
+  "opponentJoinedReady": "对手已加入！准备好后请按“准备”。",
+  "@opponentJoinedReady": {
+    "description": "Snackbar message when opponent joins the room"
+  },
+  "opponentReady": "对手已准备！",
+  "@opponentReady": {
+    "description": "Dialog title when opponent is ready"
+  },
+  "ok": "确定",
+  "@ok": {
+    "description": "OK button label"
+  },
+  "bothPlayersReady": "双方已准备！",
+  "@bothPlayersReady": {
+    "description": "Dialog title when both players are ready"
+  },
+  "searchingForHosts": "正在搜索房主...",
+  "@searchingForHosts": {
+    "description": "Snackbar message when searching for hosts"
+  },
+  "connectingToHost": "正在连接到 {hostName}...",
+  "@connectingToHost": {
+    "description": "Snackbar message when connecting to a host",
+    "placeholders": {
+      "hostName": {
+        "type": "String",
+        "example": "Player1"
+      }
+    }
+  },
+  "hostReady": "房主已准备！",
+  "@hostReady": {
+    "description": "Dialog title when host is ready"
+  },
+  "theHostIsReady": "✅ 房主已准备！",
+  "@theHostIsReady": {
+    "description": "Message in dialog when host is ready"
+  },
+  "pressReadyWhenPrepared": "准备好开始后请按“准备”。",
+  "@pressReadyWhenPrepared": {
+    "description": "Instruction to press ready button"
+  },
+  "yourOpponentIsReady": "✅ 你的对手已准备！",
+  "@yourOpponentIsReady": {
+    "description": "Message in dialog when opponent is ready"
+  },
+  "gameIsStarting": "游戏即将开始...",
+  "@gameIsStarting": {
+    "description": "Message when game is about to start"
+  },
+  "waitingForHostToSelectDifficulty": "等待房主选择难度...",
+  "@waitingForHostToSelectDifficulty": {
+    "description": "Message when waiting for host to choose difficulty"
+  },
+  "failedToInitializeNearby": "无法初始化 Nearby Connections。请授予位置权限。",
+  "@failedToInitializeNearby": {
+    "description": "Error message when Nearby Connections fails to initialize"
+  },
+  "nearbyNotInitialized": "Nearby Connections 未初始化",
+  "@nearbyNotInitialized": {
+    "description": "Error message when trying to use Nearby before initialization"
+  },
+  "failedToStartAdvertising": "开始广播失败：{error}",
+  "@failedToStartAdvertising": {
+    "description": "Error message when advertising fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "failedToSetReady": "设置准备状态失败：{error}",
+  "@failedToSetReady": {
+    "description": "Error message when setting ready status fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection lost"
+      }
+    }
+  },
+  "failedToStartGame": "开始游戏失败：{error}",
+  "@failedToStartGame": {
+    "description": "Error message when game fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection error"
+      }
+    }
+  },
+  "advertisingRoomStatus": "房间广播中...\n等待对手发现并连接。",
+  "@advertisingRoomStatus": {
+    "description": "Status message while waiting for opponent"
+  },
+  "opponentConnectedStatus": "对手已连接！\n双方准备好后请按“准备”。",
+  "@opponentConnectedStatus": {
+    "description": "Status message when opponent connects"
+  },
+  "bothPlayersReadyStatus": "双方已准备！开始游戏...",
+  "@bothPlayersReadyStatus": {
+    "description": "Status message when both players are ready"
+  },
+  "settingUpDifficulty": "正在设置游戏难度...",
+  "@settingUpDifficulty": {
+    "description": "Status message while setting up game"
+  },
+  "advertisingAs": "广播名称：",
+  "@advertisingAs": {
+    "description": "Label showing host name"
+  },
+  "connectedViaNearby": "通过 Nearby 连接",
+  "@connectedViaNearby": {
+    "description": "Status message when connected via Nearby Connections"
+  },
+  "advertising": "广播中...",
+  "@advertising": {
+    "description": "Status message when advertising for connections"
+  },
+  "selectHostToConnect": "选择房主连接",
+  "@selectHostToConnect": {
+    "description": "Message when hosts are discovered"
+  },
+  "availableHosts": "可用房主 ({count})",
+  "@availableHosts": {
+    "description": "Title showing number of discovered hosts",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "tapToConnect": "点击连接",
+  "@tapToConnect": {
+    "description": "Subtitle hint for host list items"
+  },
+  "noHostsFoundNearby": "附近未找到房主",
+  "@noHostsFoundNearby": {
+    "description": "Empty state message when no hosts discovered"
+  },
+  "makeSureFriendHosting": "确保朋友正在主持\n且两台设备距离较近",
+  "@makeSureFriendHosting": {
+    "description": "Helper text for no hosts found"
+  },
+  "discovering": "正在发现...",
+  "@discovering": {
+    "description": "Status when discovering nearby devices"
+  },
+  "notDiscovering": "未在发现",
+  "@notDiscovering": {
+    "description": "Status when not discovering"
+  },
+  "distanceWarning": "请确保设备距离在 10 米以内",
+  "@distanceWarning": {
+    "description": "Warning about device proximity for Nearby Connections"
+  }
+}

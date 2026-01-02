@@ -1,0 +1,937 @@
+{
+  "@@locale": "th",
+  "appTitle": "new_flutter_template",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcome": "ยินดีต้อนรับ!",
+  "@welcome": {
+    "description": "Welcome the user to the application",
+    "placeholders": {}
+  },
+  "welcomeUser": "ยินดีต้อนรับ {username}!",
+  "@welcomeUser": {
+    "description": "Welcome the user to the application",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  "mainMenu": "เมนูหลัก",
+  "@mainMenu": {
+    "description": "Tiêu đề của trang chính"
+  },
+  "start": "เริ่ม",
+  "@start": {
+    "description": "Start button label"
+  },
+  "topScore": "คะแนนสูงสุด",
+  "@topScore": {
+    "description": "Label for the top score"
+  },
+  "setting": "การตั้งค่า",
+  "@setting": {
+    "description": "Settings menu label"
+  },
+  "about": "เกี่ยวกับ",
+  "@about": {
+    "description": "About menu label"
+  },
+  "exit": "ออก",
+  "@exit": {
+    "description": "Exit button label"
+  },
+  "version": "เวอร์ชัน",
+  "@version": {
+    "description": "The version label of the application"
+  },
+  "anonymous": "ไม่ระบุชื่อ",
+  "@anonymous": {
+    "description": "Label for anonymous user"
+  },
+  "level": "ระดับ",
+  "@level": {
+    "description": "Label for game level"
+  },
+  "score": "คะแนน",
+  "@score": {
+    "description": "Label for game score"
+  },
+  "ready": "พร้อม",
+  "@ready": {
+    "description": "Ready status label"
+  },
+  "go": "ไป!",
+  "@go": {
+    "description": "Go status label"
+  },
+  "gameOver": "จบเกม",
+  "@gameOver": {
+    "description": "Game over message"
+  },
+  
+  "difficultySetting": "การตั้งค่าความยาก",
+  "@difficultySetting": {
+    "description": "Label for difficulty setting in the game"
+  },
+
+  "difficulty": "ความยาก",
+  "@difficulty": {
+    "description": "Difficulty level of the game"
+  },
+  
+  "easy": "ง่าย",
+  "@easy": {
+    "description": "Easy difficulty level of the game"
+  },  
+  "medium": "ปานกลาง",
+  "@medium": {
+    "description": "Medium difficulty level of the game"
+  },
+  "hard": "ยาก",
+  "@hard": {
+    "description": "Hard difficulty level of the game"
+  },
+  "veryHard": "ยากมาก",
+  "@veryHard": {
+    "description": "Very hard difficulty level of the game"
+  },
+  "extreme": "สุดโหด",
+  "@extreme": {
+    "description": "Extreme difficulty level of the game"
+  },
+  "selectDifficulty": "เลือกระดับความยาก",
+  "@selectDifficulty": {
+    "description": "Prompt for user to select the game difficulty"
+  },
+  "selectLevel": "เลือกระดับ",
+  "@selectLevel": {
+    "description": "Prompt for user to select the game level"
+  },
+  "selectLevelMessage": "เลือกระดับที่คุณต้องการเล่น ยิ่งระดับสูง ยิ่งยากขึ้น",
+  "@selectLevelMessage": {
+    "description": "Message guiding the user to select a level"
+  },
+
+  "yourScoreIs": "คะแนนปัจจุบันของคุณคือ",
+  "@yourScoreIs": {
+    "description": "Thông báo điểm số của người chơi"
+  },
+
+  "theCorrectIs": "คำตอบที่ถูกต้องคือ",
+  "@theCorrectIs": {
+    "description": "Message indicating the correct answer"
+  },
+  "name": "ชื่อ",
+  "@name": {
+    "description": "Label for name input"
+  },
+  "fontSize": "ขนาดตัวอักษร",
+  "@fontSize": {
+    "description": "Label for font size setting"
+  },
+  "volume": "ระดับเสียง",
+  "@volume": {
+    "description": "Label for volume setting"
+  },
+  "vibrate": "สั่น",
+  "@vibrate": {
+    "description": "Label for vibration setting"
+  },
+  "numberOfTopScores": "จำนวนคะแนนสูงสุดที่แสดง",
+  "@numberOfTopScores": {
+    "description": "Label for number of top scores setting"
+  },
+  "language": "ภาษา",
+  "@language": {
+    "description": "Label for language setting"
+  },
+  "thankYou": "ขอบคุณที่เล่น",
+  "@thankYou": {
+    "description": "Thank you message"
+  },
+  "thankYouMessage": "ขอบคุณที่เล่นเกมของเรา เราหวังว่าคุณจะชอบ หากคุณมีข้อเสนอแนะ โปรดแจ้งให้เราทราบ",
+  "@thankYouMessage": {
+    "description": "Detailed thank you message"
+  },
+  "authorName": "ผู้สร้าง",
+  "@authorName": {
+    "description": "Label for author name"
+  },
+  "connectWithUs": "เชื่อมต่อกับเรา",
+  "@connectWithUs": {
+    "description": "Label for connect with us section"
+  },
+  "connectWithUsMessage": "หากคุณมีคำถามหรือความคิดเห็น โปรดติดต่อเราผ่านโซเชียลมีเดียวของเรา",
+  "@connectWithUsMessage": {
+    "description": "Message encouraging users to connect on social media"
+  },
+  "introductionContent": "NuCatch เป็นเกมฝึกสมองที่สนุกและน่าสนใจ ออกแบบมาเพื่อเพิ่มความจำและสมาธิของคุณ ท้าทายตัวเองให้จับตัวเลขอย่างรวดเร็วในเวลาอันสั้น ช่วยให้คุณจำสิ่งต่างๆ เช่น OTP, เบอร์โทรศัพท์, วันเกิด และอื่นๆ ได้ดียิ่งขึ้น สนุกกับประสบการณ์และเพิ่มทักษะความจำของคุณ!",
+  "@introductionContent": {
+    "description": "Introduction content for the application"
+  },
+  "messageShareIntroWIthUsername": "เข้าร่วม #NuCatch กับ {username}! สำรวจเลยที่ {profileUrl}",
+  "@messageShareIntroWIthUsername": {
+    "description": "Message for sharing the app with username and profile URL",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      },
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "messageShareIntro": "สำรวจ #NuCatch เลยที่ {profileUrl}",
+  "@messageShareIntro": {
+    "description": "Message for sharing the app with profile URL",
+    "placeholders": {
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "messageSharePlayedLeaderSubject": "ประสบการณ์กับ #NuCatch",
+  "@messageSharePlayedLeaderSubject": {
+    "description": "Subject of the message for sharing the score",
+    "placeholders": {}
+  },
+
+  "messageSharePlayedLeaderSubjectWithUsername": "ประสบการณ์กับ {username} บน #NuCatch",
+  "@messageSharePlayedLeaderSubjectWithUsername": {
+    "description": "Subject of the message for sharing the score with username",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  
+
+  "messageSharePlayedLeaderBody": "{username} ได้คะแนน {point} ที่ {timeCreated} เข้าร่วม #NuCatch กับ {username} เลย!!",
+  "@messageSharePlayedLeaderBody": {
+    "description": "Message for sharing the score of a player",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      },
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
+  "messageSharePlayedLeaderBodyAnonymousBody": "ผู้เล่นคนหนึ่งได้คะแนน {point} ที่ {timeCreated} เข้าร่วม #NuCatch เลย!!",
+  "@messageSharePlayedLeaderBodyAnonymousBody": {
+    "description": "Message for sharing the score when username is not available",
+    "placeholders": {
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
+
+  "confirmExit": "คุณแน่ใจหรือไม่ว่าต้องการออก?",
+  "@confirmExit": {
+    "description": "Warning when the user presses the exit button",
+    "placeholders": {}
+  },
+  "no": "ไม่",
+  "@no": {
+    "description": "No button in the confirmation dialog",
+    "placeholders": {}
+  },
+  "yes": "ใช่",
+  "@yes": {
+    "description": "Yes button in the confirmation dialog",
+    "placeholders": {}
+  },
+
+  "insertedSuccess": "บันทึกรอบของคุณสำเร็จ",
+  "@insertedSuccess": {
+    "description": "Notification when data is added successfully",
+    "placeholders": {}
+  },
+  "insertedFailed": "บันทึกรอบของคุณล้มเหลว",
+  "@insertedFailed": {
+    "description": "Notification when data addition fails",
+    "placeholders": {}
+  },
+
+  "scanQrToViewDetails": "สแกน QR Code เพื่อดูรายละเอียด",
+  "@scanQrToViewDetails": {
+    "description": "Instruction to scan QR code for details",
+    "placeholders": {}
+  },
+
+  "doYouWantToExit": "คุณต้องการออกหรือไม่?",
+  "@doYouWantToExit": {
+    "description": "Prompt asking the user if they want to exit",
+    "placeholders": {}
+  },
+
+  "difficultyEasyDescription": "สร้างตัวเลขสุ่มที่มีระดับเพิ่มขึ้นเล็กน้อยเพื่อความท้าทายง่ายๆ",
+  "@difficultyEasyDescription": {
+    "description": "Description for easy difficulty level logic"
+  },
+  "difficultyMediumDescription": "สร้างโจทย์การคำนวณบวก/ลบ สำหรับความยากปานกลาง",
+  "@difficultyMediumDescription": {
+    "description": "Description for medium difficulty level logic"
+  },
+  "difficultyHardDescription": "สร้างโจทย์การคำนวณคูณ/หาร สำหรับความยากระดับสูง",
+  "@difficultyHardDescription": {
+    "description": "Description for hard difficulty level logic"
+  },
+  "difficultyExtremeDescription": "สุ่มเลือกระหว่างโจทย์บวก/ลบที่ซับซ้อน ตัวเลขสุ่มระดับสูง หรือโจทย์คูณ/หาร เพื่อประสบการณ์ที่ท้าทายที่สุด",
+  "@difficultyExtremeDescription": {
+    "description": "Description for extreme difficulty level logic"
+  },
+
+  "difficultyEasyTitle": "โหมดง่าย",
+  "@difficultyEasyTitle": {
+    "description": "Title for easy difficulty mode"
+  },
+  "difficultyMediumTitle": "โหมดปานกลาง",
+  "@difficultyMediumTitle": {
+    "description": "Title for medium difficulty mode"
+  },
+  "difficultyHardTitle": "โหมดยาก",
+  "@difficultyHardTitle": {
+    "description": "Title for hard difficulty mode"
+  },
+  "difficultyExtremeTitle": "โหมดสุดโหด",
+  "@difficultyExtremeTitle": {
+    "description": "Title for extreme difficulty mode"
+  },
+
+  "confirmChangeDifficulty": "รอบของคุณจะถูกรีเซ็ต คุณแน่ใจหรือไม่ว่าต้องการเปลี่ยนระดับความยาก?",
+  "@confirmChangeDifficulty": {
+    "description": "Warning when the user changes the difficulty",
+    "placeholders": {}
+  },
+
+  "areYouSure": "คุณแน่ใจหรือไม่?",
+  "@areYouSure": {
+    "description": "Warning when the user performs an important action",
+    "placeholders": {}
+  },
+
+  "no_turn_yet": "ยังไม่มีรอบที่เล่น",
+  "@no_turn_yet": {
+    "description": "Notification when there are no turns yet",
+    "placeholders": {}
+  },
+    
+  "daily": "ในหนึ่งวัน",
+  "@daily": {
+    "description": "Daily leaderboard"
+  },
+  "dailyDescription": "อันดับตามรอบที่บันทึกในวันนี้",
+  "@dailyDescription": {
+    "description": "Description for daily leaderboard"
+  },
+
+  "weekly": "ในหนึ่งสัปดาห์", 
+  "@weekly": {
+    "description": "Weekly leaderboard"
+  },
+  "weeklyDescription": "อันดับตามรอบที่บันทึกใน 7 วันที่ผ่านมา",
+  "@weeklyDescription": {
+    "description": "Description for weekly leaderboard"
+  },
+  "allTime": "ตลอดกาล",
+  "@allTime": {
+    "description": "All-time leaderboard"
+  },
+  "allTimeDescription": "อันดับตามรอบที่บันทึกทั้งหมด",
+  "@allTimeDescription": {
+    "description": "Description for all-time leaderboard"
+  },
+  
+  "updateRequired": "จำเป็นต้องอัปเดต",
+  "@updateRequired": {
+    "description": "Title for force update dialog"
+  },
+  "updateAvailable": "มีอัปเดตใหม่",
+  "@updateAvailable": {
+    "description": "Title for optional update dialog"
+  },
+  "currentVersion": "เวอร์ชันปัจจุบัน",
+  "@currentVersion": {
+    "description": "Label for current app version"
+  },
+  "newVersion": "เวอร์ชันใหม่",
+  "@newVersion": {
+    "description": "Label for new available version"
+  },
+  "whatsNew": "มีอะไรใหม่",
+  "@whatsNew": {
+    "description": "Label for release notes section"
+  },
+  "forceUpdateMessage": "จำเป็นต้องอัปเดตนี้เพื่อใช้งานแอปต่อ โปรดอัปเดตทันที",
+  "@forceUpdateMessage": {
+    "description": "Message for force update requirement"
+  },
+  "later": "ภายหลัง",
+  "@later": {
+    "description": "Button to postpone optional update"
+  },
+  "updateNow": "อัปเดตทันที",
+  "@updateNow": {
+    "description": "Button to proceed with update"
+  },
+  "update": "อัปเดต",
+  "@update": {
+    "description": "Button to update app"
+  },
+  
+  "checkForUpdates": "ตรวจสอบการอัปเดต",
+  "@checkForUpdates": {
+    "description": "Button to check for app updates"
+  },
+  "appUpdates": "อัปเดตแอป",
+  "@appUpdates": {
+    "description": "Section title for app updates"
+  },
+  "tapToCheckUpdates": "แตะปุ่มด้านล่างเพื่อตรวจสอบการอัปเดตแอป",
+  "@tapToCheckUpdates": {
+    "description": "Message prompting user to check for updates"
+  },
+  "checkingForUpdates": "กำลังตรวจสอบการอัปเดต...",
+  "@checkingForUpdates": {
+    "description": "Message while checking for updates"
+  },
+  "newVersionAvailable": "มีเวอร์ชันใหม่ {version} ให้ใช้งาน! {forceMessage}",
+  "@newVersionAvailable": {
+    "description": "Message when new version is available",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.2.0"
+      },
+      "forceMessage": {
+        "type": "String",
+        "example": "This update is required."
+      }
+    }
+  },
+  "thisUpdateRequired": "การอัปเดตนี้จำเป็น",
+  "@thisUpdateRequired": {
+    "description": "Message for force update"
+  },
+  "usingLatestVersion": "คุณกำลังใช้เวอร์ชันล่าสุด!",
+  "@usingLatestVersion": {
+    "description": "Message when app is up to date"
+  },
+  "unableToCheckUpdates": "ไม่สามารถตรวจสอบการอัปเดตได้ {error}",
+  "@unableToCheckUpdates": {
+    "description": "Error message when update check fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Please try again later."
+      }
+    }
+  },
+  "tryAgainLater": "โปรดลองใหม่ในภายหลัง",
+  "@tryAgainLater": {
+    "description": "Default error message"
+  },
+  "updatePostponed": "มีการอัปเดตแต่ถูกเลื่อนออกไป",
+  "@updatePostponed": {
+    "description": "Message when user dismissed update"
+  },
+  
+  "tapTimerTooltip": "คุณมีเวลา {totalSeconds} วินาทีในการแตะตัวเลข แถบจะเปลี่ยนสีเมื่อเวลาผ่านไป: สีเขียว (มากกว่า {halfSeconds} วินาที), สีส้ม ({quarterSeconds}-{halfSeconds} วินาที), สีแดง (น้อยกว่า {quarterSeconds} วินาที)",
+  "@tapTimerTooltip": {
+    "description": "Tooltip explaining the tap timer progress bar",
+    "placeholders": {
+      "totalSeconds": {
+        "type": "int",
+        "example": "20"
+      },
+      "halfSeconds": {
+        "type": "int",
+        "example": "10"
+      },
+      "quarterSeconds": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  
+  "selectPlayMode": "เลือกโหมดการเล่น",
+  "@selectPlayMode": {
+    "description": "Title for play mode selection screen"
+  },
+  "soloMode": "โหมดเล่นคนเดียว",
+  "@soloMode": {
+    "description": "Title for solo play mode"
+  },
+  "soloModeDescription": "เล่นคนเดียวและท้าทายตัวเองเพื่อทำลายสถิติคะแนนสูงสุด",
+  "@soloModeDescription": {
+    "description": "Description for solo play mode"
+  },
+  "combatMode": "โหมดต่อสู้",
+  "@combatMode": {
+    "description": "Title for combat/multiplayer play mode"
+  },
+  "combatModeDescription": "เล่นกับผู้เล่นอื่นผ่านบลูทูธและผลัดกันเล่น",
+  "@combatModeDescription": {
+    "description": "Description for combat play mode"
+  },
+  "createRoom": "สร้างห้อง",
+  "@createRoom": {
+    "description": "Button to create a new game room"
+  },
+  "createRoomDescription": "เป็นโฮสต์เกมใหม่และรอให้ผู้เล่นอื่นเข้าร่วม",
+  "@createRoomDescription": {
+    "description": "Description for create room option"
+  },
+  "joinRoom": "เข้าร่วมห้อง",
+  "@joinRoom": {
+    "description": "Button to join an existing game room"
+  },
+  "joinRoomDescription": "ป้อนรหัสห้องเพื่อเข้าร่วมเกมที่มีอยู่",
+  "@joinRoomDescription": {
+    "description": "Description for join room option"
+  },
+  "hostRoom": "ห้องโฮสต์",
+  "@hostRoom": {
+    "description": "Title for host room screen"
+  },
+  "roomCode": "รหัสห้อง",
+  "@roomCode": {
+    "description": "Label for room code"
+  },
+  "shareCodeWithPlayer": "แชร์รหัสนี้กับผู้เล่นอื่น",
+  "@shareCodeWithPlayer": {
+    "description": "Instruction to share room code"
+  },
+  "enterRoomCode": "ป้อนรหัสห้อง",
+  "@enterRoomCode": {
+    "description": "Label for entering room code"
+  },
+  "connect": "เชื่อมต่อ",
+  "@connect": {
+    "description": "Button to connect to a room"
+  },
+  "searchingForPlayers": "กำลังค้นหาผู้เล่น...",
+  "@searchingForPlayers": {
+    "description": "Status message while searching for players"
+  },
+  "pairedWith": "จับคู่กับ {playerName} แล้ว!",
+  "@pairedWith": {
+    "description": "Message when successfully paired with another player",
+    "placeholders": {
+      "playerName": {
+        "type": "String",
+        "example": "Player 2"
+      }
+    }
+  },
+  "bluetoothPermissionRequired": "ต้องการสิทธิ์บลูทูธ",
+  "@bluetoothPermissionRequired": {
+    "description": "Title for Bluetooth permission dialog"
+  },
+  "bluetoothPermissionMessage": "โหมดต่อสู้ต้องการสิทธิ์บลูทูธเพื่อเชื่อมต่อกับผู้เล่นอื่น โปรดอนุญาตสิทธิ์บลูทูธในการตั้งค่าอุปกรณ์ของคุณ",
+  "@bluetoothPermissionMessage": {
+    "description": "Message explaining why Bluetooth permission is needed"
+  },
+  "bluetoothPermissionPermanentlyDeniedMessage": "สิทธิ์บลูทูธถูกปฏิเสธอย่างถาวร หากต้องการใช้โหมดต่อสู้ คุณต้องเปิดใช้งานสิทธิ์บลูทูธในการตั้งค่าอุปกรณ์ของคุณ\n\nโปรดไปที่ การตั้งค่า > NuCatch > สิทธิ์ และเปิดใช้งานบลูทูธ",
+  "@bluetoothPermissionPermanentlyDeniedMessage": {
+    "description": "Message when Bluetooth permission is permanently denied"
+  },
+  "bluetoothDisabled": "บลูทูธถูกปิดใช้งาน",
+  "@bluetoothDisabled": {
+    "description": "Title for Bluetooth disabled dialog"
+  },
+  "bluetoothDisabledMessage": "โหมดต่อสู้ต้องการให้เปิดบลูทูธ โปรดเปิดบลูทูธในการตั้งค่าอุปกรณ์ของคุณ",
+  "@bluetoothDisabledMessage": {
+    "description": "Message when Bluetooth is disabled"
+  },
+  "cancel": "ยกเลิก",
+  "@cancel": {
+    "description": "Cancel button label"
+  },
+  "grantPermission": "อนุญาตสิทธิ์",
+  "@grantPermission": {
+    "description": "Button to grant permission"
+  },
+  "checkAgain": "ตรวจสอบอีกครั้ง",
+  "@checkAgain": {
+    "description": "Button to check again"
+  },
+  "openSettings": "เปิดการตั้งค่า",
+  "@openSettings": {
+    "description": "Button to open app settings"
+  },
+
+  "yourTurn": "ตาคุณ",
+  "@yourTurn": {
+    "description": "Indicates it's the player's turn in combat mode"
+  },
+  "opponentTurn": "ตาคู่ต่อสู้",
+  "@opponentTurn": {
+    "description": "Indicates it's the opponent's turn in combat mode"
+  },
+  "waitingForOpponent": "รอคู่ต่อสู้...",
+  "@waitingForOpponent": {
+    "description": "Status message while waiting for opponent's move"
+  },
+  "watchingOpponent": "ดูคู่ต่อสู้ของคุณ",
+  "@watchingOpponent": {
+    "description": "Instruction to watch opponent's moves"
+  },
+  "youWin": "คุณชนะ!",
+  "@youWin": {
+    "description": "Victory message in combat mode"
+  },
+  "youLose": "คุณแพ้!",
+  "@youLose": {
+    "description": "Defeat message in combat mode"
+  },
+  "opponentDisconnected": "คู่ต่อสู้ตัดการเชื่อมต่อ",
+  "@opponentDisconnected": {
+    "description": "Message when opponent disconnects"
+  },
+  "opponentRanOutOfLives": "คู่ต่อสู้หมดชีวิต",
+  "@opponentRanOutOfLives": {
+    "description": "Reason for winning when opponent loses all lives"
+  },
+  "opponentGaveUp": "คู่ต่อสู้ของคุณยอมแพ้",
+  "@opponentGaveUp": {
+    "description": "Reason for winning when opponent gives up"
+  },
+  "confirmEndCombat": "คุณแน่ใจหรือไม่ว่าต้องการจบเกมนี้? คู่ต่อสู้ของคุณจะชนะ",
+  "@confirmEndCombat": {
+    "description": "Confirmation message for ending combat game"
+  },
+  "youRanOutOfLives": "คุณหมดชีวิต",
+  "@youRanOutOfLives": {
+    "description": "Reason for losing when player loses all lives"
+  },
+  "holidayNotification": "วันนี้เป็นวัน {holidayName}, {greeting}",
+  "@holidayNotification": {
+    "description": "Holiday event notification with greeting",
+    "placeholders": {
+      "holidayName": {
+        "type": "String"
+      },
+      "greeting": {
+        "type": "String"
+      }
+    }
+  },
+  "holidayNewYear": "วันปีใหม่",
+  "@holidayNewYear": {
+    "description": "New Year holiday name"
+  },
+  "greetingNewYear": "สวัสดีปีใหม่!",
+  "@greetingNewYear": {
+    "description": "New Year greeting"
+  },
+  "holidayLunarNewYear": "วันตรุษจีน",
+  "@holidayLunarNewYear": {
+    "description": "Lunar New Year holiday name"
+  },
+  "greetingLunarNewYear": "ซินเจียยู่อี่ ซินนี้ฮวดไช้!",
+  "@greetingLunarNewYear": {
+    "description": "Lunar New Year greeting in Chinese"
+  },
+  "holidayValentine": "วันวาเลนไทน์",
+  "@holidayValentine": {
+    "description": "Valentine's Day holiday name"
+  },
+  "greetingValentine": "สุขสันต์วันวาเลนไทน์!",
+  "@greetingValentine": {
+    "description": "Valentine's Day greeting"
+  },
+  "holidayHoli": "เทศกาลโฮลี",
+  "@holidayHoli": {
+    "description": "Holi holiday name"
+  },
+  "greetingHoli": "สุขสันต์วันโฮลี!",
+  "@greetingHoli": {
+    "description": "Holi greeting in Hindi"
+  },
+  "holidayEarthDay": "วันคุ้มครองโลก",
+  "@holidayEarthDay": {
+    "description": "Earth Day holiday name"
+  },
+  "greetingEarthDay": "สุขสันต์วันคุ้มครองโลก! ช่วยกันรักษาโลกของเรา!",
+  "@greetingEarthDay": {
+    "description": "Earth Day greeting"
+  },
+  "holidayEaster": "วันอีสเตอร์",
+  "@holidayEaster": {
+    "description": "Easter holiday name"
+  },
+  "greetingEaster": "สุขสันต์วันอีสเตอร์!",
+  "@greetingEaster": {
+    "description": "Easter greeting"
+  },
+  "holidayPride": "เดือนแห่งความภาคภูมิใจ",
+  "@holidayPride": {
+    "description": "Pride Month name"
+  },
+  "greetingPride": "สุขสันต์เดือนแห่งความภาคภูมิใจ! รักคือรัก!",
+  "@greetingPride": {
+    "description": "Pride Month greeting"
+  },
+  "holidayHalloween": "วันฮาโลวีน",
+  "@holidayHalloween": {
+    "description": "Halloween holiday name"
+  },
+  "greetingHalloween": "สุขสันต์วันฮาโลวีน!",
+  "@greetingHalloween": {
+    "description": "Halloween greeting"
+  },
+  "holidayDiwali": "เทศกาลดิวาลี",
+  "@holidayDiwali": {
+    "description": "Diwali holiday name"
+  },
+  "greetingDiwali": "สุขสันต์วันดิวาลี!",
+  "@greetingDiwali": {
+    "description": "Diwali greeting in Hindi"
+  },
+  "holidayHanukkah": "เทศกาลฮานุคคา",
+  "@holidayHanukkah": {
+    "description": "Hanukkah holiday name"
+  },
+  "greetingHanukkah": "สุขสันต์วันฮานุคคา!",
+  "@greetingHanukkah": {
+    "description": "Hanukkah greeting in Hebrew"
+  },
+  "holidayChristmas": "วันคริสต์มาส",
+  "@holidayChristmas": {
+    "description": "Christmas holiday name"
+  },
+  "greetingChristmas": "สุขสันต์วันคริสต์มาส!",
+  "@greetingChristmas": {
+    "description": "Christmas greeting"
+  },
+  "holidayKwanzaa": "เทศกาลควอนซา",
+  "@holidayKwanzaa": {
+    "description": "Kwanzaa holiday name"
+  },
+  "greetingKwanzaa": "สุขสันต์วันควอนซา!",
+  "@greetingKwanzaa": {
+    "description": "Kwanzaa greeting in Swahili"
+  },
+  "playAgain": "เล่นอีกครั้ง",
+  "@playAgain": {
+    "description": "Button to restart the game"
+  },
+  "returnToMenu": "กลับสู่เมนู",
+  "@returnToMenu": {
+    "description": "Button to return to main menu"
+  },
+  "doYouReadyForRestart": "คุณพร้อมที่จะเริ่มใหม่หรือไม่?",
+  "@doYouReadyForRestart": {
+    "description": "Question asking if player is ready to restart the match"
+  },
+  "notReady": "ไม่พร้อม",
+  "@notReady": {
+    "description": "Button label when player is ready and wants to cancel"
+  },
+  "you": "คุณ",
+  "@you": {
+    "description": "Label for current player"
+  },
+  "opponent": "คู่ต่อสู้",
+  "@opponent": {
+    "description": "Label for opponent player"
+  },
+  "waiting": "กำลังรอ",
+  "@waiting": {
+    "description": "Waiting status text"
+  },
+  "youWillTakeFirst": "คุณจะได้เริ่มก่อน!",
+  "@youWillTakeFirst": {
+    "description": "Notice shown during countdown when player will go first"
+  },
+  "opponentWillTakeFirst": "คู่ต่อสู้จะเริ่มก่อน",
+  "@opponentWillTakeFirst": {
+    "description": "Notice shown during countdown when opponent will go first"
+  },
+  "advertisingRoomWaiting": "กำลังประกาศห้อง! รอคู่ต่อสู้...",
+  "@advertisingRoomWaiting": {
+    "description": "Snackbar message when host starts advertising the room"
+  },
+  "opponentJoinedReady": "คู่ต่อสู้เข้าร่วมแล้ว! กดพร้อมเมื่อคุณเตรียมตัวเสร็จ",
+  "@opponentJoinedReady": {
+    "description": "Snackbar message when opponent joins the room"
+  },
+  "opponentReady": "คู่ต่อสู้พร้อม!",
+  "@opponentReady": {
+    "description": "Dialog title when opponent is ready"
+  },
+  "ok": "ตกลง",
+  "@ok": {
+    "description": "OK button label"
+  },
+  "bothPlayersReady": "ผู้เล่นทั้งสองพร้อม!",
+  "@bothPlayersReady": {
+    "description": "Dialog title when both players are ready"
+  },
+  "searchingForHosts": "กำลังค้นหาโฮสต์...",
+  "@searchingForHosts": {
+    "description": "Snackbar message when searching for hosts"
+  },
+  "connectingToHost": "กำลังเชื่อมต่อไปยัง {hostName}...",
+  "@connectingToHost": {
+    "description": "Snackbar message when connecting to a host",
+    "placeholders": {
+      "hostName": {
+        "type": "String",
+        "example": "Player1"
+      }
+    }
+  },
+  "hostReady": "โฮสต์พร้อม!",
+  "@hostReady": {
+    "description": "Dialog title when host is ready"
+  },
+  "theHostIsReady": "✅ โฮสต์พร้อมแล้ว!",
+  "@theHostIsReady": {
+    "description": "Message in dialog when host is ready"
+  },
+  "pressReadyWhenPrepared": "กดพร้อมเมื่อคุณเตรียมตัวเสร็จ",
+  "@pressReadyWhenPrepared": {
+    "description": "Instruction to press ready button"
+  },
+  "yourOpponentIsReady": "✅ คู่ต่อสู้ของคุณพร้อมแล้ว!",
+  "@yourOpponentIsReady": {
+    "description": "Message in dialog when opponent is ready"
+  },
+  "gameIsStarting": "เกมกำลังจะเริ่ม...",
+  "@gameIsStarting": {
+    "description": "Message when game is about to start"
+  },
+  "waitingForHostToSelectDifficulty": "รอโฮสต์เลือกระดับความยาก...",
+  "@waitingForHostToSelectDifficulty": {
+    "description": "Message when waiting for host to choose difficulty"
+  },
+  "failedToInitializeNearby": "ไม่สามารถเริ่มต้น Nearby Connections ได้ โปรดอนุญาตสิทธิ์ตำแหน่งที่ตั้ง",
+  "@failedToInitializeNearby": {
+    "description": "Error message when Nearby Connections fails to initialize"
+  },
+  "nearbyNotInitialized": "Nearby Connections ไม่ได้เริ่มต้น",
+  "@nearbyNotInitialized": {
+    "description": "Error message when trying to use Nearby before initialization"
+  },
+  "failedToStartAdvertising": "ไม่สามารถเริ่มการประกาศได้: {error}",
+  "@failedToStartAdvertising": {
+    "description": "Error message when advertising fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "failedToSetReady": "ไม่สามารถตั้งค่าความพร้อมได้: {error}",
+  "@failedToSetReady": {
+    "description": "Error message when setting ready status fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection lost"
+      }
+    }
+  },
+  "failedToStartGame": "ไม่สามารถเริ่มเกมได้: {error}",
+  "@failedToStartGame": {
+    "description": "Error message when game fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection error"
+      }
+    }
+  },
+  "advertisingRoomStatus": "กำลังประกาศห้อง...\nรอให้คู่ต่อสู้ค้นพบและเชื่อมต่อ",
+  "@advertisingRoomStatus": {
+    "description": "Status message while waiting for opponent"
+  },
+  "opponentConnectedStatus": "คู่ต่อสู้เชื่อมต่อแล้ว!\nกดพร้อมเมื่อผู้เล่นทั้งสองพร้อม",
+  "@opponentConnectedStatus": {
+    "description": "Status message when opponent connects"
+  },
+  "bothPlayersReadyStatus": "ผู้เล่นทั้งสองพร้อม! เริ่มเกม...",
+  "@bothPlayersReadyStatus": {
+    "description": "Status message when both players are ready"
+  },
+  "settingUpDifficulty": "กำลังตั้งค่าความยากของเกม...",
+  "@settingUpDifficulty": {
+    "description": "Status message while setting up game"
+  },
+  "advertisingAs": "ประกาศในชื่อ:",
+  "@advertisingAs": {
+    "description": "Label showing host name"
+  },
+  "connectedViaNearby": "เชื่อมต่อผ่าน Nearby",
+  "@connectedViaNearby": {
+    "description": "Status message when connected via Nearby Connections"
+  },
+  "advertising": "กำลังประกาศ...",
+  "@advertising": {
+    "description": "Status message when advertising for connections"
+  },
+  "selectHostToConnect": "เลือกโฮสต์เพื่อเชื่อมต่อ",
+  "@selectHostToConnect": {
+    "description": "Message when hosts are discovered"
+  },
+  "availableHosts": "โฮสต์ที่พร้อมใช้งาน ({count})",
+  "@availableHosts": {
+    "description": "Title showing number of discovered hosts",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "tapToConnect": "แตะเพื่อเชื่อมต่อ",
+  "@tapToConnect": {
+    "description": "Subtitle hint for host list items"
+  },
+  "noHostsFoundNearby": "ไม่พบโฮสต์ในบริเวณใกล้เคียง",
+  "@noHostsFoundNearby": {
+    "description": "Empty state message when no hosts discovered"
+  },
+  "makeSureFriendHosting": "ตรวจสอบให้แน่ใจว่าเพื่อนกำลังโฮสต์อยู่\nและอุปกรณ์ทั้งสองอยู่ใกล้กัน",
+  "@makeSureFriendHosting": {
+    "description": "Helper text for no hosts found"
+  },
+  "discovering": "กำลังค้นพบ...",
+  "@discovering": {
+    "description": "Status when discovering nearby devices"
+  },
+  "notDiscovering": "ไม่ได้ค้นพบ",
+  "@notDiscovering": {
+    "description": "Status when not discovering"
+  },
+  "distanceWarning": "ตรวจสอบให้แน่ใจว่าอุปกรณ์อยู่ห่างกันไม่เกิน 10 เมตร",
+  "@distanceWarning": {
+    "description": "Warning about device proximity for Nearby Connections"
+  }
+}

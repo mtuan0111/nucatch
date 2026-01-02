@@ -70,191 +70,240 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     wasLifeIncreased = false;
   }
 
+  bool _isMenuShowing = false;
+
+  void _handleMenuButton(BuildContext context) {
+    // If menu is already showing, do nothing
+    if (_isMenuShowing) return;
+
+    // Mark menu as showing
+    _isMenuShowing = true;
+
+    // Show confirmation dialog
+    showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => AlertTemplate(
+        title: lang(dialogContext).mainMenu,
+        message: lang(dialogContext).confirmEndCombat,
+        possitiveButtonLabel: lang(dialogContext).yes,
+        onPossitiveButtonPressed: () => Navigator.of(dialogContext).pop(true),
+        negativeButtonLabel: lang(dialogContext).no,
+        onNegativeButtonPressed: () => Navigator.of(dialogContext).pop(false),
+      ),
+    ).then((confirmed) {
+      // Mark menu as no longer showing
+      _isMenuShowing = false;
+
+      if (confirmed == true) {
+        // End game with opponent winning
+        context.read<CombatBloc>().add(
+              CombatGameEnded(
+                isWinner: false,
+                reason: lang(context).opponentGaveUp,
+                sendMessage: true,
+              ),
+            );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedGameWrapper(
       key: _animationKey,
       child: BlocListener<CombatBloc, CombatState>(
         listener: _handleAnimationEvents,
-        child: BlocListener<CombatBloc, CombatState>(
-          listenWhen: (previous, current) {
-            // Navigate to end game screen when game ends
-            // Check both hasGameEnded transition and combatStatus to handle restarts
-            final gameJustEnded =
-                !previous.hasGameEnded && current.hasGameEnded;
-            final statusChangedToEnded =
-                previous.combatStatus != CombatStatus.ended &&
-                    current.combatStatus == CombatStatus.ended;
-            return gameJustEnded || statusChangedToEnded;
+        child: PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            // Since canPop is false, didPop will always be false
+            // Always trigger menu button when back is pressed
+            _handleMenuButton(context);
           },
-          listener: (context, state) {
-            if (state.hasGameEnded) {
-              context.read<CombatNavCubit>().showEndGame();
-            }
-          },
-          child: Scaffold(
-            body: BlocBuilder<CombatBloc, CombatState>(
-              buildWhen: (previous, current) {
-                // Always rebuild to ensure UI updates
-                return true;
-              },
-              builder: (context, combatState) {
-                return Container(
-                  decoration: LayoutConfig(context).gradientDecoration,
-                  child: SafeArea(
-                    child: DeviceWrapper(
-                      child: Column(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                // Tap timer countdown bar
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Builder(
-                                      builder: (context) {
-                                        // Calculate time values using the same formulas
-                                        final totalSeconds =
-                                            tapTimerDuration.toInt();
-                                        final halfSeconds =
-                                            (tapTimerDuration / 2).toInt();
-                                        final quarterSeconds =
-                                            (tapTimerDuration / 4).toInt();
+          child: BlocListener<CombatBloc, CombatState>(
+            listenWhen: (previous, current) {
+              // Navigate to end game screen when game ends
+              // Check both hasGameEnded transition and combatStatus to handle restarts
+              final gameJustEnded =
+                  !previous.hasGameEnded && current.hasGameEnded;
+              final statusChangedToEnded =
+                  previous.combatStatus != CombatStatus.ended &&
+                      current.combatStatus == CombatStatus.ended;
+              return gameJustEnded || statusChangedToEnded;
+            },
+            listener: (context, state) {
+              if (state.hasGameEnded) {
+                context.read<CombatNavCubit>().showEndGame();
+              }
+            },
+            child: Scaffold(
+              body: BlocBuilder<CombatBloc, CombatState>(
+                buildWhen: (previous, current) {
+                  // Always rebuild to ensure UI updates
+                  return true;
+                },
+                builder: (context, combatState) {
+                  return Container(
+                    decoration: LayoutConfig(context).gradientDecoration,
+                    child: SafeArea(
+                      child: DeviceWrapper(
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                children: [
+                                  // Tap timer countdown bar
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Builder(
+                                        builder: (context) {
+                                          // Calculate time values using the same formulas
+                                          final totalSeconds =
+                                              tapTimerDuration.toInt();
+                                          final halfSeconds =
+                                              (tapTimerDuration / 2).toInt();
+                                          final quarterSeconds =
+                                              (tapTimerDuration / 4).toInt();
 
-                                        return Tooltip(
-                                          message:
-                                              lang(context).tapTimerTooltip(
-                                            totalSeconds,
-                                            halfSeconds,
-                                            quarterSeconds,
-                                          ),
-                                          child: SizedBox(
-                                            height: kTimerBarHeight,
-                                            child: combatState.combatStatus ==
-                                                    CombatStatus.playing
-                                                ? Countdown(
-                                                    seconds: combatState
-                                                        .tapTimerRemaining
-                                                        .toInt(),
-                                                    interval: const Duration(
-                                                        milliseconds: 100),
-                                                    build:
-                                                        (BuildContext context,
-                                                            double time) {
-                                                      // Calculate percentage (0-100)
-                                                      final percent = (time /
-                                                              tapTimerDuration *
-                                                              100)
-                                                          .toInt();
+                                          return Tooltip(
+                                            message:
+                                                lang(context).tapTimerTooltip(
+                                              totalSeconds,
+                                              halfSeconds,
+                                              quarterSeconds,
+                                            ),
+                                            child: SizedBox(
+                                              height: kTimerBarHeight,
+                                              child: combatState.combatStatus ==
+                                                      CombatStatus.playing
+                                                  ? Countdown(
+                                                      seconds: combatState
+                                                          .tapTimerRemaining
+                                                          .toInt(),
+                                                      interval: const Duration(
+                                                          milliseconds: 100),
+                                                      build:
+                                                          (BuildContext context,
+                                                              double time) {
+                                                        // Calculate percentage (0-100)
+                                                        final percent = (time /
+                                                                tapTimerDuration *
+                                                                100)
+                                                            .toInt();
 
-                                                      // Determine color based on remaining time
-                                                      Color backgroundColor = time >
-                                                              tapTimerDuration /
-                                                                  2
-                                                          ? Theme.of(context)
-                                                              .primaryColor
-                                                          : time >
-                                                                  tapTimerDuration /
-                                                                      4
-                                                              ? Colors.orange
-                                                              : Colors.red;
+                                                        // Determine color based on remaining time
+                                                        Color backgroundColor = time >
+                                                                tapTimerDuration /
+                                                                    2
+                                                            ? Theme.of(context)
+                                                                .primaryColor
+                                                            : time >
+                                                                    tapTimerDuration /
+                                                                        4
+                                                                ? Colors.orange
+                                                                : Colors.red;
 
-                                                      return Stack(
-                                                        clipBehavior:
-                                                            Clip.hardEdge,
-                                                        children: [
-                                                          Positioned.fill(
-                                                            child:
-                                                                CustomElevatedButton(
-                                                              shapeAt:
-                                                                  RoundedWithShapeAt
-                                                                      .all,
-                                                              backgroundColor:
-                                                                  Theme.of(
-                                                                          context)
-                                                                      .secondaryHeaderColor,
+                                                        return Stack(
+                                                          clipBehavior:
+                                                              Clip.hardEdge,
+                                                          children: [
+                                                            Positioned.fill(
+                                                              child:
+                                                                  CustomElevatedButton(
+                                                                shapeAt:
+                                                                    RoundedWithShapeAt
+                                                                        .all,
+                                                                backgroundColor:
+                                                                    Theme.of(
+                                                                            context)
+                                                                        .secondaryHeaderColor,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              if (percent > 0)
+                                                            Row(
+                                                              children: [
+                                                                if (percent > 0)
+                                                                  Expanded(
+                                                                    flex:
+                                                                        percent,
+                                                                    child:
+                                                                        CustomElevatedButton(
+                                                                      onPressed:
+                                                                          () {},
+                                                                      shapeAt:
+                                                                          RoundedWithShapeAt
+                                                                              .all,
+                                                                      backgroundColor:
+                                                                          backgroundColor,
+                                                                    ),
+                                                                  ),
                                                                 Expanded(
-                                                                  flex: percent,
+                                                                  flex: 100 -
+                                                                      percent,
                                                                   child:
-                                                                      CustomElevatedButton(
-                                                                    onPressed:
-                                                                        () {},
-                                                                    shapeAt:
-                                                                        RoundedWithShapeAt
-                                                                            .all,
-                                                                    backgroundColor:
-                                                                        backgroundColor,
+                                                                      Opacity(
+                                                                    opacity: 0,
+                                                                    child:
+                                                                        Container(),
                                                                   ),
                                                                 ),
-                                                              Expanded(
-                                                                flex: 100 -
-                                                                    percent,
-                                                                child: Opacity(
-                                                                  opacity: 0,
-                                                                  child:
-                                                                      Container(),
-                                                                ),
-                                                              ),
-                                                            ],
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                      onFinished: () {},
+                                                    )
+                                                  : Stack(
+                                                      clipBehavior:
+                                                          Clip.hardEdge,
+                                                      children: [
+                                                        Positioned.fill(
+                                                          child:
+                                                              CustomElevatedButton(
+                                                            shapeAt:
+                                                                RoundedWithShapeAt
+                                                                    .all,
+                                                            backgroundColor: Theme
+                                                                    .of(context)
+                                                                .secondaryHeaderColor,
                                                           ),
-                                                        ],
-                                                      );
-                                                    },
-                                                    onFinished: () {},
-                                                  )
-                                                : Stack(
-                                                    clipBehavior: Clip.hardEdge,
-                                                    children: [
-                                                      Positioned.fill(
-                                                        child:
-                                                            CustomElevatedButton(
-                                                          shapeAt:
-                                                              RoundedWithShapeAt
-                                                                  .all,
-                                                          backgroundColor: Theme
-                                                                  .of(context)
-                                                              .secondaryHeaderColor,
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    const SizedBox(height: kSpaceM),
-                                  ],
-                                ),
+                                                      ],
+                                                    ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      const SizedBox(height: kSpaceM),
+                                    ],
+                                  ),
 
-                                // Combat header with scores and turn indicator
-                                _buildCombatHeader(combatState),
+                                  // Combat header with scores and turn indicator
+                                  _buildCombatHeader(combatState),
 
-                                // Life display with animation
-                                _buildLifeDisplay(combatState),
+                                  // Life display with animation
+                                  _buildLifeDisplay(combatState),
 
-                                // Game area - shows challenge or typing
-                                Expanded(
-                                  child: _buildGameArea(combatState),
-                                ),
-                              ],
+                                  // Game area - shows challenge or typing
+                                  Expanded(
+                                    child: _buildGameArea(combatState),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
 
-                          // Keyboard
-                          _buildKeyboard(combatState),
-                        ],
+                            // Keyboard
+                            _buildKeyboard(combatState),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -1075,34 +1124,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   button = AnimatedButton(
                     context,
                     iconData: FontAwesomeIcons.bars,
-                    onPressed: () {
-                      // Show confirmation dialog
-                      showDialog<bool>(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (dialogContext) => AlertTemplate(
-                          title: lang(dialogContext).mainMenu,
-                          message: lang(dialogContext).confirmEndCombat,
-                          possitiveButtonLabel: lang(dialogContext).yes,
-                          onPossitiveButtonPressed: () =>
-                              Navigator.of(dialogContext).pop(true),
-                          negativeButtonLabel: lang(dialogContext).no,
-                          onNegativeButtonPressed: () =>
-                              Navigator.of(dialogContext).pop(false),
-                        ),
-                      ).then((confirmed) {
-                        if (confirmed == true) {
-                          // End game with opponent winning
-                          context.read<CombatBloc>().add(
-                                CombatGameEnded(
-                                  isWinner: false,
-                                  reason: lang(context).opponentGaveUp,
-                                  sendMessage: true,
-                                ),
-                              );
-                        }
-                      });
-                    },
+                    onPressed: () => _handleMenuButton(context),
                   );
                 } else {
                   button = AnimatedButton(

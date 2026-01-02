@@ -14,15 +14,15 @@
 - [x] Display distance requirements before starting connection
 
 ### 3. Title Shadow Enhancement
-- [ ] Improve title text shadow for better contrast
-- [ ] Update SliverAppBar titles with better visibility
-- [ ] Apply consistent shadow styling across all screens
+- [x] Improve title text shadow for better contrast
+- [x] Update SliverAppBar titles with better visibility
+- [x] Apply consistent shadow styling across all screens
 
 ### 4. Combat Navigator Improvements
-- [ ] Update combat navigator for better pop behavior
-- [ ] Handle back navigation properly
-- [ ] Prevent accidental exits during gameplay
-- [ ] Add confirmation dialogs for navigation actions
+- [x] Update combat navigator for better pop behavior
+- [x] Handle back navigation properly
+- [x] Prevent accidental exits during gameplay
+- [x] Add confirmation dialogs for navigation actions
 
 ### 5. Design System Updates
 - [ ] Implement better overall design patterns
@@ -60,6 +60,12 @@
 - [ ] Test Nearby Connections on iOS devices
 - [ ] Review iOS-specific Bluetooth limitations
 - [ ] Update documentation for iOS requirements
+
+### 11. Device Localization Detection
+- [ ] Implement automatic locale detection from user device
+- [ ] Add support for multiple languages based on device settings
+- [ ] Configure default language fallback mechanism
+- [ ] Test localization with different device language settings
 
 
 # TODO List

@@ -51,8 +51,11 @@ class SoloNav extends StatelessWidget {
                 MaterialPage(
                   child: PopScope(
                     canPop: true,
-                    child: PlayScreen(
-                      title: menuArray(context)[MenuOption.start]!['text']!,
+                    child: PopScope(
+                      canPop: true,
+                      child: PlayScreen(
+                        title: menuArray(context)[MenuOption.start]!['text']!,
+                      ),
                     ),
                   ),
                 ),

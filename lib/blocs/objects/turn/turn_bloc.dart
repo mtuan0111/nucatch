@@ -52,6 +52,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<TapTimerPause>(_onTapTimerPause);
     on<TapTimerResume>(_onTapTimerResume);
     on<TapTimerReset>(_onTapTimerReset);
+    on<Renew>(_onRenew);
   }
 
   @override
@@ -832,6 +833,17 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         tapTimerRemaining: tapTimerDuration,
         isTimerPaused: false,
       ),
+    );
+  }
+
+  void _onRenew(
+    Renew event,
+    Emitter<TurnState> emitter,
+  ) {
+    if (isClosed) return;
+
+    emitter(
+      const TurnState(),
     );
   }
 }

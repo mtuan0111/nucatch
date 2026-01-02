@@ -15,6 +15,14 @@ const String timeDateServer = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 const Map<String, String> languages = {
   'en': "English",
   'vi': "Tiếng Việt",
+  'es': "Español",
+  'zh': "中文",
+  'fr': "Français",
+  'de': "Deutsch",
+  'ja': "日本語",
+  'th': "ไทย",
+  'id': "Bahasa Indonesia",
+  'hi': "हिन्दी",
 };
 
 const String secretKey = "NUCATCH_NO_NEED_TO_CHEAT_ME";

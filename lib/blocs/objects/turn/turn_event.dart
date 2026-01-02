@@ -134,3 +134,5 @@ class TapTimerPause extends TurnEvent {}
 class TapTimerResume extends TurnEvent {}
 
 class TapTimerReset extends TurnEvent {}
+
+class Renew extends TurnEvent {}

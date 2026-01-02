@@ -1,0 +1,937 @@
+{
+  "@@locale": "id",
+  "appTitle": "new_flutter_template",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcome": "Selamat Datang!",
+  "@welcome": {
+    "description": "Welcome the user to the application",
+    "placeholders": {}
+  },
+  "welcomeUser": "Selamat Datang {username}!",
+  "@welcomeUser": {
+    "description": "Welcome the user to the application",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  "mainMenu": "Menu Utama",
+  "@mainMenu": {
+    "description": "Tiêu đề của trang chính"
+  },
+  "start": "Mulai",
+  "@start": {
+    "description": "Start button label"
+  },
+  "topScore": "Skor Tertinggi",
+  "@topScore": {
+    "description": "Label for the top score"
+  },
+  "setting": "Pengaturan",
+  "@setting": {
+    "description": "Settings menu label"
+  },
+  "about": "Tentang",
+  "@about": {
+    "description": "About menu label"
+  },
+  "exit": "Keluar",
+  "@exit": {
+    "description": "Exit button label"
+  },
+  "version": "Versi",
+  "@version": {
+    "description": "The version label of the application"
+  },
+  "anonymous": "Anonim",
+  "@anonymous": {
+    "description": "Label for anonymous user"
+  },
+  "level": "Level",
+  "@level": {
+    "description": "Label for game level"
+  },
+  "score": "Skor",
+  "@score": {
+    "description": "Label for game score"
+  },
+  "ready": "Siap",
+  "@ready": {
+    "description": "Ready status label"
+  },
+  "go": "Mulai!",
+  "@go": {
+    "description": "Go status label"
+  },
+  "gameOver": "Permainan Berakhir",
+  "@gameOver": {
+    "description": "Game over message"
+  },
+  
+  "difficultySetting": "Pengaturan Kesulitan",
+  "@difficultySetting": {
+    "description": "Label for difficulty setting in the game"
+  },
+
+  "difficulty": "Kesulitan",
+  "@difficulty": {
+    "description": "Difficulty level of the game"
+  },
+  
+  "easy": "Mudah",
+  "@easy": {
+    "description": "Easy difficulty level of the game"
+  },  
+  "medium": "Sedang",
+  "@medium": {
+    "description": "Medium difficulty level of the game"
+  },
+  "hard": "Sulit",
+  "@hard": {
+    "description": "Hard difficulty level of the game"
+  },
+  "veryHard": "Sangat Sulit",
+  "@veryHard": {
+    "description": "Very hard difficulty level of the game"
+  },
+  "extreme": "Ekstrem",
+  "@extreme": {
+    "description": "Extreme difficulty level of the game"
+  },
+  "selectDifficulty": "Pilih Kesulitan",
+  "@selectDifficulty": {
+    "description": "Prompt for user to select the game difficulty"
+  },
+  "selectLevel": "Pilih Level",
+  "@selectLevel": {
+    "description": "Prompt for user to select the game level"
+  },
+  "selectLevelMessage": "Pilih level yang ingin Anda mainkan. Semakin tinggi level, semakin sulit.",
+  "@selectLevelMessage": {
+    "description": "Message guiding the user to select a level"
+  },
+
+  "yourScoreIs": "Skor Anda saat ini adalah",
+  "@yourScoreIs": {
+    "description": "Thông báo điểm số của người chơi"
+  },
+
+  "theCorrectIs": "Jawaban yang benar adalah",
+  "@theCorrectIs": {
+    "description": "Message indicating the correct answer"
+  },
+  "name": "Nama",
+  "@name": {
+    "description": "Label for name input"
+  },
+  "fontSize": "Ukuran Font",
+  "@fontSize": {
+    "description": "Label for font size setting"
+  },
+  "volume": "Volume",
+  "@volume": {
+    "description": "Label for volume setting"
+  },
+  "vibrate": "Getar",
+  "@vibrate": {
+    "description": "Label for vibration setting"
+  },
+  "numberOfTopScores": "Jumlah Skor Tertinggi",
+  "@numberOfTopScores": {
+    "description": "Label for number of top scores setting"
+  },
+  "language": "Bahasa",
+  "@language": {
+    "description": "Label for language setting"
+  },
+  "thankYou": "Terima kasih telah bermain",
+  "@thankYou": {
+    "description": "Thank you message"
+  },
+  "thankYouMessage": "Terima kasih telah memainkan permainan kami. Kami harap Anda menyukainya. Jika Anda memiliki umpan balik atau saran, beri tahu kami.",
+  "@thankYouMessage": {
+    "description": "Detailed thank you message"
+  },
+  "authorName": "Penulis",
+  "@authorName": {
+    "description": "Label for author name"
+  },
+  "connectWithUs": "Terhubung dengan Kami",
+  "@connectWithUs": {
+    "description": "Label for connect with us section"
+  },
+  "connectWithUsMessage": "Jika Anda memiliki pertanyaan atau komentar, jangan ragu untuk menghubungi kami melalui saluran media sosial kami.",
+  "@connectWithUsMessage": {
+    "description": "Message encouraging users to connect on social media"
+  },
+  "introductionContent": "NuCatch adalah permainan otak yang menyenangkan dan menarik yang dirancang untuk mempertajam ingatan dan meningkatkan fokus Anda. Tantang diri Anda untuk menangkap angka dengan cepat dalam waktu singkat, membantu Anda mengingat hal-hal seperti OTP, nomor telepon, ulang tahun, dan lainnya. Nikmati pengalamannya dan tingkatkan keterampilan ingatan Anda!",
+  "@introductionContent": {
+    "description": "Introduction content for the application"
+  },
+  "messageShareIntroWIthUsername": "Bergabunglah dengan #NuCatch bersama {username}! Jelajahi sekarang di {profileUrl}",
+  "@messageShareIntroWIthUsername": {
+    "description": "Message for sharing the app with username and profile URL",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      },
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "messageShareIntro": "Jelajahi #NuCatch sekarang di {profileUrl}",
+  "@messageShareIntro": {
+    "description": "Message for sharing the app with profile URL",
+    "placeholders": {
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "messageSharePlayedLeaderSubject": "Pengalaman dengan #NuCatch",
+  "@messageSharePlayedLeaderSubject": {
+    "description": "Subject of the message for sharing the score",
+    "placeholders": {}
+  },
+
+  "messageSharePlayedLeaderSubjectWithUsername": "Pengalaman dengan {username} di #NuCatch",
+  "@messageSharePlayedLeaderSubjectWithUsername": {
+    "description": "Subject of the message for sharing the score with username",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  
+
+  "messageSharePlayedLeaderBody": "{username} mendapatkan skor {point} pada {timeCreated}. Bergabunglah dengan #NuCatch bersama {username}!!",
+  "@messageSharePlayedLeaderBody": {
+    "description": "Message for sharing the score of a player",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      },
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
+  "messageSharePlayedLeaderBodyAnonymousBody": "Seorang pemain mendapatkan skor {point} pada {timeCreated}. Bergabunglah dengan #NuCatch sekarang!!",
+  "@messageSharePlayedLeaderBodyAnonymousBody": {
+    "description": "Message for sharing the score when username is not available",
+    "placeholders": {
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
+
+  "confirmExit": "Apakah Anda yakin ingin keluar?",
+  "@confirmExit": {
+    "description": "Warning when the user presses the exit button",
+    "placeholders": {}
+  },
+  "no": "Tidak",
+  "@no": {
+    "description": "No button in the confirmation dialog",
+    "placeholders": {}
+  },
+  "yes": "Ya",
+  "@yes": {
+    "description": "Yes button in the confirmation dialog",
+    "placeholders": {}
+  },
+
+  "insertedSuccess": "Berhasil mencatat giliran Anda",
+  "@insertedSuccess": {
+    "description": "Notification when data is added successfully",
+    "placeholders": {}
+  },
+  "insertedFailed": "Gagal mencatat giliran Anda",
+  "@insertedFailed": {
+    "description": "Notification when data addition fails",
+    "placeholders": {}
+  },
+
+  "scanQrToViewDetails": "Pindai Kode QR untuk melihat detail",
+  "@scanQrToViewDetails": {
+    "description": "Instruction to scan QR code for details",
+    "placeholders": {}
+  },
+
+  "doYouWantToExit": "Apakah Anda ingin keluar?",
+  "@doYouWantToExit": {
+    "description": "Prompt asking the user if they want to exit",
+    "placeholders": {}
+  },
+
+  "difficultyEasyDescription": "Menghasilkan angka acak dengan level yang sedikit ditingkatkan untuk tantangan sederhana.",
+  "@difficultyEasyDescription": {
+    "description": "Description for easy difficulty level logic"
+  },
+  "difficultyMediumDescription": "Menghasilkan perhitungan penjumlahan/pengurangan untuk kesulitan sedang.",
+  "@difficultyMediumDescription": {
+    "description": "Description for medium difficulty level logic"
+  },
+  "difficultyHardDescription": "Membuat perhitungan perkalian/pembagian untuk kesulitan lanjutan.",
+  "@difficultyHardDescription": {
+    "description": "Description for hard difficulty level logic"
+  },
+  "difficultyExtremeDescription": "Memilih secara acak antara menghasilkan perhitungan penjumlahan/pengurangan yang kompleks, angka acak level yang lebih tinggi, atau perhitungan perkalian/pembagian untuk pengalaman yang paling menantang.",
+  "@difficultyExtremeDescription": {
+    "description": "Description for extreme difficulty level logic"
+  },
+
+  "difficultyEasyTitle": "Mode Mudah",
+  "@difficultyEasyTitle": {
+    "description": "Title for easy difficulty mode"
+  },
+  "difficultyMediumTitle": "Mode Sedang",
+  "@difficultyMediumTitle": {
+    "description": "Title for medium difficulty mode"
+  },
+  "difficultyHardTitle": "Mode Sulit",
+  "@difficultyHardTitle": {
+    "description": "Title for hard difficulty mode"
+  },
+  "difficultyExtremeTitle": "Mode Ekstrem",
+  "@difficultyExtremeTitle": {
+    "description": "Title for extreme difficulty mode"
+  },
+
+  "confirmChangeDifficulty": "Giliran Anda akan direset. Apakah Anda yakin ingin mengubah kesulitan?",
+  "@confirmChangeDifficulty": {
+    "description": "Warning when the user changes the difficulty",
+    "placeholders": {}
+  },
+
+  "areYouSure": "Apakah Anda yakin?",
+  "@areYouSure": {
+    "description": "Warning when the user performs an important action",
+    "placeholders": {}
+  },
+
+  "no_turn_yet": "Belum ada giliran",
+  "@no_turn_yet": {
+    "description": "Notification when there are no turns yet",
+    "placeholders": {}
+  },
+    
+  "daily": "Dalam Sehari",
+  "@daily": {
+    "description": "Daily leaderboard"
+  },
+  "dailyDescription": "Peringkat berdasarkan giliran yang dicatat hari ini.",
+  "@dailyDescription": {
+    "description": "Description for daily leaderboard"
+  },
+
+  "weekly": "Dalam Seminggu", 
+  "@weekly": {
+    "description": "Weekly leaderboard"
+  },
+  "weeklyDescription": "Peringkat berdasarkan giliran yang dicatat dalam 7 hari terakhir.",
+  "@weeklyDescription": {
+    "description": "Description for weekly leaderboard"
+  },
+  "allTime": "Sepanjang Waktu",
+  "@allTime": {
+    "description": "All-time leaderboard"
+  },
+  "allTimeDescription": "Peringkat berdasarkan semua giliran yang dicatat.",
+  "@allTimeDescription": {
+    "description": "Description for all-time leaderboard"
+  },
+  
+  "updateRequired": "Pembaruan Diperlukan",
+  "@updateRequired": {
+    "description": "Title for force update dialog"
+  },
+  "updateAvailable": "Pembaruan Tersedia",
+  "@updateAvailable": {
+    "description": "Title for optional update dialog"
+  },
+  "currentVersion": "Versi Saat Ini",
+  "@currentVersion": {
+    "description": "Label for current app version"
+  },
+  "newVersion": "Versi Baru",
+  "@newVersion": {
+    "description": "Label for new available version"
+  },
+  "whatsNew": "Apa yang Baru",
+  "@whatsNew": {
+    "description": "Label for release notes section"
+  },
+  "forceUpdateMessage": "Pembaruan ini diperlukan untuk terus menggunakan aplikasi. Harap perbarui sekarang.",
+  "@forceUpdateMessage": {
+    "description": "Message for force update requirement"
+  },
+  "later": "Nanti",
+  "@later": {
+    "description": "Button to postpone optional update"
+  },
+  "updateNow": "Perbarui Sekarang",
+  "@updateNow": {
+    "description": "Button to proceed with update"
+  },
+  "update": "Perbarui",
+  "@update": {
+    "description": "Button to update app"
+  },
+  
+  "checkForUpdates": "Periksa Pembaruan",
+  "@checkForUpdates": {
+    "description": "Button to check for app updates"
+  },
+  "appUpdates": "Pembaruan Aplikasi",
+  "@appUpdates": {
+    "description": "Section title for app updates"
+  },
+  "tapToCheckUpdates": "Ketuk tombol di bawah untuk memeriksa pembaruan aplikasi.",
+  "@tapToCheckUpdates": {
+    "description": "Message prompting user to check for updates"
+  },
+  "checkingForUpdates": "Memeriksa pembaruan...",
+  "@checkingForUpdates": {
+    "description": "Message while checking for updates"
+  },
+  "newVersionAvailable": "Versi baru {version} tersedia! {forceMessage}",
+  "@newVersionAvailable": {
+    "description": "Message when new version is available",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.2.0"
+      },
+      "forceMessage": {
+        "type": "String",
+        "example": "This update is required."
+      }
+    }
+  },
+  "thisUpdateRequired": "Pembaruan ini diperlukan.",
+  "@thisUpdateRequired": {
+    "description": "Message for force update"
+  },
+  "usingLatestVersion": "Anda menggunakan versi terbaru!",
+  "@usingLatestVersion": {
+    "description": "Message when app is up to date"
+  },
+  "unableToCheckUpdates": "Tidak dapat memeriksa pembaruan. {error}",
+  "@unableToCheckUpdates": {
+    "description": "Error message when update check fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Please try again later."
+      }
+    }
+  },
+  "tryAgainLater": "Silakan coba lagi nanti.",
+  "@tryAgainLater": {
+    "description": "Default error message"
+  },
+  "updatePostponed": "Pembaruan tersedia tetapi ditunda.",
+  "@updatePostponed": {
+    "description": "Message when user dismissed update"
+  },
+  
+  "tapTimerTooltip": "Anda memiliki {totalSeconds} detik untuk mengetuk angka. Bilah berubah warna seiring berjalannya waktu: Hijau (di atas {halfSeconds} detik), Oranye ({quarterSeconds}-{halfSeconds} detik), Merah (di bawah {quarterSeconds} detik).",
+  "@tapTimerTooltip": {
+    "description": "Tooltip explaining the tap timer progress bar",
+    "placeholders": {
+      "totalSeconds": {
+        "type": "int",
+        "example": "20"
+      },
+      "halfSeconds": {
+        "type": "int",
+        "example": "10"
+      },
+      "quarterSeconds": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  
+  "selectPlayMode": "Pilih Mode Bermain",
+  "@selectPlayMode": {
+    "description": "Title for play mode selection screen"
+  },
+  "soloMode": "Mode Solo",
+  "@soloMode": {
+    "description": "Title for solo play mode"
+  },
+  "soloModeDescription": "Mainkan sendiri dan tantang diri Anda untuk mengalahkan skor tertinggi Anda",
+  "@soloModeDescription": {
+    "description": "Description for solo play mode"
+  },
+  "combatMode": "Mode Pertarungan",
+  "@combatMode": {
+    "description": "Title for combat/multiplayer play mode"
+  },
+  "combatModeDescription": "Bermain dengan pemain lain melalui koneksi Bluetooth dan ambil giliran",
+  "@combatModeDescription": {
+    "description": "Description for combat play mode"
+  },
+  "createRoom": "Buat Ruangan",
+  "@createRoom": {
+    "description": "Button to create a new game room"
+  },
+  "createRoomDescription": "Tuan rumah permainan baru dan tunggu pemain lain bergabung",
+  "@createRoomDescription": {
+    "description": "Description for create room option"
+  },
+  "joinRoom": "Gabung Ruangan",
+  "@joinRoom": {
+    "description": "Button to join an existing game room"
+  },
+  "joinRoomDescription": "Masukkan kode ruangan untuk bergabung dengan permainan yang ada",
+  "@joinRoomDescription": {
+    "description": "Description for join room option"
+  },
+  "hostRoom": "Ruangan Tuan Rumah",
+  "@hostRoom": {
+    "description": "Title for host room screen"
+  },
+  "roomCode": "Kode Ruangan",
+  "@roomCode": {
+    "description": "Label for room code"
+  },
+  "shareCodeWithPlayer": "Bagikan kode ini dengan pemain lain",
+  "@shareCodeWithPlayer": {
+    "description": "Instruction to share room code"
+  },
+  "enterRoomCode": "Masukkan Kode Ruangan",
+  "@enterRoomCode": {
+    "description": "Label for entering room code"
+  },
+  "connect": "Hubungkan",
+  "@connect": {
+    "description": "Button to connect to a room"
+  },
+  "searchingForPlayers": "Mencari pemain...",
+  "@searchingForPlayers": {
+    "description": "Status message while searching for players"
+  },
+  "pairedWith": "Dipasangkan dengan {playerName}!",
+  "@pairedWith": {
+    "description": "Message when successfully paired with another player",
+    "placeholders": {
+      "playerName": {
+        "type": "String",
+        "example": "Player 2"
+      }
+    }
+  },
+  "bluetoothPermissionRequired": "Izin Bluetooth Diperlukan",
+  "@bluetoothPermissionRequired": {
+    "description": "Title for Bluetooth permission dialog"
+  },
+  "bluetoothPermissionMessage": "Mode Pertarungan memerlukan izin Bluetooth untuk terhubung dengan pemain lain. Harap berikan izin Bluetooth di pengaturan perangkat Anda.",
+  "@bluetoothPermissionMessage": {
+    "description": "Message explaining why Bluetooth permission is needed"
+  },
+  "bluetoothPermissionPermanentlyDeniedMessage": "Izin Bluetooth telah ditolak secara permanen. Untuk menggunakan Mode Pertarungan, Anda perlu mengaktifkan izin Bluetooth di pengaturan perangkat Anda.\n\nSilakan buka Pengaturan > NuCatch > Izin dan aktifkan Bluetooth.",
+  "@bluetoothPermissionPermanentlyDeniedMessage": {
+    "description": "Message when Bluetooth permission is permanently denied"
+  },
+  "bluetoothDisabled": "Bluetooth Dinonaktifkan",
+  "@bluetoothDisabled": {
+    "description": "Title for Bluetooth disabled dialog"
+  },
+  "bluetoothDisabledMessage": "Mode Pertarungan mengharuskan Bluetooth diaktifkan. Harap aktifkan Bluetooth di pengaturan perangkat Anda.",
+  "@bluetoothDisabledMessage": {
+    "description": "Message when Bluetooth is disabled"
+  },
+  "cancel": "Batal",
+  "@cancel": {
+    "description": "Cancel button label"
+  },
+  "grantPermission": "Berikan Izin",
+  "@grantPermission": {
+    "description": "Button to grant permission"
+  },
+  "checkAgain": "Periksa Lagi",
+  "@checkAgain": {
+    "description": "Button to check again"
+  },
+  "openSettings": "Buka Pengaturan",
+  "@openSettings": {
+    "description": "Button to open app settings"
+  },
+
+  "yourTurn": "Giliran Anda",
+  "@yourTurn": {
+    "description": "Indicates it's the player's turn in combat mode"
+  },
+  "opponentTurn": "Giliran Lawan",
+  "@opponentTurn": {
+    "description": "Indicates it's the opponent's turn in combat mode"
+  },
+  "waitingForOpponent": "Menunggu lawan...",
+  "@waitingForOpponent": {
+    "description": "Status message while waiting for opponent's move"
+  },
+  "watchingOpponent": "Perhatikan lawan Anda",
+  "@watchingOpponent": {
+    "description": "Instruction to watch opponent's moves"
+  },
+  "youWin": "Anda Menang!",
+  "@youWin": {
+    "description": "Victory message in combat mode"
+  },
+  "youLose": "Anda Kalah!",
+  "@youLose": {
+    "description": "Defeat message in combat mode"
+  },
+  "opponentDisconnected": "Lawan terputus",
+  "@opponentDisconnected": {
+    "description": "Message when opponent disconnects"
+  },
+  "opponentRanOutOfLives": "Lawan kehabisan nyawa",
+  "@opponentRanOutOfLives": {
+    "description": "Reason for winning when opponent loses all lives"
+  },
+  "opponentGaveUp": "Lawan Anda menyerah",
+  "@opponentGaveUp": {
+    "description": "Reason for winning when opponent gives up"
+  },
+  "confirmEndCombat": "Apakah Anda yakin ingin mengakhiri permainan ini? Lawan Anda akan menang.",
+  "@confirmEndCombat": {
+    "description": "Confirmation message for ending combat game"
+  },
+  "youRanOutOfLives": "Anda kehabisan nyawa",
+  "@youRanOutOfLives": {
+    "description": "Reason for losing when player loses all lives"
+  },
+  "holidayNotification": "Hari ini adalah {holidayName}, {greeting}",
+  "@holidayNotification": {
+    "description": "Holiday event notification with greeting",
+    "placeholders": {
+      "holidayName": {
+        "type": "String"
+      },
+      "greeting": {
+        "type": "String"
+      }
+    }
+  },
+  "holidayNewYear": "Tahun Baru",
+  "@holidayNewYear": {
+    "description": "New Year holiday name"
+  },
+  "greetingNewYear": "Selamat Tahun Baru!",
+  "@greetingNewYear": {
+    "description": "New Year greeting"
+  },
+  "holidayLunarNewYear": "Tahun Baru Imlek",
+  "@holidayLunarNewYear": {
+    "description": "Lunar New Year holiday name"
+  },
+  "greetingLunarNewYear": "Selamat Tahun Baru Imlek!",
+  "@greetingLunarNewYear": {
+    "description": "Lunar New Year greeting in Chinese"
+  },
+  "holidayValentine": "Hari Valentine",
+  "@holidayValentine": {
+    "description": "Valentine's Day holiday name"
+  },
+  "greetingValentine": "Selamat Hari Valentine!",
+  "@greetingValentine": {
+    "description": "Valentine's Day greeting"
+  },
+  "holidayHoli": "Holi",
+  "@holidayHoli": {
+    "description": "Holi holiday name"
+  },
+  "greetingHoli": "Selamat Holi!",
+  "@greetingHoli": {
+    "description": "Holi greeting in Hindi"
+  },
+  "holidayEarthDay": "Hari Bumi",
+  "@holidayEarthDay": {
+    "description": "Earth Day holiday name"
+  },
+  "greetingEarthDay": "Selamat Hari Bumi! Lindungi planet kita!",
+  "@greetingEarthDay": {
+    "description": "Earth Day greeting"
+  },
+  "holidayEaster": "Paskah",
+  "@holidayEaster": {
+    "description": "Easter holiday name"
+  },
+  "greetingEaster": "Selamat Paskah!",
+  "@greetingEaster": {
+    "description": "Easter greeting"
+  },
+  "holidayPride": "Bulan Kebanggaan",
+  "@holidayPride": {
+    "description": "Pride Month name"
+  },
+  "greetingPride": "Selamat Bulan Kebanggaan! Cinta adalah Cinta!",
+  "@greetingPride": {
+    "description": "Pride Month greeting"
+  },
+  "holidayHalloween": "Halloween",
+  "@holidayHalloween": {
+    "description": "Halloween holiday name"
+  },
+  "greetingHalloween": "Selamat Halloween!",
+  "@greetingHalloween": {
+    "description": "Halloween greeting"
+  },
+  "holidayDiwali": "Diwali",
+  "@holidayDiwali": {
+    "description": "Diwali holiday name"
+  },
+  "greetingDiwali": "Selamat Diwali!",
+  "@greetingDiwali": {
+    "description": "Diwali greeting in Hindi"
+  },
+  "holidayHanukkah": "Hanukkah",
+  "@holidayHanukkah": {
+    "description": "Hanukkah holiday name"
+  },
+  "greetingHanukkah": "Selamat Hanukkah!",
+  "@greetingHanukkah": {
+    "description": "Hanukkah greeting in Hebrew"
+  },
+  "holidayChristmas": "Natal",
+  "@holidayChristmas": {
+    "description": "Christmas holiday name"
+  },
+  "greetingChristmas": "Selamat Natal!",
+  "@greetingChristmas": {
+    "description": "Christmas greeting"
+  },
+  "holidayKwanzaa": "Kwanzaa",
+  "@holidayKwanzaa": {
+    "description": "Kwanzaa holiday name"
+  },
+  "greetingKwanzaa": "Selamat Kwanzaa!",
+  "@greetingKwanzaa": {
+    "description": "Kwanzaa greeting in Swahili"
+  },
+  "playAgain": "Main Lagi",
+  "@playAgain": {
+    "description": "Button to restart the game"
+  },
+  "returnToMenu": "Kembali ke Menu",
+  "@returnToMenu": {
+    "description": "Button to return to main menu"
+  },
+  "doYouReadyForRestart": "Apakah Anda siap untuk memulai ulang?",
+  "@doYouReadyForRestart": {
+    "description": "Question asking if player is ready to restart the match"
+  },
+  "notReady": "Belum Siap",
+  "@notReady": {
+    "description": "Button label when player is ready and wants to cancel"
+  },
+  "you": "Anda",
+  "@you": {
+    "description": "Label for current player"
+  },
+  "opponent": "Lawan",
+  "@opponent": {
+    "description": "Label for opponent player"
+  },
+  "waiting": "Menunggu",
+  "@waiting": {
+    "description": "Waiting status text"
+  },
+  "youWillTakeFirst": "Anda akan mulai duluan!",
+  "@youWillTakeFirst": {
+    "description": "Notice shown during countdown when player will go first"
+  },
+  "opponentWillTakeFirst": "Lawan akan mulai duluan",
+  "@opponentWillTakeFirst": {
+    "description": "Notice shown during countdown when opponent will go first"
+  },
+  "advertisingRoomWaiting": "Menyiarkan ruangan! Menunggu lawan...",
+  "@advertisingRoomWaiting": {
+    "description": "Snackbar message when host starts advertising the room"
+  },
+  "opponentJoinedReady": "Lawan bergabung! Tekan Siap saat sudah siap.",
+  "@opponentJoinedReady": {
+    "description": "Snackbar message when opponent joins the room"
+  },
+  "opponentReady": "Lawan Siap!",
+  "@opponentReady": {
+    "description": "Dialog title when opponent is ready"
+  },
+  "ok": "OKE",
+  "@ok": {
+    "description": "OK button label"
+  },
+  "bothPlayersReady": "Kedua Pemain Siap!",
+  "@bothPlayersReady": {
+    "description": "Dialog title when both players are ready"
+  },
+  "searchingForHosts": "Mencari tuan rumah...",
+  "@searchingForHosts": {
+    "description": "Snackbar message when searching for hosts"
+  },
+  "connectingToHost": "Menghubungkan ke {hostName}...",
+  "@connectingToHost": {
+    "description": "Snackbar message when connecting to a host",
+    "placeholders": {
+      "hostName": {
+        "type": "String",
+        "example": "Player1"
+      }
+    }
+  },
+  "hostReady": "Tuan Rumah Siap!",
+  "@hostReady": {
+    "description": "Dialog title when host is ready"
+  },
+  "theHostIsReady": "✅ Tuan rumah sudah siap!",
+  "@theHostIsReady": {
+    "description": "Message in dialog when host is ready"
+  },
+  "pressReadyWhenPrepared": "Tekan Siap saat Anda siap untuk memulai.",
+  "@pressReadyWhenPrepared": {
+    "description": "Instruction to press ready button"
+  },
+  "yourOpponentIsReady": "✅ Lawan Anda sudah siap!",
+  "@yourOpponentIsReady": {
+    "description": "Message in dialog when opponent is ready"
+  },
+  "gameIsStarting": "Permainan dimulai...",
+  "@gameIsStarting": {
+    "description": "Message when game is about to start"
+  },
+  "waitingForHostToSelectDifficulty": "Menunggu tuan rumah memilih kesulitan...",
+  "@waitingForHostToSelectDifficulty": {
+    "description": "Message when waiting for host to choose difficulty"
+  },
+  "failedToInitializeNearby": "Gagal menginisialisasi Nearby Connections. Harap berikan izin lokasi.",
+  "@failedToInitializeNearby": {
+    "description": "Error message when Nearby Connections fails to initialize"
+  },
+  "nearbyNotInitialized": "Nearby Connections tidak diinisialisasi",
+  "@nearbyNotInitialized": {
+    "description": "Error message when trying to use Nearby before initialization"
+  },
+  "failedToStartAdvertising": "Gagal memulai siaran: {error}",
+  "@failedToStartAdvertising": {
+    "description": "Error message when advertising fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "failedToSetReady": "Gagal mengatur status siap: {error}",
+  "@failedToSetReady": {
+    "description": "Error message when setting ready status fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection lost"
+      }
+    }
+  },
+  "failedToStartGame": "Gagal memulai permainan: {error}",
+  "@failedToStartGame": {
+    "description": "Error message when game fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection error"
+      }
+    }
+  },
+  "advertisingRoomStatus": "Menyiarkan ruangan...\nMenunggu lawan menemukan dan terhubung.",
+  "@advertisingRoomStatus": {
+    "description": "Status message while waiting for opponent"
+  },
+  "opponentConnectedStatus": "Lawan terhubung!\nTekan Siap saat kedua pemain siap.",
+  "@opponentConnectedStatus": {
+    "description": "Status message when opponent connects"
+  },
+  "bothPlayersReadyStatus": "Kedua pemain siap! Memulai permainan...",
+  "@bothPlayersReadyStatus": {
+    "description": "Status message when both players are ready"
+  },
+  "settingUpDifficulty": "Menyiapkan kesulitan permainan...",
+  "@settingUpDifficulty": {
+    "description": "Status message while setting up game"
+  },
+  "advertisingAs": "Menyiarkan sebagai:",
+  "@advertisingAs": {
+    "description": "Label showing host name"
+  },
+  "connectedViaNearby": "Terhubung melalui Nearby",
+  "@connectedViaNearby": {
+    "description": "Status message when connected via Nearby Connections"
+  },
+  "advertising": "Menyiarkan...",
+  "@advertising": {
+    "description": "Status message when advertising for connections"
+  },
+  "selectHostToConnect": "Pilih tuan rumah untuk terhubung",
+  "@selectHostToConnect": {
+    "description": "Message when hosts are discovered"
+  },
+  "availableHosts": "Tuan Rumah Tersedia ({count})",
+  "@availableHosts": {
+    "description": "Title showing number of discovered hosts",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "tapToConnect": "Ketuk untuk terhubung",
+  "@tapToConnect": {
+    "description": "Subtitle hint for host list items"
+  },
+  "noHostsFoundNearby": "Tidak ada tuan rumah ditemukan di dekatnya",
+  "@noHostsFoundNearby": {
+    "description": "Empty state message when no hosts discovered"
+  },
+  "makeSureFriendHosting": "Pastikan teman sedang menjadi tuan rumah\ndan kedua perangkat berdekatan",
+  "@makeSureFriendHosting": {
+    "description": "Helper text for no hosts found"
+  },
+  "discovering": "Menemukan...",
+  "@discovering": {
+    "description": "Status when discovering nearby devices"
+  },
+  "notDiscovering": "Tidak menemukan",
+  "@notDiscovering": {
+    "description": "Status when not discovering"
+  },
+  "distanceWarning": "Pastikan perangkat berjarak kurang dari 10 meter",
+  "@distanceWarning": {
+    "description": "Warning about device proximity for Nearby Connections"
+  }
+}

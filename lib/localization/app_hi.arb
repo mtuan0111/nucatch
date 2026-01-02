@@ -1,0 +1,937 @@
+{
+  "@@locale": "hi",
+  "appTitle": "new_flutter_template",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcome": "स्वागत है!",
+  "@welcome": {
+    "description": "Welcome the user to the application",
+    "placeholders": {}
+  },
+  "welcomeUser": "स्वागत है {username}!",
+  "@welcomeUser": {
+    "description": "Welcome the user to the application",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  "mainMenu": "मुख्य मेनू",
+  "@mainMenu": {
+    "description": "Tiêu đề của trang chính"
+  },
+  "start": "शुरू करें",
+  "@start": {
+    "description": "Start button label"
+  },
+  "topScore": "शीर्ष स्कोर",
+  "@topScore": {
+    "description": "Label for the top score"
+  },
+  "setting": "सेटिंग्स",
+  "@setting": {
+    "description": "Settings menu label"
+  },
+  "about": "के बारे में",
+  "@about": {
+    "description": "About menu label"
+  },
+  "exit": "बाहर निकलें",
+  "@exit": {
+    "description": "Exit button label"
+  },
+  "version": "वर्जन",
+  "@version": {
+    "description": "The version label of the application"
+  },
+  "anonymous": "बेनामी",
+  "@anonymous": {
+    "description": "Label for anonymous user"
+  },
+  "level": "स्तर",
+  "@level": {
+    "description": "Label for game level"
+  },
+  "score": "स्कोर",
+  "@score": {
+    "description": "Label for game score"
+  },
+  "ready": "तैयार",
+  "@ready": {
+    "description": "Ready status label"
+  },
+  "go": "जाओ!",
+  "@go": {
+    "description": "Go status label"
+  },
+  "gameOver": "खेल खत्म",
+  "@gameOver": {
+    "description": "Game over message"
+  },
+  
+  "difficultySetting": "कठिनाई सेटिंग",
+  "@difficultySetting": {
+    "description": "Label for difficulty setting in the game"
+  },
+
+  "difficulty": "कठिनाई",
+  "@difficulty": {
+    "description": "Difficulty level of the game"
+  },
+  
+  "easy": "आसान",
+  "@easy": {
+    "description": "Easy difficulty level of the game"
+  },  
+  "medium": "मध्यम",
+  "@medium": {
+    "description": "Medium difficulty level of the game"
+  },
+  "hard": "कठिन",
+  "@hard": {
+    "description": "Hard difficulty level of the game"
+  },
+  "veryHard": "बहुत कठिन",
+  "@veryHard": {
+    "description": "Very hard difficulty level of the game"
+  },
+  "extreme": "अत्यधिक",
+  "@extreme": {
+    "description": "Extreme difficulty level of the game"
+  },
+  "selectDifficulty": "कठिनाई चुनें",
+  "@selectDifficulty": {
+    "description": "Prompt for user to select the game difficulty"
+  },
+  "selectLevel": "स्तर चुनें",
+  "@selectLevel": {
+    "description": "Prompt for user to select the game level"
+  },
+  "selectLevelMessage": "उस स्तर का चयन करें जिसे आप खेलना चाहते हैं। उच्च स्तर का मतलब अधिक कठिनाई है।",
+  "@selectLevelMessage": {
+    "description": "Message guiding the user to select a level"
+  },
+
+  "yourScoreIs": "आपका वर्तमान स्कोर है",
+  "@yourScoreIs": {
+    "description": "Thông báo điểm số của người chơi"
+  },
+
+  "theCorrectIs": "सही जवाब है",
+  "@theCorrectIs": {
+    "description": "Message indicating the correct answer"
+  },
+  "name": "नाम",
+  "@name": {
+    "description": "Label for name input"
+  },
+  "fontSize": "फ़ॉन्ट आकार",
+  "@fontSize": {
+    "description": "Label for font size setting"
+  },
+  "volume": "वॉल्यूम",
+  "@volume": {
+    "description": "Label for volume setting"
+  },
+  "vibrate": "कंपन",
+  "@vibrate": {
+    "description": "Label for vibration setting"
+  },
+  "numberOfTopScores": "शीर्ष स्कोर की संख्या",
+  "@numberOfTopScores": {
+    "description": "Label for number of top scores setting"
+  },
+  "language": "भाषा",
+  "@language": {
+    "description": "Label for language setting"
+  },
+  "thankYou": "खेलने के लिए धन्यवाद",
+  "@thankYou": {
+    "description": "Thank you message"
+  },
+  "thankYouMessage": "हमारा खेल खेलने के लिए धन्यवाद। हमें उम्मीद है कि आपने इसका आनंद लिया। यदि आपके पास कोई प्रतिक्रिया या सुझाव है, तो कृपया हमें बताएं।",
+  "@thankYouMessage": {
+    "description": "Detailed thank you message"
+  },
+  "authorName": "लेखक",
+  "@authorName": {
+    "description": "Label for author name"
+  },
+  "connectWithUs": "हमसे जुड़ें",
+  "@connectWithUs": {
+    "description": "Label for connect with us section"
+  },
+  "connectWithUsMessage": "यदि आपके पास कोई प्रश्न या टिप्पणी है, तो बेझिझक हमारे सोशल मीडिया चैनलों के माध्यम से हमसे संपर्क करें।",
+  "@connectWithUsMessage": {
+    "description": "Message encouraging users to connect on social media"
+  },
+  "introductionContent": "NuCatch एक मजेदार और आकर्षक मस्तिष्क खेल है जो आपकी याददाश्त को तेज करने और आपका ध्यान बेहतर बनाने के लिए डिज़ाइन किया गया है। कम समय में संख्याओं को जल्दी से पकड़ने के लिए खुद को चुनौती दें, जिससे आपको ओटीपी, फोन नंबर, जन्मदिन और बहुत कुछ याद रखने में मदद मिलती है। अनुभव का आनंद लें और अपनी याददाश्त कौशल को बढ़ाएं!",
+  "@introductionContent": {
+    "description": "Introduction content for the application"
+  },
+  "messageShareIntroWIthUsername": "{username} के साथ #NuCatch में शामिल हों! इसे अब {profileUrl} पर एक्सप्लोर करें",
+  "@messageShareIntroWIthUsername": {
+    "description": "Message for sharing the app with username and profile URL",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      },
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "messageShareIntro": "{profileUrl} पर अब #NuCatch एक्सप्लोर करें",
+  "@messageShareIntro": {
+    "description": "Message for sharing the app with profile URL",
+    "placeholders": {
+      "profileUrl": {
+        "type": "String",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "messageSharePlayedLeaderSubject": "#NuCatch के साथ अनुभव",
+  "@messageSharePlayedLeaderSubject": {
+    "description": "Subject of the message for sharing the score",
+    "placeholders": {}
+  },
+
+  "messageSharePlayedLeaderSubjectWithUsername": "#NuCatch पर {username} के साथ अनुभव",
+  "@messageSharePlayedLeaderSubjectWithUsername": {
+    "description": "Subject of the message for sharing the score with username",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  
+
+  "messageSharePlayedLeaderBody": "{username} ने {timeCreated} पर {point} अंक प्राप्त किए। {username} के साथ #NuCatch में शामिल हों!!",
+  "@messageSharePlayedLeaderBody": {
+    "description": "Message for sharing the score of a player",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "John Doe"
+      },
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
+  "messageSharePlayedLeaderBodyAnonymousBody": "एक खिलाड़ी ने {timeCreated} पर {point} अंक प्राप्त किए। अभी #NuCatch में शामिल हों!!",
+  "@messageSharePlayedLeaderBodyAnonymousBody": {
+    "description": "Message for sharing the score when username is not available",
+    "placeholders": {
+      "point": {
+        "type": "num",
+        "example": "100"
+      },
+      "timeCreated": {
+        "type": "String",
+        "example": "2023-10-01 12:00:00"
+      }
+    }
+  },
+
+  "confirmExit": "क्या आप वाकई छोड़ना चाहते हैं?",
+  "@confirmExit": {
+    "description": "Warning when the user presses the exit button",
+    "placeholders": {}
+  },
+  "no": "नहीं",
+  "@no": {
+    "description": "No button in the confirmation dialog",
+    "placeholders": {}
+  },
+  "yes": "हाँ",
+  "@yes": {
+    "description": "Yes button in the confirmation dialog",
+    "placeholders": {}
+  },
+
+  "insertedSuccess": "आपकी बारी सफलतापूर्वक रिकॉर्ड की गई",
+  "@insertedSuccess": {
+    "description": "Notification when data is added successfully",
+    "placeholders": {}
+  },
+  "insertedFailed": "आपकी बारी रिकॉर्ड करने में विफल",
+  "@insertedFailed": {
+    "description": "Notification when data addition fails",
+    "placeholders": {}
+  },
+
+  "scanQrToViewDetails": "विवरण देखने के लिए क्यूआर कोड स्कैन करें",
+  "@scanQrToViewDetails": {
+    "description": "Instruction to scan QR code for details",
+    "placeholders": {}
+  },
+
+  "doYouWantToExit": "क्या आप बाहर निकलना चाहते हैं?",
+  "@doYouWantToExit": {
+    "description": "Prompt asking the user if they want to exit",
+    "placeholders": {}
+  },
+
+  "difficultyEasyDescription": "साधारण चुनौतियों के लिए थोड़े बढ़े हुए स्तर के साथ एक यादृच्छिक संख्या उत्पन्न करता है।",
+  "@difficultyEasyDescription": {
+    "description": "Description for easy difficulty level logic"
+  },
+  "difficultyMediumDescription": "मध्यम कठिनाई के लिए एक जोड़/घटाव गणना अभिव्यक्ति तैयार करता है।",
+  "@difficultyMediumDescription": {
+    "description": "Description for medium difficulty level logic"
+  },
+  "difficultyHardDescription": "उन्नत कठिनाई के लिए एक गुणा/भाग गणना अभिव्यक्ति बनाता है।",
+  "@difficultyHardDescription": {
+    "description": "Description for hard difficulty level logic"
+  },
+  "difficultyExtremeDescription": "सबसे चुनौतीपूर्ण अनुभव के लिए एक जटिल जोड़/घटाव गणना, एक उच्च स्तर की यादृच्छिक संख्या, या एक गुणा/भाग गणना उत्पन्न करने के बीच यादृच्छिक रूप से चयन करता है।",
+  "@difficultyExtremeDescription": {
+    "description": "Description for extreme difficulty level logic"
+  },
+
+  "difficultyEasyTitle": "आसान मोड",
+  "@difficultyEasyTitle": {
+    "description": "Title for easy difficulty mode"
+  },
+  "difficultyMediumTitle": "मध्यम मोड",
+  "@difficultyMediumTitle": {
+    "description": "Title for medium difficulty mode"
+  },
+  "difficultyHardTitle": "कठिन मोड",
+  "@difficultyHardTitle": {
+    "description": "Title for hard difficulty mode"
+  },
+  "difficultyExtremeTitle": "अत्यधिक मोड",
+  "@difficultyExtremeTitle": {
+    "description": "Title for extreme difficulty mode"
+  },
+
+  "confirmChangeDifficulty": "आपकी बारी रीसेट कर दी जाएगी। क्या आप वाकई कठिनाई बदलना चाहते हैं?",
+  "@confirmChangeDifficulty": {
+    "description": "Warning when the user changes the difficulty",
+    "placeholders": {}
+  },
+
+  "areYouSure": "क्या आपको यकीन है?",
+  "@areYouSure": {
+    "description": "Warning when the user performs an important action",
+    "placeholders": {}
+  },
+
+  "no_turn_yet": "अभी तक कोई बारी नहीं",
+  "@no_turn_yet": {
+    "description": "Notification when there are no turns yet",
+    "placeholders": {}
+  },
+    
+  "daily": "एक दिन में",
+  "@daily": {
+    "description": "Daily leaderboard"
+  },
+  "dailyDescription": "आज रिकॉर्ड की गई बारियों के आधार पर रैंकिंग।",
+  "@dailyDescription": {
+    "description": "Description for daily leaderboard"
+  },
+
+  "weekly": "एक सप्ताह में", 
+  "@weekly": {
+    "description": "Weekly leaderboard"
+  },
+  "weeklyDescription": "पिछले 7 दिनों में रिकॉर्ड की गई बारियों के आधार पर रैंकिंग।",
+  "@weeklyDescription": {
+    "description": "Description for weekly leaderboard"
+  },
+  "allTime": "पूरे समय",
+  "@allTime": {
+    "description": "All-time leaderboard"
+  },
+  "allTimeDescription": "रिकॉर्ड की गई सभी बारियों के आधार पर रैंकिंग।",
+  "@allTimeDescription": {
+    "description": "Description for all-time leaderboard"
+  },
+  
+  "updateRequired": "अपडेट आवश्यक",
+  "@updateRequired": {
+    "description": "Title for force update dialog"
+  },
+  "updateAvailable": "अपडेट उपलब्ध",
+  "@updateAvailable": {
+    "description": "Title for optional update dialog"
+  },
+  "currentVersion": "वर्तमान संस्करण",
+  "@currentVersion": {
+    "description": "Label for current app version"
+  },
+  "newVersion": "नया संस्करण",
+  "@newVersion": {
+    "description": "Label for new available version"
+  },
+  "whatsNew": "नया क्या है",
+  "@whatsNew": {
+    "description": "Label for release notes section"
+  },
+  "forceUpdateMessage": "ऐप का उपयोग जारी रखने के लिए यह अपडेट आवश्यक है। कृपया अभी अपडेट करें।",
+  "@forceUpdateMessage": {
+    "description": "Message for force update requirement"
+  },
+  "later": "बाद में",
+  "@later": {
+    "description": "Button to postpone optional update"
+  },
+  "updateNow": "अभी अपडेट करें",
+  "@updateNow": {
+    "description": "Button to proceed with update"
+  },
+  "update": "अपडेट करें",
+  "@update": {
+    "description": "Button to update app"
+  },
+  
+  "checkForUpdates": "अपडेट देखें",
+  "@checkForUpdates": {
+    "description": "Button to check for app updates"
+  },
+  "appUpdates": "ऐप अपडेट",
+  "@appUpdates": {
+    "description": "Section title for app updates"
+  },
+  "tapToCheckUpdates": "ऐप अपडेट देखने के लिए नीचे दिए गए बटन पर टैप करें।",
+  "@tapToCheckUpdates": {
+    "description": "Message prompting user to check for updates"
+  },
+  "checkingForUpdates": "अपडेट की जांच हो रही है...",
+  "@checkingForUpdates": {
+    "description": "Message while checking for updates"
+  },
+  "newVersionAvailable": "नया संस्करण {version} उपलब्ध है! {forceMessage}",
+  "@newVersionAvailable": {
+    "description": "Message when new version is available",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.2.0"
+      },
+      "forceMessage": {
+        "type": "String",
+        "example": "This update is required."
+      }
+    }
+  },
+  "thisUpdateRequired": "यह अपडेट आवश्यक है।",
+  "@thisUpdateRequired": {
+    "description": "Message for force update"
+  },
+  "usingLatestVersion": "आप नवीनतम संस्करण का उपयोग कर रहे हैं!",
+  "@usingLatestVersion": {
+    "description": "Message when app is up to date"
+  },
+  "unableToCheckUpdates": "अपडेट की जांच करने में असमर्थ। {error}",
+  "@unableToCheckUpdates": {
+    "description": "Error message when update check fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Please try again later."
+      }
+    }
+  },
+  "tryAgainLater": "कृपया बाद में पुनः प्रयास करें।",
+  "@tryAgainLater": {
+    "description": "Default error message"
+  },
+  "updatePostponed": "अपडेट उपलब्ध है लेकिन स्थगित कर दिया गया है।",
+  "@updatePostponed": {
+    "description": "Message when user dismissed update"
+  },
+  
+  "tapTimerTooltip": "संख्या पर टैप करने के लिए आपके पास {totalSeconds} सेकंड हैं। बार समय के साथ रंग बदलता है: हरा ({halfSeconds} से अधिक), नारंगी ({quarterSeconds}-{halfSeconds}s), लाल ({quarterSeconds} से कम)।",
+  "@tapTimerTooltip": {
+    "description": "Tooltip explaining the tap timer progress bar",
+    "placeholders": {
+      "totalSeconds": {
+        "type": "int",
+        "example": "20"
+      },
+      "halfSeconds": {
+        "type": "int",
+        "example": "10"
+      },
+      "quarterSeconds": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  
+  "selectPlayMode": "खेल मोड चुनें",
+  "@selectPlayMode": {
+    "description": "Title for play mode selection screen"
+  },
+  "soloMode": "सोलो मोड",
+  "@soloMode": {
+    "description": "Title for solo play mode"
+  },
+  "soloModeDescription": "अकेले खेलें और अपने शीर्ष स्कोर को मात देने के लिए खुद को चुनौती दें",
+  "@soloModeDescription": {
+    "description": "Description for solo play mode"
+  },
+  "combatMode": "कॉम्बैट मोड",
+  "@combatMode": {
+    "description": "Title for combat/multiplayer play mode"
+  },
+  "combatModeDescription": "ब्लूटूथ कनेक्शन के माध्यम से दूसरे खिलाड़ी के साथ खेलें और बारी-बारी से खेलें",
+  "@combatModeDescription": {
+    "description": "Description for combat play mode"
+  },
+  "createRoom": "रूम बनाएं",
+  "@createRoom": {
+    "description": "Button to create a new game room"
+  },
+  "createRoomDescription": "एक नया गेम होस्ट करें और दूसरे खिलाड़ी के शामिल होने की प्रतीक्षा करें",
+  "@createRoomDescription": {
+    "description": "Description for create room option"
+  },
+  "joinRoom": "रूम ज्वाइन करें",
+  "@joinRoom": {
+    "description": "Button to join an existing game room"
+  },
+  "joinRoomDescription": "मौजूदा गेम में शामिल होने के लिए रूम कोड दर्ज करें",
+  "@joinRoomDescription": {
+    "description": "Description for join room option"
+  },
+  "hostRoom": "होस्ट रूम",
+  "@hostRoom": {
+    "description": "Title for host room screen"
+  },
+  "roomCode": "रूम कोड",
+  "@roomCode": {
+    "description": "Label for room code"
+  },
+  "shareCodeWithPlayer": "इस कोड को दूसरे खिलाड़ी के साथ शेयर करें",
+  "@shareCodeWithPlayer": {
+    "description": "Instruction to share room code"
+  },
+  "enterRoomCode": "रूम कोड दर्ज करें",
+  "@enterRoomCode": {
+    "description": "Label for entering room code"
+  },
+  "connect": "कनेक्ट करें",
+  "@connect": {
+    "description": "Button to connect to a room"
+  },
+  "searchingForPlayers": "खिलाड़ियों की खोज की जा रही है...",
+  "@searchingForPlayers": {
+    "description": "Status message while searching for players"
+  },
+  "pairedWith": "{playerName} के साथ पेयर किया गया!",
+  "@pairedWith": {
+    "description": "Message when successfully paired with another player",
+    "placeholders": {
+      "playerName": {
+        "type": "String",
+        "example": "Player 2"
+      }
+    }
+  },
+  "bluetoothPermissionRequired": "ब्लूटूथ अनुमति आवश्यक",
+  "@bluetoothPermissionRequired": {
+    "description": "Title for Bluetooth permission dialog"
+  },
+  "bluetoothPermissionMessage": "कॉम्बैट मोड को अन्य खिलाड़ियों से जुड़ने के लिए ब्लूटूथ अनुमति की आवश्यकता होती है। कृपया अपने डिवाइस सेटिंग में ब्लूटूथ अनुमति दें।",
+  "@bluetoothPermissionMessage": {
+    "description": "Message explaining why Bluetooth permission is needed"
+  },
+  "bluetoothPermissionPermanentlyDeniedMessage": "ब्लूटूथ अनुमतियाँ स्थायी रूप से अस्वीकार कर दी गई हैं। कॉम्बैट मोड का उपयोग करने के लिए, आपको अपने डिवाइस सेटिंग में ब्लूटूथ अनुमतियाँ सक्षम करनी होंगी।\n\nकृपया सेटिंग > NuCatch > अनुमतियाँ पर जाएँ और ब्लूटूथ सक्षम करें।",
+  "@bluetoothPermissionPermanentlyDeniedMessage": {
+    "description": "Message when Bluetooth permission is permanently denied"
+  },
+  "bluetoothDisabled": "ब्लूटूथ अक्षम",
+  "@bluetoothDisabled": {
+    "description": "Title for Bluetooth disabled dialog"
+  },
+  "bluetoothDisabledMessage": "कॉम्बैट मोड के लिए ब्लूटूथ सक्षम होना आवश्यक है। कृपया अपने डिवाइस सेटिंग में ब्लूटूथ चालू करें।",
+  "@bluetoothDisabledMessage": {
+    "description": "Message when Bluetooth is disabled"
+  },
+  "cancel": "रद्द करें",
+  "@cancel": {
+    "description": "Cancel button label"
+  },
+  "grantPermission": "अनुमति दें",
+  "@grantPermission": {
+    "description": "Button to grant permission"
+  },
+  "checkAgain": "फिर से जांचें",
+  "@checkAgain": {
+    "description": "Button to check again"
+  },
+  "openSettings": "सेटिंग्स खोलें",
+  "@openSettings": {
+    "description": "Button to open app settings"
+  },
+
+  "yourTurn": "आपकी बारी",
+  "@yourTurn": {
+    "description": "Indicates it's the player's turn in combat mode"
+  },
+  "opponentTurn": "प्रतिद्वंद्वी की बारी",
+  "@opponentTurn": {
+    "description": "Indicates it's the opponent's turn in combat mode"
+  },
+  "waitingForOpponent": "प्रतिद्वंद्वी की प्रतीक्षा कर रहा है...",
+  "@waitingForOpponent": {
+    "description": "Status message while waiting for opponent's move"
+  },
+  "watchingOpponent": "अपने प्रतिद्वंद्वी को देखें",
+  "@watchingOpponent": {
+    "description": "Instruction to watch opponent's moves"
+  },
+  "youWin": "आप जीत गए!",
+  "@youWin": {
+    "description": "Victory message in combat mode"
+  },
+  "youLose": "आप हार गए!",
+  "@youLose": {
+    "description": "Defeat message in combat mode"
+  },
+  "opponentDisconnected": "प्रतिद्वंद्वी डिस्कनेक्ट हो गया",
+  "@opponentDisconnected": {
+    "description": "Message when opponent disconnects"
+  },
+  "opponentRanOutOfLives": "प्रतिद्वंद्वी का जीवन समाप्त हो गया",
+  "@opponentRanOutOfLives": {
+    "description": "Reason for winning when opponent loses all lives"
+  },
+  "opponentGaveUp": "आपके प्रतिद्वंद्वी ने हार मान ली",
+  "@opponentGaveUp": {
+    "description": "Reason for winning when opponent gives up"
+  },
+  "confirmEndCombat": "क्या आप वाकई इस गेम को समाप्त करना चाहते हैं? आपका प्रतिद्वंद्वी जीत जाएगा।",
+  "@confirmEndCombat": {
+    "description": "Confirmation message for ending combat game"
+  },
+  "youRanOutOfLives": "आपका जीवन समाप्त हो गया",
+  "@youRanOutOfLives": {
+    "description": "Reason for losing when player loses all lives"
+  },
+  "holidayNotification": "आज {holidayName} है, {greeting}",
+  "@holidayNotification": {
+    "description": "Holiday event notification with greeting",
+    "placeholders": {
+      "holidayName": {
+        "type": "String"
+      },
+      "greeting": {
+        "type": "String"
+      }
+    }
+  },
+  "holidayNewYear": "नया साल",
+  "@holidayNewYear": {
+    "description": "New Year holiday name"
+  },
+  "greetingNewYear": "नया साल मुबारक हो!",
+  "@greetingNewYear": {
+    "description": "New Year greeting"
+  },
+  "holidayLunarNewYear": "चंद्र नव वर्ष",
+  "@holidayLunarNewYear": {
+    "description": "Lunar New Year holiday name"
+  },
+  "greetingLunarNewYear": "चंद्र नव वर्ष मुबारक हो!",
+  "@greetingLunarNewYear": {
+    "description": "Lunar New Year greeting in Chinese"
+  },
+  "holidayValentine": "वेलेंटाइन डे",
+  "@holidayValentine": {
+    "description": "Valentine's Day holiday name"
+  },
+  "greetingValentine": "हैप्पी वेलेंटाइन डे!",
+  "@greetingValentine": {
+    "description": "Valentine's Day greeting"
+  },
+  "holidayHoli": "होली",
+  "@holidayHoli": {
+    "description": "Holi holiday name"
+  },
+  "greetingHoli": "होली मुबारक!",
+  "@greetingHoli": {
+    "description": "Holi greeting in Hindi"
+  },
+  "holidayEarthDay": "पृथ्वी दिवस",
+  "@holidayEarthDay": {
+    "description": "Earth Day holiday name"
+  },
+  "greetingEarthDay": "हैप्पी पृथ्वी दिवस! हमारे ग्रह की रक्षा करें!",
+  "@greetingEarthDay": {
+    "description": "Earth Day greeting"
+  },
+  "holidayEaster": "ईस्टर",
+  "@holidayEaster": {
+    "description": "Easter holiday name"
+  },
+  "greetingEaster": "हैप्पी ईस्टर!",
+  "@greetingEaster": {
+    "description": "Easter greeting"
+  },
+  "holidayPride": "प्राइड मंथ",
+  "@holidayPride": {
+    "description": "Pride Month name"
+  },
+  "greetingPride": "हैप्पी प्राइड मंथ! प्यार प्यार है!",
+  "@greetingPride": {
+    "description": "Pride Month greeting"
+  },
+  "holidayHalloween": "हैलोवीन",
+  "@holidayHalloween": {
+    "description": "Halloween holiday name"
+  },
+  "greetingHalloween": "हैप्पी हैलोवीन!",
+  "@greetingHalloween": {
+    "description": "Halloween greeting"
+  },
+  "holidayDiwali": "दीपावली",
+  "@holidayDiwali": {
+    "description": "Diwali holiday name"
+  },
+  "greetingDiwali": "दीपावली मुबारक!",
+  "@greetingDiwali": {
+    "description": "Diwali greeting in Hindi"
+  },
+  "holidayHanukkah": "हनुक्काह",
+  "@holidayHanukkah": {
+    "description": "Hanukkah holiday name"
+  },
+  "greetingHanukkah": "हैप्पी हनुक्काह!",
+  "@greetingHanukkah": {
+    "description": "Hanukkah greeting in Hebrew"
+  },
+  "holidayChristmas": "क्रिसमस",
+  "@holidayChristmas": {
+    "description": "Christmas holiday name"
+  },
+  "greetingChristmas": "मेरी क्रिसमस!",
+  "@greetingChristmas": {
+    "description": "Christmas greeting"
+  },
+  "holidayKwanzaa": "क्वांज़ा",
+  "@holidayKwanzaa": {
+    "description": "Kwanzaa holiday name"
+  },
+  "greetingKwanzaa": "हैप्पी क्वांज़ा!",
+  "@greetingKwanzaa": {
+    "description": "Kwanzaa greeting in Swahili"
+  },
+  "playAgain": "फिर से खेलें",
+  "@playAgain": {
+    "description": "Button to restart the game"
+  },
+  "returnToMenu": "मेनू पर लौटें",
+  "@returnToMenu": {
+    "description": "Button to return to main menu"
+  },
+  "doYouReadyForRestart": "क्या आप पुनरारंभ करने के लिए तैयार हैं?",
+  "@doYouReadyForRestart": {
+    "description": "Question asking if player is ready to restart the match"
+  },
+  "notReady": "तैयार नहीं",
+  "@notReady": {
+    "description": "Button label when player is ready and wants to cancel"
+  },
+  "you": "आप",
+  "@you": {
+    "description": "Label for current player"
+  },
+  "opponent": "प्रतिद्वंद्वी",
+  "@opponent": {
+    "description": "Label for opponent player"
+  },
+  "waiting": "प्रतीक्षा कर रहा है",
+  "@waiting": {
+    "description": "Waiting status text"
+  },
+  "youWillTakeFirst": "आप पहले लेंगे!",
+  "@youWillTakeFirst": {
+    "description": "Notice shown during countdown when player will go first"
+  },
+  "opponentWillTakeFirst": "प्रतिद्वंद्वी पहले लेगा",
+  "@opponentWillTakeFirst": {
+    "description": "Notice shown during countdown when opponent will go first"
+  },
+  "advertisingRoomWaiting": "रूम ब्रॉडकास्टिंग! प्रतिद्वंद्वी की प्रतीक्षा कर रहा है...",
+  "@advertisingRoomWaiting": {
+    "description": "Snackbar message when host starts advertising the room"
+  },
+  "opponentJoinedReady": "प्रतिद्वंद्वी शामिल हो गया! तैयार होने पर तैयार दबाएं।",
+  "@opponentJoinedReady": {
+    "description": "Snackbar message when opponent joins the room"
+  },
+  "opponentReady": "प्रतिद्वंद्वी तैयार!",
+  "@opponentReady": {
+    "description": "Dialog title when opponent is ready"
+  },
+  "ok": "ठीक",
+  "@ok": {
+    "description": "OK button label"
+  },
+  "bothPlayersReady": "दोनों खिलाड़ी तैयार!",
+  "@bothPlayersReady": {
+    "description": "Dialog title when both players are ready"
+  },
+  "searchingForHosts": "होस्ट की तलाश की जा रही है...",
+  "@searchingForHosts": {
+    "description": "Snackbar message when searching for hosts"
+  },
+  "connectingToHost": "{hostName} से जुड़ रहा है...",
+  "@connectingToHost": {
+    "description": "Snackbar message when connecting to a host",
+    "placeholders": {
+      "hostName": {
+        "type": "String",
+        "example": "Player1"
+      }
+    }
+  },
+  "hostReady": "होस्ट तैयार!",
+  "@hostReady": {
+    "description": "Dialog title when host is ready"
+  },
+  "theHostIsReady": "✅ होस्ट तैयार है!",
+  "@theHostIsReady": {
+    "description": "Message in dialog when host is ready"
+  },
+  "pressReadyWhenPrepared": "शुरू करने के लिए तैयार होने पर तैयार दबाएं।",
+  "@pressReadyWhenPrepared": {
+    "description": "Instruction to press ready button"
+  },
+  "yourOpponentIsReady": "✅ आपका प्रतिद्वंद्वी तैयार है!",
+  "@yourOpponentIsReady": {
+    "description": "Message in dialog when opponent is ready"
+  },
+  "gameIsStarting": "खेल शुरू हो रहा है...",
+  "@gameIsStarting": {
+    "description": "Message when game is about to start"
+  },
+  "waitingForHostToSelectDifficulty": "होस्ट द्वारा कठिनाई चुनने की प्रतीक्षा कर रहा है...",
+  "@waitingForHostToSelectDifficulty": {
+    "description": "Message when waiting for host to choose difficulty"
+  },
+  "failedToInitializeNearby": "Nearby Connections प्रारंभ करने में विफल। कृपया स्थान अनुमति प्रदान करें।",
+  "@failedToInitializeNearby": {
+    "description": "Error message when Nearby Connections fails to initialize"
+  },
+  "nearbyNotInitialized": "Nearby Connections प्रारंभ नहीं किया गया",
+  "@nearbyNotInitialized": {
+    "description": "Error message when trying to use Nearby before initialization"
+  },
+  "failedToStartAdvertising": "विज्ञापन शुरू करने में विफल: {error}",
+  "@failedToStartAdvertising": {
+    "description": "Error message when advertising fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "failedToSetReady": "तैयार स्थिति सेट करने में विफल: {error}",
+  "@failedToSetReady": {
+    "description": "Error message when setting ready status fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection lost"
+      }
+    }
+  },
+  "failedToStartGame": "खेल शुरू करने में विफल: {error}",
+  "@failedToStartGame": {
+    "description": "Error message when game fails to start",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Connection error"
+      }
+    }
+  },
+  "advertisingRoomStatus": "रूम ब्रॉडकास्टिंग...\nप्रतिद्वंद्वी के खोजने और कनेक्ट करने की प्रतीक्षा कर रहा है।",
+  "@advertisingRoomStatus": {
+    "description": "Status message while waiting for opponent"
+  },
+  "opponentConnectedStatus": "प्रतिद्वंद्वी जुड़ा हुआ है!\nजब दोनों खिलाड़ी तैयार हों तो तैयार दबाएं।",
+  "@opponentConnectedStatus": {
+    "description": "Status message when opponent connects"
+  },
+  "bothPlayersReadyStatus": "दोनों खिलाड़ी तैयार! खेल शुरू...",
+  "@bothPlayersReadyStatus": {
+    "description": "Status message when both players are ready"
+  },
+  "settingUpDifficulty": "खेल कठिनाई सेट कर रहा है...",
+  "@settingUpDifficulty": {
+    "description": "Status message while setting up game"
+  },
+  "advertisingAs": "के रूप में विज्ञापन:",
+  "@advertisingAs": {
+    "description": "Label showing host name"
+  },
+  "connectedViaNearby": "Nearby के माध्यम से जुड़ा हुआ है",
+  "@connectedViaNearby": {
+    "description": "Status message when connected via Nearby Connections"
+  },
+  "advertising": "विज्ञापन...",
+  "@advertising": {
+    "description": "Status message when advertising for connections"
+  },
+  "selectHostToConnect": "कनेक्ट करने के लिए होस्ट चुनें",
+  "@selectHostToConnect": {
+    "description": "Message when hosts are discovered"
+  },
+  "availableHosts": "उपलब्ध होस्ट ({count})",
+  "@availableHosts": {
+    "description": "Title showing number of discovered hosts",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "tapToConnect": "कनेक्ट करने के लिए टैप करें",
+  "@tapToConnect": {
+    "description": "Subtitle hint for host list items"
+  },
+  "noHostsFoundNearby": "आस-पास कोई होस्ट नहीं मिला",
+  "@noHostsFoundNearby": {
+    "description": "Empty state message when no hosts discovered"
+  },
+  "makeSureFriendHosting": "सुनिश्चित करें कि कोई मित्र होस्ट कर रहा है\nऔर दोनों डिवाइस एक दूसरे के करीब हैं",
+  "@makeSureFriendHosting": {
+    "description": "Helper text for no hosts found"
+  },
+  "discovering": "खोज रहा है...",
+  "@discovering": {
+    "description": "Status when discovering nearby devices"
+  },
+  "notDiscovering": "खोज नहीं रहा है",
+  "@notDiscovering": {
+    "description": "Status when not discovering"
+  },
+  "distanceWarning": "सुनिश्चित करें कि डिवाइस 10 मीटर से कम दूरी पर हैं",
+  "@distanceWarning": {
+    "description": "Warning about device proximity for Nearby Connections"
+  }
+}

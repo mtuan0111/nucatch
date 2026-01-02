@@ -94,12 +94,7 @@ class _MyAppState extends State<MyApp> {
                       GlobalCupertinoLocalizations.delegate,
                     ],
                     locale: Locale(state.locale),
-                    supportedLocales: const [
-                      Locale('en'), // English
-                      Locale(
-                          'vi'), // Vietnamese (example for your current location)
-                      // Add more locales as needed
-                    ],
+                    supportedLocales: AppLocalizations.supportedLocales,
                     theme: ThemeData(
                       // This is the theme of your application.
                       //

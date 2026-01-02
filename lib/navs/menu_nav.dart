@@ -59,7 +59,7 @@ class _MenuNavState extends State<MenuNav> {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
 
-              context.read<MenuBloc>().add(ShowMenu());
+              if (navState is! Play) context.read<MenuBloc>().add(ShowMenu());
             },
             child: BlocBuilder<UserBloc, UserState>(
               builder: (context, userState) {
