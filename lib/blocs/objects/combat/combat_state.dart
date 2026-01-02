@@ -28,6 +28,8 @@ class CombatState extends TurnState {
   final bool isOpponentReady;
   final bool?
       willStartFirst; // null = unknown, true = I start first, false = opponent starts first
+  final bool
+      opponentJustSucceeded; // Track when opponent successfully completes for firework animation
 
   const CombatState({
     // Combat-specific parameters
@@ -46,6 +48,7 @@ class CombatState extends TurnState {
     this.isPlayerReady = false,
     this.isOpponentReady = false,
     this.willStartFirst,
+    this.opponentJustSucceeded = false,
     // TurnState parameters
     super.level = 0,
     super.timesCorrect = 0,
@@ -83,6 +86,7 @@ class CombatState extends TurnState {
     bool? isPlayerReady,
     bool? isOpponentReady,
     bool? willStartFirst,
+    bool? opponentJustSucceeded,
     // TurnState parameters
     int? level,
     int? timesCorrect,
@@ -118,6 +122,8 @@ class CombatState extends TurnState {
       isPlayerReady: isPlayerReady ?? this.isPlayerReady,
       isOpponentReady: isOpponentReady ?? this.isOpponentReady,
       willStartFirst: willStartFirst ?? this.willStartFirst,
+      opponentJustSucceeded:
+          opponentJustSucceeded ?? this.opponentJustSucceeded,
       // TurnState
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,

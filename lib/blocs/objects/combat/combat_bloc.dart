@@ -53,6 +53,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatNumberReset>(_onCombatResetNewNumber);
     on<CombatTapTimerTick>(_onCombatTapTimerTick);
     on<CombatTapTimerTimeout>(_onCombatTapTimerTimeout);
+    on<CombatOpponentSuccessReceived>(_onCombatOpponentSuccessReceived);
     on<CombatBlocReset>(_onCombatBlocReset);
 
     // Listen to BLE messages
@@ -117,6 +118,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
               currentInput: data['currentInput'],
             ));
           }
+          break;
+        case 'move_success':
+          // Immediate notification that opponent finished successfully
+          // Triggers firework animation on opponent's score
+          add(CombatOpponentSuccessReceived());
           break;
         case 'move_completed':
           add(CombatOpponentMoveReceived(
@@ -650,6 +656,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       ),
     );
 
+    // Send immediate success notification to trigger opponent's firework
+    await _sendMessage({
+      'type': 'move_success',
+    });
+
     // Increment timesCorrect and add life bonus (every 3 correct turns)
     emit(
       state.copyWith(
@@ -874,6 +885,24 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         isMyTurn: false,
       ));
     }
+  }
+
+  Future<void> _onCombatOpponentSuccessReceived(
+    CombatOpponentSuccessReceived event,
+    Emitter<CombatState> emit,
+  ) async {
+    // Set flag that opponent just succeeded - this will trigger firework in UI
+    emit(state.copyWith(
+      opponentJustSucceeded: true,
+    ));
+
+    // Reset the flag after a short delay
+    await Future.delayed(const Duration(milliseconds: 100));
+    if (isClosed) return;
+
+    emit(state.copyWith(
+      opponentJustSucceeded: false,
+    ));
   }
 
   // Reset bloc to fresh initial state

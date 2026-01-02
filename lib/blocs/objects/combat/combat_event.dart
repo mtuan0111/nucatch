@@ -146,6 +146,8 @@ class CombatOpponentTypingUpdate extends CombatEvent {
   CombatOpponentTypingUpdate({required this.currentInput});
 }
 
+class CombatOpponentSuccessReceived extends CombatEvent {}
+
 class CombatOpponentDisconnected extends CombatEvent {}
 
 class CombatRestartRequested extends CombatEvent {}
