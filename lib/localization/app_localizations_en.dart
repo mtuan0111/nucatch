@@ -656,53 +656,60 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tourButtonLabel => 'Start Tour';
 
   @override
-  String get tourStartTitle => 'Let\'s Get Started!';
+  String get tourWelcomeTitle => 'Welcome to NuCatch!';
+
+  @override
+  String get tourWelcomeDesc =>
+      'Welcome! This quick tour will help you get started smoothly with NuCatch. We\'ll show you all the main features so you can dive right in and start playing. Let\'s begin!';
+
+  @override
+  String get tourStartTitle => 'Start - Begin Your Game';
 
   @override
   String get tourStartDesc =>
-      'This button opens both Solo and Combat modes. Tap it and I\'ll explain more inside!';
+      'Tap the Start button to begin. You\'ll then choose between Solo Mode for single-player mathematical challenges, or Combat Mode for real-time Bluetooth multiplayer battles. Let\'s explore both options!';
 
   @override
-  String get tourSoloTitle => 'Solo Mode';
+  String get tourSoloTitle => 'Solo Mode - Play Alone';
 
   @override
   String get tourSoloDesc =>
-      'Challenge yourself! Tap numbers to solve math problems or match sequences. The faster you are, the higher your score. Each correct answer levels you up with harder challenges!';
+      'In Solo Mode, challenge yourself with mathematical equations! Choose from 4 difficulty levels (Easy to Extremely Hard). You start with 3 lives - each wrong answer or timeout costs 1 life. Higher difficulty means more points! Now let\'s look at the multiplayer option.';
 
   @override
-  String get tourCombatTitle => 'Combat Mode';
+  String get tourCombatTitle => 'Combat Mode - Bluetooth Multiplayer';
 
   @override
   String get tourCombatDesc =>
-      'Battle against friends in real-time using Bluetooth! No internet required. Two players solve the same challenges simultaneously - the fastest wins!';
+      'Combat Mode lets you battle a friend via Bluetooth! Two players take turns solving equations - no WiFi needed, just stay within 10 meters. The host plays first initially, but in rematches the loser goes first. You have two ways to start a match:';
 
   @override
-  String get tourCreateRoomTitle => 'Create Room';
+  String get tourCreateRoomTitle => 'Combat Mode → Create Room';
 
   @override
   String get tourCreateRoomDesc =>
-      'Host a game for your friend! Choose your difficulty level and share your room code. Your opponent can join using Nearby Connections or by scanning your QR code.';
+      'First option: Create Room makes you the host! After granting Bluetooth permissions, you\'ll wait for a guest to join your room, then choose the difficulty level. As host, you play first in the initial match. Or you can join someone else\'s game:';
 
   @override
-  String get tourJoinRoomTitle => 'Join Room';
+  String get tourJoinRoomTitle => 'Combat Mode → Join Room';
 
   @override
   String get tourJoinRoomDesc =>
-      'Join a friend\'s game! Enter their room code or scan their QR code to connect. Make sure you\'re within Bluetooth range for the best experience.';
+      'Second option: Join Room makes you the guest! After granting permissions, you\'ll scan for nearby rooms, select one, and tap ready. The host chooses difficulty, and you\'ll play second in the initial match. Now let\'s check the other menu features.';
 
   @override
-  String get tourLeaderboardTitle => 'Top Scores';
+  String get tourLeaderboardTitle => 'Top Score - Leaderboards';
 
   @override
   String get tourLeaderboardDesc =>
-      'Check out the best players! View high scores, track your progress, and compete to reach the top. Can you beat the current champions?';
+      'Track your progress here! View global rankings, your personal records, and statistics including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Finally, let\'s visit Settings.';
 
   @override
-  String get tourSettingsTitle => 'Settings';
+  String get tourSettingsTitle => 'Settings - Customize';
 
   @override
   String get tourSettingsDesc =>
-      'Customize your experience! Adjust sound, change language, modify difficulty, and personalize the app to your liking. You can also restart this tour anytime from here.';
+      'Customize everything here! Change your username, select a theme, adjust sound/music, choose your language, and manage privacy settings. You can restart this tour anytime from here. That\'s it - you\'re ready to play!';
 
   @override
   String get tourNext => 'Next';

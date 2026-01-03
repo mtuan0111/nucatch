@@ -654,69 +654,76 @@ class AppLocalizationsHi extends AppLocalizations {
       'सुनिश्चित करें कि डिवाइस 10 मीटर से कम दूरी पर हैं';
 
   @override
-  String get tourButtonLabel => 'Start Tour';
+  String get tourButtonLabel => 'टूर शुरू करें';
 
   @override
-  String get tourStartTitle => 'Let\'s Get Started!';
+  String get tourWelcomeTitle => 'NuCatch में आपका स्वागत है!';
+
+  @override
+  String get tourWelcomeDesc =>
+      'स्वागत है! यह त्वरित दौरा NuCatch के साथ सुगमता से शुरूआत करने में आपकी मदद करेगा। हम आपको सभी मुख्य सुविधाएं दिखाएंगे ताकि आप सीधे शुरू कर सकें। शुरू करते हैं!';
+
+  @override
+  String get tourStartTitle => 'शुरू करें - अपना गेम शुरू करें';
 
   @override
   String get tourStartDesc =>
-      'This button opens both Solo and Combat modes. Tap it and I\'ll explain more inside!';
+      'शुरू करने के लिए स्टार्ट बटन टैप करें। फिर आप सिंगल-प्लेयर गणितीय चुनौतियों के लिए सोलो मोड, या ब्लूटूथ के माध्यम से रीयल-टाइम मल्टीप्लेयर युद्धों के लिए कॉम्बैट मोड के बीच चुनेंगे। आइए दोनों विकल्पों का अन्वेषण करें!';
 
   @override
-  String get tourSoloTitle => 'Solo Mode';
+  String get tourSoloTitle => 'सोलो मोड - अकेले खेलें';
 
   @override
   String get tourSoloDesc =>
-      'Challenge yourself! Tap numbers to solve math problems or match sequences. The faster you are, the higher your score. Each correct answer levels you up with harder challenges!';
+      'सोलो मोड में, गणितीय समीकरणों के साथ खुद को चुनौती दें! 4 कठिनाई स्तरों में से चुनें (आसान से अत्यंत कठिन तक)। आप 3 जीवन के साथ शुरू करते हैं - प्रत्येक गलत उत्तर या टाइमआउट 1 जीवन खर्च करता है। उच्च कठिनाई का मतलब अधिक अंक हैं! अब मल्टीप्लेयर विकल्प देखें।';
 
   @override
-  String get tourCombatTitle => 'Combat Mode';
+  String get tourCombatTitle => 'कॉम्बैट मोड - ब्लूटूथ मल्टीप्लेयर';
 
   @override
   String get tourCombatDesc =>
-      'Battle against friends in real-time using Bluetooth! No internet required. Two players solve the same challenges simultaneously - the fastest wins!';
+      'कॉम्बैट मोड आपको ब्लूटूथ के माध्यम से एक दोस्त के साथ लड़ने की अनुमति देता है! दो खिलाड़ी बारी-बारी से समीकरणों को हल करते हैं - कोई वाईफाई की आवश्यकता नहीं, बस 10 मीटर के भीतर रहें। मेजबान शुरू में पहले खेलता है, लेकिन री-मैचों में हारने वाला पहले जाता है। आपके पास मैच शुरू करने के दो तरीके हैं:';
 
   @override
-  String get tourCreateRoomTitle => 'Create Room';
+  String get tourCreateRoomTitle => 'कॉम्बैट मोड → रूम बनाएं';
 
   @override
   String get tourCreateRoomDesc =>
-      'Host a game for your friend! Choose your difficulty level and share your room code. Your opponent can join using Nearby Connections or by scanning your QR code.';
+      'पहला विकल्प: रूम बनाएं आपको मेजबान बनाता है! ब्लूटूथ अनुमतियाँ देने के बाद, आप एक अतिथि के अपने कमरे में शामिल होने का इंतजार करेंगे, फिर कठिनाई स्तर चुनेंगे। मेजबान के रूप में, आप प्रारंभिक मैच में पहले खेलते हैं। या आप किसी और के गेम में शामिल हो सकते हैं:';
 
   @override
-  String get tourJoinRoomTitle => 'Join Room';
+  String get tourJoinRoomTitle => 'कॉम्बैट मोड → रूम में शामिल हों';
 
   @override
   String get tourJoinRoomDesc =>
-      'Join a friend\'s game! Enter their room code or scan their QR code to connect. Make sure you\'re within Bluetooth range for the best experience.';
+      'दूसरा विकल्प: रूम में शामिल होना आपको अतिथि बनाता है! अनुमतियाँ देने के बाद, आप आस-पास के कमरों को स्कैन करेंगे, एक का चयन करेंगे और तैयार टैप करेंगे। मेजबान कठिनाई चुनता है, और आप प्रारंभिक मैच में दूसरे खेलेंगे। अब अन्य मेनू सुविधाओं की जाँच करें।';
 
   @override
-  String get tourLeaderboardTitle => 'Top Scores';
+  String get tourLeaderboardTitle => 'शीर्ष स्कोर - लीडरबोर्ड';
 
   @override
   String get tourLeaderboardDesc =>
-      'Check out the best players! View high scores, track your progress, and compete to reach the top. Can you beat the current champions?';
+      'यहाँ अपनी प्रगति ट्रैक करें! वैश्विक रैंकिंग, अपने व्यक्तिगत रिकॉर्ड और सांख्यिकी देखें जिसमें खेले गए गेम, जीत दर, सटीकता और कठिनाई स्तर के अनुसार स्कोर शामिल हैं। दोस्तों के साथ तुलना करें और देखें कि आप समय के साथ कैसे सुधरते हैं। अंत में, सेटिंग्स पर जाएँ।';
 
   @override
-  String get tourSettingsTitle => 'Settings';
+  String get tourSettingsTitle => 'सेटिंग्स - अनुकूलित करें';
 
   @override
   String get tourSettingsDesc =>
-      'Customize your experience! Adjust sound, change language, modify difficulty, and personalize the app to your liking. You can also restart this tour anytime from here.';
+      'यहाँ सब कुछ अनुकूलित करें! अपना उपयोगकर्ता नाम बदलें, एक थीम चुनें, साउंड/म्यूज़िक समायोजित करें, अपनी भाषा चुनें और गोपनीयता सेटिंग्स प्रबंधित करें। आप यहाँ से किसी भी समय इस टूर को पुनः प्रारंभ कर सकते हैं। बस इतना ही - आप खेलने के लिए तैयार हैं!';
 
   @override
-  String get tourNext => 'Next';
+  String get tourNext => 'अगला';
 
   @override
-  String get tourPrevious => 'Previous';
+  String get tourPrevious => 'पिछला';
 
   @override
-  String get tourSkip => 'Skip Tour';
+  String get tourSkip => 'टूर छोड़ें';
 
   @override
-  String get tourFinish => 'Finish';
+  String get tourFinish => 'समाप्त करें';
 
   @override
-  String get tourRestartFromSettings => 'Restart Tour';
+  String get tourRestartFromSettings => 'टूर पुनः प्रारंभ करें';
 }

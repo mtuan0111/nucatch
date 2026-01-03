@@ -632,69 +632,76 @@ class AppLocalizationsJa extends AppLocalizations {
   String get distanceWarning => 'デバイスが10メートル以内にあることを確認してください';
 
   @override
-  String get tourButtonLabel => 'Start Tour';
+  String get tourButtonLabel => 'ツアーを開始';
 
   @override
-  String get tourStartTitle => 'Let\'s Get Started!';
+  String get tourWelcomeTitle => 'NuCatchへようこそ!';
+
+  @override
+  String get tourWelcomeDesc =>
+      'ようこそ! この簡単なツアーは、NuCatchをスムーズに始めるのに役立ちます。主要な機能をすべてお見せしますので、すぐにプレイを始められます。始めましょう!';
+
+  @override
+  String get tourStartTitle => 'スタート - ゲームを始める';
 
   @override
   String get tourStartDesc =>
-      'This button opens both Solo and Combat modes. Tap it and I\'ll explain more inside!';
+      'スタートボタンをタップして始めましょう。次に、シングルプレイヤーの数学チャレンジ用のソロモード、またはBluetoothを介したリアルタイムマルチプレイヤーバトル用のコンバットモードを選択します。両方のオプションを見てみましょう!';
 
   @override
-  String get tourSoloTitle => 'Solo Mode';
+  String get tourSoloTitle => 'ソロモード - 一人でプレイ';
 
   @override
   String get tourSoloDesc =>
-      'Challenge yourself! Tap numbers to solve math problems or match sequences. The faster you are, the higher your score. Each correct answer levels you up with harder challenges!';
+      'ソロモードでは、数学の方程式で自分に挑戦してください! 4つの難易度レベル(簡単から非常に難しいまで)から選択します。3つのライフで始まり、間違った答えやタイムアウトごとに1ライフを失います。難易度が高いほど、より多くのポイントを獲得できます! 次はマルチプレイヤーオプションを見てみましょう。';
 
   @override
-  String get tourCombatTitle => 'Combat Mode';
+  String get tourCombatTitle => 'コンバットモード - Bluetoothマルチプレイヤー';
 
   @override
   String get tourCombatDesc =>
-      'Battle against friends in real-time using Bluetooth! No internet required. Two players solve the same challenges simultaneously - the fastest wins!';
+      'コンバットモードでは、Bluetoothを介して友達とバトルできます! 2人のプレイヤーが交互に方程式を解きます - WiFiは不要で、10メートル以内にいるだけです。ホストが最初に最初にプレイしますが、再戦では敗者が最初にプレイします。マッチを開始する2つの方法があります:';
 
   @override
-  String get tourCreateRoomTitle => 'Create Room';
+  String get tourCreateRoomTitle => 'コンバットモード → ルームを作成';
 
   @override
   String get tourCreateRoomDesc =>
-      'Host a game for your friend! Choose your difficulty level and share your room code. Your opponent can join using Nearby Connections or by scanning your QR code.';
+      '最初のオプション: ルームを作成すると、あなたがホストになります! Bluetoothの許可を与えた後、ゲストがあなたのルームに参加するのを待ち、その後難易度レベルを選択します。ホストとして、最初のマッチで最初にプレイします。または、他の人のゲームに参加できます:';
 
   @override
-  String get tourJoinRoomTitle => 'Join Room';
+  String get tourJoinRoomTitle => 'コンバットモード → ルームに参加';
 
   @override
   String get tourJoinRoomDesc =>
-      'Join a friend\'s game! Enter their room code or scan their QR code to connect. Make sure you\'re within Bluetooth range for the best experience.';
+      '2番目のオプション: ルームに参加すると、あなたがゲストになります! 許可を与えた後、近くのルームをスキャンし、1つを選択して準備完了をタップします。ホストが難易度を選択し、最初のマッチで2番目にプレイします。それでは、他のメニュー機能を確認しましょう。';
 
   @override
-  String get tourLeaderboardTitle => 'Top Scores';
+  String get tourLeaderboardTitle => 'トップスコア - リーダーボード';
 
   @override
   String get tourLeaderboardDesc =>
-      'Check out the best players! View high scores, track your progress, and compete to reach the top. Can you beat the current champions?';
+      'ここで進捗を追跡しましょう! グローバルランキング、個人記録、プレイしたゲーム、勝率、精度、難易度レベル別のスコアなどの統計を表示します。友達と比較し、時間の経過とともにどのように向上するかを確認してください。最後に、設定にアクセスしましょう。';
 
   @override
-  String get tourSettingsTitle => 'Settings';
+  String get tourSettingsTitle => '設定 - カスタマイズ';
 
   @override
   String get tourSettingsDesc =>
-      'Customize your experience! Adjust sound, change language, modify difficulty, and personalize the app to your liking. You can also restart this tour anytime from here.';
+      'ここですべてをカスタマイズしましょう! ユーザー名を変更し、テーマを選択し、サウンド/音楽を調整し、言語を選択し、プライバシー設定を管理します。ここからいつでもこのツアーを再開できます。以上です - プレイする準備ができました!';
 
   @override
-  String get tourNext => 'Next';
+  String get tourNext => '次へ';
 
   @override
-  String get tourPrevious => 'Previous';
+  String get tourPrevious => '前へ';
 
   @override
-  String get tourSkip => 'Skip Tour';
+  String get tourSkip => 'ツアーをスキップ';
 
   @override
-  String get tourFinish => 'Finish';
+  String get tourFinish => '完了';
 
   @override
-  String get tourRestartFromSettings => 'Restart Tour';
+  String get tourRestartFromSettings => 'ツアーを再開';
 }

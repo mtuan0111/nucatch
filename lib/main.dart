@@ -17,6 +17,7 @@ import 'package:nucatch/helpers/theme_config.dart';
 import 'package:nucatch/localization/app_localizations.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 import 'package:nucatch/screens/wrappers/update_checker_wrapper.dart';
+import 'package:nucatch/widgets/global_tour_wrapper.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nucatch/firebase_options.dart';
@@ -166,8 +167,10 @@ class _MyAppState extends State<MyApp> {
                       ],
                       child: Container(
                         decoration: LayoutConfig(context).gradientDecoration,
-                        child: const UpdateCheckerWrapper(
-                          child: MenuNav(),
+                        child: GlobalTourWrapper(
+                          child: const UpdateCheckerWrapper(
+                            child: MenuNav(),
+                          ),
                         ),
                       ),
                     ),

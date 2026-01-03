@@ -657,69 +657,76 @@ class AppLocalizationsFr extends AppLocalizations {
       'Assurez-vous que les appareils sont à moins de 10 mètres de distance';
 
   @override
-  String get tourButtonLabel => 'Start Tour';
+  String get tourButtonLabel => 'Démarrer la visite';
 
   @override
-  String get tourStartTitle => 'Let\'s Get Started!';
+  String get tourWelcomeTitle => 'Bienvenue sur NuCatch!';
+
+  @override
+  String get tourWelcomeDesc =>
+      'Bienvenue! Cette visite rapide vous aidera à démarrer en douceur avec NuCatch. Nous vous montrerons toutes les fonctionnalités principales pour que vous puissiez vous lancer et commencer à jouer immédiatement. Commençons!';
+
+  @override
+  String get tourStartTitle => 'Démarrer - Commencez votre jeu';
 
   @override
   String get tourStartDesc =>
-      'This button opens both Solo and Combat modes. Tap it and I\'ll explain more inside!';
+      'Appuyez sur le bouton Démarrer pour commencer. Vous choisirez ensuite entre le Mode Solo pour des défis mathématiques en solo, ou le Mode Combat pour des batailles multijoueurs en temps réel via Bluetooth. Explorons les deux options!';
 
   @override
-  String get tourSoloTitle => 'Solo Mode';
+  String get tourSoloTitle => 'Mode Solo - Jouez seul';
 
   @override
   String get tourSoloDesc =>
-      'Challenge yourself! Tap numbers to solve math problems or match sequences. The faster you are, the higher your score. Each correct answer levels you up with harder challenges!';
+      'En Mode Solo, défiez-vous avec des équations mathématiques! Choisissez parmi 4 niveaux de difficulté (Facile à Extrêmement Difficile). Vous commencez avec 3 vies - chaque mauvaise réponse ou expiration coûte 1 vie. Plus la difficulté est élevée, plus vous gagnez de points! Voyons maintenant l\'option multijoueur.';
 
   @override
-  String get tourCombatTitle => 'Combat Mode';
+  String get tourCombatTitle => 'Mode Combat - Multijoueur Bluetooth';
 
   @override
   String get tourCombatDesc =>
-      'Battle against friends in real-time using Bluetooth! No internet required. Two players solve the same challenges simultaneously - the fastest wins!';
+      'Le Mode Combat vous permet de vous battre contre un ami via Bluetooth! Deux joueurs résolvent à tour de rôle des équations - pas besoin de WiFi, restez juste à moins de 10 mètres. L\'hôte joue en premier initialement, mais lors des revanches, le perdant commence. Vous avez deux façons de commencer un match:';
 
   @override
-  String get tourCreateRoomTitle => 'Create Room';
+  String get tourCreateRoomTitle => 'Mode Combat → Créer une salle';
 
   @override
   String get tourCreateRoomDesc =>
-      'Host a game for your friend! Choose your difficulty level and share your room code. Your opponent can join using Nearby Connections or by scanning your QR code.';
+      'Première option: Créer une salle fait de vous l\'hôte! Après avoir accordé les autorisations Bluetooth, vous attendrez qu\'un invité rejoigne votre salle, puis vous choisirez le niveau de difficulté. En tant qu\'hôte, vous jouez en premier dans le match initial. Ou vous pouvez rejoindre la partie de quelqu\'un d\'autre:';
 
   @override
-  String get tourJoinRoomTitle => 'Join Room';
+  String get tourJoinRoomTitle => 'Mode Combat → Rejoindre une salle';
 
   @override
   String get tourJoinRoomDesc =>
-      'Join a friend\'s game! Enter their room code or scan their QR code to connect. Make sure you\'re within Bluetooth range for the best experience.';
+      'Deuxième option: Rejoindre une salle fait de vous l\'invité! Après avoir accordé les autorisations, vous rechercherez les salles à proximité, en sélectionnerez une et appuierez sur prêt. L\'hôte choisit la difficulté, et vous jouerez en deuxième dans le match initial. Vérifions maintenant les autres fonctionnalités du menu.';
 
   @override
-  String get tourLeaderboardTitle => 'Top Scores';
+  String get tourLeaderboardTitle => 'Meilleur score - Classements';
 
   @override
   String get tourLeaderboardDesc =>
-      'Check out the best players! View high scores, track your progress, and compete to reach the top. Can you beat the current champions?';
+      'Suivez vos progrès ici! Consultez les classements mondiaux, vos records personnels et les statistiques, y compris les parties jouées, le taux de victoire, la précision et les scores par niveau de difficulté. Comparez avec des amis et observez comment vous vous améliorez au fil du temps. Enfin, visitons les Paramètres.';
 
   @override
-  String get tourSettingsTitle => 'Settings';
+  String get tourSettingsTitle => 'Paramètres - Personnaliser';
 
   @override
   String get tourSettingsDesc =>
-      'Customize your experience! Adjust sound, change language, modify difficulty, and personalize the app to your liking. You can also restart this tour anytime from here.';
+      'Personnalisez tout ici! Changez votre nom d\'utilisateur, sélectionnez un thème, ajustez le son/la musique, choisissez votre langue et gérez les paramètres de confidentialité. Vous pouvez redémarrer cette visite à tout moment depuis ici. C\'est tout - vous êtes prêt à jouer!';
 
   @override
-  String get tourNext => 'Next';
+  String get tourNext => 'Suivant';
 
   @override
-  String get tourPrevious => 'Previous';
+  String get tourPrevious => 'Précédent';
 
   @override
-  String get tourSkip => 'Skip Tour';
+  String get tourSkip => 'Passer la visite';
 
   @override
-  String get tourFinish => 'Finish';
+  String get tourFinish => 'Terminer';
 
   @override
-  String get tourRestartFromSettings => 'Restart Tour';
+  String get tourRestartFromSettings => 'Redémarrer la visite';
 }

@@ -655,69 +655,76 @@ class AppLocalizationsVi extends AppLocalizations {
       'Đảm bảo các thiết bị cách nhau trong vòng 10 mét';
 
   @override
-  String get tourButtonLabel => 'Start Tour';
+  String get tourButtonLabel => 'Bắt đầu Tour';
 
   @override
-  String get tourStartTitle => 'Let\'s Get Started!';
+  String get tourWelcomeTitle => 'Chào mừng đến với NuCatch!';
+
+  @override
+  String get tourWelcomeDesc =>
+      'Chào mừng! Tour nhanh này sẽ giúp bạn bắt đầu một cách suôn sẻ với NuCatch. Chúng tôi sẽ chỉ cho bạn tất cả các tính năng chính để bạn có thể bắt đầu chơi ngay. Bắt đầu thôi!';
+
+  @override
+  String get tourStartTitle => 'Bắt đầu - Bắt đầu trò chơi của bạn';
 
   @override
   String get tourStartDesc =>
-      'This button opens both Solo and Combat modes. Tap it and I\'ll explain more inside!';
+      'Nhấn nút Bắt đầu để bắt đầu. Sau đó bạn sẽ chọn giữa Chế độ Solo cho các thử thách toán học một người chơi, hoặc Chế độ Chiến đấu cho các trận chiến nhiều người chơi theo thời gian thực qua Bluetooth. Hãy khám phá cả hai tùy chọn!';
 
   @override
-  String get tourSoloTitle => 'Solo Mode';
+  String get tourSoloTitle => 'Chế độ Solo - Chơi một mình';
 
   @override
   String get tourSoloDesc =>
-      'Challenge yourself! Tap numbers to solve math problems or match sequences. The faster you are, the higher your score. Each correct answer levels you up with harder challenges!';
+      'Trong Chế độ Solo, thách thức bản thân với các phương trình toán học! Chọn từ 4 cấp độ khó (Dễ đến Cực khó). Bạn bắt đầu với 3 mạng - mỗi câu trả lời sai hoặc hết thời gian tốn 1 mạng. Độ khó cao hơn có nghĩa là nhiều điểm hơn! Bây giờ hãy xem tùy chọn nhiều người chơi.';
 
   @override
-  String get tourCombatTitle => 'Combat Mode';
+  String get tourCombatTitle => 'Chế độ Chiến đấu - Nhiều người chơi Bluetooth';
 
   @override
   String get tourCombatDesc =>
-      'Battle against friends in real-time using Bluetooth! No internet required. Two players solve the same challenges simultaneously - the fastest wins!';
+      'Chế độ Chiến đấu cho phép bạn chiến đấu với bạn bè qua Bluetooth! Hai người chơi thay phiên nhau giải phương trình - không cần WiFi, chỉ cần ở trong phạm vi 10 mét. Chủ phòng chơi trước ban đầu, nhưng trong các trận tái đấu, người thua chơi trước. Bạn có hai cách để bắt đầu trận đấu:';
 
   @override
-  String get tourCreateRoomTitle => 'Create Room';
+  String get tourCreateRoomTitle => 'Chế độ Chiến đấu → Tạo phòng';
 
   @override
   String get tourCreateRoomDesc =>
-      'Host a game for your friend! Choose your difficulty level and share your room code. Your opponent can join using Nearby Connections or by scanning your QR code.';
+      'Tùy chọn đầu tiên: Tạo phòng làm cho bạn trở thành chủ phòng! Sau khi cấp quyền Bluetooth, bạn sẽ đợi khách tham gia phòng của mình, sau đó chọn cấp độ khó. Là chủ phòng, bạn chơi trước trong trận đấu ban đầu. Hoặc bạn có thể tham gia trò chơi của người khác:';
 
   @override
-  String get tourJoinRoomTitle => 'Join Room';
+  String get tourJoinRoomTitle => 'Chế độ Chiến đấu → Tham gia phòng';
 
   @override
   String get tourJoinRoomDesc =>
-      'Join a friend\'s game! Enter their room code or scan their QR code to connect. Make sure you\'re within Bluetooth range for the best experience.';
+      'Tùy chọn thứ hai: Tham gia phòng làm cho bạn trở thành khách! Sau khi cấp quyền, bạn sẽ quét các phòng gần đó, chọn một phòng và nhấn sẵn sàng. Chủ phòng chọn độ khó, và bạn sẽ chơi thứ hai trong trận đấu ban đầu. Bây giờ hãy kiểm tra các tính năng menu khác.';
 
   @override
-  String get tourLeaderboardTitle => 'Top Scores';
+  String get tourLeaderboardTitle => 'Điểm cao nhất - Bảng xếp hạng';
 
   @override
   String get tourLeaderboardDesc =>
-      'Check out the best players! View high scores, track your progress, and compete to reach the top. Can you beat the current champions?';
+      'Theo dõi tiến trình của bạn tại đây! Xem bảng xếp hạng toàn cầu, kỷ lục cá nhân của bạn và số liệu thống kê bao gồm các trò chơi đã chơi, tỷ lệ thắng, độ chính xác và điểm số theo cấp độ khó. So sánh với bạn bè và xem bạn cải thiện như thế nào theo thời gian. Cuối cùng, hãy truy cập Cài đặt.';
 
   @override
-  String get tourSettingsTitle => 'Settings';
+  String get tourSettingsTitle => 'Cài đặt - Tùy chỉnh';
 
   @override
   String get tourSettingsDesc =>
-      'Customize your experience! Adjust sound, change language, modify difficulty, and personalize the app to your liking. You can also restart this tour anytime from here.';
+      'Tùy chỉnh mọi thứ tại đây! Thay đổi tên người dùng của bạn, chọn chủ đề, điều chỉnh âm thanh/nhạc, chọn ngôn ngữ của bạn và quản lý cài đặt quyền riêng tư. Bạn có thể khởi động lại tour này bất cứ lúc nào từ đây. Đó là tất cả - bạn đã sẵn sàng chơi!';
 
   @override
-  String get tourNext => 'Next';
+  String get tourNext => 'Tiếp theo';
 
   @override
-  String get tourPrevious => 'Previous';
+  String get tourPrevious => 'Trước đó';
 
   @override
-  String get tourSkip => 'Skip Tour';
+  String get tourSkip => 'Bỏ qua Tour';
 
   @override
-  String get tourFinish => 'Finish';
+  String get tourFinish => 'Hoàn thành';
 
   @override
-  String get tourRestartFromSettings => 'Restart Tour';
+  String get tourRestartFromSettings => 'Khởi động lại Tour';
 }

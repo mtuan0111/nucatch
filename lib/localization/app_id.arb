@@ -933,5 +933,27 @@
   "distanceWarning": "Pastikan perangkat berjarak kurang dari 10 meter",
   "@distanceWarning": {
     "description": "Warning about device proximity for Nearby Connections"
-  }
+  },
+  "tourButtonLabel": "Mulai Tur",
+  "tourWelcomeTitle": "Selamat datang di NuCatch!",
+  "tourWelcomeDesc": "Selamat datang! Tur singkat ini akan membantu Anda memulai dengan lancar dengan NuCatch. Kami akan menunjukkan semua fitur utama sehingga Anda dapat langsung masuk dan mulai bermain. Mari kita mulai!",
+  "tourStartTitle": "Mulai - Mulai Permainan Anda",
+  "tourStartDesc": "Ketuk tombol Mulai untuk memulai. Anda kemudian akan memilih antara Mode Solo untuk tantangan matematika pemain tunggal, atau Mode Pertarungan untuk pertempuran multipemain waktu nyata melalui Bluetooth. Mari jelajahi kedua opsi!",
+  "tourSoloTitle": "Mode Solo - Main Sendiri",
+  "tourSoloDesc": "Dalam Mode Solo, tantang diri Anda dengan persamaan matematika! Pilih dari 4 tingkat kesulitan (Mudah hingga Sangat Sulit). Anda mulai dengan 3 nyawa - setiap jawaban salah atau waktu habis menghabiskan 1 nyawa. Kesulitan lebih tinggi berarti lebih banyak poin! Sekarang mari lihat opsi multipemain.",
+  "tourCombatTitle": "Mode Pertarungan - Multipemain Bluetooth",
+  "tourCombatDesc": "Mode Pertarungan memungkinkan Anda bertarung dengan teman melalui Bluetooth! Dua pemain bergantian menyelesaikan persamaan - tidak perlu WiFi, cukup tetap dalam jarak 10 meter. Tuan rumah bermain pertama awalnya, tetapi dalam pertandingan ulang yang kalah bermain pertama. Anda memiliki dua cara untuk memulai pertandingan:",
+  "tourCreateRoomTitle": "Mode Pertarungan → Buat Ruangan",
+  "tourCreateRoomDesc": "Opsi pertama: Buat Ruangan membuat Anda menjadi tuan rumah! Setelah memberikan izin Bluetooth, Anda akan menunggu tamu bergabung dengan ruangan Anda, lalu memilih tingkat kesulitan. Sebagai tuan rumah, Anda bermain pertama di pertandingan awal. Atau Anda bisa bergabung dengan permainan orang lain:",
+  "tourJoinRoomTitle": "Mode Pertarungan → Bergabung dengan Ruangan",
+  "tourJoinRoomDesc": "Opsi kedua: Bergabung dengan Ruangan membuat Anda menjadi tamu! Setelah memberikan izin, Anda akan memindai ruangan terdekat, memilih satu, dan mengetuk siap. Tuan rumah memilih kesulitan, dan Anda akan bermain kedua di pertandingan awal. Sekarang mari periksa fitur menu lainnya.",
+  "tourLeaderboardTitle": "Skor Tertinggi - Papan Peringkat",
+  "tourLeaderboardDesc": "Lacak kemajuan Anda di sini! Lihat peringkat global, rekor pribadi Anda, dan statistik termasuk permainan yang dimainkan, tingkat kemenangan, akurasi, dan skor menurut tingkat kesulitan. Bandingkan dengan teman dan lihat bagaimana Anda berkembang dari waktu ke waktu. Terakhir, mari kunjungi Pengaturan.",
+  "tourSettingsTitle": "Pengaturan - Sesuaikan",
+  "tourSettingsDesc": "Sesuaikan semuanya di sini! Ubah nama pengguna Anda, pilih tema, sesuaikan suara/musik, pilih bahasa Anda, dan kelola pengaturan privasi. Anda dapat memulai ulang tur ini kapan saja dari sini. Itu saja - Anda siap bermain!",
+  "tourNext": "Berikutnya",
+  "tourPrevious": "Sebelumnya",
+  "tourSkip": "Lewati Tur",
+  "tourFinish": "Selesai",
+  "tourRestartFromSettings": "Mulai Ulang Tur"
 }

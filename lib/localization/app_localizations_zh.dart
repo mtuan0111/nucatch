@@ -626,69 +626,76 @@ class AppLocalizationsZh extends AppLocalizations {
   String get distanceWarning => '请确保设备距离在 10 米以内';
 
   @override
-  String get tourButtonLabel => 'Start Tour';
+  String get tourButtonLabel => '开始导览';
 
   @override
-  String get tourStartTitle => 'Let\'s Get Started!';
+  String get tourWelcomeTitle => '欢迎来到 NuCatch!';
+
+  @override
+  String get tourWelcomeDesc =>
+      '欢迎! 这个快速导览将帮助您顺利开始使用 NuCatch。我们将向您展示所有主要功能，让您立即开始游戏。让我们开始吧!';
+
+  @override
+  String get tourStartTitle => '开始 - 开始您的游戏';
 
   @override
   String get tourStartDesc =>
-      'This button opens both Solo and Combat modes. Tap it and I\'ll explain more inside!';
+      '点击开始按钮开始。然后您将在单人数学挑战的单人模式，或通过蓝牙进行实时多人对战的战斗模式之间进行选择。让我们探索这两个选项!';
 
   @override
-  String get tourSoloTitle => 'Solo Mode';
+  String get tourSoloTitle => '单人模式 - 单独游戏';
 
   @override
   String get tourSoloDesc =>
-      'Challenge yourself! Tap numbers to solve math problems or match sequences. The faster you are, the higher your score. Each correct answer levels you up with harder challenges!';
+      '在单人模式中，用数学方程式挑战自己! 从4个难度级别中选择（简单到极难）。您从3条生命开始 - 每个错误答案或超时花费1条生命。更高的难度意味着更多的分数! 现在让我们看看多人游戏选项。';
 
   @override
-  String get tourCombatTitle => 'Combat Mode';
+  String get tourCombatTitle => '战斗模式 - 蓝牙多人游戏';
 
   @override
   String get tourCombatDesc =>
-      'Battle against friends in real-time using Bluetooth! No internet required. Two players solve the same challenges simultaneously - the fastest wins!';
+      '战斗模式让您通过蓝牙与朋友对战! 两名玩家轮流解决方程式 - 不需要WiFi，只需保持在10米范围内。主机最初先玩，但在复赛中失败者先玩。您有两种方式开始比赛:';
 
   @override
-  String get tourCreateRoomTitle => 'Create Room';
+  String get tourCreateRoomTitle => '战斗模式 → 创建房间';
 
   @override
   String get tourCreateRoomDesc =>
-      'Host a game for your friend! Choose your difficulty level and share your room code. Your opponent can join using Nearby Connections or by scanning your QR code.';
+      '第一个选项: 创建房间使您成为主机! 授予蓝牙权限后，您将等待客人加入您的房间，然后选择难度级别。作为主机，您在初始比赛中先玩。或者您可以加入其他人的游戏:';
 
   @override
-  String get tourJoinRoomTitle => 'Join Room';
+  String get tourJoinRoomTitle => '战斗模式 → 加入房间';
 
   @override
   String get tourJoinRoomDesc =>
-      'Join a friend\'s game! Enter their room code or scan their QR code to connect. Make sure you\'re within Bluetooth range for the best experience.';
+      '第二个选项: 加入房间使您成为客人! 授予权限后，您将扫描附近的房间，选择一个并点击准备。主机选择难度，您将在初始比赛中第二个玩。现在让我们检查其他菜单功能。';
 
   @override
-  String get tourLeaderboardTitle => 'Top Scores';
+  String get tourLeaderboardTitle => '最高分 - 排行榜';
 
   @override
   String get tourLeaderboardDesc =>
-      'Check out the best players! View high scores, track your progress, and compete to reach the top. Can you beat the current champions?';
+      '在这里跟踪您的进度! 查看全球排名、您的个人记录和统计数据，包括玩过的游戏、胜率、准确性和按难度级别的分数。与朋友比较，看看您如何随时间改进。最后，让我们访问设置。';
 
   @override
-  String get tourSettingsTitle => 'Settings';
+  String get tourSettingsTitle => '设置 - 自定义';
 
   @override
   String get tourSettingsDesc =>
-      'Customize your experience! Adjust sound, change language, modify difficulty, and personalize the app to your liking. You can also restart this tour anytime from here.';
+      '在这里自定义一切! 更改您的用户名，选择主题，调整声音/音乐，选择您的语言并管理隐私设置。您可以随时从这里重新启动此导览。就是这样 - 您准备好玩了!';
 
   @override
-  String get tourNext => 'Next';
+  String get tourNext => '下一步';
 
   @override
-  String get tourPrevious => 'Previous';
+  String get tourPrevious => '上一步';
 
   @override
-  String get tourSkip => 'Skip Tour';
+  String get tourSkip => '跳过导览';
 
   @override
-  String get tourFinish => 'Finish';
+  String get tourFinish => '完成';
 
   @override
-  String get tourRestartFromSettings => 'Restart Tour';
+  String get tourRestartFromSettings => '重新启动导览';
 }

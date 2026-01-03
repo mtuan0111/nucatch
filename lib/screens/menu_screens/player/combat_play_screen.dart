@@ -1213,15 +1213,18 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     final wasLifeDecreasedForAnimation = _prevLifeForAnimation != null &&
         state.lifeRemaining < _prevLifeForAnimation!;
 
+    // Track opponent score changes
+    final wasOpponentScoreIncreased = _prevOpponentScoreForAnimation != null &&
+        state.opponentScore > _prevOpponentScoreForAnimation!;
+
     // Trigger point animation
     if (wasPointIncreased) {
       final scorePosition = _getWidgetPosition(_scoreKey);
       _animationKey.currentState?.triggers.onAddPoint(scorePosition);
     }
 
-    // Trigger opponent score animation (small firework) when they successfully complete
-    // Use opponentJustSucceeded flag instead of score change for immediate fireworks
-    if (state.opponentJustSucceeded) {
+    // Trigger opponent score animation (small firework)
+    if (wasOpponentScoreIncreased) {
       final opponentScorePosition = _getWidgetPosition(_opponentScoreKey);
       _animationKey.currentState?.triggers.onAddPoint(opponentScorePosition);
     }
@@ -1246,7 +1249,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
         state.lifeRemaining != _prevLifeForAnimation) {
       _prevLifeForAnimation = state.lifeRemaining;
     }
-    // Keep tracking opponent score for other purposes if needed
     if (_prevOpponentScoreForAnimation == null ||
         state.opponentScore != _prevOpponentScoreForAnimation) {
       _prevOpponentScoreForAnimation = state.opponentScore;

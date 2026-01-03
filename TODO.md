@@ -7,6 +7,7 @@
 - [ ] Explain combat, and solo mode features
 - [ ] Tutorial for hosting and joining rooms
 - [ ] Nearby Connections permission explanations
+- 
 
 ### 2. Distance Warning for Bluetooth Connection
 - [x] Add note in host room screen: "Make sure devices are within 10 meters distance"
@@ -72,6 +73,13 @@
 - [ ] Implement real-time progress tracking for both players
 - [ ] Ensure low-latency updates for typing status
 <!-- Update the required string into the opponent after each time the user typing correctly, easier to let the opponent catchup the typing statement of the user, let them get more ready for their turn -->
+
+### 13. Play Again in Play Screen
+- [ ] Add "Play Again" button to the menu in `play_screen.dart`
+- [ ] Implement logic to reset game state and start a new match
+- [ ] Ensure consistency with existing UI buttons and layouts
+- [ ] Verify that all game resources are re-initialized correctly
+
 
 
 # TODO List

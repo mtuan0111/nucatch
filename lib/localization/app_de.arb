@@ -933,5 +933,27 @@
   "distanceWarning": "Stelle sicher, dass die Geräte weniger als 10 Meter entfernt sind",
   "@distanceWarning": {
     "description": "Warning about device proximity for Nearby Connections"
-  }
+  },
+  "tourButtonLabel": "Tour starten",
+  "tourWelcomeTitle": "Willkommen bei NuCatch!",
+  "tourWelcomeDesc": "Willkommen! Diese kurze Tour hilft Ihnen, problemlos mit NuCatch zu beginnen. Wir zeigen Ihnen alle Hauptfunktionen, damit Sie sofort loslegen und spielen können. Los geht's!",
+  "tourStartTitle": "Start - Beginne dein Spiel",
+  "tourStartDesc": "Tippe auf die Start-Schaltfläche, um zu beginnen. Dann wählst du zwischen Einzelmodus für mathematische Herausforderungen oder Kampfmodus für Echtzeit-Multiplayer-Kämpfe über Bluetooth. Lass uns beide Optionen erkunden!",
+  "tourSoloTitle": "Einzelmodus - Alleine spielen",
+  "tourSoloDesc": "Im Einzelmodus fordere dich selbst mit mathematischen Gleichungen heraus! Wähle aus 4 Schwierigkeitsgraden (Leicht bis Extrem Schwer). Du startest mit 3 Leben - jede falsche Antwort oder Zeitüberschreitung kostet 1 Leben. Höhere Schwierigkeit bedeutet mehr Punkte! Schauen wir uns jetzt die Multiplayer-Option an.",
+  "tourCombatTitle": "Kampfmodus - Bluetooth-Multiplayer",
+  "tourCombatDesc": "Der Kampfmodus ermöglicht dir, gegen einen Freund über Bluetooth zu kämpfen! Zwei Spieler lösen abwechselnd Gleichungen - kein WLAN erforderlich, bleibe nur innerhalb von 10 Metern. Der Gastgeber spielt zunächst zuerst, aber bei Rückspielen beginnt der Verlierer. Du hast zwei Möglichkeiten, ein Match zu starten:",
+  "tourCreateRoomTitle": "Kampfmodus → Raum erstellen",
+  "tourCreateRoomDesc": "Erste Option: Raum erstellen macht dich zum Gastgeber! Nach Erteilung der Bluetooth-Berechtigungen wartest du auf einen Gast, der deinem Raum beitritt, dann wählst du den Schwierigkeitsgrad. Als Gastgeber spielst du im ersten Match zuerst. Oder du kannst dem Spiel eines anderen beitreten:",
+  "tourJoinRoomTitle": "Kampfmodus → Raum beitreten",
+  "tourJoinRoomDesc": "Zweite Option: Raum beitreten macht dich zum Gast! Nach Erteilung der Berechtigungen scannst du nach nahegelegenen Räumen, wählst einen aus und tippst auf Bereit. Der Gastgeber wählt die Schwierigkeit, und du spielst im ersten Match als Zweiter. Schauen wir uns jetzt die anderen Menüfunktionen an.",
+  "tourLeaderboardTitle": "Top-Score - Bestenlisten",
+  "tourLeaderboardDesc": "Verfolge hier deinen Fortschritt! Sieh dir globale Rankings, deine persönlichen Rekorde und Statistiken an, einschließlich gespielter Spiele, Gewinnrate, Genauigkeit und Punktzahlen nach Schwierigkeitsgrad. Vergleiche dich mit Freunden und beobachte, wie du dich im Laufe der Zeit verbesserst. Abschließend besuchen wir die Einstellungen.",
+  "tourSettingsTitle": "Einstellungen - Anpassen",
+  "tourSettingsDesc": "Passe hier alles an! Ändere deinen Benutzernamen, wähle ein Design, passe Sound/Musik an, wähle deine Sprache und verwalte Datenschutzeinstellungen. Du kannst diese Tour jederzeit von hier aus neu starten. Das war's - du bist bereit zum Spielen!",
+  "tourNext": "Weiter",
+  "tourPrevious": "Zurück",
+  "tourSkip": "Tour überspringen",
+  "tourFinish": "Fertig",
+  "tourRestartFromSettings": "Tour neu starten"
 }

@@ -933,5 +933,27 @@
   "distanceWarning": "Assurez-vous que les appareils sont à moins de 10 mètres de distance",
   "@distanceWarning": {
     "description": "Warning about device proximity for Nearby Connections"
-  }
+  },
+  "tourButtonLabel": "Démarrer la visite",
+  "tourWelcomeTitle": "Bienvenue sur NuCatch!",
+  "tourWelcomeDesc": "Bienvenue! Cette visite rapide vous aidera à démarrer en douceur avec NuCatch. Nous vous montrerons toutes les fonctionnalités principales pour que vous puissiez vous lancer et commencer à jouer immédiatement. Commençons!",
+  "tourStartTitle": "Démarrer - Commencez votre jeu",
+  "tourStartDesc": "Appuyez sur le bouton Démarrer pour commencer. Vous choisirez ensuite entre le Mode Solo pour des défis mathématiques en solo, ou le Mode Combat pour des batailles multijoueurs en temps réel via Bluetooth. Explorons les deux options!",
+  "tourSoloTitle": "Mode Solo - Jouez seul",
+  "tourSoloDesc": "En Mode Solo, défiez-vous avec des équations mathématiques! Choisissez parmi 4 niveaux de difficulté (Facile à Extrêmement Difficile). Vous commencez avec 3 vies - chaque mauvaise réponse ou expiration coûte 1 vie. Plus la difficulté est élevée, plus vous gagnez de points! Voyons maintenant l'option multijoueur.",
+  "tourCombatTitle": "Mode Combat - Multijoueur Bluetooth",
+  "tourCombatDesc": "Le Mode Combat vous permet de vous battre contre un ami via Bluetooth! Deux joueurs résolvent à tour de rôle des équations - pas besoin de WiFi, restez juste à moins de 10 mètres. L'hôte joue en premier initialement, mais lors des revanches, le perdant commence. Vous avez deux façons de commencer un match:",
+  "tourCreateRoomTitle": "Mode Combat → Créer une salle",
+  "tourCreateRoomDesc": "Première option: Créer une salle fait de vous l'hôte! Après avoir accordé les autorisations Bluetooth, vous attendrez qu'un invité rejoigne votre salle, puis vous choisirez le niveau de difficulté. En tant qu'hôte, vous jouez en premier dans le match initial. Ou vous pouvez rejoindre la partie de quelqu'un d'autre:",
+  "tourJoinRoomTitle": "Mode Combat → Rejoindre une salle",
+  "tourJoinRoomDesc": "Deuxième option: Rejoindre une salle fait de vous l'invité! Après avoir accordé les autorisations, vous rechercherez les salles à proximité, en sélectionnerez une et appuierez sur prêt. L'hôte choisit la difficulté, et vous jouerez en deuxième dans le match initial. Vérifions maintenant les autres fonctionnalités du menu.",
+  "tourLeaderboardTitle": "Meilleur score - Classements",
+  "tourLeaderboardDesc": "Suivez vos progrès ici! Consultez les classements mondiaux, vos records personnels et les statistiques, y compris les parties jouées, le taux de victoire, la précision et les scores par niveau de difficulté. Comparez avec des amis et observez comment vous vous améliorez au fil du temps. Enfin, visitons les Paramètres.",
+  "tourSettingsTitle": "Paramètres - Personnaliser",
+  "tourSettingsDesc": "Personnalisez tout ici! Changez votre nom d'utilisateur, sélectionnez un thème, ajustez le son/la musique, choisissez votre langue et gérez les paramètres de confidentialité. Vous pouvez redémarrer cette visite à tout moment depuis ici. C'est tout - vous êtes prêt à jouer!",
+  "tourNext": "Suivant",
+  "tourPrevious": "Précédent",
+  "tourSkip": "Passer la visite",
+  "tourFinish": "Terminer",
+  "tourRestartFromSettings": "Redémarrer la visite"
 }

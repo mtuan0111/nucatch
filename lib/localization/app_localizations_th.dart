@@ -647,69 +647,76 @@ class AppLocalizationsTh extends AppLocalizations {
       'ตรวจสอบให้แน่ใจว่าอุปกรณ์อยู่ห่างกันไม่เกิน 10 เมตร';
 
   @override
-  String get tourButtonLabel => 'Start Tour';
+  String get tourButtonLabel => 'เริ่มทัวร์';
 
   @override
-  String get tourStartTitle => 'Let\'s Get Started!';
+  String get tourWelcomeTitle => 'ยินดีต้อนรับสู่ NuCatch!';
+
+  @override
+  String get tourWelcomeDesc =>
+      'ยินดีต้อนรับ! ทัวร์สั้นๆ นี้จะช่วยให้คุณเริ่มต้นกับ NuCatch ได้อย่างราบรื่น เราจะแสดงคุณสมบัติหลักทั้งหมด เพื่อให้คุณสามารถเข้าไปเล่นได้ทันที มาเริ่มกันเลย!';
+
+  @override
+  String get tourStartTitle => 'เริ่ม - เริ่มเกมของคุณ';
 
   @override
   String get tourStartDesc =>
-      'This button opens both Solo and Combat modes. Tap it and I\'ll explain more inside!';
+      'แตะปุ่มเริ่มเพื่อเริ่มต้น จากนั้นคุณจะเลือกระหว่างโหมดเดี่ยวสำหรับความท้าทายทางคณิตศาสตร์ผู้เล่นเดียว หรือโหมดต่อสู้สำหรับการต่อสู้แบบผู้เล่นหลายคนแบบเรียลไทม์ผ่านบลูทูธ มาสำรวจทั้งสองตัวเลือกกัน!';
 
   @override
-  String get tourSoloTitle => 'Solo Mode';
+  String get tourSoloTitle => 'โหมดเดี่ยว - เล่นคนเดียว';
 
   @override
   String get tourSoloDesc =>
-      'Challenge yourself! Tap numbers to solve math problems or match sequences. The faster you are, the higher your score. Each correct answer levels you up with harder challenges!';
+      'ในโหมดเดี่ยว ท้าทายตัวเองด้วยสมการคณิตศาสตร์! เลือกจาก 4 ระดับความยาก (ง่ายถึงยากมาก) คุณเริ่มด้วย 3 ชีวิต - คำตอบผิดหรือหมดเวลาแต่ละครั้งเสีย 1 ชีวิต ความยากที่สูงขึ้นหมายถึงแต้มมากขึ้น! ตอนนี้มาดูตัวเลือกผู้เล่นหลายคนกัน';
 
   @override
-  String get tourCombatTitle => 'Combat Mode';
+  String get tourCombatTitle => 'โหมดต่อสู้ - ผู้เล่นหลายคนผ่านบลูทูธ';
 
   @override
   String get tourCombatDesc =>
-      'Battle against friends in real-time using Bluetooth! No internet required. Two players solve the same challenges simultaneously - the fastest wins!';
+      'โหมดต่อสู้ให้คุณต่อสู้กับเพื่อนผ่านบลูทูธ! ผู้เล่นสองคนผลัดกันแก้สมการ - ไม่ต้องใช้ WiFi เพียงอยู่ในระยะ 10 เมตร ผู้สร้างห้องเล่นก่อนในตอนแรก แต่ในการแข่งขันซ้ำผู้แพ้จะเล่นก่อน คุณมีสองวิธีในการเริ่มการแข่งขัน:';
 
   @override
-  String get tourCreateRoomTitle => 'Create Room';
+  String get tourCreateRoomTitle => 'โหมดต่อสู้ → สร้างห้อง';
 
   @override
   String get tourCreateRoomDesc =>
-      'Host a game for your friend! Choose your difficulty level and share your room code. Your opponent can join using Nearby Connections or by scanning your QR code.';
+      'ตัวเลือกแรก: สร้างห้องทำให้คุณเป็นเจ้าบ้าน! หลังจากอนุญาตบลูทูธ คุณจะรอแขกเข้าร่วมห้องของคุณ จากนั้นเลือกระดับความยาก ในฐานะเจ้าบ้าน คุณเล่นก่อนในการแข่งขันแรก หรือคุณสามารถเข้าร่วมเกมของคนอื่น:';
 
   @override
-  String get tourJoinRoomTitle => 'Join Room';
+  String get tourJoinRoomTitle => 'โหมดต่อสู้ → เข้าร่วมห้อง';
 
   @override
   String get tourJoinRoomDesc =>
-      'Join a friend\'s game! Enter their room code or scan their QR code to connect. Make sure you\'re within Bluetooth range for the best experience.';
+      'ตัวเลือกที่สอง: เข้าร่วมห้องทำให้คุณเป็นแขก! หลังจากอนุญาต คุณจะสแกนหาห้องใกล้เคียง เลือกหนึ่งห้อง และแตะพร้อม เจ้าบ้านเลือกความยาก และคุณจะเล่นเป็นคนที่สองในการแข่งขันแรก ตอนนี้มาตรวจสอบคุณสมบัติเมนูอื่นๆ กัน';
 
   @override
-  String get tourLeaderboardTitle => 'Top Scores';
+  String get tourLeaderboardTitle => 'คะแนนสูงสุด - กระดานผู้นำ';
 
   @override
   String get tourLeaderboardDesc =>
-      'Check out the best players! View high scores, track your progress, and compete to reach the top. Can you beat the current champions?';
+      'ติดตามความคืบหน้าของคุณที่นี่! ดูอันดับทั่วโลก สถิติส่วนตัวของคุณ และสถิติรวมถึงเกมที่เล่น อัตราชนะ ความแม่นยำ และคะแนนตามระดับความยาก เปรียบเทียบกับเพื่อนและดูว่าคุณพัฒนาขึ้นอย่างไร สุดท้าย มาไปที่การตั้งค่ากัน';
 
   @override
-  String get tourSettingsTitle => 'Settings';
+  String get tourSettingsTitle => 'การตั้งค่า - ปรับแต่ง';
 
   @override
   String get tourSettingsDesc =>
-      'Customize your experience! Adjust sound, change language, modify difficulty, and personalize the app to your liking. You can also restart this tour anytime from here.';
+      'ปรับแต่งทุกอย่างที่นี่! เปลี่ยนชื่อผู้ใช้ เลือกธีม ปรับเสียง/เพลง เลือกภาษา และจัดการการตั้งค่าความเป็นส่วนตัว คุณสามารถเริ่มทัวร์นี้ใหม่ได้ทุกเมื่อจากที่นี่ เท่านี้แหละ - คุณพร้อมเล่นแล้ว!';
 
   @override
-  String get tourNext => 'Next';
+  String get tourNext => 'ถัดไป';
 
   @override
-  String get tourPrevious => 'Previous';
+  String get tourPrevious => 'ก่อนหน้า';
 
   @override
-  String get tourSkip => 'Skip Tour';
+  String get tourSkip => 'ข้ามทัวร์';
 
   @override
-  String get tourFinish => 'Finish';
+  String get tourFinish => 'เสร็จสิ้น';
 
   @override
-  String get tourRestartFromSettings => 'Restart Tour';
+  String get tourRestartFromSettings => 'เริ่มทัวร์ใหม่';
 }

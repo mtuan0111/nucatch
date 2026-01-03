@@ -87,6 +87,7 @@ class TourBloc extends Bloc<TourEvent, TourState> {
     emit(state.copyWith(
       isTourActive: false,
       hasCompletedTour: true,
+      isFirstLaunch: false, // Mark as no longer first launch
     ));
     await _saveTourState();
   }
@@ -137,6 +138,13 @@ class TourBloc extends Bloc<TourEvent, TourState> {
       hasCompletedTour: event.hasCompletedTour,
       currentStep: event.currentStep,
     ));
+
+    // Auto-start tour for first-time users
+    if (event.isFirstLaunch && !event.hasCompletedTour) {
+      // Small delay to ensure UI is ready
+      await Future.delayed(const Duration(milliseconds: 500));
+      add(TourStarted());
+    }
   }
 }
 

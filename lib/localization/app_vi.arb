@@ -935,5 +935,27 @@
   "distanceWarning": "Đảm bảo các thiết bị cách nhau trong vòng 10 mét",
   "@distanceWarning": {
     "description": "Cảnh báo về khoảng cách thiết bị cho Nearby Connections"
-  }
+  },
+  "tourButtonLabel": "Bắt đầu Tour",
+  "tourWelcomeTitle": "Chào mừng đến với NuCatch!",
+  "tourWelcomeDesc": "Chào mừng! Tour nhanh này sẽ giúp bạn bắt đầu một cách suôn sẻ với NuCatch. Chúng tôi sẽ chỉ cho bạn tất cả các tính năng chính để bạn có thể bắt đầu chơi ngay. Bắt đầu thôi!",
+  "tourStartTitle": "Bắt đầu - Bắt đầu trò chơi của bạn",
+  "tourStartDesc": "Nhấn nút Bắt đầu để bắt đầu. Sau đó bạn sẽ chọn giữa Chế độ Solo cho các thử thách toán học một người chơi, hoặc Chế độ Chiến đấu cho các trận chiến nhiều người chơi theo thời gian thực qua Bluetooth. Hãy khám phá cả hai tùy chọn!",
+  "tourSoloTitle": "Chế độ Solo - Chơi một mình",
+  "tourSoloDesc": "Trong Chế độ Solo, thách thức bản thân với các phương trình toán học! Chọn từ 4 cấp độ khó (Dễ đến Cực khó). Bạn bắt đầu với 3 mạng - mỗi câu trả lời sai hoặc hết thời gian tốn 1 mạng. Độ khó cao hơn có nghĩa là nhiều điểm hơn! Bây giờ hãy xem tùy chọn nhiều người chơi.",
+  "tourCombatTitle": "Chế độ Chiến đấu - Nhiều người chơi Bluetooth",
+  "tourCombatDesc": "Chế độ Chiến đấu cho phép bạn chiến đấu với bạn bè qua Bluetooth! Hai người chơi thay phiên nhau giải phương trình - không cần WiFi, chỉ cần ở trong phạm vi 10 mét. Chủ phòng chơi trước ban đầu, nhưng trong các trận tái đấu, người thua chơi trước. Bạn có hai cách để bắt đầu trận đấu:",
+  "tourCreateRoomTitle": "Chế độ Chiến đấu → Tạo phòng",
+  "tourCreateRoomDesc": "Tùy chọn đầu tiên: Tạo phòng làm cho bạn trở thành chủ phòng! Sau khi cấp quyền Bluetooth, bạn sẽ đợi khách tham gia phòng của mình, sau đó chọn cấp độ khó. Là chủ phòng, bạn chơi trước trong trận đấu ban đầu. Hoặc bạn có thể tham gia trò chơi của người khác:",
+  "tourJoinRoomTitle": "Chế độ Chiến đấu → Tham gia phòng",
+  "tourJoinRoomDesc": "Tùy chọn thứ hai: Tham gia phòng làm cho bạn trở thành khách! Sau khi cấp quyền, bạn sẽ quét các phòng gần đó, chọn một phòng và nhấn sẵn sàng. Chủ phòng chọn độ khó, và bạn sẽ chơi thứ hai trong trận đấu ban đầu. Bây giờ hãy kiểm tra các tính năng menu khác.",
+  "tourLeaderboardTitle": "Điểm cao nhất - Bảng xếp hạng",
+  "tourLeaderboardDesc": "Theo dõi tiến trình của bạn tại đây! Xem bảng xếp hạng toàn cầu, kỷ lục cá nhân của bạn và số liệu thống kê bao gồm các trò chơi đã chơi, tỷ lệ thắng, độ chính xác và điểm số theo cấp độ khó. So sánh với bạn bè và xem bạn cải thiện như thế nào theo thời gian. Cuối cùng, hãy truy cập Cài đặt.",
+  "tourSettingsTitle": "Cài đặt - Tùy chỉnh",
+  "tourSettingsDesc": "Tùy chỉnh mọi thứ tại đây! Thay đổi tên người dùng của bạn, chọn chủ đề, điều chỉnh âm thanh/nhạc, chọn ngôn ngữ của bạn và quản lý cài đặt quyền riêng tư. Bạn có thể khởi động lại tour này bất cứ lúc nào từ đây. Đó là tất cả - bạn đã sẵn sàng chơi!",
+  "tourNext": "Tiếp theo",
+  "tourPrevious": "Trước đó",
+  "tourSkip": "Bỏ qua Tour",
+  "tourFinish": "Hoàn thành",
+  "tourRestartFromSettings": "Khởi động lại Tour"
 }

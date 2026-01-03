@@ -654,69 +654,76 @@ class AppLocalizationsId extends AppLocalizations {
       'Pastikan perangkat berjarak kurang dari 10 meter';
 
   @override
-  String get tourButtonLabel => 'Start Tour';
+  String get tourButtonLabel => 'Mulai Tur';
 
   @override
-  String get tourStartTitle => 'Let\'s Get Started!';
+  String get tourWelcomeTitle => 'Selamat datang di NuCatch!';
+
+  @override
+  String get tourWelcomeDesc =>
+      'Selamat datang! Tur singkat ini akan membantu Anda memulai dengan lancar dengan NuCatch. Kami akan menunjukkan semua fitur utama sehingga Anda dapat langsung masuk dan mulai bermain. Mari kita mulai!';
+
+  @override
+  String get tourStartTitle => 'Mulai - Mulai Permainan Anda';
 
   @override
   String get tourStartDesc =>
-      'This button opens both Solo and Combat modes. Tap it and I\'ll explain more inside!';
+      'Ketuk tombol Mulai untuk memulai. Anda kemudian akan memilih antara Mode Solo untuk tantangan matematika pemain tunggal, atau Mode Pertarungan untuk pertempuran multipemain waktu nyata melalui Bluetooth. Mari jelajahi kedua opsi!';
 
   @override
-  String get tourSoloTitle => 'Solo Mode';
+  String get tourSoloTitle => 'Mode Solo - Main Sendiri';
 
   @override
   String get tourSoloDesc =>
-      'Challenge yourself! Tap numbers to solve math problems or match sequences. The faster you are, the higher your score. Each correct answer levels you up with harder challenges!';
+      'Dalam Mode Solo, tantang diri Anda dengan persamaan matematika! Pilih dari 4 tingkat kesulitan (Mudah hingga Sangat Sulit). Anda mulai dengan 3 nyawa - setiap jawaban salah atau waktu habis menghabiskan 1 nyawa. Kesulitan lebih tinggi berarti lebih banyak poin! Sekarang mari lihat opsi multipemain.';
 
   @override
-  String get tourCombatTitle => 'Combat Mode';
+  String get tourCombatTitle => 'Mode Pertarungan - Multipemain Bluetooth';
 
   @override
   String get tourCombatDesc =>
-      'Battle against friends in real-time using Bluetooth! No internet required. Two players solve the same challenges simultaneously - the fastest wins!';
+      'Mode Pertarungan memungkinkan Anda bertarung dengan teman melalui Bluetooth! Dua pemain bergantian menyelesaikan persamaan - tidak perlu WiFi, cukup tetap dalam jarak 10 meter. Tuan rumah bermain pertama awalnya, tetapi dalam pertandingan ulang yang kalah bermain pertama. Anda memiliki dua cara untuk memulai pertandingan:';
 
   @override
-  String get tourCreateRoomTitle => 'Create Room';
+  String get tourCreateRoomTitle => 'Mode Pertarungan → Buat Ruangan';
 
   @override
   String get tourCreateRoomDesc =>
-      'Host a game for your friend! Choose your difficulty level and share your room code. Your opponent can join using Nearby Connections or by scanning your QR code.';
+      'Opsi pertama: Buat Ruangan membuat Anda menjadi tuan rumah! Setelah memberikan izin Bluetooth, Anda akan menunggu tamu bergabung dengan ruangan Anda, lalu memilih tingkat kesulitan. Sebagai tuan rumah, Anda bermain pertama di pertandingan awal. Atau Anda bisa bergabung dengan permainan orang lain:';
 
   @override
-  String get tourJoinRoomTitle => 'Join Room';
+  String get tourJoinRoomTitle => 'Mode Pertarungan → Bergabung dengan Ruangan';
 
   @override
   String get tourJoinRoomDesc =>
-      'Join a friend\'s game! Enter their room code or scan their QR code to connect. Make sure you\'re within Bluetooth range for the best experience.';
+      'Opsi kedua: Bergabung dengan Ruangan membuat Anda menjadi tamu! Setelah memberikan izin, Anda akan memindai ruangan terdekat, memilih satu, dan mengetuk siap. Tuan rumah memilih kesulitan, dan Anda akan bermain kedua di pertandingan awal. Sekarang mari periksa fitur menu lainnya.';
 
   @override
-  String get tourLeaderboardTitle => 'Top Scores';
+  String get tourLeaderboardTitle => 'Skor Tertinggi - Papan Peringkat';
 
   @override
   String get tourLeaderboardDesc =>
-      'Check out the best players! View high scores, track your progress, and compete to reach the top. Can you beat the current champions?';
+      'Lacak kemajuan Anda di sini! Lihat peringkat global, rekor pribadi Anda, dan statistik termasuk permainan yang dimainkan, tingkat kemenangan, akurasi, dan skor menurut tingkat kesulitan. Bandingkan dengan teman dan lihat bagaimana Anda berkembang dari waktu ke waktu. Terakhir, mari kunjungi Pengaturan.';
 
   @override
-  String get tourSettingsTitle => 'Settings';
+  String get tourSettingsTitle => 'Pengaturan - Sesuaikan';
 
   @override
   String get tourSettingsDesc =>
-      'Customize your experience! Adjust sound, change language, modify difficulty, and personalize the app to your liking. You can also restart this tour anytime from here.';
+      'Sesuaikan semuanya di sini! Ubah nama pengguna Anda, pilih tema, sesuaikan suara/musik, pilih bahasa Anda, dan kelola pengaturan privasi. Anda dapat memulai ulang tur ini kapan saja dari sini. Itu saja - Anda siap bermain!';
 
   @override
-  String get tourNext => 'Next';
+  String get tourNext => 'Berikutnya';
 
   @override
-  String get tourPrevious => 'Previous';
+  String get tourPrevious => 'Sebelumnya';
 
   @override
-  String get tourSkip => 'Skip Tour';
+  String get tourSkip => 'Lewati Tur';
 
   @override
-  String get tourFinish => 'Finish';
+  String get tourFinish => 'Selesai';
 
   @override
-  String get tourRestartFromSettings => 'Restart Tour';
+  String get tourRestartFromSettings => 'Mulai Ulang Tur';
 }
