@@ -732,7 +732,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                             const SizedBox(width: 12),
                                             ElevatedButton(
                                               onPressed: () {
-                                                final tourBloc = context.read<TourBloc>();
+                                                final tourBloc =
+                                                    context.read<TourBloc>();
                                                 // Reset tour
                                                 tourBloc.add(TourReset());
                                                 // Start tour immediately
@@ -742,7 +743,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     .showSnackBar(
                                                   SnackBar(
                                                     content: Text(
-                                                      lang(context).tourResetMessage,
+                                                      lang(context)
+                                                          .tourResetMessage,
                                                       style: LayoutConfig(
                                                               context)
                                                           .contentSectionStyle(),
