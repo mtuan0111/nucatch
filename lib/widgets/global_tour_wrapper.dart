@@ -7,6 +7,8 @@ import 'package:nucatch/blocs/objects/tour/tour_bloc.dart';
 import 'package:nucatch/blocs/objects/tour/tour_event.dart';
 import 'package:nucatch/blocs/objects/tour/tour_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/extension.dart';
+import 'package:nucatch/helpers/template/custome_alert.dart';
 
 /// Global tour wrapper that manages all tour dialogs from the root level
 /// This eliminates dialog stacking issues and centralizes tour logic
@@ -38,7 +40,7 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
     _lastShownStep = null;
   }
 
-  void _showTourDialog(TourState tourState) {
+  Future<void> _showTourDialog(TourState tourState) async {
     // Don't show if already showing the same step
     if (_lastShownStep == tourState.currentTourStep &&
         _currentTourOverlay != null) {
@@ -116,103 +118,64 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
               child: Container(color: Colors.transparent),
             ),
           ),
-          // Tour content
+          // Tour content using AlertTemplate
           Center(
-            child: Container(
-              margin: const EdgeInsets.all(20),
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    blurRadius: 20,
-                    spreadRadius: 5,
-                  ),
-                ],
-              ),
-              child: Column(
+            child: AlertTemplate(
+              title: _getTitleForStep(tourState.currentTourStep),
+              content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title
-                  Text(
-                    _getTitleForStep(tourState.currentTourStep),
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 12),
-                  // Description
-                  Text(
+                  const SizedBox(height: 10),
+                  _buildDescriptionText(
                     _getDescriptionForStep(tourState.currentTourStep),
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white,
-                        ),
+                    context,
+                  ),
+                  // Skip button at top left
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: TextButton(
+                      onPressed: () {
+                        _removeTourOverlay();
+                        context.read<TourBloc>().add(TourSkipped());
+                      },
+                      child: Text(
+                        lang(context).tourSkip,
+                        style: LayoutConfig(context).secondaryTextStyle(
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 20),
-                  // Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Previous button
-                      if (!tourState.isFirstStep)
-                        TextButton(
-                          onPressed: () {
-                            _removeTourOverlay();
-                            context.read<TourBloc>().add(TourStepBack());
-                          },
-                          child: Text(
-                            lang(context).tourPrevious,
-                            style: const TextStyle(color: Colors.white70),
-                          ),
-                        )
-                      else
-                        const SizedBox.shrink(),
-                      // Skip button
-                      TextButton(
-                        onPressed: () {
-                          _removeTourOverlay();
-                          context.read<TourBloc>().add(TourSkipped());
-                        },
-                        child: Text(
-                          lang(context).tourSkip,
-                          style: const TextStyle(color: Colors.white70),
-                        ),
-                      ),
-                      // Next/Finish button
-                      ElevatedButton(
-                        onPressed: () {
-                          _removeTourOverlay();
-                          context.read<TourBloc>().add(TourStepCompleted());
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Theme.of(context).primaryColor,
-                        ),
-                        child: Text(
-                          tourState.isLastStep
-                              ? lang(context).tourFinish
-                              : lang(context).tourNext,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
                   // Progress indicator
-                  Center(
+                  Align(
+                    alignment: Alignment.center,
                     child: Text(
                       '${tourState.currentStep + 1} / ${tourState.totalSteps}',
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 12,
-                      ),
+                      style: LayoutConfig(context).captionStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .getDarker()),
                     ),
                   ),
                 ],
               ),
+              negativeButtonLabel:
+                  tourState.isFirstStep ? null : lang(context).tourPrevious,
+              onNegativeButtonPressed: tourState.isFirstStep
+                  ? null
+                  : () {
+                      _removeTourOverlay();
+                      context.read<TourBloc>().add(TourStepBack());
+                    },
+              possitiveButtonLabel: tourState.isLastStep
+                  ? lang(context).tourFinish
+                  : lang(context).tourNext,
+              onPossitiveButtonPressed: () {
+                _removeTourOverlay();
+                context.read<TourBloc>().add(TourStepCompleted());
+              },
             ),
           ),
         ],
@@ -260,6 +223,42 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
       case TourStep.settings:
         return lang(context).tourSettingsDesc;
     }
+  }
+
+  Widget _buildDescriptionText(String text, BuildContext context) {
+    final parts = <TextSpan>[];
+    final regex = RegExp(r'\*\*(.*?)\*\*');
+    int lastIndex = 0;
+
+    for (final match in regex.allMatches(text)) {
+      // Add normal text before the bold part
+      if (match.start > lastIndex) {
+        parts.add(TextSpan(
+          text: text.substring(lastIndex, match.start),
+        ));
+      }
+      // Add bold text
+      parts.add(TextSpan(
+        text: match.group(1),
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ));
+      lastIndex = match.end;
+    }
+
+    // Add remaining text
+    if (lastIndex < text.length) {
+      parts.add(TextSpan(
+        text: text.substring(lastIndex),
+      ));
+    }
+
+    return RichText(
+      text: TextSpan(
+        style: LayoutConfig(context).contentSectionStyle(
+            color: Theme.of(context).colorScheme.primary.getDarker()),
+        children: parts,
+      ),
+    );
   }
 
   @override

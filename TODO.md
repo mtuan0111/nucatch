@@ -80,7 +80,11 @@
 - [ ] Ensure consistency with existing UI buttons and layouts
 - [ ] Verify that all game resources are re-initialized correctly
 
-
+### 14. Offline Log Storage
+- [ ] Implement local storage for logs when no internet connection
+- [ ] Ensure app doesn't freeze or hang when saving logs offline
+- [ ] Add queue mechanism to sync logs when connection is restored
+- [ ] Test offline log persistence and retrieval
 
 # TODO List
 

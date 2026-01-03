@@ -662,7 +662,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'Chào mừng! Tour nhanh này sẽ giúp bạn bắt đầu một cách suôn sẻ với NuCatch. Chúng tôi sẽ chỉ cho bạn tất cả các tính năng chính để bạn có thể bắt đầu chơi ngay. Bắt đầu thôi!';
+      'Chào mừng! Tour nhanh này sẽ giúp bạn bắt đầu một cách suôn sẻ với **NuCatch**. Chúng tôi sẽ chỉ cho bạn tất cả các **tính năng chính** để bạn có thể bắt đầu chơi ngay. Bắt đầu thôi!';
 
   @override
   String get tourStartTitle => 'Bắt đầu - Bắt đầu trò chơi của bạn';
@@ -727,4 +727,8 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get tourRestartFromSettings => 'Khởi động lại Tour';
+
+  @override
+  String get tourResetMessage =>
+      'Tour đã được đặt lại. Quay lại menu chính để bắt đầu.';
 }

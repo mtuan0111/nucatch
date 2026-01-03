@@ -665,14 +665,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'Willkommen! Diese kurze Tour hilft Ihnen, problemlos mit NuCatch zu beginnen. Wir zeigen Ihnen alle Hauptfunktionen, damit Sie sofort loslegen und spielen können. Los geht\'s!';
+      'Willkommen! Diese kurze Tour hilft Ihnen, problemlos mit **NuCatch** zu beginnen. Wir zeigen Ihnen alle **Hauptfunktionen**, damit Sie sofort loslegen und spielen können. Los geht\'s!';
 
   @override
   String get tourStartTitle => 'Start - Beginne dein Spiel';
 
   @override
   String get tourStartDesc =>
-      'Tippe auf die Start-Schaltfläche, um zu beginnen. Dann wählst du zwischen Einzelmodus für mathematische Herausforderungen oder Kampfmodus für Echtzeit-Multiplayer-Kämpfe über Bluetooth. Lass uns beide Optionen erkunden!';
+      'Tippe auf die **Start-Schaltfläche**, um zu beginnen. Dann wählst du zwischen **Einzelmodus** für mathematische Herausforderungen oder **Kampfmodus** für Echtzeit-Multiplayer-Kämpfe über **Bluetooth**. Lass uns beide Optionen erkunden!';
 
   @override
   String get tourSoloTitle => 'Einzelmodus - Alleine spielen';
@@ -730,4 +730,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get tourRestartFromSettings => 'Tour neu starten';
+
+  @override
+  String get tourResetMessage =>
+      'Die Tour wurde zurückgesetzt. Kehren Sie zum Hauptmenü zurück, um zu beginnen.';
 }

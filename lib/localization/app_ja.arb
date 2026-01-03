@@ -936,7 +936,7 @@
   },
   "tourButtonLabel": "ツアーを開始",
   "tourWelcomeTitle": "NuCatchへようこそ!",
-  "tourWelcomeDesc": "ようこそ! この簡単なツアーは、NuCatchをスムーズに始めるのに役立ちます。主要な機能をすべてお見せしますので、すぐにプレイを始められます。始めましょう!",
+  "tourWelcomeDesc": "ようこそ! この簡単なツアーは、**NuCatch**をスムーズに始めるのに役立ちます。**主要な機能**をすべてお見せしますので、すぐにプレイを始められます。始めましょう!",
   "tourStartTitle": "スタート - ゲームを始める",
   "tourStartDesc": "スタートボタンをタップして始めましょう。次に、シングルプレイヤーの数学チャレンジ用のソロモード、またはBluetoothを介したリアルタイムマルチプレイヤーバトル用のコンバットモードを選択します。両方のオプションを見てみましょう!",
   "tourSoloTitle": "ソロモード - 一人でプレイ",
@@ -955,5 +955,6 @@
   "tourPrevious": "前へ",
   "tourSkip": "ツアーをスキップ",
   "tourFinish": "完了",
-  "tourRestartFromSettings": "ツアーを再開"
+  "tourRestartFromSettings": "ツアーを再開",
+  "tourResetMessage": "ツアーがリセットされました。開始するにはメインメニューに戻ってください。"
 }

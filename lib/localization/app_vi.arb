@@ -938,7 +938,7 @@
   },
   "tourButtonLabel": "Bắt đầu Tour",
   "tourWelcomeTitle": "Chào mừng đến với NuCatch!",
-  "tourWelcomeDesc": "Chào mừng! Tour nhanh này sẽ giúp bạn bắt đầu một cách suôn sẻ với NuCatch. Chúng tôi sẽ chỉ cho bạn tất cả các tính năng chính để bạn có thể bắt đầu chơi ngay. Bắt đầu thôi!",
+  "tourWelcomeDesc": "Chào mừng! Tour nhanh này sẽ giúp bạn bắt đầu một cách suôn sẻ với **NuCatch**. Chúng tôi sẽ chỉ cho bạn tất cả các **tính năng chính** để bạn có thể bắt đầu chơi ngay. Bắt đầu thôi!",
   "tourStartTitle": "Bắt đầu - Bắt đầu trò chơi của bạn",
   "tourStartDesc": "Nhấn nút Bắt đầu để bắt đầu. Sau đó bạn sẽ chọn giữa Chế độ Solo cho các thử thách toán học một người chơi, hoặc Chế độ Chiến đấu cho các trận chiến nhiều người chơi theo thời gian thực qua Bluetooth. Hãy khám phá cả hai tùy chọn!",
   "tourSoloTitle": "Chế độ Solo - Chơi một mình",
@@ -957,5 +957,6 @@
   "tourPrevious": "Trước đó",
   "tourSkip": "Bỏ qua Tour",
   "tourFinish": "Hoàn thành",
-  "tourRestartFromSettings": "Khởi động lại Tour"
+  "tourRestartFromSettings": "Khởi động lại Tour",
+  "tourResetMessage": "Tour đã được đặt lại. Quay lại menu chính để bắt đầu."
 }

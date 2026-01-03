@@ -936,7 +936,7 @@
   },
   "tourButtonLabel": "Mulai Tur",
   "tourWelcomeTitle": "Selamat datang di NuCatch!",
-  "tourWelcomeDesc": "Selamat datang! Tur singkat ini akan membantu Anda memulai dengan lancar dengan NuCatch. Kami akan menunjukkan semua fitur utama sehingga Anda dapat langsung masuk dan mulai bermain. Mari kita mulai!",
+  "tourWelcomeDesc": "Selamat datang! Tur singkat ini akan membantu Anda memulai dengan lancar dengan **NuCatch**. Kami akan menunjukkan semua **fitur utama** sehingga Anda dapat langsung masuk dan mulai bermain. Mari kita mulai!",
   "tourStartTitle": "Mulai - Mulai Permainan Anda",
   "tourStartDesc": "Ketuk tombol Mulai untuk memulai. Anda kemudian akan memilih antara Mode Solo untuk tantangan matematika pemain tunggal, atau Mode Pertarungan untuk pertempuran multipemain waktu nyata melalui Bluetooth. Mari jelajahi kedua opsi!",
   "tourSoloTitle": "Mode Solo - Main Sendiri",
@@ -955,5 +955,6 @@
   "tourPrevious": "Sebelumnya",
   "tourSkip": "Lewati Tur",
   "tourFinish": "Selesai",
-  "tourRestartFromSettings": "Mulai Ulang Tur"
+  "tourRestartFromSettings": "Mulai Ulang Tur",
+  "tourResetMessage": "Tur telah direset. Kembali ke menu utama untuk memulai."
 }

@@ -633,7 +633,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      '欢迎! 这个快速导览将帮助您顺利开始使用 NuCatch。我们将向您展示所有主要功能，让您立即开始游戏。让我们开始吧!';
+      '欢迎! 这个快速导览将帮助您顺利开始使用**NuCatch**。我们将向您展示所有**主要功能**，让您立即开始游戏。让我们开始吧!';
 
   @override
   String get tourStartTitle => '开始 - 开始您的游戏';
@@ -697,5 +697,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tourFinish => '完成';
 
   @override
-  String get tourRestartFromSettings => '重新启动导览';
+  String get tourRestartFromSettings => '重新开始导览';
+
+  @override
+  String get tourResetMessage => '导览已重置。返回主菜单开始。';
 }

@@ -639,7 +639,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'ようこそ! この簡単なツアーは、NuCatchをスムーズに始めるのに役立ちます。主要な機能をすべてお見せしますので、すぐにプレイを始められます。始めましょう!';
+      'ようこそ! この簡単なツアーは、**NuCatch**をスムーズに始めるのに役立ちます。**主要な機能**をすべてお見せしますので、すぐにプレイを始められます。始めましょう!';
 
   @override
   String get tourStartTitle => 'スタート - ゲームを始める';
@@ -704,4 +704,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get tourRestartFromSettings => 'ツアーを再開';
+
+  @override
+  String get tourResetMessage => 'ツアーがリセットされました。開始するにはメインメニューに戻ってください。';
 }

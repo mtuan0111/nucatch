@@ -732,15 +732,17 @@ class _SettingScreenState extends State<SettingScreen> {
                                             const SizedBox(width: 12),
                                             ElevatedButton(
                                               onPressed: () {
-                                                context
-                                                    .read<TourBloc>()
-                                                    .add(TourReset());
+                                                final tourBloc = context.read<TourBloc>();
+                                                // Reset tour
+                                                tourBloc.add(TourReset());
+                                                // Start tour immediately
+                                                tourBloc.add(TourStarted());
                                                 // Show confirmation
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   SnackBar(
                                                     content: Text(
-                                                      'Tour has been reset. Return to the main menu to start.',
+                                                      lang(context).tourResetMessage,
                                                       style: LayoutConfig(
                                                               context)
                                                           .contentSectionStyle(),
@@ -750,6 +752,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                                             .primaryColor,
                                                   ),
                                                 );
+                                                // Navigate back to main menu to start tour
+                                                context
+                                                    .read<MenuBloc>()
+                                                    .add(ShowMenu());
                                               },
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor:

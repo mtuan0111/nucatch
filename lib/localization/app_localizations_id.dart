@@ -661,7 +661,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'Selamat datang! Tur singkat ini akan membantu Anda memulai dengan lancar dengan NuCatch. Kami akan menunjukkan semua fitur utama sehingga Anda dapat langsung masuk dan mulai bermain. Mari kita mulai!';
+      'Selamat datang! Tur singkat ini akan membantu Anda memulai dengan lancar dengan **NuCatch**. Kami akan menunjukkan semua **fitur utama** sehingga Anda dapat langsung masuk dan mulai bermain. Mari kita mulai!';
 
   @override
   String get tourStartTitle => 'Mulai - Mulai Permainan Anda';
@@ -726,4 +726,8 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tourRestartFromSettings => 'Mulai Ulang Tur';
+
+  @override
+  String get tourResetMessage =>
+      'Tur telah direset. Kembali ke menu utama untuk memulai.';
 }

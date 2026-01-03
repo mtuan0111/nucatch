@@ -45,13 +45,11 @@ class MenuAlert extends StatelessWidget {
             "${lang(context).yourScoreIs}: $point",
             style: LayoutConfig(context).contentSectionStyle(
                 color: Theme.of(context).colorScheme.primary.getDarker()),
-            textAlign: TextAlign.center,
           ),
           Text(
             "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, turnState.difficultyModel!.difficulty)}",
             style: LayoutConfig(context).contentSectionStyle(
                 color: Theme.of(context).colorScheme.primary.getDarker()),
-            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
           AnimatedButton(
@@ -299,7 +297,7 @@ class AlertTemplate extends StatelessWidget {
                             shapeAt: RoundedWithShapeAt.topRight,
                             child: Padding(
                               padding:
-                                  const EdgeInsets.all(30.0).copyWith(top: 10),
+                                  const EdgeInsets.all(10.0).copyWith(top: 10),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -314,7 +312,6 @@ class AlertTemplate extends StatelessWidget {
                                                   .colorScheme
                                                   .primary
                                                   .getDarker()),
-                                      textAlign: TextAlign.center,
                                     ),
                                 ],
                               ),

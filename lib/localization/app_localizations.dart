@@ -1289,7 +1289,7 @@ abstract class AppLocalizations {
   /// Description for the welcome tour step
   ///
   /// In en, this message translates to:
-  /// **'Welcome! This quick tour will help you get started smoothly with NuCatch. We\'ll show you all the main features so you can dive right in and start playing. Let\'s begin!'**
+  /// **'Welcome! This quick tour will help you get started smoothly with **NuCatch**. We\'ll show you all the **main features** so you can dive right in and start playing. Let\'s begin!'**
   String get tourWelcomeDesc;
 
   /// Title for the start button tour step
@@ -1301,7 +1301,7 @@ abstract class AppLocalizations {
   /// Description for the start button tour step
   ///
   /// In en, this message translates to:
-  /// **'Tap the Start button to begin. You\'ll then choose between Solo Mode for single-player mathematical challenges, or Combat Mode for real-time Bluetooth multiplayer battles. Let\'s explore both options!'**
+  /// **'Tap the **Start button** to begin. You\'ll then choose between **Solo Mode** for single-player mathematical challenges, or **Combat Mode** for real-time **Bluetooth** multiplayer battles. Let\'s explore both options!'**
   String get tourStartDesc;
 
   /// Title for solo mode tour step
@@ -1313,7 +1313,7 @@ abstract class AppLocalizations {
   /// Description for solo mode tour step
   ///
   /// In en, this message translates to:
-  /// **'In Solo Mode, challenge yourself with mathematical equations! Choose from 4 difficulty levels (Easy to Extremely Hard). You start with 3 lives - each wrong answer or timeout costs 1 life. Higher difficulty means more points! Now let\'s look at the multiplayer option.'**
+  /// **'In **Solo Mode**, challenge yourself with mathematical equations! Choose from **4 difficulty levels** (Easy to Extremely Hard). You start with **3 lives** - each wrong answer or timeout costs 1 life. **Higher difficulty** means more points! Now let\'s look at the multiplayer option.'**
   String get tourSoloDesc;
 
   /// Title for combat mode tour step
@@ -1325,7 +1325,7 @@ abstract class AppLocalizations {
   /// Description for combat mode tour step
   ///
   /// In en, this message translates to:
-  /// **'Combat Mode lets you battle a friend via Bluetooth! Two players take turns solving equations - no WiFi needed, just stay within 10 meters. The host plays first initially, but in rematches the loser goes first. You have two ways to start a match:'**
+  /// **'**Combat Mode** lets you battle a friend via **Bluetooth**! **Two players** take turns solving equations - **no WiFi needed**, just stay within **10 meters**. The host plays first initially, but in rematches the loser goes first. You have two ways to start a match:'**
   String get tourCombatDesc;
 
   /// Title for create room tour step
@@ -1337,7 +1337,7 @@ abstract class AppLocalizations {
   /// Description for create room tour step
   ///
   /// In en, this message translates to:
-  /// **'First option: Create Room makes you the host! After granting Bluetooth permissions, you\'ll wait for a guest to join your room, then choose the difficulty level. As host, you play first in the initial match. Or you can join someone else\'s game:'**
+  /// **'First option: **Create Room** makes you the **host**! After granting **Bluetooth permissions**, you\'ll wait for a guest to join your room, then choose the **difficulty level**. As host, you **play first** in the initial match. Or you can join someone else\'s game:'**
   String get tourCreateRoomDesc;
 
   /// Title for join room tour step
@@ -1349,7 +1349,7 @@ abstract class AppLocalizations {
   /// Description for join room tour step
   ///
   /// In en, this message translates to:
-  /// **'Second option: Join Room makes you the guest! After granting permissions, you\'ll scan for nearby rooms, select one, and tap ready. The host chooses difficulty, and you\'ll play second in the initial match. Now let\'s check the other menu features.'**
+  /// **'Second option: **Join Room** makes you the **guest**! After granting permissions, you\'ll **scan** for nearby rooms, select one, and tap **ready**. The host chooses difficulty, and you\'ll **play second** in the initial match. Now let\'s check the other menu features.'**
   String get tourJoinRoomDesc;
 
   /// Title for leaderboard tour step
@@ -1361,7 +1361,7 @@ abstract class AppLocalizations {
   /// Description for leaderboard tour step
   ///
   /// In en, this message translates to:
-  /// **'Track your progress here! View global rankings, your personal records, and statistics including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Finally, let\'s visit Settings.'**
+  /// **'Track your progress here! View **global rankings**, your **personal records**, and **statistics** including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Finally, let\'s visit Settings.'**
   String get tourLeaderboardDesc;
 
   /// Title for settings tour step
@@ -1373,7 +1373,7 @@ abstract class AppLocalizations {
   /// Description for settings tour step
   ///
   /// In en, this message translates to:
-  /// **'Customize everything here! Change your username, select a theme, adjust sound/music, choose your language, and manage privacy settings. You can restart this tour anytime from here. That\'s it - you\'re ready to play!'**
+  /// **'Customize everything here! Change your **username**, select a **theme**, adjust **sound/music**, choose your **language**, and manage **privacy settings**. You can restart this tour anytime from here. That\'s it - you\'re ready to play!'**
   String get tourSettingsDesc;
 
   /// Next button in tour
@@ -1405,6 +1405,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restart Tour'**
   String get tourRestartFromSettings;
+
+  /// Message shown when tour is reset
+  ///
+  /// In en, this message translates to:
+  /// **'Tour has been reset. Return to the main menu to start.'**
+  String get tourResetMessage;
 }
 
 class _AppLocalizationsDelegate

@@ -936,7 +936,7 @@
   },
   "tourButtonLabel": "Démarrer la visite",
   "tourWelcomeTitle": "Bienvenue sur NuCatch!",
-  "tourWelcomeDesc": "Bienvenue! Cette visite rapide vous aidera à démarrer en douceur avec NuCatch. Nous vous montrerons toutes les fonctionnalités principales pour que vous puissiez vous lancer et commencer à jouer immédiatement. Commençons!",
+  "tourWelcomeDesc": "Bienvenue! Cette visite rapide vous aidera à démarrer en douceur avec **NuCatch**. Nous vous montrerons toutes les **fonctionnalités principales** pour que vous puissiez vous lancer et commencer à jouer immédiatement. Commençons!",
   "tourStartTitle": "Démarrer - Commencez votre jeu",
   "tourStartDesc": "Appuyez sur le bouton Démarrer pour commencer. Vous choisirez ensuite entre le Mode Solo pour des défis mathématiques en solo, ou le Mode Combat pour des batailles multijoueurs en temps réel via Bluetooth. Explorons les deux options!",
   "tourSoloTitle": "Mode Solo - Jouez seul",
@@ -955,5 +955,6 @@
   "tourPrevious": "Précédent",
   "tourSkip": "Passer la visite",
   "tourFinish": "Terminer",
-  "tourRestartFromSettings": "Redémarrer la visite"
+  "tourRestartFromSettings": "Redémarrer la visite",
+  "tourResetMessage": "La visite a été réinitialisée. Retournez au menu principal pour commencer."
 }

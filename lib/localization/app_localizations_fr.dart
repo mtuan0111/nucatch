@@ -664,7 +664,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'Bienvenue! Cette visite rapide vous aidera à démarrer en douceur avec NuCatch. Nous vous montrerons toutes les fonctionnalités principales pour que vous puissiez vous lancer et commencer à jouer immédiatement. Commençons!';
+      'Bienvenue! Cette visite rapide vous aidera à démarrer en douceur avec **NuCatch**. Nous vous montrerons toutes les **fonctionnalités principales** pour que vous puissiez vous lancer et commencer à jouer immédiatement. Commençons!';
 
   @override
   String get tourStartTitle => 'Démarrer - Commencez votre jeu';
@@ -729,4 +729,8 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get tourRestartFromSettings => 'Redémarrer la visite';
+
+  @override
+  String get tourResetMessage =>
+      'La visite a été réinitialisée. Retournez au menu principal pour commencer.';
 }

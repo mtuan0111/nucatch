@@ -660,56 +660,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'Welcome! This quick tour will help you get started smoothly with NuCatch. We\'ll show you all the main features so you can dive right in and start playing. Let\'s begin!';
+      'Welcome! This quick tour will help you get started smoothly with **NuCatch**. We\'ll show you all the **main features** so you can dive right in and start playing. Let\'s begin!';
 
   @override
   String get tourStartTitle => 'Start - Begin Your Game';
 
   @override
   String get tourStartDesc =>
-      'Tap the Start button to begin. You\'ll then choose between Solo Mode for single-player mathematical challenges, or Combat Mode for real-time Bluetooth multiplayer battles. Let\'s explore both options!';
+      'Tap the **Start button** to begin. You\'ll then choose between **Solo Mode** for single-player mathematical challenges, or **Combat Mode** for real-time **Bluetooth** multiplayer battles. Let\'s explore both options!';
 
   @override
   String get tourSoloTitle => 'Solo Mode - Play Alone';
 
   @override
   String get tourSoloDesc =>
-      'In Solo Mode, challenge yourself with mathematical equations! Choose from 4 difficulty levels (Easy to Extremely Hard). You start with 3 lives - each wrong answer or timeout costs 1 life. Higher difficulty means more points! Now let\'s look at the multiplayer option.';
+      'In **Solo Mode**, challenge yourself with mathematical equations! Choose from **4 difficulty levels** (Easy to Extremely Hard). You start with **3 lives** - each wrong answer or timeout costs 1 life. **Higher difficulty** means more points! Now let\'s look at the multiplayer option.';
 
   @override
   String get tourCombatTitle => 'Combat Mode - Bluetooth Multiplayer';
 
   @override
   String get tourCombatDesc =>
-      'Combat Mode lets you battle a friend via Bluetooth! Two players take turns solving equations - no WiFi needed, just stay within 10 meters. The host plays first initially, but in rematches the loser goes first. You have two ways to start a match:';
+      '**Combat Mode** lets you battle a friend via **Bluetooth**! **Two players** take turns solving equations - **no WiFi needed**, just stay within **10 meters**. The host plays first initially, but in rematches the loser goes first. You have two ways to start a match:';
 
   @override
   String get tourCreateRoomTitle => 'Combat Mode → Create Room';
 
   @override
   String get tourCreateRoomDesc =>
-      'First option: Create Room makes you the host! After granting Bluetooth permissions, you\'ll wait for a guest to join your room, then choose the difficulty level. As host, you play first in the initial match. Or you can join someone else\'s game:';
+      'First option: **Create Room** makes you the **host**! After granting **Bluetooth permissions**, you\'ll wait for a guest to join your room, then choose the **difficulty level**. As host, you **play first** in the initial match. Or you can join someone else\'s game:';
 
   @override
   String get tourJoinRoomTitle => 'Combat Mode → Join Room';
 
   @override
   String get tourJoinRoomDesc =>
-      'Second option: Join Room makes you the guest! After granting permissions, you\'ll scan for nearby rooms, select one, and tap ready. The host chooses difficulty, and you\'ll play second in the initial match. Now let\'s check the other menu features.';
+      'Second option: **Join Room** makes you the **guest**! After granting permissions, you\'ll **scan** for nearby rooms, select one, and tap **ready**. The host chooses difficulty, and you\'ll **play second** in the initial match. Now let\'s check the other menu features.';
 
   @override
   String get tourLeaderboardTitle => 'Top Score - Leaderboards';
 
   @override
   String get tourLeaderboardDesc =>
-      'Track your progress here! View global rankings, your personal records, and statistics including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Finally, let\'s visit Settings.';
+      'Track your progress here! View **global rankings**, your **personal records**, and **statistics** including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Finally, let\'s visit Settings.';
 
   @override
   String get tourSettingsTitle => 'Settings - Customize';
 
   @override
   String get tourSettingsDesc =>
-      'Customize everything here! Change your username, select a theme, adjust sound/music, choose your language, and manage privacy settings. You can restart this tour anytime from here. That\'s it - you\'re ready to play!';
+      'Customize everything here! Change your **username**, select a **theme**, adjust **sound/music**, choose your **language**, and manage **privacy settings**. You can restart this tour anytime from here. That\'s it - you\'re ready to play!';
 
   @override
   String get tourNext => 'Next';
@@ -725,4 +725,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tourRestartFromSettings => 'Restart Tour';
+
+  @override
+  String get tourResetMessage =>
+      'Tour has been reset. Return to the main menu to start.';
 }

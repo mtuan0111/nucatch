@@ -661,7 +661,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'स्वागत है! यह त्वरित दौरा NuCatch के साथ सुगमता से शुरूआत करने में आपकी मदद करेगा। हम आपको सभी मुख्य सुविधाएं दिखाएंगे ताकि आप सीधे शुरू कर सकें। शुरू करते हैं!';
+      'स्वागत है! यह त्वरित दौरा **NuCatch** के साथ सुगमता से शुरूआत करने में आपकी मदद करेगा। हम आपको सभी **मुख्य सुविधाएं** दिखाएंगे ताकि आप सीधे शुरू कर सकें। शुरू करते हैं!';
 
   @override
   String get tourStartTitle => 'शुरू करें - अपना गेम शुरू करें';
@@ -725,5 +725,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get tourFinish => 'समाप्त करें';
 
   @override
-  String get tourRestartFromSettings => 'टूर पुनः प्रारंभ करें';
+  String get tourRestartFromSettings => 'टूर पुनः आरंभ करें';
+
+  @override
+  String get tourResetMessage =>
+      'टूर रीसेट हो गया है। शुरू करने के लिए मुख्य मेनू पर वापस जाएं।';
 }
