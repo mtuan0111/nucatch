@@ -1273,6 +1273,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Make sure devices are within 10 meters distance'**
   String get distanceWarning;
+
+  /// Label for the tour button
+  ///
+  /// In en, this message translates to:
+  /// **'Start Tour'**
+  String get tourButtonLabel;
+
+  /// Title for the start button tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s Get Started!'**
+  String get tourStartTitle;
+
+  /// Description for the start button tour step
+  ///
+  /// In en, this message translates to:
+  /// **'This button opens both Solo and Combat modes. Tap it and I\'ll explain more inside!'**
+  String get tourStartDesc;
+
+  /// Title for solo mode tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Solo Mode'**
+  String get tourSoloTitle;
+
+  /// Description for solo mode tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge yourself! Tap numbers to solve math problems or match sequences. The faster you are, the higher your score. Each correct answer levels you up with harder challenges!'**
+  String get tourSoloDesc;
+
+  /// Title for combat mode tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Combat Mode'**
+  String get tourCombatTitle;
+
+  /// Description for combat mode tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Battle against friends in real-time using Bluetooth! No internet required. Two players solve the same challenges simultaneously - the fastest wins!'**
+  String get tourCombatDesc;
+
+  /// Title for create room tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Create Room'**
+  String get tourCreateRoomTitle;
+
+  /// Description for create room tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Host a game for your friend! Choose your difficulty level and share your room code. Your opponent can join using Nearby Connections or by scanning your QR code.'**
+  String get tourCreateRoomDesc;
+
+  /// Title for join room tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Join Room'**
+  String get tourJoinRoomTitle;
+
+  /// Description for join room tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Join a friend\'s game! Enter their room code or scan their QR code to connect. Make sure you\'re within Bluetooth range for the best experience.'**
+  String get tourJoinRoomDesc;
+
+  /// Title for leaderboard tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Top Scores'**
+  String get tourLeaderboardTitle;
+
+  /// Description for leaderboard tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Check out the best players! View high scores, track your progress, and compete to reach the top. Can you beat the current champions?'**
+  String get tourLeaderboardDesc;
+
+  /// Title for settings tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get tourSettingsTitle;
+
+  /// Description for settings tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Customize your experience! Adjust sound, change language, modify difficulty, and personalize the app to your liking. You can also restart this tour anytime from here.'**
+  String get tourSettingsDesc;
+
+  /// Next button in tour
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get tourNext;
+
+  /// Previous button in tour
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get tourPrevious;
+
+  /// Skip tour button
+  ///
+  /// In en, this message translates to:
+  /// **'Skip Tour'**
+  String get tourSkip;
+
+  /// Finish tour button
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get tourFinish;
+
+  /// Restart tour option in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Tour'**
+  String get tourRestartFromSettings;
 }
 
 class _AppLocalizationsDelegate

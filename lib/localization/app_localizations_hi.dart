@@ -652,4 +652,71 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get distanceWarning =>
       'सुनिश्चित करें कि डिवाइस 10 मीटर से कम दूरी पर हैं';
+
+  @override
+  String get tourButtonLabel => 'Start Tour';
+
+  @override
+  String get tourStartTitle => 'Let\'s Get Started!';
+
+  @override
+  String get tourStartDesc =>
+      'This button opens both Solo and Combat modes. Tap it and I\'ll explain more inside!';
+
+  @override
+  String get tourSoloTitle => 'Solo Mode';
+
+  @override
+  String get tourSoloDesc =>
+      'Challenge yourself! Tap numbers to solve math problems or match sequences. The faster you are, the higher your score. Each correct answer levels you up with harder challenges!';
+
+  @override
+  String get tourCombatTitle => 'Combat Mode';
+
+  @override
+  String get tourCombatDesc =>
+      'Battle against friends in real-time using Bluetooth! No internet required. Two players solve the same challenges simultaneously - the fastest wins!';
+
+  @override
+  String get tourCreateRoomTitle => 'Create Room';
+
+  @override
+  String get tourCreateRoomDesc =>
+      'Host a game for your friend! Choose your difficulty level and share your room code. Your opponent can join using Nearby Connections or by scanning your QR code.';
+
+  @override
+  String get tourJoinRoomTitle => 'Join Room';
+
+  @override
+  String get tourJoinRoomDesc =>
+      'Join a friend\'s game! Enter their room code or scan their QR code to connect. Make sure you\'re within Bluetooth range for the best experience.';
+
+  @override
+  String get tourLeaderboardTitle => 'Top Scores';
+
+  @override
+  String get tourLeaderboardDesc =>
+      'Check out the best players! View high scores, track your progress, and compete to reach the top. Can you beat the current champions?';
+
+  @override
+  String get tourSettingsTitle => 'Settings';
+
+  @override
+  String get tourSettingsDesc =>
+      'Customize your experience! Adjust sound, change language, modify difficulty, and personalize the app to your liking. You can also restart this tour anytime from here.';
+
+  @override
+  String get tourNext => 'Next';
+
+  @override
+  String get tourPrevious => 'Previous';
+
+  @override
+  String get tourSkip => 'Skip Tour';
+
+  @override
+  String get tourFinish => 'Finish';
+
+  @override
+  String get tourRestartFromSettings => 'Restart Tour';
 }

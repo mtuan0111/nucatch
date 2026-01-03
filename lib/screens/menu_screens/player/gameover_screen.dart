@@ -14,7 +14,6 @@ import 'package:nucatch/helpers/extension.dart';
 
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 
 class GameOverScreen extends StatefulWidget {

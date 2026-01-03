@@ -10,6 +10,8 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.d
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart'
     as tlre;
+import 'package:nucatch/blocs/objects/tour/tour_bloc.dart';
+import 'package:nucatch/blocs/objects/tour/tour_event.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_event.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
@@ -687,6 +689,87 @@ class _SettingScreenState extends State<SettingScreen> {
                                         ),
                                       ),
                                       const SizedBox(height: 24),
+                                      // Restart Tour Button
+                                      Container(
+                                        padding: const EdgeInsets.all(16),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context)
+                                              .primaryColor
+                                              .withOpacity(0.2),
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(
+                                                LayoutConfig
+                                                    .layoutBorderRadius),
+                                            bottomRight: Radius.circular(
+                                                LayoutConfig
+                                                    .layoutBorderRadius),
+                                          ),
+                                          border: Border.all(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary
+                                                .withOpacity(0.2),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              FontAwesomeIcons.compass,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary,
+                                              size: 20,
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Expanded(
+                                              child: Text(
+                                                lang(context)
+                                                    .tourRestartFromSettings,
+                                                style: LayoutConfig(context)
+                                                    .titleSectionStyle(),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 12),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                context
+                                                    .read<TourBloc>()
+                                                    .add(TourReset());
+                                                // Show confirmation
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      'Tour has been reset. Return to the main menu to start.',
+                                                      style: LayoutConfig(
+                                                              context)
+                                                          .contentSectionStyle(),
+                                                    ),
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .primaryColor,
+                                                  ),
+                                                );
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColor,
+                                                foregroundColor:
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .onPrimary,
+                                              ),
+                                              child: Text(
+                                                lang(context)
+                                                    .tourRestartFromSettings,
+                                                style: LayoutConfig(context)
+                                                    .contentSectionStyle(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 );

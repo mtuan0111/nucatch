@@ -4,7 +4,7 @@
 
 ### 1. First-Time User Guide
 - [ ] Add onboarding guide for first-time users
-- [ ] Explain combat mode features
+- [ ] Explain combat, and solo mode features
 - [ ] Tutorial for hosting and joining rooms
 - [ ] Nearby Connections permission explanations
 
@@ -66,6 +66,12 @@
 - [ ] Add support for multiple languages based on device settings
 - [ ] Configure default language fallback mechanism
 - [ ] Test localization with different device language settings
+### 12. Real-time Typing Synchronization
+- [ ] Update the required string to the opponent after each correct input
+- [ ] Synchronize typing progress to help opponent prepare for their turn
+- [ ] Implement real-time progress tracking for both players
+- [ ] Ensure low-latency updates for typing status
+<!-- Update the required string into the opponent after each time the user typing correctly, easier to let the opponent catchup the typing statement of the user, let them get more ready for their turn -->
 
 
 # TODO List
