@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
@@ -418,8 +419,6 @@ class Helper {
         ) ??
         true;
     // }
-
-    return confirmExit;
   }
 
   static IconData getIconFromDifficulty(

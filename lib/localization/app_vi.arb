@@ -251,6 +251,21 @@
     "description": "Cảnh báo khi người dùng nhấn nút thoát",
     "placeholders": {}
   },
+  "restart": "Chơi lại",
+  "@restart": {
+    "description": "Nhãn nút chơi lại",
+    "placeholders": {}
+  },
+  "restartGame": "Chơi lại trò chơi",
+  "@restartGame": {
+    "description": "Tiêu đề hộp thoại chơi lại trò chơi",
+    "placeholders": {}
+  },
+  "confirmRestart": "Bạn có chắc chắn muốn chơi lại không?",
+  "@confirmRestart": {
+    "description": "Thông báo xác nhận khi chơi lại trò chơi",
+    "placeholders": {}
+  },
   "no": "Không",
   "@no": {
     "description": "Nút không trong hộp thoại xác nhận",

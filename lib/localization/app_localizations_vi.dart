@@ -168,6 +168,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get confirmExit => 'Bạn có chắc chắn muốn thoát không?';
 
   @override
+  String get restart => 'Chơi lại';
+
+  @override
+  String get restartGame => 'Chơi lại trò chơi';
+
+  @override
+  String get confirmRestart => 'Bạn có chắc chắn muốn chơi lại không?';
+
+  @override
   String get no => 'Không';
 
   @override

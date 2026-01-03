@@ -398,6 +398,24 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to exit?'**
   String get confirmExit;
 
+  /// Restart button label
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get restart;
+
+  /// Title for restart game dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Game'**
+  String get restartGame;
+
+  /// Confirmation message when restarting the game
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to restart the game?'**
+  String get confirmRestart;
+
   /// No button in the confirmation dialog
   ///
   /// In en, this message translates to:

@@ -252,6 +252,21 @@
     "description": "Warning when the user presses the exit button",
     "placeholders": {}
   },
+  "restart": "Restart",
+  "@restart": {
+    "description": "Restart button label",
+    "placeholders": {}
+  },
+  "restartGame": "Restart Game",
+  "@restartGame": {
+    "description": "Title for restart game dialog",
+    "placeholders": {}
+  },
+  "confirmRestart": "Are you sure you want to restart the game?",
+  "@confirmRestart": {
+    "description": "Confirmation message when restarting the game",
+    "placeholders": {}
+  },
   "no": "No",
   "@no": {
     "description": "No button in the confirmation dialog",

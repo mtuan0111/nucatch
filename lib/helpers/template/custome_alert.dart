@@ -62,6 +62,7 @@ class MenuAlert extends StatelessWidget {
               context,
               turnState.difficultyModel!.difficulty,
             ),
+            text: lang(context).difficultySetting,
             shapeAt: RoundedWithShapeAt.topLeft,
             // backgroundColor: Colors.white70,
             // color: Colors.black87,
@@ -91,6 +92,44 @@ class MenuAlert extends StatelessWidget {
                       Navigator.of(context).pop(false);
                     },
                   ));
+                }
+              });
+            },
+          ),
+          const SizedBox(height: 10),
+          // Restart button
+          AnimatedButton(
+            context,
+            iconData: Icons.refresh,
+            text: lang(context).restart,
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
+            shapeAt: RoundedWithShapeAt.topRight,
+            buttonSize: ButtonSize.smallest,
+            onPressed: () {
+              showDialog<bool>(
+                context: context,
+                barrierDismissible: false,
+                builder: (dialogContext) => AlertTemplate(
+                  title: lang(dialogContext).restartGame,
+                  message: lang(dialogContext).confirmRestart,
+                  possitiveButtonLabel: lang(dialogContext).yes,
+                  onPossitiveButtonPressed: () =>
+                      Navigator.of(dialogContext).pop(true),
+                  negativeButtonLabel: lang(dialogContext).no,
+                  onNegativeButtonPressed: () =>
+                      Navigator.of(dialogContext).pop(false),
+                ),
+              ).then((confirmed) {
+                if (confirmed == true && context.mounted) {
+                  // Defer navigation to after build completes
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (context.mounted) {
+                      // Close game over dialog
+                      Navigator.of(context).pop(false);
+                      // Start new game with countdown
+                      turnBloc.add(Start(seconds: 4));
+                    }
+                  });
                 }
               });
             },

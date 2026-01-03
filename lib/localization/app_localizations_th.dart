@@ -168,6 +168,15 @@ class AppLocalizationsTh extends AppLocalizations {
   String get confirmExit => 'คุณแน่ใจหรือไม่ว่าต้องการออก?';
 
   @override
+  String get restart => 'Restart';
+
+  @override
+  String get restartGame => 'Restart Game';
+
+  @override
+  String get confirmRestart => 'Are you sure you want to restart the game?';
+
+  @override
   String get no => 'ไม่';
 
   @override
