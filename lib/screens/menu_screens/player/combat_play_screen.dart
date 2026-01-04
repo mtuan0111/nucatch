@@ -1202,14 +1202,20 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     final wasOpponentScoreIncreased = _prevOpponentScoreForAnimation != null &&
         state.opponentScore > _prevOpponentScoreForAnimation!;
 
-    // Trigger point animation
-    if (wasPointIncreased) {
-      final scorePosition = _getWidgetPosition(_scoreKey);
-      _animationKey.currentState?.triggers.onAddPoint(scorePosition);
-    }
+    // // Trigger point animation
+    // if (wasPointIncreased) {
+    //   final scorePosition = _getWidgetPosition(_scoreKey);
+    //   _animationKey.currentState?.triggers.onAddPoint(scorePosition);
+    // }
 
     // Trigger opponent score animation (small firework)
-    if (wasOpponentScoreIncreased) {
+    // This triggers IMMEDIATELY when opponent succeeds, before score updates
+    if (state.opponentJustSucceeded) {
+      final opponentScorePosition = _getWidgetPosition(_opponentScoreKey);
+      _animationKey.currentState?.triggers.onAddPoint(opponentScorePosition);
+    }
+    // Also trigger if score actually increased (fallback)
+    else if (wasOpponentScoreIncreased) {
       final opponentScorePosition = _getWidgetPosition(_opponentScoreKey);
       _animationKey.currentState?.triggers.onAddPoint(opponentScorePosition);
     }

@@ -706,10 +706,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       ),
     );
 
-    // Send immediate success notification to trigger opponent's firework
-    await _sendMessage({
-      'type': _messageTypeToString(CombatMessageType.moveSuccess),
-    });
+    // // Send immediate success notification to trigger opponent's firework
+    // await _sendMessage({
+    //   'type': _messageTypeToString(CombatMessageType.moveSuccess),
+    // });
 
     // Increment timesCorrect and add life bonus (every 3 correct turns)
     emit(
