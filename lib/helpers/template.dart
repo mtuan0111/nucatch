@@ -749,9 +749,9 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
         child: Text(
           widget.text!,
           style: getTextStyle(context).copyWith(
-            fontSize: getFontSize(context),
-            color: getPressedColor(context),
-          ),
+              fontSize: getFontSize(context),
+              color: getPressedColor(context),
+              fontWeight: FontWeight.bold),
         ),
       );
     }

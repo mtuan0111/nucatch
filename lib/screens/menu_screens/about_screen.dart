@@ -480,11 +480,20 @@ class _AboutScreenState extends State<AboutScreen> {
                                 icon: FontAwesomeIcons.shareNodes,
                                 label: 'Share',
                                 onTap: () {
+                                  // Get the button's position for iPad share sheet
+                                  final box =
+                                      context.findRenderObject() as RenderBox?;
+                                  final sharePositionOrigin = box != null
+                                      ? box.localToGlobal(Offset.zero) &
+                                          box.size
+                                      : null;
+
                                   if (userState.username == null) {
                                     Share.share(
                                       lang(context).messageShareIntro(
                                         dotenv.env['PROFILE_URL']!,
                                       ),
+                                      sharePositionOrigin: sharePositionOrigin,
                                     );
                                   } else {
                                     Share.share(
@@ -494,6 +503,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                             lang(context).anonymous,
                                         dotenv.env['PROFILE_URL']!,
                                       ),
+                                      sharePositionOrigin: sharePositionOrigin,
                                     );
                                   }
                                 },

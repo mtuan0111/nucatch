@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
@@ -5,6 +7,7 @@ import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show PlayMode;
 
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
@@ -101,6 +104,17 @@ class _MenuNavState extends State<MenuNav> {
                               ,
                             ),
                             BlocProvider<PlayerNavCubit>(create: (context) {
+                              // if (Theme.of(context).platform ==
+                              //     TargetPlatform.android) {
+                              //   return PlayerNavCubit()..showSelectPlayMode();
+                              // }
+
+                              if (Platform.isIOS) {
+                                return PlayerNavCubit()
+                                  ..showSelectPlayMode()
+                                  ..selectPlayMode(PlayMode.solo);
+                              }
+
                               return PlayerNavCubit()..showSelectPlayMode()
                                   // ..selectPlayMode(PlayMode.solo)
                                   ;

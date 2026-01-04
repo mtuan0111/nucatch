@@ -141,8 +141,11 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
                       },
                       child: Text(
                         lang(context).tourSkip,
-                        style: LayoutConfig(context).secondaryTextStyle(
-                            color: Theme.of(context).colorScheme.secondary),
+                        style: LayoutConfig(context)
+                            .secondaryTextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                            )
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -151,7 +154,7 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      '${tourState.currentStep + 1} / ${tourState.totalSteps}',
+                      '${tourState.displayStepNumber} / ${tourState.totalSteps}',
                       style: LayoutConfig(context).captionStyle(
                           color: Theme.of(context)
                               .colorScheme
