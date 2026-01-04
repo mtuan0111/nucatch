@@ -1046,3 +1046,40 @@ feat: Improve UI UX
 
     Flutter build for iOS
     ```flutter build ios --build-name=2.4.6 --build-number=61 --release```
+---
+## Released on: 5/1/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 61           | 2.5.1   |
+| iOS      | 62           | 2.5.1   |
+
+### Release note:
+feat: Improve UI UX, add the multiple player
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+    ```
+    [Builded] Version 2.5.1 - 61 / 2.5.1 - 62 _ Improve UI UX, add the multiple player
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Added multiplayer support for more engaging gameplay.  
+        - Improved user interface for better visual experience.  
+        - Enhanced overall app design and usability.
+
+    - **Tiếng Việt:**  
+        - Thêm hỗ trợ chơi nhiều người để trải nghiệm chơi game hấp dẫn hơn.  
+        - Cải thiện giao diện người dùng để trải nghiệm hình ảnh tốt hơn.  
+        - Nâng cao thiết kế và khả năng sử dụng tổng thể của ứng dụng.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.5.1 --build-number=61 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.5.1 --build-number=62 --release```
+    ```
+    ---
