@@ -23,7 +23,7 @@ class CombatGameStarted extends CombatEvent {
 class CombatGameEnded extends CombatEvent {
   final bool isCauseGameOver;
   final bool isWinner;
-  final String reason;
+  final GameEndReason? reason;
   final bool sendMessage;
 
   CombatGameEnded({

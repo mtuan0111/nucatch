@@ -124,7 +124,7 @@ class CombatGameEndScreen extends StatelessWidget {
 
           // Game End Reason
           Text(
-            _getGameEndReason(context, combatState.gameEndReason),
+            _getGameEndReason(context, combatState),
             style: LayoutConfig(context).largeBoldStyle(),
             textAlign: TextAlign.center,
           ),
@@ -250,15 +250,19 @@ class CombatGameEndScreen extends StatelessWidget {
     );
   }
 
-  String _getGameEndReason(BuildContext context, String? reason) {
+  String _getGameEndReason(BuildContext context, CombatState combatState) {
+    final reason = combatState.gameEndReason;
+
     switch (reason) {
-      case 'opponent_lives_out':
+      case GameEndReason.opponentLivesOut:
         return lang(context).opponentRanOutOfLives;
-      case 'my_lives_out':
+      case GameEndReason.myLivesOut:
         return lang(context).youRanOutOfLives;
-      case 'opponent_disconnected':
+      case GameEndReason.opponentDisconnected:
         return lang(context).opponentDisconnected;
-      default:
+      case GameEndReason.timeout:
+        return lang(context).youRanOutOfLives; // Timeout is treated as losing
+      case null:
         return '';
     }
   }

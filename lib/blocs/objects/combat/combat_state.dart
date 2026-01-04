@@ -20,7 +20,7 @@ class CombatState extends TurnState {
   // Game status
   final CombatStatus combatStatus;
   final bool? isWinner; // null = ongoing, true = won, false = lost
-  final String? gameEndReason;
+  final GameEndReason? gameEndReason;
 
   // Restart state
   final bool isRestartRequested;
@@ -81,7 +81,7 @@ class CombatState extends TurnState {
     bool? isWaitingForOpponent,
     CombatStatus? combatStatus,
     bool? isWinner,
-    String? gameEndReason,
+    GameEndReason? gameEndReason,
     bool? isRestartRequested,
     bool? isPlayerReady,
     bool? isOpponentReady,
@@ -163,4 +163,23 @@ enum CombatStatus {
   intro, // Countdown before game starts
   playing, // Game in progress
   ended, // Game finished
+}
+
+enum GameEndReason {
+  opponentLivesOut, // Opponent ran out of lives
+  myLivesOut, // I ran out of lives
+  opponentDisconnected, // Opponent disconnected
+  timeout, // Timeout
+}
+
+enum CombatMessageType {
+  difficultySelected, // Host selected difficulty
+  turnStart, // Turn started
+  typingUpdate, // Full typing update
+  moveSuccess, // Move completed successfully
+  moveCompleted, // Turn completed
+  gameEnded, // Game ended
+  restartRequested, // Restart requested
+  restartReady, // Player ready for restart
+  opponentDisconnected, // Opponent disconnected
 }

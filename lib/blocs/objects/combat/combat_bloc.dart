@@ -79,78 +79,104 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         return;
       }
 
-      final type = data['type'] as String;
+      if (data['type'] != null) {
+        final String typeString = data['type'];
+        final CombatMessageType? messageType = _stringToMessageType(typeString);
 
-      switch (type) {
-        case 'difficulty_selected':
-          if (!state.isHost) {
-            final difficulty = Difficulty.values.firstWhere(
-              (d) => d.toString() == data['difficulty'],
-            );
-            // Initialize combat game for guest first
-            add(CombatGameStarted(
-              difficulty: difficulty,
-              isHost: false,
-              combatStatus: CombatStatus.intro,
-            ));
-            // Then handle difficulty selection
-            // add(CombatDifficultyChanged(difficulty: difficulty));
+        if (messageType == null) {
+          // Handle special cases like move_typed_* events
+          if (typeString.startsWith('move_typed_')) {
+            print(
+                '📥 [Combat] Received move_typed event: $typeString, isMyTurn: ${state.isMyTurn}');
+            final currentInput = data['currentInput'] as String?;
+            print('📥 [Combat] currentInput from message: $currentInput');
+            if (currentInput != null && !state.isMyTurn) {
+              print('✅ [Combat] Updating opponent input to: $currentInput');
+              add(CombatOpponentTypingUpdate(currentInput: currentInput));
+            } else if (state.isMyTurn) {
+              print('⏭️ [Combat] Skipping - it\'s my turn');
+            }
           }
-          break;
-        case 'turn_start':
-          // Use _roomService.isHost instead of state.isHost to avoid race condition
-          // where state might not be updated yet when message arrives
-          final isMyTurn = data['isHostTurn'] == _roomService.isHost;
-          final requirement = data['requirement'] as String;
-          final expect = data['expect'] as String;
-          print(
-              '🎮 [Combat] turn_start received - isHostTurn: ${data['isHostTurn']}, _roomService.isHost: ${_roomService.isHost}, calculated isMyTurn: $isMyTurn');
-          add(CombatTurnReceived(
-            isMyTurn: isMyTurn,
-            requirement: requirement,
-            expect: expect,
-          ));
-          break;
-        case 'typing_update':
-          // Real-time typing progress from opponent
-          if (!state.isMyTurn) {
-            add(CombatOpponentTypingUpdate(
-              currentInput: data['currentInput'],
+          return;
+        }
+
+        switch (messageType) {
+          case CombatMessageType.difficultySelected:
+            if (!state.isHost) {
+              final difficulty = Difficulty.values.firstWhere(
+                (d) => d.toString() == data['difficulty'],
+              );
+              // Initialize combat game for guest first
+              add(CombatGameStarted(
+                difficulty: difficulty,
+                isHost: false,
+                combatStatus: CombatStatus.intro,
+              ));
+              // Then handle difficulty selection
+              // add(CombatDifficultyChanged(difficulty: difficulty));
+            }
+            break;
+          case CombatMessageType.turnStart:
+            // Use _roomService.isHost instead of state.isHost to avoid race condition
+            // where state might not be updated yet when message arrives
+            final isMyTurn = data['isHostTurn'] == _roomService.isHost;
+            final requirement = data['requirement'] as String;
+            final expect = data['expect'] as String;
+            print(
+                '🎮 [Combat] turn_start received - isHostTurn: ${data['isHostTurn']}, _roomService.isHost: ${_roomService.isHost}, calculated isMyTurn: $isMyTurn');
+            add(CombatTurnReceived(
+              isMyTurn: isMyTurn,
+              requirement: requirement,
+              expect: expect,
             ));
-          }
-          break;
-        case 'move_success':
-          // Immediate notification that opponent finished successfully
-          // Triggers firework animation on opponent's score
-          add(CombatOpponentSuccessReceived());
-          break;
-        case 'move_completed':
-          add(CombatOpponentMoveReceived(
-            opponentInput: data['input'],
-            wasOpponentCorrect: data['correct'],
-            opponentScore: data['score'],
-            opponentLives: data['lives'],
-          ));
-          break;
-        case 'game_ended':
-          // Don't send message back - this prevents infinite loop
-          add(CombatGameEnded(
-            isWinner: !data['isWinner'], // Opponent sends their win status
-            reason: data['reason'],
-            sendMessage: false, // Don't echo the message back
-          ));
-          break;
-        case 'restart_requested':
-          // add(CombatRestartRequested());
-          break;
-        case 'restart_ready':
-          add(CombatRestartReadyReceived(
-            opponentReady: data['isReady'] as bool,
-          ));
-          break;
-        case 'opponent_disconnected':
-          add(CombatOpponentDisconnected());
-          break;
+            break;
+          case CombatMessageType.typingUpdate:
+            // Real-time typing progress from opponent
+            if (!state.isMyTurn) {
+              add(CombatOpponentTypingUpdate(
+                currentInput: data['currentInput'],
+              ));
+            }
+            break;
+          case CombatMessageType.moveSuccess:
+            // Immediate notification that opponent finished successfully
+            // Triggers firework animation on opponent's score
+            add(CombatOpponentSuccessReceived());
+            break;
+          case CombatMessageType.moveCompleted:
+            add(CombatOpponentMoveReceived(
+              opponentInput: data['input'],
+              wasOpponentCorrect: data['correct'],
+              opponentScore: data['score'],
+              opponentLives: data['lives'],
+            ));
+            break;
+          case CombatMessageType.gameEnded:
+            // Don't send message back - this prevents infinite loop
+            // Swap the reason: opponent's "my_lives_out" becomes "opponent_lives_out" for me
+            String receivedReasonString = data['reason'];
+            GameEndReason? myReason = _stringToGameEndReason(
+                receivedReasonString,
+                swapPerspective: true);
+
+            add(CombatGameEnded(
+              isWinner: !data['isWinner'], // Opponent sends their win status
+              reason: myReason,
+              sendMessage: false, // Don't echo the message back
+            ));
+            break;
+          case CombatMessageType.restartRequested:
+            // add(CombatRestartRequested());
+            break;
+          case CombatMessageType.restartReady:
+            add(CombatRestartReadyReceived(
+              opponentReady: data['isReady'] as bool,
+            ));
+            break;
+          case CombatMessageType.opponentDisconnected:
+            add(CombatOpponentDisconnected());
+            break;
+        }
       }
     } catch (e) {
       print('❌ [Combat] Failed to parse message: $e');
@@ -159,8 +185,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
   Future<void> _sendMessage(Map<String, dynamic> data) async {
     try {
+      print('📤 [Combat] Attempting to send message: ${data['type']}');
       await _roomService.sendMessage(data);
-      print('📤 [Combat] Sent message: $data');
+      print(
+          '✅ [Combat] Successfully sent message: ${data['type']}, data: $data');
     } catch (e) {
       print('❌ [Combat] Failed to send message: $e');
     }
@@ -217,7 +245,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // Only HOST sends the difficulty selection message
     if (state.isHost) {
       await _sendMessage({
-        'type': 'difficulty_selected',
+        'type': _messageTypeToString(CombatMessageType.difficultySelected),
         'difficulty': event.difficulty.toString(),
       });
     }
@@ -270,7 +298,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     print('🎮 [Combat] Sending turn_start - isHostTurn: $isHostTurn');
 
     await _sendMessage({
-      'type': 'turn_start',
+      'type': _messageTypeToString(CombatMessageType.turnStart),
       'isHostTurn': isHostTurn,
       'requirement': requirement,
       'expect': expect,
@@ -346,7 +374,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Check if opponent lost
     if (event.opponentLives <= 0) {
-      add(CombatGameEnded(isWinner: true, reason: 'opponent_lives_out'));
+      add(CombatGameEnded(
+          isWinner: true, reason: GameEndReason.opponentLivesOut));
       return;
     }
 
@@ -358,9 +387,15 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatOpponentTypingUpdate event,
     Emitter<CombatState> emit,
   ) async {
+    print(
+        '🔄 [Combat] OpponentTypingUpdate event - updating opponentInput to: ${event.currentInput}');
     emit(state.copyWith(
       opponentInput: event.currentInput,
     ));
+    print(
+        '✅ [Combat] State updated - opponentInput is now: ${state.opponentInput}');
+    print(
+        '🔍 [Combat] UI State: isMyTurn=${state.isMyTurn}, isGameActive=${state.isGameActive}, isOpponentActive=${state.isOpponentActive}');
   }
 
   Future<void> _onCombatGameEnded(
@@ -376,10 +411,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Only send game ended message if this is a local game end (not from opponent)
     if (event.sendMessage) {
+      // Convert enum to string for message transmission
+      String reasonString = _gameEndReasonToString(event.reason);
       await _sendMessage({
-        'type': 'game_ended',
+        'type': _messageTypeToString(CombatMessageType.gameEnded),
         'isWinner': event.isWinner,
-        'reason': event.reason,
+        'reason': reasonString,
       });
     }
   }
@@ -391,7 +428,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(state.copyWith(
       combatStatus: CombatStatus.ended,
       isWinner: true,
-      gameEndReason: 'opponent_disconnected',
+      gameEndReason: GameEndReason.opponentDisconnected,
       isGameActive: false,
     ));
   }
@@ -409,7 +446,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Notify opponent
     await _sendMessage({
-      'type': 'restart_requested',
+      'type': _messageTypeToString(CombatMessageType.restartRequested),
     });
   }
 
@@ -424,7 +461,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Send ready status to opponent
     await _sendMessage({
-      'type': 'restart_ready',
+      'type': _messageTypeToString(CombatMessageType.restartReady),
       'isReady': event.isReady,
     });
 
@@ -564,15 +601,28 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     KeyboardOption keyValue,
     Emitter<CombatState> emit,
   ) async {
-    final newTyping = "${state.typing}${keyboardArray[keyValue].toString()}";
+    final tappedNumber = keyboardArray[keyValue].toString();
+    final newTyping = "${state.typing}$tappedNumber";
+
+    print('⌨️ [Combat] Correct tap: $tappedNumber, newTyping: $newTyping');
 
     emit(
       state.copyWith(typing: newTyping),
     );
 
-    // Send real-time typing update to opponent
+    // Send individual number event for real-time character-by-character display
+    print(
+        '📤 [Combat] Sending move_typed_$tappedNumber with currentInput: $newTyping');
     await _sendMessage({
-      'type': 'typing_update',
+      'type': 'move_typed_$tappedNumber',
+      'number': tappedNumber,
+      'currentInput': newTyping,
+    });
+
+    // Also send full typing update for backward compatibility
+    print('📤 [Combat] Sending typing_update with currentInput: $newTyping');
+    await _sendMessage({
+      'type': _messageTypeToString(CombatMessageType.typingUpdate),
       'currentInput': newTyping,
     });
   }
@@ -584,7 +634,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     add(CombatLostLife());
 
     if (!state.isAbleToContinue) {
-      add(CombatGameEnded(isWinner: false, reason: 'my_lives_out'));
+      add(CombatGameEnded(isWinner: false, reason: GameEndReason.myLivesOut));
       return;
     }
   }
@@ -614,7 +664,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     final newLives = state.lifeRemaining;
 
     await _sendMessage({
-      'type': 'move_completed',
+      'type': _messageTypeToString(CombatMessageType.moveCompleted),
       'input': state.typing,
       'correct': true,
       'score': newScore,
@@ -640,7 +690,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     );
 
     if (!state.isAbleToContinue) {
-      add(CombatGameEnded(isWinner: false, reason: 'my_lives_out'));
+      add(CombatGameEnded(isWinner: false, reason: GameEndReason.myLivesOut));
     }
   }
 
@@ -658,7 +708,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Send immediate success notification to trigger opponent's firework
     await _sendMessage({
-      'type': 'move_success',
+      'type': _messageTypeToString(CombatMessageType.moveSuccess),
     });
 
     // Increment timesCorrect and add life bonus (every 3 correct turns)
@@ -740,6 +790,13 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(
       state.copyWith(
         requirementString: requiredString,
+      ),
+    );
+
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    emit(
+      state.copyWith(
         expect: expectString,
       ),
     );
@@ -864,7 +921,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     add(CombatLostLife());
 
     if (!state.isAbleToContinue) {
-      add(CombatGameEnded(isWinner: false, reason: 'timeout'));
+      add(CombatGameEnded(isWinner: false, reason: GameEndReason.timeout));
       return;
     } else {
       _audioBloc.add(PlayWrongAudio());
@@ -872,7 +929,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
       // Send timeout notification to opponent
       await _sendMessage({
-        'type': 'move_completed',
+        'type': _messageTypeToString(CombatMessageType.moveCompleted),
         'input': '',
         'correct': false,
         'score': state.point,
@@ -897,7 +954,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     ));
 
     // Reset the flag after a short delay
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 10));
     if (isClosed) return;
 
     emit(state.copyWith(
@@ -920,5 +977,84 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(const CombatState());
 
     print('✅ [Combat] CombatBloc reset complete');
+  }
+
+  // Constant maps for enum-to-string conversions
+  static const Map<GameEndReason, String> _gameEndReasonToStringMap = {
+    GameEndReason.opponentLivesOut: 'opponent_lives_out',
+    GameEndReason.myLivesOut: 'my_lives_out',
+    GameEndReason.opponentDisconnected: 'opponent_disconnected',
+    GameEndReason.timeout: 'timeout',
+  };
+
+  static const Map<String, GameEndReason> _stringToGameEndReasonMap = {
+    'opponent_lives_out': GameEndReason.opponentLivesOut,
+    'my_lives_out': GameEndReason.myLivesOut,
+    'opponent_disconnected': GameEndReason.opponentDisconnected,
+    'timeout': GameEndReason.timeout,
+  };
+
+  static const Map<CombatMessageType, String> _messageTypeToStringMap = {
+    CombatMessageType.difficultySelected: 'difficulty_selected',
+    CombatMessageType.turnStart: 'turn_start',
+    CombatMessageType.typingUpdate: 'typing_update',
+    CombatMessageType.moveSuccess: 'move_success',
+    CombatMessageType.moveCompleted: 'move_completed',
+    CombatMessageType.gameEnded: 'game_ended',
+    CombatMessageType.restartRequested: 'restart_requested',
+    CombatMessageType.restartReady: 'restart_ready',
+    CombatMessageType.opponentDisconnected: 'opponent_disconnected',
+  };
+
+  static const Map<String, CombatMessageType> _stringToMessageTypeMap = {
+    'difficulty_selected': CombatMessageType.difficultySelected,
+    'turn_start': CombatMessageType.turnStart,
+    'typing_update': CombatMessageType.typingUpdate,
+    'move_success': CombatMessageType.moveSuccess,
+    'move_completed': CombatMessageType.moveCompleted,
+    'game_ended': CombatMessageType.gameEnded,
+    'restart_requested': CombatMessageType.restartRequested,
+    'restart_ready': CombatMessageType.restartReady,
+    'opponent_disconnected': CombatMessageType.opponentDisconnected,
+  };
+
+  // Helper function to convert GameEndReason enum to string for message transmission
+  String _gameEndReasonToString(GameEndReason? reason) {
+    if (reason == null) return '';
+    return _gameEndReasonToStringMap[reason] ?? '';
+  }
+
+  // Helper function to convert CombatMessageType enum to string for message transmission
+  String _messageTypeToString(CombatMessageType type) {
+    return _messageTypeToStringMap[type] ?? '';
+  }
+
+  // Helper function to convert string to CombatMessageType enum
+  CombatMessageType? _stringToMessageType(String type) {
+    return _stringToMessageTypeMap[type];
+  }
+
+  // Helper function to convert string to GameEndReason enum
+  // If swapPerspective is true, swaps "my" and "opponent" reasons
+  GameEndReason? _stringToGameEndReason(String? reasonString,
+      {bool swapPerspective = false}) {
+    if (reasonString == null) return null;
+
+    GameEndReason? reason = _stringToGameEndReasonMap[reasonString];
+    if (reason == null) return null;
+
+    // Swap perspective if requested (for receiving opponent's messages)
+    if (swapPerspective) {
+      switch (reason) {
+        case GameEndReason.myLivesOut:
+          return GameEndReason.opponentLivesOut;
+        case GameEndReason.opponentLivesOut:
+          return GameEndReason.myLivesOut;
+        default:
+          return reason;
+      }
+    }
+
+    return reason;
   }
 }

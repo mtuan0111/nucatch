@@ -96,11 +96,12 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       _isMenuShowing = false;
 
       if (confirmed == true) {
-        // End game with opponent winning
+        // End game with opponent winning (I gave up)
         context.read<CombatBloc>().add(
               CombatGameEnded(
                 isWinner: false,
-                reason: lang(context).opponentGaveUp,
+                reason:
+                    GameEndReason.myLivesOut, // Giving up is treated as losing
                 sendMessage: true,
               ),
             );
@@ -844,8 +845,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       );
     }
 
-    // Show typing area with animations (user input)
-    if (combatState.isTimeForTyping && combatState.expect != null) {
+    // Show typing area with animations (user input) - ONLY when it's my turn
+    if (combatState.isMyTurn &&
+        combatState.isTimeForTyping &&
+        combatState.expect != null) {
       return Center(
         child: Wrap(
           children: List.generate(
@@ -933,27 +936,57 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     }
 
     // Waiting/watching opponent - show mirror view
-    if (combatState.isOpponentActive) {
+    if (combatState.isOpponentActive && !combatState.isMyTurn) {
       // Show the opponent's challenge and progress as a mirror
       if (combatState.requirementString != null && combatState.expect != null) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              lang(context).watchingOpponent,
-              style: LayoutConfig(context).contentSectionStyle().copyWith(
-                    color: Colors.orange,
-                    fontSize: kFontSizeL,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: kSpace4XL),
-            // Show opponent's challenge (mirrored)
+            // const SizedBox(height: kSpaceXL),
+            // // Show opponent's challenge (mirrored)
+            // Wrap(
+            //   children: List.generate(
+            //     combatState.requirementString!.length,
+            //     (index) {
+            //       String char = combatState.requirementString![index];
+            //       return SizedBox(
+            //         width: (boldedStyleFont(
+            //                     numberOfCharactor:
+            //                         combatState.requirementString!.length)
+            //                 .fontSize! *
+            //             0.65),
+            //         child: Column(
+            //           children: [
+            //             Opacity(
+            //               opacity: 0.6, // Dimmed to show it's opponent's
+            //               child: Text(
+            //                 char,
+            //                 textAlign: TextAlign.center,
+            //                 style: boldedStyleFont(
+            //                   numberOfCharactor:
+            //                       combatState.requirementString!.length,
+            //                 ),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+            // const SizedBox(height: kSpaceXL),
+            // Show opponent's typing progress (always show when watching)
             Wrap(
               children: List.generate(
-                combatState.requirementString!.length,
+                combatState.expect!.length,
                 (index) {
-                  String char = combatState.requirementString![index];
+                  double hide = combatState.opponentInput != null &&
+                          index < combatState.opponentInput!.length
+                      ? 1
+                      : 0;
+
+                  String inputted = combatState.expect![index];
+
                   return SizedBox(
                     width: (boldedStyleFont(
                                 numberOfCharactor:
@@ -962,15 +995,24 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                         0.65),
                     child: Column(
                       children: [
-                        Opacity(
-                          opacity: 0.6, // Dimmed to show it's opponent's
+                        AnimatedOpacity(
+                          duration: const Duration(milliseconds: 200),
+                          opacity: hide * 0.6, // Dimmed
                           child: Text(
-                            char,
+                            inputted,
                             textAlign: TextAlign.center,
                             style: boldedStyleFont(
                               numberOfCharactor:
                                   combatState.requirementString!.length,
                             ),
+                          ),
+                        ),
+                        AnimatedOpacity(
+                          opacity: (hide == 0) ? 0.6 : 0,
+                          duration: const Duration(milliseconds: 200),
+                          child: Icon(
+                            FontAwesomeIcons.minus,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
                       ],
@@ -979,63 +1021,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                 },
               ),
             ),
-            const SizedBox(height: kSpaceXL),
-            // Show opponent's typing progress if available
-            if (combatState.opponentInput != null &&
-                combatState.opponentInput!.isNotEmpty)
-              Wrap(
-                children: List.generate(
-                  combatState.expect!.length,
-                  (index) {
-                    double hide = combatState.opponentInput != null &&
-                            index < combatState.opponentInput!.length
-                        ? 1
-                        : 0;
-
-                    String inputted = combatState.expect![index];
-
-                    return SizedBox(
-                      width: (boldedStyleFont(
-                                  numberOfCharactor:
-                                      combatState.requirementString!.length)
-                              .fontSize! *
-                          0.65),
-                      child: Column(
-                        children: [
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 200),
-                            opacity: hide * 0.6, // Dimmed
-                            child: Text(
-                              inputted,
-                              textAlign: TextAlign.center,
-                              style: boldedStyleFont(
-                                numberOfCharactor:
-                                    combatState.requirementString!.length,
-                              ),
-                            ),
-                          ),
-                          AnimatedOpacity(
-                            opacity: (hide == 0) ? 0.6 : 0,
-                            duration: const Duration(milliseconds: 200),
-                            child: Icon(
-                              FontAwesomeIcons.minus,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              )
-            else
-              // Show waiting indicator if no input yet
-              Padding(
-                padding: const EdgeInsets.all(kPaddingXL),
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
           ],
         );
       }
