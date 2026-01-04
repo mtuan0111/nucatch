@@ -170,7 +170,7 @@ class _PlayScreenState extends State<PlayScreen> {
           onPopInvokedWithResult: (didPop, result) {
             // Since canPop is false, didPop will always be false
             // Always trigger menu button when back is pressed
-            _handleMenuButton();
+            // _handleMenuButton();
           },
           child: Scaffold(
             body: BlocBuilder<TurnBloc, TurnState>(

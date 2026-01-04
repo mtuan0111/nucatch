@@ -119,7 +119,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           onPopInvokedWithResult: (didPop, result) {
             // Since canPop is false, didPop will always be false
             // Always trigger menu button when back is pressed
-            _handleMenuButton(context);
+            // _handleMenuButton(context);
           },
           child: BlocListener<CombatBloc, CombatState>(
             listenWhen: (previous, current) {

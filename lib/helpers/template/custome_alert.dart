@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
@@ -85,11 +86,15 @@ class MenuAlert extends StatelessWidget {
                       Navigator.of(context).pop(false),
                 ),
               ).then((confirmed) {
-                if (confirmed == true) {
+                if (confirmed == true && context.mounted) {
                   turnBloc.add(SaveRecorded(
                     callback: () {
-                      playerNavCubit.showSetDifficulty();
+                      // Close game over dialog
                       Navigator.of(context).pop(false);
+                      // Show difficulty setting
+                      playerNavCubit.selectPlayMode(
+                        PlayMode.solo,
+                      );
                     },
                   ));
                 }
@@ -121,15 +126,14 @@ class MenuAlert extends StatelessWidget {
                 ),
               ).then((confirmed) {
                 if (confirmed == true && context.mounted) {
-                  // Defer navigation to after build completes
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    if (context.mounted) {
+                  turnBloc.add(SaveRecorded(
+                    callback: () {
                       // Close game over dialog
                       Navigator.of(context).pop(false);
                       // Start new game with countdown
                       turnBloc.add(Start(seconds: 4));
-                    }
-                  });
+                    },
+                  ));
                 }
               });
             },
