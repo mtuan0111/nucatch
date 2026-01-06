@@ -167,13 +167,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get confirmExit => '本当に終了しますか？';
 
   @override
-  String get restart => 'Restart';
+  String get restart => '再起動';
 
   @override
-  String get restartGame => 'Restart Game';
+  String get restartGame => 'ゲームを再起動';
 
   @override
-  String get confirmRestart => 'Are you sure you want to restart the game?';
+  String get confirmRestart => '本当にゲームを再起動しますか？';
 
   @override
   String get no => 'いいえ';

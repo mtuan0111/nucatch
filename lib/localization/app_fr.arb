@@ -955,6 +955,9 @@
   "tourPrevious": "Précédent",
   "tourSkip": "Passer la visite",
   "tourFinish": "Terminer",
+  "restart": "Redémarrer",
+  "restartGame": "Redémarrer le jeu",
+  "confirmRestart": "Êtes-vous sûr de vouloir redémarrer le jeu ?",
   "tourRestartFromSettings": "Redémarrer la visite",
   "tourResetMessage": "La visite a été réinitialisée. Retournez au menu principal pour commencer."
 }

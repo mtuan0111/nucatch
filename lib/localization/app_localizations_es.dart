@@ -168,13 +168,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get confirmExit => '¿Estás seguro de que quieres salir?';
 
   @override
-  String get restart => 'Restart';
+  String get restart => 'Reiniciar';
 
   @override
-  String get restartGame => 'Restart Game';
+  String get restartGame => 'Reiniciar Juego';
 
   @override
-  String get confirmRestart => 'Are you sure you want to restart the game?';
+  String get confirmRestart =>
+      '¿Estás seguro de que quieres reiniciar el juego?';
 
   @override
   String get no => 'No';

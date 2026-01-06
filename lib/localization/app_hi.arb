@@ -955,6 +955,9 @@
   "tourPrevious": "पिछला",
   "tourSkip": "टूर छोड़ें",
   "tourFinish": "समाप्त करें",
+  "restart": "पुनः आरंभ करें",
+  "restartGame": "गेम पुनः आरंभ करें",
+  "confirmRestart": "क्या आप वाकई गेम को पुनः आरंभ करना चाहते हैं?",
   "tourRestartFromSettings": "टूर पुनः आरंभ करें",
   "tourResetMessage": "टूर रीसेट हो गया है। शुरू करने के लिए मुख्य मेनू पर वापस जाएं।"
 }

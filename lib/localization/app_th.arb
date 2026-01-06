@@ -955,6 +955,9 @@
   "tourPrevious": "ก่อนหน้า",
   "tourSkip": "ข้ามทัวร์",
   "tourFinish": "เสร็จสิ้น",
+  "restart": "เริ่มใหม่",
+  "restartGame": "เริ่มเกมใหม่",
+  "confirmRestart": "คุณแน่ใจหรือไม่ว่าต้องการเริ่มเกมใหม่?",
   "tourRestartFromSettings": "เริ่มทัวร์ใหม่",
   "tourResetMessage": "รีเซ็ตทัวร์แล้ว กลับไปที่เมนูหลักเพื่อเริ่มต้น"
 }

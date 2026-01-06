@@ -168,13 +168,13 @@ class AppLocalizationsTh extends AppLocalizations {
   String get confirmExit => 'คุณแน่ใจหรือไม่ว่าต้องการออก?';
 
   @override
-  String get restart => 'Restart';
+  String get restart => 'เริ่มใหม่';
 
   @override
-  String get restartGame => 'Restart Game';
+  String get restartGame => 'เริ่มเกมใหม่';
 
   @override
-  String get confirmRestart => 'Are you sure you want to restart the game?';
+  String get confirmRestart => 'คุณแน่ใจหรือไม่ว่าต้องการเริ่มเกมใหม่?';
 
   @override
   String get no => 'ไม่';

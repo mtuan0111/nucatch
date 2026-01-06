@@ -955,6 +955,9 @@
   "tourPrevious": "Sebelumnya",
   "tourSkip": "Lewati Tur",
   "tourFinish": "Selesai",
+  "restart": "Mulai Ulang",
+  "restartGame": "Mulai Ulang Permainan",
+  "confirmRestart": "Apakah Anda yakin ingin memulai ulang permainan?",
   "tourRestartFromSettings": "Mulai Ulang Tur",
   "tourResetMessage": "Tur telah direset. Kembali ke menu utama untuk memulai."
 }

@@ -955,6 +955,9 @@
   "tourPrevious": "上一步",
   "tourSkip": "跳过导览",
   "tourFinish": "完成",
+  "restart": "重新开始",
+  "restartGame": "重新开始游戏",
+  "confirmRestart": "您确定要重新开始游戏吗？",
   "tourRestartFromSettings": "重新开始导览",
   "tourResetMessage": "导览已重置。返回主菜单开始。"
 }

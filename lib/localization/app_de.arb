@@ -955,6 +955,9 @@
   "tourPrevious": "Zurück",
   "tourSkip": "Tour überspringen",
   "tourFinish": "Fertig",
+  "restart": "Neustart",
+  "restartGame": "Spiel neu starten",
+  "confirmRestart": "Möchten Sie das Spiel wirklich neu starten?",
   "tourRestartFromSettings": "Tour neu starten",
   "tourResetMessage": "Die Tour wurde zurückgesetzt. Kehren Sie zum Hauptmenü zurück, um zu beginnen."
 }

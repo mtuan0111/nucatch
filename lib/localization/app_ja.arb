@@ -955,6 +955,9 @@
   "tourPrevious": "前へ",
   "tourSkip": "ツアーをスキップ",
   "tourFinish": "完了",
+  "restart": "再起動",
+  "restartGame": "ゲームを再起動",
+  "confirmRestart": "本当にゲームを再起動しますか？",
   "tourRestartFromSettings": "ツアーを再開",
   "tourResetMessage": "ツアーがリセットされました。開始するにはメインメニューに戻ってください。"
 }

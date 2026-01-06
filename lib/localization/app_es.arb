@@ -955,6 +955,9 @@
   "tourPrevious": "Anterior",
   "tourSkip": "Saltar Tour",
   "tourFinish": "Finalizar",
+  "restart": "Reiniciar",
+  "restartGame": "Reiniciar Juego",
+  "confirmRestart": "¿Estás seguro de que quieres reiniciar el juego?",
   "tourRestartFromSettings": "Reiniciar Tour",
   "tourResetMessage": "El tour ha sido reiniciado. Regresa al menú principal para comenzar."
 }

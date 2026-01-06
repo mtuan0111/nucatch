@@ -165,13 +165,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get confirmExit => '你确定要退出吗？';
 
   @override
-  String get restart => 'Restart';
+  String get restart => '重新开始';
 
   @override
-  String get restartGame => 'Restart Game';
+  String get restartGame => '重新开始游戏';
 
   @override
-  String get confirmRestart => 'Are you sure you want to restart the game?';
+  String get confirmRestart => '您确定要重新开始游戏吗？';
 
   @override
   String get no => '不';

@@ -168,13 +168,14 @@ class AppLocalizationsId extends AppLocalizations {
   String get confirmExit => 'Apakah Anda yakin ingin keluar?';
 
   @override
-  String get restart => 'Restart';
+  String get restart => 'Mulai Ulang';
 
   @override
-  String get restartGame => 'Restart Game';
+  String get restartGame => 'Mulai Ulang Permainan';
 
   @override
-  String get confirmRestart => 'Are you sure you want to restart the game?';
+  String get confirmRestart =>
+      'Apakah Anda yakin ingin memulai ulang permainan?';
 
   @override
   String get no => 'Tidak';
