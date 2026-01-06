@@ -10,6 +10,7 @@ import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/animations/animated_game_wrapper.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
@@ -39,24 +40,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   final GlobalKey _heartKey = GlobalKey();
   final GlobalKey _opponentScoreKey = GlobalKey();
 
-  // Font size for challenge display
-  TextStyle boldedStyleFont({int numberOfCharactor = 1}) {
-    double fontSize = 50;
-
-    if (numberOfCharactor >= 10) {
-      fontSize = kFontSizeXL;
-    } else if (numberOfCharactor >= 8) {
-      fontSize = kFontSize2XL;
-    } else if (numberOfCharactor >= 6) {
-      fontSize = kFontSize3XL;
-    } else if (numberOfCharactor >= 4) {
-      fontSize = kFontSize4XL;
-    }
-    return LayoutConfig(context).boldedStyle.copyWith(
-          color: Theme.of(context).colorScheme.onPrimary,
-          fontSize: fontSize,
-        );
-  }
+  // Removed: boldedStyleFont - now using AppTextStyles.forChallenge()
 
   @override
   void initState() {
@@ -314,7 +298,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
   Widget _buildCombatHeader(CombatState combatState) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+          horizontal: kPaddingL, vertical: kPaddingSM),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -338,13 +323,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                         children: [
                           TextSpan(
                             text: "${lang(context).level}: ",
-                            style: LayoutConfig(context)
-                                .contentSectionStyle()
-                                .copyWith(fontWeight: FontWeight.bold),
+                            style: AppTextStyles.bodyLargeBold(context),
                           ),
                           TextSpan(
                             text: combatState.levelAndTimeCorrect,
-                            style: LayoutConfig(context).contentSectionStyle(),
+                            style: AppTextStyles.bodyLarge(context),
                           ),
                         ],
                       ),
@@ -363,13 +346,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     const SizedBox(width: kSpaceS),
                     Text(
                       "${lang(context).score}: ",
-                      style: LayoutConfig(context)
-                          .contentSectionStyle()
-                          .copyWith(fontWeight: FontWeight.bold),
+                      style: AppTextStyles.bodyLargeBold(context),
                     ),
                     Text(
                       "${combatState.point}",
-                      style: LayoutConfig(context).contentSectionStyle(),
+                      style: AppTextStyles.bodyLarge(context),
                     ),
                   ],
                 ),
@@ -378,8 +359,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   opacity:
                       combatState.combatStatus != CombatStatus.intro ? 1 : 0,
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kPaddingL, vertical: kPaddingSM),
                     decoration: BoxDecoration(
                       color:
                           combatState.isMyTurn ? Colors.green : Colors.orange,
@@ -389,7 +370,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       combatState.isMyTurn
                           ? lang(context).yourTurn
                           : lang(context).opponentTurn,
-                      style: LayoutConfig(context).boldSubtitleStyle(),
+                      style: AppTextStyles.bodyLargeBold(context),
                     ),
                   ),
                 ),
@@ -404,9 +385,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               children: [
                 Text(
                   lang(context).opponent,
-                  style: LayoutConfig(context)
-                      .contentSectionStyle()
-                      .copyWith(fontWeight: FontWeight.bold),
+                  style: AppTextStyles.bodyLargeBold(context),
                 ),
                 const SizedBox(height: kSpaceS),
                 Wrap(
@@ -415,13 +394,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   children: [
                     Text(
                       "${lang(context).score}: ",
-                      style: LayoutConfig(context)
-                          .contentSectionStyle()
-                          .copyWith(fontWeight: FontWeight.bold),
+                      style: AppTextStyles.bodyLargeBold(context),
                     ),
                     Text(
                       "${combatState.opponentScore}",
-                      style: LayoutConfig(context).contentSectionStyle(),
+                      style: AppTextStyles.bodyLarge(context),
                     ),
                   ],
                 ),
@@ -493,7 +470,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     if (shouldAnimateAdd) {
                       return TweenAnimationBuilder<double>(
                         tween: Tween<double>(begin: 0.0, end: 1.0),
-                        duration: const Duration(milliseconds: 300),
+                        duration: const Duration(
+                            milliseconds: kAnimationDurationMedium),
                         curve: Curves.elasticOut,
                         onEnd: () {},
                         builder: (context, value, child) {
@@ -507,11 +485,13 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     if (shouldAnimateRemove) {
                       return TweenAnimationBuilder<double>(
                         tween: Tween<double>(begin: 1.0, end: 0.0),
-                        duration: const Duration(milliseconds: 300),
+                        duration: const Duration(
+                            milliseconds: kAnimationDurationMedium),
                         curve: Curves.elasticIn,
                         onEnd: () async {
                           await Future.delayed(
-                            const Duration(milliseconds: 300),
+                            const Duration(
+                                milliseconds: kAnimationDurationMedium),
                           ).then((_) {
                             if (!mounted) return;
                             wasLifeDecreased = false;
@@ -607,11 +587,13 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                           }
 
                           return AnimatedScale(
-                            duration: const Duration(milliseconds: 500),
+                            duration: const Duration(
+                                milliseconds: kAnimationDurationSlow),
                             scale: time > 0.5 ? 1.0 : 5,
                             curve: Curves.easeOutQuart,
                             child: AnimatedOpacity(
-                              duration: const Duration(milliseconds: 500),
+                              duration: const Duration(
+                                  milliseconds: kAnimationDurationSlow),
                               opacity: time > 0.5 ? 1.0 : 0.0,
                               curve: Curves.easeOutQuart,
                               child: Container(
@@ -665,79 +647,38 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                           AnimatedDefaultTextStyle(
                                             duration: const Duration(
                                                 milliseconds: 300),
-                                            style: LayoutConfig(context)
-                                                .displaySmallStyle()
-                                                .copyWith(
-                                                  fontSize: kFontSize3XL,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface,
-                                                ),
+                                            style: AppTextStyles.forCountdown(
+                                                context),
                                             child: Text(
                                               time.truncate().toString(),
-                                              style: LayoutConfig(context)
-                                                  .titleSectionStyle(
-                                                      isItalic: true)
-                                                  .copyWith(
-                                                    fontSize: kFontSize3XL,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Theme.of(context)
-                                                        .scaffoldBackgroundColor,
-                                                  ),
+                                              style: AppTextStyles.forCountdown(
+                                                  context),
                                             ),
                                           ),
                                         if (time >= 1)
                                           AnimatedDefaultTextStyle(
                                             duration: const Duration(
                                                 milliseconds: 300),
-                                            style: LayoutConfig(context)
-                                                .titleSectionStyle(
-                                                    isItalic: true)
-                                                .copyWith(
-                                                  fontSize: kFontSizeM,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface,
-                                                ),
+                                            style:
+                                                AppTextStyles.forCountdownReady(
+                                                    context),
                                             child: Text(
                                               readyText,
-                                              style: LayoutConfig(context)
-                                                  .titleSectionStyle(
-                                                      isItalic: true)
-                                                  .copyWith(
-                                                    fontSize: kFontSizeM,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Theme.of(context)
-                                                        .scaffoldBackgroundColor,
-                                                  ),
+                                              style: AppTextStyles
+                                                  .forCountdownReady(context),
                                             ),
                                           )
                                         else
                                           AnimatedDefaultTextStyle(
                                             duration: const Duration(
                                                 milliseconds: 300),
-                                            style: LayoutConfig(context)
-                                                .titleSectionStyle(
-                                                    isItalic: true)
-                                                .copyWith(
-                                                  fontSize: kFontSize2XL,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface,
-                                                ),
+                                            style: AppTextStyles.forCountdownGo(
+                                                context),
                                             child: Text(
                                               goText,
-                                              style: LayoutConfig(context)
-                                                  .titleSectionStyle(
-                                                      isItalic: true)
-                                                  .copyWith(
-                                                    fontSize: kFontSize2XL,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Theme.of(context)
-                                                        .scaffoldBackgroundColor,
-                                                  ),
+                                              style:
+                                                  AppTextStyles.forCountdownGo(
+                                                      context),
                                             ),
                                           ),
                                       ],
@@ -764,7 +705,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       color: combatState.willStartFirst!
                           ? Colors.green.withOpacity(0.2)
                           : Colors.orange.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(kBorderRadiusL),
                       border: Border.all(
                         color: combatState.willStartFirst!
                             ? Colors.green
@@ -790,13 +731,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                             combatState.willStartFirst!
                                 ? lang(context).youWillTakeFirst
                                 : lang(context).opponentWillTakeFirst,
-                            style: LayoutConfig(context)
-                                .mediumBoldStyle()
-                                .copyWith(
-                                  color: combatState.willStartFirst!
-                                      ? Colors.green
-                                      : Colors.orange,
-                                ),
+                            style: AppTextStyles.bodyMediumBold(context),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -821,9 +756,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             (index) {
               String char = combatState.requirementString![index];
               return SizedBox(
-                width: (boldedStyleFont(
-                            numberOfCharactor:
-                                combatState.requirementString!.length)
+                width: (AppTextStyles.forChallenge(
+                            combatState.requirementString!.length, context)
                         .fontSize! *
                     0.65),
                 child: Column(
@@ -831,9 +765,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     Text(
                       char,
                       textAlign: TextAlign.center,
-                      style: boldedStyleFont(
-                        numberOfCharactor:
-                            combatState.requirementString!.length,
+                      style: AppTextStyles.forChallenge(
+                        combatState.requirementString!.length,
+                        context,
                       ),
                     ),
                   ],
@@ -862,9 +796,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               String inputted = combatState.expect![index];
 
               return SizedBox(
-                width: (boldedStyleFont(
-                            numberOfCharactor:
-                                combatState.requirementString!.length)
+                width: (AppTextStyles.forChallenge(
+                            combatState.requirementString!.length, context)
                         .fontSize! *
                     0.65),
                 child: Builder(
@@ -908,9 +841,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                               child: Text(
                                 inputted,
                                 textAlign: TextAlign.center,
-                                style: boldedStyleFont(
-                                  numberOfCharactor:
-                                      combatState.requirementString!.length,
+                                style: AppTextStyles.forChallenge(
+                                  combatState.requirementString!.length,
+                                  context,
                                 ),
                               ),
                             ),
@@ -988,9 +921,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   String inputted = combatState.expect![index];
 
                   return SizedBox(
-                    width: (boldedStyleFont(
-                                numberOfCharactor:
-                                    combatState.requirementString!.length)
+                    width: (AppTextStyles.forChallenge(
+                                combatState.requirementString!.length, context)
                             .fontSize! *
                         0.65),
                     child: Column(
@@ -1001,9 +933,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                           child: Text(
                             inputted,
                             textAlign: TextAlign.center,
-                            style: boldedStyleFont(
-                              numberOfCharactor:
-                                  combatState.requirementString!.length,
+                            style: AppTextStyles.forChallenge(
+                              combatState.requirementString!.length,
+                              context,
                             ),
                           ),
                         ),
@@ -1036,10 +968,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             const SizedBox(height: kSpaceXL),
             Text(
               lang(context).watchingOpponent,
-              style: LayoutConfig(context).contentSectionStyle().copyWith(
-                    color: Colors.orange,
-                    fontSize: kFontSizeXL,
-                  ),
+              style: AppTextStyles.bodyLarge(context).copyWith(
+                color: Colors.orange,
+                fontSize: kFontSizeXL,
+              ),
             ),
           ],
         ),
@@ -1058,10 +990,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             const SizedBox(height: kSpaceXL),
             Text(
               lang(context).waitingForOpponent,
-              style: LayoutConfig(context).contentSectionStyle().copyWith(
-                    color: Colors.yellow,
-                    fontSize: kFontSizeXL,
-                  ),
+              style: AppTextStyles.bodyLarge(context).copyWith(
+                color: Colors.yellow,
+                fontSize: kFontSizeXL,
+              ),
             ),
           ],
         ),
@@ -1115,7 +1047,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   button = AnimatedButton(
                     context,
                     text: e.value.toString(),
-                    style: LayoutConfig(context).boldedStyle,
+                    style: AppTextStyles.displayLarge(context),
                     isEnable: combatState.canTap,
                     onPressed: () {
                       context.read<CombatBloc>().add(
@@ -1189,8 +1121,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
   void _handleAnimationEvents(BuildContext context, CombatState state) {
     // Track point changes
-    final wasPointIncreased =
-        _prevPointForAnimation != null && state.point > _prevPointForAnimation!;
 
     // Track life changes
     final wasLifeIncreasedForAnimation = _prevLifeForAnimation != null &&

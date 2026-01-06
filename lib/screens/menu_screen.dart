@@ -7,6 +7,7 @@ import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/widgets/tour_button.dart';
@@ -67,7 +68,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           state.username != null
                               ? lang(context).welcomeUser(state.username!)
                               : lang(context).welcome,
-                          style: LayoutConfig(context).titleSectionStyle(),
+                          style: AppTextStyles.titleLarge(context),
                         ),
                       ),
                     ),
@@ -83,12 +84,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         child: Center(
                           child: Text(
                             _getHolidayMessage(context),
-                            style: LayoutConfig(context)
-                                .titleSectionStyle()
-                                .copyWith(
-                                  fontSize: kFontSizeM,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                            style: AppTextStyles.bodyLargeMedium(context),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -113,12 +109,8 @@ class _MenuScreenState extends State<MenuScreen> {
                                 context,
                                 text: (entry.value['text'] as String)
                                     .toUpperCase(),
-                                style: LayoutConfig(context)
-                                    .titleSectionStyle()
-                                    .copyWith(
-                                      fontWeight: FontWeight.w900,
-                                      fontStyle: FontStyle.italic,
-                                    ),
+                                style: AppTextStyles.titleLargeItalic(
+                                    context),
                                 iconData: entry.value['icon'] as IconData,
                                 backgroundColor: Theme.of(context).primaryColor,
                                 // textDirection: TextDirection.rtl,
@@ -141,7 +133,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     SliverFillRemaining(
                       hasScrollBody: false,
                       child: Container(
-                        margin: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(kPaddingM),
                         alignment: Alignment.bottomCenter,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -149,14 +141,12 @@ class _MenuScreenState extends State<MenuScreen> {
                           children: [
                             Text(
                               "${lang(context).version}: ",
-                              style:
-                                  LayoutConfig(context).contentSectionStyle(),
+                              style: AppTextStyles.bodyLarge(context),
                               // style: LayoutConfig(context).titleSectionStyle(),
                             ),
                             Text(
                               version ?? "",
-                              style:
-                                  LayoutConfig(context).contentSectionStyle(),
+                              style: AppTextStyles.bodyLarge(context),
                             ),
                           ],
                         ),

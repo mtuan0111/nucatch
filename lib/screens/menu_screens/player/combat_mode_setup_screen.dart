@@ -5,6 +5,7 @@ import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 
@@ -46,7 +47,7 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                         kToolbarHeight + MediaQuery.of(context).padding.top;
 
                     return AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: kAnimationDurationMedium),
                       color: isCollapsed
                           ? Theme.of(context).primaryColor
                           : Colors.transparent,
@@ -58,10 +59,8 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                           child: Text(
                             lang(context).combatMode,
                             textAlign: TextAlign.center,
-                            style: LayoutConfig(context).displaySmallStyle(
-                              isActiveShadow: true,
-                              isItalic: true,
-                            ),
+                            style:
+                                AppTextStyles.displaySmallTitleScreen(context),
                           ),
                         ),
                       ),
@@ -147,7 +146,7 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                                     child: const Icon(
                                       Icons.check,
                                       color: Colors.white,
-                                      size: 20,
+                                      size: kIconSizeM,
                                     ),
                                   ),
                                 ),
@@ -156,7 +155,7 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
 
                             // Divider to show hierarchy
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: kPaddingM),
                               child: Row(
                                 children: [
                                   const Expanded(child: Divider(thickness: 2)),
@@ -165,13 +164,9 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                                         horizontal: kPaddingL),
                                     child: Text(
                                       lang(context).combatMode,
-                                      style: LayoutConfig(context)
-                                          .titleSectionStyle()
-                                          .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .error,
-                                          ),
+                                      style: AppTextStyles.withColor(
+                                          AppTextStyles.titleLarge(context),
+                                          Theme.of(context).colorScheme.error),
                                     ),
                                   ),
                                   const Expanded(child: Divider(thickness: 2)),

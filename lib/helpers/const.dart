@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/localization/app_localizations.dart';
 
 const diffShowLevelMilisecond = 250;
@@ -47,145 +46,8 @@ class LayoutConfig {
 
   LayoutConfig(this.context);
 
-  TextStyle displaySmallStyle({
-    bool isActiveShadow = false,
-    bool isItalic = false,
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.headlineLarge!.copyWith(
-        color: Theme.of(context).colorScheme.onPrimary,
-        fontFamily: fontFamily,
-        fontStyle: isItalic ? FontStyle.italic : null,
-        fontWeight: FontWeight.bold,
-        shadows: [
-          if (isActiveShadow)
-            BoxShadow(
-              color: Theme.of(context)
-                  .colorScheme
-                  .onPrimary
-                  .getTheOpposite()
-                  .withOpacity(0.6),
-              blurRadius: 10,
-              offset: Offset(-2, 4),
-            )
-        ],
-      );
-
-  TextStyle get titleScreenStyle => displaySmallStyle(
-        isActiveShadow: true,
-        isItalic: true,
-      );
-
-  TextStyle get boldedStyle =>
-      Theme.of(context).textTheme.displayLarge!.copyWith(
-            fontFamily: "Inter",
-            fontWeight: FontWeight.w900,
-            fontStyle: FontStyle.italic,
-          );
-
-  TextStyle titleSectionStyle({
-    bool isActiveShadow = false,
-    bool isItalic = false,
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.titleLarge!.copyWith(
-        color: Theme.of(context).colorScheme.onPrimary,
-        fontFamily: fontFamily,
-        fontStyle: isItalic ? FontStyle.italic : null,
-        fontWeight: FontWeight.w600,
-        shadows: [
-          if (isActiveShadow)
-            const BoxShadow(
-              color: Colors.black54,
-              blurRadius: 0,
-              offset: Offset(-2, 4),
-            )
-        ],
-      );
-
-  TextStyle contentSectionStyle({
-    Color? color,
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.bodyLarge!.copyWith(
-            color: color ?? Theme.of(context).colorScheme.onPrimary,
-            fontFamily: fontFamily,
-          );
-
-  TextStyle handWritingSectionStyle({
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.displaySmall!.copyWith(
-            color: Theme.of(context).colorScheme.onPrimary,
-            fontFamily: "Dancing Script",
-          );
-
-  TextStyle subtitleStyle({
-    Color? color,
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.bodyLarge!.copyWith(
-            color: color ?? Theme.of(context).colorScheme.onPrimary,
-            fontFamily: fontFamily,
-            fontWeight: FontWeight.w500,
-          );
-
-  TextStyle boldSubtitleStyle({
-    Color? color,
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.bodyLarge!.copyWith(
-            color: color ?? Theme.of(context).colorScheme.onPrimary,
-            fontFamily: fontFamily,
-            fontWeight: FontWeight.bold,
-          );
-
-  TextStyle largeBoldStyle({
-    Color? color,
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.titleMedium!.copyWith(
-            color: color ?? Theme.of(context).colorScheme.onPrimary,
-            fontFamily: fontFamily,
-            fontWeight: FontWeight.bold,
-          );
-
-  TextStyle mediumBoldStyle({
-    Color? color,
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.bodyLarge!.copyWith(
-            color: color ?? Theme.of(context).colorScheme.onPrimary,
-            fontFamily: fontFamily,
-            fontWeight: FontWeight.bold,
-          );
-
-  TextStyle captionStyle({
-    Color? color,
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.bodySmall!.copyWith(
-            color: color ?? Theme.of(context).colorScheme.onPrimary,
-            fontFamily: fontFamily,
-          );
-
-  TextStyle secondaryTextStyle({
-    Color? color,
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: color ?? Theme.of(context).colorScheme.onSurfaceVariant,
-            fontFamily: fontFamily,
-          );
-
-  TextStyle hintTextStyle({
-    Color? color,
-    String? fontFamily,
-  }) =>
-      Theme.of(context).textTheme.bodySmall!.copyWith(
-            color: color ?? Theme.of(context).colorScheme.onSurfaceVariant,
-            fontFamily: fontFamily,
-          );
+  // TextStyle methods removed - now using AppTextStyles class
+  // See lib/helpers/app_text_styles.dart for centralized TextStyle system
 
   static ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
     shape: RoundedRectangleBorder(

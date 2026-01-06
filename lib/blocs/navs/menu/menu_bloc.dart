@@ -36,10 +36,6 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         emitter(Exit());
         SystemNavigator.pop();
         exit(0);
-
-      default:
-        emitter(Menu());
-        break;
     }
   }
 

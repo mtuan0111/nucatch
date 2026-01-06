@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 import 'package:nucatch/blocs/objects/tour/tour_bloc.dart';
 import 'package:nucatch/blocs/objects/tour/tour_event.dart';
@@ -52,7 +53,7 @@ class _TourOverlayState extends State<TourOverlay> {
 
     if (targetKey == null || targetKey.currentContext == null) {
       // Target not available, skip to next step
-      Future.delayed(const Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: kAnimationDurationSlow), () {
         if (mounted) {
           context.read<TourBloc>().add(TourStepCompleted());
         }
@@ -64,7 +65,7 @@ class _TourOverlayState extends State<TourOverlay> {
     _tooltipController = SuperTooltipController();
 
     // Show tooltip after a short delay
-    Future.delayed(const Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: kAnimationDurationMedium), () {
       if (mounted && _tooltipController != null) {
         _tooltipController!.showTooltip();
       }

@@ -13,6 +13,7 @@ import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/services/combat_nearby_service.dart';
 
 class CombatBloc extends Bloc<CombatEvent, CombatState> {
@@ -274,7 +275,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // Generate new challenge based on difficulty and level using event handler
     await _onCombatGeneratedRequiredString(
         CombatRequiredStringGenerated(), emit);
-    await Future.delayed(const Duration(milliseconds: 500)); // Slight delay
+    await Future.delayed(
+        const Duration(milliseconds: kAnimationDurationSlow)); // Slight delay
     final requirement = state.requirementString ?? "";
     final expect = state.expect ?? "";
 
@@ -793,7 +795,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       ),
     );
 
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: kAnimationDurationSlow));
 
     emit(
       state.copyWith(
@@ -868,7 +870,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
   void _startTapTimer() {
     _tapTimer?.cancel();
-    const tickDuration = Duration(milliseconds: 100);
+    const tickDuration = Duration(milliseconds: kAnimationDurationFast);
     double remainingTime = tapTimerDuration;
 
     _tapTimer = Timer.periodic(tickDuration, (timer) {
@@ -925,7 +927,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       return;
     } else {
       _audioBloc.add(PlayWrongAudio());
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(
+          const Duration(milliseconds: kAnimationDurationSlow));
 
       // Send timeout notification to opponent
       await _sendMessage({

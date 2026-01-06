@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
@@ -33,16 +34,17 @@ class CombatDialogs {
               const SizedBox(height: kSpaceL),
               Text(
                 message,
-                style: LayoutConfig(context).boldSubtitleStyle().copyWith(
-                      color: Theme.of(context).colorScheme.primary.getDarker(),
-                    ),
+                style: AppTextStyles.bodyLargeBold(context).copyWith(
+                  color: Theme.of(context).colorScheme.primary.getDarker(),
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: kSpaceSM),
               Text(
                 lang(dialogContext).pressReadyWhenPrepared,
-                style: LayoutConfig(context).contentSectionStyle(
-                  color: Theme.of(context).colorScheme.primary.getDarker(),
+                style: AppTextStyles.withColor(
+                  AppTextStyles.bodyLarge(context),
+                  Theme.of(context).colorScheme.primary.getDarker(),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -75,15 +77,16 @@ class CombatDialogs {
             const SizedBox(height: kSpaceL),
             Text(
               lang(context).gameIsStarting,
-              style: LayoutConfig(context).largeBoldStyle().copyWith(
+              style: AppTextStyles.titleMediumBold(context).copyWith(
                   color: Theme.of(context).colorScheme.primary.getDarker()),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: kSpaceSM),
             Text(
               lang(context).waitingForHostToSelectDifficulty,
-              style: LayoutConfig(context).contentSectionStyle(
-                color: Theme.of(context).colorScheme.primary.getDarker(),
+              style: AppTextStyles.withColor(
+                AppTextStyles.bodyLarge(context),
+                Theme.of(context).colorScheme.primary.getDarker(),
               ),
               textAlign: TextAlign.center,
             ),

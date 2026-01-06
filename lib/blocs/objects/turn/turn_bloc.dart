@@ -14,6 +14,7 @@ import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:nucatch/services/user_services.dart';
 import 'package:nucatch/services/turn_services.dart';
@@ -63,7 +64,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
   void _startTapTimer() {
     _tapTimer?.cancel();
-    const tickDuration = Duration(milliseconds: 100);
+    const tickDuration = Duration(milliseconds: kAnimationDurationFast);
     double remainingTime = tapTimerDuration;
 
     _tapTimer = Timer.periodic(tickDuration, (timer) {
@@ -658,7 +659,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       }
 
       if (i == 1) {
-        Future.delayed(const Duration(milliseconds: 500)).then((_) {
+        Future.delayed(const Duration(milliseconds: kAnimationDurationSlow))
+            .then((_) {
           _audioBloc.add(PlayNewTings());
         });
       }
@@ -790,7 +792,8 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     } else {
       _audioBloc.add(PlayWrongAudio());
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(
+          const Duration(milliseconds: kAnimationDurationSlow));
       add(SetLevel(level: state.level));
     }
   }

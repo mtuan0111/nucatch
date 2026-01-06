@@ -8,6 +8,7 @@ import 'package:nucatch/blocs/app_version/app_version_state.dart';
 import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
 import 'package:nucatch/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
@@ -78,7 +79,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         kToolbarHeight + MediaQuery.of(context).padding.top;
 
                     return AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: kAnimationDurationMedium),
                       color: isCollapsed
                           ? Theme.of(context).primaryColor
                           : Colors.transparent,
@@ -90,10 +91,8 @@ class _AboutScreenState extends State<AboutScreen> {
                           child: Text(
                             screenTitle,
                             textAlign: TextAlign.center,
-                            style: LayoutConfig(context).displaySmallStyle(
-                              isActiveShadow: true,
-                              isItalic: true,
-                            ),
+                            style:
+                                AppTextStyles.displaySmallTitleScreen(context),
                           ),
                         ),
                       ),
@@ -147,32 +146,29 @@ class _AboutScreenState extends State<AboutScreen> {
                               Icon(
                                 FontAwesomeIcons.solidHeart,
                                 color: Theme.of(context).colorScheme.onPrimary,
-                                size: 24,
+                                size: kIconSizeM,
                               ),
                               const SizedBox(width: kSpaceML),
                               Expanded(
                                 child: Text(
                                   lang(context).thankYou,
-                                  style: LayoutConfig(context)
-                                      .titleSectionStyle()
+                                  style: AppTextStyles.titleLarge(context)
                                       .copyWith(fontSize: kFontSizeL),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: kSpaceL),
                           Text(
                             lang(context).introductionContent,
-                            style: LayoutConfig(context).contentSectionStyle(),
+                            style: AppTextStyles.bodyLarge(context),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: kSpaceML),
                           Text(
                             lang(context).thankYouMessage,
-                            style: LayoutConfig(context)
-                                .contentSectionStyle()
-                                .copyWith(
-                                  fontStyle: FontStyle.italic,
-                                ),
+                            style: AppTextStyles.bodyLarge(context).copyWith(
+                              fontStyle: FontStyle.italic,
+                            ),
                           ),
                         ],
                       ),
@@ -219,25 +215,24 @@ class _AboutScreenState extends State<AboutScreen> {
                               Icon(
                                 FontAwesomeIcons.circleInfo,
                                 color: Theme.of(context).colorScheme.onPrimary,
-                                size: 24,
+                                size: kIconSizeM,
                               ),
                               const SizedBox(width: kSpaceML),
                               Text(
                                 lang(context).authorName,
-                                style: LayoutConfig(context)
-                                    .titleSectionStyle()
+                                style: AppTextStyles.titleLarge(context)
                                     .copyWith(fontSize: kFontSizeL),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: kSpaceL),
                           _buildInfoRow(
                             context,
                             FontAwesomeIcons.user,
                             lang(context).authorName,
                             "BOM",
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: kSpaceML),
                           _buildInfoRow(
                             context,
                             FontAwesomeIcons.codeBranch,
@@ -292,20 +287,19 @@ class _AboutScreenState extends State<AboutScreen> {
                                     FontAwesomeIcons.arrowsRotate,
                                     color:
                                         Theme.of(context).colorScheme.onPrimary,
-                                    size: 24,
+                                    size: kIconSizeM,
                                   ),
                                   const SizedBox(width: kSpaceML),
                                   Expanded(
                                     child: Text(
                                       lang(context).appUpdates,
-                                      style: LayoutConfig(context)
-                                          .titleSectionStyle()
+                                      style: AppTextStyles.titleLarge(context)
                                           .copyWith(fontSize: kFontSizeL),
                                     ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: kSpaceL),
                               Container(
                                 padding: const EdgeInsets.all(kPaddingL),
                                 decoration: BoxDecoration(
@@ -327,20 +321,19 @@ class _AboutScreenState extends State<AboutScreen> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onPrimary,
-                                      size: 20,
+                                      size: kIconSizeM,
                                     ),
-                                    const SizedBox(width: 12),
+                                    const SizedBox(width: kSpaceML),
                                     Expanded(
                                       child: Text(
                                         _getUpdateStatusText(context, state),
-                                        style: LayoutConfig(context)
-                                            .contentSectionStyle(),
+                                        style: AppTextStyles.bodyLarge(context),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: kSpaceL),
                               Center(
                                 child: ElevatedButton.icon(
                                   onPressed:
@@ -367,17 +360,15 @@ class _AboutScreenState extends State<AboutScreen> {
                                         )
                                       : Icon(
                                           FontAwesomeIcons.arrowsRotate,
-                                          size: 16,
+                                          size: kIconSizeS,
                                         ),
                                   label: Text(
                                     lang(context).checkForUpdates,
-                                    style: LayoutConfig(context)
-                                        .contentSectionStyle()
-                                        .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                        ),
+                                    style: AppTextStyles.withColor(
+                                        AppTextStyles.bodyLarge(context),
+                                        Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
@@ -450,25 +441,24 @@ class _AboutScreenState extends State<AboutScreen> {
                               Icon(
                                 FontAwesomeIcons.shareNodes,
                                 color: Theme.of(context).colorScheme.onPrimary,
-                                size: 24,
+                                size: kIconSizeM,
                               ),
                               const SizedBox(width: kSpaceML),
                               Expanded(
                                 child: Text(
                                   lang(context).connectWithUs,
-                                  style: LayoutConfig(context)
-                                      .titleSectionStyle()
+                                  style: AppTextStyles.titleLarge(context)
                                       .copyWith(fontSize: kFontSizeL),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: kSpaceL),
                           Text(
                             lang(context).connectWithUsMessage,
-                            style: LayoutConfig(context).contentSectionStyle(),
+                            style: AppTextStyles.bodyLarge(context),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: kSpaceXL),
                           Wrap(
                             // mainAxisAlignment: MainAxisAlignment.,
                             // crossAxisAlignment: CrossAxisAlignment.start,
@@ -599,19 +589,19 @@ class _AboutScreenState extends State<AboutScreen> {
         Icon(
           icon,
           color: Theme.of(context).colorScheme.onPrimary,
-          size: 18,
+          size: kIconSizeS,
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: kSpaceML),
         Text(
           "$label: ",
-          style: LayoutConfig(context).contentSectionStyle(),
+          style: AppTextStyles.bodyLarge(context),
         ),
         Expanded(
           child: Text(
             value,
-            style: LayoutConfig(context).contentSectionStyle().copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: AppTextStyles.bodyLarge(context).copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],
@@ -641,14 +631,14 @@ class _AboutScreenState extends State<AboutScreen> {
                   Icon(
                     icon,
                     color: Theme.of(context).colorScheme.onPrimary,
-                    size: 24,
+                    size: kIconSizeM,
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: kSpaceS),
                   Text(
                     label,
-                    style: LayoutConfig(context).contentSectionStyle().copyWith(
-                          fontSize: kFontSizeXS,
-                        ),
+                    style: AppTextStyles.bodyLarge(context).copyWith(
+                      fontSize: kFontSizeXS,
+                    ),
                   ),
                 ],
               ),

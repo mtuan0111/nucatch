@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/models/app_version_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -64,38 +66,32 @@ class UpdateNoticeDialog extends StatelessWidget {
                 lang(context).currentVersion,
                 currentVersion,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: kSpaceSM),
               _buildInfoRow(
                 context,
                 lang(context).newVersion,
                 versionInfo.versionName,
               ),
               if (localizedMessage != null) ...[
-                const SizedBox(height: 16),
+                const SizedBox(height: kSpaceL),
                 Text(
                   lang(context).whatsNew,
-                  style: LayoutConfig(context)
-                      .contentSectionStyle(
-                          color: Theme.of(context).colorScheme.onSurface)
-                      .copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: AppTextStyles.bodyLargeBoldOnDialogBackground(context),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: kSpaceSM),
                 Text(
                   localizedMessage,
-                  style: LayoutConfig(context).contentSectionStyle(
-                      color: Theme.of(context).colorScheme.onSurface),
+                  style: AppTextStyles.bodyLargeOnDialogBackground(context),
                 ),
               ],
               if (isForceUpdate) ...[
-                const SizedBox(height: 16),
+                const SizedBox(height: kSpaceL),
                 CustomElevatedButton(
                   backgroundColor: Colors.orangeAccent,
-                  // padding: const EdgeInsets.all(12),
+                  // padding: const EdgeInsets.all(kPaddingML),
                   // decoration: BoxDecoration(
                   //   color: Colors.orange.withValues(alpha: 0.1),
-                  //   borderRadius: BorderRadius.circular(8),
+                  //   borderRadius: BorderRadius.circular(kBorderRadiusM),
                   //   border: Border.all(
                   //     color: Colors.orange.withValues(alpha: 0.3),
                   //   ),
@@ -105,15 +101,15 @@ class UpdateNoticeDialog extends StatelessWidget {
                       Icon(
                         Icons.error_outline,
                         color: Theme.of(context).colorScheme.onSurface,
-                        // size: 20,
+                        // size: kIconSizeM,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: kSpaceSM),
                       Expanded(
                         child: Text(
                           lang(context).forceUpdateMessage,
-                          style: LayoutConfig(context).contentSectionStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
+                          style: AppTextStyles.withColor(
+                              AppTextStyles.bodyLarge(context),
+                              Theme.of(context).colorScheme.onSurface),
                         ),
                       ),
                     ],
@@ -145,17 +141,11 @@ class UpdateNoticeDialog extends StatelessWidget {
       children: [
         Text(
           label,
-          style: LayoutConfig(context)
-              .contentSectionStyle(
-                  color: Theme.of(context).colorScheme.onSurface)
-              .copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: AppTextStyles.bodyLargeBoldOnDialogBackground(context),
         ),
         Text(
           value,
-          style: LayoutConfig(context).contentSectionStyle(
-              color: Theme.of(context).colorScheme.onSurface),
+          style: AppTextStyles.bodyLargeOnDialogBackground(context),
         ),
       ],
     );

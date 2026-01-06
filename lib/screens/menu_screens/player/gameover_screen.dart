@@ -10,6 +10,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/extension.dart';
 
 import 'package:nucatch/helpers/template.dart';
@@ -67,9 +68,9 @@ class _GameOverScreenState extends State<GameOverScreen> {
                   children: [
                     Text(
                       lang(context).gameOver,
-                      style: LayoutConfig(context).boldedStyle.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
+                      style: AppTextStyles.displayLarge(context).copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: kSpace3XL),
@@ -79,10 +80,10 @@ class _GameOverScreenState extends State<GameOverScreen> {
                             const EdgeInsets.symmetric(horizontal: kSpace2XL),
                         child: Text(
                           turnState.requirementString ?? '',
-                          style: LayoutConfig(context).boldedStyle.copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                fontSize: kFontSizeXL,
-                              ),
+                          style: AppTextStyles.displayLarge(context).copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontSize: kFontSizeXL,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -92,19 +93,16 @@ class _GameOverScreenState extends State<GameOverScreen> {
                       children: [
                         Text(
                           lang(context).theCorrectIs,
-                          style: LayoutConfig(context)
-                              .contentSectionStyle()
-                              .copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
+                          style: AppTextStyles.withColor(
+                              AppTextStyles.bodyLargeMedium(context),
+                              Theme.of(context).colorScheme.onPrimary),
                         ),
                         const SizedBox(width: kSpaceS),
                         Text(
                           turnState.expect ?? '',
-                          style: LayoutConfig(context).boldedStyle.copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
+                          style: AppTextStyles.displayLarge(context).copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
                         ),
                       ],
                     ),

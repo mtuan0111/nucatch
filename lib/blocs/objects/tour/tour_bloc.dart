@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'tour_event.dart';
 import 'tour_state.dart';
@@ -158,7 +159,8 @@ class TourBloc extends Bloc<TourEvent, TourState> {
     // Auto-start tour for first-time users
     if (event.isFirstLaunch && !event.hasCompletedTour) {
       // Small delay to ensure UI is ready
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(
+          const Duration(milliseconds: kAnimationDurationSlow));
       add(TourStarted());
     }
   }

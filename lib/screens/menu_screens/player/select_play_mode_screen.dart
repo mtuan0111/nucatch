@@ -6,6 +6,7 @@ import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 
@@ -38,7 +39,7 @@ class _SelectPlayModeScreenState extends State<SelectPlayModeScreen> {
                         kToolbarHeight + MediaQuery.of(context).padding.top;
 
                     return AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: kAnimationDurationMedium),
                       color: isCollapsed
                           ? Theme.of(context).primaryColor
                           : Colors.transparent,
@@ -50,10 +51,8 @@ class _SelectPlayModeScreenState extends State<SelectPlayModeScreen> {
                           child: Text(
                             lang(context).selectPlayMode,
                             textAlign: TextAlign.center,
-                            style: LayoutConfig(context).displaySmallStyle(
-                              isActiveShadow: true,
-                              isItalic: true,
-                            ),
+                            style:
+                                AppTextStyles.displaySmallTitleScreen(context),
                           ),
                         ),
                       ),

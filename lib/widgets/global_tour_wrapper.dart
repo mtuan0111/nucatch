@@ -6,9 +6,11 @@ import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/objects/tour/tour_bloc.dart';
 import 'package:nucatch/blocs/objects/tour/tour_event.dart';
 import 'package:nucatch/blocs/objects/tour/tour_state.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 
 /// Global tour wrapper that manages all tour dialogs from the root level
 /// This eliminates dialog stacking issues and centralizes tour logic
@@ -126,7 +128,7 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 10),
+                  const SizedBox(height: kSpaceM),
                   _buildDescriptionText(
                     _getDescriptionForStep(tourState.currentTourStep),
                     context,
@@ -141,25 +143,21 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
                       },
                       child: Text(
                         lang(context).tourSkip,
-                        style: LayoutConfig(context)
-                            .secondaryTextStyle(
-                              color: Theme.of(context).colorScheme.secondary,
-                            )
-                            .copyWith(fontWeight: FontWeight.bold),
+                        style: AppTextStyles.withColor(
+                            AppTextStyles.bodyMediumBold(context),
+                            Theme.of(context).colorScheme.secondary),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: kSpaceXL),
                   // Progress indicator
                   Align(
                     alignment: Alignment.center,
                     child: Text(
                       '${tourState.displayStepNumber} / ${tourState.totalSteps}',
-                      style: LayoutConfig(context).captionStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondary
-                              .getDarker()),
+                      style: AppTextStyles.withColor(
+                          AppTextStyles.bodySmall(context),
+                          Theme.of(context).colorScheme.secondary.getDarker()),
                     ),
                   ),
                 ],
@@ -257,8 +255,8 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
 
     return RichText(
       text: TextSpan(
-        style: LayoutConfig(context).contentSectionStyle(
-            color: Theme.of(context).colorScheme.primary.getDarker()),
+        style: AppTextStyles.withColor(AppTextStyles.bodyLarge(context),
+            Theme.of(context).colorScheme.primary.getDarker()),
         children: parts,
       ),
     );

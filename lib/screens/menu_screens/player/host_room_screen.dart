@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/helpers/combat_dialogs.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
@@ -252,7 +253,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                         kToolbarHeight + MediaQuery.of(context).padding.top;
 
                     return AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: kAnimationDurationMedium),
                       color: isCollapsed
                           ? Theme.of(context).primaryColor
                           : Colors.transparent,
@@ -264,10 +265,8 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                           child: Text(
                             lang(context).hostRoom,
                             textAlign: TextAlign.center,
-                            style: LayoutConfig(context).displaySmallStyle(
-                              isActiveShadow: true,
-                              isItalic: true,
-                            ),
+                            style:
+                                AppTextStyles.displaySmallTitleScreen(context),
                           ),
                         ),
                       ),
@@ -286,7 +285,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                 expandedHeight: 100,
               ),
               SliverPadding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(kPaddingXL),
                 sliver: SliverToBoxAdapter(
                   child: SingleChildScrollView(
                     child: Column(
@@ -300,7 +299,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                         const SizedBox(height: kSpaceXL),
                         Text(
                           lang(context).advertisingAs,
-                          style: LayoutConfig(context).titleSectionStyle(),
+                          style: AppTextStyles.titleLarge(context),
                         ),
                         const SizedBox(height: kSpaceM),
                         Container(
@@ -312,15 +311,15 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                           ),
                           child: Text(
                             _myEndpointName ?? 'Unknown',
-                            style: LayoutConfig(context).displaySmallStyle(
-                              fontFamily: 'monospace',
-                            ),
+                            style: AppTextStyles.withFontFamily(
+                                AppTextStyles.displaySmall(context),
+                                'monospace'),
                           ),
                         ),
                         const SizedBox(height: kSpace2XL),
                         Text(
                           _getRoomStateText(),
-                          style: LayoutConfig(context).subtitleStyle(),
+                          style: AppTextStyles.bodyLargeMedium(context),
                           textAlign: TextAlign.center,
                         ),
 
@@ -354,8 +353,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                                   const SizedBox(width: kSpaceSM),
                                   Text(
                                     lang(context).ready,
-                                    style: LayoutConfig(context)
-                                        .boldSubtitleStyle(),
+                                    style: AppTextStyles.bodyLargeBold(context),
                                   ),
                                 ],
                               ),
@@ -391,10 +389,10 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                               Expanded(
                                 child: Text(
                                   lang(context).distanceWarning,
-                                  style:
-                                      LayoutConfig(context).secondaryTextStyle(
-                                    color: Theme.of(context).colorScheme.error,
-                                  ),
+                                  style: AppTextStyles.withColor(
+                                      AppTextStyles.bodyMediumSecondary(
+                                          context),
+                                      Theme.of(context).colorScheme.error),
                                 ),
                               ),
                             ],
@@ -421,12 +419,16 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                                   _nearbyService.isConnected
                                       ? lang(context).connectedViaNearby
                                       : lang(context).advertising,
-                                  style:
-                                      LayoutConfig(context).secondaryTextStyle(
-                                    color: _nearbyService.isConnected
-                                        ? Theme.of(context).colorScheme.tertiary
-                                        : Theme.of(context).colorScheme.error,
-                                  ),
+                                  style: AppTextStyles.withColor(
+                                      AppTextStyles.bodyMediumSecondary(
+                                          context),
+                                      _nearbyService.isConnected
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .tertiary
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .error),
                                 ),
                               ],
                             ),
@@ -479,15 +481,15 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
         const SizedBox(height: kSpaceL),
         Text(
           label,
-          style: LayoutConfig(context).contentSectionStyle(),
+          style: AppTextStyles.bodyLarge(context),
         ),
         Text(
           isReady ? lang(context).ready : lang(context).waiting,
-          style: LayoutConfig(context).contentSectionStyle(
-            color: isReady
-                ? Theme.of(context).colorScheme.tertiary
-                : Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
+          style: AppTextStyles.withColor(
+              AppTextStyles.bodyLarge(context),
+              isReady
+                  ? Theme.of(context).colorScheme.tertiary
+                  : Theme.of(context).colorScheme.onSurfaceVariant),
         ),
       ],
     );

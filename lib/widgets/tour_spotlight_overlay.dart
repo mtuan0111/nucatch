@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/blocs/objects/tour/tour_bloc.dart';
 import 'package:nucatch/blocs/objects/tour/tour_event.dart';
 import 'package:nucatch/blocs/objects/tour/tour_state.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 
 /// Spotlight overlay that highlights a target widget during the tour
 /// and allows users to tap the actual element to proceed
@@ -93,7 +95,7 @@ class TourSpotlightOverlay extends StatelessWidget {
                     color: Colors.white,
                     width: 2,
                   ),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(kBorderRadiusM),
                 ),
               ),
             ),
@@ -104,10 +106,10 @@ class TourSpotlightOverlay extends StatelessWidget {
 
   Widget _buildTooltip(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(kPaddingL),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(kBorderRadiusL),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.3),
@@ -127,14 +129,14 @@ class TourSpotlightOverlay extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: kSpaceSM),
           Text(
             description,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Colors.white,
                 ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: kSpaceL),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -144,7 +146,7 @@ class TourSpotlightOverlay extends StatelessWidget {
                 },
                 child: Text(
                   skipText,
-                  style: const TextStyle(color: Colors.white70),
+                  style: AppTextStyles.bodyMediumLight(context),
                 ),
               ),
               if (!allowTargetTap)
@@ -157,10 +159,10 @@ class TourSpotlightOverlay extends StatelessWidget {
                         },
                         child: Text(
                           previousText,
-                          style: const TextStyle(color: Colors.white70),
+                          style: AppTextStyles.bodyMediumLight(context),
                         ),
                       ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: kSpaceSM),
                     ElevatedButton(
                       onPressed: () {
                         context.read<TourBloc>().add(TourStepCompleted());
@@ -191,28 +193,25 @@ class TourSpotlightOverlay extends StatelessWidget {
                       const Icon(
                         Icons.touch_app,
                         color: Colors.white,
-                        size: 16,
+                        size: kIconSizeS,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: kSpaceS),
                       Text(
                         'Tap to continue',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
+                        style: AppTextStyles.labelSmallLight(context),
                       ),
                     ],
                   ),
                 ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: kSpaceSM),
           Center(
             child: Text(
               '${tourState.currentStep + 1} / ${tourState.totalSteps}',
               style: const TextStyle(
                 color: Colors.white70,
-                fontSize: 12,
+                fontSize: kFontSizeXS,
               ),
             ),
           ),
@@ -248,7 +247,7 @@ class SpotlightPainter extends CustomPainter {
       ..addRRect(
         RRect.fromRectAndRadius(
           spotlightRect.inflate(padding),
-          const Radius.circular(8),
+          const Radius.circular(kBorderRadiusM),
         ),
       );
 
@@ -270,7 +269,7 @@ class SpotlightPainter extends CustomPainter {
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         spotlightRect.inflate(padding),
-        const Radius.circular(8),
+        const Radius.circular(kBorderRadiusM),
       ),
       borderPaint,
     );

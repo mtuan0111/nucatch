@@ -16,6 +16,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/helper.dart';
 
 import 'package:nucatch/helpers/template.dart';
@@ -76,7 +77,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                     const SizedBox(height: kSpaceXL),
                     Text(
                       'Waiting for host to select difficulty...',
-                      style: LayoutConfig(context).titleSectionStyle(),
+                      style: AppTextStyles.titleLarge(context),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -107,7 +108,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                         kToolbarHeight + MediaQuery.of(context).padding.top;
 
                     return AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: kAnimationDurationMedium),
                       color: isCollapsed
                           ? Theme.of(context).primaryColor
                           : Colors.transparent,
@@ -119,10 +120,8 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                           child: Text(
                             lang(context).difficultySetting,
                             textAlign: TextAlign.center,
-                            style: LayoutConfig(context).displaySmallStyle(
-                              isActiveShadow: true,
-                              isItalic: true,
-                            ),
+                            style:
+                                AppTextStyles.displaySmallTitleScreen(context),
                           ),
                         ),
                       ),

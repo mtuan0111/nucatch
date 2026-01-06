@@ -17,7 +17,9 @@ import 'package:nucatch/blocs/objects/user/user_event.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({
@@ -74,7 +76,8 @@ class _SettingScreenState extends State<SettingScreen> {
                           kToolbarHeight + MediaQuery.of(context).padding.top;
 
                       return AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
+                        duration: const Duration(
+                            milliseconds: kAnimationDurationMedium),
                         color: isCollapsed
                             ? Theme.of(context).primaryColor
                             : Colors.transparent,
@@ -86,10 +89,8 @@ class _SettingScreenState extends State<SettingScreen> {
                             child: Text(
                               screenTitle,
                               textAlign: TextAlign.center,
-                              style: LayoutConfig(context).displaySmallStyle(
-                                isActiveShadow: true,
-                                isItalic: true,
-                              ),
+                              style: AppTextStyles.displaySmallTitleScreen(
+                                  context),
                             ),
                           ),
                         ),
@@ -134,16 +135,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                           ),
                                           labelText: lang(context).name,
                                           hintText: lang(context).anonymous,
-                                          labelStyle: LayoutConfig(context)
-                                              .titleSectionStyle(),
-                                          hintStyle: LayoutConfig(context)
-                                              .contentSectionStyle()
-                                              .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary
-                                                    .withOpacity(0.5),
-                                              ),
+                                          labelStyle:
+                                              AppTextStyles.titleLarge(context),
+                                          hintStyle: AppTextStyles.withColor(
+                                              AppTextStyles.bodyLarge(context),
+                                              Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary
+                                                  .withOpacity(0.5)),
                                           border: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(
                                               LayoutConfig.layoutBorderRadius,
@@ -172,8 +171,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                             ),
                                           ),
                                         ),
-                                        style: LayoutConfig(context)
-                                            .titleSectionStyle(),
+                                        style:
+                                            AppTextStyles.titleLarge(context),
                                         initialValue: userState.model.username,
                                         onChanged: (value) {
                                           userBloc.add(
@@ -183,10 +182,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                           );
                                         },
                                       ),
-                                      const SizedBox(height: 24),
+                                      const SizedBox(height: kSpace2XL),
                                       // Font size slider
                                       Container(
-                                        padding: const EdgeInsets.all(16),
+                                        padding:
+                                            const EdgeInsets.all(kPaddingL),
                                         decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.1),
                                           borderRadius: BorderRadius.only(
@@ -222,17 +222,17 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .onPrimary,
-                                                  size: 20,
+                                                  size: kIconSizeM,
                                                 ),
-                                                const SizedBox(width: 12),
+                                                const SizedBox(width: kSpaceML),
                                                 Expanded(
                                                   child: Text(
                                                     lang(context).fontSize,
-                                                    style: LayoutConfig(context)
-                                                        .titleSectionStyle(),
+                                                    style: AppTextStyles
+                                                        .titleLarge(context),
                                                   ),
                                                 ),
-                                                const SizedBox(width: 12),
+                                                const SizedBox(width: kSpaceML),
                                                 Container(
                                                   padding: const EdgeInsets
                                                       .symmetric(
@@ -250,12 +250,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   child: Text(
                                                     settingState.fontSize
                                                         .toString(),
-                                                    style: LayoutConfig(context)
-                                                        .contentSectionStyle()
-                                                        .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
+                                                    style: AppTextStyles
+                                                        .bodyLargeBold(context),
                                                   ),
                                                 ),
                                               ],
@@ -286,10 +282,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(height: 16),
+                                      const SizedBox(height: kSpaceL),
                                       // Volume slider
                                       Container(
-                                        padding: const EdgeInsets.all(16),
+                                        padding:
+                                            const EdgeInsets.all(kPaddingL),
                                         decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.1),
                                           borderRadius: BorderRadius.only(
@@ -335,13 +332,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .onPrimary,
-                                                  size: 20,
+                                                  size: kIconSizeM,
                                                 ),
-                                                const SizedBox(width: 12),
+                                                const SizedBox(width: kSpaceML),
                                                 Text(
                                                   lang(context).volume,
-                                                  style: LayoutConfig(context)
-                                                      .titleSectionStyle(),
+                                                  style:
+                                                      AppTextStyles.titleLarge(
+                                                          context),
                                                 ),
                                                 const Spacer(),
                                                 Container(
@@ -360,12 +358,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   ),
                                                   child: Text(
                                                     settingState.vol.toString(),
-                                                    style: LayoutConfig(context)
-                                                        .contentSectionStyle()
-                                                        .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
+                                                    style: AppTextStyles
+                                                        .bodyLargeBold(context),
                                                   ),
                                                 ),
                                               ],
@@ -394,10 +388,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(height: 16),
+                                      const SizedBox(height: kSpaceL),
                                       // Vibrate toggle
                                       Container(
-                                        padding: const EdgeInsets.all(16),
+                                        padding:
+                                            const EdgeInsets.all(kPaddingL),
                                         decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.1),
                                           borderRadius: BorderRadius.only(
@@ -429,13 +424,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .onPrimary,
-                                              size: 20,
+                                              size: kIconSizeM,
                                             ),
-                                            const SizedBox(width: 12),
+                                            const SizedBox(width: kSpaceML),
                                             Text(
                                               lang(context).vibrate,
-                                              style: LayoutConfig(context)
-                                                  .titleSectionStyle(),
+                                              style: AppTextStyles.titleLarge(
+                                                  context),
                                             ),
                                             const Spacer(),
                                             Switch(
@@ -453,10 +448,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(height: 16),
+                                      const SizedBox(height: kSpaceL),
                                       // Top scores slider
                                       Container(
-                                        padding: const EdgeInsets.all(16),
+                                        padding:
+                                            const EdgeInsets.all(kPaddingL),
                                         decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.1),
                                           borderRadius: BorderRadius.only(
@@ -492,15 +488,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .onPrimary,
-                                                  size: 20,
+                                                  size: kIconSizeM,
                                                 ),
-                                                const SizedBox(width: 12),
+                                                const SizedBox(width: kSpaceML),
                                                 Expanded(
                                                   child: Text(
                                                     lang(context)
                                                         .numberOfTopScores,
-                                                    style: LayoutConfig(context)
-                                                        .titleSectionStyle(),
+                                                    style: AppTextStyles
+                                                        .titleLarge(context),
                                                   ),
                                                 ),
                                                 Container(
@@ -521,12 +517,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     settingState
                                                         .numberOfTopBoard
                                                         .toString(),
-                                                    style: LayoutConfig(context)
-                                                        .contentSectionStyle()
-                                                        .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
+                                                    style: AppTextStyles
+                                                        .bodyLargeBold(context),
                                                   ),
                                                 ),
                                               ],
@@ -559,10 +551,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(height: 16),
+                                      const SizedBox(height: kSpaceL),
                                       // Language dropdown
                                       Container(
-                                        padding: const EdgeInsets.all(16),
+                                        padding:
+                                            const EdgeInsets.all(kPaddingL),
                                         decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.1),
                                           borderRadius: BorderRadius.only(
@@ -598,17 +591,18 @@ class _SettingScreenState extends State<SettingScreen> {
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .onPrimary,
-                                                  size: 20,
+                                                  size: kIconSizeM,
                                                 ),
-                                                const SizedBox(width: 12),
+                                                const SizedBox(width: kSpaceML),
                                                 Text(
                                                   lang(context).language,
-                                                  style: LayoutConfig(context)
-                                                      .titleSectionStyle(),
+                                                  style:
+                                                      AppTextStyles.titleLarge(
+                                                          context),
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(height: 12),
+                                            const SizedBox(height: kSpaceML),
                                             DropdownButtonFormField<String>(
                                               initialValue: settingState.locale,
                                               items: languages.entries
@@ -618,9 +612,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                                       value: lang.key,
                                                       child: Text(
                                                         lang.value,
-                                                        style: LayoutConfig(
-                                                                context)
-                                                            .contentSectionStyle(),
+                                                        style: AppTextStyles
+                                                            .bodyLarge(context),
                                                       ),
                                                     ),
                                                   )
@@ -682,16 +675,17 @@ class _SettingScreenState extends State<SettingScreen> {
                                               ),
                                               dropdownColor: Theme.of(context)
                                                   .primaryColor,
-                                              style: LayoutConfig(context)
-                                                  .contentSectionStyle(),
+                                              style: AppTextStyles.bodyLarge(
+                                                  context),
                                             ),
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(height: 24),
+                                      const SizedBox(height: kSpace2XL),
                                       // Restart Tour Button
                                       Container(
-                                        padding: const EdgeInsets.all(16),
+                                        padding:
+                                            const EdgeInsets.all(kPaddingL),
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .primaryColor
@@ -718,18 +712,18 @@ class _SettingScreenState extends State<SettingScreen> {
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .onPrimary,
-                                              size: 20,
+                                              size: kIconSizeM,
                                             ),
-                                            const SizedBox(width: 12),
+                                            const SizedBox(width: kSpaceML),
                                             Expanded(
                                               child: Text(
                                                 lang(context)
                                                     .tourRestartFromSettings,
-                                                style: LayoutConfig(context)
-                                                    .titleSectionStyle(),
+                                                style: AppTextStyles.titleLarge(
+                                                    context),
                                               ),
                                             ),
-                                            const SizedBox(width: 12),
+                                            const SizedBox(width: kSpaceML),
                                             ElevatedButton(
                                               onPressed: () {
                                                 final tourBloc =
@@ -745,9 +739,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     content: Text(
                                                       lang(context)
                                                           .tourResetMessage,
-                                                      style: LayoutConfig(
-                                                              context)
-                                                          .contentSectionStyle(),
+                                                      style: AppTextStyles
+                                                          .bodyLarge(context),
                                                     ),
                                                     backgroundColor:
                                                         Theme.of(context)
@@ -771,8 +764,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                               child: Text(
                                                 lang(context)
                                                     .tourRestartFromSettings,
-                                                style: LayoutConfig(context)
-                                                    .contentSectionStyle(),
+                                                style: AppTextStyles.bodyLarge(
+                                                    context),
                                               ),
                                             ),
                                           ],

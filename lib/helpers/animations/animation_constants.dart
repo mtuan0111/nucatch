@@ -2,12 +2,14 @@
 /// All size, width, height, and dimension values are centralized here
 library;
 
+import 'package:nucatch/helpers/ui_constants.dart';
+
 // ============================================================================
 // SCREEN SHAKE CONSTANTS
 // ============================================================================
 
 /// Screen shake animation duration
-const Duration kShakeDuration = Duration(milliseconds: 500);
+const Duration kShakeDuration = Duration(milliseconds: kAnimationDurationSlow);
 
 /// Maximum offset for screen shake effect (in pixels)
 const double kShakeMaxOffset = 20.0;

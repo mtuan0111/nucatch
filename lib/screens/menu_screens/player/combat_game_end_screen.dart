@@ -7,6 +7,7 @@ import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 
@@ -49,7 +50,7 @@ class CombatGameEndScreen extends StatelessWidget {
                                   MediaQuery.of(context).padding.top;
 
                           return AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: kAnimationDurationMedium),
                             color: isCollapsed
                                 ? Theme.of(context).primaryColor
                                 : Colors.transparent,
@@ -63,11 +64,8 @@ class CombatGameEndScreen extends StatelessWidget {
                                       ? lang(context).youWin
                                       : lang(context).youLose,
                                   textAlign: TextAlign.center,
-                                  style:
-                                      LayoutConfig(context).displaySmallStyle(
-                                    isActiveShadow: true,
-                                    isItalic: true,
-                                  ),
+                                  style: AppTextStyles.displaySmallTitleScreen(
+                                      context),
                                 ),
                               ),
                             ),
@@ -125,7 +123,7 @@ class CombatGameEndScreen extends StatelessWidget {
           // Game End Reason
           Text(
             _getGameEndReason(context, combatState),
-            style: LayoutConfig(context).largeBoldStyle(),
+            style: AppTextStyles.titleMediumBold(context),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: kSpace4XL),
@@ -236,12 +234,13 @@ class CombatGameEndScreen extends StatelessWidget {
         const SizedBox(height: kSpaceM),
         Text(
           label,
-          style: LayoutConfig(context).contentSectionStyle(),
+          style: AppTextStyles.bodyLarge(context),
         ),
         Text(
           isReady ? lang(context).ready : lang(context).waiting,
-          style: LayoutConfig(context).contentSectionStyle(
-            color: isReady
+          style: AppTextStyles.withColor(
+            AppTextStyles.bodyLarge(context),
+            isReady
                 ? Theme.of(context).colorScheme.tertiary
                 : Theme.of(context).colorScheme.onSurfaceVariant,
           ),

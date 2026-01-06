@@ -20,6 +20,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.d
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/animations/animated_game_wrapper.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
@@ -72,24 +73,7 @@ class _PlayScreenState extends State<PlayScreen> {
       context.read<TurnRecordedListBloc>();
   TurnRecordedListState get turnRecordedListState => turnRecordedListBloc.state;
 
-  // Font size constants
-  TextStyle boldedStyleFont({int numberOfCharactor = 1}) {
-    double fontSize = 50;
-
-    if (numberOfCharactor >= 10) {
-      fontSize = kFontSizeXL;
-    } else if (numberOfCharactor >= 8) {
-      fontSize = kFontSize2XL;
-    } else if (numberOfCharactor >= 6) {
-      fontSize = kFontSize3XL;
-    } else if (numberOfCharactor >= 4) {
-      fontSize = kFontSize4XL;
-    }
-    return LayoutConfig(context).boldedStyle.copyWith(
-          color: Theme.of(context).colorScheme.onSurface,
-          fontSize: fontSize,
-        );
-  }
+  // Removed: boldedStyleFont - now using AppTextStyles.forChallenge()
 
   @override
   void initState() {
@@ -350,20 +334,15 @@ class _PlayScreenState extends State<PlayScreen> {
                                                     TextSpan(
                                                       text:
                                                           "${lang(context).level}: ",
-                                                      style: LayoutConfig(
-                                                              context)
-                                                          .contentSectionStyle()
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                      style: AppTextStyles
+                                                          .bodyLargeBold(
+                                                              context),
                                                     ),
                                                     TextSpan(
                                                       text: turnState
                                                           .levelAndTimeCorrect,
-                                                      style: LayoutConfig(
-                                                              context)
-                                                          .contentSectionStyle(),
+                                                      style: AppTextStyles
+                                                          .bodyLarge(context),
                                                     ),
                                                   ],
                                                 ),
@@ -388,16 +367,14 @@ class _PlayScreenState extends State<PlayScreen> {
                                               const SizedBox(width: kSpaceS),
                                               Text(
                                                 "${lang(context).score}: ",
-                                                style: LayoutConfig(context)
-                                                    .contentSectionStyle()
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                style:
+                                                    AppTextStyles.bodyLargeBold(
+                                                        context),
                                               ),
                                               Text(
                                                 "${turnState.point}",
-                                                style: LayoutConfig(context)
-                                                    .contentSectionStyle(),
+                                                style: AppTextStyles.bodyLarge(
+                                                    context),
                                               ),
                                             ],
                                           ),
@@ -728,34 +705,33 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                     duration: const Duration(
                                                                         milliseconds:
                                                                             300),
-                                                                    style: LayoutConfig(
+                                                                    style: AppTextStyles.displaySmall(
                                                                             context)
-                                                                        .displaySmallStyle()
                                                                         .copyWith(
-                                                                          fontSize:
-                                                                              kFontSize3XL,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .onSurface,
-                                                                        ),
+                                                                      fontSize:
+                                                                          kFontSize3XL,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .colorScheme
+                                                                          .onSurface,
+                                                                    ),
                                                                     child: Text(
                                                                       time
                                                                           .truncate()
                                                                           .toString(),
-                                                                      style: LayoutConfig(
+                                                                      style: AppTextStyles.titleLargeItalic(
                                                                               context)
-                                                                          .titleSectionStyle(
-                                                                              isItalic: true)
                                                                           .copyWith(
-                                                                            fontSize:
-                                                                                kFontSize3XL,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color:
-                                                                                Theme.of(context).scaffoldBackgroundColor,
-                                                                          ),
+                                                                        fontSize:
+                                                                            kFontSize3XL,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        color: Theme.of(context)
+                                                                            .scaffoldBackgroundColor,
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 if (time >= 1)
@@ -763,53 +739,53 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                     duration: const Duration(
                                                                         milliseconds:
                                                                             300),
-                                                                    style: LayoutConfig(
+                                                                    style: AppTextStyles.titleLargeItalic(
                                                                             context)
-                                                                        .titleSectionStyle(
-                                                                            isItalic:
-                                                                                true)
                                                                         .copyWith(
+                                                                      fontSize:
+                                                                          kFontSizeM,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .scaffoldBackgroundColor,
+                                                                    ),
+                                                                    child: Text(
+                                                                        readyText,
+                                                                        style: AppTextStyles.titleLargeItalic(context)
+                                                                            .copyWith(
                                                                           fontSize:
                                                                               kFontSizeM,
                                                                           color:
                                                                               Theme.of(context).scaffoldBackgroundColor,
-                                                                        ),
-                                                                    child: Text(
-                                                                        readyText,
-                                                                        style: LayoutConfig(context)
-                                                                            .titleSectionStyle(isItalic: true)
-                                                                            .copyWith(
-                                                                              fontSize: kFontSizeM,
-                                                                              color: Theme.of(context).scaffoldBackgroundColor,
-                                                                            )),
+                                                                        )),
                                                                   )
                                                                 else
                                                                   AnimatedDefaultTextStyle(
                                                                     duration: const Duration(
                                                                         milliseconds:
                                                                             300),
-                                                                    style: LayoutConfig(
+                                                                    style: AppTextStyles.titleLargeItalic(
                                                                             context)
-                                                                        .titleSectionStyle(
-                                                                            isItalic:
-                                                                                true)
                                                                         .copyWith(
+                                                                      fontSize:
+                                                                          kFontSize2XL,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .scaffoldBackgroundColor,
+                                                                    ),
+                                                                    child: Text(
+                                                                        goText,
+                                                                        style: AppTextStyles.titleLargeItalic(context)
+                                                                            .copyWith(
                                                                           fontSize:
                                                                               kFontSize2XL,
                                                                           fontWeight:
                                                                               FontWeight.bold,
                                                                           color:
                                                                               Theme.of(context).scaffoldBackgroundColor,
-                                                                        ),
-                                                                    child: Text(
-                                                                        goText,
-                                                                        style: LayoutConfig(context)
-                                                                            .titleSectionStyle(isItalic: true)
-                                                                            .copyWith(
-                                                                              fontSize: kFontSize2XL,
-                                                                              fontWeight: FontWeight.bold,
-                                                                              color: Theme.of(context).scaffoldBackgroundColor,
-                                                                            )),
+                                                                        )),
                                                                   ),
                                                               ],
                                                             ),
@@ -836,11 +812,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                             String inputted = turnState
                                                 .requirementString![index];
                                             return SizedBox(
-                                              width: (boldedStyleFont(
-                                                          numberOfCharactor:
-                                                              turnState
-                                                                  .requirementString!
-                                                                  .length)
+                                              width: (AppTextStyles.forChallenge(
+                                                          turnState
+                                                              .requirementString!
+                                                              .length,
+                                                          context)
                                                       .fontSize! *
                                                   0.65),
                                               child: Column(
@@ -848,11 +824,12 @@ class _PlayScreenState extends State<PlayScreen> {
                                                   Text(
                                                     inputted,
                                                     textAlign: TextAlign.center,
-                                                    style: boldedStyleFont(
-                                                      numberOfCharactor:
-                                                          turnState
-                                                              .requirementString!
-                                                              .length,
+                                                    style: AppTextStyles
+                                                        .forChallenge(
+                                                      turnState
+                                                          .requirementString!
+                                                          .length,
+                                                      context,
                                                     ).copyWith(
                                                         color: Theme.of(context)
                                                             .colorScheme
@@ -891,11 +868,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                                 turnState.expect![index];
 
                                             return SizedBox(
-                                              width: (boldedStyleFont(
-                                                          numberOfCharactor:
-                                                              turnState
-                                                                  .requirementString!
-                                                                  .length)
+                                              width: (AppTextStyles.forChallenge(
+                                                          turnState
+                                                              .requirementString!
+                                                              .length,
+                                                          context)
                                                       .fontSize! *
                                                   0.65),
                                               child: Builder(
@@ -981,17 +958,17 @@ class _PlayScreenState extends State<PlayScreen> {
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
-                                                              style:
-                                                                  boldedStyleFont(
-                                                                numberOfCharactor:
-                                                                    turnState
-                                                                        .requirementString!
-                                                                        .length,
+                                                              style: AppTextStyles
+                                                                  .forChallenge(
+                                                                turnState
+                                                                    .requirementString!
+                                                                    .length,
+                                                                context,
                                                               ).copyWith(
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .colorScheme
-                                                                          .onPrimary),
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .onPrimary),
                                                             ),
                                                           ),
                                                         ),
@@ -1078,8 +1055,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                         button = AnimatedButton(
                                           context,
                                           text: e.value.toString(),
-                                          style:
-                                              LayoutConfig(context).boldedStyle,
+                                          style: AppTextStyles.displayLarge(
+                                              context),
                                           isEnable: turnState.isAbleToTap,
                                           onPressed: () {
                                             context.read<TurnBloc>().add(

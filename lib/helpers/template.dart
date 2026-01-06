@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'dart:math' as math;
 
@@ -112,7 +113,7 @@ class RankingInfoRow extends StatelessWidget {
           fit: FlexFit.loose,
           child: Text(
             text,
-            style: (style ?? LayoutConfig(context).contentSectionStyle()),
+            style: (style ?? AppTextStyles.bodyLarge(context)),
             overflow: TextOverflow.ellipsis,
             softWrap: true,
           ),
@@ -293,7 +294,7 @@ class RankBadge extends StatelessWidget {
           Center(
             child: Text(
               ranking.toString(),
-              style: LayoutConfig(context).displaySmallStyle(),
+              style: AppTextStyles.displaySmall(context),
             ),
           ),
         ],
@@ -488,11 +489,11 @@ class RankingSortingWidget extends StatelessWidget {
               child: childElement ??
                   Text(
                     position.toString(),
-                    style: LayoutConfig(context).boldedStyle.copyWith(
-                          color: theme.scaffoldBackgroundColor,
-                          fontWeight: FontWeight.w900,
-                          fontSize: baseSize / 1.5,
-                        ),
+                    style: AppTextStyles.displayLarge(context).copyWith(
+                      color: theme.scaffoldBackgroundColor,
+                      fontWeight: FontWeight.w900,
+                      fontSize: baseSize / 1.5,
+                    ),
                     textAlign: TextAlign.center,
                   ),
             ),
@@ -610,7 +611,8 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
   static const double _shadowOpacity = 0.5;
 
   double getFontSize(BuildContext context) {
-    final baseFontSize = LayoutConfig(context).titleScreenStyle.fontSize ?? 20;
+    final baseFontSize =
+        AppTextStyles.displaySmallTitleScreen(context).fontSize ?? 20;
     switch (widget.buttonSize) {
       case ButtonSize.smallest:
         return baseFontSize * 0.4;
@@ -770,7 +772,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
       textDirection: getTextDirection(),
       children: [
         if (iconWidget != null) iconWidget,
-        if (iconWidget != null && textWidget != null) const SizedBox(width: 8),
+        if (iconWidget != null && textWidget != null) const SizedBox(width: kSpaceSM),
         if (textWidget != null) textWidget,
       ],
     );
@@ -795,7 +797,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
       opacity: widget.opacity,
       duration: const Duration(milliseconds: 10),
       child: AnimatedScale(
-        duration: const Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: kAnimationDurationFast),
         scale: isPressed ? 1.0 : 1.0,
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -891,7 +893,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                       );
                     }
                     Future.delayed(
-                      const Duration(milliseconds: 100),
+                      const Duration(milliseconds: kAnimationDurationFast),
                       () {
                         if (mounted) {
                           setState(() {
@@ -912,7 +914,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                     child: Opacity(
                       opacity: _shadowOpacity / 1.5,
                       child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 100),
+                        duration: const Duration(milliseconds: kAnimationDurationFast),
                         // margin: EdgeInsets.only(
                         //   // top: _highlightBorderPadding / 2,
                         //   // right: _highlightBorderPadding / 2,
@@ -949,7 +951,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                     child: Opacity(
                       opacity: _shadowOpacity / 2,
                       child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 100),
+                        duration: const Duration(milliseconds: kAnimationDurationFast),
                         margin: EdgeInsets.only(
                           // top: _highlightBorderPadding / 2,
                           // right: _highlightBorderPadding / 2,
@@ -1203,10 +1205,7 @@ class CustomeTitleButton extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: Text(
           text,
-          style: LayoutConfig(context).displaySmallStyle(
-            isActiveShadow: true,
-            isItalic: true,
-          ),
+          style: AppTextStyles.displaySmallTitleScreen(context),
         ),
       ),
     );
@@ -1311,7 +1310,7 @@ class OptionCard extends StatelessWidget {
                 children: [
                   CustomElevatedButton(
                     text: description,
-                    style: LayoutConfig(context).contentSectionStyle(),
+                    style: AppTextStyles.bodyLarge(context),
                     buttonSize: ButtonSize.smallest,
                     shapeAt: RoundedWithShapeAt.topRight,
                     backgroundColor: Colors.black54,
@@ -1330,7 +1329,7 @@ class OptionCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: kSpaceL),
           AnimatedButton(
             context,
             onPressed: onTap,

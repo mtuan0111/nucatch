@@ -149,7 +149,7 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                           child: QrImageView(
                                             data: state.secureLink,
                                             version: QrVersions.auto,
-                                            size: 180.0,
+                                            size: kIconSizeS,
                                             embeddedImage: const AssetImage(
                                               'assets/images/nuCatch-launcher-512.png',
                                             ),

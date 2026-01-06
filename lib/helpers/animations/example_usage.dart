@@ -35,7 +35,7 @@ class _AnimationExampleScreenState extends State<AnimationExampleScreen> {
               _buildHeader(),
               const Spacer(),
               _buildControls(),
-              const SizedBox(height: 40),
+              const SizedBox(height: kSpace4XL),
             ],
           ),
         ),
@@ -45,14 +45,14 @@ class _AnimationExampleScreenState extends State<AnimationExampleScreen> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(kPaddingL),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Score counter
           Container(
             key: _scoreKey,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: kPaddingL, vertical: kPaddingSM),
             decoration: BoxDecoration(
               color: Colors.amber[700],
               borderRadius: BorderRadius.circular(20),
@@ -209,7 +209,7 @@ class _AnimationExampleBuilderScreenState
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: kSpace4XL),
                 ElevatedButton(
                   onPressed: () {
                     setState(() => score += 10);

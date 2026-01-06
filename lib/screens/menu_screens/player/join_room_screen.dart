@@ -7,6 +7,7 @@ import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/combat_dialogs.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
@@ -288,7 +289,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                           kToolbarHeight + MediaQuery.of(context).padding.top;
 
                       return AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: kAnimationDurationMedium),
                         color: isCollapsed
                             ? Theme.of(context).primaryColor
                             : Colors.transparent,
@@ -300,10 +301,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                             child: Text(
                               lang(context).joinRoom,
                               textAlign: TextAlign.center,
-                              style: LayoutConfig(context).displaySmallStyle(
-                                isActiveShadow: true,
-                                isItalic: true,
-                              ),
+                              style: AppTextStyles.displaySmallTitleScreen(
+                                  context),
                             ),
                           ),
                         ),
@@ -323,7 +322,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                   expandedHeight: 100,
                 ),
                 SliverPadding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(kPaddingXL),
                   sliver: SliverToBoxAdapter(
                     child: SingleChildScrollView(
                       child: Column(
@@ -358,15 +357,14 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                 const SizedBox(width: kSpaceM),
                                 Text(
                                   lang(context).searchingForHosts,
-                                  style:
-                                      LayoutConfig(context).titleSectionStyle(),
+                                  style: AppTextStyles.titleLarge(context),
                                 ),
                               ],
                             )
                           else
                             Text(
                               _getRoomStateText(),
-                              style: LayoutConfig(context).subtitleStyle(),
+                              style: AppTextStyles.bodyLargeMedium(context),
                               textAlign: TextAlign.center,
                             ),
                           const SizedBox(height: kSpace2XL),
@@ -378,12 +376,12 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                               height: 400,
                               child: Card(
                                 margin:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                    const EdgeInsets.symmetric(vertical: kPaddingM),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.all(16.0),
+                                      padding: const EdgeInsets.all(kPaddingL),
                                       child: Row(
                                         children: [
                                           Icon(Icons.radar,
@@ -394,8 +392,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                           Text(
                                             lang(context).availableHosts(
                                                 _discoveredEndpoints.length),
-                                            style: LayoutConfig(context)
-                                                .largeBoldStyle(),
+                                            style:
+                                                AppTextStyles.titleMediumBold(
+                                                    context),
                                           ),
                                         ],
                                       ),
@@ -426,13 +425,15 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                             ),
                                             title: Text(
                                               endpointName,
-                                              style: LayoutConfig(context)
-                                                  .boldSubtitleStyle(),
+                                              style:
+                                                  AppTextStyles.bodyLargeBold(
+                                                      context),
                                             ),
                                             subtitle: Text(
                                               lang(context).tapToConnect,
-                                              style: LayoutConfig(context)
-                                                  .hintTextStyle(),
+                                              style:
+                                                  AppTextStyles.bodySmallHint(
+                                                      context),
                                             ),
                                             trailing: const Icon(
                                               Icons.arrow_forward_ios,
@@ -467,23 +468,20 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                   const SizedBox(height: kSpaceXL),
                                   Text(
                                     lang(context).noHostsFoundNearby,
-                                    style: LayoutConfig(context).largeBoldStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurfaceVariant,
-                                    ),
+                                    style:
+                                        AppTextStyles.titleMediumBold(context),
                                   ),
                                   const SizedBox(height: kSpaceM),
                                   Text(
                                     lang(context).makeSureFriendHosting,
                                     textAlign: TextAlign.center,
-                                    style: LayoutConfig(context)
-                                        .secondaryTextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurfaceVariant
-                                          .withOpacity(0.7),
-                                    ),
+                                    style: AppTextStyles.withColor(
+                                        AppTextStyles.bodyMediumSecondary(
+                                            context),
+                                        Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant
+                                            .withOpacity(0.7)),
                                   ),
                                 ],
                               ),
@@ -519,8 +517,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                     const SizedBox(width: kSpaceS),
                                     Text(
                                       lang(context).ready,
-                                      style: LayoutConfig(context)
-                                          .boldSubtitleStyle(),
+                                      style:
+                                          AppTextStyles.bodyLargeBold(context),
                                     ),
                                   ],
                                 ),
@@ -558,11 +556,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                 Expanded(
                                   child: Text(
                                     lang(context).distanceWarning,
-                                    style: LayoutConfig(context)
-                                        .secondaryTextStyle(
-                                      color:
-                                          Theme.of(context).colorScheme.error,
-                                    ),
+                                    style: AppTextStyles.withColor(
+                                        AppTextStyles.bodyMediumSecondary(
+                                            context),
+                                        Theme.of(context).colorScheme.error),
                                   ),
                                 ),
                               ],
@@ -597,14 +594,14 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                         : _isDiscovering
                                             ? lang(context).discovering
                                             : lang(context).notDiscovering,
-                                    style: LayoutConfig(context)
-                                        .secondaryTextStyle(
-                                      color: _nearbyService.isConnected
-                                          ? Colors.green
-                                          : _isDiscovering
-                                              ? Colors.orange
-                                              : Colors.grey,
-                                    ),
+                                    style: AppTextStyles.withColor(
+                                        AppTextStyles.bodyMediumSecondary(
+                                            context),
+                                        _nearbyService.isConnected
+                                            ? Colors.green
+                                            : _isDiscovering
+                                                ? Colors.orange
+                                                : Colors.grey),
                                   ),
                                 ],
                               ),
@@ -658,15 +655,15 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         const SizedBox(height: kSpaceL),
         Text(
           label,
-          style: LayoutConfig(context).contentSectionStyle(),
+          style: AppTextStyles.bodyLarge(context),
         ),
         Text(
           isReady ? lang(context).ready : lang(context).waiting,
-          style: LayoutConfig(context).contentSectionStyle(
-            color: isReady
-                ? Theme.of(context).colorScheme.tertiary
-                : Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
+          style: AppTextStyles.withColor(
+              AppTextStyles.bodyLarge(context),
+              isReady
+                  ? Theme.of(context).colorScheme.tertiary
+                  : Theme.of(context).colorScheme.onSurfaceVariant),
         ),
       ],
     );

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:nearby_connections/nearby_connections.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
@@ -146,7 +147,8 @@ class CombatNearbyService {
       _discoveredEndpoints.clear();
 
       // Small delay to let Nearby Connections fully reset
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(
+          const Duration(milliseconds: kAnimationDurationFast));
 
       print('✅ [Nearby] Service reset complete');
     } catch (e) {

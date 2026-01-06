@@ -5,9 +5,11 @@ import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/ui_constants.dart';
 
 class MenuAlert extends StatelessWidget {
   final int point;
@@ -41,18 +43,18 @@ class MenuAlert extends StatelessWidget {
                 position: rank!,
               ),
             ),
-          if (rank != null) const SizedBox(height: 20),
+          if (rank != null) const SizedBox(height: kSpaceXL),
           Text(
             "${lang(context).yourScoreIs}: $point",
-            style: LayoutConfig(context).contentSectionStyle(
-                color: Theme.of(context).colorScheme.primary.getDarker()),
+            style: AppTextStyles.withColor(AppTextStyles.bodyLarge(context),
+                Theme.of(context).colorScheme.primary.getDarker()),
           ),
           Text(
             "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, turnState.difficultyModel!.difficulty)}",
-            style: LayoutConfig(context).contentSectionStyle(
-                color: Theme.of(context).colorScheme.primary.getDarker()),
+            style: AppTextStyles.withColor(AppTextStyles.bodyLarge(context),
+                Theme.of(context).colorScheme.primary.getDarker()),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: kSpaceM),
           AnimatedButton(
             context,
             iconData: Helper.getIconFromDifficulty(
@@ -101,7 +103,7 @@ class MenuAlert extends StatelessWidget {
               });
             },
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: kSpaceM),
           // Restart button
           AnimatedButton(
             context,
@@ -138,7 +140,7 @@ class MenuAlert extends StatelessWidget {
               });
             },
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: kSpaceM),
         ],
       ),
       possitiveButtonLabel: lang(context).yes,
@@ -228,7 +230,7 @@ class AlertTemplate extends StatelessWidget {
         //                       ),
         //                     ),
         //                     Padding(
-        //                       padding: const EdgeInsets.all(20),
+        //                       padding: const EdgeInsets.all(kPaddingXL),
         //                       child: Column(
         //                         children: [
         //                           const SizedBox(
@@ -260,9 +262,9 @@ class AlertTemplate extends StatelessWidget {
         //             ),
         //           ),
         //           // Buttons outside the dialog
-        //           const SizedBox(height: 20),
+        //           const SizedBox(height: kSpaceXL),
         //           Padding(
-        //             padding: const EdgeInsets.symmetric(horizontal: 20),
+        //             padding: const EdgeInsets.symmetric(horizontal: kPaddingXL),
         //             child: Row(
         //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         //               children: [
@@ -270,7 +272,7 @@ class AlertTemplate extends StatelessWidget {
         //                   Expanded(child: _buildNegativeButton(context)),
         //                 if (negativeButtonLabel != null &&
         //                     possitiveButtonLabel != null)
-        //                   const SizedBox(width: 10),
+        //                   const SizedBox(width: kSpaceM),
         //                 if (possitiveButtonLabel != null)
         //                   Expanded(child: _buildPossitiveButton(context)),
         //               ],
@@ -349,12 +351,12 @@ class AlertTemplate extends StatelessWidget {
                                   if (message != null)
                                     Text(
                                       message!,
-                                      style: LayoutConfig(context)
-                                          .contentSectionStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary
-                                                  .getDarker()),
+                                      style: AppTextStyles.withColor(
+                                          AppTextStyles.bodyLarge(context),
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .getDarker()),
                                     ),
                                 ],
                               ),
@@ -379,7 +381,7 @@ class AlertTemplate extends StatelessWidget {
                         Expanded(child: _buildNegativeButton(context)),
                       if (negativeButtonLabel != null &&
                           possitiveButtonLabel != null)
-                        const SizedBox(width: 10),
+                        const SizedBox(width: kSpaceM),
                       if (possitiveButtonLabel != null)
                         Expanded(child: _buildPossitiveButton(context)),
                     ],

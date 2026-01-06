@@ -8,6 +8,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.d
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/navs/menu_nav.dart';
@@ -97,7 +98,7 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                                   MediaQuery.of(context).padding.top;
 
                           return AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: kAnimationDurationMedium),
                             color: isCollapsed
                                 ? Theme.of(context).primaryColor
                                 : Colors.transparent,
@@ -109,11 +110,8 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                                 child: Text(
                                   screenTitle,
                                   textAlign: TextAlign.center,
-                                  style:
-                                      LayoutConfig(context).displaySmallStyle(
-                                    isActiveShadow: true,
-                                    isItalic: true,
-                                  ),
+                                  style: AppTextStyles.displaySmallTitleScreen(
+                                      context),
                                 ),
                               ),
                             ),
@@ -228,7 +226,7 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                     padding: const EdgeInsets.only(bottom: 30),
                     child: Text(
                       _getPeriodTitle(),
-                      style: LayoutConfig(context).titleSectionStyle(),
+                      style: AppTextStyles.titleLarge(context),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -260,7 +258,7 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                       else if (!turnRecordedListState.isLoading)
                         Text(
                           lang(context).no_turn_yet,
-                          style: LayoutConfig(context).contentSectionStyle(),
+                          style: AppTextStyles.bodyLarge(context),
                         ),
                       if (turnRecordedListState.isLoading)
                         const LoadingWidget(),

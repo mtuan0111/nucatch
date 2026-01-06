@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/services/auth_services.dart';
 
@@ -93,7 +93,7 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
         children: [
           Text(
             '🔐 Auth Debug',
-            style: LayoutConfig(context).boldSubtitleStyle(),
+            style: AppTextStyles.bodyLargeBold(context),
           ),
           const SizedBox(height: kSpaceS),
           Text('Status: $_status'),
@@ -101,7 +101,7 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
             const SizedBox(height: kSpaceXS),
             Text(
               'User ID: ${_userId!.substring(0, 8)}...',
-              style: LayoutConfig(context).captionStyle(),
+              style: AppTextStyles.bodySmall(context),
             ),
             const SizedBox(height: kSpaceXS),
             Text('Anonymous: $_isAnonymous'),
@@ -116,8 +116,7 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: kPaddingML, vertical: kPaddingSM),
                 ),
-                child: Text('Refresh',
-                    style: LayoutConfig(context).captionStyle()),
+                child: Text('Refresh', style: AppTextStyles.bodySmall(context)),
               ),
               const SizedBox(width: kSpaceS),
               ElevatedButton(
@@ -126,8 +125,7 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: kPaddingML, vertical: kPaddingSM),
                 ),
-                child: Text('Sign In',
-                    style: LayoutConfig(context).captionStyle()),
+                child: Text('Sign In', style: AppTextStyles.bodySmall(context)),
               ),
               const SizedBox(width: kSpaceS),
               ElevatedButton(
@@ -136,8 +134,8 @@ class _AuthDebugWidgetState extends State<AuthDebugWidget> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: kPaddingML, vertical: kPaddingSM),
                 ),
-                child: Text('Sign Out',
-                    style: LayoutConfig(context).captionStyle()),
+                child:
+                    Text('Sign Out', style: AppTextStyles.bodySmall(context)),
               ),
             ],
           ),
