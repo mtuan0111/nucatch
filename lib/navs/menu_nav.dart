@@ -72,7 +72,7 @@ class _MenuNavState extends State<MenuNav> {
                   //   return route.didPop(result);
                   // },
                   onDidRemovePage: (page) =>
-                      context.read<MenuBloc>().add(SelectOption(option: null)),
+                      context.read<MenuBloc>().add(ShowMenu()),
                   pages: [
                     const MaterialPage(
                       child: MenuScreen(),

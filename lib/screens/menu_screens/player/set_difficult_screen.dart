@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
+import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
+import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
@@ -129,8 +131,12 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                 ),
                 leading: IconButton(
                   onPressed: () {
-                    // Navigate back to select play mode screen
-                    playerNavCubit.showSelectPlayMode();
+                    if (Theme.of(context).platform == TargetPlatform.iOS) {
+                      context.read<MenuBloc>().add(ShowMenu());
+                    } else {
+                      // Navigate back to select play mode screen
+                      playerNavCubit.showSelectPlayMode();
+                    }
                   },
                   icon: const Icon(FontAwesomeIcons.chevronLeft),
                 ),

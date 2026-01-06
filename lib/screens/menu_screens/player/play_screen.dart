@@ -141,9 +141,7 @@ class _PlayScreenState extends State<PlayScreen> {
           isCauseGameOver: false,
         ));
         menuBloc.add(
-          SelectOption(
-            option: null,
-          ),
+          ShowMenu(),
         );
       } else {
         // Resume timer when menu closes

@@ -131,7 +131,7 @@ class MenuAlert extends StatelessWidget {
                       // Close game over dialog
                       Navigator.of(context).pop(false);
                       // Start new game with countdown
-                      turnBloc.add(Start(seconds: 4));
+                      turnBloc.add(Start());
                     },
                   ));
                 }
