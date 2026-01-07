@@ -86,7 +86,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get selectLevel => 'Chọn cấp độ';
 
   @override
-  String get selectLevelMessage => 'Chọn cấp độ bạn muốn chơi. Cấp độ càng cao, độ khó càng tăng.';
+  String get selectLevelMessage =>
+      'Chọn cấp độ bạn muốn chơi. Cấp độ càng cao, độ khó càng tăng.';
 
   @override
   String get yourScoreIs => 'Điểm của bạn hiện là';
@@ -116,7 +117,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get thankYou => 'Cảm ơn bạn!';
 
   @override
-  String get thankYouMessage => 'Cảm ơn bạn đã chơi trò chơi của chúng tôi. Chúng tôi hy vọng bạn đã thích nó. Nếu bạn có bất kỳ phản hồi hoặc đề xuất nào, xin vui lòng cho chúng tôi biết.';
+  String get thankYouMessage =>
+      'Cảm ơn bạn đã chơi trò chơi của chúng tôi. Chúng tôi hy vọng bạn đã thích nó. Nếu bạn có bất kỳ phản hồi hoặc đề xuất nào, xin vui lòng cho chúng tôi biết.';
 
   @override
   String get authorName => 'Tác giả';
@@ -125,10 +127,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get connectWithUs => 'Kết nối với chúng tôi';
 
   @override
-  String get connectWithUsMessage => 'Nếu bạn có bất kỳ câu hỏi hoặc phản hồi nào, hãy liên hệ với chúng tôi qua các kênh truyền thông xã hội của chúng tôi.';
+  String get connectWithUsMessage =>
+      'Nếu bạn có bất kỳ câu hỏi hoặc phản hồi nào, hãy liên hệ với chúng tôi qua các kênh truyền thông xã hội của chúng tôi.';
 
   @override
-  String get introductionContent => 'NuCatch là một trò chơi đơn giản và thú vị, được thiết kế để giúp bạn rèn luyện trí nhớ và cải thiện sự tập trung. Hãy thử thách bản thân và tận hưởng trò chơi!';
+  String get introductionContent =>
+      'NuCatch là một trò chơi đơn giản và thú vị, được thiết kế để giúp bạn rèn luyện trí nhớ và cải thiện sự tập trung. Hãy thử thách bản thân và tận hưởng trò chơi!';
 
   @override
   String messageShareIntroWIthUsername(String username, String profileUrl) {
@@ -149,12 +153,14 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String messageSharePlayedLeaderBody(String username, num point, String timeCreated) {
+  String messageSharePlayedLeaderBody(
+      String username, num point, String timeCreated) {
     return '$username đã đạt được $point điểm vào lúc $timeCreated. Hãy tham gia #NuCatch cùng $username!!';
   }
 
   @override
-  String messageSharePlayedLeaderBodyAnonymousBody(num point, String timeCreated) {
+  String messageSharePlayedLeaderBodyAnonymousBody(
+      num point, String timeCreated) {
     return 'Một người chơi đã đạt được $point điểm vào lúc $timeCreated. Hãy tham gia #NuCatch ngay!!';
   }
 
@@ -189,16 +195,20 @@ class AppLocalizationsVi extends AppLocalizations {
   String get doYouWantToExit => 'Bạn có muốn thoát không?';
 
   @override
-  String get difficultyEasyDescription => 'Bạn sẽ gặp các câu hỏi đơn giản, chủ yếu là số nhỏ, rất phù hợp để làm quen và bắt đầu chơi.';
+  String get difficultyEasyDescription =>
+      'Bạn sẽ gặp các câu hỏi đơn giản, chủ yếu là số nhỏ, rất phù hợp để làm quen và bắt đầu chơi.';
 
   @override
-  String get difficultyMediumDescription => 'Các phép cộng và trừ với số lớn hơn, giúp bạn nâng cao kỹ năng một cách nhẹ nhàng.';
+  String get difficultyMediumDescription =>
+      'Các phép cộng và trừ với số lớn hơn, giúp bạn nâng cao kỹ năng một cách nhẹ nhàng.';
 
   @override
-  String get difficultyHardDescription => 'Xuất hiện phép nhân và chia, yêu cầu bạn phải tập trung và phản xạ nhanh hơn.';
+  String get difficultyHardDescription =>
+      'Xuất hiện phép nhân và chia, yêu cầu bạn phải tập trung và phản xạ nhanh hơn.';
 
   @override
-  String get difficultyExtremeDescription => 'Câu hỏi đa dạng, số lớn, phép tính phức tạp, mang đến thử thách thực sự cho bạn.';
+  String get difficultyExtremeDescription =>
+      'Câu hỏi đa dạng, số lớn, phép tính phức tạp, mang đến thử thách thực sự cho bạn.';
 
   @override
   String get difficultyEasyTitle => 'Dễ';
@@ -213,7 +223,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get difficultyExtremeTitle => 'Cực kỳ khó';
 
   @override
-  String get confirmChangeDifficulty => 'Lượt chơi sẽ bị reset. Bạn có chắc chắn muốn thay đổi không?';
+  String get confirmChangeDifficulty =>
+      'Lượt chơi sẽ bị reset. Bạn có chắc chắn muốn thay đổi không?';
 
   @override
   String get areYouSure => 'Bạn có chắc chắn không?';
@@ -225,19 +236,22 @@ class AppLocalizationsVi extends AppLocalizations {
   String get daily => 'Trong ngày';
 
   @override
-  String get dailyDescription => 'Xếp hạng dựa trên các lượt chơi được ghi trong ngày hôm nay.';
+  String get dailyDescription =>
+      'Xếp hạng dựa trên các lượt chơi được ghi trong ngày hôm nay.';
 
   @override
   String get weekly => 'Trong tuần';
 
   @override
-  String get weeklyDescription => 'Xếp hạng dựa trên các lượt chơi được ghi trong 7 ngày qua.';
+  String get weeklyDescription =>
+      'Xếp hạng dựa trên các lượt chơi được ghi trong 7 ngày qua.';
 
   @override
   String get allTime => 'Tất cả';
 
   @override
-  String get allTimeDescription => 'Xếp hạng dựa trên các lượt chơi được ghi trong tất cả thời gian.';
+  String get allTimeDescription =>
+      'Xếp hạng dựa trên các lượt chơi được ghi trong tất cả thời gian.';
 
   @override
   String get updateRequired => 'Yêu cầu cập nhật';
@@ -255,7 +269,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get whatsNew => 'Có gì mới';
 
   @override
-  String get forceUpdateMessage => 'Bản cập nhật này là bắt buộc để tiếp tục sử dụng ứng dụng. Vui lòng cập nhật ngay.';
+  String get forceUpdateMessage =>
+      'Bản cập nhật này là bắt buộc để tiếp tục sử dụng ứng dụng. Vui lòng cập nhật ngay.';
 
   @override
   String get later => 'Để sau';
@@ -273,7 +288,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get appUpdates => 'Cập nhật ứng dụng';
 
   @override
-  String get tapToCheckUpdates => 'Nhấn vào nút bên dưới để kiểm tra cập nhật ứng dụng.';
+  String get tapToCheckUpdates =>
+      'Nhấn vào nút bên dưới để kiểm tra cập nhật ứng dụng.';
 
   @override
   String get checkingForUpdates => 'Đang kiểm tra cập nhật...';
@@ -301,7 +317,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get updatePostponed => 'Có bản cập nhật nhưng đã hoãn lại.';
 
   @override
-  String tapTimerTooltip(int totalSeconds, int halfSeconds, int quarterSeconds) {
+  String tapTimerTooltip(
+      int totalSeconds, int halfSeconds, int quarterSeconds) {
     return 'Bạn có $totalSeconds giây để chạm vào một số. Thanh đổi màu khi thời gian trôi qua: xanh lá (hơn $halfSeconds giây), cam ($quarterSeconds-$halfSeconds giây), đỏ (dưới $quarterSeconds giây).';
   }
 
@@ -312,19 +329,22 @@ class AppLocalizationsVi extends AppLocalizations {
   String get soloMode => 'Chơi đơn';
 
   @override
-  String get soloModeDescription => 'Chơi một mình và thử thách bản thân để đạt điểm cao nhất';
+  String get soloModeDescription =>
+      'Chơi một mình và thử thách bản thân để đạt điểm cao nhất';
 
   @override
   String get combatMode => 'Chế độ đối kháng';
 
   @override
-  String get combatModeDescription => 'Chơi với người chơi khác qua kết nối Bluetooth và luân phiên';
+  String get combatModeDescription =>
+      'Chơi với người chơi khác qua kết nối Bluetooth và luân phiên';
 
   @override
   String get createRoom => 'Tạo phòng';
 
   @override
-  String get createRoomDescription => 'Tạo phòng mới và chờ người chơi khác tham gia';
+  String get createRoomDescription =>
+      'Tạo phòng mới và chờ người chơi khác tham gia';
 
   @override
   String get joinRoom => 'Tham gia phòng';
@@ -359,16 +379,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String get bluetoothPermissionRequired => 'Yêu cầu quyền Bluetooth';
 
   @override
-  String get bluetoothPermissionMessage => 'Chế độ đối kháng cần quyền Bluetooth để kết nối với người chơi khác. Vui lòng cấp quyền Bluetooth trong cài đặt thiết bị.';
+  String get bluetoothPermissionMessage =>
+      'Chế độ đối kháng cần quyền Bluetooth để kết nối với người chơi khác. Vui lòng cấp quyền Bluetooth trong cài đặt thiết bị.';
 
   @override
-  String get bluetoothPermissionPermanentlyDeniedMessage => 'Quyền Bluetooth đã bị từ chối trước đó. Để sử dụng Chế độ đối kháng, bạn cần bật quyền Bluetooth trong cài đặt thiết bị.\n\nVui lòng vào Cài đặt > NuCatch > Quyền và bật Bluetooth.';
+  String get bluetoothPermissionPermanentlyDeniedMessage =>
+      'Quyền Bluetooth đã bị từ chối trước đó. Để sử dụng Chế độ đối kháng, bạn cần bật quyền Bluetooth trong cài đặt thiết bị.\n\nVui lòng vào Cài đặt > NuCatch > Quyền và bật Bluetooth.';
 
   @override
   String get bluetoothDisabled => 'Bluetooth đã tắt';
 
   @override
-  String get bluetoothDisabledMessage => 'Chế độ đối kháng yêu cầu Bluetooth phải được bật. Vui lòng bật Bluetooth trong cài đặt thiết bị.';
+  String get bluetoothDisabledMessage =>
+      'Chế độ đối kháng yêu cầu Bluetooth phải được bật. Vui lòng bật Bluetooth trong cài đặt thiết bị.';
 
   @override
   String get cancel => 'Hủy';
@@ -410,7 +433,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get opponentGaveUp => 'Đối thủ của bạn đã bỏ cuộc';
 
   @override
-  String get confirmEndCombat => 'Bạn có chắc chắn muốn kết thúc trò chơi này? Đối thủ của bạn sẽ thắng.';
+  String get confirmEndCombat =>
+      'Bạn có chắc chắn muốn kết thúc trò chơi này? Đối thủ của bạn sẽ thắng.';
 
   @override
   String get youRanOutOfLives => 'Bạn đã hết mạng';
@@ -448,7 +472,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get holidayEarthDay => 'Ngày Trái Đất';
 
   @override
-  String get greetingEarthDay => 'Chúc mừng Ngày Trái Đất! Bảo vệ hành tinh của chúng ta!';
+  String get greetingEarthDay =>
+      'Chúc mừng Ngày Trái Đất! Bảo vệ hành tinh của chúng ta!';
 
   @override
   String get holidayEaster => 'Lễ Phục Sinh';
@@ -472,7 +497,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get holidayDiwali => 'Lễ hội Diwali';
 
   @override
-  String get greetingDiwali => 'दीपावली की शुभकामनाएं! (Deepavali Ki Shubhkamnayein!)';
+  String get greetingDiwali =>
+      'दीपावली की शुभकामनाएं! (Deepavali Ki Shubhkamnayein!)';
 
   @override
   String get holidayHanukkah => 'Lễ Hanukkah';
@@ -523,7 +549,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get advertisingRoomWaiting => 'Đang tạo kết nối phòng! Chờ đối thủ...';
 
   @override
-  String get opponentJoinedReady => 'Đối thủ đã tham gia! Nhấn Sẵn sàng khi bạn đã chuẩn bị.';
+  String get opponentJoinedReady =>
+      'Đối thủ đã tham gia! Nhấn Sẵn sàng khi bạn đã chuẩn bị.';
 
   @override
   String get opponentReady => 'Đối thủ sẵn sàng!';
@@ -549,7 +576,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get theHostIsReady => 'Chủ phòng đã sẵn sàng!';
 
   @override
-  String get pressReadyWhenPrepared => 'Nhấn Sẵn sàng khi bạn đã chuẩn bị xong.';
+  String get pressReadyWhenPrepared =>
+      'Nhấn Sẵn sàng khi bạn đã chuẩn bị xong.';
 
   @override
   String get yourOpponentIsReady => 'Đối thủ của bạn đã sẵn sàng!';
@@ -558,10 +586,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get gameIsStarting => 'Trò chơi đang bắt đầu...';
 
   @override
-  String get waitingForHostToSelectDifficulty => 'Đang chờ chủ phòng chọn độ khó...';
+  String get waitingForHostToSelectDifficulty =>
+      'Đang chờ chủ phòng chọn độ khó...';
 
   @override
-  String get failedToInitializeNearby => 'Không thể khởi tạo Kết nối Gần. Vui lòng cấp quyền truy cập vị trí.';
+  String get failedToInitializeNearby =>
+      'Không thể khởi tạo Kết nối Gần. Vui lòng cấp quyền truy cập vị trí.';
 
   @override
   String get nearbyNotInitialized => 'Kết nối Gần chưa được khởi tạo';
@@ -582,13 +612,16 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get advertisingRoomStatus => 'Đang tạo kết nối phòng...\nChờ đối thủ tìm và kết nối.';
+  String get advertisingRoomStatus =>
+      'Đang tạo kết nối phòng...\nChờ đối thủ tìm và kết nối.';
 
   @override
-  String get opponentConnectedStatus => 'Đối thủ đã kết nối!\nNhấn Sẵn sàng khi cả hai người chơi đã chuẩn bị.';
+  String get opponentConnectedStatus =>
+      'Đối thủ đã kết nối!\nNhấn Sẵn sàng khi cả hai người chơi đã chuẩn bị.';
 
   @override
-  String get bothPlayersReadyStatus => 'Cả hai người chơi đã sẵn sàng! Đang bắt đầu trò chơi...';
+  String get bothPlayersReadyStatus =>
+      'Cả hai người chơi đã sẵn sàng! Đang bắt đầu trò chơi...';
 
   @override
   String get settingUpDifficulty => 'Đang thiết lập độ khó...';
@@ -617,7 +650,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get noHostsFoundNearby => 'Không tìm thấy chủ phòng gần đây';
 
   @override
-  String get makeSureFriendHosting => 'Đảm bảo bạn bè đang tạo phòng\nvà cả hai thiết bị gần nhau';
+  String get makeSureFriendHosting =>
+      'Đảm bảo bạn bè đang tạo phòng\nvà cả hai thiết bị gần nhau';
 
   @override
   String get discovering => 'Đang tìm kiếm...';
@@ -626,7 +660,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get notDiscovering => 'Không tìm kiếm';
 
   @override
-  String get distanceWarning => 'Đảm bảo các thiết bị cách nhau trong vòng 10 mét';
+  String get distanceWarning =>
+      'Đảm bảo các thiết bị cách nhau trong vòng 10 mét';
 
   @override
   String get tourButtonLabel => 'Bắt đầu Tour';
@@ -635,49 +670,57 @@ class AppLocalizationsVi extends AppLocalizations {
   String get tourWelcomeTitle => 'Chào mừng đến với NuCatch!';
 
   @override
-  String get tourWelcomeDesc => 'Chào mừng! Tour nhanh này sẽ giúp bạn bắt đầu một cách suôn sẻ với **NuCatch**. Chúng tôi sẽ chỉ cho bạn tất cả các **tính năng chính** để bạn có thể bắt đầu chơi ngay. Bắt đầu thôi!';
+  String get tourWelcomeDesc =>
+      'Chào mừng! Tour nhanh này sẽ giúp bạn bắt đầu một cách suôn sẻ với **NuCatch**. Chúng tôi sẽ chỉ cho bạn tất cả các **tính năng chính** để bạn có thể bắt đầu chơi ngay. Bắt đầu thôi!';
 
   @override
   String get tourStartTitle => 'Bắt đầu - Bắt đầu trò chơi của bạn';
 
   @override
-  String get tourStartDesc => 'Nhấn nút Bắt đầu để bắt đầu. Sau đó bạn sẽ chọn giữa Chế độ Solo cho các thử thách toán học một người chơi, hoặc Chế độ Chiến đấu cho các trận chiến nhiều người chơi theo thời gian thực qua Bluetooth. Hãy khám phá cả hai tùy chọn!';
+  String get tourStartDesc =>
+      'Nhấn nút Bắt đầu để bắt đầu. Sau đó bạn sẽ chọn giữa Chế độ Solo cho các thử thách toán học một người chơi, hoặc Chế độ Chiến đấu cho các trận chiến nhiều người chơi theo thời gian thực qua Bluetooth. Hãy khám phá cả hai tùy chọn!';
 
   @override
   String get tourSoloTitle => 'Chế độ Solo - Chơi một mình';
 
   @override
-  String get tourSoloDesc => 'Trong Chế độ Solo, thách thức bản thân với các phương trình toán học! Chọn từ 4 cấp độ khó (Dễ đến Cực khó). Bạn bắt đầu với 3 mạng - mỗi câu trả lời sai hoặc hết thời gian tốn 1 mạng. Độ khó cao hơn có nghĩa là nhiều điểm hơn! Bây giờ hãy xem tùy chọn nhiều người chơi.';
+  String get tourSoloDesc =>
+      'Trong Chế độ Solo, thách thức bản thân với các phương trình toán học! Chọn từ 4 cấp độ khó (Dễ đến Cực khó). Bạn bắt đầu với 3 mạng - mỗi câu trả lời sai hoặc hết thời gian tốn 1 mạng. Độ khó cao hơn có nghĩa là nhiều điểm hơn! Bây giờ hãy xem tùy chọn nhiều người chơi.';
 
   @override
   String get tourCombatTitle => 'Chế độ Chiến đấu - Nhiều người chơi Bluetooth';
 
   @override
-  String get tourCombatDesc => 'Chế độ Chiến đấu cho phép bạn chiến đấu với bạn bè qua Bluetooth! Hai người chơi thay phiên nhau giải phương trình - không cần WiFi, chỉ cần ở trong phạm vi 10 mét. Chủ phòng chơi trước ban đầu, nhưng trong các trận tái đấu, người thua chơi trước. Bạn có hai cách để bắt đầu trận đấu:';
+  String get tourCombatDesc =>
+      'Chế độ Chiến đấu cho phép bạn chiến đấu với bạn bè qua Bluetooth! Hai người chơi thay phiên nhau giải phương trình - không cần WiFi, chỉ cần ở trong phạm vi 10 mét. Chủ phòng chơi trước ban đầu, nhưng trong các trận tái đấu, người thua chơi trước. Bạn có hai cách để bắt đầu trận đấu:';
 
   @override
   String get tourCreateRoomTitle => 'Chế độ Chiến đấu → Tạo phòng';
 
   @override
-  String get tourCreateRoomDesc => 'Tùy chọn đầu tiên: Tạo phòng làm cho bạn trở thành chủ phòng! Sau khi cấp quyền Bluetooth, bạn sẽ đợi khách tham gia phòng của mình, sau đó chọn cấp độ khó. Là chủ phòng, bạn chơi trước trong trận đấu ban đầu. Hoặc bạn có thể tham gia trò chơi của người khác:';
+  String get tourCreateRoomDesc =>
+      'Tùy chọn đầu tiên: Tạo phòng làm cho bạn trở thành chủ phòng! Sau khi cấp quyền Bluetooth, bạn sẽ đợi khách tham gia phòng của mình, sau đó chọn cấp độ khó. Là chủ phòng, bạn chơi trước trong trận đấu ban đầu. Hoặc bạn có thể tham gia trò chơi của người khác:';
 
   @override
   String get tourJoinRoomTitle => 'Chế độ Chiến đấu → Tham gia phòng';
 
   @override
-  String get tourJoinRoomDesc => 'Tùy chọn thứ hai: Tham gia phòng làm cho bạn trở thành khách! Sau khi cấp quyền, bạn sẽ quét các phòng gần đó, chọn một phòng và nhấn sẵn sàng. Chủ phòng chọn độ khó, và bạn sẽ chơi thứ hai trong trận đấu ban đầu. Bây giờ hãy kiểm tra các tính năng menu khác.';
+  String get tourJoinRoomDesc =>
+      'Tùy chọn thứ hai: Tham gia phòng làm cho bạn trở thành khách! Sau khi cấp quyền, bạn sẽ quét các phòng gần đó, chọn một phòng và nhấn sẵn sàng. Chủ phòng chọn độ khó, và bạn sẽ chơi thứ hai trong trận đấu ban đầu. Bây giờ hãy kiểm tra các tính năng menu khác.';
 
   @override
   String get tourLeaderboardTitle => 'Điểm cao nhất - Bảng xếp hạng';
 
   @override
-  String get tourLeaderboardDesc => 'Theo dõi tiến trình của bạn tại đây! Xem bảng xếp hạng toàn cầu, kỷ lục cá nhân của bạn và số liệu thống kê bao gồm các trò chơi đã chơi, tỷ lệ thắng, độ chính xác và điểm số theo cấp độ khó. So sánh với bạn bè và xem bạn cải thiện như thế nào theo thời gian. Cuối cùng, hãy truy cập Cài đặt.';
+  String get tourLeaderboardDesc =>
+      'Theo dõi tiến trình của bạn tại đây! Xem bảng xếp hạng toàn cầu, kỷ lục cá nhân của bạn và số liệu thống kê bao gồm các trò chơi đã chơi, tỷ lệ thắng, độ chính xác và điểm số theo cấp độ khó. So sánh với bạn bè và xem bạn cải thiện như thế nào theo thời gian. Cuối cùng, hãy truy cập Cài đặt.';
 
   @override
   String get tourSettingsTitle => 'Cài đặt - Tùy chỉnh';
 
   @override
-  String get tourSettingsDesc => 'Tùy chỉnh mọi thứ tại đây! Thay đổi tên người dùng của bạn, chọn chủ đề, điều chỉnh âm thanh/nhạc, chọn ngôn ngữ của bạn và quản lý cài đặt quyền riêng tư. Bạn có thể khởi động lại tour này bất cứ lúc nào từ đây. Đó là tất cả - bạn đã sẵn sàng chơi!';
+  String get tourSettingsDesc =>
+      'Tùy chỉnh mọi thứ tại đây! Thay đổi tên người dùng của bạn, chọn chủ đề, điều chỉnh âm thanh/nhạc, chọn ngôn ngữ của bạn và quản lý cài đặt quyền riêng tư. Bạn có thể khởi động lại tour này bất cứ lúc nào từ đây. Đó là tất cả - bạn đã sẵn sàng chơi!';
 
   @override
   String get tourNext => 'Tiếp theo';
@@ -695,5 +738,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get tourRestartFromSettings => 'Khởi động lại Tour';
 
   @override
-  String get tourResetMessage => 'Tour đã được đặt lại. Quay lại menu chính để bắt đầu.';
+  String get tourResetMessage =>
+      'Tour đã được đặt lại. Quay lại menu chính để bắt đầu.';
 }

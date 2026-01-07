@@ -86,7 +86,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get selectLevel => 'स्तर चुनें';
 
   @override
-  String get selectLevelMessage => 'उस स्तर का चयन करें जिसे आप खेलना चाहते हैं। उच्च स्तर का मतलब अधिक कठिनाई है।';
+  String get selectLevelMessage =>
+      'उस स्तर का चयन करें जिसे आप खेलना चाहते हैं। उच्च स्तर का मतलब अधिक कठिनाई है।';
 
   @override
   String get yourScoreIs => 'आपका वर्तमान स्कोर है';
@@ -116,7 +117,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get thankYou => 'खेलने के लिए धन्यवाद';
 
   @override
-  String get thankYouMessage => 'हमारा खेल खेलने के लिए धन्यवाद। हमें उम्मीद है कि आपने इसका आनंद लिया। यदि आपके पास कोई प्रतिक्रिया या सुझाव है, तो कृपया हमें बताएं।';
+  String get thankYouMessage =>
+      'हमारा खेल खेलने के लिए धन्यवाद। हमें उम्मीद है कि आपने इसका आनंद लिया। यदि आपके पास कोई प्रतिक्रिया या सुझाव है, तो कृपया हमें बताएं।';
 
   @override
   String get authorName => 'लेखक';
@@ -125,10 +127,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get connectWithUs => 'हमसे जुड़ें';
 
   @override
-  String get connectWithUsMessage => 'यदि आपके पास कोई प्रश्न या टिप्पणी है, तो बेझिझक हमारे सोशल मीडिया चैनलों के माध्यम से हमसे संपर्क करें।';
+  String get connectWithUsMessage =>
+      'यदि आपके पास कोई प्रश्न या टिप्पणी है, तो बेझिझक हमारे सोशल मीडिया चैनलों के माध्यम से हमसे संपर्क करें।';
 
   @override
-  String get introductionContent => 'NuCatch एक मजेदार और आकर्षक मस्तिष्क खेल है जो आपकी याददाश्त को तेज करने और आपका ध्यान बेहतर बनाने के लिए डिज़ाइन किया गया है। कम समय में संख्याओं को जल्दी से पकड़ने के लिए खुद को चुनौती दें, जिससे आपको ओटीपी, फोन नंबर, जन्मदिन और बहुत कुछ याद रखने में मदद मिलती है। अनुभव का आनंद लें और अपनी याददाश्त कौशल को बढ़ाएं!';
+  String get introductionContent =>
+      'NuCatch एक मजेदार और आकर्षक मस्तिष्क खेल है जो आपकी याददाश्त को तेज करने और आपका ध्यान बेहतर बनाने के लिए डिज़ाइन किया गया है। कम समय में संख्याओं को जल्दी से पकड़ने के लिए खुद को चुनौती दें, जिससे आपको ओटीपी, फोन नंबर, जन्मदिन और बहुत कुछ याद रखने में मदद मिलती है। अनुभव का आनंद लें और अपनी याददाश्त कौशल को बढ़ाएं!';
 
   @override
   String messageShareIntroWIthUsername(String username, String profileUrl) {
@@ -149,12 +153,14 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String messageSharePlayedLeaderBody(String username, num point, String timeCreated) {
+  String messageSharePlayedLeaderBody(
+      String username, num point, String timeCreated) {
     return '$username ने $timeCreated पर $point अंक प्राप्त किए। $username के साथ #NuCatch में शामिल हों!!';
   }
 
   @override
-  String messageSharePlayedLeaderBodyAnonymousBody(num point, String timeCreated) {
+  String messageSharePlayedLeaderBodyAnonymousBody(
+      num point, String timeCreated) {
     return 'एक खिलाड़ी ने $timeCreated पर $point अंक प्राप्त किए। अभी #NuCatch में शामिल हों!!';
   }
 
@@ -189,16 +195,20 @@ class AppLocalizationsHi extends AppLocalizations {
   String get doYouWantToExit => 'क्या आप बाहर निकलना चाहते हैं?';
 
   @override
-  String get difficultyEasyDescription => 'साधारण चुनौतियों के लिए थोड़े बढ़े हुए स्तर के साथ एक यादृच्छिक संख्या उत्पन्न करता है।';
+  String get difficultyEasyDescription =>
+      'साधारण चुनौतियों के लिए थोड़े बढ़े हुए स्तर के साथ एक यादृच्छिक संख्या उत्पन्न करता है।';
 
   @override
-  String get difficultyMediumDescription => 'मध्यम कठिनाई के लिए एक जोड़/घटाव गणना अभिव्यक्ति तैयार करता है।';
+  String get difficultyMediumDescription =>
+      'मध्यम कठिनाई के लिए एक जोड़/घटाव गणना अभिव्यक्ति तैयार करता है।';
 
   @override
-  String get difficultyHardDescription => 'उन्नत कठिनाई के लिए एक गुणा/भाग गणना अभिव्यक्ति बनाता है।';
+  String get difficultyHardDescription =>
+      'उन्नत कठिनाई के लिए एक गुणा/भाग गणना अभिव्यक्ति बनाता है।';
 
   @override
-  String get difficultyExtremeDescription => 'सबसे चुनौतीपूर्ण अनुभव के लिए एक जटिल जोड़/घटाव गणना, एक उच्च स्तर की यादृच्छिक संख्या, या एक गुणा/भाग गणना उत्पन्न करने के बीच यादृच्छिक रूप से चयन करता है।';
+  String get difficultyExtremeDescription =>
+      'सबसे चुनौतीपूर्ण अनुभव के लिए एक जटिल जोड़/घटाव गणना, एक उच्च स्तर की यादृच्छिक संख्या, या एक गुणा/भाग गणना उत्पन्न करने के बीच यादृच्छिक रूप से चयन करता है।';
 
   @override
   String get difficultyEasyTitle => 'आसान मोड';
@@ -213,7 +223,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get difficultyExtremeTitle => 'अत्यधिक मोड';
 
   @override
-  String get confirmChangeDifficulty => 'आपकी बारी रीसेट कर दी जाएगी। क्या आप वाकई कठिनाई बदलना चाहते हैं?';
+  String get confirmChangeDifficulty =>
+      'आपकी बारी रीसेट कर दी जाएगी। क्या आप वाकई कठिनाई बदलना चाहते हैं?';
 
   @override
   String get areYouSure => 'क्या आपको यकीन है?';
@@ -231,13 +242,15 @@ class AppLocalizationsHi extends AppLocalizations {
   String get weekly => 'एक सप्ताह में';
 
   @override
-  String get weeklyDescription => 'पिछले 7 दिनों में रिकॉर्ड की गई बारियों के आधार पर रैंकिंग।';
+  String get weeklyDescription =>
+      'पिछले 7 दिनों में रिकॉर्ड की गई बारियों के आधार पर रैंकिंग।';
 
   @override
   String get allTime => 'पूरे समय';
 
   @override
-  String get allTimeDescription => 'रिकॉर्ड की गई सभी बारियों के आधार पर रैंकिंग।';
+  String get allTimeDescription =>
+      'रिकॉर्ड की गई सभी बारियों के आधार पर रैंकिंग।';
 
   @override
   String get updateRequired => 'अपडेट आवश्यक';
@@ -255,7 +268,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get whatsNew => 'नया क्या है';
 
   @override
-  String get forceUpdateMessage => 'ऐप का उपयोग जारी रखने के लिए यह अपडेट आवश्यक है। कृपया अभी अपडेट करें।';
+  String get forceUpdateMessage =>
+      'ऐप का उपयोग जारी रखने के लिए यह अपडेट आवश्यक है। कृपया अभी अपडेट करें।';
 
   @override
   String get later => 'बाद में';
@@ -273,7 +287,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get appUpdates => 'ऐप अपडेट';
 
   @override
-  String get tapToCheckUpdates => 'ऐप अपडेट देखने के लिए नीचे दिए गए बटन पर टैप करें।';
+  String get tapToCheckUpdates =>
+      'ऐप अपडेट देखने के लिए नीचे दिए गए बटन पर टैप करें।';
 
   @override
   String get checkingForUpdates => 'अपडेट की जांच हो रही है...';
@@ -301,7 +316,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get updatePostponed => 'अपडेट उपलब्ध है लेकिन स्थगित कर दिया गया है।';
 
   @override
-  String tapTimerTooltip(int totalSeconds, int halfSeconds, int quarterSeconds) {
+  String tapTimerTooltip(
+      int totalSeconds, int halfSeconds, int quarterSeconds) {
     return 'संख्या पर टैप करने के लिए आपके पास $totalSeconds सेकंड हैं। बार समय के साथ रंग बदलता है: हरा ($halfSeconds से अधिक), नारंगी ($quarterSeconds-${halfSeconds}s), लाल ($quarterSeconds से कम)।';
   }
 
@@ -312,25 +328,29 @@ class AppLocalizationsHi extends AppLocalizations {
   String get soloMode => 'सोलो मोड';
 
   @override
-  String get soloModeDescription => 'अकेले खेलें और अपने शीर्ष स्कोर को मात देने के लिए खुद को चुनौती दें';
+  String get soloModeDescription =>
+      'अकेले खेलें और अपने शीर्ष स्कोर को मात देने के लिए खुद को चुनौती दें';
 
   @override
   String get combatMode => 'कॉम्बैट मोड';
 
   @override
-  String get combatModeDescription => 'ब्लूटूथ कनेक्शन के माध्यम से दूसरे खिलाड़ी के साथ खेलें और बारी-बारी से खेलें';
+  String get combatModeDescription =>
+      'ब्लूटूथ कनेक्शन के माध्यम से दूसरे खिलाड़ी के साथ खेलें और बारी-बारी से खेलें';
 
   @override
   String get createRoom => 'रूम बनाएं';
 
   @override
-  String get createRoomDescription => 'एक नया गेम होस्ट करें और दूसरे खिलाड़ी के शामिल होने की प्रतीक्षा करें';
+  String get createRoomDescription =>
+      'एक नया गेम होस्ट करें और दूसरे खिलाड़ी के शामिल होने की प्रतीक्षा करें';
 
   @override
   String get joinRoom => 'रूम ज्वाइन करें';
 
   @override
-  String get joinRoomDescription => 'मौजूदा गेम में शामिल होने के लिए रूम कोड दर्ज करें';
+  String get joinRoomDescription =>
+      'मौजूदा गेम में शामिल होने के लिए रूम कोड दर्ज करें';
 
   @override
   String get hostRoom => 'होस्ट रूम';
@@ -359,16 +379,19 @@ class AppLocalizationsHi extends AppLocalizations {
   String get bluetoothPermissionRequired => 'ब्लूटूथ अनुमति आवश्यक';
 
   @override
-  String get bluetoothPermissionMessage => 'कॉम्बैट मोड को अन्य खिलाड़ियों से जुड़ने के लिए ब्लूटूथ अनुमति की आवश्यकता होती है। कृपया अपने डिवाइस सेटिंग में ब्लूटूथ अनुमति दें।';
+  String get bluetoothPermissionMessage =>
+      'कॉम्बैट मोड को अन्य खिलाड़ियों से जुड़ने के लिए ब्लूटूथ अनुमति की आवश्यकता होती है। कृपया अपने डिवाइस सेटिंग में ब्लूटूथ अनुमति दें।';
 
   @override
-  String get bluetoothPermissionPermanentlyDeniedMessage => 'ब्लूटूथ अनुमतियाँ स्थायी रूप से अस्वीकार कर दी गई हैं। कॉम्बैट मोड का उपयोग करने के लिए, आपको अपने डिवाइस सेटिंग में ब्लूटूथ अनुमतियाँ सक्षम करनी होंगी।\n\nकृपया सेटिंग > NuCatch > अनुमतियाँ पर जाएँ और ब्लूटूथ सक्षम करें।';
+  String get bluetoothPermissionPermanentlyDeniedMessage =>
+      'ब्लूटूथ अनुमतियाँ स्थायी रूप से अस्वीकार कर दी गई हैं। कॉम्बैट मोड का उपयोग करने के लिए, आपको अपने डिवाइस सेटिंग में ब्लूटूथ अनुमतियाँ सक्षम करनी होंगी।\n\nकृपया सेटिंग > NuCatch > अनुमतियाँ पर जाएँ और ब्लूटूथ सक्षम करें।';
 
   @override
   String get bluetoothDisabled => 'ब्लूटूथ अक्षम';
 
   @override
-  String get bluetoothDisabledMessage => 'कॉम्बैट मोड के लिए ब्लूटूथ सक्षम होना आवश्यक है। कृपया अपने डिवाइस सेटिंग में ब्लूटूथ चालू करें।';
+  String get bluetoothDisabledMessage =>
+      'कॉम्बैट मोड के लिए ब्लूटूथ सक्षम होना आवश्यक है। कृपया अपने डिवाइस सेटिंग में ब्लूटूथ चालू करें।';
 
   @override
   String get cancel => 'रद्द करें';
@@ -410,7 +433,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get opponentGaveUp => 'आपके प्रतिद्वंद्वी ने हार मान ली';
 
   @override
-  String get confirmEndCombat => 'क्या आप वाकई इस गेम को समाप्त करना चाहते हैं? आपका प्रतिद्वंद्वी जीत जाएगा।';
+  String get confirmEndCombat =>
+      'क्या आप वाकई इस गेम को समाप्त करना चाहते हैं? आपका प्रतिद्वंद्वी जीत जाएगा।';
 
   @override
   String get youRanOutOfLives => 'आपका जीवन समाप्त हो गया';
@@ -448,7 +472,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get holidayEarthDay => 'पृथ्वी दिवस';
 
   @override
-  String get greetingEarthDay => 'हैप्पी पृथ्वी दिवस! हमारे ग्रह की रक्षा करें!';
+  String get greetingEarthDay =>
+      'हैप्पी पृथ्वी दिवस! हमारे ग्रह की रक्षा करें!';
 
   @override
   String get holidayEaster => 'ईस्टर';
@@ -520,10 +545,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get opponentWillTakeFirst => 'प्रतिद्वंद्वी पहले लेगा';
 
   @override
-  String get advertisingRoomWaiting => 'रूम ब्रॉडकास्टिंग! प्रतिद्वंद्वी की प्रतीक्षा कर रहा है...';
+  String get advertisingRoomWaiting =>
+      'रूम ब्रॉडकास्टिंग! प्रतिद्वंद्वी की प्रतीक्षा कर रहा है...';
 
   @override
-  String get opponentJoinedReady => 'प्रतिद्वंद्वी शामिल हो गया! तैयार होने पर तैयार दबाएं।';
+  String get opponentJoinedReady =>
+      'प्रतिद्वंद्वी शामिल हो गया! तैयार होने पर तैयार दबाएं।';
 
   @override
   String get opponentReady => 'प्रतिद्वंद्वी तैयार!';
@@ -549,7 +576,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get theHostIsReady => '✅ होस्ट तैयार है!';
 
   @override
-  String get pressReadyWhenPrepared => 'शुरू करने के लिए तैयार होने पर तैयार दबाएं।';
+  String get pressReadyWhenPrepared =>
+      'शुरू करने के लिए तैयार होने पर तैयार दबाएं।';
 
   @override
   String get yourOpponentIsReady => '✅ आपका प्रतिद्वंद्वी तैयार है!';
@@ -558,10 +586,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get gameIsStarting => 'खेल शुरू हो रहा है...';
 
   @override
-  String get waitingForHostToSelectDifficulty => 'होस्ट द्वारा कठिनाई चुनने की प्रतीक्षा कर रहा है...';
+  String get waitingForHostToSelectDifficulty =>
+      'होस्ट द्वारा कठिनाई चुनने की प्रतीक्षा कर रहा है...';
 
   @override
-  String get failedToInitializeNearby => 'Nearby Connections प्रारंभ करने में विफल। कृपया स्थान अनुमति प्रदान करें।';
+  String get failedToInitializeNearby =>
+      'Nearby Connections प्रारंभ करने में विफल। कृपया स्थान अनुमति प्रदान करें।';
 
   @override
   String get nearbyNotInitialized => 'Nearby Connections प्रारंभ नहीं किया गया';
@@ -582,10 +612,12 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get advertisingRoomStatus => 'रूम ब्रॉडकास्टिंग...\nप्रतिद्वंद्वी के खोजने और कनेक्ट करने की प्रतीक्षा कर रहा है।';
+  String get advertisingRoomStatus =>
+      'रूम ब्रॉडकास्टिंग...\nप्रतिद्वंद्वी के खोजने और कनेक्ट करने की प्रतीक्षा कर रहा है।';
 
   @override
-  String get opponentConnectedStatus => 'प्रतिद्वंद्वी जुड़ा हुआ है!\nजब दोनों खिलाड़ी तैयार हों तो तैयार दबाएं।';
+  String get opponentConnectedStatus =>
+      'प्रतिद्वंद्वी जुड़ा हुआ है!\nजब दोनों खिलाड़ी तैयार हों तो तैयार दबाएं।';
 
   @override
   String get bothPlayersReadyStatus => 'दोनों खिलाड़ी तैयार! खेल शुरू...';
@@ -617,7 +649,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get noHostsFoundNearby => 'आस-पास कोई होस्ट नहीं मिला';
 
   @override
-  String get makeSureFriendHosting => 'सुनिश्चित करें कि कोई मित्र होस्ट कर रहा है\nऔर दोनों डिवाइस एक दूसरे के करीब हैं';
+  String get makeSureFriendHosting =>
+      'सुनिश्चित करें कि कोई मित्र होस्ट कर रहा है\nऔर दोनों डिवाइस एक दूसरे के करीब हैं';
 
   @override
   String get discovering => 'खोज रहा है...';
@@ -626,7 +659,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get notDiscovering => 'खोज नहीं रहा है';
 
   @override
-  String get distanceWarning => 'सुनिश्चित करें कि डिवाइस 10 मीटर से कम दूरी पर हैं';
+  String get distanceWarning =>
+      'सुनिश्चित करें कि डिवाइस 10 मीटर से कम दूरी पर हैं';
 
   @override
   String get tourButtonLabel => 'टूर शुरू करें';
@@ -635,49 +669,57 @@ class AppLocalizationsHi extends AppLocalizations {
   String get tourWelcomeTitle => 'NuCatch में आपका स्वागत है!';
 
   @override
-  String get tourWelcomeDesc => 'स्वागत है! यह त्वरित दौरा **NuCatch** के साथ सुगमता से शुरूआत करने में आपकी मदद करेगा। हम आपको सभी **मुख्य सुविधाएं** दिखाएंगे ताकि आप सीधे शुरू कर सकें। शुरू करते हैं!';
+  String get tourWelcomeDesc =>
+      'स्वागत है! यह त्वरित दौरा **NuCatch** के साथ सुगमता से शुरूआत करने में आपकी मदद करेगा। हम आपको सभी **मुख्य सुविधाएं** दिखाएंगे ताकि आप सीधे शुरू कर सकें। शुरू करते हैं!';
 
   @override
   String get tourStartTitle => 'शुरू करें - अपना गेम शुरू करें';
 
   @override
-  String get tourStartDesc => 'शुरू करने के लिए स्टार्ट बटन टैप करें। फिर आप सिंगल-प्लेयर गणितीय चुनौतियों के लिए सोलो मोड, या ब्लूटूथ के माध्यम से रीयल-टाइम मल्टीप्लेयर युद्धों के लिए कॉम्बैट मोड के बीच चुनेंगे। आइए दोनों विकल्पों का अन्वेषण करें!';
+  String get tourStartDesc =>
+      'शुरू करने के लिए स्टार्ट बटन टैप करें। फिर आप सिंगल-प्लेयर गणितीय चुनौतियों के लिए सोलो मोड, या ब्लूटूथ के माध्यम से रीयल-टाइम मल्टीप्लेयर युद्धों के लिए कॉम्बैट मोड के बीच चुनेंगे। आइए दोनों विकल्पों का अन्वेषण करें!';
 
   @override
   String get tourSoloTitle => 'सोलो मोड - अकेले खेलें';
 
   @override
-  String get tourSoloDesc => 'सोलो मोड में, गणितीय समीकरणों के साथ खुद को चुनौती दें! 4 कठिनाई स्तरों में से चुनें (आसान से अत्यंत कठिन तक)। आप 3 जीवन के साथ शुरू करते हैं - प्रत्येक गलत उत्तर या टाइमआउट 1 जीवन खर्च करता है। उच्च कठिनाई का मतलब अधिक अंक हैं! अब मल्टीप्लेयर विकल्प देखें।';
+  String get tourSoloDesc =>
+      'सोलो मोड में, गणितीय समीकरणों के साथ खुद को चुनौती दें! 4 कठिनाई स्तरों में से चुनें (आसान से अत्यंत कठिन तक)। आप 3 जीवन के साथ शुरू करते हैं - प्रत्येक गलत उत्तर या टाइमआउट 1 जीवन खर्च करता है। उच्च कठिनाई का मतलब अधिक अंक हैं! अब मल्टीप्लेयर विकल्प देखें।';
 
   @override
   String get tourCombatTitle => 'कॉम्बैट मोड - ब्लूटूथ मल्टीप्लेयर';
 
   @override
-  String get tourCombatDesc => 'कॉम्बैट मोड आपको ब्लूटूथ के माध्यम से एक दोस्त के साथ लड़ने की अनुमति देता है! दो खिलाड़ी बारी-बारी से समीकरणों को हल करते हैं - कोई वाईफाई की आवश्यकता नहीं, बस 10 मीटर के भीतर रहें। मेजबान शुरू में पहले खेलता है, लेकिन री-मैचों में हारने वाला पहले जाता है। आपके पास मैच शुरू करने के दो तरीके हैं:';
+  String get tourCombatDesc =>
+      'कॉम्बैट मोड आपको ब्लूटूथ के माध्यम से एक दोस्त के साथ लड़ने की अनुमति देता है! दो खिलाड़ी बारी-बारी से समीकरणों को हल करते हैं - कोई वाईफाई की आवश्यकता नहीं, बस 10 मीटर के भीतर रहें। मेजबान शुरू में पहले खेलता है, लेकिन री-मैचों में हारने वाला पहले जाता है। आपके पास मैच शुरू करने के दो तरीके हैं:';
 
   @override
   String get tourCreateRoomTitle => 'कॉम्बैट मोड → रूम बनाएं';
 
   @override
-  String get tourCreateRoomDesc => 'पहला विकल्प: रूम बनाएं आपको मेजबान बनाता है! ब्लूटूथ अनुमतियाँ देने के बाद, आप एक अतिथि के अपने कमरे में शामिल होने का इंतजार करेंगे, फिर कठिनाई स्तर चुनेंगे। मेजबान के रूप में, आप प्रारंभिक मैच में पहले खेलते हैं। या आप किसी और के गेम में शामिल हो सकते हैं:';
+  String get tourCreateRoomDesc =>
+      'पहला विकल्प: रूम बनाएं आपको मेजबान बनाता है! ब्लूटूथ अनुमतियाँ देने के बाद, आप एक अतिथि के अपने कमरे में शामिल होने का इंतजार करेंगे, फिर कठिनाई स्तर चुनेंगे। मेजबान के रूप में, आप प्रारंभिक मैच में पहले खेलते हैं। या आप किसी और के गेम में शामिल हो सकते हैं:';
 
   @override
   String get tourJoinRoomTitle => 'कॉम्बैट मोड → रूम में शामिल हों';
 
   @override
-  String get tourJoinRoomDesc => 'दूसरा विकल्प: रूम में शामिल होना आपको अतिथि बनाता है! अनुमतियाँ देने के बाद, आप आस-पास के कमरों को स्कैन करेंगे, एक का चयन करेंगे और तैयार टैप करेंगे। मेजबान कठिनाई चुनता है, और आप प्रारंभिक मैच में दूसरे खेलेंगे। अब अन्य मेनू सुविधाओं की जाँच करें।';
+  String get tourJoinRoomDesc =>
+      'दूसरा विकल्प: रूम में शामिल होना आपको अतिथि बनाता है! अनुमतियाँ देने के बाद, आप आस-पास के कमरों को स्कैन करेंगे, एक का चयन करेंगे और तैयार टैप करेंगे। मेजबान कठिनाई चुनता है, और आप प्रारंभिक मैच में दूसरे खेलेंगे। अब अन्य मेनू सुविधाओं की जाँच करें।';
 
   @override
   String get tourLeaderboardTitle => 'शीर्ष स्कोर - लीडरबोर्ड';
 
   @override
-  String get tourLeaderboardDesc => 'यहाँ अपनी प्रगति ट्रैक करें! वैश्विक रैंकिंग, अपने व्यक्तिगत रिकॉर्ड और सांख्यिकी देखें जिसमें खेले गए गेम, जीत दर, सटीकता और कठिनाई स्तर के अनुसार स्कोर शामिल हैं। दोस्तों के साथ तुलना करें और देखें कि आप समय के साथ कैसे सुधरते हैं। अंत में, सेटिंग्स पर जाएँ।';
+  String get tourLeaderboardDesc =>
+      'यहाँ अपनी प्रगति ट्रैक करें! वैश्विक रैंकिंग, अपने व्यक्तिगत रिकॉर्ड और सांख्यिकी देखें जिसमें खेले गए गेम, जीत दर, सटीकता और कठिनाई स्तर के अनुसार स्कोर शामिल हैं। दोस्तों के साथ तुलना करें और देखें कि आप समय के साथ कैसे सुधरते हैं। अंत में, सेटिंग्स पर जाएँ।';
 
   @override
   String get tourSettingsTitle => 'सेटिंग्स - अनुकूलित करें';
 
   @override
-  String get tourSettingsDesc => 'यहाँ सब कुछ अनुकूलित करें! अपना उपयोगकर्ता नाम बदलें, एक थीम चुनें, साउंड/म्यूज़िक समायोजित करें, अपनी भाषा चुनें और गोपनीयता सेटिंग्स प्रबंधित करें। आप यहाँ से किसी भी समय इस टूर को पुनः प्रारंभ कर सकते हैं। बस इतना ही - आप खेलने के लिए तैयार हैं!';
+  String get tourSettingsDesc =>
+      'यहाँ सब कुछ अनुकूलित करें! अपना उपयोगकर्ता नाम बदलें, एक थीम चुनें, साउंड/म्यूज़िक समायोजित करें, अपनी भाषा चुनें और गोपनीयता सेटिंग्स प्रबंधित करें। आप यहाँ से किसी भी समय इस टूर को पुनः प्रारंभ कर सकते हैं। बस इतना ही - आप खेलने के लिए तैयार हैं!';
 
   @override
   String get tourNext => 'अगला';
@@ -695,5 +737,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get tourRestartFromSettings => 'टूर पुनः आरंभ करें';
 
   @override
-  String get tourResetMessage => 'टूर रीसेट हो गया है। शुरू करने के लिए मुख्य मेनू पर वापस जाएं।';
+  String get tourResetMessage =>
+      'टूर रीसेट हो गया है। शुरू करने के लिए मुख्य मेनू पर वापस जाएं।';
 }

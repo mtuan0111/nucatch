@@ -128,7 +128,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get connectWithUsMessage => '如果你有任何问题或反馈，请随时通过我们的社交媒体渠道联系我们。';
 
   @override
-  String get introductionContent => 'NuCatch 是一款有趣且引人入胜的益智游戏，旨在提高你的记忆力和注意力。挑战自己在短时间内快速捕捉数字，帮助你记住 OTP、电话号码、生日等内容。享受体验并提升你的记忆力！';
+  String get introductionContent =>
+      'NuCatch 是一款有趣且引人入胜的益智游戏，旨在提高你的记忆力和注意力。挑战自己在短时间内快速捕捉数字，帮助你记住 OTP、电话号码、生日等内容。享受体验并提升你的记忆力！';
 
   @override
   String messageShareIntroWIthUsername(String username, String profileUrl) {
@@ -149,12 +150,14 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String messageSharePlayedLeaderBody(String username, num point, String timeCreated) {
+  String messageSharePlayedLeaderBody(
+      String username, num point, String timeCreated) {
     return '$username 在 $timeCreated 获得了 $point 分。快来和 $username 一起加入 #NuCatch 吧！！';
   }
 
   @override
-  String messageSharePlayedLeaderBodyAnonymousBody(num point, String timeCreated) {
+  String messageSharePlayedLeaderBodyAnonymousBody(
+      num point, String timeCreated) {
     return '一位玩家在 $timeCreated 获得了 $point 分。现在加入 #NuCatch！！';
   }
 
@@ -198,7 +201,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get difficultyHardDescription => '创建一个乘除法计算表达式，难度较高。';
 
   @override
-  String get difficultyExtremeDescription => '随机会生成复杂的加减法计算、更高等级的随机数或乘除法计算，带来最具挑战性的体验。';
+  String get difficultyExtremeDescription =>
+      '随机会生成复杂的加减法计算、更高等级的随机数或乘除法计算，带来最具挑战性的体验。';
 
   @override
   String get difficultyEasyTitle => '简单模式';
@@ -301,7 +305,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get updatePostponed => '更新可用但已推迟。';
 
   @override
-  String tapTimerTooltip(int totalSeconds, int halfSeconds, int quarterSeconds) {
+  String tapTimerTooltip(
+      int totalSeconds, int halfSeconds, int quarterSeconds) {
     return '你有 $totalSeconds 秒的时间点击一个数字。进度条会随着时间流逝改变颜色：绿色（超过 $halfSeconds秒），橙色（$quarterSeconds-$halfSeconds秒），红色（少于 $quarterSeconds秒）。';
   }
 
@@ -362,7 +367,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bluetoothPermissionMessage => '对战模式需要蓝牙权限才能与其他玩家连接。请在设备设置中授予蓝牙权限。';
 
   @override
-  String get bluetoothPermissionPermanentlyDeniedMessage => '蓝牙权限已被永久拒绝。要使用对战模式，你需要在设备设置中启用蓝牙权限。\n\n请前往设置 > NuCatch > 权限并启用蓝牙。';
+  String get bluetoothPermissionPermanentlyDeniedMessage =>
+      '蓝牙权限已被永久拒绝。要使用对战模式，你需要在设备设置中启用蓝牙权限。\n\n请前往设置 > NuCatch > 权限并启用蓝牙。';
 
   @override
   String get bluetoothDisabled => '蓝牙已禁用';
@@ -635,49 +641,57 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tourWelcomeTitle => '欢迎来到 NuCatch!';
 
   @override
-  String get tourWelcomeDesc => '欢迎! 这个快速导览将帮助您顺利开始使用**NuCatch**。我们将向您展示所有**主要功能**，让您立即开始游戏。让我们开始吧!';
+  String get tourWelcomeDesc =>
+      '欢迎! 这个快速导览将帮助您顺利开始使用**NuCatch**。我们将向您展示所有**主要功能**，让您立即开始游戏。让我们开始吧!';
 
   @override
   String get tourStartTitle => '开始 - 开始您的游戏';
 
   @override
-  String get tourStartDesc => '点击开始按钮开始。然后您将在单人数学挑战的单人模式，或通过蓝牙进行实时多人对战的战斗模式之间进行选择。让我们探索这两个选项!';
+  String get tourStartDesc =>
+      '点击开始按钮开始。然后您将在单人数学挑战的单人模式，或通过蓝牙进行实时多人对战的战斗模式之间进行选择。让我们探索这两个选项!';
 
   @override
   String get tourSoloTitle => '单人模式 - 单独游戏';
 
   @override
-  String get tourSoloDesc => '在单人模式中，用数学方程式挑战自己! 从4个难度级别中选择（简单到极难）。您从3条生命开始 - 每个错误答案或超时花费1条生命。更高的难度意味着更多的分数! 现在让我们看看多人游戏选项。';
+  String get tourSoloDesc =>
+      '在单人模式中，用数学方程式挑战自己! 从4个难度级别中选择（简单到极难）。您从3条生命开始 - 每个错误答案或超时花费1条生命。更高的难度意味着更多的分数! 现在让我们看看多人游戏选项。';
 
   @override
   String get tourCombatTitle => '战斗模式 - 蓝牙多人游戏';
 
   @override
-  String get tourCombatDesc => '战斗模式让您通过蓝牙与朋友对战! 两名玩家轮流解决方程式 - 不需要WiFi，只需保持在10米范围内。主机最初先玩，但在复赛中失败者先玩。您有两种方式开始比赛:';
+  String get tourCombatDesc =>
+      '战斗模式让您通过蓝牙与朋友对战! 两名玩家轮流解决方程式 - 不需要WiFi，只需保持在10米范围内。主机最初先玩，但在复赛中失败者先玩。您有两种方式开始比赛:';
 
   @override
   String get tourCreateRoomTitle => '战斗模式 → 创建房间';
 
   @override
-  String get tourCreateRoomDesc => '第一个选项: 创建房间使您成为主机! 授予蓝牙权限后，您将等待客人加入您的房间，然后选择难度级别。作为主机，您在初始比赛中先玩。或者您可以加入其他人的游戏:';
+  String get tourCreateRoomDesc =>
+      '第一个选项: 创建房间使您成为主机! 授予蓝牙权限后，您将等待客人加入您的房间，然后选择难度级别。作为主机，您在初始比赛中先玩。或者您可以加入其他人的游戏:';
 
   @override
   String get tourJoinRoomTitle => '战斗模式 → 加入房间';
 
   @override
-  String get tourJoinRoomDesc => '第二个选项: 加入房间使您成为客人! 授予权限后，您将扫描附近的房间，选择一个并点击准备。主机选择难度，您将在初始比赛中第二个玩。现在让我们检查其他菜单功能。';
+  String get tourJoinRoomDesc =>
+      '第二个选项: 加入房间使您成为客人! 授予权限后，您将扫描附近的房间，选择一个并点击准备。主机选择难度，您将在初始比赛中第二个玩。现在让我们检查其他菜单功能。';
 
   @override
   String get tourLeaderboardTitle => '最高分 - 排行榜';
 
   @override
-  String get tourLeaderboardDesc => '在这里跟踪您的进度! 查看全球排名、您的个人记录和统计数据，包括玩过的游戏、胜率、准确性和按难度级别的分数。与朋友比较，看看您如何随时间改进。最后，让我们访问设置。';
+  String get tourLeaderboardDesc =>
+      '在这里跟踪您的进度! 查看全球排名、您的个人记录和统计数据，包括玩过的游戏、胜率、准确性和按难度级别的分数。与朋友比较，看看您如何随时间改进。最后，让我们访问设置。';
 
   @override
   String get tourSettingsTitle => '设置 - 自定义';
 
   @override
-  String get tourSettingsDesc => '在这里自定义一切! 更改您的用户名，选择主题，调整声音/音乐，选择您的语言并管理隐私设置。您可以随时从这里重新启动此导览。就是这样 - 您准备好玩了!';
+  String get tourSettingsDesc =>
+      '在这里自定义一切! 更改您的用户名，选择主题，调整声音/音乐，选择您的语言并管理隐私设置。您可以随时从这里重新启动此导览。就是这样 - 您准备好玩了!';
 
   @override
   String get tourNext => '下一步';
