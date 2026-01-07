@@ -50,7 +50,8 @@ class CombatGameEndScreen extends StatelessWidget {
                                   MediaQuery.of(context).padding.top;
 
                           return AnimatedContainer(
-                            duration: const Duration(milliseconds: kAnimationDurationMedium),
+                            duration: const Duration(
+                                milliseconds: kAnimationDurationMedium),
                             color: isCollapsed
                                 ? Theme.of(context).primaryColor
                                 : Colors.transparent,
@@ -110,15 +111,35 @@ class CombatGameEndScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Result Icon
-          Icon(
-            isWinner ? Icons.emoji_events : Icons.sentiment_dissatisfied,
+          // Ranking Widget - Winner (position 1) or Loser (position 4)
+          RankingSortingWidget(
+            position: isWinner ? 1 : 4,
             size: kContainerSizeS,
-            color: isWinner
-                ? Theme.of(context).colorScheme.tertiary
-                : Theme.of(context).colorScheme.onSurfaceVariant,
+            childElement: Icon(
+              isWinner ? FontAwesomeIcons.trophy : FontAwesomeIcons.faceFrown,
+              color: Theme.of(context).scaffoldBackgroundColor,
+              size: kIconSizeL,
+            ),
           ),
           const SizedBox(height: kSpaceXL),
+
+          // Expected String Display
+          if (combatState.expect != null && combatState.expect!.isNotEmpty) ...[
+            Text(
+              lang(context).theCorrectIs,
+              style: AppTextStyles.bodyMediumBold(context),
+            ),
+            const SizedBox(height: kSpaceS),
+            Text(
+              combatState.expect!,
+              style: AppTextStyles.forChallenge(
+                combatState.expect!.length,
+                context,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: kSpaceXL),
+          ],
 
           // Game End Reason
           Text(
@@ -128,41 +149,62 @@ class CombatGameEndScreen extends StatelessWidget {
           ),
           const SizedBox(height: kSpace4XL),
 
-          // Ready indicators section
+          // Ready indicators section - wrapped in styled container
           if (combatState.isRestartRequested) ...[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildReadyIndicator(
-                  context,
-                  label: lang(context).you,
-                  isReady: combatState.isPlayerReady,
+            Container(
+              padding: const EdgeInsets.all(kPaddingL),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
+                  topRight: Radius.circular(LayoutConfig.layoutBorderRadius),
+                  bottomLeft: Radius.circular(LayoutConfig.layoutBorderRadius),
+                  bottomRight: Radius.circular(LayoutConfig.layoutBorderRadius),
                 ),
-                const SizedBox(width: kSpace4XL),
-                _buildReadyIndicator(
-                  context,
-                  label: lang(context).opponent,
-                  isReady: combatState.isOpponentReady,
+                border: Border.all(
+                  color:
+                      Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                 ),
-              ],
-            ),
-            const SizedBox(height: kSpace3XL),
-            CustomElevatedButton(
-              text: combatState.isPlayerReady
-                  ? lang(context).notReady
-                  : '${lang(context).ready} - ${lang(context).playAgain}',
-              buttonSize: ButtonSize.small,
-              shapeAt: RoundedWithShapeAt.topRight,
-              backgroundColor: combatState.isPlayerReady
-                  ? Theme.of(context).colorScheme.error
-                  : Theme.of(context).colorScheme.tertiary,
-              onPressed: () {
-                context.read<CombatBloc>().add(
-                      CombatRestartReady(
-                        isReady: !combatState.isPlayerReady,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildReadyIndicator(
+                        context,
+                        label: lang(context).you,
+                        isReady: combatState.isPlayerReady,
                       ),
-                    );
-              },
+                      const SizedBox(width: kSpace4XL),
+                      _buildReadyIndicator(
+                        context,
+                        label: lang(context).opponent,
+                        isReady: combatState.isOpponentReady,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: kSpaceXL),
+                  CustomElevatedButton(
+                    text: combatState.isPlayerReady
+                        ? lang(context).notReady
+                        : '${lang(context).ready} - ${lang(context).playAgain}',
+                    buttonSize: ButtonSize.small,
+                    shapeAt: RoundedWithShapeAt.topRight,
+                    backgroundColor: combatState.isPlayerReady
+                        ? Theme.of(context).colorScheme.error
+                        : Theme.of(context).colorScheme.tertiary,
+                    onPressed: () {
+                      context.read<CombatBloc>().add(
+                            CombatRestartReady(
+                              isReady: !combatState.isPlayerReady,
+                            ),
+                          );
+                    },
+                  ),
+                ],
+              ),
             ),
           ] else ...[
             CustomElevatedButton(
@@ -206,16 +248,16 @@ class CombatGameEndScreen extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: kContainerSizeS,
-          height: kContainerSizeS,
+          width: 70.0, // Smaller size for ready indicators
+          height: 70.0,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isReady
-                ? Theme.of(context).colorScheme.tertiary.withOpacity(0.3)
+                ? Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.3)
                 : Theme.of(context)
                     .colorScheme
                     .onSurfaceVariant
-                    .withOpacity(0.3),
+                    .withValues(alpha: 0.3),
             border: Border.all(
               color: isReady
                   ? Theme.of(context).colorScheme.tertiary
@@ -225,21 +267,21 @@ class CombatGameEndScreen extends StatelessWidget {
           ),
           child: Icon(
             isReady ? Icons.check : Icons.hourglass_empty,
-            size: kIconSizeL,
+            size: kIconSizeM,
             color: isReady
                 ? Theme.of(context).colorScheme.onTertiary
                 : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
-        const SizedBox(height: kSpaceM),
+        const SizedBox(height: kSpaceS),
         Text(
           label,
-          style: AppTextStyles.bodyLarge(context),
+          style: AppTextStyles.bodyMedium(context),
         ),
         Text(
           isReady ? lang(context).ready : lang(context).waiting,
           style: AppTextStyles.withColor(
-            AppTextStyles.bodyLarge(context),
+            AppTextStyles.bodySmall(context),
             isReady
                 ? Theme.of(context).colorScheme.tertiary
                 : Theme.of(context).colorScheme.onSurfaceVariant,
