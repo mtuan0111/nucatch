@@ -116,8 +116,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get thankYou => 'プレイありがとうございます';
 
   @override
-  String get thankYouMessage =>
-      '当ゲームをプレイいただきありがとうございます。楽しんでいただけたでしょうか。ご意見やご感想がございましたら、お気軽にお寄せください。';
+  String get thankYouMessage => '当ゲームをプレイいただきありがとうございます。楽しんでいただけたでしょうか。ご意見やご感想がございましたら、お気軽にお寄せください。';
 
   @override
   String get authorName => '作者';
@@ -126,12 +125,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get connectWithUs => 'お問い合わせ';
 
   @override
-  String get connectWithUsMessage =>
-      'ご質問やご意見がございましたら、ソーシャルメディアチャネルからお気軽にお問い合わせください。';
+  String get connectWithUsMessage => 'ご質問やご意見がございましたら、ソーシャルメディアチャネルからお気軽にお問い合わせください。';
 
   @override
-  String get introductionContent =>
-      'NuCatchは、記憶力を高め、集中力を向上させるために設計された楽しく魅力的な脳トレゲームです。短時間で数字を素早くキャッチすることに挑戦し、OTP、電話番号、誕生日などを覚えるのに役立ちます。体験を楽しんで、記憶力を向上させましょう！';
+  String get introductionContent => 'NuCatchは、記憶力を高め、集中力を向上させるために設計された楽しく魅力的な脳トレゲームです。短時間で数字を素早くキャッチすることに挑戦し、OTP、電話番号、誕生日などを覚えるのに役立ちます。体験を楽しんで、記憶力を向上させましょう！';
 
   @override
   String messageShareIntroWIthUsername(String username, String profileUrl) {
@@ -152,14 +149,12 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String messageSharePlayedLeaderBody(
-      String username, num point, String timeCreated) {
+  String messageSharePlayedLeaderBody(String username, num point, String timeCreated) {
     return '$username が $timeCreated に $point 点を獲得しました。$username と一緒に #NuCatch に参加しましょう！！';
   }
 
   @override
-  String messageSharePlayedLeaderBodyAnonymousBody(
-      num point, String timeCreated) {
+  String messageSharePlayedLeaderBodyAnonymousBody(num point, String timeCreated) {
     return 'プレイヤーが $timeCreated に $point 点を獲得しました。今すぐ #NuCatch に参加しましょう！！';
   }
 
@@ -203,8 +198,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get difficultyHardDescription => '掛け算/割り算の計算式を作成する、高度な難易度です。';
 
   @override
-  String get difficultyExtremeDescription =>
-      '複雑な足し算/引き算、より高いレベルのランダムな数字、または掛け算/割り算の計算式からランダムに選択する、最もやりがいのある体験です。';
+  String get difficultyExtremeDescription => '複雑な足し算/引き算、より高いレベルのランダムな数字、または掛け算/割り算の計算式からランダムに選択する、最もやりがいのある体験です。';
 
   @override
   String get difficultyEasyTitle => 'かんたんモード';
@@ -307,8 +301,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get updatePostponed => '更新は利用可能ですが延期されました。';
 
   @override
-  String tapTimerTooltip(
-      int totalSeconds, int halfSeconds, int quarterSeconds) {
+  String tapTimerTooltip(int totalSeconds, int halfSeconds, int quarterSeconds) {
     return '数字をタップするのに $totalSeconds 秒時間が与えられます。時間が経つにつれてバーの色が変わります：緑（$halfSeconds秒以上）、オレンジ（$quarterSeconds-$halfSeconds秒）、赤（$quarterSeconds秒未満）。';
   }
 
@@ -366,19 +359,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bluetoothPermissionRequired => 'Bluetooth権限が必要です';
 
   @override
-  String get bluetoothPermissionMessage =>
-      '対戦モードでは他のプレイヤーと接続するためにBluetooth権限が必要です。デバイスの設定でBluetooth権限を許可してください。';
+  String get bluetoothPermissionMessage => '対戦モードでは他のプレイヤーと接続するためにBluetooth権限が必要です。デバイスの設定でBluetooth権限を許可してください。';
 
   @override
-  String get bluetoothPermissionPermanentlyDeniedMessage =>
-      'Bluetooth権限が永久に拒否されました。対戦モードを使用するには、デバイスの設定でBluetooth権限を有効にする必要があります。\n\n設定 > NuCatch > 権限 に移動してBluetoothを有効にしてください。';
+  String get bluetoothPermissionPermanentlyDeniedMessage => 'Bluetooth権限が永久に拒否されました。対戦モードを使用するには、デバイスの設定でBluetooth権限を有効にする必要があります。\n\n設定 > NuCatch > 権限 に移動してBluetoothを有効にしてください。';
 
   @override
   String get bluetoothDisabled => 'Bluetoothが無効です';
 
   @override
-  String get bluetoothDisabledMessage =>
-      '対戦モードではBluetoothを有効にする必要があります。デバイスの設定でBluetoothをオンにしてください。';
+  String get bluetoothDisabledMessage => '対戦モードではBluetoothを有効にする必要があります。デバイスの設定でBluetoothをオンにしてください。';
 
   @override
   String get cancel => 'キャンセル';
@@ -571,8 +561,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get waitingForHostToSelectDifficulty => 'ホストが難易度を選択するのを待っています...';
 
   @override
-  String get failedToInitializeNearby =>
-      'Nearby Connectionsの初期化に失敗しました。位置情報の権限を許可してください。';
+  String get failedToInitializeNearby => 'Nearby Connectionsの初期化に失敗しました。位置情報の権限を許可してください。';
 
   @override
   String get nearbyNotInitialized => 'Nearby Connectionsが初期化されていません';
@@ -596,8 +585,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get advertisingRoomStatus => 'ルームを公開中...\n相手が見つけて接続するのを待っています。';
 
   @override
-  String get opponentConnectedStatus =>
-      '相手が接続しました！\n両方のプレイヤーの準備ができたら「準備完了」を押してください。';
+  String get opponentConnectedStatus => '相手が接続しました！\n両方のプレイヤーの準備ができたら「準備完了」を押してください。';
 
   @override
   String get bothPlayersReadyStatus => '両プレイヤー準備完了！ゲームを開始します...';
@@ -647,57 +635,49 @@ class AppLocalizationsJa extends AppLocalizations {
   String get tourWelcomeTitle => 'NuCatchへようこそ!';
 
   @override
-  String get tourWelcomeDesc =>
-      'ようこそ! この簡単なツアーは、**NuCatch**をスムーズに始めるのに役立ちます。**主要な機能**をすべてお見せしますので、すぐにプレイを始められます。始めましょう!';
+  String get tourWelcomeDesc => 'ようこそ! この簡単なツアーは、**NuCatch**をスムーズに始めるのに役立ちます。**主要な機能**をすべてお見せしますので、すぐにプレイを始められます。始めましょう!';
 
   @override
   String get tourStartTitle => 'スタート - ゲームを始める';
 
   @override
-  String get tourStartDesc =>
-      'スタートボタンをタップして始めましょう。次に、シングルプレイヤーの数学チャレンジ用のソロモード、またはBluetoothを介したリアルタイムマルチプレイヤーバトル用のコンバットモードを選択します。両方のオプションを見てみましょう!';
+  String get tourStartDesc => 'スタートボタンをタップして始めましょう。次に、シングルプレイヤーの数学チャレンジ用のソロモード、またはBluetoothを介したリアルタイムマルチプレイヤーバトル用のコンバットモードを選択します。両方のオプションを見てみましょう!';
 
   @override
   String get tourSoloTitle => 'ソロモード - 一人でプレイ';
 
   @override
-  String get tourSoloDesc =>
-      'ソロモードでは、数学の方程式で自分に挑戦してください! 4つの難易度レベル(簡単から非常に難しいまで)から選択します。3つのライフで始まり、間違った答えやタイムアウトごとに1ライフを失います。難易度が高いほど、より多くのポイントを獲得できます! 次はマルチプレイヤーオプションを見てみましょう。';
+  String get tourSoloDesc => 'ソロモードでは、数学の方程式で自分に挑戦してください! 4つの難易度レベル(簡単から非常に難しいまで)から選択します。3つのライフで始まり、間違った答えやタイムアウトごとに1ライフを失います。難易度が高いほど、より多くのポイントを獲得できます! 次はマルチプレイヤーオプションを見てみましょう。';
 
   @override
   String get tourCombatTitle => 'コンバットモード - Bluetoothマルチプレイヤー';
 
   @override
-  String get tourCombatDesc =>
-      'コンバットモードでは、Bluetoothを介して友達とバトルできます! 2人のプレイヤーが交互に方程式を解きます - WiFiは不要で、10メートル以内にいるだけです。ホストが最初に最初にプレイしますが、再戦では敗者が最初にプレイします。マッチを開始する2つの方法があります:';
+  String get tourCombatDesc => 'コンバットモードでは、Bluetoothを介して友達とバトルできます! 2人のプレイヤーが交互に方程式を解きます - WiFiは不要で、10メートル以内にいるだけです。ホストが最初に最初にプレイしますが、再戦では敗者が最初にプレイします。マッチを開始する2つの方法があります:';
 
   @override
   String get tourCreateRoomTitle => 'コンバットモード → ルームを作成';
 
   @override
-  String get tourCreateRoomDesc =>
-      '最初のオプション: ルームを作成すると、あなたがホストになります! Bluetoothの許可を与えた後、ゲストがあなたのルームに参加するのを待ち、その後難易度レベルを選択します。ホストとして、最初のマッチで最初にプレイします。または、他の人のゲームに参加できます:';
+  String get tourCreateRoomDesc => '最初のオプション: ルームを作成すると、あなたがホストになります! Bluetoothの許可を与えた後、ゲストがあなたのルームに参加するのを待ち、その後難易度レベルを選択します。ホストとして、最初のマッチで最初にプレイします。または、他の人のゲームに参加できます:';
 
   @override
   String get tourJoinRoomTitle => 'コンバットモード → ルームに参加';
 
   @override
-  String get tourJoinRoomDesc =>
-      '2番目のオプション: ルームに参加すると、あなたがゲストになります! 許可を与えた後、近くのルームをスキャンし、1つを選択して準備完了をタップします。ホストが難易度を選択し、最初のマッチで2番目にプレイします。それでは、他のメニュー機能を確認しましょう。';
+  String get tourJoinRoomDesc => '2番目のオプション: ルームに参加すると、あなたがゲストになります! 許可を与えた後、近くのルームをスキャンし、1つを選択して準備完了をタップします。ホストが難易度を選択し、最初のマッチで2番目にプレイします。それでは、他のメニュー機能を確認しましょう。';
 
   @override
   String get tourLeaderboardTitle => 'トップスコア - リーダーボード';
 
   @override
-  String get tourLeaderboardDesc =>
-      'ここで進捗を追跡しましょう! グローバルランキング、個人記録、プレイしたゲーム、勝率、精度、難易度レベル別のスコアなどの統計を表示します。友達と比較し、時間の経過とともにどのように向上するかを確認してください。最後に、設定にアクセスしましょう。';
+  String get tourLeaderboardDesc => 'ここで進捗を追跡しましょう! グローバルランキング、個人記録、プレイしたゲーム、勝率、精度、難易度レベル別のスコアなどの統計を表示します。友達と比較し、時間の経過とともにどのように向上するかを確認してください。最後に、設定にアクセスしましょう。';
 
   @override
   String get tourSettingsTitle => '設定 - カスタマイズ';
 
   @override
-  String get tourSettingsDesc =>
-      'ここですべてをカスタマイズしましょう! ユーザー名を変更し、テーマを選択し、サウンド/音楽を調整し、言語を選択し、プライバシー設定を管理します。ここからいつでもこのツアーを再開できます。以上です - プレイする準備ができました!';
+  String get tourSettingsDesc => 'ここですべてをカスタマイズしましょう! ユーザー名を変更し、テーマを選択し、サウンド/音楽を調整し、言語を選択し、プライバシー設定を管理します。ここからいつでもこのツアーを再開できます。以上です - プレイする準備ができました!';
 
   @override
   String get tourNext => '次へ';

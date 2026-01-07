@@ -435,9 +435,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                             const Spacer(),
                                             Switch(
                                               value: settingState.isVibrate,
-                                              activeThumbColor:
-                                                  Theme.of(context)
-                                                      .primaryColor,
+                                              activeColor: Theme.of(context)
+                                                  .primaryColor,
                                               onChanged: (val) {
                                                 settingBloc.add(
                                                   ChangedIsVibrate(
@@ -604,7 +603,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             ),
                                             const SizedBox(height: kSpaceML),
                                             DropdownButtonFormField<String>(
-                                              initialValue: settingState.locale,
+                                              value: settingState.locale,
                                               items: languages.entries
                                                   .map(
                                                     (lang) => DropdownMenuItem<

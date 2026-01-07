@@ -86,8 +86,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get selectLevel => 'Pilih Level';
 
   @override
-  String get selectLevelMessage =>
-      'Pilih level yang ingin Anda mainkan. Semakin tinggi level, semakin sulit.';
+  String get selectLevelMessage => 'Pilih level yang ingin Anda mainkan. Semakin tinggi level, semakin sulit.';
 
   @override
   String get yourScoreIs => 'Skor Anda saat ini adalah';
@@ -117,8 +116,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get thankYou => 'Terima kasih telah bermain';
 
   @override
-  String get thankYouMessage =>
-      'Terima kasih telah memainkan permainan kami. Kami harap Anda menyukainya. Jika Anda memiliki umpan balik atau saran, beri tahu kami.';
+  String get thankYouMessage => 'Terima kasih telah memainkan permainan kami. Kami harap Anda menyukainya. Jika Anda memiliki umpan balik atau saran, beri tahu kami.';
 
   @override
   String get authorName => 'Penulis';
@@ -127,12 +125,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get connectWithUs => 'Terhubung dengan Kami';
 
   @override
-  String get connectWithUsMessage =>
-      'Jika Anda memiliki pertanyaan atau komentar, jangan ragu untuk menghubungi kami melalui saluran media sosial kami.';
+  String get connectWithUsMessage => 'Jika Anda memiliki pertanyaan atau komentar, jangan ragu untuk menghubungi kami melalui saluran media sosial kami.';
 
   @override
-  String get introductionContent =>
-      'NuCatch adalah permainan otak yang menyenangkan dan menarik yang dirancang untuk mempertajam ingatan dan meningkatkan fokus Anda. Tantang diri Anda untuk menangkap angka dengan cepat dalam waktu singkat, membantu Anda mengingat hal-hal seperti OTP, nomor telepon, ulang tahun, dan lainnya. Nikmati pengalamannya dan tingkatkan keterampilan ingatan Anda!';
+  String get introductionContent => 'NuCatch adalah permainan otak yang menyenangkan dan menarik yang dirancang untuk mempertajam ingatan dan meningkatkan fokus Anda. Tantang diri Anda untuk menangkap angka dengan cepat dalam waktu singkat, membantu Anda mengingat hal-hal seperti OTP, nomor telepon, ulang tahun, dan lainnya. Nikmati pengalamannya dan tingkatkan keterampilan ingatan Anda!';
 
   @override
   String messageShareIntroWIthUsername(String username, String profileUrl) {
@@ -153,14 +149,12 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String messageSharePlayedLeaderBody(
-      String username, num point, String timeCreated) {
+  String messageSharePlayedLeaderBody(String username, num point, String timeCreated) {
     return '$username mendapatkan skor $point pada $timeCreated. Bergabunglah dengan #NuCatch bersama $username!!';
   }
 
   @override
-  String messageSharePlayedLeaderBodyAnonymousBody(
-      num point, String timeCreated) {
+  String messageSharePlayedLeaderBodyAnonymousBody(num point, String timeCreated) {
     return 'Seorang pemain mendapatkan skor $point pada $timeCreated. Bergabunglah dengan #NuCatch sekarang!!';
   }
 
@@ -174,8 +168,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get restartGame => 'Mulai Ulang Permainan';
 
   @override
-  String get confirmRestart =>
-      'Apakah Anda yakin ingin memulai ulang permainan?';
+  String get confirmRestart => 'Apakah Anda yakin ingin memulai ulang permainan?';
 
   @override
   String get no => 'Tidak';
@@ -196,20 +189,16 @@ class AppLocalizationsId extends AppLocalizations {
   String get doYouWantToExit => 'Apakah Anda ingin keluar?';
 
   @override
-  String get difficultyEasyDescription =>
-      'Menghasilkan angka acak dengan level yang sedikit ditingkatkan untuk tantangan sederhana.';
+  String get difficultyEasyDescription => 'Menghasilkan angka acak dengan level yang sedikit ditingkatkan untuk tantangan sederhana.';
 
   @override
-  String get difficultyMediumDescription =>
-      'Menghasilkan perhitungan penjumlahan/pengurangan untuk kesulitan sedang.';
+  String get difficultyMediumDescription => 'Menghasilkan perhitungan penjumlahan/pengurangan untuk kesulitan sedang.';
 
   @override
-  String get difficultyHardDescription =>
-      'Membuat perhitungan perkalian/pembagian untuk kesulitan lanjutan.';
+  String get difficultyHardDescription => 'Membuat perhitungan perkalian/pembagian untuk kesulitan lanjutan.';
 
   @override
-  String get difficultyExtremeDescription =>
-      'Memilih secara acak antara menghasilkan perhitungan penjumlahan/pengurangan yang kompleks, angka acak level yang lebih tinggi, atau perhitungan perkalian/pembagian untuk pengalaman yang paling menantang.';
+  String get difficultyExtremeDescription => 'Memilih secara acak antara menghasilkan perhitungan penjumlahan/pengurangan yang kompleks, angka acak level yang lebih tinggi, atau perhitungan perkalian/pembagian untuk pengalaman yang paling menantang.';
 
   @override
   String get difficultyEasyTitle => 'Mode Mudah';
@@ -224,8 +213,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get difficultyExtremeTitle => 'Mode Ekstrem';
 
   @override
-  String get confirmChangeDifficulty =>
-      'Giliran Anda akan direset. Apakah Anda yakin ingin mengubah kesulitan?';
+  String get confirmChangeDifficulty => 'Giliran Anda akan direset. Apakah Anda yakin ingin mengubah kesulitan?';
 
   @override
   String get areYouSure => 'Apakah Anda yakin?';
@@ -237,22 +225,19 @@ class AppLocalizationsId extends AppLocalizations {
   String get daily => 'Dalam Sehari';
 
   @override
-  String get dailyDescription =>
-      'Peringkat berdasarkan giliran yang dicatat hari ini.';
+  String get dailyDescription => 'Peringkat berdasarkan giliran yang dicatat hari ini.';
 
   @override
   String get weekly => 'Dalam Seminggu';
 
   @override
-  String get weeklyDescription =>
-      'Peringkat berdasarkan giliran yang dicatat dalam 7 hari terakhir.';
+  String get weeklyDescription => 'Peringkat berdasarkan giliran yang dicatat dalam 7 hari terakhir.';
 
   @override
   String get allTime => 'Sepanjang Waktu';
 
   @override
-  String get allTimeDescription =>
-      'Peringkat berdasarkan semua giliran yang dicatat.';
+  String get allTimeDescription => 'Peringkat berdasarkan semua giliran yang dicatat.';
 
   @override
   String get updateRequired => 'Pembaruan Diperlukan';
@@ -270,8 +255,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get whatsNew => 'Apa yang Baru';
 
   @override
-  String get forceUpdateMessage =>
-      'Pembaruan ini diperlukan untuk terus menggunakan aplikasi. Harap perbarui sekarang.';
+  String get forceUpdateMessage => 'Pembaruan ini diperlukan untuk terus menggunakan aplikasi. Harap perbarui sekarang.';
 
   @override
   String get later => 'Nanti';
@@ -289,8 +273,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get appUpdates => 'Pembaruan Aplikasi';
 
   @override
-  String get tapToCheckUpdates =>
-      'Ketuk tombol di bawah untuk memeriksa pembaruan aplikasi.';
+  String get tapToCheckUpdates => 'Ketuk tombol di bawah untuk memeriksa pembaruan aplikasi.';
 
   @override
   String get checkingForUpdates => 'Memeriksa pembaruan...';
@@ -318,8 +301,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get updatePostponed => 'Pembaruan tersedia tetapi ditunda.';
 
   @override
-  String tapTimerTooltip(
-      int totalSeconds, int halfSeconds, int quarterSeconds) {
+  String tapTimerTooltip(int totalSeconds, int halfSeconds, int quarterSeconds) {
     return 'Anda memiliki $totalSeconds detik untuk mengetuk angka. Bilah berubah warna seiring berjalannya waktu: Hijau (di atas $halfSeconds detik), Oranye ($quarterSeconds-$halfSeconds detik), Merah (di bawah $quarterSeconds detik).';
   }
 
@@ -330,29 +312,25 @@ class AppLocalizationsId extends AppLocalizations {
   String get soloMode => 'Mode Solo';
 
   @override
-  String get soloModeDescription =>
-      'Mainkan sendiri dan tantang diri Anda untuk mengalahkan skor tertinggi Anda';
+  String get soloModeDescription => 'Mainkan sendiri dan tantang diri Anda untuk mengalahkan skor tertinggi Anda';
 
   @override
   String get combatMode => 'Mode Pertarungan';
 
   @override
-  String get combatModeDescription =>
-      'Bermain dengan pemain lain melalui koneksi Bluetooth dan ambil giliran';
+  String get combatModeDescription => 'Bermain dengan pemain lain melalui koneksi Bluetooth dan ambil giliran';
 
   @override
   String get createRoom => 'Buat Ruangan';
 
   @override
-  String get createRoomDescription =>
-      'Tuan rumah permainan baru dan tunggu pemain lain bergabung';
+  String get createRoomDescription => 'Tuan rumah permainan baru dan tunggu pemain lain bergabung';
 
   @override
   String get joinRoom => 'Gabung Ruangan';
 
   @override
-  String get joinRoomDescription =>
-      'Masukkan kode ruangan untuk bergabung dengan permainan yang ada';
+  String get joinRoomDescription => 'Masukkan kode ruangan untuk bergabung dengan permainan yang ada';
 
   @override
   String get hostRoom => 'Ruangan Tuan Rumah';
@@ -381,19 +359,16 @@ class AppLocalizationsId extends AppLocalizations {
   String get bluetoothPermissionRequired => 'Izin Bluetooth Diperlukan';
 
   @override
-  String get bluetoothPermissionMessage =>
-      'Mode Pertarungan memerlukan izin Bluetooth untuk terhubung dengan pemain lain. Harap berikan izin Bluetooth di pengaturan perangkat Anda.';
+  String get bluetoothPermissionMessage => 'Mode Pertarungan memerlukan izin Bluetooth untuk terhubung dengan pemain lain. Harap berikan izin Bluetooth di pengaturan perangkat Anda.';
 
   @override
-  String get bluetoothPermissionPermanentlyDeniedMessage =>
-      'Izin Bluetooth telah ditolak secara permanen. Untuk menggunakan Mode Pertarungan, Anda perlu mengaktifkan izin Bluetooth di pengaturan perangkat Anda.\n\nSilakan buka Pengaturan > NuCatch > Izin dan aktifkan Bluetooth.';
+  String get bluetoothPermissionPermanentlyDeniedMessage => 'Izin Bluetooth telah ditolak secara permanen. Untuk menggunakan Mode Pertarungan, Anda perlu mengaktifkan izin Bluetooth di pengaturan perangkat Anda.\n\nSilakan buka Pengaturan > NuCatch > Izin dan aktifkan Bluetooth.';
 
   @override
   String get bluetoothDisabled => 'Bluetooth Dinonaktifkan';
 
   @override
-  String get bluetoothDisabledMessage =>
-      'Mode Pertarungan mengharuskan Bluetooth diaktifkan. Harap aktifkan Bluetooth di pengaturan perangkat Anda.';
+  String get bluetoothDisabledMessage => 'Mode Pertarungan mengharuskan Bluetooth diaktifkan. Harap aktifkan Bluetooth di pengaturan perangkat Anda.';
 
   @override
   String get cancel => 'Batal';
@@ -435,8 +410,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get opponentGaveUp => 'Lawan Anda menyerah';
 
   @override
-  String get confirmEndCombat =>
-      'Apakah Anda yakin ingin mengakhiri permainan ini? Lawan Anda akan menang.';
+  String get confirmEndCombat => 'Apakah Anda yakin ingin mengakhiri permainan ini? Lawan Anda akan menang.';
 
   @override
   String get youRanOutOfLives => 'Anda kehabisan nyawa';
@@ -549,8 +523,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get advertisingRoomWaiting => 'Menyiarkan ruangan! Menunggu lawan...';
 
   @override
-  String get opponentJoinedReady =>
-      'Lawan bergabung! Tekan Siap saat sudah siap.';
+  String get opponentJoinedReady => 'Lawan bergabung! Tekan Siap saat sudah siap.';
 
   @override
   String get opponentReady => 'Lawan Siap!';
@@ -576,8 +549,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get theHostIsReady => '✅ Tuan rumah sudah siap!';
 
   @override
-  String get pressReadyWhenPrepared =>
-      'Tekan Siap saat Anda siap untuk memulai.';
+  String get pressReadyWhenPrepared => 'Tekan Siap saat Anda siap untuk memulai.';
 
   @override
   String get yourOpponentIsReady => '✅ Lawan Anda sudah siap!';
@@ -586,12 +558,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get gameIsStarting => 'Permainan dimulai...';
 
   @override
-  String get waitingForHostToSelectDifficulty =>
-      'Menunggu tuan rumah memilih kesulitan...';
+  String get waitingForHostToSelectDifficulty => 'Menunggu tuan rumah memilih kesulitan...';
 
   @override
-  String get failedToInitializeNearby =>
-      'Gagal menginisialisasi Nearby Connections. Harap berikan izin lokasi.';
+  String get failedToInitializeNearby => 'Gagal menginisialisasi Nearby Connections. Harap berikan izin lokasi.';
 
   @override
   String get nearbyNotInitialized => 'Nearby Connections tidak diinisialisasi';
@@ -612,16 +582,13 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get advertisingRoomStatus =>
-      'Menyiarkan ruangan...\nMenunggu lawan menemukan dan terhubung.';
+  String get advertisingRoomStatus => 'Menyiarkan ruangan...\nMenunggu lawan menemukan dan terhubung.';
 
   @override
-  String get opponentConnectedStatus =>
-      'Lawan terhubung!\nTekan Siap saat kedua pemain siap.';
+  String get opponentConnectedStatus => 'Lawan terhubung!\nTekan Siap saat kedua pemain siap.';
 
   @override
-  String get bothPlayersReadyStatus =>
-      'Kedua pemain siap! Memulai permainan...';
+  String get bothPlayersReadyStatus => 'Kedua pemain siap! Memulai permainan...';
 
   @override
   String get settingUpDifficulty => 'Menyiapkan kesulitan permainan...';
@@ -650,8 +617,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get noHostsFoundNearby => 'Tidak ada tuan rumah ditemukan di dekatnya';
 
   @override
-  String get makeSureFriendHosting =>
-      'Pastikan teman sedang menjadi tuan rumah\ndan kedua perangkat berdekatan';
+  String get makeSureFriendHosting => 'Pastikan teman sedang menjadi tuan rumah\ndan kedua perangkat berdekatan';
 
   @override
   String get discovering => 'Menemukan...';
@@ -660,8 +626,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get notDiscovering => 'Tidak menemukan';
 
   @override
-  String get distanceWarning =>
-      'Pastikan perangkat berjarak kurang dari 10 meter';
+  String get distanceWarning => 'Pastikan perangkat berjarak kurang dari 10 meter';
 
   @override
   String get tourButtonLabel => 'Mulai Tur';
@@ -670,57 +635,49 @@ class AppLocalizationsId extends AppLocalizations {
   String get tourWelcomeTitle => 'Selamat datang di NuCatch!';
 
   @override
-  String get tourWelcomeDesc =>
-      'Selamat datang! Tur singkat ini akan membantu Anda memulai dengan lancar dengan **NuCatch**. Kami akan menunjukkan semua **fitur utama** sehingga Anda dapat langsung masuk dan mulai bermain. Mari kita mulai!';
+  String get tourWelcomeDesc => 'Selamat datang! Tur singkat ini akan membantu Anda memulai dengan lancar dengan **NuCatch**. Kami akan menunjukkan semua **fitur utama** sehingga Anda dapat langsung masuk dan mulai bermain. Mari kita mulai!';
 
   @override
   String get tourStartTitle => 'Mulai - Mulai Permainan Anda';
 
   @override
-  String get tourStartDesc =>
-      'Ketuk tombol Mulai untuk memulai. Anda kemudian akan memilih antara Mode Solo untuk tantangan matematika pemain tunggal, atau Mode Pertarungan untuk pertempuran multipemain waktu nyata melalui Bluetooth. Mari jelajahi kedua opsi!';
+  String get tourStartDesc => 'Ketuk tombol Mulai untuk memulai. Anda kemudian akan memilih antara Mode Solo untuk tantangan matematika pemain tunggal, atau Mode Pertarungan untuk pertempuran multipemain waktu nyata melalui Bluetooth. Mari jelajahi kedua opsi!';
 
   @override
   String get tourSoloTitle => 'Mode Solo - Main Sendiri';
 
   @override
-  String get tourSoloDesc =>
-      'Dalam Mode Solo, tantang diri Anda dengan persamaan matematika! Pilih dari 4 tingkat kesulitan (Mudah hingga Sangat Sulit). Anda mulai dengan 3 nyawa - setiap jawaban salah atau waktu habis menghabiskan 1 nyawa. Kesulitan lebih tinggi berarti lebih banyak poin! Sekarang mari lihat opsi multipemain.';
+  String get tourSoloDesc => 'Dalam Mode Solo, tantang diri Anda dengan persamaan matematika! Pilih dari 4 tingkat kesulitan (Mudah hingga Sangat Sulit). Anda mulai dengan 3 nyawa - setiap jawaban salah atau waktu habis menghabiskan 1 nyawa. Kesulitan lebih tinggi berarti lebih banyak poin! Sekarang mari lihat opsi multipemain.';
 
   @override
   String get tourCombatTitle => 'Mode Pertarungan - Multipemain Bluetooth';
 
   @override
-  String get tourCombatDesc =>
-      'Mode Pertarungan memungkinkan Anda bertarung dengan teman melalui Bluetooth! Dua pemain bergantian menyelesaikan persamaan - tidak perlu WiFi, cukup tetap dalam jarak 10 meter. Tuan rumah bermain pertama awalnya, tetapi dalam pertandingan ulang yang kalah bermain pertama. Anda memiliki dua cara untuk memulai pertandingan:';
+  String get tourCombatDesc => 'Mode Pertarungan memungkinkan Anda bertarung dengan teman melalui Bluetooth! Dua pemain bergantian menyelesaikan persamaan - tidak perlu WiFi, cukup tetap dalam jarak 10 meter. Tuan rumah bermain pertama awalnya, tetapi dalam pertandingan ulang yang kalah bermain pertama. Anda memiliki dua cara untuk memulai pertandingan:';
 
   @override
   String get tourCreateRoomTitle => 'Mode Pertarungan → Buat Ruangan';
 
   @override
-  String get tourCreateRoomDesc =>
-      'Opsi pertama: Buat Ruangan membuat Anda menjadi tuan rumah! Setelah memberikan izin Bluetooth, Anda akan menunggu tamu bergabung dengan ruangan Anda, lalu memilih tingkat kesulitan. Sebagai tuan rumah, Anda bermain pertama di pertandingan awal. Atau Anda bisa bergabung dengan permainan orang lain:';
+  String get tourCreateRoomDesc => 'Opsi pertama: Buat Ruangan membuat Anda menjadi tuan rumah! Setelah memberikan izin Bluetooth, Anda akan menunggu tamu bergabung dengan ruangan Anda, lalu memilih tingkat kesulitan. Sebagai tuan rumah, Anda bermain pertama di pertandingan awal. Atau Anda bisa bergabung dengan permainan orang lain:';
 
   @override
   String get tourJoinRoomTitle => 'Mode Pertarungan → Bergabung dengan Ruangan';
 
   @override
-  String get tourJoinRoomDesc =>
-      'Opsi kedua: Bergabung dengan Ruangan membuat Anda menjadi tamu! Setelah memberikan izin, Anda akan memindai ruangan terdekat, memilih satu, dan mengetuk siap. Tuan rumah memilih kesulitan, dan Anda akan bermain kedua di pertandingan awal. Sekarang mari periksa fitur menu lainnya.';
+  String get tourJoinRoomDesc => 'Opsi kedua: Bergabung dengan Ruangan membuat Anda menjadi tamu! Setelah memberikan izin, Anda akan memindai ruangan terdekat, memilih satu, dan mengetuk siap. Tuan rumah memilih kesulitan, dan Anda akan bermain kedua di pertandingan awal. Sekarang mari periksa fitur menu lainnya.';
 
   @override
   String get tourLeaderboardTitle => 'Skor Tertinggi - Papan Peringkat';
 
   @override
-  String get tourLeaderboardDesc =>
-      'Lacak kemajuan Anda di sini! Lihat peringkat global, rekor pribadi Anda, dan statistik termasuk permainan yang dimainkan, tingkat kemenangan, akurasi, dan skor menurut tingkat kesulitan. Bandingkan dengan teman dan lihat bagaimana Anda berkembang dari waktu ke waktu. Terakhir, mari kunjungi Pengaturan.';
+  String get tourLeaderboardDesc => 'Lacak kemajuan Anda di sini! Lihat peringkat global, rekor pribadi Anda, dan statistik termasuk permainan yang dimainkan, tingkat kemenangan, akurasi, dan skor menurut tingkat kesulitan. Bandingkan dengan teman dan lihat bagaimana Anda berkembang dari waktu ke waktu. Terakhir, mari kunjungi Pengaturan.';
 
   @override
   String get tourSettingsTitle => 'Pengaturan - Sesuaikan';
 
   @override
-  String get tourSettingsDesc =>
-      'Sesuaikan semuanya di sini! Ubah nama pengguna Anda, pilih tema, sesuaikan suara/musik, pilih bahasa Anda, dan kelola pengaturan privasi. Anda dapat memulai ulang tur ini kapan saja dari sini. Itu saja - Anda siap bermain!';
+  String get tourSettingsDesc => 'Sesuaikan semuanya di sini! Ubah nama pengguna Anda, pilih tema, sesuaikan suara/musik, pilih bahasa Anda, dan kelola pengaturan privasi. Anda dapat memulai ulang tur ini kapan saja dari sini. Itu saja - Anda siap bermain!';
 
   @override
   String get tourNext => 'Berikutnya';
@@ -738,6 +695,5 @@ class AppLocalizationsId extends AppLocalizations {
   String get tourRestartFromSettings => 'Mulai Ulang Tur';
 
   @override
-  String get tourResetMessage =>
-      'Tur telah direset. Kembali ke menu utama untuk memulai.';
+  String get tourResetMessage => 'Tur telah direset. Kembali ke menu utama untuk memulai.';
 }

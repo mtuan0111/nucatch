@@ -86,8 +86,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get selectLevel => 'Sélectionner le niveau';
 
   @override
-  String get selectLevelMessage =>
-      'Choisissez le niveau auquel vous voulez jouer. Plus le niveau est élevé, plus c\'est difficile.';
+  String get selectLevelMessage => 'Choisissez le niveau auquel vous voulez jouer. Plus le niveau est élevé, plus c\'est difficile.';
 
   @override
   String get yourScoreIs => 'Votre score actuel est';
@@ -117,8 +116,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get thankYou => 'Merci d\'avoir joué';
 
   @override
-  String get thankYouMessage =>
-      'Merci de jouer à notre jeu. Nous espérons que vous l\'avez apprécié. Si vous avez des commentaires ou des suggestions, n\'hésitez pas à nous le faire savoir.';
+  String get thankYouMessage => 'Merci de jouer à notre jeu. Nous espérons que vous l\'avez apprécié. Si vous avez des commentaires ou des suggestions, n\'hésitez pas à nous le faire savoir.';
 
   @override
   String get authorName => 'Auteur';
@@ -127,12 +125,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get connectWithUs => 'Connectez-vous avec nous';
 
   @override
-  String get connectWithUsMessage =>
-      'Si vous avez des questions ou des commentaires, n\'hésitez pas à nous contacter sur nos réseaux sociaux.';
+  String get connectWithUsMessage => 'Si vous avez des questions ou des commentaires, n\'hésitez pas à nous contacter sur nos réseaux sociaux.';
 
   @override
-  String get introductionContent =>
-      'NuCatch est un jeu d\'esprit amusant et engageant conçu pour aiguiser votre mémoire et améliorer votre concentration. Mettez-vous au défi d\'attraper rapidement des chiffres en peu de temps, vous aidant à mémoriser des choses comme des OTP, des numéros de téléphone, des anniversaires et plus encore. Profitez de l\'expérience et boostez vos compétences de mémoire !';
+  String get introductionContent => 'NuCatch est un jeu d\'esprit amusant et engageant conçu pour aiguiser votre mémoire et améliorer votre concentration. Mettez-vous au défi d\'attraper rapidement des chiffres en peu de temps, vous aidant à mémoriser des choses comme des OTP, des numéros de téléphone, des anniversaires et plus encore. Profitez de l\'expérience et boostez vos compétences de mémoire !';
 
   @override
   String messageShareIntroWIthUsername(String username, String profileUrl) {
@@ -153,14 +149,12 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String messageSharePlayedLeaderBody(
-      String username, num point, String timeCreated) {
+  String messageSharePlayedLeaderBody(String username, num point, String timeCreated) {
     return '$username a obtenu $point points à $timeCreated. Rejoignez #NuCatch avec $username !!';
   }
 
   @override
-  String messageSharePlayedLeaderBodyAnonymousBody(
-      num point, String timeCreated) {
+  String messageSharePlayedLeaderBodyAnonymousBody(num point, String timeCreated) {
     return 'Un joueur a obtenu $point points à $timeCreated. Rejoignez #NuCatch maintenant !!';
   }
 
@@ -195,20 +189,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get doYouWantToExit => 'Voulez-vous quitter ?';
 
   @override
-  String get difficultyEasyDescription =>
-      'Génère un nombre aléatoire avec un niveau légèrement augmenté pour des défis simples.';
+  String get difficultyEasyDescription => 'Génère un nombre aléatoire avec un niveau légèrement augmenté pour des défis simples.';
 
   @override
-  String get difficultyMediumDescription =>
-      'Produit une expression de calcul d\'addition/soustraction pour une difficulté modérée.';
+  String get difficultyMediumDescription => 'Produit une expression de calcul d\'addition/soustraction pour une difficulté modérée.';
 
   @override
-  String get difficultyHardDescription =>
-      'Crée une expression de calcul de multiplication/division pour une difficulté avancée.';
+  String get difficultyHardDescription => 'Crée une expression de calcul de multiplication/division pour une difficulté avancée.';
 
   @override
-  String get difficultyExtremeDescription =>
-      'Choisit aléatoirement entre générer un calcul complexe d\'addition/soustraction, un nombre aléatoire de plus haut niveau ou un calcul de multiplication/division pour l\'expérience la plus difficile.';
+  String get difficultyExtremeDescription => 'Choisit aléatoirement entre générer un calcul complexe d\'addition/soustraction, un nombre aléatoire de plus haut niveau ou un calcul de multiplication/division pour l\'expérience la plus difficile.';
 
   @override
   String get difficultyEasyTitle => 'Mode Facile';
@@ -223,8 +213,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get difficultyExtremeTitle => 'Mode Extrême';
 
   @override
-  String get confirmChangeDifficulty =>
-      'Votre tour sera réinitialisé. Êtes-vous sûr de vouloir changer la difficulté ?';
+  String get confirmChangeDifficulty => 'Votre tour sera réinitialisé. Êtes-vous sûr de vouloir changer la difficulté ?';
 
   @override
   String get areYouSure => 'Êtes-vous sûr ?';
@@ -236,22 +225,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get daily => 'En un jour';
 
   @override
-  String get dailyDescription =>
-      'Classements basés sur les tours enregistrés aujourd\'hui.';
+  String get dailyDescription => 'Classements basés sur les tours enregistrés aujourd\'hui.';
 
   @override
   String get weekly => 'En une semaine';
 
   @override
-  String get weeklyDescription =>
-      'Classements basés sur les tours enregistrés au cours des 7 derniers jours.';
+  String get weeklyDescription => 'Classements basés sur les tours enregistrés au cours des 7 derniers jours.';
 
   @override
   String get allTime => 'Tout le temps';
 
   @override
-  String get allTimeDescription =>
-      'Classements basés sur tous les tours enregistrés.';
+  String get allTimeDescription => 'Classements basés sur tous les tours enregistrés.';
 
   @override
   String get updateRequired => 'Mise à jour requise';
@@ -269,8 +255,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get whatsNew => 'Nouveautés';
 
   @override
-  String get forceUpdateMessage =>
-      'Cette mise à jour est nécessaire pour continuer à utiliser l\'application. Veuillez mettre à jour maintenant.';
+  String get forceUpdateMessage => 'Cette mise à jour est nécessaire pour continuer à utiliser l\'application. Veuillez mettre à jour maintenant.';
 
   @override
   String get later => 'Plus tard';
@@ -288,8 +273,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get appUpdates => 'Mises à jour de l\'application';
 
   @override
-  String get tapToCheckUpdates =>
-      'Appuyez sur le bouton ci-dessous pour vérifier les mises à jour de l\'application.';
+  String get tapToCheckUpdates => 'Appuyez sur le bouton ci-dessous pour vérifier les mises à jour de l\'application.';
 
   @override
   String get checkingForUpdates => 'Recherche de mises à jour...';
@@ -317,8 +301,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get updatePostponed => 'Mise à jour disponible mais reportée.';
 
   @override
-  String tapTimerTooltip(
-      int totalSeconds, int halfSeconds, int quarterSeconds) {
+  String tapTimerTooltip(int totalSeconds, int halfSeconds, int quarterSeconds) {
     return 'Vous avez $totalSeconds secondes pour toucher un nombre. La barre change de couleur au fur et à mesure que le temps s\'écoule : vert (plus de ${halfSeconds}s), orange ($quarterSeconds-${halfSeconds}s), rouge (moins de ${quarterSeconds}s).';
   }
 
@@ -329,29 +312,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get soloMode => 'Mode Solo';
 
   @override
-  String get soloModeDescription =>
-      'Jouez seul et mettez-vous au défi de battre votre meilleur score';
+  String get soloModeDescription => 'Jouez seul et mettez-vous au défi de battre votre meilleur score';
 
   @override
   String get combatMode => 'Mode Combat';
 
   @override
-  String get combatModeDescription =>
-      'Jouez avec un autre joueur via une connexion Bluetooth et jouez tour à tour';
+  String get combatModeDescription => 'Jouez avec un autre joueur via une connexion Bluetooth et jouez tour à tour';
 
   @override
   String get createRoom => 'Créer une salle';
 
   @override
-  String get createRoomDescription =>
-      'Hébergez un nouveau jeu et attendez qu\'un autre joueur rejoigne';
+  String get createRoomDescription => 'Hébergez un nouveau jeu et attendez qu\'un autre joueur rejoigne';
 
   @override
   String get joinRoom => 'Rejoindre une salle';
 
   @override
-  String get joinRoomDescription =>
-      'Entrez un code de salle pour rejoindre un jeu existant';
+  String get joinRoomDescription => 'Entrez un code de salle pour rejoindre un jeu existant';
 
   @override
   String get hostRoom => 'Salle d\'hôte';
@@ -380,19 +359,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get bluetoothPermissionRequired => 'Permission Bluetooth requise';
 
   @override
-  String get bluetoothPermissionMessage =>
-      'Le mode Combat nécessite l\'autorisation Bluetooth pour se connecter avec d\'autres joueurs. Veuillez accorder l\'autorisation Bluetooth dans les paramètres de votre appareil.';
+  String get bluetoothPermissionMessage => 'Le mode Combat nécessite l\'autorisation Bluetooth pour se connecter avec d\'autres joueurs. Veuillez accorder l\'autorisation Bluetooth dans les paramètres de votre appareil.';
 
   @override
-  String get bluetoothPermissionPermanentlyDeniedMessage =>
-      'Les autorisations Bluetooth ont été refusées de manière permanente. Pour utiliser le mode Combat, vous devez activer les autorisations Bluetooth dans les paramètres de votre appareil.\n\nVeuillez aller dans Paramètres > NuCatch > Autorisations et activer le Bluetooth.';
+  String get bluetoothPermissionPermanentlyDeniedMessage => 'Les autorisations Bluetooth ont été refusées de manière permanente. Pour utiliser le mode Combat, vous devez activer les autorisations Bluetooth dans les paramètres de votre appareil.\n\nVeuillez aller dans Paramètres > NuCatch > Autorisations et activer le Bluetooth.';
 
   @override
   String get bluetoothDisabled => 'Bluetooth désactivé';
 
   @override
-  String get bluetoothDisabledMessage =>
-      'Le mode Combat nécessite que le Bluetooth soit activé. Veuillez activer le Bluetooth dans les paramètres de votre appareil.';
+  String get bluetoothDisabledMessage => 'Le mode Combat nécessite que le Bluetooth soit activé. Veuillez activer le Bluetooth dans les paramètres de votre appareil.';
 
   @override
   String get cancel => 'Annuler';
@@ -434,8 +410,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get opponentGaveUp => 'Votre adversaire a abandonné';
 
   @override
-  String get confirmEndCombat =>
-      'Êtes-vous sûr de vouloir terminer ce jeu ? Votre adversaire gagnera.';
+  String get confirmEndCombat => 'Êtes-vous sûr de vouloir terminer ce jeu ? Votre adversaire gagnera.';
 
   @override
   String get youRanOutOfLives => 'Vous n\'avez plus de vies';
@@ -473,8 +448,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get holidayEarthDay => 'Jour de la Terre';
 
   @override
-  String get greetingEarthDay =>
-      'Joyeux Jour de la Terre ! Protégez notre planète !';
+  String get greetingEarthDay => 'Joyeux Jour de la Terre ! Protégez notre planète !';
 
   @override
   String get holidayEaster => 'Pâques';
@@ -486,8 +460,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get holidayPride => 'Mois des Fiertés';
 
   @override
-  String get greetingPride =>
-      'Joyeux Mois des Fiertés ! L\'amour est l\'amour !';
+  String get greetingPride => 'Joyeux Mois des Fiertés ! L\'amour est l\'amour !';
 
   @override
   String get holidayHalloween => 'Halloween';
@@ -547,12 +520,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get opponentWillTakeFirst => 'L\'adversaire prendra le premier tour';
 
   @override
-  String get advertisingRoomWaiting =>
-      'Salle diffusée ! En attente de l\'adversaire...';
+  String get advertisingRoomWaiting => 'Salle diffusée ! En attente de l\'adversaire...';
 
   @override
-  String get opponentJoinedReady =>
-      'Adversaire rejoint ! Appuyez sur Prêt lorsque vous êtes préparé.';
+  String get opponentJoinedReady => 'Adversaire rejoint ! Appuyez sur Prêt lorsque vous êtes préparé.';
 
   @override
   String get opponentReady => 'Adversaire Prêt !';
@@ -578,8 +549,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get theHostIsReady => '✅ L\'hôte est prêt !';
 
   @override
-  String get pressReadyWhenPrepared =>
-      'Appuyez sur Prêt lorsque vous êtes prêt à commencer.';
+  String get pressReadyWhenPrepared => 'Appuyez sur Prêt lorsque vous êtes prêt à commencer.';
 
   @override
   String get yourOpponentIsReady => '✅ Votre adversaire est prêt !';
@@ -588,12 +558,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get gameIsStarting => 'Le jeu commence...';
 
   @override
-  String get waitingForHostToSelectDifficulty =>
-      'En attente que l\'hôte sélectionne la difficulté...';
+  String get waitingForHostToSelectDifficulty => 'En attente que l\'hôte sélectionne la difficulté...';
 
   @override
-  String get failedToInitializeNearby =>
-      'Échec de l\'initialisation de Nearby Connections. Veuillez accorder les autorisations de localisation.';
+  String get failedToInitializeNearby => 'Échec de l\'initialisation de Nearby Connections. Veuillez accorder les autorisations de localisation.';
 
   @override
   String get nearbyNotInitialized => 'Nearby Connections n\'est pas initialisé';
@@ -614,16 +582,13 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get advertisingRoomStatus =>
-      'Diffusion de la salle...\nEn attente de la découverte et de la connexion de l\'adversaire.';
+  String get advertisingRoomStatus => 'Diffusion de la salle...\nEn attente de la découverte et de la connexion de l\'adversaire.';
 
   @override
-  String get opponentConnectedStatus =>
-      'Adversaire connecté !\nAppuyez sur Prêt lorsque les deux joueurs sont prêts.';
+  String get opponentConnectedStatus => 'Adversaire connecté !\nAppuyez sur Prêt lorsque les deux joueurs sont prêts.';
 
   @override
-  String get bothPlayersReadyStatus =>
-      'Les deux joueurs sont prêts ! Démarrage du jeu...';
+  String get bothPlayersReadyStatus => 'Les deux joueurs sont prêts ! Démarrage du jeu...';
 
   @override
   String get settingUpDifficulty => 'Configuration de la difficulté du jeu...';
@@ -652,8 +617,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noHostsFoundNearby => 'Aucun hôte trouvé à proximité';
 
   @override
-  String get makeSureFriendHosting =>
-      'Assurez-vous qu\'un ami héberge\net que les deux appareils sont proches l\'un de l\'autre';
+  String get makeSureFriendHosting => 'Assurez-vous qu\'un ami héberge\net que les deux appareils sont proches l\'un de l\'autre';
 
   @override
   String get discovering => 'Découverte...';
@@ -662,8 +626,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get notDiscovering => 'Pas de découverte';
 
   @override
-  String get distanceWarning =>
-      'Assurez-vous que les appareils sont à moins de 10 mètres de distance';
+  String get distanceWarning => 'Assurez-vous que les appareils sont à moins de 10 mètres de distance';
 
   @override
   String get tourButtonLabel => 'Démarrer la visite';
@@ -672,57 +635,49 @@ class AppLocalizationsFr extends AppLocalizations {
   String get tourWelcomeTitle => 'Bienvenue sur NuCatch!';
 
   @override
-  String get tourWelcomeDesc =>
-      'Bienvenue! Cette visite rapide vous aidera à démarrer en douceur avec **NuCatch**. Nous vous montrerons toutes les **fonctionnalités principales** pour que vous puissiez vous lancer et commencer à jouer immédiatement. Commençons!';
+  String get tourWelcomeDesc => 'Bienvenue! Cette visite rapide vous aidera à démarrer en douceur avec **NuCatch**. Nous vous montrerons toutes les **fonctionnalités principales** pour que vous puissiez vous lancer et commencer à jouer immédiatement. Commençons!';
 
   @override
   String get tourStartTitle => 'Démarrer - Commencez votre jeu';
 
   @override
-  String get tourStartDesc =>
-      'Appuyez sur le bouton Démarrer pour commencer. Vous choisirez ensuite entre le Mode Solo pour des défis mathématiques en solo, ou le Mode Combat pour des batailles multijoueurs en temps réel via Bluetooth. Explorons les deux options!';
+  String get tourStartDesc => 'Appuyez sur le bouton Démarrer pour commencer. Vous choisirez ensuite entre le Mode Solo pour des défis mathématiques en solo, ou le Mode Combat pour des batailles multijoueurs en temps réel via Bluetooth. Explorons les deux options!';
 
   @override
   String get tourSoloTitle => 'Mode Solo - Jouez seul';
 
   @override
-  String get tourSoloDesc =>
-      'En Mode Solo, défiez-vous avec des équations mathématiques! Choisissez parmi 4 niveaux de difficulté (Facile à Extrêmement Difficile). Vous commencez avec 3 vies - chaque mauvaise réponse ou expiration coûte 1 vie. Plus la difficulté est élevée, plus vous gagnez de points! Voyons maintenant l\'option multijoueur.';
+  String get tourSoloDesc => 'En Mode Solo, défiez-vous avec des équations mathématiques! Choisissez parmi 4 niveaux de difficulté (Facile à Extrêmement Difficile). Vous commencez avec 3 vies - chaque mauvaise réponse ou expiration coûte 1 vie. Plus la difficulté est élevée, plus vous gagnez de points! Voyons maintenant l\'option multijoueur.';
 
   @override
   String get tourCombatTitle => 'Mode Combat - Multijoueur Bluetooth';
 
   @override
-  String get tourCombatDesc =>
-      'Le Mode Combat vous permet de vous battre contre un ami via Bluetooth! Deux joueurs résolvent à tour de rôle des équations - pas besoin de WiFi, restez juste à moins de 10 mètres. L\'hôte joue en premier initialement, mais lors des revanches, le perdant commence. Vous avez deux façons de commencer un match:';
+  String get tourCombatDesc => 'Le Mode Combat vous permet de vous battre contre un ami via Bluetooth! Deux joueurs résolvent à tour de rôle des équations - pas besoin de WiFi, restez juste à moins de 10 mètres. L\'hôte joue en premier initialement, mais lors des revanches, le perdant commence. Vous avez deux façons de commencer un match:';
 
   @override
   String get tourCreateRoomTitle => 'Mode Combat → Créer une salle';
 
   @override
-  String get tourCreateRoomDesc =>
-      'Première option: Créer une salle fait de vous l\'hôte! Après avoir accordé les autorisations Bluetooth, vous attendrez qu\'un invité rejoigne votre salle, puis vous choisirez le niveau de difficulté. En tant qu\'hôte, vous jouez en premier dans le match initial. Ou vous pouvez rejoindre la partie de quelqu\'un d\'autre:';
+  String get tourCreateRoomDesc => 'Première option: Créer une salle fait de vous l\'hôte! Après avoir accordé les autorisations Bluetooth, vous attendrez qu\'un invité rejoigne votre salle, puis vous choisirez le niveau de difficulté. En tant qu\'hôte, vous jouez en premier dans le match initial. Ou vous pouvez rejoindre la partie de quelqu\'un d\'autre:';
 
   @override
   String get tourJoinRoomTitle => 'Mode Combat → Rejoindre une salle';
 
   @override
-  String get tourJoinRoomDesc =>
-      'Deuxième option: Rejoindre une salle fait de vous l\'invité! Après avoir accordé les autorisations, vous rechercherez les salles à proximité, en sélectionnerez une et appuierez sur prêt. L\'hôte choisit la difficulté, et vous jouerez en deuxième dans le match initial. Vérifions maintenant les autres fonctionnalités du menu.';
+  String get tourJoinRoomDesc => 'Deuxième option: Rejoindre une salle fait de vous l\'invité! Après avoir accordé les autorisations, vous rechercherez les salles à proximité, en sélectionnerez une et appuierez sur prêt. L\'hôte choisit la difficulté, et vous jouerez en deuxième dans le match initial. Vérifions maintenant les autres fonctionnalités du menu.';
 
   @override
   String get tourLeaderboardTitle => 'Meilleur score - Classements';
 
   @override
-  String get tourLeaderboardDesc =>
-      'Suivez vos progrès ici! Consultez les classements mondiaux, vos records personnels et les statistiques, y compris les parties jouées, le taux de victoire, la précision et les scores par niveau de difficulté. Comparez avec des amis et observez comment vous vous améliorez au fil du temps. Enfin, visitons les Paramètres.';
+  String get tourLeaderboardDesc => 'Suivez vos progrès ici! Consultez les classements mondiaux, vos records personnels et les statistiques, y compris les parties jouées, le taux de victoire, la précision et les scores par niveau de difficulté. Comparez avec des amis et observez comment vous vous améliorez au fil du temps. Enfin, visitons les Paramètres.';
 
   @override
   String get tourSettingsTitle => 'Paramètres - Personnaliser';
 
   @override
-  String get tourSettingsDesc =>
-      'Personnalisez tout ici! Changez votre nom d\'utilisateur, sélectionnez un thème, ajustez le son/la musique, choisissez votre langue et gérez les paramètres de confidentialité. Vous pouvez redémarrer cette visite à tout moment depuis ici. C\'est tout - vous êtes prêt à jouer!';
+  String get tourSettingsDesc => 'Personnalisez tout ici! Changez votre nom d\'utilisateur, sélectionnez un thème, ajustez le son/la musique, choisissez votre langue et gérez les paramètres de confidentialité. Vous pouvez redémarrer cette visite à tout moment depuis ici. C\'est tout - vous êtes prêt à jouer!';
 
   @override
   String get tourNext => 'Suivant';
@@ -740,6 +695,5 @@ class AppLocalizationsFr extends AppLocalizations {
   String get tourRestartFromSettings => 'Redémarrer la visite';
 
   @override
-  String get tourResetMessage =>
-      'La visite a été réinitialisée. Retournez au menu principal pour commencer.';
+  String get tourResetMessage => 'La visite a été réinitialisée. Retournez au menu principal pour commencer.';
 }
