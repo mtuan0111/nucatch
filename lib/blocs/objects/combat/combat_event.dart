@@ -148,6 +148,18 @@ class CombatOpponentTypingUpdate extends CombatEvent {
 
 class CombatOpponentSuccessReceived extends CombatEvent {}
 
+class CombatOpponentLifeUpdate extends CombatEvent {
+  final int opponentLives;
+  final int opponentScore;
+  final bool wrongTap; // Flag to trigger red blink animation
+
+  CombatOpponentLifeUpdate({
+    required this.opponentLives,
+    required this.opponentScore,
+    this.wrongTap = false,
+  });
+}
+
 class CombatOpponentDisconnected extends CombatEvent {}
 
 class CombatRestartRequested extends CombatEvent {}

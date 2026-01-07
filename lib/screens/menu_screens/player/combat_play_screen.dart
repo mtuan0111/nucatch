@@ -39,6 +39,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   final GlobalKey _scoreKey = GlobalKey();
   final GlobalKey _heartKey = GlobalKey();
   final GlobalKey _opponentScoreKey = GlobalKey();
+  final GlobalKey _opponentHeartKey =
+      GlobalKey(); // For opponent life blink animation
 
   // Removed: boldedStyleFont - now using AppTextStyles.forChallenge()
 
@@ -403,21 +405,36 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   ],
                 ),
                 const SizedBox(height: kSpaceS),
-                Wrap(
-                  spacing: kLifeStarSpacing,
-                  children: List.generate(
-                    combatState.opponentLives,
-                    (index) => SizedBox(
-                      width:
-                          (Theme.of(context).textTheme.titleLarge!.fontSize ??
-                              20.0),
-                      height:
-                          (Theme.of(context).textTheme.titleLarge!.fontSize ??
-                              20.0),
-                      child: Icon(
-                        FontAwesomeIcons.solidStar,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        size: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  decoration: BoxDecoration(
+                    color: combatState.opponentJustLostLife
+                        ? Colors.red.withOpacity(0.5)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(kBorderRadiusL),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal:
+                        combatState.opponentJustLostLife ? kPaddingS : 0,
+                    vertical: combatState.opponentJustLostLife ? kPaddingSM : 0,
+                  ),
+                  child: Wrap(
+                    key: _opponentHeartKey, // Add key for animation
+                    spacing: kLifeStarSpacing,
+                    children: List.generate(
+                      combatState.opponentLives,
+                      (index) => SizedBox(
+                        width:
+                            (Theme.of(context).textTheme.titleLarge!.fontSize ??
+                                20.0),
+                        height:
+                            (Theme.of(context).textTheme.titleLarge!.fontSize ??
+                                20.0),
+                        child: Icon(
+                          FontAwesomeIcons.solidStar,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          size: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                        ),
                       ),
                     ),
                   ),
@@ -1144,11 +1161,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       final opponentScorePosition = _getWidgetPosition(_opponentScoreKey);
       _animationKey.currentState?.triggers.onAddPoint(opponentScorePosition);
     }
-    // Also trigger if score actually increased (fallback)
-    else if (wasOpponentScoreIncreased) {
-      final opponentScorePosition = _getWidgetPosition(_opponentScoreKey);
-      _animationKey.currentState?.triggers.onAddPoint(opponentScorePosition);
-    }
+    // // Also trigger if score actually increased (fallback)
+    // else if (wasOpponentScoreIncreased) {
+    //   final opponentScorePosition = _getWidgetPosition(_opponentScoreKey);
+    //   _animationKey.currentState?.triggers.onAddPoint(opponentScorePosition);
+    // }
 
     // Trigger life gain animation
     if (wasLifeIncreasedForAnimation) {

@@ -1120,3 +1120,42 @@ feat: Improve UI UX, add the multiple player
     ```
     ---
     
+---
+## Released on: 6/1/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 63           | 2.5.23   |
+| iOS      | 63           | 2.5.3   |
+
+### Release note:
+feat: feat: Implement opponent life updates and wrong tap animation via BLE communication.
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+    
+    [Builded] Version 2.5.23 - 63 / 2.5.3 - 63 _ Implement opponent life updates and wrong tap animation
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Enhanced multiplayer interaction with real-time opponent status updates.  
+        - Added new visual feedback for gameplay actions.  
+        - Improved overall stability and performance.
+
+    - **Tiếng Việt:**  
+        - Tăng cường tương tác trong chế độ nhiều người chơi với cập nhật trạng thái đối thủ thời gian thực.  
+        - Thêm hiệu ứng hình ảnh mới cho các thao tác trong trò chơi.  
+        - Cải thiện độ ổn định và hiệu suất tổng thể.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.5.23 --build-number=63 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.5.3 --build-number=63 --release```
+    ```
+
+
+    

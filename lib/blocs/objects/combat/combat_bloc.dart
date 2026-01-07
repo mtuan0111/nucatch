@@ -55,6 +55,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatTapTimerTick>(_onCombatTapTimerTick);
     on<CombatTapTimerTimeout>(_onCombatTapTimerTimeout);
     on<CombatOpponentSuccessReceived>(_onCombatOpponentSuccessReceived);
+    on<CombatOpponentLifeUpdate>(_onCombatOpponentLifeUpdate);
     on<CombatBlocReset>(_onCombatBlocReset);
 
     // Listen to BLE messages
@@ -85,7 +86,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         final CombatMessageType? messageType = _stringToMessageType(typeString);
 
         if (messageType == null) {
-          // Handle special cases like move_typed_* events
+          // Handle special cases like move_typed_* events and life_update
           if (typeString.startsWith('move_typed_')) {
             print(
                 '📥 [Combat] Received move_typed event: $typeString, isMyTurn: ${state.isMyTurn}');
@@ -96,6 +97,22 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
               add(CombatOpponentTypingUpdate(currentInput: currentInput));
             } else if (state.isMyTurn) {
               print('⏭️ [Combat] Skipping - it\'s my turn');
+            }
+          } else if (typeString == 'life_update') {
+            // Handle life update from opponent
+            print('💔 [Combat] Received life_update from opponent');
+            final opponentLives = data['lives'] as int?;
+            final opponentScore = data['score'] as int?;
+            final wrongTap = data['wrongTap'] as bool? ?? false;
+            if (opponentLives != null) {
+              print(
+                  '💔 [Combat] Updating opponent lives to: $opponentLives, score: $opponentScore, wrongTap: $wrongTap');
+              // Use existing event to update opponent stats
+              add(CombatOpponentLifeUpdate(
+                opponentLives: opponentLives,
+                opponentScore: opponentScore ?? 0,
+                wrongTap: wrongTap,
+              ));
             }
           }
           return;
@@ -691,6 +708,18 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       ),
     );
 
+    _vibrationBloc.add(VibrateShort());
+
+    // Send current life number to opponent so they can update their UI
+    // Include wrongTap flag to trigger red blink animation
+    await _sendMessage({
+      'type': 'life_update',
+      'lives': state.lifeRemaining,
+      'score': state.point,
+      'wrongTap':
+          true, // Flag to trigger red blink animation on opponent's side
+    });
+
     if (!state.isAbleToContinue) {
       add(CombatGameEnded(isWinner: false, reason: GameEndReason.myLivesOut));
     }
@@ -708,10 +737,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       ),
     );
 
-    // // Send immediate success notification to trigger opponent's firework
-    // await _sendMessage({
-    //   'type': _messageTypeToString(CombatMessageType.moveSuccess),
-    // });
+    // Send immediate success notification to trigger opponent's firework
+    await _sendMessage({
+      'type': _messageTypeToString(CombatMessageType.moveSuccess),
+    });
 
     // Increment timesCorrect and add life bonus (every 3 correct turns)
     emit(
@@ -963,6 +992,32 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(state.copyWith(
       opponentJustSucceeded: false,
     ));
+  }
+
+  Future<void> _onCombatOpponentLifeUpdate(
+    CombatOpponentLifeUpdate event,
+    Emitter<CombatState> emit,
+  ) async {
+    print(
+        '💔 [Combat] Handling opponent life update: lives=${event.opponentLives}, score=${event.opponentScore}, wrongTap=${event.wrongTap}');
+
+    // Update opponent stats
+    emit(state.copyWith(
+      opponentLives: event.opponentLives,
+      opponentScore: event.opponentScore,
+      opponentJustLostLife:
+          event.wrongTap, // Trigger red blink animation if wrong tap
+    ));
+
+    // If this was a wrong tap, reset the animation flag after 500ms
+    if (event.wrongTap) {
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (isClosed) return;
+
+      emit(state.copyWith(
+        opponentJustLostLife: false, // Reset animation flag
+      ));
+    }
   }
 
   // Reset bloc to fresh initial state
