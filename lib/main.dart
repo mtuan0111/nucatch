@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +32,22 @@ Future<void> main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     print('✅ Firebase initialized successfully');
+
+    // Enable offline persistence for Firestore
+    try {
+      final firestore = FirebaseFirestore.instance;
+
+      // Enable persistence settings
+      firestore.settings = const Settings(
+        persistenceEnabled: true,
+        cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+      );
+
+      print('✅ Firestore offline persistence enabled');
+    } catch (e) {
+      print('⚠️ Failed to enable Firestore persistence: $e');
+      // Continue anyway - persistence might already be enabled
+    }
   } catch (e) {
     print('⚠️ Firebase initialization failed (offline mode): $e');
     // Continue without Firebase - BLE-only mode will still work

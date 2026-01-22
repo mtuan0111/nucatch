@@ -114,23 +114,13 @@ class TurnRecordedListBloc
     );
   }
 
+  // Debug method removed - no longer needed with Firestore offline persistence
   Future<void> _onDebugDatabaseContent(
     DebugDatabaseContent event,
     Emitter<TurnRecordedListState> emitter,
   ) async {
-    await _turnedServices.debugDatabaseContent();
+    // No-op: Database debugging not needed with Firestore offline persistence
+    print(
+        'ℹ️ Database debugging not available - using Firestore offline persistence');
   }
-
-  // Future<void> _onAddItem(
-  //   AddItem event,
-  //   Emitter<TurnRecordedListState> emitter,
-  // ) async {
-  //   if (await _turnedServices.addItem(event.item)) {
-  //     emitter(
-  //       state.copyWith(
-  //         listModel: await _turnedServices.getTurnedList(),
-  //       ),
-  //     );
-  //   }
-  // }
 }

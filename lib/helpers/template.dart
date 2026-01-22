@@ -489,11 +489,9 @@ class RankingSortingWidget extends StatelessWidget {
               child: childElement ??
                   Text(
                     position.toString(),
-                    style: AppTextStyles.displayLarge(context).copyWith(
-                      color: theme.scaffoldBackgroundColor,
-                      fontWeight: FontWeight.w900,
-                      fontSize: baseSize / 1.5,
-                    ),
+                    style: (position.toString().length == 1
+                        ? AppTextStyles.displayMedium(context)
+                        : AppTextStyles.displaySmall(context)),
                     textAlign: TextAlign.center,
                   ),
             ),
@@ -772,7 +770,8 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
       textDirection: getTextDirection(),
       children: [
         if (iconWidget != null) iconWidget,
-        if (iconWidget != null && textWidget != null) const SizedBox(width: kSpaceSM),
+        if (iconWidget != null && textWidget != null)
+          const SizedBox(width: kSpaceSM),
         if (textWidget != null) textWidget,
       ],
     );
@@ -914,7 +913,8 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                     child: Opacity(
                       opacity: _shadowOpacity / 1.5,
                       child: AnimatedContainer(
-                        duration: const Duration(milliseconds: kAnimationDurationFast),
+                        duration: const Duration(
+                            milliseconds: kAnimationDurationFast),
                         // margin: EdgeInsets.only(
                         //   // top: _highlightBorderPadding / 2,
                         //   // right: _highlightBorderPadding / 2,
@@ -951,7 +951,8 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
                     child: Opacity(
                       opacity: _shadowOpacity / 2,
                       child: AnimatedContainer(
-                        duration: const Duration(milliseconds: kAnimationDurationFast),
+                        duration: const Duration(
+                            milliseconds: kAnimationDurationFast),
                         margin: EdgeInsets.only(
                           // top: _highlightBorderPadding / 2,
                           // right: _highlightBorderPadding / 2,

@@ -1190,3 +1190,39 @@ feat: Fixed timeout issue when adding items to Firestore.
     Flutter build for iOS
     ```flutter build ios --build-name=2.5.4 --build-number=64 --release```
     
+---
+## Released on: 22/01/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 65           | 2.5.5   |
+| iOS      | 65           | 2.5.5   |
+
+### Release note:
+feat: Fixed timeout issue when adding items to Firestore.
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+    
+    [Builded] Version 2.5.5 - 65 / 2.5.5 - 65 _ Fixed data sync timeout issues
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Optimized data synchronization for better reliability.
+        - General performance improvements and bug fixes.
+
+    - **Tiếng Việt:**  
+        - Tối ưu hóa đồng bộ hóa dữ liệu để tăng độ tin cậy.
+        - Cải thiện hiệu suất và sửa lỗi tổng thể.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.5.5 --build-number=65 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.5.5 --build-number=65 --release```
+    
+
+    

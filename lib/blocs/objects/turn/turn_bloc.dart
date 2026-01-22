@@ -600,14 +600,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
-    final results = await Future.wait([
-      _turnedServices.addItemToFirebase(state.recordedItem!),
-      _turnedServices.addItem(state.recordedItem!), // For backup locally
-    ]);
-
-    final insertSuccess = results[0];
-    final insertSuccessLocal = results[1];
-    final saveSuccess = insertSuccess || insertSuccessLocal;
+    // Save to Firestore - offline persistence will queue if offline and auto-sync when online
+    final insertSuccess =
+        await _turnedServices.addItemToFirebase(state.recordedItem!);
+    final saveSuccess = insertSuccess;
 
     _audioBloc.add(PlaySaveSuccessAudio());
 
