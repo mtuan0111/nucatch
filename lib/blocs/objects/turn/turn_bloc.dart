@@ -566,25 +566,33 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     SaveRecorded event,
     Emitter<TurnState> emitter,
   ) async {
+    print('🎮 SaveRecorded event triggered');
+
     if (isClosed) {
+      print('⚠️ Save skipped: BLoC is closed');
       event.callback?.call();
       return;
     }
 
     if (state.recordedItem == null) {
+      print('⚠️ Save skipped: recordedItem is null');
       event.callback?.call();
       return;
     }
 
     if (state.recordedItem!.point == 0) {
+      print('⚠️ Save skipped: score is 0 (intentional)');
       event.callback?.call();
       return;
     }
 
     if (state.isLoading) {
+      print('⚠️ Save skipped: already loading');
       event.callback?.call();
       return;
     }
+
+    print('✅ Starting save for score: ${state.recordedItem!.point}');
 
     emitter(
       state.copyWith(
@@ -716,6 +724,14 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     final userServices = UserServices();
     final userState = await userServices.getUserSession();
     String? firebaseUserId = userState.model.firebaseUserId;
+
+    // Retry auth if Firebase user ID is null (race condition fix)
+    if (firebaseUserId == null) {
+      print('⚠️ Firebase user not ready, retrying auth...');
+      final retryState = await userServices.initializeAuth();
+      firebaseUserId = retryState.model.firebaseUserId;
+      print('✅ Firebase user after retry: $firebaseUserId');
+    }
 
     TurnRecordedModel itemModel = TurnRecordedModel(
       turnId: const Uuid().v4(),

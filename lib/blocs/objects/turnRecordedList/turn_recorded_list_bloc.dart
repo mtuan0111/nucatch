@@ -32,12 +32,18 @@ class TurnRecordedListBloc
     // Clear cache for refresh operation
     _turnedServices.clearCache();
 
+    // Use getTurnedListByPeriod which handles offline mode efficiently
+    // This method tries Firestore first but falls back quickly to local DB
+    final data = await _turnedServices.getTurnedListByPeriod(
+      RankingPeriod.all,
+      state.numberOfTopBoard,
+      useFirebase: true, // Try Firebase but fallback quickly
+      clearCache: true,
+    );
+
     emitter(
       state.copyWith(
-        listModel: await _turnedServices
-                .getTurnedListFirebase(state.numberOfTopBoard) ??
-            await _turnedServices
-                .getTurnedList(state.numberOfTopBoard), // Use if no Internet
+        listModel: data,
         isLoading: false,
         currentPeriod: RankingPeriod.all, // Default to all time using enum
       ),

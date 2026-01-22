@@ -77,7 +77,7 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   void initState() {
-    turnRecordedListBloc.add(LoadData());
+    // turnRecordedListBloc.add(LoadData());
 
     // Store previous lifeRemaining for animation logic
     // final prevLife = _prevLifeRemaining;

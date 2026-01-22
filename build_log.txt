@@ -1,0 +1,36 @@
+Running Gradle task 'assembleRelease'...                        
+Warning: Flutter support for your project's Kotlin version (1.9.10) will soon be dropped. Please upgrade your Kotlin version to a version of at least 2.1.0 soon.
+Alternatively, use the flag "--android-skip-build-dependency-validation" to bypass this check.
+
+Potential fix: Your project's KGP version is typically defined in the plugins block of the `settings.gradle` file (/Volumes/DATA/BOM_DATA/flutter_projects/nucatch-with-bloc/android/settings.gradle), by a plugin with the id of org.jetbrains.kotlin.android. 
+If you don't see a plugins block, your project was likely created with an older template version, in which case it is most likely defined in the top-level build.gradle file (/Volumes/DATA/BOM_DATA/flutter_projects/nucatch-with-bloc/android/build.gradle) by the ext.kotlin_version property.
+
+Font asset "fa-regular-400.ttf" was tree-shaken, reducing it from 67976 to 3504 bytes (94.8% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Font asset "fa-brands-400.ttf" was tree-shaken, reducing it from 209376 to 1016 bytes (99.5% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Font asset "fa-solid-900.ttf" was tree-shaken, reducing it from 423676 to 7688 bytes (98.2% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 3448 bytes (99.8% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+/Users/mac/.pub-cache/hosted/pub.dev/nearby_connections-4.3.0/android/src/main/java/com/pkmnapps/nearby_connections/NearbyConnectionsPlugin.java:274: warning: [deprecation] getAuthenticationToken() in ConnectionInfo has been deprecated
+			args.put("authenticationToken", connectionInfo.getAuthenticationToken());
+			                                              ^
+/Users/mac/.pub-cache/hosted/pub.dev/nearby_connections-4.3.0/android/src/main/java/com/pkmnapps/nearby_connections/NearbyConnectionsPlugin.java:326: warning: [deprecation] getAuthenticationToken() in ConnectionInfo has been deprecated
+			args.put("authenticationToken", connectionInfo.getAuthenticationToken());
+			                                              ^
+/Users/mac/.pub-cache/hosted/pub.dev/nearby_connections-4.3.0/android/src/main/java/com/pkmnapps/nearby_connections/NearbyConnectionsPlugin.java:389: warning: [deprecation] asJavaFile() in com.google.android.gms.nearby.connection.Payload.File has been deprecated
+					args.put("filePath", payload.asFile().asJavaFile().getAbsolutePath());
+					                                     ^
+6 warnings
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+3 warnings
+warning: [options] source value 8 is obsolete and will be removed in a future release
+warning: [options] target value 8 is obsolete and will be removed in a future release
+warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
+3 warnings
+Running Gradle task 'assembleRelease'...                           74.8s
+✓ Built build/app/outputs/flutter-apk/app-release.apk (68.5MB)

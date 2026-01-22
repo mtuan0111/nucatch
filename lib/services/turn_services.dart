@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +11,6 @@ import 'package:path/path.dart';
 class TurnRecordedServices {
   Database? _database;
   late final FirebaseFirestore? firebaseFirestore;
-  bool _isOfflineMode = false;
 
   // Cache for Firebase data with timestamps
   static final Map<String, List<TurnRecordedModel>?> _firebaseCache = {};
@@ -23,7 +23,6 @@ class TurnRecordedServices {
     } catch (e) {
       print('⚠️ Firestore not available for turn services (offline mode): $e');
       firebaseFirestore = null;
-      _isOfflineMode = true;
     }
   }
 
@@ -79,6 +78,7 @@ class TurnRecordedServices {
     PreferencesKey.POINT,
     PreferencesKey.RECORDED_TIME,
     PreferencesKey.DIFFICULTY,
+    PreferencesKey.FIREBASE_USER_ID,
   ];
 
   static const Map<String, String> columnTypes = {
@@ -88,6 +88,7 @@ class TurnRecordedServices {
     PreferencesKey.POINT: 'INTEGER NOT NULL',
     PreferencesKey.RECORDED_TIME: 'TEXT NOT NULL',
     PreferencesKey.DIFFICULTY: "TEXT NOT NULL DEFAULT 'easy'",
+    PreferencesKey.FIREBASE_USER_ID: 'TEXT',
   };
 
   Future<Database> _initDatabase() async {
@@ -188,30 +189,42 @@ class TurnRecordedServices {
     }
 
     // Return empty list if in offline mode
-    if (_isOfflineMode || firebaseFirestore == null) {
+    if (firebaseFirestore == null) {
       print('📱 Turn records unavailable (offline mode)');
       return [];
     }
 
-    // Fetch from Firebase if not cached
-    final querySnapshot = await firebaseFirestore!
-        .collection('turn_records')
-        .orderBy(PreferencesKey.POINT, descending: true)
-        .orderBy(PreferencesKey.RECORDED_TIME)
-        .limit(limit)
-        .get();
+    try {
+      // Fetch from Firebase if not cached (with timeout for offline scenarios)
+      final querySnapshot = await firebaseFirestore!
+          .collection('turn_records')
+          .orderBy(PreferencesKey.POINT, descending: true)
+          .orderBy(PreferencesKey.RECORDED_TIME)
+          .limit(limit)
+          .get()
+          .timeout(
+        const Duration(seconds: 3),
+        onTimeout: () {
+          log('⏱️ Firestore query timed out, will use local data');
+          throw TimeoutException('Firestore timeout');
+        },
+      );
 
-    final result = querySnapshot.docs.map((doc) {
-      final data = doc.data();
-      final TurnRecordedModel item = TurnRecordedModel.fromJson(data);
-      return item;
-    }).toList();
+      final result = querySnapshot.docs.map((doc) {
+        final data = doc.data();
+        final TurnRecordedModel item = TurnRecordedModel.fromJson(data);
+        return item;
+      }).toList();
 
-    // Cache the result
-    _setToCache(cacheKey, result);
-    log('Cached all-time data');
+      // Cache the result
+      _setToCache(cacheKey, result);
+      log('Cached all-time data');
 
-    return result;
+      return result;
+    } catch (e) {
+      log('Error fetching from Firebase (will use local data): $e');
+      return []; // Return empty to trigger fallback to local DB
+    }
   }
 
   // Get daily rankings from Firebase (today only)
@@ -234,32 +247,44 @@ class TurnRecordedServices {
     final endOfDayMillis = endOfDay.millisecondsSinceEpoch;
 
     // Return empty list if in offline mode
-    if (_isOfflineMode || firebaseFirestore == null) {
+    if (firebaseFirestore == null) {
       print('📱 Daily turn records unavailable (offline mode)');
       return [];
     }
 
-    // Firebase stores recordedTime as milliseconds, so use integer milliseconds for comparison
-    final querySnapshot = await firebaseFirestore!
-        .collection('turn_records')
-        .where(PreferencesKey.RECORDED_TIME,
-            isGreaterThanOrEqualTo: startOfDayMillis)
-        .where(PreferencesKey.RECORDED_TIME, isLessThan: endOfDayMillis)
-        .orderBy(PreferencesKey.POINT, descending: true)
-        .orderBy(PreferencesKey.RECORDED_TIME)
-        .limit(limit)
-        .get();
+    try {
+      // Firebase stores recordedTime as milliseconds, so use integer milliseconds for comparison
+      final querySnapshot = await firebaseFirestore!
+          .collection('turn_records')
+          .where(PreferencesKey.RECORDED_TIME,
+              isGreaterThanOrEqualTo: startOfDayMillis)
+          .where(PreferencesKey.RECORDED_TIME, isLessThan: endOfDayMillis)
+          .orderBy(PreferencesKey.POINT, descending: true)
+          .orderBy(PreferencesKey.RECORDED_TIME)
+          .limit(limit)
+          .get()
+          .timeout(
+        const Duration(seconds: 3),
+        onTimeout: () {
+          log('⏱️ Daily Firestore query timed out');
+          throw TimeoutException('Firestore timeout');
+        },
+      );
 
-    final result = querySnapshot.docs.map((doc) {
-      final data = doc.data();
-      return TurnRecordedModel.fromJson(data);
-    }).toList();
+      final result = querySnapshot.docs.map((doc) {
+        final data = doc.data();
+        return TurnRecordedModel.fromJson(data);
+      }).toList();
 
-    // Cache the result
-    _setToCache(cacheKey, result);
-    log('Cached daily data');
+      // Cache the result
+      _setToCache(cacheKey, result);
+      log('Cached daily data');
 
-    return result;
+      return result;
+    } catch (e) {
+      log('Error fetching daily data from Firebase: $e');
+      return [];
+    }
   }
 
   // Get weekly rankings from Firebase (last 7 days)
@@ -281,31 +306,43 @@ class TurnRecordedServices {
     final weekAgoMillis = weekAgo.millisecondsSinceEpoch;
 
     // Return empty list if in offline mode
-    if (_isOfflineMode || firebaseFirestore == null) {
+    if (firebaseFirestore == null) {
       print('📱 Weekly turn records unavailable (offline mode)');
       return [];
     }
 
-    // Firebase stores recordedTime as milliseconds, so use integer milliseconds for comparison
-    final querySnapshot = await firebaseFirestore!
-        .collection('turn_records')
-        .where(PreferencesKey.RECORDED_TIME,
-            isGreaterThanOrEqualTo: weekAgoMillis)
-        .orderBy(PreferencesKey.POINT, descending: true)
-        .orderBy(PreferencesKey.RECORDED_TIME)
-        .limit(limit)
-        .get();
+    try {
+      // Firebase stores recordedTime as milliseconds, so use integer milliseconds for comparison
+      final querySnapshot = await firebaseFirestore!
+          .collection('turn_records')
+          .where(PreferencesKey.RECORDED_TIME,
+              isGreaterThanOrEqualTo: weekAgoMillis)
+          .orderBy(PreferencesKey.POINT, descending: true)
+          .orderBy(PreferencesKey.RECORDED_TIME)
+          .limit(limit)
+          .get()
+          .timeout(
+        const Duration(seconds: 3),
+        onTimeout: () {
+          log('⏱️ Weekly Firestore query timed out');
+          throw TimeoutException('Firestore timeout');
+        },
+      );
 
-    final result = querySnapshot.docs.map((doc) {
-      final data = doc.data();
-      return TurnRecordedModel.fromJson(data);
-    }).toList();
+      final result = querySnapshot.docs.map((doc) {
+        final data = doc.data();
+        return TurnRecordedModel.fromJson(data);
+      }).toList();
 
-    // Cache the result
-    _setToCache(cacheKey, result);
-    log('Cached weekly data');
+      // Cache the result
+      _setToCache(cacheKey, result);
+      log('Cached weekly data');
 
-    return result;
+      return result;
+    } catch (e) {
+      log('Error fetching weekly data from Firebase: $e');
+      return [];
+    }
   }
 
   // Get all time rankings from Firebase (existing method renamed for clarity)
@@ -396,15 +433,19 @@ class TurnRecordedServices {
 
   Future<bool> addItemToFirebase(TurnRecordedModel item) async {
     // Skip Firebase upload in offline mode
-    if (_isOfflineMode || firebaseFirestore == null) {
+    if (firebaseFirestore == null) {
       print('📱 Skipping Firebase upload (offline mode)');
       return true; // Return success for offline mode
     }
 
     try {
-      await firebaseFirestore!.collection('turn_records').add(
-            item.toJson(),
-          );
+      await firebaseFirestore!
+          .collection('turn_records')
+          .add(item.toJson())
+          .timeout(const Duration(seconds: 3), onTimeout: () {
+        log('Timeout adding item to Firebase');
+        throw TimeoutException('Firestore timeout');
+      });
 
       // Clear cache after successful insert
       _clearFirebaseCache();
