@@ -33,6 +33,13 @@
             "deviceId": "00008120-001245282131A01E"
         },
         {
+            "name": "nucatch - iphone device - MM’s iPhone 15 Plus (wireless)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "00008120-001245282131A01E"
+        },
+        {
             "name": "nucatch (profile mode)",
             "request": "launch",
             "type": "dart",

@@ -19,7 +19,9 @@ import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
-import 'package:nucatch/services/combat_nearby_service.dart';
+import 'package:nucatch/services/combat_ble_service.dart';
+import 'package:nucatch/data/repositories/bluetooth_repository_impl.dart';
+import 'package:nucatch/data/datasources/ble_data_source.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
@@ -126,11 +128,23 @@ class _MenuNavState extends State<MenuNav> {
                               create: (context) => CombatNavCubit(),
                             ),
                             BlocProvider(
-                              create: (context) => CombatBloc(
-                                roomService: CombatNearbyService(),
-                                audioBloc: context.read<AudioBloc>(),
-                                vibrationBloc: context.read<VibrationBloc>(),
-                              ),
+                              create: (context) {
+                                // Create BLE infrastructure
+                                final bleDataSource = BleDataSource();
+                                final bluetoothRepository =
+                                    BluetoothRepositoryImpl(
+                                  dataSource: bleDataSource,
+                                );
+                                final combatBleService = CombatBleService(
+                                  repository: bluetoothRepository,
+                                );
+
+                                return CombatBloc(
+                                  roomService: combatBleService,
+                                  audioBloc: context.read<AudioBloc>(),
+                                  vibrationBloc: context.read<VibrationBloc>(),
+                                );
+                              },
                             ),
                           ],
                           child: const PlayerNav(),

@@ -11,9 +11,10 @@ import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
-import 'package:nucatch/services/combat_nearby_service.dart';
+import 'package:nucatch/services/combat_ble_service.dart';
+import 'package:nucatch/domain/entities/bluetooth_device_info.dart';
 
-/// Guest room screen for discovering and joining Nearby Connections combat rooms
+/// Guest room screen for discovering and joining BLE combat rooms
 class JoinRoomScreen extends StatefulWidget {
   const JoinRoomScreen({super.key});
 
@@ -22,7 +23,7 @@ class JoinRoomScreen extends StatefulWidget {
 }
 
 class _JoinRoomScreenState extends State<JoinRoomScreen> {
-  final CombatNearbyService _nearbyService = CombatNearbyService();
+  CombatBleService? _bleService;
 
   String? _myPlayerId;
   String? _myEndpointName;
@@ -31,10 +32,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   bool _isDiscovering = false;
   bool _myPlayerReady = false;
   bool _hostPlayerReady = false;
-  Map<String, String> _discoveredEndpoints = {}; // endpointId -> endpointName
+  List<BluetoothDeviceInfo> _discoveredDevices = [];
   StreamSubscription? _roomStateSubscription;
   StreamSubscription? _messageSubscription;
-  StreamSubscription? _endpointsSubscription;
+  StreamSubscription? _devicesSubscription;
   StreamSubscription? _connectionStateSubscription;
 
   @override
@@ -44,9 +45,22 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     _myEndpointName =
         'Guest-${Random().nextInt(9999).toString().padLeft(4, '0')}';
 
+    // Initialize on next frame to ensure context is available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _setupBleService();
+    });
+  }
+
+  void _setupBleService() async {
+    // Get BLE service from CombatBloc
+    final combatBloc = context.read<CombatBloc>();
+    _bleService = combatBloc.roomService;
+
+    // Reset service state to ensure clean start
+    await _bleService?.reset();
+
     // Listen to room state
-    _roomStateSubscription =
-        _nearbyService.roomStateStream.listen((state) async {
+    _roomStateSubscription = _bleService!.roomStateStream.listen((state) async {
       if (!mounted) return;
 
       setState(() {
@@ -62,42 +76,37 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       }
     });
 
-    // Listen to discovered endpoints
-    _endpointsSubscription = _nearbyService.endpointsStream.listen((endpoints) {
+    // Listen to discovered devices
+    _devicesSubscription = _bleService!.devicesStream.listen((devices) {
       if (!mounted) return;
 
       setState(() {
-        _discoveredEndpoints = endpoints;
+        _discoveredDevices = devices;
       });
-      print('📡 [Guest] Discovered ${endpoints.length} endpoints');
+      print('📡 [Guest] Discovered ${devices.length} devices');
     });
 
     // Listen to connection state
     _connectionStateSubscription =
-        _nearbyService.connectionStateStream.listen((state) {
+        _bleService!.connectionStateStream.listen((state) {
       print('🔗 [Guest] Connection state: $state');
     });
 
     // Listen to incoming messages
-    _messageSubscription = _nearbyService.messageStream.listen((message) {
+    _messageSubscription = _bleService!.messageStream.listen((message) {
       _handleIncomingMessage(message);
     });
 
-    // CombatGameStarted will reset state when game starts
-
-    // Initialize on next frame
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializeNearby();
-    });
+    _initializeBle();
   }
 
-  Future<void> _initializeNearby() async {
+  Future<void> _initializeBle() async {
     try {
-      print('📡 [Guest] Initializing Nearby Connections...');
+      print('📡 [Guest] Initializing BLE...');
 
-      final initialized = await _nearbyService.initialize();
+      final initialized = await _bleService!.initialize();
       if (!initialized) {
-        _showError(lang(context).failedToInitializeNearby);
+        _showError('Failed to initialize Bluetooth');
         return;
       }
 
@@ -107,7 +116,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
       await _startDiscovery();
     } catch (e) {
-      print('❌ [Guest] Nearby initialization failed: $e');
+      print('❌ [Guest] BLE initialization failed: $e');
       _showError('Failed to initialize: $e');
     }
   }
@@ -115,13 +124,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   @override
   void dispose() {
     _roomStateSubscription?.cancel();
-    _endpointsSubscription?.cancel();
+    _devicesSubscription?.cancel();
     _connectionStateSubscription?.cancel();
     _messageSubscription?.cancel();
 
     if (_roomState != RoomState.playing && _roomState != RoomState.ended) {
-      _nearbyService.stopDiscovery();
-      _nearbyService.disconnect();
+      _bleService?.stopDiscovery();
+      _bleService?.disconnect();
     }
 
     super.dispose();
@@ -152,7 +161,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
   Future<void> _startDiscovery() async {
     if (!_isInitialized) {
-      _showError(lang(context).nearbyNotInitialized);
+      _showError('Bluetooth not initialized');
       return;
     }
 
@@ -161,7 +170,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         _isDiscovering = true;
       });
 
-      await _nearbyService.startDiscovery(_myEndpointName!, _myPlayerId!);
+      await _bleService!.startDiscovery(_myEndpointName!, _myPlayerId!);
       print('✅ [Guest] Discovery started');
 
       if (mounted) {
@@ -181,19 +190,25 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     }
   }
 
-  Future<void> _connectToEndpoint(
-      String endpointId, String endpointName) async {
+  Future<void> _connectToDevice(BluetoothDeviceInfo device) async {
     try {
-      print('🤝 [Guest] Connecting to: $endpointName ($endpointId)');
+      print('🤝 [Guest] Connecting to: ${device.name} (${device.id})');
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(lang(context).connectingToHost(endpointName)),
+          content: Text('Connecting to ${device.name}...'),
           backgroundColor: Theme.of(context).colorScheme.primary,
         ),
       );
 
-      await _nearbyService.requestConnection(endpointId);
+      // Extract room code from device name (format: "ChatApp-XXXX")
+      final roomCode = device.name.replaceFirst('ChatApp-', '');
+
+      await _bleService!.connectToDevice(
+        endpointId: device.id,
+        roomCode: roomCode,
+        userName: _myEndpointName!,
+      );
     } catch (e) {
       _showError('Failed to connect: $e');
     }
@@ -205,13 +220,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         _myPlayerReady = true;
       });
 
-      await _nearbyService.setPlayerReady();
+      await _bleService!.setPlayerReady();
       print('✅ Guest marked as ready');
     } catch (e) {
       setState(() {
         _myPlayerReady = false;
       });
-      _showError(lang(context).failedToSetReady(e.toString()));
+      _showError('Failed to set ready: $e');
     }
   }
 
@@ -238,7 +253,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   String _getRoomStateText() {
     switch (_roomState) {
       case RoomState.waiting:
-        return _discoveredEndpoints.isEmpty
+        return _discoveredDevices.isEmpty
             ? lang(context).searchingForHosts
             : lang(context).selectHostToConnect;
       case RoomState.guestJoined:
@@ -257,8 +272,6 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     return BlocListener<CombatBloc, CombatState>(
       listener: (context, combatState) {
         // Guest auto-navigates when difficulty is received and game is starting
-        // Status will be 'starting' after receiving difficulty from host
-        // It won't reach 'playing' until receiving the first turn_start message
         if (combatState.difficultyModel != null &&
             (combatState.combatStatus == CombatStatus.playing ||
                 combatState.combatStatus == CombatStatus.intro)) {
@@ -289,7 +302,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                           kToolbarHeight + MediaQuery.of(context).padding.top;
 
                       return AnimatedContainer(
-                        duration: const Duration(milliseconds: kAnimationDurationMedium),
+                        duration: const Duration(
+                            milliseconds: kAnimationDurationMedium),
                         color: isCollapsed
                             ? Theme.of(context).primaryColor
                             : Colors.transparent,
@@ -311,8 +325,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                   ),
                   leading: IconButton(
                     onPressed: () async {
-                      await _nearbyService.stopDiscovery();
-                      await _nearbyService.disconnect();
+                      await _bleService?.reset();
                       if (mounted) {
                         context.read<CombatNavCubit>().showSetup();
                       }
@@ -331,10 +344,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                           // Icon
                           Icon(
                             _roomState == RoomState.waiting
-                                ? Icons.radar
+                                ? Icons.bluetooth_searching
                                 : _roomState == RoomState.bothReady
                                     ? Icons.check_circle
-                                    : Icons.wifi_tethering,
+                                    : Icons.bluetooth_connected,
                             size: kContainerSizeS,
                             color: _roomState == RoomState.bothReady
                                 ? Theme.of(context).colorScheme.tertiary
@@ -371,12 +384,12 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
                           // Discovered Hosts List
                           if (_roomState == RoomState.waiting &&
-                              _discoveredEndpoints.isNotEmpty)
+                              _discoveredDevices.isNotEmpty)
                             SizedBox(
                               height: 400,
                               child: Card(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: kPaddingM),
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: kPaddingM),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -384,14 +397,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                       padding: const EdgeInsets.all(kPaddingL),
                                       child: Row(
                                         children: [
-                                          Icon(Icons.radar,
+                                          Icon(Icons.bluetooth_searching,
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .primary),
                                           const SizedBox(width: kSpaceSM),
                                           Text(
-                                            lang(context).availableHosts(
-                                                _discoveredEndpoints.length),
+                                            'Available Hosts (${_discoveredDevices.length})',
                                             style:
                                                 AppTextStyles.titleMediumBold(
                                                     context),
@@ -403,13 +415,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                     Flexible(
                                       child: ListView.builder(
                                         shrinkWrap: true,
-                                        itemCount: _discoveredEndpoints.length,
+                                        itemCount: _discoveredDevices.length,
                                         itemBuilder: (context, index) {
-                                          final entry = _discoveredEndpoints
-                                              .entries
-                                              .elementAt(index);
-                                          final endpointId = entry.key;
-                                          final endpointName = entry.value;
+                                          final device =
+                                              _discoveredDevices[index];
+                                          // Extract room code from device name
+                                          final roomCode = device.name
+                                              .replaceFirst('ChatApp-', '');
 
                                           return ListTile(
                                             leading: CircleAvatar(
@@ -424,7 +436,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                               ),
                                             ),
                                             title: Text(
-                                              endpointName,
+                                              'Room: $roomCode',
                                               style:
                                                   AppTextStyles.bodyLargeBold(
                                                       context),
@@ -439,8 +451,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                               Icons.arrow_forward_ios,
                                               size: kIconSizeS,
                                             ),
-                                            onTap: () => _connectToEndpoint(
-                                                endpointId, endpointName),
+                                            onTap: () =>
+                                                _connectToDevice(device),
                                           );
                                         },
                                       ),
@@ -452,7 +464,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
                           // Empty State
                           if (_roomState == RoomState.waiting &&
-                              _discoveredEndpoints.isEmpty)
+                              _discoveredDevices.isEmpty)
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 40),
                               child: Column(
@@ -575,8 +587,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    Icons.settings_input_antenna,
-                                    color: _nearbyService.isConnected
+                                    Icons.bluetooth_connected,
+                                    color: (_bleService?.isConnected ?? false)
                                         ? Theme.of(context).colorScheme.tertiary
                                         : _isDiscovering
                                             ? Theme.of(context)
@@ -589,15 +601,15 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                   ),
                                   const SizedBox(width: kSpaceM),
                                   Text(
-                                    _nearbyService.isConnected
-                                        ? lang(context).connectedViaNearby
+                                    (_bleService?.isConnected ?? false)
+                                        ? 'Connected via Bluetooth'
                                         : _isDiscovering
                                             ? lang(context).discovering
-                                            : lang(context).notDiscovering,
+                                            : 'Not discovering',
                                     style: AppTextStyles.withColor(
                                         AppTextStyles.bodyMediumSecondary(
                                             context),
-                                        _nearbyService.isConnected
+                                        (_bleService?.isConnected ?? false)
                                             ? Colors.green
                                             : _isDiscovering
                                                 ? Colors.orange

@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
+import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/helpers/combat_dialogs.dart';
 import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
-import 'package:nucatch/services/combat_nearby_service.dart';
+import 'package:nucatch/services/combat_ble_service.dart';
 
-/// Host room screen for advertising via Nearby Connections
+/// Host room screen for advertising via BLE
 class HostRoomScreen extends StatefulWidget {
   const HostRoomScreen({super.key});
 
@@ -20,10 +21,11 @@ class HostRoomScreen extends StatefulWidget {
 }
 
 class _HostRoomScreenState extends State<HostRoomScreen> {
-  final CombatNearbyService _nearbyService = CombatNearbyService();
+  CombatBleService? _bleService;
 
   String? _myPlayerId;
   String? _myEndpointName;
+  String? _roomCode;
   RoomState _roomState = RoomState.waiting;
   bool _isInitialized = false;
   bool _myPlayerReady = false;
@@ -31,22 +33,37 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
   StreamSubscription? _roomStateSubscription;
   StreamSubscription? _messageSubscription;
   StreamSubscription? _connectionStateSubscription;
+  StreamSubscription? _connectionRequestSubscription;
 
   @override
   void initState() {
     super.initState();
+
     _myPlayerId = _generatePlayerId();
     _myEndpointName =
         'Nuca-${Random().nextInt(9999).toString().padLeft(4, '0')}';
 
+    // Initialize on next frame to ensure context is available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _setupBleService();
+    });
+  }
+
+  void _setupBleService() async {
+    // Get BLE service from CombatBloc
+    final combatBloc = context.read<CombatBloc>();
+    _bleService = combatBloc.roomService;
+
+    // Reset service state to ensure clean start
+    await _bleService?.reset();
+
     // Listen to incoming messages
-    _messageSubscription = _nearbyService.messageStream.listen((message) {
+    _messageSubscription = _bleService!.messageStream.listen((message) {
       _handleIncomingMessage(message);
     });
 
     // Listen to room state
-    _roomStateSubscription =
-        _nearbyService.roomStateStream.listen((state) async {
+    _roomStateSubscription = _bleService!.roomStateStream.listen((state) async {
       if (!mounted) return;
 
       setState(() {
@@ -66,25 +83,26 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
     // Listen to connection state
     _connectionStateSubscription =
-        _nearbyService.connectionStateStream.listen((state) {
+        _bleService!.connectionStateStream.listen((state) {
       print('🔗 [Host] Connection state: $state');
     });
 
-    // CombatGameStarted will reset state when game starts
-
-    // Initialize on next frame
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializeNearby();
+    // Listen to connection requests (BLE specific)
+    _connectionRequestSubscription =
+        _bleService!.connectionRequestStream.listen((request) {
+      _handleConnectionRequest(request);
     });
+
+    _initializeBle();
   }
 
-  Future<void> _initializeNearby() async {
+  Future<void> _initializeBle() async {
     try {
-      print('📡 [Host] Initializing Nearby Connections...');
+      print('📡 [Host] Initializing BLE...');
 
-      final initialized = await _nearbyService.initialize();
+      final initialized = await _bleService!.initialize();
       if (!initialized) {
-        _showError(lang(context).failedToInitializeNearby);
+        _showError('Failed to initialize Bluetooth');
         return;
       }
 
@@ -94,7 +112,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
       await _startAdvertising();
     } catch (e) {
-      print('❌ [Host] Nearby initialization failed: $e');
+      print('❌ [Host] BLE initialization failed: $e');
       _showError('Failed to initialize: $e');
     }
   }
@@ -104,9 +122,10 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
     _roomStateSubscription?.cancel();
     _messageSubscription?.cancel();
     _connectionStateSubscription?.cancel();
+    _connectionRequestSubscription?.cancel();
 
     if (_roomState != RoomState.playing && _roomState != RoomState.ended) {
-      _nearbyService.stopAdvertising();
+      _bleService?.stopAdvertising();
     }
 
     super.dispose();
@@ -131,21 +150,70 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
     }
   }
 
+  void _handleConnectionRequest(Map<String, dynamic> request) {
+    if (!mounted) return;
+
+    final endpointId = request['endpointId'] as String?;
+    final endpointName = request['endpointName'] as String?;
+
+    if (endpointId == null || endpointName == null) {
+      print('⚠️ [Host] Invalid connection request');
+      return;
+    }
+
+    print('🔔 [Host] Connection request from: $endpointName ($endpointId)');
+
+    // Show dialog to accept/reject connection
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Connection Request'),
+        content: Text(
+          'Player $endpointName wants to join. Accept?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _bleService?.rejectConnection(endpointId);
+              print('❌ [Host] Connection rejected');
+            },
+            child: const Text('Reject'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _bleService?.acceptConnection(endpointId, endpointName);
+              print('✅ [Host] Connection accepted');
+            },
+            child: const Text('Accept'),
+          ),
+        ],
+      ),
+    );
+  }
+
   String _generatePlayerId() {
     return 'player_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(1000)}';
   }
 
   Future<void> _startAdvertising() async {
     if (!_isInitialized) {
-      _showError(lang(context).nearbyNotInitialized);
+      _showError('Bluetooth not initialized');
       return;
     }
 
     try {
-      await _nearbyService.startAdvertising(_myEndpointName!, _myPlayerId!);
+      await _bleService!.startAdvertising(_myEndpointName!, _myPlayerId!);
+      _roomCode = _bleService!.currentRoomCode;
+
       print('✅ [Host] Advertising started as: $_myEndpointName');
+      print('📱 [Host] Room code: $_roomCode');
 
       if (mounted) {
+        setState(() {}); // Update UI with room code
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(lang(context).advertisingRoomWaiting),
@@ -155,7 +223,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
         );
       }
     } catch (e) {
-      _showError(lang(context).failedToStartAdvertising(e.toString()));
+      _showError('Failed to start advertising: $e');
     }
   }
 
@@ -165,13 +233,13 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
         _myPlayerReady = true;
       });
 
-      await _nearbyService.setPlayerReady();
+      await _bleService!.setPlayerReady();
       print('✅ Host marked as ready');
     } catch (e) {
       setState(() {
         _myPlayerReady = false;
       });
-      _showError(lang(context).failedToSetReady(e.toString()));
+      _showError('Failed to set ready: $e');
     }
   }
 
@@ -191,7 +259,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
     try {
       print('🎮 [Host] Starting game with Easy difficulty...');
 
-      await _nearbyService.startGame();
+      await _bleService!.startGame();
 
       if (mounted) {
         print(
@@ -202,7 +270,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       }
     } catch (e) {
       print('❌ [Host] Failed to start game: $e');
-      _showError(lang(context).failedToStartGame(e.toString()));
+      _showError('Failed to start game: $e');
     }
   }
 
@@ -253,7 +321,8 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                         kToolbarHeight + MediaQuery.of(context).padding.top;
 
                     return AnimatedContainer(
-                      duration: const Duration(milliseconds: kAnimationDurationMedium),
+                      duration: const Duration(
+                          milliseconds: kAnimationDurationMedium),
                       color: isCollapsed
                           ? Theme.of(context).primaryColor
                           : Colors.transparent,
@@ -275,7 +344,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                 ),
                 leading: IconButton(
                   onPressed: () async {
-                    await _nearbyService.stopAdvertising();
+                    await _bleService?.reset();
                     if (mounted) {
                       context.read<CombatNavCubit>().showSetup();
                     }
@@ -292,31 +361,37 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.wifi_tethering,
+                          Icons.bluetooth,
                           size: 80,
                           color: Theme.of(context).colorScheme.primary,
                         ),
                         const SizedBox(height: kSpaceXL),
-                        Text(
-                          lang(context).advertisingAs,
-                          style: AppTextStyles.titleLarge(context),
-                        ),
-                        const SizedBox(height: kSpaceM),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: kPadding2XL, vertical: kPaddingML),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(kBorderRadiusL),
+
+                        // Room Code Display
+                        if (_roomCode != null) ...[
+                          Text(
+                            'Room Code',
+                            style: AppTextStyles.titleLarge(context),
                           ),
-                          child: Text(
-                            _myEndpointName ?? 'Unknown',
-                            style: AppTextStyles.withFontFamily(
-                                AppTextStyles.displaySmall(context),
-                                'monospace'),
+                          const SizedBox(height: kSpaceM),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kPadding2XL, vertical: kPaddingML),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.1),
+                              borderRadius:
+                                  BorderRadius.circular(kBorderRadiusL),
+                            ),
+                            child: Text(
+                              _roomCode!,
+                              style: AppTextStyles.withFontFamily(
+                                  AppTextStyles.displaySmall(context),
+                                  'monospace'),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: kSpace2XL),
+                          const SizedBox(height: kSpace2XL),
+                        ],
+
                         Text(
                           _getRoomStateText(),
                           style: AppTextStyles.bodyLargeMedium(context),
@@ -408,21 +483,21 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
-                                  Icons.settings_input_antenna,
-                                  color: _nearbyService.isConnected
+                                  Icons.bluetooth_connected,
+                                  color: (_bleService?.isConnected ?? false)
                                       ? Theme.of(context).colorScheme.tertiary
                                       : Theme.of(context).colorScheme.error,
                                   size: kFontSizeXL,
                                 ),
                                 const SizedBox(width: kSpaceM),
                                 Text(
-                                  _nearbyService.isConnected
-                                      ? lang(context).connectedViaNearby
+                                  (_bleService?.isConnected ?? false)
+                                      ? 'Connected via Bluetooth'
                                       : lang(context).advertising,
                                   style: AppTextStyles.withColor(
                                       AppTextStyles.bodyMediumSecondary(
                                           context),
-                                      _nearbyService.isConnected
+                                      (_bleService?.isConnected ?? false)
                                           ? Theme.of(context)
                                               .colorScheme
                                               .tertiary

@@ -89,6 +89,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  ble_peripheral:
+    dependency: "direct main"
+    description:
+      name: ble_peripheral
+      sha256: "858d370709507155bbf69e6160e9cb81d802e664f133a649a38b9ca04439884c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.0"
   bloc:
     dependency: transitive
     description:
@@ -331,6 +339,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_reactive_ble:
+    dependency: "direct main"
+    description:
+      name: flutter_reactive_ble
+      sha256: "3ca8430bc7a6cabe5529aab4afaa2e3cb285941f7f7ab7472604074e347c1302"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -357,6 +373,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.8.0"
+  functional_data:
+    dependency: transitive
+    description:
+      name: functional_data
+      sha256: "76d17dc707c40e552014f5a49c0afcc3f1e3f05e800cd6b7872940bfe41a5039"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   http:
     dependency: transitive
     description:
@@ -477,14 +501,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
-  nearby_connections:
-    dependency: "direct main"
-    description:
-      name: nearby_connections
-      sha256: "94d500bdb11f9a3db3b1cb2949ab438107e581f0142380efc17ecc8038e99369"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.3.0"
   nested:
     dependency: transitive
     description:
@@ -645,6 +661,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  protobuf:
+    dependency: transitive
+    description:
+      name: protobuf
+      sha256: "01dd9bd0fa02548bf2ceee13545d4a0ec6046459d847b6b061d8a27237108a08"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   provider:
     dependency: transitive
     description:
@@ -669,6 +693,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  reactive_ble_mobile:
+    dependency: transitive
+    description:
+      name: reactive_ble_mobile
+      sha256: "78af92cfb184770a277a8bdaa76b396a28dbada8931f3d8d0ff552414681f5db"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.0"
+  reactive_ble_platform_interface:
+    dependency: transitive
+    description:
+      name: reactive_ble_platform_interface
+      sha256: d0e6f86c7ee3865b74d8a7b6deb1fb8320b24176dfd9a3e475f84b7117eb42c7
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.0"
   share_plus:
     dependency: "direct main"
     description:

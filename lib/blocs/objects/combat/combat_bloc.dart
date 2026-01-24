@@ -14,10 +14,10 @@ import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
-import 'package:nucatch/services/combat_nearby_service.dart';
+import 'package:nucatch/services/combat_ble_service.dart';
 
 class CombatBloc extends Bloc<CombatEvent, CombatState> {
-  final CombatNearbyService _roomService;
+  final CombatBleService _roomService;
   final AudioBloc _audioBloc;
   final VibrationBloc _vibrationBloc;
   StreamSubscription? _messageSubscription;
@@ -26,8 +26,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   // Expose isHost status from room service
   bool get isHost => _roomService.isHost;
 
+  // Expose room service for UI screens
+  CombatBleService get roomService => _roomService;
+
   CombatBloc({
-    required CombatNearbyService roomService,
+    required CombatBleService roomService,
     required AudioBloc audioBloc,
     required VibrationBloc vibrationBloc,
   })  : _roomService = roomService,
@@ -59,7 +62,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatBlocReset>(_onCombatBlocReset);
 
     // Listen to BLE messages
-    _messageSubscription = _roomService.messageStream.listen((data) {
+    _messageSubscription = _roomService.incomingDataStream.listen((data) {
       _handleRoomMessage(data);
     });
   }
@@ -204,7 +207,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   Future<void> _sendMessage(Map<String, dynamic> data) async {
     try {
       print('📤 [Combat] Attempting to send message: ${data['type']}');
-      await _roomService.sendMessage(data);
+      await _roomService.sendData(data);
       print(
           '✅ [Combat] Successfully sent message: ${data['type']}, data: $data');
     } catch (e) {
