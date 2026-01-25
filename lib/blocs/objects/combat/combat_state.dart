@@ -163,6 +163,12 @@ class CombatState extends TurnState {
   int get myLives => lifeRemaining;
   String? get currentRequirement => requirementString;
   String? get currentTarget => expect;
+
+  // Auto-detect opponent completion when their input length matches expected length
+  bool get isOpponentComplete =>
+      opponentInput != null &&
+      expect != null &&
+      opponentInput!.length == expect!.length;
 }
 
 enum CombatStatus {
@@ -183,8 +189,7 @@ enum GameEndReason {
 enum CombatMessageType {
   difficultySelected, // Host selected difficulty
   turnStart, // Turn started
-  typingUpdate, // Full typing update
-  moveSuccess, // Move completed successfully
+  typingUpdate, // Full typing update (auto-detects completion)
   moveCompleted, // Turn completed
   gameEnded, // Game ended
   restartRequested, // Restart requested

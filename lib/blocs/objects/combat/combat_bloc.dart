@@ -157,12 +157,17 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
               add(CombatOpponentTypingUpdate(
                 currentInput: data['currentInput'],
               ));
+
+              // Auto-detect opponent completion based on input length
+              // Check if opponent just completed their move
+              final newOpponentInput = data['currentInput'] as String?;
+              if (newOpponentInput != null &&
+                  state.expect != null &&
+                  newOpponentInput.length == state.expect!.length) {
+                // Automatically trigger success animation
+                add(CombatOpponentSuccessReceived());
+              }
             }
-            break;
-          case CombatMessageType.moveSuccess:
-            // Immediate notification that opponent finished successfully
-            // Triggers firework animation on opponent's score
-            add(CombatOpponentSuccessReceived());
             break;
           case CombatMessageType.moveCompleted:
             add(CombatOpponentMoveReceived(
@@ -761,10 +766,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       ),
     );
 
-    // Send immediate success notification to trigger opponent's firework
-    await _sendMessage({
-      'type': _messageTypeToString(CombatMessageType.moveSuccess),
-    });
+    // Note: move_success is now auto-detected by opponent from typing_update
+    // when opponentInput.length == expect.length
 
     // Increment timesCorrect and add life bonus (every 3 correct turns)
     emit(
@@ -1092,7 +1095,6 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatMessageType.difficultySelected: 'difficulty_selected',
     CombatMessageType.turnStart: 'turn_start',
     CombatMessageType.typingUpdate: 'typing_update',
-    CombatMessageType.moveSuccess: 'move_success',
     CombatMessageType.moveCompleted: 'move_completed',
     CombatMessageType.gameEnded: 'game_ended',
     CombatMessageType.restartRequested: 'restart_requested',
@@ -1104,7 +1106,6 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     'difficulty_selected': CombatMessageType.difficultySelected,
     'turn_start': CombatMessageType.turnStart,
     'typing_update': CombatMessageType.typingUpdate,
-    'move_success': CombatMessageType.moveSuccess,
     'move_completed': CombatMessageType.moveCompleted,
     'game_ended': CombatMessageType.gameEnded,
     'restart_requested': CombatMessageType.restartRequested,
