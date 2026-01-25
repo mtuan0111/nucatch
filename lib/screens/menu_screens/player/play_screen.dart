@@ -436,7 +436,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                         // Don't update _currentLifeRemaining here, let animation handle it
                                       });
 
-                                      if (wasLifeIncreased) {
+                                      // Update current life remaining for both increases and decreases
+                                      if (wasLifeIncreased ||
+                                          wasLifeDecreased) {
                                         setState(() {
                                           _currentLifeRemaining =
                                               state.lifeRemaining;
