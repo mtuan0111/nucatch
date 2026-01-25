@@ -98,12 +98,14 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
   Future<void> _initializeBle() async {
     try {
-      print('📡 [Host] Initializing BLE...');
+      print('📡 [Host] Requesting Bluetooth permissions...');
 
-      final initialized = await _bleService!.initialize();
-      if (!initialized) {
-        _showError('Failed to initialize Bluetooth');
-        return;
+      final permissionsGranted = await _bleService!.requestPermissions();
+      if (!permissionsGranted) {
+        print(
+            '⚠️ [Host] Bluetooth permissions denied, but continuing anyway...');
+        // Note: On iOS, BLE advertising can still work even with "denied" permissions
+        // The permission_handler package may report "denied" but iOS BLE stack allows it
       }
 
       setState(() {

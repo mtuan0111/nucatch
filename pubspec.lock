@@ -90,7 +90,7 @@ packages:
     source: hosted
     version: "3.1.0"
   ble_peripheral:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: ble_peripheral
       sha256: "858d370709507155bbf69e6160e9cb81d802e664f133a649a38b9ca04439884c"
@@ -347,7 +347,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_reactive_ble:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_reactive_ble
       sha256: "3ca8430bc7a6cabe5529aab4afaa2e3cb285941f7f7ab7472604074e347c1302"

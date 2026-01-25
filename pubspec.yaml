@@ -68,8 +68,7 @@ dependencies:
   permission_handler: ^11.3.1
   device_info_plus: ^10.1.0
   super_tooltip: ^2.0.8
-  flutter_reactive_ble: ^5.4.0
-  ble_peripheral: ^2.4.0
+  # Shared BLE Platform Services (includes flutter_reactive_ble and ble_peripheral)
   ble_plat_services:
     path: ../ble_plat_services
 

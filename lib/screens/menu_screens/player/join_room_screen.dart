@@ -102,12 +102,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
   Future<void> _initializeBle() async {
     try {
-      print('📡 [Guest] Initializing BLE...');
+      print('📡 [Join] Requesting Bluetooth permissions...');
 
-      final initialized = await _bleService!.initialize();
-      if (!initialized) {
-        _showError('Failed to initialize Bluetooth');
-        return;
+      final permissionsGranted = await _bleService!.requestPermissions();
+      if (!permissionsGranted) {
+        print(
+            '⚠️ [Join] Bluetooth permissions denied, but continuing anyway...');
+        // Note: On iOS, BLE scanning can still work even with "denied" permissions
       }
 
       setState(() {

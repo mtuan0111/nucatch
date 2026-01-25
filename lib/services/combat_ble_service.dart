@@ -146,8 +146,8 @@ class CombatBleService {
     }
   }
 
-  /// Initialize and request Bluetooth permissions
-  Future<bool> initialize() async {
+  /// Request Bluetooth permissions (matching chat_bluetooth pattern)
+  Future<bool> requestPermissions() async {
     debugPrint('📡 [CombatBLE] Initializing...');
     final granted = await repository.requestPermissions();
     if (granted) {
@@ -156,11 +156,6 @@ class CombatBleService {
       debugPrint('❌ [CombatBLE] Permissions denied');
     }
     return granted;
-  }
-
-  /// Request Bluetooth permissions
-  Future<bool> requestPermissions() async {
-    return await repository.requestPermissions();
   }
 
   /// Start advertising as host (matching CombatNearbyService.startAdvertising)

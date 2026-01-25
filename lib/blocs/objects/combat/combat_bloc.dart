@@ -650,18 +650,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       state.copyWith(typing: newTyping),
     );
 
-    // Send individual number event for real-time character-by-character display
-    print(
-        '📤 [Combat] Sending move_typed_$tappedNumber with currentInput: $newTyping');
-    await _sendMessage({
-      'type': 'move_typed_$tappedNumber',
-      'number': tappedNumber,
-      'currentInput': newTyping,
-    });
-
-    // Also send full typing update for backward compatibility
+    // Send typing update immediately without await (fire-and-forget)
+    // This ensures fast taps don't queue up - receiver gets the latest cumulative string
+    // Example: "1" -> "12" -> "123" -> "1235"
     print('📤 [Combat] Sending typing_update with currentInput: $newTyping');
-    await _sendMessage({
+    _sendMessage({
       'type': _messageTypeToString(CombatMessageType.typingUpdate),
       'currentInput': newTyping,
     });
