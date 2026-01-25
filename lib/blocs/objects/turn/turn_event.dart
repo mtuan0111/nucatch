@@ -38,11 +38,9 @@ class Tap extends TurnEvent {
 
 class SetLevel extends TurnEvent {
   final int level;
-  final int addPoint;
 
   SetLevel({
     required this.level,
-    this.addPoint = 1,
   });
 }
 

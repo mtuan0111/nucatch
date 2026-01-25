@@ -150,7 +150,10 @@ class CombatState extends TurnState {
   }
 
   // Combat-specific computed properties
-  bool get canTap => isMyTurn && isGameActive && expect != null;
+
+  @override
+  bool get isAbleToTap =>
+      isMyTurn && isGameActive && isExpectNotEmpty && !isFinishTarget;
   bool get isComplete => myInput == expect;
   bool get hasGameEnded => isWinner != null;
   bool get isOpponentActive => !isMyTurn && isGameActive;

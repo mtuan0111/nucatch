@@ -111,11 +111,11 @@ class _MenuNavState extends State<MenuNav> {
                               //   return PlayerNavCubit()..showSelectPlayMode();
                               // }
 
-                              if (Platform.isIOS) {
-                                return PlayerNavCubit()
-                                  ..showSelectPlayMode()
-                                  ..selectPlayMode(PlayMode.solo);
-                              }
+                              // if (Platform.isIOS) {
+                              //   return PlayerNavCubit()
+                              //     ..showSelectPlayMode()
+                              //     ..selectPlayMode(PlayMode.solo);
+                              // }
 
                               return PlayerNavCubit()..showSelectPlayMode()
                                   // ..selectPlayMode(PlayMode.solo)

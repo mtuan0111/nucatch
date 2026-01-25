@@ -556,7 +556,6 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     await _onSetLevel(
       SetLevel(
         level: state.level,
-        addPoint: 0,
       ),
       emitter,
     );

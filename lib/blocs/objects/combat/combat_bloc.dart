@@ -572,9 +572,22 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatTap event,
     Emitter<CombatState> emit,
   ) async {
-    if (!state.isMyTurn || !state.canTap) {
+    if (!state.isMyTurn || !state.isAbleToTap) {
       return;
     }
+
+    if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
+      return;
+    }
+
+    _audioBloc.add(PlayTapAudio());
+
+    // Reset timer on each tap
+    _startTapTimer();
 
     if (event.keyValue == KeyboardOption.reset) {
       return;
@@ -705,6 +718,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatLostLife event,
     Emitter<CombatState> emit,
   ) async {
+    if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
+      return;
+    }
+
     emit(
       state.copyWith(
         lifeRemaining: state.lifeRemaining - 1,
@@ -884,16 +905,28 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatNumberReset event,
     Emitter<CombatState> emit,
   ) async {
+    if (isClosed) {
+      return;
+    }
+
+    if (state.isLoading) {
+      return;
+    }
+
     if (!state.isAbleToReset) {
       return;
     }
 
+    _stopTapTimer();
     add(CombatLostLife());
+    _vibrationBloc.add(VibrateMultiple());
 
     await Future.delayed(
         Duration(milliseconds: event.duration.inMilliseconds + 500));
     await _onCombatSetLevel(
-      CombatLevelChanged(level: state.level),
+      CombatLevelChanged(
+        level: state.level,
+      ),
       emit,
     );
   }
@@ -947,7 +980,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     Emitter<CombatState> emit,
   ) async {
     if (isClosed) return;
-    if (!state.canTap) return;
+    if (!state.isAbleToTap) return;
 
     _stopTapTimer();
 

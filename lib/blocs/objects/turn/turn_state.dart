@@ -99,7 +99,7 @@ class TurnState {
   }
 
   int get currentTypingIndex => typing.length;
-  bool get isFinishTarget => expect == typing;
+  bool get isFinishTarget => (expect?.isNotEmpty ?? false) && expect == typing;
 
   int get getTimeShowTarget => 1000 + level * diffShowLevelMilisecond;
 

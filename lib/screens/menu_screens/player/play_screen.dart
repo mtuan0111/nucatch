@@ -57,6 +57,9 @@ class _PlayScreenState extends State<PlayScreen> {
   final GlobalKey _scoreKey = GlobalKey();
   final GlobalKey _heartKey = GlobalKey();
 
+  // Track which character indices have triggered fireworks
+  final Set<int> _triggeredFireworkIndices = {};
+
   PlayerNavCubit get playerNavCubit => context.read<PlayerNavCubit>();
   PlayerNavState get playerNavState => playerNavCubit.state;
 
@@ -878,9 +881,14 @@ class _PlayScreenState extends State<PlayScreen> {
                                               child: Builder(
                                                 builder: (context) {
                                                   // Trigger firework when finished
+                                                  // Only trigger once per character index
                                                   if (turnState
                                                           .isFinishTarget &&
-                                                      hide == 1) {
+                                                      hide == 1 &&
+                                                      !_triggeredFireworkIndices
+                                                          .contains(index)) {
+                                                    _triggeredFireworkIndices
+                                                        .add(index);
                                                     WidgetsBinding.instance
                                                         .addPostFrameCallback(
                                                             (_) {
@@ -921,6 +929,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                                         });
                                                       }
                                                     });
+                                                  } else if (!turnState
+                                                      .isFinishTarget) {
+                                                    // Reset set when starting a new turn
+                                                    _triggeredFireworkIndices
+                                                        .clear();
                                                   }
 
                                                   return Column(

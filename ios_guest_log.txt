@@ -1,0 +1,40 @@
+Launching lib/main.dart on MM’s iPhone 15 Plus (wireless) in debug mode...
+Wireless debugging on iOS 26 may be slower than expected. For better performance, consider using a wired (USB) connection.
+Automatically signing iOS for device deployment using specified development team in Xcode project: R23LP5MFKD
+Running Xcode build...                                          
+Xcode build done.                                           20.8s
+Installing and launching...                                        58.7s
+flutter: ✅ Firebase initialized successfully
+flutter: ✅ Firestore offline persistence enabled
+Syncing files to device MM’s iPhone 15 Plus (wireless)...           79ms
+
+Flutter run key commands.
+r Hot reload. 🔥🔥🔥
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on MM’s iPhone 15 Plus is available at: http://127.0.0.1:51542/sP4Dj9f0YDY=/
+The Flutter DevTools debugger and profiler on MM’s iPhone 15 Plus is available at: http://127.0.0.1:51542/sP4Dj9f0YDY=/devtools/?uri=ws://127.0.0.1:51542/sP4Dj9f0YDY=/ws
+flutter: ☁️ User session (online mode): wc70X3aJrtcnpu6cwao9YdUipQp2
+flutter: 🔄 [CombatBLE] Resetting service state...
+flutter: ✅ BLE: Stopped advertising and cleared services
+flutter: 🛑 [CombatBLE] Advertising stopped
+flutter: BLE: Stopped discovery
+flutter: 🛑 [CombatBLE] Discovery stopped
+flutter: ✅ [CombatBLE] Service reset complete
+flutter: 📡 [Guest] Initializing BLE...
+flutter: 📡 [CombatBLE] Initializing...
+flutter: 🔐 BLE: Requesting Bluetooth permissions...
+flutter: 🔐 BLE: Platform: iOS
+BluetoothState: CBManagerState(rawValue: 5)
+flutter: 🔐 BLE: Permissions granted: false
+flutter:   ❌ Permission.bluetoothConnect: PermissionStatus.permanentlyDenied
+flutter:   ❌ Permission.bluetoothScan: PermissionStatus.permanentlyDenied
+flutter: ⚠️ BLE: DENIED PERMISSIONS:
+flutter:   ❌ Permission.bluetoothConnect - Status: PermissionStatus.permanentlyDenied
+flutter:   ❌ Permission.bluetoothScan - Status: PermissionStatus.permanentlyDenied
+flutter: ❌ [CombatBLE] Permissions denied
+Lost connection to device.
