@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../../../../../MM_DATA/flutter_projects/chat_bluetooth"
+		},
+		{
+			"path": "../../../ble_plat_services"
 		}
 	],
 	"settings": {}

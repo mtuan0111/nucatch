@@ -70,6 +70,8 @@ dependencies:
   super_tooltip: ^2.0.8
   flutter_reactive_ble: ^5.4.0
   ble_peripheral: ^2.4.0
+  ble_plat_services:
+    path: ../ble_plat_services
 
 
 dependency_overrides:

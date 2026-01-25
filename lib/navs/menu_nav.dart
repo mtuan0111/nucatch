@@ -20,8 +20,7 @@ import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
-import 'package:nucatch/data/repositories/bluetooth_repository_impl.dart';
-import 'package:nucatch/data/datasources/ble_data_source.dart';
+import 'package:ble_plat_services/ble_plat_services.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
@@ -130,7 +129,8 @@ class _MenuNavState extends State<MenuNav> {
                             BlocProvider(
                               create: (context) {
                                 // Create BLE infrastructure
-                                final bleDataSource = BleDataSource();
+                                final bleDataSource =
+                                    BleDataSource(appPrefix: 'nucatch');
                                 final bluetoothRepository =
                                     BluetoothRepositoryImpl(
                                   dataSource: bleDataSource,

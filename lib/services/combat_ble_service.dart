@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import '../domain/repositories/bluetooth_repository.dart';
-import '../domain/entities/bluetooth_device_info.dart';
+import 'package:ble_plat_services/ble_plat_services.dart';
 import '../core/utils/room_code_generator.dart';
 
 /// Room states for combat mode (matching CombatNearbyService)
