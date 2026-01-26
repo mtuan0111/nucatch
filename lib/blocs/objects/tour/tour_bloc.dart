@@ -66,10 +66,10 @@ class TourBloc extends Bloc<TourEvent, TourState> {
       // Move to next step
       int nextStep = state.currentStep + 1;
 
-      // Skip combat-related steps for iOS users
-      if (Platform.isIOS) {
-        nextStep = _getNextNonCombatStep(nextStep);
-      }
+      // // Skip combat-related steps for iOS users
+      // if (Platform.isIOS) {
+      //   nextStep = _getNextNonCombatStep(nextStep);
+      // }
 
       emit(state.copyWith(
         currentStep: nextStep,
@@ -85,10 +85,10 @@ class TourBloc extends Bloc<TourEvent, TourState> {
     if (!state.isFirstStep) {
       int previousStep = state.currentStep - 1;
 
-      // Skip combat-related steps for iOS users when going back
-      if (Platform.isIOS) {
-        previousStep = _getPreviousNonCombatStep(previousStep);
-      }
+      // // Skip combat-related steps for iOS users when going back
+      // if (Platform.isIOS) {
+      //   previousStep = _getPreviousNonCombatStep(previousStep);
+      // }
 
       emit(state.copyWith(
         currentStep: previousStep,

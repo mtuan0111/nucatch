@@ -33,11 +33,11 @@ class TourState {
   /// iOS: 5 steps (skips combat mode, create room, join room)
   /// Android: 8 steps (all steps)
   int get totalSteps {
-    if (Platform.isIOS) {
-      // iOS: welcome, startButton, soloMode, leaderboard, settings = 5 steps
-      return TourStep.values.length -
-          3; // Exclude combatMode, createRoom, joinRoom
-    }
+    // if (Platform.isIOS) {
+    //   // iOS: welcome, startButton, soloMode, leaderboard, settings = 5 steps
+    //   return TourStep.values.length -
+    //       3; // Exclude combatMode, createRoom, joinRoom
+    // }
     return TourStep.values.length; // Android: all 8 steps
   }
 
@@ -51,23 +51,23 @@ class TourState {
   /// iOS: Maps actual indices to display numbers (skipping combat steps)
   /// Android: Uses actual step index + 1
   int get displayStepNumber {
-    if (Platform.isIOS) {
-      // Map actual step indices to display numbers for iOS
-      switch (currentTourStep) {
-        case TourStep.welcome:
-          return 1;
-        case TourStep.startButton:
-          return 2;
-        case TourStep.soloMode:
-          return 3;
-        case TourStep.leaderboard:
-          return 4; // Skip combat steps (3-5 in enum)
-        case TourStep.settings:
-          return 5;
-        default:
-          return currentStep + 1; // Fallback
-      }
-    }
+    // if (Platform.isIOS) {
+    //   // Map actual step indices to display numbers for iOS
+    //   switch (currentTourStep) {
+    //     case TourStep.welcome:
+    //       return 1;
+    //     case TourStep.startButton:
+    //       return 2;
+    //     case TourStep.soloMode:
+    //       return 3;
+    //     case TourStep.leaderboard:
+    //       return 4; // Skip combat steps (3-5 in enum)
+    //     case TourStep.settings:
+    //       return 5;
+    //     default:
+    //       return currentStep + 1; // Fallback
+    //   }
+    // }
     return currentStep + 1; // Android: normal 1-based indexing
   }
 
