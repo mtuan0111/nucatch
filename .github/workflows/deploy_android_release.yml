@@ -130,6 +130,11 @@ jobs:
           KEY_PROPERTIES_BASE64: ${{ env.KEY_PROPERTIES_BASE64 }}
           SERVICE_ACCOUNT_JSON_BASE64: ${{ env.SERVICE_ACCOUNT_JSON_BASE64 }}
 
+      - name: Setup SSH for private dependencies
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Get Flutter dependencies
         run: flutter pub get
 
