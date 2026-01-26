@@ -23,6 +23,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   StreamSubscription? _messageSubscription;
   Timer? _tapTimer;
 
+  // Debounce timer for typing_update messages to prevent BLE flooding
+  Timer? _typingUpdateDebounceTimer;
+  String? _pendingTypingUpdate;
+  static const Duration _typingUpdateDebounce = Duration(milliseconds: 100);
+
   // Expose isHost status from room service
   bool get isHost => _roomService.isHost;
 
@@ -650,13 +655,22 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       state.copyWith(typing: newTyping),
     );
 
-    // Send typing update immediately without await (fire-and-forget)
-    // This ensures fast taps don't queue up - receiver gets the latest cumulative string
-    // Example: "1" -> "12" -> "123" -> "1235"
-    print('📤 [Combat] Sending typing_update with currentInput: $newTyping');
-    _sendMessage({
-      'type': _messageTypeToString(CombatMessageType.typingUpdate),
-      'currentInput': newTyping,
+    // Debounce typing_update to prevent BLE flooding when user taps too fast
+    // Store the latest input and send after debounce period
+    _pendingTypingUpdate = newTyping;
+    _typingUpdateDebounceTimer?.cancel();
+    _typingUpdateDebounceTimer = Timer(_typingUpdateDebounce, () async {
+      if (_pendingTypingUpdate != null) {
+        final inputToSend = _pendingTypingUpdate!;
+        _pendingTypingUpdate = null;
+
+        print(
+            '📤 [Combat] Sending debounced typing_update with currentInput: $inputToSend');
+        await _sendMessage({
+          'type': _messageTypeToString(CombatMessageType.typingUpdate),
+          'currentInput': inputToSend,
+        });
+      }
     });
   }
 
