@@ -217,6 +217,19 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: android/service_account.json
 
+      - name: 🔥 Configure FlutterFire
+        run: |
+          echo "=== Configuring FlutterFire ==="
+          export PATH=$PATH:$HOME/.pub-cache/bin
+          export GOOGLE_APPLICATION_CREDENTIALS="android/service_account.json"
+          
+          # Run FlutterFire configuration script (development)
+          npm run flutterfire_setup_dev_ios
+          
+          echo "✅ FlutterFire configuration completed"
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: android/service_account.json
+
       - name: Set up iOS signing
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles

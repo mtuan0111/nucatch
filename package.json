@@ -1,0 +1,22 @@
+{
+    "name": "nucatch",
+    "version": "1.0.0",
+    "description": "NuCatch Flutter App",
+    "main": "index.js",
+    "scripts": {
+        "pubclean": "flutter clean",
+        "pubget": "flutter pub get",
+        "install-pod": "cd ios/ && rm -rf Pods/ Podfile.lock && pod install && cd ../",
+        "refresh-ios": "npm run pubclean && npm run pubget && npm run install-pod",
+        "refresh": "npm run pubclean && npm run pubget",
+        "set_path_pubcache": "export PATH=$PATH:$HOME/.pub-cache/bin",
+        "flutterfire_get_config_ios": "npm run refresh-ios && npm run set_path_pubcache && ./scripts/flutterfire_get_config.sh",
+        "flutterfire_get_config": "npm run refresh && npm run set_path_pubcache && ./scripts/flutterfire_get_config.sh",
+        "flutterfire_setup_ios": "npm run flutterfire_get_config_ios",
+        "flutterfire_setup": "npm run flutterfire_get_config",
+        "flutterfire_setup_dev_ios": "./scripts/flutterfire_get_config.sh development",
+        "flutterfire_setup_dev": "./scripts/flutterfire_get_config.sh development"
+    },
+    "author": "",
+    "license": "ISC"
+}
