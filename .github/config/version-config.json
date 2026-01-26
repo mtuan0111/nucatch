@@ -1,0 +1,46 @@
+{
+    "android": {
+        "dev": {
+            "versionName": "2.0.0",
+            "versionCode": 31,
+            "releaseNotes": {
+                "en-US": "Bug fixes and performance improvements",
+                "vi-VN": "Sửa lỗi và cải thiện hiệu suất",
+                "ja-JP": "バグ修正とパフォーマンス改善"
+            }
+        },
+        "prod": {
+            "versionName": "2.0.0",
+            "versionCode": 30,
+            "releaseNotes": {
+                "en-US": "Bug fixes and performance improvements",
+                "vi-VN": "Sửa lỗi và cải thiện hiệu suất",
+                "ja-JP": "バグ修正とパフォーマンス改善"
+            }
+        }
+    },
+    "ios": {
+        "dev": {
+            "versionName": "2.0.0",
+            "buildNumber": "31",
+            "releaseNotes": {
+                "en-US": "Bug fixes and performance improvements",
+                "vi-VN": "Sửa lỗi và cải thiện hiệu suất",
+                "ja-JP": "バグ修正とパフォーマンス改善"
+            }
+        },
+        "prod": {
+            "versionName": "2.0.0",
+            "buildNumber": "30",
+            "releaseNotes": {
+                "en-US": "Bug fixes and performance improvements",
+                "vi-VN": "Sửa lỗi và cải thiện hiệu suất",
+                "ja-JP": "バグ修正とパフォーマンス改善"
+            }
+        }
+    },
+    "metadata": {
+        "lastUpdated": "2026-01-26T15:00:00Z",
+        "updatedBy": "CI/CD Pipeline"
+    }
+}

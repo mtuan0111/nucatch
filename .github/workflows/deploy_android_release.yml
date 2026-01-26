@@ -1,0 +1,260 @@
+name: Android Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  ENV_TRACK: production
+  KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64_PRD }}
+  KEY_PROPERTIES_BASE64: ${{ secrets.KEY_PROPERTIES_BASE64_PRD }}
+  SERVICE_ACCOUNT_JSON_BASE64: ${{ secrets.SERVICE_ACCOUNT_JSON_BASE64_PRD }}
+  ANDROID_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME_PRD }}
+  KEYSTORE_FILE_NAME: nucatch.keystore
+
+jobs:
+  deploy-production:
+    runs-on: macos-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔢 Load version configuration
+        id: version
+        run: |
+          # Load from config file
+          VERSION_NAME=$(jq -r '.android.prod.versionName' .github/config/version-config.json)
+          VERSION_CODE=$(jq -r '.android.prod.versionCode' .github/config/version-config.json)
+          
+          # Allow manual override
+          if [ -n "${{ github.event.inputs.version_override }}" ]; then
+            IFS=',' read -r VERSION_NAME VERSION_CODE <<< "${{ github.event.inputs.version_override }}"
+            echo "⚠️  Using version override: $VERSION_NAME ($VERSION_CODE)"
+          fi
+          
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_OUTPUT
+          
+          echo "=== Version Information ==="
+          echo "Version Name: $VERSION_NAME"
+          echo "Version Code: $VERSION_CODE"
+
+      - name: ✅ Validate version against Google Play Console
+        run: |
+          set +e
+          
+          echo "=== Validating Version and Build Number ==="
+          echo "Checking if version ${{ steps.version.outputs.VERSION_NAME }} (${{ steps.version.outputs.VERSION_CODE }}) is valid..."
+          
+          # Decode service account JSON
+          mkdir -p /tmp/gcp
+          echo "$SERVICE_ACCOUNT_JSON_BASE64" | base64 --decode > /tmp/gcp/service_account.json
+          
+          if [ ! -f /tmp/gcp/service_account.json ]; then
+            echo "❌ ERROR: Failed to create service account file"
+            exit 1
+          fi
+          
+          echo "✅ Service account file created successfully"
+          
+          # Install Python dependencies
+          echo "Installing Python dependencies..."
+          python3 -m pip install --quiet --user google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client 2>/dev/null || \
+          python3 -m pip install --quiet --break-system-packages google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client 2>/dev/null || {
+            echo "⚠️ Failed to install Python dependencies"
+            rm -rf /tmp/gcp
+            exit 1
+          }
+          
+          # Run version check script
+          python3 .github/workflows/check_version_android.py \
+            "${{ env.ANDROID_PACKAGE_NAME }}" \
+            "${{ steps.version.outputs.VERSION_CODE }}" \
+            "${{ steps.version.outputs.VERSION_NAME }}" \
+            "/tmp/gcp/service_account.json" \
+            "${{ env.ENV_TRACK }}"
+          
+          VALIDATION_EXIT_CODE=$?
+          
+          rm -rf /tmp/gcp
+          
+          if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
+            echo ""
+            echo "❌ Version validation failed!"
+            exit 1
+          fi
+          
+          echo ""
+          echo "✅ Version validation completed successfully"
+        env:
+          SERVICE_ACCOUNT_JSON_BASE64: ${{ env.SERVICE_ACCOUNT_JSON_BASE64 }}
+
+      - name: 📝 Load release notes
+        id: release_notes
+        run: |
+          echo "=== Generating Release Notes for All Languages ==="
+          mkdir -p distribution/whatsnew
+          
+          LANGUAGES=$(jq -r '.android.prod.releaseNotes | keys[]' .github/config/version-config.json)
+          
+          for LANG in $LANGUAGES; do
+            NOTES=$(jq -r ".android.prod.releaseNotes[\"$LANG\"]" .github/config/version-config.json)
+            echo "$NOTES" > "distribution/whatsnew/$LANG.txt"
+            echo "✅ Generated release notes for $LANG:"
+            cat "distribution/whatsnew/$LANG.txt"
+            echo ""
+          done
+          
+          echo "✅ Release notes generated for all languages: $LANGUAGES"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Disable Flutter analytics
+        run: flutter config --no-analytics
+
+      - name: Decode keystore
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > android/${{ env.KEYSTORE_FILE_NAME }}
+          echo "$KEY_PROPERTIES_BASE64" | base64 -d > android/keystore.properties
+          echo "$SERVICE_ACCOUNT_JSON_BASE64" | base64 -d > android/service_account.json
+          
+          echo "Firebase CLI authenticate with key ID: $(jq -r .client_id android/service_account.json)"
+        env:
+          KEYSTORE_BASE64: ${{ env.KEYSTORE_BASE64 }}
+          KEY_PROPERTIES_BASE64: ${{ env.KEY_PROPERTIES_BASE64 }}
+          SERVICE_ACCOUNT_JSON_BASE64: ${{ env.SERVICE_ACCOUNT_JSON_BASE64 }}
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Install Firebase CLI and FlutterFire CLI
+        run: |
+          npm install -g firebase-tools
+          dart pub global activate flutterfire_cli
+          firebase --version
+          flutterfire --version
+
+      - name: Authenticate Firebase CLI
+        run: |
+          firebase projects:list
+          if firebase projects:list 2>&1 | grep -q "Project ID"; then
+            echo "✅ Firebase CLI authenticated successfully"
+            echo "   Key ID: $(jq -r .client_id android/service_account.json)"
+          else
+            echo "❌ ERROR: Firebase CLI authentication failed"
+            echo "   Key ID: $(jq -r .client_id android/service_account.json)"
+            exit 1
+          fi
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: android/service_account.json
+
+      - name: Build appbundle (prod)
+        run: |
+          echo "=== Building Android App Bundle ==="
+          echo "Building version: ${{ steps.version.outputs.VERSION_NAME }} (${{ steps.version.outputs.VERSION_CODE }})"
+          
+          export PATH=$PATH:$HOME/.pub-cache/bin
+          export GOOGLE_APPLICATION_CREDENTIALS="android/service_account.json"
+          
+          flutter build appbundle \
+            --build-name=${{ steps.version.outputs.VERSION_NAME }} \
+            --build-number=${{ steps.version.outputs.VERSION_CODE }} \
+            --release
+          
+          echo ""
+          echo "=== Build Verification ==="
+          if [ -f "build/app/outputs/bundle/release/app-release.aab" ]; then
+            echo "✅ AAB file generated successfully"
+            ls -lh build/app/outputs/bundle/release/app-release.aab
+          else
+            echo "❌ ERROR: AAB file not found"
+            exit 1
+          fi
+          
+          if [ -f "build/app/outputs/mapping/release/mapping.txt" ]; then
+            echo "✅ Mapping file generated successfully"
+            ls -lh build/app/outputs/mapping/release/mapping.txt
+          else
+            echo "⚠️ WARNING: Mapping file not found, creating empty one"
+            mkdir -p build/app/outputs/mapping/release
+            echo "# No obfuscation mapping available" > build/app/outputs/mapping/release/mapping.txt
+            echo "✅ Created placeholder mapping file"
+          fi
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: android/service_account.json
+
+      - name: 📋 Check mapping file existence
+        run: |
+          MAPPING_PATH="build/app/outputs/mapping/release/mapping.txt"
+          if [ -f "$MAPPING_PATH" ]; then
+            echo "MAPPING_EXISTS=true" >> $GITHUB_ENV
+            echo "MAPPING_FILE_PATH=$MAPPING_PATH" >> $GITHUB_ENV
+            echo "✅ Mapping file exists and will be uploaded"
+          else
+            echo "MAPPING_EXISTS=false" >> $GITHUB_ENV
+            echo "MAPPING_FILE_PATH=" >> $GITHUB_ENV
+            echo "⚠️ WARNING: Mapping file does not exist"
+          fi
+
+      - name: 📋 Verify Service Account Details
+        run: |
+          echo "=== Service Account Information ==="
+          echo "Service Account Email: $(jq -r .client_email android/service_account.json)"
+          echo "Project ID: $(jq -r .project_id android/service_account.json)"
+          echo "Package Name: ${{ env.ANDROID_PACKAGE_NAME }}"
+          echo ""
+          echo "ℹ️ If you get a permission error, ensure:"
+          echo "   1. This service account is invited in Google Play Console"
+          echo "   2. It has 'Admin' or at least 'Release Manager' role"
+          echo "   3. The package name matches your app in Play Console"
+
+      - name: 📦 Upload to Google Play Production
+        uses: r0adkll/upload-google-play@v1.1.3
+        with:
+          serviceAccountJson: android/service_account.json
+          packageName: ${{ env.ANDROID_PACKAGE_NAME }}
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          track: ${{ env.ENV_TRACK }}
+          status: completed
+          inAppUpdatePriority: 2
+          changesNotSentForReview: false
+          whatsNewDirectory: distribution/whatsnew
+          mappingFile: ${{ env.MAPPING_FILE_PATH }}
+
+      - name: 📊 Build Summary
+        if: success()
+        run: |
+          echo "╔════════════════════════════════════════════════════════════════╗"
+          echo "║            ANDROID DEPLOYMENT SUMMARY                          ║"
+          echo "╚════════════════════════════════════════════════════════════════╝"
+          echo ""
+          echo "✅ Status: Successfully Deployed"
+          echo "📱 Platform: Android"
+          echo "🏷️  Version: ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.VERSION_CODE }})"
+          echo "🎯 Distribution: Google Play - ${{ env.ENV_TRACK }} Track"
+          echo "⏰ Build Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          echo ""
+          echo "📋 What's Next:"
+          echo "   • Build is now available in Google Play Console"
+          echo "   • Production users will receive the update"
+          echo "   • Check Google Play Console for deployment status"
+          echo "   • Monitor crash reports and performance metrics"
+          echo ""
+          echo "🔗 Links:"
+          echo "   • Google Play Console: https://play.google.com/console"
+          echo ""
+
+      - name: 🧹 Cleanup sensitive files
+        if: always()
+        run: |
+          echo "=== Cleaning Up Sensitive Files ==="
+          rm -f android/${{ env.KEYSTORE_FILE_NAME }}
+          rm -f android/keystore.properties
+          rm -f android/service_account.json
+          echo "✅ Sensitive files cleaned up"
