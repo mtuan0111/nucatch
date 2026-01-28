@@ -100,9 +100,11 @@ packages:
   ble_plat_services:
     dependency: "direct main"
     description:
-      path: "../ble_plat_services"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: ce868bdda1766bf762e955a7f96e7b98350b2d66
+      url: "git@github.com:mtuan0111/blue_plat_services.git"
+    source: git
     version: "0.0.1"
   bloc:
     dependency: transitive
