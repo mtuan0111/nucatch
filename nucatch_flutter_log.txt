@@ -1,0 +1,18 @@
+01-29 00:42:21.345  2245  2299 I AppsFilter: interaction: PackageSetting{8acd7a3 com.example.flutter_application_1/10440} -> PackageSetting{b2a9955 bomnguyen.nucatch/10678} BLOCKED
+01-29 00:42:22.041 15066 15090 D FlutterJNI: Beginning load of flutter...
+01-29 00:42:22.095 15066 15090 D nativeloader: Load /data/app/~~5pGJ8FJGZ3yhLLZ8LLs88A==/bomnguyen.nucatch-jtC0hOjhmReGxMrvca2yCA==/base.apk!/lib/arm64-v8a/libflutter.so using class loader ns clns-7 (caller=/data/app/~~5pGJ8FJGZ3yhLLZ8LLs88A==/bomnguyen.nucatch-jtC0hOjhmReGxMrvca2yCA==/base.apk): ok
+01-29 00:42:22.097 15066 15090 D FlutterJNI: flutter (null) was loaded normally!
+01-29 00:42:22.257 15066 15094 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+01-29 00:42:22.369 15066 15105 I flutter : The Dart VM service is listening on http://127.0.0.1:42707/6Q_SjkRUs_0=/
+01-29 00:42:22.991 15066 15066 I mnguyen.nucatch: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported,test-api) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+01-29 00:42:22.991 15066 15066 I mnguyen.nucatch: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+01-29 00:42:22.991 15066 15066 I mnguyen.nucatch: hiddenapi: Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+01-29 00:42:22.991 15066 15066 I mnguyen.nucatch: hiddenapi: Accessing hidden method Landroid/util/LongArray;->get(I)J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+01-29 00:42:23.278 15066 15066 I SurfaceView@dd8079: onWindowVisibilityChanged(0) true io.flutter.embedding.android.FlutterSurfaceView{dd8079 V.E...... ......I. 0,0-0,0} of VRI[MainActivity]@2f0759c
+01-29 00:42:23.300 15066 15066 I SurfaceView@dd8079: windowStopped(false) true io.flutter.embedding.android.FlutterSurfaceView{dd8079 V.E...... ......ID 0,0-1080,2400} of VRI[MainActivity]@2f0759c
+01-29 00:42:23.308 15066 15066 I SurfaceView@dd8079: surfaceCreated 1 #8 io.flutter.embedding.android.FlutterSurfaceView{dd8079 V.E...... ......ID 0,0-1080,2400}
+01-29 00:42:23.360 15066 15066 I SurfaceView@dd8079: surfaceChanged (1080,2400) 1 #8 io.flutter.embedding.android.FlutterSurfaceView{dd8079 V.E...... ......ID 0,0-1080,2400}
+01-29 00:42:23.597 15066 15066 I flutter : ✅ Firebase initialized successfully
+01-29 00:42:23.604 15066 15066 I flutter : ✅ Firestore offline persistence enabled
+01-29 00:42:26.008 15066 15066 I flutter : ☁️ User session (online mode): bQt2UEQx0YR8vgCHfaj3iD64PD13
+01-29 00:42:26.450 15066 15066 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@5dd5cb1

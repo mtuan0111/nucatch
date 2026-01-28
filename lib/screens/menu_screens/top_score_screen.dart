@@ -41,9 +41,9 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
 
   @override
   void initState() {
-    // Load all time data initially
-    turnRecordedListBloc.add(LoadDataByPeriod(period: _selectedPeriod));
     super.initState();
+    // Load weekly data initially
+    turnRecordedListBloc.add(LoadDataByPeriod(period: _selectedPeriod));
   }
 
   void _onTabChanged(RankingPeriod period) {
@@ -150,8 +150,7 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Expanded(
-                                  child: AnimatedButton(
-                                    context,
+                                  child: CustomElevatedButton(
                                     text: lang(context).daily,
                                     buttonSize: ButtonSize.small,
                                     shapeAt: RoundedWithShapeAt.topLeft,
@@ -165,11 +164,10 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                                 ),
                                 const SizedBox(width: kSpaceM),
                                 Expanded(
-                                  child: AnimatedButton(
-                                    context,
+                                  child: CustomElevatedButton(
                                     text: lang(context).weekly,
                                     buttonSize: ButtonSize.small,
-                                    shapeAt: RoundedWithShapeAt.topRight,
+                                    shapeAt: RoundedWithShapeAt.all,
                                     isActive:
                                         _selectedPeriod == RankingPeriod.weekly,
                                     backgroundColor:
@@ -180,11 +178,10 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                                 ),
                                 const SizedBox(width: kSpaceM),
                                 Expanded(
-                                  child: AnimatedButton(
-                                    context,
+                                  child: CustomElevatedButton(
                                     text: lang(context).allTime,
                                     buttonSize: ButtonSize.small,
-                                    shapeAt: RoundedWithShapeAt.bottomLeft,
+                                    shapeAt: RoundedWithShapeAt.topRight,
                                     isActive:
                                         _selectedPeriod == RankingPeriod.all,
                                     backgroundColor:
