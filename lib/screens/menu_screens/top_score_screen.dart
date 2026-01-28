@@ -12,6 +12,7 @@ import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/navs/menu_nav.dart';
+import 'package:nucatch/services/auth_services.dart';
 
 class TopScoreScreen extends StatefulWidget {
   const TopScoreScreen({super.key, required this.title});
@@ -28,8 +29,15 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
 
   MenuBloc get mainMenuBloc => context.read<MenuBloc>();
 
+  // Auth services for getting current user ID
+  final AuthServices _authServices = AuthServices();
+
   // Track selected tab with enum
   RankingPeriod _selectedPeriod = RankingPeriod.weekly;
+
+  // Get current user Firebase ID
+  String? get _currentUserId =>
+      _authServices.currentUser?.uid ?? _authServices.offlineUserId;
 
   @override
   void initState() {
@@ -252,6 +260,8 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                               child: RankingItem(
                                 ranking: index + 1,
                                 turnRecordedModel: e,
+                                isCurrentUser: _currentUserId != null &&
+                                    e.firebaseUserId == _currentUserId,
                               ),
                             );
                           },
