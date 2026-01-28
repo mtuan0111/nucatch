@@ -260,11 +260,25 @@ jobs:
           security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
           security default-keychain -s build.keychain
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-          security import certificate.p12 -k build.keychain -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          
+          # Add build.keychain to search list along with system keychain
+          security list-keychains -d user -s build.keychain $(security list-keychains -d user | sed 's/"//g')
+          
+          echo "Importing certificate..."
+          security import certificate.p12 -k build.keychain -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign -A
+          
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
           
-          echo "Available signing identities:"
+          echo "=== Available signing identities in build.keychain ==="
           security find-identity -v -p codesigning build.keychain
+          
+          echo "=== Available signing identities (all keychains) ==="
+          security find-identity -v -p codesigning
+          
+          # Capture the signing identity for later use
+          SIGNING_IDENTITY=$(security find-identity -v -p codesigning build.keychain | grep "iPhone Distribution\|Apple Distribution\|iOS Distribution" | head -1 | sed 's/.*"\(.*\)".*/\1/')
+          echo "Detected signing identity: $SIGNING_IDENTITY"
+          echo "SIGNING_IDENTITY=$SIGNING_IDENTITY" >> $GITHUB_ENV
         env:
           IOS_CERTIFICATE_BASE64: ${{ env.IOS_CERTIFICATE_BASE64 }}
           IOS_PROVISIONING_PROFILE_BASE64: ${{ env.IOS_PROVISIONING_PROFILE_BASE64 }}
@@ -387,7 +401,7 @@ jobs:
             -destination 'generic/platform=iOS' \
             -allowProvisioningUpdates \
             CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
+            CODE_SIGN_IDENTITY="${SIGNING_IDENTITY:-iPhone Distribution}" \
             DEVELOPMENT_TEAM="$TEAM_ID" \
             PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
             CURRENT_PROJECT_VERSION="${{ steps.version.outputs.BUILD_NUMBER }}" \
