@@ -98,7 +98,8 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                                   MediaQuery.of(context).padding.top;
 
                           return AnimatedContainer(
-                            duration: const Duration(milliseconds: kAnimationDurationMedium),
+                            duration: const Duration(
+                                milliseconds: kAnimationDurationMedium),
                             color: isCollapsed
                                 ? Theme.of(context).primaryColor
                                 : Colors.transparent,
