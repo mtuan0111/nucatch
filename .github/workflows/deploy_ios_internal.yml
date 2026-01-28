@@ -387,7 +387,7 @@ jobs:
             -destination 'generic/platform=iOS' \
             -allowProvisioningUpdates \
             CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="iPhone Distribution" \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
             DEVELOPMENT_TEAM="$TEAM_ID" \
             PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
             CURRENT_PROJECT_VERSION="${{ steps.version.outputs.BUILD_NUMBER }}" \
