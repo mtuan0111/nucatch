@@ -22,7 +22,8 @@ class TopScoreScreen extends StatefulWidget {
   State<TopScoreScreen> createState() => _TopScoreScreenState();
 }
 
-class _TopScoreScreenState extends State<TopScoreScreen> {
+class _TopScoreScreenState extends State<TopScoreScreen>
+    with SingleTickerProviderStateMixin {
   String get screenTitle => widget.title;
   TurnRecordedListBloc get turnRecordedListBloc =>
       context.read<TurnRecordedListBloc>();
@@ -31,6 +32,9 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
 
   // Auth services for getting current user ID
   final AuthServices _authServices = AuthServices();
+
+  // Tab controller for period selection
+  late TabController _tabController;
 
   // Track selected tab with enum
   RankingPeriod _selectedPeriod = RankingPeriod.weekly;
@@ -42,8 +46,25 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
   @override
   void initState() {
     super.initState();
-    // Load weekly data initially
+    // Initialize tab controller with 3 tabs (daily, weekly, all time)
+    _tabController = TabController(length: 3, vsync: this, initialIndex: 1);
+    _tabController.addListener(_handleTabChange);
+    // Load weekly data initially (matching initial tab)
     turnRecordedListBloc.add(LoadDataByPeriod(period: _selectedPeriod));
+  }
+
+  void _handleTabChange() {
+    if (!_tabController.indexIsChanging) {
+      final periods = [
+        RankingPeriod.daily,
+        RankingPeriod.weekly,
+        RankingPeriod.all
+      ];
+      final newPeriod = periods[_tabController.index];
+      if (newPeriod != _selectedPeriod) {
+        _onTabChanged(newPeriod);
+      }
+    }
   }
 
   void _onTabChanged(RankingPeriod period) {
@@ -66,6 +87,8 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
 
   @override
   void dispose() {
+    _tabController.removeListener(_handleTabChange);
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -146,51 +169,57 @@ class _TopScoreScreenState extends State<TopScoreScreen> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: kPaddingXL, vertical: kPaddingM),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                  child: CustomElevatedButton(
-                                    text: lang(context).daily,
-                                    buttonSize: ButtonSize.small,
-                                    shapeAt: RoundedWithShapeAt.topLeft,
-                                    isActive:
-                                        _selectedPeriod == RankingPeriod.daily,
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor,
-                                    onPressed: () =>
-                                        _onTabChanged(RankingPeriod.daily),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .primaryColor
+                                    .withValues(alpha: 0.3),
+                                borderRadius: BorderRadius.circular(
+                                    LayoutConfig.layoutBorderRadius),
+                              ),
+                              child: TabBar(
+                                controller: _tabController,
+                                indicator: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Theme.of(context).primaryColor,
+                                      Theme.of(context)
+                                          .primaryColor
+                                          .withValues(alpha: 0.8),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                   ),
+                                  borderRadius: BorderRadius.circular(
+                                      LayoutConfig.layoutBorderRadius),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withValues(alpha: 0.4),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: kSpaceM),
-                                Expanded(
-                                  child: CustomElevatedButton(
-                                    text: lang(context).weekly,
-                                    buttonSize: ButtonSize.small,
-                                    shapeAt: RoundedWithShapeAt.all,
-                                    isActive:
-                                        _selectedPeriod == RankingPeriod.weekly,
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor,
-                                    onPressed: () =>
-                                        _onTabChanged(RankingPeriod.weekly),
-                                  ),
-                                ),
-                                const SizedBox(width: kSpaceM),
-                                Expanded(
-                                  child: CustomElevatedButton(
-                                    text: lang(context).allTime,
-                                    buttonSize: ButtonSize.small,
-                                    shapeAt: RoundedWithShapeAt.topRight,
-                                    isActive:
-                                        _selectedPeriod == RankingPeriod.all,
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor,
-                                    onPressed: () =>
-                                        _onTabChanged(RankingPeriod.all),
-                                  ),
-                                ),
-                              ],
+                                indicatorSize: TabBarIndicatorSize.tab,
+                                dividerColor: Colors.transparent,
+                                labelColor:
+                                    Theme.of(context).colorScheme.onPrimary,
+                                unselectedLabelColor: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimary
+                                    .withValues(alpha: 0.6),
+                                labelStyle:
+                                    AppTextStyles.bodyMediumBold(context),
+                                unselectedLabelStyle:
+                                    AppTextStyles.bodyMedium(context),
+                                tabs: [
+                                  Tab(text: lang(context).daily),
+                                  Tab(text: lang(context).weekly),
+                                  Tab(text: lang(context).allTime),
+                                ],
+                              ),
                             ),
                           ),
                         ),
