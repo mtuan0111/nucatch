@@ -1254,4 +1254,20 @@ feat: Fixed bugs and improve UI
 
     Flutter build for iOS
     ```flutter build ios --build-name=2.5.6 --build-number=66 --release```
+---
+## Released on: 26/01/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 67           | 2.5.7   |
+| iOS      | 67           | 2.5.7   |
+
+### Release note:
+feat: Indicated your rank in the top score screen
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+    
     

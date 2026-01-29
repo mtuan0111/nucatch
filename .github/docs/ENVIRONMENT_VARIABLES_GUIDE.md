@@ -65,7 +65,7 @@ cat keystore_base64.txt
 **Where to find existing keystore:**
 - Check your project's `android/` directory
 - Look for files with `.jks` or `.keystore` extension
-- The NuCatch project has `key.jks` in the root directory
+- The NuCatch project has `upload-keystore.jks` in the root directory
 
 **GitHub Secret Names:**
 - `KEYSTORE_BASE64` - For development builds
@@ -75,11 +75,11 @@ cat keystore_base64.txt
 
 ### 2. KEY_PROPERTIES_BASE64 / KEY_PROPERTIES_BASE64_PRD
 
-**What it is:** Base64-encoded keystore.properties file
+**What it is:** Base64-encoded key.properties file
 
 **How to create:**
 
-First, create a `keystore.properties` file:
+First, create a `key.properties` file:
 
 ```properties
 storePassword=your_keystore_password
@@ -91,7 +91,7 @@ storeFile=nucatch.keystore
 Then encode it:
 
 ```bash
-base64 -i keystore.properties -o key_properties_base64.txt
+base64 -i key.properties -o key_properties_base64.txt
 cat key_properties_base64.txt
 ```
 
