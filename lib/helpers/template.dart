@@ -15,13 +15,12 @@ class RankingItem extends StatelessWidget {
     super.key,
     required this.turnRecordedModel,
     required this.ranking,
-    // required this.playerName,
-    // required this.createdAt,
-    // required this.turnedPoint,
+    this.isCurrentUser = false,
   });
 
   final TurnRecordedModel? turnRecordedModel;
   final int? ranking;
+  final bool isCurrentUser;
 
   String? get playerName => turnRecordedModel?.playedUsername;
   DateTime get createdAt => turnRecordedModel?.recordedTime ?? DateTime.now();
@@ -55,9 +54,34 @@ class RankingItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RankingInfoRow(
-                  icon: Icons.person,
-                  text: playerName ?? lang(context).anonymous,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RankingInfoRow(
+                      icon: Icons.person,
+                      text: playerName ?? lang(context).anonymous,
+                    ),
+                    if (isCurrentUser) ...[
+                      const SizedBox(width: kSpaceXS),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: kPaddingXS,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.secondary,
+                          borderRadius: BorderRadius.circular(kBorderRadiusS),
+                        ),
+                        child: Text(
+                          lang(context).you,
+                          style: AppTextStyles.bodySmall(context).copyWith(
+                            color: Theme.of(context).colorScheme.onSecondary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
                 RankingInfoRow(
                   icon: Icons.calendar_today,
