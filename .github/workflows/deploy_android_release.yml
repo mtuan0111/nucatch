@@ -41,12 +41,13 @@ jobs:
           echo "Version Name: $VERSION_NAME"
           echo "Version Code: $VERSION_CODE"
 
-      - name: ✅ Validate version against Google Play Console
+      - name: ✅ Check Internal Track and Decide Action
+        id: check_action
         run: |
           set +e
           
-          echo "=== Validating Version and Build Number ==="
-          echo "Checking if version ${{ steps.version.outputs.VERSION_NAME }} (${{ steps.version.outputs.VERSION_CODE }}) is valid..."
+          echo "=== Checking Internal Track for Existing Build ==="
+          echo "Looking for version ${{ steps.version.outputs.VERSION_NAME }} (${{ steps.version.outputs.VERSION_CODE }}) in internal track..."
           
           # Decode service account JSON
           mkdir -p /tmp/gcp
@@ -54,7 +55,8 @@ jobs:
           
           if [ ! -f /tmp/gcp/service_account.json ]; then
             echo "❌ ERROR: Failed to create service account file"
-            exit 1
+            echo "ACTION=BUILD" >> $GITHUB_OUTPUT
+            exit 0
           fi
           
           echo "✅ Service account file created successfully"
@@ -64,30 +66,35 @@ jobs:
           python3 -m pip install --quiet --user google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client 2>/dev/null || \
           python3 -m pip install --quiet --break-system-packages google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client 2>/dev/null || {
             echo "⚠️ Failed to install Python dependencies"
+            echo "ACTION=BUILD" >> $GITHUB_OUTPUT
             rm -rf /tmp/gcp
-            exit 1
+            exit 0
           }
           
-          # Run version check script
-          python3 .github/workflows/check_version_android.py \
+          # Run promote-or-build check script
+          ACTION=$(python3 .github/workflows/promote_or_build_android.py \
             "${{ env.ANDROID_PACKAGE_NAME }}" \
             "${{ steps.version.outputs.VERSION_CODE }}" \
             "${{ steps.version.outputs.VERSION_NAME }}" \
-            "/tmp/gcp/service_account.json" \
-            "${{ env.ENV_TRACK }}"
-          
-          VALIDATION_EXIT_CODE=$?
+            "/tmp/gcp/service_account.json")
           
           rm -rf /tmp/gcp
           
-          if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
-            echo ""
-            echo "❌ Version validation failed!"
-            exit 1
-          fi
+          echo "ACTION=$ACTION" >> $GITHUB_OUTPUT
           
-          echo ""
-          echo "✅ Version validation completed successfully"
+          if [ "$ACTION" = "PROMOTE" ]; then
+            echo ""
+            echo "╔════════════════════════════════════════════════════════════════╗"
+            echo "║  🚀 BUILD FOUND IN INTERNAL TRACK - WILL PROMOTE              ║"
+            echo "╚════════════════════════════════════════════════════════════════╝"
+            echo "Skipping build steps, will promote directly to production."
+          else
+            echo ""
+            echo "╔════════════════════════════════════════════════════════════════╗"
+            echo "║  🔨 NO BUILD IN INTERNAL TRACK - WILL BUILD FRESH             ║"
+            echo "╚════════════════════════════════════════════════════════════════╝"
+            echo "Will build and upload directly to production."
+          fi
         env:
           SERVICE_ACCOUNT_JSON_BASE64: ${{ env.SERVICE_ACCOUNT_JSON_BASE64 }}
 
@@ -110,6 +117,7 @@ jobs:
           echo "✅ Release notes generated for all languages: $LANGUAGES"
 
       - name: Set up Flutter
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.38.5'
@@ -117,9 +125,11 @@ jobs:
           cache: true
 
       - name: Disable Flutter analytics
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         run: flutter config --no-analytics
 
       - name: Decode keystore
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > android/${{ env.KEYSTORE_FILE_NAME }}
           echo "$KEY_PROPERTIES_BASE64" | base64 -d > android/key.properties
@@ -132,14 +142,17 @@ jobs:
           SERVICE_ACCOUNT_JSON_BASE64: ${{ env.SERVICE_ACCOUNT_JSON_BASE64 }}
 
       - name: Setup SSH for private dependencies
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Get Flutter dependencies
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         run: flutter pub get
 
       - name: Install Firebase CLI and FlutterFire CLI
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         run: |
           npm install -g firebase-tools
           dart pub global activate flutterfire_cli
@@ -147,6 +160,7 @@ jobs:
           flutterfire --version
 
       - name: Authenticate Firebase CLI
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         run: |
           firebase projects:list
           if firebase projects:list 2>&1 | grep -q "Project ID"; then
@@ -161,6 +175,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: android/service_account.json
 
       - name: 🔥 Configure FlutterFire
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         run: |
           echo "=== Configuring FlutterFire ==="
           export PATH=$PATH:$HOME/.pub-cache/bin
@@ -174,6 +189,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: android/service_account.json
 
       - name: Build appbundle (prod)
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         run: |
           echo "=== Building Android App Bundle ==="
           echo "Building version: ${{ steps.version.outputs.VERSION_NAME }} (${{ steps.version.outputs.VERSION_CODE }})"
@@ -209,6 +225,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: android/service_account.json
 
       - name: 📋 Check mapping file existence
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         run: |
           MAPPING_PATH="build/app/outputs/mapping/release/mapping.txt"
           if [ -f "$MAPPING_PATH" ]; then
@@ -222,6 +239,7 @@ jobs:
           fi
 
       - name: 📋 Verify Service Account Details
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         run: |
           echo "=== Service Account Information ==="
           echo "Service Account Email: $(jq -r .client_email android/service_account.json)"
@@ -233,7 +251,8 @@ jobs:
           echo "   2. It has 'Admin' or at least 'Release Manager' role"
           echo "   3. The package name matches your app in Play Console"
 
-      - name: 📦 Upload to Google Play Production
+      - name: 📦 Upload to Google Play Production (Fresh Build)
+        if: steps.check_action.outputs.ACTION == 'BUILD'
         uses: r0adkll/upload-google-play@v1.1.3
         with:
           serviceAccountJson: android/service_account.json
@@ -245,6 +264,110 @@ jobs:
           changesNotSentForReview: false
           whatsNewDirectory: distribution/whatsnew
           mappingFile: ${{ env.MAPPING_FILE_PATH }}
+
+      - name: 🚀 Promote from Internal to Production
+        if: steps.check_action.outputs.ACTION == 'PROMOTE'
+        run: |
+          echo "=== Promoting Build from Internal to Production ==="
+          echo "Version: ${{ steps.version.outputs.VERSION_NAME }} (${{ steps.version.outputs.VERSION_CODE }})"
+          
+          # Decode service account JSON
+          mkdir -p /tmp/gcp
+          echo "$SERVICE_ACCOUNT_JSON_BASE64" | base64 --decode > /tmp/gcp/service_account.json
+          
+          # Install Python dependencies
+          python3 -m pip install --quiet --user google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client 2>/dev/null || \
+          python3 -m pip install --quiet --break-system-packages google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client 2>/dev/null
+          
+          # Create promote script
+          cat > /tmp/promote_internal_to_production.py << 'PROMOTE_SCRIPT'
+          import sys
+          import json
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+          
+          def promote_to_production(package_name, version_code, release_notes_dir, service_account_path):
+              print(f"Promoting version {version_code} from internal to production...")
+              
+              credentials = service_account.Credentials.from_service_account_file(
+                  service_account_path,
+                  scopes=['https://www.googleapis.com/auth/androidpublisher']
+              )
+              
+              service = build('androidpublisher', 'v3', credentials=credentials)
+              
+              # Create edit
+              edit = service.edits().insert(body={}, packageName=package_name).execute()
+              edit_id = edit['id']
+              print(f"Edit created: {edit_id}")
+              
+              # Get internal track to find the release
+              internal_track = service.edits().tracks().get(
+                  packageName=package_name,
+                  editId=edit_id,
+                  track='internal'
+              ).execute()
+              
+              # Find release with our version code
+              target_release = None
+              for release in internal_track.get('releases', []):
+                  if int(version_code) in [int(vc) for vc in release.get('versionCodes', [])]:
+                      target_release = release
+                      break
+              
+              if not target_release:
+                  print(f"ERROR: Version {version_code} not found in internal track")
+                  sys.exit(1)
+              
+              print(f"Found release: {target_release.get('name', 'unnamed')}")
+              
+              # Load release notes
+              release_notes = []
+              import os
+              for filename in os.listdir(release_notes_dir):
+                  if filename.endswith('.txt'):
+                      lang = filename.replace('.txt', '')  # e.g., en-US
+                      with open(os.path.join(release_notes_dir, filename), 'r') as f:
+                          text = f.read().strip()
+                          release_notes.append({'language': lang, 'text': text})
+              
+              # Create production release
+              production_release = {
+                  'versionCodes': target_release['versionCodes'],
+                  'status': 'completed',
+                  'releaseNotes': release_notes
+              }
+              
+              # Update production track
+              service.edits().tracks().update(
+                  packageName=package_name,
+                  editId=edit_id,
+                  track='production',
+                  body={'track': 'production', 'releases': [production_release]}
+              ).execute()
+              
+              # Commit the edit
+              service.edits().commit(
+                  packageName=package_name,
+                  editId=edit_id
+              ).execute()
+              
+              print(f"✅ Successfully promoted version {version_code} to production!")
+          
+          if __name__ == '__main__':
+              promote_to_production(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+          PROMOTE_SCRIPT
+          
+          python3 /tmp/promote_internal_to_production.py \
+            "${{ env.ANDROID_PACKAGE_NAME }}" \
+            "${{ steps.version.outputs.VERSION_CODE }}" \
+            "distribution/whatsnew" \
+            "/tmp/gcp/service_account.json"
+          
+          rm -rf /tmp/gcp
+          rm -f /tmp/promote_internal_to_production.py
+        env:
+          SERVICE_ACCOUNT_JSON_BASE64: ${{ env.SERVICE_ACCOUNT_JSON_BASE64 }}
 
       - name: 📊 Build Summary
         if: success()

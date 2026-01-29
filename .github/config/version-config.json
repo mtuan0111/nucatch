@@ -10,12 +10,12 @@
             }
         },
         "prod": {
-            "versionName": "2.2.0",
-            "versionCode": 43,
+            "versionName": "2.5.7",
+            "versionCode": 67,
             "releaseNotes": {
-                "en-US": "Bug fixes and performance improvements",
-                "vi-VN": "Sửa lỗi và cải thiện hiệu suất",
-                "ja-JP": "バグ修正とパフォーマンス改善"
+                "en-US": "View your current rank on the top score screen.",
+                "vi-VN": "Hiển thị thứ hạng của bạn trên màn hình bảng xếp hạng.",
+                "ja-JP": "トップスコア画面で現在の順位を確認できます。"
             }
         }
     },
@@ -30,12 +30,12 @@
             }
         },
         "prod": {
-            "versionName": "2.2.0",
-            "buildNumber": "43",
+            "versionName": "2.5.7",
+            "buildNumber": "67",
             "releaseNotes": {
-                "en-US": "Bug fixes and performance improvements",
-                "vi-VN": "Sửa lỗi và cải thiện hiệu suất",
-                "ja-JP": "バグ修正とパフォーマンス改善"
+                "en-US": "View your current rank on the top score screen.",
+                "vi-VN": "Hiển thị thứ hạng của bạn trên màn hình bảng xếp hạng.",
+                "ja-JP": "トップスコア画面で現在の順位を確認できます。"
             }
         }
     },
