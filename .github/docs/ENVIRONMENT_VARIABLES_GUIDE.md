@@ -65,7 +65,7 @@ cat keystore_base64.txt
 **Where to find existing keystore:**
 - Check your project's `android/` directory
 - Look for files with `.jks` or `.keystore` extension
-- The NuCatch project has `upload-keystore.jks` in the root directory
+- The NuCatch project has `key.jks` in the root directory
 
 **GitHub Secret Names:**
 - `KEYSTORE_BASE64` - For development builds
