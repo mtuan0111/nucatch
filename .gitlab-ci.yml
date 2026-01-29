@@ -99,7 +99,7 @@ build:android:release:
     - .flutter_setup
   script:
     # Decode keystore
-    - echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > upload-keystore.jks
+    - echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > key.jks
     
     # Create key.properties
     - |
@@ -107,7 +107,7 @@ build:android:release:
       storePassword=$ANDROID_KEY_STORE_PASSWORD
       keyPassword=$ANDROID_KEY_PASSWORD
       keyAlias=$ANDROID_KEY_ALIAS
-      storeFile=upload-keystore.jks
+      storeFile=key.jks
       EOF
     
     # Build release
@@ -115,7 +115,7 @@ build:android:release:
     - flutter build apk --release
     
     # Clean up
-    - rm -f upload-keystore.jks android/key.properties
+    - rm -f key.jks android/key.properties
   artifacts:
     paths:
       - build/app/outputs/bundle/release/app-release.aab

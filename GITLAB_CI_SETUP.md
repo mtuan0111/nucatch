@@ -31,7 +31,7 @@ Navigate to your GitLab project → Settings → CI/CD → Variables
 
 | Variable Name | Type | Description | How to Obtain |
 |---------------|------|-------------|---------------|
-| `ANDROID_KEYSTORE_BASE64` | Variable | Base64-encoded Android keystore file | `base64 -i upload-keystore.jks` or `base64 -w 0 upload-keystore.jks` (Linux) |
+| `ANDROID_KEYSTORE_BASE64` | Variable | Base64-encoded Android keystore file | `base64 -i key.jks` or `base64 -w 0 key.jks` (Linux) |
 | `ANDROID_KEY_STORE_PASSWORD` | Variable (Masked) | Keystore password | From your keystore creation |
 | `ANDROID_KEY_PASSWORD` | Variable (Masked) | Key password | From your keystore creation |
 | `ANDROID_KEY_ALIAS` | Variable | Key alias | From your keystore creation |
@@ -42,7 +42,7 @@ Navigate to your GitLab project → Settings → CI/CD → Variables
 If you don't have a keystore:
 
 ```bash
-keytool -genkey -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+keytool -genkey -v -keystore key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
 ```
 
 Save the passwords and alias for the variables above.
@@ -413,7 +413,7 @@ Test coverage is automatically tracked:
 - Verify `ANDROID_KEYSTORE_BASE64` is correctly encoded (no line breaks in base64)
 - Use `base64 -w 0` on Linux to ensure no line wrapping
 - Check that passwords match your keystore
-- Ensure `upload-keystore.jks` file name matches in variables
+- Ensure `key.jks` file name matches in variables
 
 **Issue**: Google Play API error
 - Verify service account JSON is correct and base64-encoded properly
