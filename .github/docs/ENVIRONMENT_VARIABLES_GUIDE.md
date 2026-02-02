@@ -218,19 +218,19 @@ openssl rand -base64 24
 4. Select **App Store Connect** (for distribution)
 5. Select your App ID (bundle identifier)
 6. Select your Distribution Certificate
-7. Name the profile (e.g., `NuCatch_Dev_AppStore` or `NuCatch_Prd_AppStore`)
+7. Name the profile (e.g., `NuCatch_AppStore` or `NuCatch_Prd_AppStore`)
 8. Download the .mobileprovision file
 
 **Encode the profile:**
 
 ```bash
-base64 -i NuCatch_Dev_AppStore.mobileprovision -o profile_base64.txt
+base64 -i NuCatch_AppStore.mobileprovision -o profile_base64.txt
 cat profile_base64.txt
 ```
 
 > [!NOTE]
 > Make sure the provisioning profile filename matches the one specified in the workflow:
-> - Development: `NuCatch_Dev_AppStore.mobileprovision`
+> - Development: `NuCatch_AppStore.mobileprovision`
 > - Production: `NuCatch_Prd_AppStore.mobileprovision`
 
 **GitHub Secret Names:**
