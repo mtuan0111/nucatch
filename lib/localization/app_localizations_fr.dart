@@ -111,6 +111,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get numberOfTopScores => 'Nombre de meilleurs scores';
 
   @override
+  String get onlyShowMyRecorded => 'Only show my recorded';
+
+  @override
   String get language => 'Langue';
 
   @override

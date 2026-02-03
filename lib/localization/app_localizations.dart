@@ -312,6 +312,12 @@ abstract class AppLocalizations {
   /// **'Number of top scores'**
   String get numberOfTopScores;
 
+  /// Label for filter to show only user's own recorded scores
+  ///
+  /// In en, this message translates to:
+  /// **'Only show my recorded'**
+  String get onlyShowMyRecorded;
+
   /// Label for language setting
   ///
   /// In en, this message translates to:

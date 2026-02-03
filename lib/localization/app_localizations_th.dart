@@ -111,6 +111,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get numberOfTopScores => 'จำนวนคะแนนสูงสุดที่แสดง';
 
   @override
+  String get onlyShowMyRecorded => 'Only show my recorded';
+
+  @override
   String get language => 'ภาษา';
 
   @override

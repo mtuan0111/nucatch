@@ -8,6 +8,7 @@ class SettingModel {
   final bool isVibrate;
   final int fontSize;
   final int numberOfTopBoard;
+  final bool onlyShowMyRecorded;
   final Difficulty difficulty;
 
   SettingModel({
@@ -17,6 +18,7 @@ class SettingModel {
     this.isVibrate = true,
     this.fontSize = 8,
     this.numberOfTopBoard = 20,
+    this.onlyShowMyRecorded = false,
     this.difficulty = Difficulty.easy,
   });
 
@@ -27,6 +29,7 @@ class SettingModel {
     bool? isVibrate,
     int? fontSize,
     int? numberOfTopBoard,
+    bool? onlyShowMyRecorded,
     Difficulty? difficulty,
   }) {
     return SettingModel(
@@ -36,6 +39,7 @@ class SettingModel {
       isVibrate: isVibrate ?? this.isVibrate,
       fontSize: fontSize ?? this.fontSize,
       numberOfTopBoard: numberOfTopBoard ?? this.numberOfTopBoard,
+      onlyShowMyRecorded: onlyShowMyRecorded ?? this.onlyShowMyRecorded,
       difficulty: difficulty ?? this.difficulty,
     );
   }

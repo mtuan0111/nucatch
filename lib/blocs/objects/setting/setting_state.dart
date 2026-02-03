@@ -17,6 +17,7 @@ class SettingState {
     bool? isVibrate,
     int? fontSize,
     int? numberOfTopBoard,
+    bool? onlyShowMyRecorded,
     bool? isLoading,
     SettingModel? model,
   }) {
@@ -29,6 +30,8 @@ class SettingState {
         isVibrate: isVibrate ?? currentModel.isVibrate,
         fontSize: fontSize ?? currentModel.fontSize,
         numberOfTopBoard: numberOfTopBoard ?? currentModel.numberOfTopBoard,
+        onlyShowMyRecorded:
+            onlyShowMyRecorded ?? currentModel.onlyShowMyRecorded,
       ),
       isLoading: isLoading ?? this.isLoading,
     );
@@ -39,5 +42,6 @@ class SettingState {
   int get vol => model.vol;
   bool get isVibrate => model.isVibrate;
   int get numberOfTopBoard => model.numberOfTopBoard;
+  bool get onlyShowMyRecorded => model.onlyShowMyRecorded;
   ThemeMode get themeMode => model.themeMode;
 }

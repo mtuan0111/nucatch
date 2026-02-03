@@ -144,6 +144,10 @@
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
   },
+  "onlyShowMyRecorded": "Only show my recorded",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
   "language": "Language",
   "@language": {
     "description": "Label for language setting"
