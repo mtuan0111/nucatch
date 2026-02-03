@@ -19,6 +19,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     on<ChangedIsVibrate>(_onChangedIsVibrate);
     on<ChangedFontSize>(_onChangedFontSize);
     on<ChangedNumberOfTopBoard>(_onChangedNumberOfTopBoard);
+    on<ChangedOnlyShowMyRecorded>(_onChangedOnlyShowMyRecorded);
 
     _audioServices = AudioServices();
 
@@ -39,6 +40,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         isVibrate: _prefs!.getBool(PreferencesKey.IS_VIBRATE) ?? true,
         fontSize: _prefs!.getInt(PreferencesKey.FONT_SIZE),
         numberOfTopBoard: _prefs!.getInt(PreferencesKey.NUMBER_OF_TOP_BOARD),
+        onlyShowMyRecorded:
+            _prefs!.getBool(PreferencesKey.ONLY_SHOW_MY_RECORDED) ?? false,
         isLoading: false,
       ),
     );
@@ -128,6 +131,21 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     emitter(
       state.copyWith(
         numberOfTopBoard: event.numberOfTopBoard,
+      ),
+    );
+  }
+
+  Future<void> _onChangedOnlyShowMyRecorded(
+    ChangedOnlyShowMyRecorded event,
+    Emitter<SettingState> emitter,
+  ) async {
+    _prefs ??= await SharedPreferences.getInstance();
+    _prefs!.setBool(
+        PreferencesKey.ONLY_SHOW_MY_RECORDED, event.onlyShowMyRecorded);
+
+    emitter(
+      state.copyWith(
+        onlyShowMyRecorded: event.onlyShowMyRecorded,
       ),
     );
   }

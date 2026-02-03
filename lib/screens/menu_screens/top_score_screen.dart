@@ -7,6 +7,9 @@ import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
+import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
+import 'package:nucatch/blocs/objects/setting/setting_event.dart';
+import 'package:nucatch/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
@@ -139,11 +142,17 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                               titlePadding: EdgeInsets.zero,
                               title: Padding(
                                 padding: const EdgeInsets.all(kPaddingM),
-                                child: Text(
-                                  screenTitle,
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.displaySmallTitleScreen(
-                                      context),
+                                child: BlocBuilder<TurnRecordedListBloc,
+                                    TurnRecordedListState>(
+                                  builder: (context, state) {
+                                    return Text(
+                                      "$screenTitle ${state.numberOfTopBoard}",
+                                      textAlign: TextAlign.center,
+                                      style:
+                                          AppTextStyles.displaySmallTitleScreen(
+                                              context),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
@@ -160,69 +169,90 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                       ),
                       expandedHeight: 100, // Increased to accommodate buttons
                     ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 50,
-                      ),
-                      sliver: SliverToBoxAdapter(
-                        child: SafeArea(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPaddingXL, vertical: kPaddingM),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .primaryColor
-                                    .withValues(alpha: 0.3),
+                    SliverToBoxAdapter(
+                      child: SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: kPaddingXL, vertical: kPaddingXL),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withValues(alpha: 0.3),
+                              borderRadius: BorderRadius.circular(
+                                  LayoutConfig.layoutBorderRadius),
+                            ),
+                            child: TabBar(
+                              controller: _tabController,
+                              indicator: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Theme.of(context).primaryColor,
+                                    Theme.of(context)
+                                        .primaryColor
+                                        .withValues(alpha: 0.8),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
                                 borderRadius: BorderRadius.circular(
                                     LayoutConfig.layoutBorderRadius),
-                              ),
-                              child: TabBar(
-                                controller: _tabController,
-                                indicator: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Theme.of(context).primaryColor,
-                                      Theme.of(context)
-                                          .primaryColor
-                                          .withValues(alpha: 0.8),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Theme.of(context)
+                                        .primaryColor
+                                        .withValues(alpha: 0.4),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
                                   ),
-                                  borderRadius: BorderRadius.circular(
-                                      LayoutConfig.layoutBorderRadius),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Theme.of(context)
-                                          .primaryColor
-                                          .withValues(alpha: 0.4),
-                                      blurRadius: 8,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                indicatorSize: TabBarIndicatorSize.tab,
-                                dividerColor: Colors.transparent,
-                                labelColor:
-                                    Theme.of(context).colorScheme.onPrimary,
-                                unselectedLabelColor: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimary
-                                    .withValues(alpha: 0.6),
-                                labelStyle:
-                                    AppTextStyles.bodyMediumBold(context),
-                                unselectedLabelStyle:
-                                    AppTextStyles.bodyMedium(context),
-                                tabs: [
-                                  Tab(text: lang(context).daily),
-                                  Tab(text: lang(context).weekly),
-                                  Tab(text: lang(context).allTime),
                                 ],
                               ),
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              dividerColor: Colors.transparent,
+                              labelColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              unselectedLabelColor: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimary
+                                  .withValues(alpha: 0.6),
+                              labelStyle: AppTextStyles.bodyMediumBold(context),
+                              unselectedLabelStyle:
+                                  AppTextStyles.bodyMedium(context),
+                              tabs: [
+                                Tab(text: lang(context).daily),
+                                Tab(text: lang(context).weekly),
+                                Tab(text: lang(context).allTime),
+                              ],
                             ),
                           ),
                         ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: BlocBuilder<SettingBloc, SettingState>(
+                        builder: (context, settingState) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Checkbox(
+                                value: settingState.onlyShowMyRecorded,
+                                activeColor: Theme.of(context).primaryColor,
+                                onChanged: (val) {
+                                  context.read<SettingBloc>().add(
+                                        ChangedOnlyShowMyRecorded(
+                                          onlyShowMyRecorded: val ?? false,
+                                        ),
+                                      );
+                                },
+                              ),
+                              const SizedBox(width: kSpaceS),
+                              Text(
+                                lang(context).onlyShowMyRecorded,
+                                style: AppTextStyles.bodyLarge(context),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
                     SliverFillRemaining(
@@ -266,40 +296,60 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                     ),
                   ),
 
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    runSpacing: 50,
-                    spacing: 50,
-                    children: [
-                      if (turnRecordedListState.listModel != null &&
-                          turnRecordedListState.listModel!.isNotEmpty)
-                        ...turnRecordedListState.listModel!.asMap().entries.map(
-                          (entry) {
-                            int index = entry.key;
-                            var e = entry.value;
-                            return GestureDetector(
-                              onTap: () {
-                                context
-                                    .read<TopScoreNavCubit>()
-                                    .showTopScoreDetail(e, index + 1);
+                  BlocBuilder<SettingBloc, SettingState>(
+                    builder: (context, settingState) {
+                      return Wrap(
+                        alignment: WrapAlignment.center,
+                        runSpacing: 50,
+                        spacing: 50,
+                        children: [
+                          if (turnRecordedListState.listModel != null &&
+                              turnRecordedListState.listModel!.isNotEmpty)
+                            ...turnRecordedListState.listModel!
+                                .asMap()
+                                .entries
+                                .map(
+                              (entry) {
+                                int index = entry.key;
+                                var e = entry.value;
+
+                                // Apply filter if enabled
+                                if (settingState.onlyShowMyRecorded) {
+                                  if (_currentUserId == null ||
+                                      e.firebaseUserId != _currentUserId) {
+                                    return const SizedBox.shrink();
+                                  }
+                                }
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    context
+                                        .read<TopScoreNavCubit>()
+                                        .showTopScoreDetail(e, index + 1);
+                                  },
+                                  child: RankingItem(
+                                    ranking: index + 1,
+                                    turnRecordedModel: e,
+                                    isCurrentUser: _currentUserId != null &&
+                                        e.firebaseUserId == _currentUserId,
+                                    heroTagSuffix:
+                                        settingState.onlyShowMyRecorded
+                                            ? '-filtered'
+                                            : '',
+                                  ),
+                                );
                               },
-                              child: RankingItem(
-                                ranking: index + 1,
-                                turnRecordedModel: e,
-                                isCurrentUser: _currentUserId != null &&
-                                    e.firebaseUserId == _currentUserId,
-                              ),
-                            );
-                          },
-                        )
-                      else if (!turnRecordedListState.isLoading)
-                        Text(
-                          lang(context).no_turn_yet,
-                          style: AppTextStyles.bodyLarge(context),
-                        ),
-                      if (turnRecordedListState.isLoading)
-                        const LoadingWidget(),
-                    ],
+                            )
+                          else if (!turnRecordedListState.isLoading)
+                            Text(
+                              lang(context).no_turn_yet,
+                              style: AppTextStyles.bodyLarge(context),
+                            ),
+                          if (turnRecordedListState.isLoading)
+                            const LoadingWidget(),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),

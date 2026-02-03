@@ -5,6 +5,7 @@ class PreferencesKey {
   static const FIREBASE_USER_ID = "firebase_user_id";
 
   static const NUMBER_OF_TOP_BOARD = "number_of_top_board";
+  static const ONLY_SHOW_MY_RECORDED = "only_show_my_recorded";
   static const FONT_SIZE = "font_size";
   static const VOL = "vol";
   static const IS_VIBRATE = "is_variant";

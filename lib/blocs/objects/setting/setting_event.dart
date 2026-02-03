@@ -39,3 +39,9 @@ class ChangedLocale extends SettingEvent {
 
   ChangedLocale({required this.locale});
 }
+
+class ChangedOnlyShowMyRecorded extends SettingEvent {
+  final bool onlyShowMyRecorded;
+
+  ChangedOnlyShowMyRecorded({required this.onlyShowMyRecorded});
+}

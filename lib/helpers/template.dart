@@ -16,11 +16,13 @@ class RankingItem extends StatelessWidget {
     required this.turnRecordedModel,
     required this.ranking,
     this.isCurrentUser = false,
+    this.heroTagSuffix,
   });
 
   final TurnRecordedModel? turnRecordedModel;
   final int? ranking;
   final bool isCurrentUser;
+  final String? heroTagSuffix;
 
   String? get playerName => turnRecordedModel?.playedUsername;
   DateTime get createdAt => turnRecordedModel?.recordedTime ?? DateTime.now();
@@ -30,7 +32,7 @@ class RankingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: "ranking-${turnRecordedModel!.turnId}",
+      tag: "ranking-${turnRecordedModel!.turnId}${heroTagSuffix ?? ''}",
       child: Row(
         mainAxisSize: MainAxisSize.min,
         // mainAxisAlignment: MainAxisAlignment.spaceAround,

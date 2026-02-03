@@ -111,6 +111,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get numberOfTopScores => 'Số điểm cao nhất';
 
   @override
+  String get onlyShowMyRecorded => 'Only show my recorded';
+
+  @override
   String get language => 'Ngôn ngữ';
 
   @override

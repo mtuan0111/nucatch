@@ -551,6 +551,69 @@ class _SettingScreenState extends State<SettingScreen> {
                                         ),
                                       ),
                                       const SizedBox(height: kSpaceL),
+                                      // Only show my recorded toggle
+                                      Container(
+                                        padding:
+                                            const EdgeInsets.all(kPaddingL),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.1),
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(
+                                                LayoutConfig
+                                                        .layoutBorderRadius /
+                                                    5),
+                                            topRight: Radius.circular(
+                                                LayoutConfig
+                                                    .layoutBorderRadius),
+                                            bottomLeft: Radius.circular(
+                                                LayoutConfig
+                                                    .layoutBorderRadius),
+                                            bottomRight: Radius.circular(
+                                                LayoutConfig
+                                                    .layoutBorderRadius),
+                                          ),
+                                          border: Border.all(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary
+                                                .withOpacity(0.2),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              FontAwesomeIcons.userCheck,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary,
+                                              size: kIconSizeM,
+                                            ),
+                                            const SizedBox(width: kSpaceML),
+                                            Expanded(
+                                              child: Text(
+                                                lang(context)
+                                                    .onlyShowMyRecorded,
+                                                style: AppTextStyles.titleLarge(
+                                                    context),
+                                              ),
+                                            ),
+                                            const SizedBox(width: kSpaceML),
+                                            Switch(
+                                              value: settingState
+                                                  .onlyShowMyRecorded,
+                                              activeColor: Theme.of(context)
+                                                  .primaryColor,
+                                              onChanged: (val) {
+                                                settingBloc.add(
+                                                  ChangedOnlyShowMyRecorded(
+                                                      onlyShowMyRecorded: val),
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: kSpaceL),
                                       // Language dropdown
                                       Container(
                                         padding:
