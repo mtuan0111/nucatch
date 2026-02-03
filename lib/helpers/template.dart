@@ -55,14 +55,14 @@ class RankingItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     RankingInfoRow(
-                      icon: Icons.person,
-                      text: playerName ?? lang(context).anonymous,
+                      icon: Icons.star,
+                      text: turnedPoint.toString(),
+                      style: AppTextStyles.titleLarge(context),
                     ),
                     if (isCurrentUser) ...[
-                      const SizedBox(width: kSpaceXS),
+                      const SizedBox(width: kSpaceS),
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: kPaddingXS,
@@ -80,21 +80,20 @@ class RankingItem extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ],
+                    ]
                   ],
+                ),
+                RankingInfoRow(
+                  icon: Icons.person,
+                  text: playerName ?? lang(context).anonymous,
                 ),
                 RankingInfoRow(
                   icon: Icons.calendar_today,
                   text: createdAt.formatClient(),
                 ),
                 RankingInfoRow(
-                  icon: Icons.star,
-                  text: "${lang(context).score}: $turnedPoint",
-                ),
-                RankingInfoRow(
                   icon: Helper.getIconFromDifficulty(context, difficulty),
-                  text:
-                      "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, difficulty)}",
+                  text: Helper.getTitleFromDifficulty(context, difficulty),
                 ),
               ],
             ),
@@ -126,19 +125,21 @@ class RankingInfoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(
           icon,
           size: Theme.of(context).textTheme.titleLarge?.fontSize,
           color: color ?? Theme.of(context).colorScheme.onPrimary,
         ),
-        const SizedBox(width: kSpaceXS),
+        const SizedBox(width: kSpaceM),
         Flexible(
           fit: FlexFit.loose,
           child: Text(
             text,
             style: (style ?? AppTextStyles.bodyLarge(context)),
-            overflow: TextOverflow.ellipsis,
+            // overflow: TextOverflow.ellipsis,
+            // maxLines: 0,
             softWrap: true,
           ),
         ),
