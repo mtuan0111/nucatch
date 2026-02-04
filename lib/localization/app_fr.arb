@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "Démarrage instantané",
+  "@instantStart": {
+    "description": "Bouton de démarrage instantané pour démarrage rapide du jeu"
+  },
   "topScore": "Meilleur Score",
   "@topScore": {
     "description": "Label for the top score"
@@ -143,6 +147,26 @@
   "numberOfTopScores": "Nombre de meilleurs scores",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
+  },
+  "onlyShowMyRecorded": "Afficher uniquement mes enregistrements",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "Global",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "Personnel",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "Rang",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "Partager",
+  "@share": {
+    "description": "Label for share button"
   },
   "language": "Langue",
   "@language": {

@@ -26,6 +26,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get start => 'Comenzar';
 
   @override
+  String get instantStart => 'Inicio instantáneo';
+
+  @override
   String get topScore => 'Mejor puntuación';
 
   @override
@@ -111,7 +114,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get numberOfTopScores => 'Número de mejores puntuaciones';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => 'Solo mostrar mis registros';
+
+  @override
+  String get global => 'Global';
+
+  @override
+  String get personal => 'Personal';
+
+  @override
+  String get rank => 'Rango';
+
+  @override
+  String get share => 'Compartir';
 
   @override
   String get language => 'Idioma';

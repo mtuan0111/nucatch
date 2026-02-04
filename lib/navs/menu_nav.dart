@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
@@ -63,7 +61,8 @@ class _MenuNavState extends State<MenuNav> {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
 
-              if (navState is! Play) context.read<MenuBloc>().add(ShowMenu());
+              if (navState is! Play && navState is! InstantStart)
+                context.read<MenuBloc>().add(ShowMenu());
             },
             child: BlocBuilder<UserBloc, UserState>(
               builder: (context, userState) {
@@ -78,7 +77,7 @@ class _MenuNavState extends State<MenuNav> {
                     const MaterialPage(
                       child: MenuScreen(),
                     ),
-                    if (navState is Play)
+                    if (navState is Play || navState is InstantStart)
                       MaterialPage(
                         child: MultiBlocProvider(
                           providers: [
@@ -93,36 +92,31 @@ class _MenuNavState extends State<MenuNav> {
                                     enabled: settingState.isVibrate)),
                             ),
                             BlocProvider<TurnBloc>(
-                              create: (context) => TurnBloc(
-                                const TurnState(),
-                                audioBloc: context.read<AudioBloc>(),
-                                vibrationBloc: context.read<VibrationBloc>(),
-                              )..add(ApplySetting(
-                                  settingModel: settingState.model))
-                              // ..add(
-                              //   Start(),
-                              // )
-                              ,
+                              create: (context) {
+                                final turnBloc = TurnBloc(
+                                  const TurnState(),
+                                  audioBloc: context.read<AudioBloc>(),
+                                  vibrationBloc: context.read<VibrationBloc>(),
+                                )..add(ApplySetting(
+                                    settingModel: settingState.model));
+
+                                // Difficulty will be loaded and set in SetDifficultScreen
+                                return turnBloc;
+                              },
                             ),
                             BlocProvider<PlayerNavCubit>(create: (context) {
-                              // if (Theme.of(context).platform ==
-                              //     TargetPlatform.android) {
-                              //   return PlayerNavCubit()..showSelectPlayMode();
-                              // }
+                              // For instant start, set play mode to solo with isInstantStart flag
+                              // The difficulty will be loaded and game will auto-start in SetDifficultScreen
+                              if (navState is InstantStart) {
+                                final cubit = PlayerNavCubit();
+                                cubit.selectPlayModeForInstantStart(
+                                    PlayMode.solo);
+                                return cubit;
+                              }
 
-                              // if (Platform.isIOS) {
-                              //   return PlayerNavCubit()
-                              //     ..showSelectPlayMode()
-                              //     ..selectPlayMode(PlayMode.solo);
-                              // }
-
-                              return PlayerNavCubit()..showSelectPlayMode()
-                                  // ..selectPlayMode(PlayMode.solo)
-                                  ;
-                            }
-
-                                // ..showSetDifficulty(),
-                                ),
+                              // Normal play flow - show play mode selection
+                              return PlayerNavCubit()..showSelectPlayMode();
+                            }),
                             BlocProvider(
                               create: (context) => CombatNavCubit(),
                             ),

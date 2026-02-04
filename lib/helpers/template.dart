@@ -35,6 +35,7 @@ class RankingItem extends StatelessWidget {
       tag: "ranking-${turnRecordedModel!.turnId}${heroTagSuffix ?? ''}",
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         // mainAxisAlignment: MainAxisAlignment.spaceAround,
         // crossAxisAlignment: WrapCrossAlignment.center,
         // alignment: WrapAlignment.center,
@@ -43,14 +44,17 @@ class RankingItem extends StatelessWidget {
         // runSpacing: 20,
         children: [
           if (ranking != null)
-            RankingSortingWidget(
-              position: ranking!,
+            Expanded(
+              flex: 2,
+              child: RankingSortingWidget(
+                position: ranking!,
+              ),
             ),
           // const SizedBox(
           //   width: 20,
           // ),
-          Flexible(
-            fit: FlexFit.loose,
+          Expanded(
+            // fit: FlexFit.loose,
             flex: 2,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -91,7 +95,8 @@ class RankingItem extends StatelessWidget {
                 ),
                 RankingInfoRow(
                   icon: Icons.calendar_today,
-                  text: createdAt.formatClient(),
+                  text: createdAt.formatClient().replaceFirst(
+                      ' ', '\n'), // Split date and time into 2 lines
                 ),
                 RankingInfoRow(
                   icon: Helper.getIconFromDifficulty(context, difficulty),

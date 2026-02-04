@@ -6,6 +6,7 @@ abstract class MenuState {}
 
 enum MenuOption {
   start,
+  instantStart,
   topScore,
   setting,
   about,
@@ -13,6 +14,10 @@ enum MenuOption {
 }
 
 Map<MenuOption, Map<String, dynamic>> menuArray(BuildContext context) => {
+      MenuOption.instantStart: {
+        "text": lang(context).instantStart,
+        "icon": FontAwesomeIcons.bolt,
+      },
       MenuOption.start: {
         "text": lang(context).start,
         "icon": FontAwesomeIcons.play,
@@ -69,6 +74,8 @@ const Map<KeyboardOption, int> keyboardArray = {
 class Menu extends MenuState {}
 
 class Play extends MenuState {}
+
+class InstantStart extends MenuState {}
 
 class TopScore extends MenuState {}
 
