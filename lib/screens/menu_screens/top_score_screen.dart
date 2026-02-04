@@ -52,8 +52,13 @@ class _TopScoreScreenState extends State<TopScoreScreen>
     // Initialize tab controller with 3 tabs (daily, weekly, all time)
     _tabController = TabController(length: 3, vsync: this, initialIndex: 1);
     _tabController.addListener(_handleTabChange);
+
     // Load weekly data initially (matching initial tab)
-    turnRecordedListBloc.add(LoadDataByPeriod(period: _selectedPeriod));
+    // Check filter state and pass userId if filter is enabled
+    final settingState = context.read<SettingBloc>().state;
+    final userId = settingState.onlyShowMyRecorded ? _currentUserId : null;
+    turnRecordedListBloc
+        .add(LoadDataByPeriod(period: _selectedPeriod, userId: userId));
   }
 
   void _handleTabChange() {
@@ -65,16 +70,19 @@ class _TopScoreScreenState extends State<TopScoreScreen>
       ];
       final newPeriod = periods[_tabController.index];
       if (newPeriod != _selectedPeriod) {
-        _onTabChanged(newPeriod);
+        // Get current filter state
+        final settingState = context.read<SettingBloc>().state;
+        final userId = settingState.onlyShowMyRecorded ? _currentUserId : null;
+        _onTabChanged(newPeriod, userId: userId);
       }
     }
   }
 
-  void _onTabChanged(RankingPeriod period) {
+  void _onTabChanged(RankingPeriod period, {String? userId}) {
     setState(() {
       _selectedPeriod = period;
     });
-    turnRecordedListBloc.add(LoadDataByPeriod(period: period));
+    turnRecordedListBloc.add(LoadDataByPeriod(period: period, userId: userId));
   }
 
   String _getPeriodTitle() {
@@ -103,11 +111,17 @@ class _TopScoreScreenState extends State<TopScoreScreen>
           // appBar: AppBar(),
           body: RefreshIndicator(
             onRefresh: () async {
+              // Get current filter state
+              final settingState = context.read<SettingBloc>().state;
+              final userId =
+                  settingState.onlyShowMyRecorded ? _currentUserId : null;
+
               // Clear cache and reload data for current period
               turnRecordedListBloc.add(
                 LoadDataByPeriod(
                   period: _selectedPeriod,
                   isRefresh: true, // This will clear the cache
+                  userId: userId,
                 ),
               );
             },
@@ -234,15 +248,24 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Checkbox(
+                              Switch(
                                 value: settingState.onlyShowMyRecorded,
                                 activeColor: Theme.of(context).primaryColor,
                                 onChanged: (val) {
                                   context.read<SettingBloc>().add(
                                         ChangedOnlyShowMyRecorded(
-                                          onlyShowMyRecorded: val ?? false,
+                                          onlyShowMyRecorded: val,
                                         ),
                                       );
+
+                                  // Reload data with or without userId filter
+                                  final userId = val ? _currentUserId : null;
+                                  turnRecordedListBloc.add(
+                                    LoadDataByPeriod(
+                                      period: _selectedPeriod,
+                                      userId: userId,
+                                    ),
+                                  );
                                 },
                               ),
                               const SizedBox(width: kSpaceS),
@@ -313,13 +336,7 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                                 int index = entry.key;
                                 var e = entry.value;
 
-                                // Apply filter if enabled
-                                if (settingState.onlyShowMyRecorded) {
-                                  if (_currentUserId == null ||
-                                      e.firebaseUserId != _currentUserId) {
-                                    return const SizedBox.shrink();
-                                  }
-                                }
+                                // No UI-level filtering - filtering happens at database query level
 
                                 return GestureDetector(
                                   onTap: () {
