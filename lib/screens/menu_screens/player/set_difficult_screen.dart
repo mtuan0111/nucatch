@@ -23,6 +23,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 
 class SetDifficultScreen extends StatefulWidget {
   const SetDifficultScreen({super.key});
@@ -142,51 +143,16 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
         child: SafeArea(
           child: CustomScrollView(
             slivers: <Widget>[
-              SliverAppBar(
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                shadowColor: Colors.transparent,
-                backgroundColor: Colors.transparent,
-                pinned: true,
-                stretch: true,
-                flexibleSpace: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    final double appBarHeight = constraints.biggest.height;
-                    final bool isCollapsed = appBarHeight <=
-                        kToolbarHeight + MediaQuery.of(context).padding.top;
-
-                    return AnimatedContainer(
-                      duration: const Duration(
-                          milliseconds: kAnimationDurationMedium),
-                      color: isCollapsed
-                          ? Theme.of(context).primaryColor
-                          : Colors.transparent,
-                      child: FlexibleSpaceBar(
-                        centerTitle: true,
-                        titlePadding: EdgeInsets.zero,
-                        title: Padding(
-                          padding: const EdgeInsets.all(kPaddingM),
-                          child: Text(
-                            lang(context).difficultySetting,
-                            textAlign: TextAlign.center,
-                            style:
-                                AppTextStyles.displaySmallTitleScreen(context),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                leading: IconButton(
-                  onPressed: () {
-                    if (Theme.of(context).platform == TargetPlatform.iOS) {
-                      context.read<MenuBloc>().add(ShowMenu());
-                    } else {
-                      // Navigate back to select play mode screen
-                      playerNavCubit.showSelectPlayMode();
-                    }
-                  },
-                  icon: const Icon(FontAwesomeIcons.chevronLeft),
-                ),
+              CustomSliverAppBar(
+                title: lang(context).difficultySetting,
+                onBackPressed: () {
+                  if (Theme.of(context).platform == TargetPlatform.iOS) {
+                    context.read<MenuBloc>().add(ShowMenu());
+                  } else {
+                    // Navigate back to select play mode screen
+                    playerNavCubit.showSelectPlayMode();
+                  }
+                },
                 expandedHeight: 100,
               ),
               DecoratedSliver(
