@@ -20,6 +20,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({
@@ -62,48 +63,11 @@ class _SettingScreenState extends State<SettingScreen> {
             decoration: LayoutConfig(context).gradientDecoration,
             child: CustomScrollView(
               slivers: [
-                SliverAppBar(
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  shadowColor: Colors.transparent,
-                  backgroundColor: Colors.transparent,
-                  pinned: true,
-                  stretch: true,
-                  flexibleSpace: LayoutBuilder(
-                    builder:
-                        (BuildContext context, BoxConstraints constraints) {
-                      final double appBarHeight = constraints.biggest.height;
-                      final bool isCollapsed = appBarHeight <=
-                          kToolbarHeight + MediaQuery.of(context).padding.top;
-
-                      return AnimatedContainer(
-                        duration: const Duration(
-                            milliseconds: kAnimationDurationMedium),
-                        color: isCollapsed
-                            ? Theme.of(context).primaryColor
-                            : Colors.transparent,
-                        child: FlexibleSpaceBar(
-                          centerTitle: true,
-                          titlePadding: EdgeInsets.zero,
-                          title: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              screenTitle,
-                              textAlign: TextAlign.center,
-                              style: AppTextStyles.displaySmallTitleScreen(
-                                  context),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  leading: IconButton(
-                    onPressed: () {
-                      context.read<MenuBloc>().add(ShowMenu());
-                      // Navigator.pop(context);
-                    },
-                    icon: const Icon(FontAwesomeIcons.chevronLeft),
-                  ),
+                CustomSliverAppBar(
+                  title: screenTitle,
+                  onBackPressed: () {
+                    context.read<MenuBloc>().add(ShowMenu());
+                  },
                   expandedHeight: 100,
                 ),
                 SliverPadding(

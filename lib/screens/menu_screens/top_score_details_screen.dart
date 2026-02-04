@@ -16,6 +16,7 @@ import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:nucatch/services/auth_services.dart';
+import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class TopScoreDetailScreen extends StatefulWidget {
@@ -144,58 +145,13 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                     //   ),
                     //   expandedHeight: 100,
                     // ),
-                    SliverAppBar(
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                      shadowColor: Colors.transparent,
-                      backgroundColor: Colors.transparent,
-                      pinned: true,
-                      stretch: true,
-                      flexibleSpace: Opacity(
-                        opacity: state.isCapturing ? 0.0 : 1.0,
-                        child: LayoutBuilder(
-                          builder: (BuildContext context,
-                              BoxConstraints constraints) {
-                            final double appBarHeight =
-                                constraints.biggest.height;
-                            final bool isCollapsed = appBarHeight <=
-                                kToolbarHeight +
-                                    MediaQuery.of(context).padding.top;
-
-                            return AnimatedContainer(
-                              duration: const Duration(
-                                  milliseconds: kAnimationDurationMedium),
-                              color: isCollapsed
-                                  ? Theme.of(context).primaryColor
-                                  : Colors.transparent,
-                              child: FlexibleSpaceBar(
-                                centerTitle: true,
-                                titlePadding: EdgeInsets.zero,
-                                title: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Text(
-                                    '${_getPeriodText()} - ${lang(context).rank} ${ranking ?? ''} - ${_getFilterContext()}',
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        AppTextStyles.displaySmallTitleScreen(
-                                            context),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      leading: Opacity(
-                        opacity: state.isCapturing ? 0.0 : 1.0,
-                        child: IconButton(
-                          onPressed: () {
-                            topScoreCubit.showTopScore();
-                          },
-                          icon: const Icon(
-                            FontAwesomeIcons.chevronLeft,
-                          ),
-                        ),
-                      ),
+                    CustomSliverAppBar(
+                      title:
+                          '${_getPeriodText()} - ${lang(context).rank} ${ranking ?? ''} - ${_getFilterContext()}',
+                      opacity: state.isCapturing ? 0.0 : 1.0,
+                      onBackPressed: () {
+                        topScoreCubit.showTopScore();
+                      },
                       expandedHeight: 100,
                     ),
                     SliverFillRemaining(
@@ -204,64 +160,68 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                RankingItem(
-                                  ranking: ranking,
-                                  turnRecordedModel: turnRecordedModel,
-                                ),
-                                const SizedBox(height: kSpace3XL),
-                                CustomElevatedButton(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(kPaddingXL),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          lang(context).scanQrToViewDetails,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium!
-                                              .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
+                            Expanded(
+                              flex: 5,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  RankingItem(
+                                    ranking: ranking,
+                                    turnRecordedModel: turnRecordedModel,
+                                  ),
+                                  const SizedBox(height: kSpace3XL),
+                                  CustomElevatedButton(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(kPaddingXL),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            lang(context).scanQrToViewDetails,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium!
+                                                .copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          const SizedBox(height: kSpaceM),
+                                          SizedBox(
+                                            height: 180,
+                                            width: 180,
+                                            child: QrImageView(
+                                              data: state.secureLink,
+                                              version: QrVersions.auto,
+                                              size: kIconSizeS,
+                                              embeddedImage: const AssetImage(
+                                                'assets/images/nuCatch-launcher-512.png',
                                               ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        const SizedBox(height: kSpaceM),
-                                        SizedBox(
-                                          height: 180,
-                                          width: 180,
-                                          child: QrImageView(
-                                            data: state.secureLink,
-                                            version: QrVersions.auto,
-                                            size: kIconSizeS,
-                                            embeddedImage: const AssetImage(
-                                              'assets/images/nuCatch-launcher-512.png',
-                                            ),
-                                            // 6 modules in a 180x180 QR means each module is 30px,
-                                            // so embedded image should be about 6*moduleSize = 36px
-                                            embeddedImageStyle:
-                                                const QrEmbeddedImageStyle(
-                                              size: Size(36, 36),
+                                              // 6 modules in a 180x180 QR means each module is 30px,
+                                              // so embedded image should be about 6*moduleSize = 36px
+                                              embeddedImageStyle:
+                                                  const QrEmbeddedImageStyle(
+                                                size: Size(36, 36),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                             const SizedBox(height: kSpace2XL),
                             // Share button - only visible if user owns this record
                             if (isCurrentUser)
                               Expanded(
+                                flex: 1,
                                 child: Opacity(
                                   opacity: state.isCapturing ? 0.0 : 1.0,
                                   child: IntrinsicWidth(
