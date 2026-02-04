@@ -118,21 +118,30 @@ class TurnRecordedServices {
     }
   }
 
-  Future<List<TurnRecordedModel>?> getTurnedListFirebase(int limit) async {
-    final query = firebaseFirestore!
-        .collection('turn_records')
+  Future<List<TurnRecordedModel>?> getTurnedListFirebase(int limit,
+      {String? userId}) async {
+    Query<Map<String, dynamic>> query =
+        firebaseFirestore!.collection('turn_records');
+
+    // Filter by user ID if provided
+    if (userId != null) {
+      query = query.where(PreferencesKey.FIREBASE_USER_ID, isEqualTo: userId);
+    }
+
+    query = query
         .orderBy(PreferencesKey.POINT, descending: true)
         .orderBy(PreferencesKey.RECORDED_TIME)
         .limit(limit);
 
     return _queryFirestore(
-      cacheKey: 'all_time_$limit',
+      cacheKey: 'all_time_${limit}_${userId ?? "all"}',
       query: query,
       queryType: 'all-time',
     );
   }
 
-  Future<List<TurnRecordedModel>?> getDailyTurnedListFirebase(int limit) async {
+  Future<List<TurnRecordedModel>?> getDailyTurnedListFirebase(int limit,
+      {String? userId}) async {
     final today = DateTime.now();
     final startOfDay = DateTime(today.year, today.month, today.day);
     final endOfDay = startOfDay.add(const Duration(days: 1));
@@ -140,51 +149,67 @@ class TurnRecordedServices {
     final startOfDayMillis = startOfDay.millisecondsSinceEpoch;
     final endOfDayMillis = endOfDay.millisecondsSinceEpoch;
 
-    final query = firebaseFirestore!
+    Query<Map<String, dynamic>> query = firebaseFirestore!
         .collection('turn_records')
         .where(PreferencesKey.RECORDED_TIME,
             isGreaterThanOrEqualTo: startOfDayMillis)
-        .where(PreferencesKey.RECORDED_TIME, isLessThan: endOfDayMillis)
+        .where(PreferencesKey.RECORDED_TIME, isLessThan: endOfDayMillis);
+
+    // Filter by user ID if provided
+    if (userId != null) {
+      query = query.where(PreferencesKey.FIREBASE_USER_ID, isEqualTo: userId);
+    }
+
+    query = query
         .orderBy(PreferencesKey.POINT, descending: true)
         .orderBy(PreferencesKey.RECORDED_TIME)
         .limit(limit);
 
     return _queryFirestore(
-      cacheKey: 'daily_${startOfDayMillis}_$limit',
+      cacheKey: 'daily_${startOfDayMillis}_${limit}_${userId ?? "all"}',
       query: query,
       queryType: 'daily',
     );
   }
 
-  Future<List<TurnRecordedModel>?> getWeeklyTurnedListFirebase(
-      int limit) async {
+  Future<List<TurnRecordedModel>?> getWeeklyTurnedListFirebase(int limit,
+      {String? userId}) async {
     final now = DateTime.now();
     final weekAgo = now.subtract(const Duration(days: 7));
     final weekAgoMillis = weekAgo.millisecondsSinceEpoch;
 
-    final query = firebaseFirestore!
+    Query<Map<String, dynamic>> query = firebaseFirestore!
         .collection('turn_records')
         .where(PreferencesKey.RECORDED_TIME,
-            isGreaterThanOrEqualTo: weekAgoMillis)
+            isGreaterThanOrEqualTo: weekAgoMillis);
+
+    // Filter by user ID if provided
+    if (userId != null) {
+      query = query.where(PreferencesKey.FIREBASE_USER_ID, isEqualTo: userId);
+    }
+
+    query = query
         .orderBy(PreferencesKey.POINT, descending: true)
         .orderBy(PreferencesKey.RECORDED_TIME)
         .limit(limit);
 
     return _queryFirestore(
-      cacheKey: 'weekly_${weekAgoMillis}_$limit',
+      cacheKey: 'weekly_${weekAgoMillis}_${limit}_${userId ?? "all"}',
       query: query,
       queryType: 'weekly',
     );
   }
 
-  Future<List<TurnRecordedModel>?> getAllTimeTurnedListFirebase(
-      int limit) async {
-    return await getTurnedListFirebase(limit);
+  Future<List<TurnRecordedModel>?> getAllTimeTurnedListFirebase(int limit,
+      {String? userId}) async {
+    return await getTurnedListFirebase(limit, userId: userId);
   }
 
   Future<List<TurnRecordedModel>?> getTurnedListByPeriod(
       RankingPeriod period, int limit,
-      {bool useFirebase = false, bool clearCache = false}) async {
+      {bool useFirebase = false,
+      bool clearCache = false,
+      String? userId}) async {
     // Clear cache if requested (for refresh operations)
     if (clearCache) {
       _clearFirebaseCache();
@@ -194,11 +219,11 @@ class TurnRecordedServices {
     // It will automatically use cached data when offline
     switch (period) {
       case RankingPeriod.daily:
-        return await getDailyTurnedListFirebase(limit) ?? [];
+        return await getDailyTurnedListFirebase(limit, userId: userId) ?? [];
       case RankingPeriod.weekly:
-        return await getWeeklyTurnedListFirebase(limit) ?? [];
+        return await getWeeklyTurnedListFirebase(limit, userId: userId) ?? [];
       case RankingPeriod.all:
-        return await getAllTimeTurnedListFirebase(limit) ?? [];
+        return await getAllTimeTurnedListFirebase(limit, userId: userId) ?? [];
     }
   }
 
