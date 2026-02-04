@@ -73,6 +73,7 @@ class TurnRecordedListBloc
           useFirebase: true,
           clearCache:
               event.isRefresh, // Clear cache if it's a refresh operation
+          userId: event.userId, // Pass userId for filtering
         );
       }
 
@@ -82,6 +83,7 @@ class TurnRecordedListBloc
         state.numberOfTopBoard,
         useFirebase: false,
         clearCache: event.isRefresh, // Clear cache if it's a refresh operation
+        userId: event.userId, // Pass userId for filtering
       );
 
       emitter(
