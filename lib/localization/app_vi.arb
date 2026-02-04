@@ -144,6 +144,26 @@
   "@numberOfTopScores": {
     "description": "Số lượng điểm cao nhất được hiển thị"
   },
+  "global": "Toàn cầu",
+  "@global": {
+    "description": "Nhãn cho chế độ xem xếp hạng toàn cầu"
+  },
+  "personal": "Cá nhân",
+  "@personal": {
+    "description": "Nhãn cho chế độ xem xếp hạng cá nhân"
+  },
+  "onlyShowMyRecorded": "Chỉ hiển thị bản ghi của tôi",
+  "@onlyShowMyRecorded": {
+    "description": "Nhãn cho bộ lọc chỉ hiển thị điểm số đã ghi của người dùng"
+  },
+  "rank": "Hạng",
+  "@rank": {
+    "description": "Nhãn cho vị trí xếp hạng"
+  },
+  "share": "Chia sẻ",
+  "@share": {
+    "description": "Nhãn cho nút chia sẻ"
+  },
   "language": "Ngôn ngữ",
   "@language": {
     "description": "Cài đặt ngôn ngữ của ứng dụng"

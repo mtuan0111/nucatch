@@ -110,7 +110,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get numberOfTopScores => '排行榜数量';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => '仅显示我的记录';
+
+  @override
+  String get global => '全球';
+
+  @override
+  String get personal => '个人';
+
+  @override
+  String get rank => '排名';
+
+  @override
+  String get share => '分享';
 
   @override
   String get language => '语言';

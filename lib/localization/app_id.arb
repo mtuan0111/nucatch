@@ -144,6 +144,26 @@
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
   },
+  "onlyShowMyRecorded": "Hanya tampilkan rekaman saya",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "Global",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "Pribadi",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "Peringkat",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "Bagikan",
+  "@share": {
+    "description": "Label for share button"
+  },
   "language": "Bahasa",
   "@language": {
     "description": "Label for language setting"

@@ -144,6 +144,26 @@
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
   },
+  "onlyShowMyRecorded": "केवल मेरे रिकॉर्ड दिखाएं",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "वैश्विक",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "व्यक्तिगत",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "रैंक",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "साझा करें",
+  "@share": {
+    "description": "Label for share button"
+  },
   "language": "भाषा",
   "@language": {
     "description": "Label for language setting"

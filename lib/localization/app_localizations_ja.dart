@@ -110,7 +110,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get numberOfTopScores => 'ハイスコア表示数';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => '自分の記録のみ表示';
+
+  @override
+  String get global => 'グローバル';
+
+  @override
+  String get personal => '個人';
+
+  @override
+  String get rank => 'ランク';
+
+  @override
+  String get share => '共有';
 
   @override
   String get language => '言語';

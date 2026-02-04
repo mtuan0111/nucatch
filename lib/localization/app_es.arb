@@ -144,6 +144,26 @@
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
   },
+  "onlyShowMyRecorded": "Solo mostrar mis registros",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "Global",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "Personal",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "Rango",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "Compartir",
+  "@share": {
+    "description": "Label for share button"
+  },
   "language": "Idioma",
   "@language": {
     "description": "Label for language setting"

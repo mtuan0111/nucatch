@@ -111,7 +111,19 @@ class AppLocalizationsId extends AppLocalizations {
   String get numberOfTopScores => 'Jumlah Skor Tertinggi';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => 'Hanya tampilkan rekaman saya';
+
+  @override
+  String get global => 'Global';
+
+  @override
+  String get personal => 'Pribadi';
+
+  @override
+  String get rank => 'Peringkat';
+
+  @override
+  String get share => 'Bagikan';
 
   @override
   String get language => 'Bahasa';
