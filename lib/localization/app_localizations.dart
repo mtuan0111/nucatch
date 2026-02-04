@@ -144,6 +144,12 @@ abstract class AppLocalizations {
   /// **'Start'**
   String get start;
 
+  /// Instant start button label for quick game start
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Start'**
+  String get instantStart;
+
   /// Label for the top score
   ///
   /// In en, this message translates to:

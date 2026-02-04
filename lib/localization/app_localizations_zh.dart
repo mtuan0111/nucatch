@@ -26,6 +26,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get start => '开始';
 
   @override
+  String get instantStart => '即时开始';
+
+  @override
   String get topScore => '最高分';
 
   @override

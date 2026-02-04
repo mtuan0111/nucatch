@@ -26,6 +26,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get start => 'Bắt đầu';
 
   @override
+  String get instantStart => 'Bắt đầu nhanh';
+
+  @override
   String get topScore => 'Điểm cao nhất';
 
   @override

@@ -26,6 +26,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get start => 'スタート';
 
   @override
+  String get instantStart => 'インスタントスタート';
+
+  @override
   String get topScore => '最高スコア';
 
   @override

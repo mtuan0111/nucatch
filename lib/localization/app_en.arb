@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "Instant Start",
+  "@instantStart": {
+    "description": "Instant start button label for quick game start"
+  },
   "topScore": "Top score",
   "@topScore": {
     "description": "Label for the top score"

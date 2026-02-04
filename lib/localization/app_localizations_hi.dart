@@ -26,6 +26,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get start => 'शुरू करें';
 
   @override
+  String get instantStart => 'तत्काल शुरुआत';
+
+  @override
   String get topScore => 'शीर्ष स्कोर';
 
   @override

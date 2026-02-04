@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "Démarrage instantané",
+  "@instantStart": {
+    "description": "Bouton de démarrage instantané pour démarrage rapide du jeu"
+  },
   "topScore": "Meilleur Score",
   "@topScore": {
     "description": "Label for the top score"

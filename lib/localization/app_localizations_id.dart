@@ -26,6 +26,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get start => 'Mulai';
 
   @override
+  String get instantStart => 'Mulai Instan';
+
+  @override
   String get topScore => 'Skor Tertinggi';
 
   @override
