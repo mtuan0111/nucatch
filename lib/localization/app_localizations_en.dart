@@ -114,6 +114,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onlyShowMyRecorded => 'Only show my recorded';
 
   @override
+  String get global => 'Global';
+
+  @override
+  String get personal => 'Personal';
+
+  @override
+  String get rank => 'Rank';
+
+  @override
+  String get share => 'Share';
+
+  @override
   String get language => 'Language';
 
   @override

@@ -342,7 +342,12 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                                   onTap: () {
                                     context
                                         .read<TopScoreNavCubit>()
-                                        .showTopScoreDetail(e, index + 1);
+                                        .showTopScoreDetail(
+                                          e,
+                                          index + 1,
+                                          _selectedPeriod,
+                                          settingState.onlyShowMyRecorded,
+                                        );
                                   },
                                   child: RankingItem(
                                     ranking: index + 1,

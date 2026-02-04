@@ -148,6 +148,22 @@
   "@onlyShowMyRecorded": {
     "description": "Label for filter to show only user's own recorded scores"
   },
+  "global": "Global",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "Personal",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "Rank",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "Share",
+  "@share": {
+    "description": "Label for share button"
+  },
   "language": "Language",
   "@language": {
     "description": "Label for language setting"

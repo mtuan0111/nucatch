@@ -111,7 +111,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String get numberOfTopScores => 'Số điểm cao nhất';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => 'Chỉ hiển thị bản ghi của tôi';
+
+  @override
+  String get global => 'Toàn cầu';
+
+  @override
+  String get personal => 'Cá nhân';
+
+  @override
+  String get rank => 'Hạng';
+
+  @override
+  String get share => 'Chia sẻ';
 
   @override
   String get language => 'Ngôn ngữ';

@@ -144,6 +144,26 @@
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
   },
+  "onlyShowMyRecorded": "แสดงเฉพาะบันทึกของฉัน",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "ทั่วโลก",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "ส่วนตัว",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "อันดับ",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "แชร์",
+  "@share": {
+    "description": "Label for share button"
+  },
   "language": "ภาษา",
   "@language": {
     "description": "Label for language setting"

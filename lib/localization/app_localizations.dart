@@ -318,6 +318,30 @@ abstract class AppLocalizations {
   /// **'Only show my recorded'**
   String get onlyShowMyRecorded;
 
+  /// Label for global ranking view
+  ///
+  /// In en, this message translates to:
+  /// **'Global'**
+  String get global;
+
+  /// Label for personal ranking view
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get personal;
+
+  /// Label for ranking position
+  ///
+  /// In en, this message translates to:
+  /// **'Rank'**
+  String get rank;
+
+  /// Label for share button
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
   /// Label for language setting
   ///
   /// In en, this message translates to:
