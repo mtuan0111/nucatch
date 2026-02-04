@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "तत्काल शुरुआत",
+  "@instantStart": {
+    "description": "त्वरित गेम शुरू करने के लिए तत्काल शुरुआत बटन"
+  },
   "topScore": "शीर्ष स्कोर",
   "@topScore": {
     "description": "Label for the top score"

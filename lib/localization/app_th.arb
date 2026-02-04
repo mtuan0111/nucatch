@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "เริ่มทันที",
+  "@instantStart": {
+    "description": "ปุ่มเริ่มทันทีสำหรับเริ่มเกมอย่างรวดเร็ว"
+  },
   "topScore": "คะแนนสูงสุด",
   "@topScore": {
     "description": "Label for the top score"

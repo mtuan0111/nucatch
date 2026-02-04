@@ -26,6 +26,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get start => 'Start';
 
   @override
+  String get instantStart => 'Instant Start';
+
+  @override
   String get topScore => 'Top score';
 
   @override

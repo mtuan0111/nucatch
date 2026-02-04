@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "即时开始",
+  "@instantStart": {
+    "description": "快速开始游戏的即时开始按钮"
+  },
   "topScore": "最高分",
   "@topScore": {
     "description": "Label for the top score"

@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "Mulai Instan",
+  "@instantStart": {
+    "description": "Tombol mulai instan untuk memulai permainan dengan cepat"
+  },
   "topScore": "Skor Tertinggi",
   "@topScore": {
     "description": "Label for the top score"

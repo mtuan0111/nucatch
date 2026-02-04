@@ -26,6 +26,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get start => 'เริ่ม';
 
   @override
+  String get instantStart => 'เริ่มทันที';
+
+  @override
   String get topScore => 'คะแนนสูงสุด';
 
   @override
