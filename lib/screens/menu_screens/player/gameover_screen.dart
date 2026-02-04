@@ -61,95 +61,98 @@ class _GameOverScreenState extends State<GameOverScreen> {
             slivers: <Widget>[
               SliverFillRemaining(
                 // fillOverscroll: true,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      lang(context).gameOver,
-                      style: AppTextStyles.displayLarge(context).copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: kSpace3XL),
-                    if (turnState.expect != turnState.requirementString)
-                      Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: kSpace2XL),
-                        child: Text(
-                          turnState.requirementString ?? '',
-                          style: AppTextStyles.displayLarge(context).copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontSize: kFontSizeXL,
-                          ),
-                          textAlign: TextAlign.center,
+                child: DeviceWrapper(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        lang(context).gameOver,
+                        style: AppTextStyles.displayLarge(context).copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
+                        textAlign: TextAlign.center,
                       ),
-                    const SizedBox(height: kSpaceL),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          lang(context).theCorrectIs,
-                          style: AppTextStyles.withColor(
-                              AppTextStyles.bodyLargeMedium(context),
-                              Theme.of(context).colorScheme.onPrimary),
-                        ),
-                        const SizedBox(width: kSpaceS),
-                        Text(
-                          turnState.expect ?? '',
-                          style: AppTextStyles.displayLarge(context).copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
+                      const SizedBox(height: kSpace3XL),
+                      if (turnState.expect != turnState.requirementString)
+                        Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: kSpace2XL),
+                          child: Text(
+                            turnState.requirementString ?? '',
+                            style: AppTextStyles.displayLarge(context).copyWith(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontSize: kFontSizeXL,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: kSpaceXL,
-                    ),
-                    BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
-                      builder: (context, state) {
-                        if (state.isLoading || turnState.recordedItem == null) {
-                          return const LoadingWidget();
-                        }
+                      const SizedBox(height: kSpaceL),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            lang(context).theCorrectIs,
+                            style: AppTextStyles.withColor(
+                                AppTextStyles.bodyLargeMedium(context),
+                                Theme.of(context).colorScheme.onPrimary),
+                          ),
+                          const SizedBox(width: kSpaceS),
+                          Text(
+                            turnState.expect ?? '',
+                            style: AppTextStyles.displayLarge(context).copyWith(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: kSpaceXL,
+                      ),
+                      BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
+                        builder: (context, state) {
+                          if (state.isLoading ||
+                              turnState.recordedItem == null) {
+                            return const LoadingWidget();
+                          }
 
-                        int? indexOfItem = state.listModel!
-                            .indexOfTurn(turnState.recordedItem!);
+                          int? indexOfItem = state.listModel!
+                              .indexOfTurn(turnState.recordedItem!);
 
-                        return RankingItem(
-                          ranking: indexOfItem,
-                          turnRecordedModel: turnState.recordedItem!,
-                          // playerName: turnState.recordedItem!.playedUsername ??
-                          //     lang(context).anonymous,
-                          // createdAt: turnState.recordedItem!.recordedTime,
-                          // turnedPoint: turnState.recordedItem!.point,
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: kSpace4XL,
-                    ),
-                    const SizedBox(
-                      height: kSpaceXS,
-                    ),
-                    BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
-                      builder: (context, state) {
-                        return AnimatedButton(
-                          context,
-                          onPressed: () {
-                            playerNavCubit.showPlay();
+                          return RankingItem(
+                            ranking: indexOfItem,
+                            turnRecordedModel: turnState.recordedItem!,
+                            // playerName: turnState.recordedItem!.playedUsername ??
+                            //     lang(context).anonymous,
+                            // createdAt: turnState.recordedItem!.recordedTime,
+                            // turnedPoint: turnState.recordedItem!.point,
+                          );
+                        },
+                      ),
+                      const SizedBox(
+                        height: kSpace4XL,
+                      ),
+                      const SizedBox(
+                        height: kSpaceXS,
+                      ),
+                      BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
+                        builder: (context, state) {
+                          return AnimatedButton(
+                            context,
+                            onPressed: () {
+                              playerNavCubit.showPlay();
 
-                            turnBloc.add(
-                              Start(),
-                            );
-                          },
-                          iconData: FontAwesomeIcons.arrowRotateLeft,
-                        );
-                      },
-                    ),
-                  ],
+                              turnBloc.add(
+                                Start(),
+                              );
+                            },
+                            iconData: FontAwesomeIcons.arrowRotateLeft,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

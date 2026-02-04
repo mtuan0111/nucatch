@@ -10,6 +10,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 
 class CombatRestartConfirmationScreen extends StatelessWidget {
   const CombatRestartConfirmationScreen({super.key});
@@ -22,44 +23,11 @@ class CombatRestartConfirmationScreen extends StatelessWidget {
       child: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
-            SliverAppBar(
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              shadowColor: Colors.transparent,
-              backgroundColor: Colors.transparent,
-              pinned: true,
-              stretch: true,
-              flexibleSpace: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  final double appBarHeight = constraints.biggest.height;
-                  final bool isCollapsed = appBarHeight <=
-                      kToolbarHeight + MediaQuery.of(context).padding.top;
-
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: kAnimationDurationMedium),
-                    color: isCollapsed
-                        ? Theme.of(context).primaryColor
-                        : Colors.transparent,
-                    child: FlexibleSpaceBar(
-                      centerTitle: true,
-                      titlePadding: EdgeInsets.zero,
-                      title: Padding(
-                        padding: const EdgeInsets.all(kPaddingM),
-                        child: Text(
-                          lang(context).doYouReadyForRestart,
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.displaySmallTitleScreen(context),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              leading: IconButton(
-                onPressed: () {
-                  context.read<PlayerNavCubit>().showSelectPlayMode();
-                },
-                icon: const Icon(FontAwesomeIcons.chevronLeft),
-              ),
+            CustomSliverAppBar(
+              title: lang(context).doYouReadyForRestart,
+              onBackPressed: () {
+                context.read<PlayerNavCubit>().showSelectPlayMode();
+              },
               expandedHeight: 100,
             ),
             SliverPadding(

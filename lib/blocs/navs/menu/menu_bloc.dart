@@ -20,6 +20,10 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         emitter(Play());
         break;
 
+      case MenuOption.instantStart:
+        emitter(InstantStart());
+        break;
+
       case MenuOption.topScore:
         emitter(TopScore());
         break;

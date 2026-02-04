@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "Mulai Instan",
+  "@instantStart": {
+    "description": "Tombol mulai instan untuk memulai permainan dengan cepat"
+  },
   "topScore": "Skor Tertinggi",
   "@topScore": {
     "description": "Label for the top score"
@@ -143,6 +147,26 @@
   "numberOfTopScores": "Jumlah Skor Tertinggi",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
+  },
+  "onlyShowMyRecorded": "Hanya tampilkan rekaman saya",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "Global",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "Pribadi",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "Peringkat",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "Bagikan",
+  "@share": {
+    "description": "Label for share button"
   },
   "language": "Bahasa",
   "@language": {

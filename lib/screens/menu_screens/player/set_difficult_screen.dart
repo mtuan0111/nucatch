@@ -18,9 +18,12 @@ import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/helpers/preferences_key.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 
 class SetDifficultScreen extends StatefulWidget {
   const SetDifficultScreen({super.key});
@@ -50,6 +53,51 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
     turnRecordedListBloc.add(
       LoadData(),
     );
+
+    // Auto-start if this is instant start (instant start feature)
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final playerNavCubit = context.read<PlayerNavCubit>();
+      final playerNavState = playerNavCubit.state;
+
+      // Only auto-start for instant start, not regular start
+      if (playerNavState is SetDifficultyState &&
+          playerNavState.isInstantStart) {
+        // Check if difficulty is pre-selected
+        Difficulty? difficulty = playerNavState.difficulty;
+
+        // If no pre-selected difficulty, load from SharedPreferences (instant start case)
+        if (difficulty == null) {
+          final prefs = await SharedPreferences.getInstance();
+          final savedDifficulty = prefs.getString(
+            PreferencesKey.LAST_USED_DIFFICULTY,
+          );
+
+          difficulty = Difficulty.easy;
+          if (savedDifficulty != null) {
+            try {
+              difficulty = Difficulty.values.firstWhere(
+                (d) => d.name == savedDifficulty,
+              );
+            } catch (e) {
+              difficulty = Difficulty.easy;
+            }
+          }
+        }
+
+        final playMode = playerNavCubit.currentPlayMode;
+
+        // Auto-select the difficulty and start the game
+        turnBloc.add(
+          SetDifficulty(
+            difficulty: difficulty,
+            onChanged: () {
+              turnBloc.add(Start());
+              playerNavCubit.showPlay(playMode: playMode);
+            },
+          ),
+        );
+      }
+    });
 
     super.initState();
   }
@@ -95,50 +143,16 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
         child: SafeArea(
           child: CustomScrollView(
             slivers: <Widget>[
-              SliverAppBar(
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                shadowColor: Colors.transparent,
-                backgroundColor: Colors.transparent,
-                pinned: true,
-                stretch: true,
-                flexibleSpace: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    final double appBarHeight = constraints.biggest.height;
-                    final bool isCollapsed = appBarHeight <=
-                        kToolbarHeight + MediaQuery.of(context).padding.top;
-
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: kAnimationDurationMedium),
-                      color: isCollapsed
-                          ? Theme.of(context).primaryColor
-                          : Colors.transparent,
-                      child: FlexibleSpaceBar(
-                        centerTitle: true,
-                        titlePadding: EdgeInsets.zero,
-                        title: Padding(
-                          padding: const EdgeInsets.all(kPaddingM),
-                          child: Text(
-                            lang(context).difficultySetting,
-                            textAlign: TextAlign.center,
-                            style:
-                                AppTextStyles.displaySmallTitleScreen(context),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                leading: IconButton(
-                  onPressed: () {
-                    if (Theme.of(context).platform == TargetPlatform.iOS) {
-                      context.read<MenuBloc>().add(ShowMenu());
-                    } else {
-                      // Navigate back to select play mode screen
-                      playerNavCubit.showSelectPlayMode();
-                    }
-                  },
-                  icon: const Icon(FontAwesomeIcons.chevronLeft),
-                ),
+              CustomSliverAppBar(
+                title: lang(context).difficultySetting,
+                onBackPressed: () {
+                  if (Theme.of(context).platform == TargetPlatform.iOS) {
+                    context.read<MenuBloc>().add(ShowMenu());
+                  } else {
+                    // Navigate back to select play mode screen
+                    playerNavCubit.showSelectPlayMode();
+                  }
+                },
                 expandedHeight: 100,
               ),
               DecoratedSliver(

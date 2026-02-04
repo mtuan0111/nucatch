@@ -4,14 +4,19 @@ import '../helpers/theme_config.dart';
 import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
 import 'package:nucatch/blocs/navs/menu/menu_event.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart'
+    show Difficulty;
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/helpers/preferences_key.dart';
 import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/widgets/tour_button.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -22,6 +27,7 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   String? version;
+  Difficulty? savedDifficulty;
   MenuBloc get menuBloc => context.read<MenuBloc>();
   MenuState get menuState => menuBloc.state;
 
@@ -34,6 +40,29 @@ class _MenuScreenState extends State<MenuScreen> {
         version = packageInfo.version;
       });
     });
+
+    // Load saved difficulty for instant start button styling
+    _loadSavedDifficulty();
+  }
+
+  Future<void> _loadSavedDifficulty() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedDifficultyName = prefs.getString(
+      PreferencesKey.LAST_USED_DIFFICULTY,
+    );
+
+    if (savedDifficultyName != null) {
+      try {
+        final difficulty = Difficulty.values.firstWhere(
+          (d) => d.name == savedDifficultyName,
+        );
+        setState(() {
+          savedDifficulty = difficulty;
+        });
+      } catch (e) {
+        // If parsing fails, keep savedDifficulty as null (will use default)
+      }
+    }
   }
 
   @override
@@ -101,6 +130,23 @@ class _MenuScreenState extends State<MenuScreen> {
                           final entry =
                               menuArray(context).entries.elementAt(index);
 
+                          // Get color and icon for instant start button based on saved difficulty
+                          Color backgroundColor =
+                              Theme.of(context).primaryColor;
+                          IconData iconData = entry.value['icon'] as IconData;
+
+                          if (entry.key == MenuOption.instantStart &&
+                              savedDifficulty != null) {
+                            backgroundColor = Helper.getColorIconFromDifficulty(
+                              context,
+                              savedDifficulty!,
+                            );
+                            iconData = Helper.getIconFromDifficulty(
+                              context,
+                              savedDifficulty!,
+                            );
+                          }
+
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 16.0),
                             child: Align(
@@ -109,10 +155,9 @@ class _MenuScreenState extends State<MenuScreen> {
                                 context,
                                 text: (entry.value['text'] as String)
                                     .toUpperCase(),
-                                style: AppTextStyles.titleLargeItalic(
-                                    context),
-                                iconData: entry.value['icon'] as IconData,
-                                backgroundColor: Theme.of(context).primaryColor,
+                                style: AppTextStyles.titleLargeItalic(context),
+                                iconData: iconData,
+                                backgroundColor: backgroundColor,
                                 // textDirection: TextDirection.rtl,
                                 // color: Colors.black87,
                                 onPressed: () => menuBloc.add(

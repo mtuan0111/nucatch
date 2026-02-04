@@ -36,8 +36,14 @@ class GameOverState extends PlayerNavState {}
 
 class SetDifficultyState extends PlayerNavState {
   final PlayMode playMode;
+  final Difficulty? difficulty;
+  final bool isInstantStart;
 
-  SetDifficultyState({this.playMode = PlayMode.solo});
+  SetDifficultyState({
+    this.playMode = PlayMode.solo,
+    this.difficulty,
+    this.isInstantStart = false,
+  });
 }
 
 class DifficultyModel {

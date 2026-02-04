@@ -26,6 +26,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get start => 'เริ่ม';
 
   @override
+  String get instantStart => 'เริ่มทันที';
+
+  @override
   String get topScore => 'คะแนนสูงสุด';
 
   @override
@@ -111,7 +114,19 @@ class AppLocalizationsTh extends AppLocalizations {
   String get numberOfTopScores => 'จำนวนคะแนนสูงสุดที่แสดง';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => 'แสดงเฉพาะบันทึกของฉัน';
+
+  @override
+  String get global => 'ทั่วโลก';
+
+  @override
+  String get personal => 'ส่วนตัว';
+
+  @override
+  String get rank => 'อันดับ';
+
+  @override
+  String get share => 'แชร์';
 
   @override
   String get language => 'ภาษา';

@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "เริ่มทันที",
+  "@instantStart": {
+    "description": "ปุ่มเริ่มทันทีสำหรับเริ่มเกมอย่างรวดเร็ว"
+  },
   "topScore": "คะแนนสูงสุด",
   "@topScore": {
     "description": "Label for the top score"
@@ -143,6 +147,26 @@
   "numberOfTopScores": "จำนวนคะแนนสูงสุดที่แสดง",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
+  },
+  "onlyShowMyRecorded": "แสดงเฉพาะบันทึกของฉัน",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "ทั่วโลก",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "ส่วนตัว",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "อันดับ",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "แชร์",
+  "@share": {
+    "description": "Label for share button"
   },
   "language": "ภาษา",
   "@language": {

@@ -27,6 +27,10 @@
   "@start": {
     "description": "Nút bắt đầu trò chơi"
   },
+  "instantStart": "Bắt đầu nhanh",
+  "@instantStart": {
+    "description": "Nút bắt đầu nhanh để khởi động trò chơi ngay lập tức"
+  },
   "topScore": "Điểm cao nhất",
   "@topScore": {
     "description": "Hiển thị điểm cao nhất của người chơi"
@@ -143,6 +147,26 @@
   "numberOfTopScores": "Số điểm cao nhất",
   "@numberOfTopScores": {
     "description": "Số lượng điểm cao nhất được hiển thị"
+  },
+  "global": "Toàn cầu",
+  "@global": {
+    "description": "Nhãn cho chế độ xem xếp hạng toàn cầu"
+  },
+  "personal": "Cá nhân",
+  "@personal": {
+    "description": "Nhãn cho chế độ xem xếp hạng cá nhân"
+  },
+  "onlyShowMyRecorded": "Chỉ hiển thị bản ghi của tôi",
+  "@onlyShowMyRecorded": {
+    "description": "Nhãn cho bộ lọc chỉ hiển thị điểm số đã ghi của người dùng"
+  },
+  "rank": "Hạng",
+  "@rank": {
+    "description": "Nhãn cho vị trí xếp hạng"
+  },
+  "share": "Chia sẻ",
+  "@share": {
+    "description": "Nhãn cho nút chia sẻ"
   },
   "language": "Ngôn ngữ",
   "@language": {
