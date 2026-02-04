@@ -14,6 +14,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 import 'package:nucatch/services/auth_services.dart';
 
@@ -130,59 +131,16 @@ class _TopScoreScreenState extends State<TopScoreScreen>
               child: SafeArea(
                 child: CustomScrollView(
                   slivers: [
-                    SliverAppBar(
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                      shadowColor: Colors.transparent,
-                      backgroundColor: Colors.transparent,
-                      pinned: true,
-                      stretch: true,
-                      flexibleSpace: LayoutBuilder(
-                        builder:
-                            (BuildContext context, BoxConstraints constraints) {
-                          final double appBarHeight =
-                              constraints.biggest.height;
-                          final bool isCollapsed = appBarHeight <=
-                              kToolbarHeight +
-                                  MediaQuery.of(context).padding.top;
-
-                          return AnimatedContainer(
-                            duration: const Duration(
-                                milliseconds: kAnimationDurationMedium),
-                            color: isCollapsed
-                                ? Theme.of(context).primaryColor
-                                : Colors.transparent,
-                            child: FlexibleSpaceBar(
-                              centerTitle: true,
-                              titlePadding: EdgeInsets.zero,
-                              title: Padding(
-                                padding: const EdgeInsets.all(kPaddingM),
-                                child: BlocBuilder<TurnRecordedListBloc,
-                                    TurnRecordedListState>(
-                                  builder: (context, state) {
-                                    return Text(
-                                      "$screenTitle ${state.numberOfTopBoard}",
-                                      textAlign: TextAlign.center,
-                                      style:
-                                          AppTextStyles.displaySmallTitleScreen(
-                                              context),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      leading: IconButton(
-                        onPressed: () {
+                    BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
+                        builder: (context, state) {
+                      return CustomSliverAppBar(
+                        title: "$screenTitle ${state.numberOfTopBoard}",
+                        onBackPressed: () {
                           mainMenuBloc.add(ShowMenu());
                         },
-                        icon: const Icon(
-                          FontAwesomeIcons.chevronLeft,
-                        ),
-                      ),
-                      expandedHeight: 100, // Increased to accommodate buttons
-                    ),
+                        expandedHeight: 100,
+                      );
+                    }),
                     SliverToBoxAdapter(
                       child: SafeArea(
                         child: Padding(
@@ -342,7 +300,12 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                                   onTap: () {
                                     context
                                         .read<TopScoreNavCubit>()
-                                        .showTopScoreDetail(e, index + 1);
+                                        .showTopScoreDetail(
+                                          e,
+                                          index + 1,
+                                          _selectedPeriod,
+                                          settingState.onlyShowMyRecorded,
+                                        );
                                   },
                                   child: RankingItem(
                                     ranking: index + 1,

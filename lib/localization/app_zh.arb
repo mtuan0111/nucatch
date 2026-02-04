@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "即时开始",
+  "@instantStart": {
+    "description": "快速开始游戏的即时开始按钮"
+  },
   "topScore": "最高分",
   "@topScore": {
     "description": "Label for the top score"
@@ -143,6 +147,26 @@
   "numberOfTopScores": "排行榜数量",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
+  },
+  "onlyShowMyRecorded": "仅显示我的记录",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "全球",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "个人",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "排名",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "分享",
+  "@share": {
+    "description": "Label for share button"
   },
   "language": "语言",
   "@language": {

@@ -439,6 +439,13 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
 
+    // Save the last used difficulty for instant start feature
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      PreferencesKey.LAST_USED_DIFFICULTY,
+      event.difficulty.name,
+    );
+
     // add(Start(
     //   seconds: state.countDown,
     // ));

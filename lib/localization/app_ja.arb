@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "インスタントスタート",
+  "@instantStart": {
+    "description": "クイックゲーム開始のためのインスタントスタートボタン"
+  },
   "topScore": "最高スコア",
   "@topScore": {
     "description": "Label for the top score"
@@ -143,6 +147,26 @@
   "numberOfTopScores": "ハイスコア表示数",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
+  },
+  "onlyShowMyRecorded": "自分の記録のみ表示",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "グローバル",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "個人",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "ランク",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "共有",
+  "@share": {
+    "description": "Label for share button"
   },
   "language": "言語",
   "@language": {

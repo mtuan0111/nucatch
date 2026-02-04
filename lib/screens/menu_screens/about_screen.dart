@@ -14,6 +14,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 import 'package:nucatch/models/setting_model.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
@@ -66,45 +67,11 @@ class _AboutScreenState extends State<AboutScreen> {
         child: SafeArea(
           child: CustomScrollView(
             slivers: [
-              SliverAppBar(
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                shadowColor: Colors.transparent,
-                backgroundColor: Colors.transparent,
-                pinned: true,
-                stretch: true,
-                flexibleSpace: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    final double appBarHeight = constraints.biggest.height;
-                    final bool isCollapsed = appBarHeight <=
-                        kToolbarHeight + MediaQuery.of(context).padding.top;
-
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: kAnimationDurationMedium),
-                      color: isCollapsed
-                          ? Theme.of(context).primaryColor
-                          : Colors.transparent,
-                      child: FlexibleSpaceBar(
-                        centerTitle: true,
-                        titlePadding: EdgeInsets.zero,
-                        title: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            screenTitle,
-                            textAlign: TextAlign.center,
-                            style:
-                                AppTextStyles.displaySmallTitleScreen(context),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                leading: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(FontAwesomeIcons.chevronLeft),
-                ),
+              CustomSliverAppBar(
+                title: screenTitle,
+                onBackPressed: () {
+                  Navigator.pop(context);
+                },
                 expandedHeight: 100,
               ),
               SliverPadding(
