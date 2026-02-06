@@ -1,8 +1,8 @@
 {
     "android": {
         "dev": {
-            "versionName": "2.7.1",
-            "versionCode": 71,
+            "versionName": "2.7.2",
+            "versionCode": 72,
             "releaseNotes": {
                 "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
                 "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
@@ -10,8 +10,8 @@
             }
         },
         "prod": {
-            "versionName": "2.7.1",
-            "versionCode": 71,
+            "versionName": "2.7.2",
+            "versionCode": 72,
             "releaseNotes": {
                 "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
                 "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
@@ -21,8 +21,8 @@
     },
     "ios": {
         "dev": {
-            "versionName": "2.7.1",
-            "buildNumber": "71",
+            "versionName": "2.7.2",
+            "buildNumber": "72",
             "releaseNotes": {
                 "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
                 "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
@@ -30,8 +30,8 @@
             }
         },
         "prod": {
-            "versionName": "2.7.1",
-            "buildNumber": "71",
+            "versionName": "2.7.2",
+            "buildNumber": "72",
             "releaseNotes": {
                 "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
                 "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
@@ -40,7 +40,7 @@
         }
     },
     "metadata": {
-        "lastUpdated": "2026-02-06T15:00:00Z",
+        "lastUpdated": "2026-02-06T17:06:00Z",
         "updatedBy": "CI/CD Pipeline"
     }
 }
