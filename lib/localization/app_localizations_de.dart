@@ -702,6 +702,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Tippe auf die **Start-Schaltfläche**, um zu beginnen. Dann wählst du zwischen **Einzelmodus** für mathematische Herausforderungen oder **Kampfmodus** für Echtzeit-Multiplayer-Kämpfe über **Bluetooth**. Lass uns beide Optionen erkunden!';
 
   @override
+  String get tourInstantStartTitle => 'Schnellstart - Schnelles Spiel';
+
+  @override
+  String get tourInstantStartDesc =>
+      'Möchten Sie sofort loslegen? Tippen Sie auf die **Schnellstart-Schaltfläche**, um sofort ein Solo-Spiel mit dem gleichen Schwierigkeitsgrad zu beginnen, den Sie zuletzt gespielt haben. Das ist der schnellste Weg, um Ihren Fortschritt fortzusetzen!';
+
+  @override
   String get tourSoloTitle => 'Einzelmodus - Alleine spielen';
 
   @override

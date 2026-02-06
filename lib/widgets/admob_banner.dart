@@ -139,17 +139,10 @@ class _AdMobBannerState extends State<AdMobBanner> {
             shapeAt: RoundedWithShapeAt.bottom,
             // adjustment: kPaddingS, // Optional adjustment to radius
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
         ),
         child: SizedBox(
-            height: widget.adSize.height.toDouble() - kPaddingS,
-            width: widget.adSize.width.toDouble() - kPaddingS,
+            height: widget.adSize.height.toDouble() + kPaddingS,
+            width: widget.adSize.width.toDouble() + kPaddingS / 2,
             child: AdWidget(ad: _bannerAd!)));
   }
 }

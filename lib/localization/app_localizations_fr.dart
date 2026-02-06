@@ -701,6 +701,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Appuyez sur le bouton Démarrer pour commencer. Vous choisirez ensuite entre le Mode Solo pour des défis mathématiques en solo, ou le Mode Combat pour des batailles multijoueurs en temps réel via Bluetooth. Explorons les deux options!';
 
   @override
+  String get tourInstantStartTitle => 'Démarrage Rapide - Jeu Rapide';
+
+  @override
+  String get tourInstantStartDesc =>
+      'Vous voulez commencer tout de suite ? Appuyez sur le bouton **Démarrage Rapide** pour commencer immédiatement un jeu solo avec le même niveau de difficulté que vous avez joué la dernière fois. C\'est le moyen le plus rapide de continuer votre progression !';
+
+  @override
   String get tourSoloTitle => 'Mode Solo - Jouez seul';
 
   @override

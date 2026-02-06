@@ -676,6 +676,13 @@ class AppLocalizationsJa extends AppLocalizations {
       'スタートボタンをタップして始めましょう。次に、シングルプレイヤーの数学チャレンジ用のソロモード、またはBluetoothを介したリアルタイムマルチプレイヤーバトル用のコンバットモードを選択します。両方のオプションを見てみましょう!';
 
   @override
+  String get tourInstantStartTitle => 'クイックスタート - 素早くプレイ';
+
+  @override
+  String get tourInstantStartDesc =>
+      'すぐに始めたいですか？**クイックスタートボタン**をタップすると、前回プレイした難易度でソロゲームをすぐに開始できます。進行状況を続ける最速の方法です！';
+
+  @override
   String get tourSoloTitle => 'ソロモード - 一人でプレイ';
 
   @override

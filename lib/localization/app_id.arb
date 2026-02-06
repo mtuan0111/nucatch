@@ -963,6 +963,8 @@
   "tourWelcomeDesc": "Selamat datang! Tur singkat ini akan membantu Anda memulai dengan lancar dengan **NuCatch**. Kami akan menunjukkan semua **fitur utama** sehingga Anda dapat langsung masuk dan mulai bermain. Mari kita mulai!",
   "tourStartTitle": "Mulai - Mulai Permainan Anda",
   "tourStartDesc": "Ketuk tombol Mulai untuk memulai. Anda kemudian akan memilih antara Mode Solo untuk tantangan matematika pemain tunggal, atau Mode Pertarungan untuk pertempuran multipemain waktu nyata melalui Bluetooth. Mari jelajahi kedua opsi!",
+  "tourInstantStartTitle": "Mulai Cepat - Main Cepat",
+  "tourInstantStartDesc": "Ingin langsung mulai? Ketuk tombol **Mulai Cepat** untuk memulai permainan solo segera dengan tingkat kesulitan yang sama seperti terakhir kali Anda bermain. Ini adalah cara tercepat untuk melanjutkan kemajuan Anda!",
   "tourSoloTitle": "Mode Solo - Main Sendiri",
   "tourSoloDesc": "Dalam Mode Solo, tantang diri Anda dengan persamaan matematika! Pilih dari 4 tingkat kesulitan (Mudah hingga Sangat Sulit). Anda mulai dengan 3 nyawa - setiap jawaban salah atau waktu habis menghabiskan 1 nyawa. Kesulitan lebih tinggi berarti lebih banyak poin! Sekarang mari lihat opsi multipemain.",
   "tourCombatTitle": "Mode Pertarungan - Multipemain Bluetooth",

@@ -963,6 +963,8 @@
   "tourWelcomeDesc": "Willkommen! Diese kurze Tour hilft Ihnen, problemlos mit **NuCatch** zu beginnen. Wir zeigen Ihnen alle **Hauptfunktionen**, damit Sie sofort loslegen und spielen können. Los geht's!",
   "tourStartTitle": "Start - Beginne dein Spiel",
   "tourStartDesc": "Tippe auf die **Start-Schaltfläche**, um zu beginnen. Dann wählst du zwischen **Einzelmodus** für mathematische Herausforderungen oder **Kampfmodus** für Echtzeit-Multiplayer-Kämpfe über **Bluetooth**. Lass uns beide Optionen erkunden!",
+  "tourInstantStartTitle": "Schnellstart - Schnelles Spiel",
+  "tourInstantStartDesc": "Möchten Sie sofort loslegen? Tippen Sie auf die **Schnellstart-Schaltfläche**, um sofort ein Solo-Spiel mit dem gleichen Schwierigkeitsgrad zu beginnen, den Sie zuletzt gespielt haben. Das ist der schnellste Weg, um Ihren Fortschritt fortzusetzen!",
   "tourSoloTitle": "Einzelmodus - Alleine spielen",
   "tourSoloDesc": "Im Einzelmodus fordere dich selbst mit mathematischen Gleichungen heraus! Wähle aus 4 Schwierigkeitsgraden (Leicht bis Extrem Schwer). Du startest mit 3 Leben - jede falsche Antwort oder Zeitüberschreitung kostet 1 Leben. Höhere Schwierigkeit bedeutet mehr Punkte! Schauen wir uns jetzt die Multiplayer-Option an.",
   "tourCombatTitle": "Kampfmodus - Bluetooth-Multiplayer",
