@@ -15,12 +15,14 @@ class RankingItem extends StatelessWidget {
     super.key,
     required this.turnRecordedModel,
     required this.ranking,
+    this.iconData,
     this.isCurrentUser = false,
     this.heroTagSuffix,
   });
 
   final TurnRecordedModel? turnRecordedModel;
   final int? ranking;
+  final IconData? iconData;
   final bool isCurrentUser;
   final String? heroTagSuffix;
 
@@ -48,6 +50,14 @@ class RankingItem extends StatelessWidget {
               flex: 2,
               child: RankingSortingWidget(
                 position: ranking!,
+              ),
+            )
+          else
+            Expanded(
+              flex: 2,
+              child: RankingSortingWidget(
+                position: 0,
+                childElement: Icon(iconData),
               ),
             ),
           // const SizedBox(
@@ -568,14 +578,6 @@ enum ButtonSize {
   large,
 }
 
-enum RoundedWithShapeAt {
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight,
-  all,
-}
-
 class CustomElevatedButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget? child;
@@ -684,44 +686,11 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
 
   BorderRadius getBorderRadius(RoundedWithShapeAt? shapeAt,
       {double adjustment = 0}) {
-    double adjustedRadius =
-        (widget.buttonRadius ?? LayoutConfig.layoutBorderRadius) + adjustment;
-    BorderRadius baseRadius = BorderRadius.only(
-      topLeft: Radius.circular(adjustedRadius),
-      topRight: Radius.circular(adjustedRadius),
-      bottomLeft: Radius.circular(adjustedRadius),
-      bottomRight: Radius.circular(adjustedRadius),
+    return Helper.getBorderRadius(
+      radius: widget.buttonRadius,
+      shapeAt: shapeAt,
+      adjustment: adjustment,
     );
-
-    switch (shapeAt) {
-      case RoundedWithShapeAt.topLeft:
-        baseRadius = baseRadius.copyWith(
-          topLeft: Radius.circular(adjustedRadius / 5),
-        );
-      case RoundedWithShapeAt.topRight:
-        baseRadius = baseRadius.copyWith(
-          topRight: Radius.circular(adjustedRadius / 5),
-        );
-      case RoundedWithShapeAt.bottomLeft:
-        baseRadius = baseRadius.copyWith(
-          bottomLeft: Radius.circular(adjustedRadius / 5),
-        );
-      case RoundedWithShapeAt.bottomRight:
-        baseRadius = baseRadius.copyWith(
-          bottomRight: Radius.circular(adjustedRadius / 5),
-        );
-      case RoundedWithShapeAt.all:
-        baseRadius = baseRadius.copyWith(
-          topLeft: Radius.circular(adjustedRadius),
-          topRight: Radius.circular(adjustedRadius),
-          bottomLeft: Radius.circular(adjustedRadius),
-          bottomRight: Radius.circular(adjustedRadius),
-        );
-      default:
-        break;
-    }
-
-    return baseRadius;
   }
 
   TextStyle getTextStyle(BuildContext context) {

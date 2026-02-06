@@ -22,6 +22,7 @@ import 'package:nucatch/widgets/global_tour_wrapper.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nucatch/firebase_options.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,6 +67,15 @@ Future<void> main() async {
   } catch (e) {
     print('⚠️ Failed to load .env file: $e');
     // Continue without .env file
+  }
+
+  // Initialize Google Mobile Ads SDK
+  try {
+    await MobileAds.instance.initialize();
+    print('✅ Google Mobile Ads initialized successfully');
+  } catch (e) {
+    print('⚠️ Failed to initialize Google Mobile Ads: $e');
+    // Continue without ads
   }
 
   runApp(const MyApp());
