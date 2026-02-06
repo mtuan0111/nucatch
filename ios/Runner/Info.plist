@@ -85,6 +85,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>12.0</string>
+<string>12.0</string>
+<key>GADApplicationIdentifier</key>
+<string>ca-app-pub-7979935537603411~5942915481</string>
 </dict>
 </plist>

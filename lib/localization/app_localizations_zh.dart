@@ -26,6 +26,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get start => '开始';
 
   @override
+  String get instantStart => '即时开始';
+
+  @override
   String get topScore => '最高分';
 
   @override
@@ -110,7 +113,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get numberOfTopScores => '排行榜数量';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => '仅显示我的记录';
+
+  @override
+  String get global => '全球';
+
+  @override
+  String get personal => '个人';
+
+  @override
+  String get rank => '排名';
+
+  @override
+  String get share => '分享';
 
   @override
   String get language => '语言';
@@ -653,6 +668,13 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get tourStartDesc =>
       '点击开始按钮开始。然后您将在单人数学挑战的单人模式，或通过蓝牙进行实时多人对战的战斗模式之间进行选择。让我们探索这两个选项!';
+
+  @override
+  String get tourInstantStartTitle => '快速开始 - 快速游戏';
+
+  @override
+  String get tourInstantStartDesc =>
+      '想立即开始吗？点击**快速开始按钮**，立即以上次玩的难度级别开始单人游戏。这是继续进度的最快方式！';
 
   @override
   String get tourSoloTitle => '单人模式 - 单独游戏';

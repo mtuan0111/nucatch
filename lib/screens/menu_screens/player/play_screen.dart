@@ -514,11 +514,12 @@ class _PlayScreenState extends State<PlayScreen> {
                                                             false;
                                                         shouldAnimateRemove =
                                                             false;
-                                                        setState(() {
-                                                          _currentLifeRemaining =
-                                                              _prevLifeRemaining ??
-                                                                  _currentLifeRemaining;
-                                                        });
+                                                        if (mounted)
+                                                          setState(() {
+                                                            _currentLifeRemaining =
+                                                                _prevLifeRemaining ??
+                                                                    _currentLifeRemaining;
+                                                          });
                                                       });
                                                       // setState(() {
                                                       //   _currentLifeRemaining =

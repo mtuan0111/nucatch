@@ -26,6 +26,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get start => 'Mulai';
 
   @override
+  String get instantStart => 'Mulai Instan';
+
+  @override
   String get topScore => 'Skor Tertinggi';
 
   @override
@@ -111,7 +114,19 @@ class AppLocalizationsId extends AppLocalizations {
   String get numberOfTopScores => 'Jumlah Skor Tertinggi';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => 'Hanya tampilkan rekaman saya';
+
+  @override
+  String get global => 'Global';
+
+  @override
+  String get personal => 'Pribadi';
+
+  @override
+  String get rank => 'Peringkat';
+
+  @override
+  String get share => 'Bagikan';
 
   @override
   String get language => 'Bahasa';
@@ -682,6 +697,13 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'Ketuk tombol Mulai untuk memulai. Anda kemudian akan memilih antara Mode Solo untuk tantangan matematika pemain tunggal, atau Mode Pertarungan untuk pertempuran multipemain waktu nyata melalui Bluetooth. Mari jelajahi kedua opsi!';
+
+  @override
+  String get tourInstantStartTitle => 'Mulai Cepat - Main Cepat';
+
+  @override
+  String get tourInstantStartDesc =>
+      'Ingin langsung mulai? Ketuk tombol **Mulai Cepat** untuk memulai permainan solo segera dengan tingkat kesulitan yang sama seperti terakhir kali Anda bermain. Ini adalah cara tercepat untuk melanjutkan kemajuan Anda!';
 
   @override
   String get tourSoloTitle => 'Mode Solo - Main Sendiri';

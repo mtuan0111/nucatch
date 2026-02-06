@@ -26,6 +26,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get start => 'शुरू करें';
 
   @override
+  String get instantStart => 'तत्काल शुरुआत';
+
+  @override
   String get topScore => 'शीर्ष स्कोर';
 
   @override
@@ -111,7 +114,19 @@ class AppLocalizationsHi extends AppLocalizations {
   String get numberOfTopScores => 'शीर्ष स्कोर की संख्या';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => 'केवल मेरे रिकॉर्ड दिखाएं';
+
+  @override
+  String get global => 'वैश्विक';
+
+  @override
+  String get personal => 'व्यक्तिगत';
+
+  @override
+  String get rank => 'रैंक';
+
+  @override
+  String get share => 'साझा करें';
 
   @override
   String get language => 'भाषा';
@@ -681,6 +696,13 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'शुरू करने के लिए स्टार्ट बटन टैप करें। फिर आप सिंगल-प्लेयर गणितीय चुनौतियों के लिए सोलो मोड, या ब्लूटूथ के माध्यम से रीयल-टाइम मल्टीप्लेयर युद्धों के लिए कॉम्बैट मोड के बीच चुनेंगे। आइए दोनों विकल्पों का अन्वेषण करें!';
+
+  @override
+  String get tourInstantStartTitle => 'त्वरित प्रारंभ - त्वरित खेल';
+
+  @override
+  String get tourInstantStartDesc =>
+      'तुरंत शुरू करना चाहते हैं? **त्वरित प्रारंभ बटन** टैप करें और उसी कठिनाई स्तर के साथ तुरंत एकल गेम शुरू करें जो आपने पिछली बार खेला था। यह आपकी प्रगति जारी रखने का सबसे तेज़ तरीका है!';
 
   @override
   String get tourSoloTitle => 'सोलो मोड - अकेले खेलें';

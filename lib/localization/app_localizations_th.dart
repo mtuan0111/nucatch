@@ -26,6 +26,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get start => 'เริ่ม';
 
   @override
+  String get instantStart => 'เริ่มทันที';
+
+  @override
   String get topScore => 'คะแนนสูงสุด';
 
   @override
@@ -111,7 +114,19 @@ class AppLocalizationsTh extends AppLocalizations {
   String get numberOfTopScores => 'จำนวนคะแนนสูงสุดที่แสดง';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => 'แสดงเฉพาะบันทึกของฉัน';
+
+  @override
+  String get global => 'ทั่วโลก';
+
+  @override
+  String get personal => 'ส่วนตัว';
+
+  @override
+  String get rank => 'อันดับ';
+
+  @override
+  String get share => 'แชร์';
 
   @override
   String get language => 'ภาษา';
@@ -674,6 +689,13 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'แตะ**ปุ่มเริ่ม**เพื่อเริ่มต้น จากนั้นคุณจะเลือกระหว่าง**โหมดเดี่ยว**สำหรับความท้าทายทางคณิตศาสตร์ผู้เล่นเดียว หรือ**โหมดต่อสู้**สำหรับการต่อสู้แบบผู้เล่นหลายคนแบบเรียลไทม์ผ่าน**บลูทูธ** มาสำรวจทั้งสองตัวเลือกกัน!';
+
+  @override
+  String get tourInstantStartTitle => 'เริ่มด่วน - เล่นเร็ว';
+
+  @override
+  String get tourInstantStartDesc =>
+      'ต้องการเริ่มเลยไหม? แตะ**ปุ่มเริ่มด่วน**เพื่อเริ่มเกมเดี่ยวทันทีด้วยระดับความยากเดียวกับที่คุณเล่นครั้งล่าสุด นี่เป็นวิธีที่เร็วที่สุดในการดำเนินความคืบหน้าของคุณต่อ!';
 
   @override
   String get tourSoloTitle => 'โหมดเดี่ยว - เล่นคนเดียว';

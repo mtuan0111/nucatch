@@ -26,6 +26,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get start => 'Starten';
 
   @override
+  String get instantStart => 'Sofortstart';
+
+  @override
   String get topScore => 'Bestenliste';
 
   @override
@@ -111,7 +114,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get numberOfTopScores => 'Anzahl der Bestenlisten';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => 'Nur meine Aufzeichnungen anzeigen';
+
+  @override
+  String get global => 'Global';
+
+  @override
+  String get personal => 'Persönlich';
+
+  @override
+  String get rank => 'Rang';
+
+  @override
+  String get share => 'Teilen';
 
   @override
   String get language => 'Sprache';
@@ -685,6 +700,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'Tippe auf die **Start-Schaltfläche**, um zu beginnen. Dann wählst du zwischen **Einzelmodus** für mathematische Herausforderungen oder **Kampfmodus** für Echtzeit-Multiplayer-Kämpfe über **Bluetooth**. Lass uns beide Optionen erkunden!';
+
+  @override
+  String get tourInstantStartTitle => 'Schnellstart - Schnelles Spiel';
+
+  @override
+  String get tourInstantStartDesc =>
+      'Möchten Sie sofort loslegen? Tippen Sie auf die **Schnellstart-Schaltfläche**, um sofort ein Solo-Spiel mit dem gleichen Schwierigkeitsgrad zu beginnen, den Sie zuletzt gespielt haben. Das ist der schnellste Weg, um Ihren Fortschritt fortzusetzen!';
 
   @override
   String get tourSoloTitle => 'Einzelmodus - Alleine spielen';

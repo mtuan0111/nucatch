@@ -27,6 +27,10 @@
   "@start": {
     "description": "Nút bắt đầu trò chơi"
   },
+  "instantStart": "Bắt đầu nhanh",
+  "@instantStart": {
+    "description": "Nút bắt đầu nhanh để khởi động trò chơi ngay lập tức"
+  },
   "topScore": "Điểm cao nhất",
   "@topScore": {
     "description": "Hiển thị điểm cao nhất của người chơi"
@@ -143,6 +147,26 @@
   "numberOfTopScores": "Số điểm cao nhất",
   "@numberOfTopScores": {
     "description": "Số lượng điểm cao nhất được hiển thị"
+  },
+  "global": "Toàn cầu",
+  "@global": {
+    "description": "Nhãn cho chế độ xem xếp hạng toàn cầu"
+  },
+  "personal": "Cá nhân",
+  "@personal": {
+    "description": "Nhãn cho chế độ xem xếp hạng cá nhân"
+  },
+  "onlyShowMyRecorded": "Chỉ hiển thị bản ghi của tôi",
+  "@onlyShowMyRecorded": {
+    "description": "Nhãn cho bộ lọc chỉ hiển thị điểm số đã ghi của người dùng"
+  },
+  "rank": "Hạng",
+  "@rank": {
+    "description": "Nhãn cho vị trí xếp hạng"
+  },
+  "share": "Chia sẻ",
+  "@share": {
+    "description": "Nhãn cho nút chia sẻ"
   },
   "language": "Ngôn ngữ",
   "@language": {
@@ -956,6 +980,8 @@
   "tourWelcomeDesc": "Chào mừng! Tour nhanh này sẽ giúp bạn bắt đầu một cách suôn sẻ với **NuCatch**. Chúng tôi sẽ chỉ cho bạn tất cả các **tính năng chính** để bạn có thể bắt đầu chơi ngay. Bắt đầu thôi!",
   "tourStartTitle": "Bắt đầu - Bắt đầu trò chơi của bạn",
   "tourStartDesc": "Nhấn nút Bắt đầu để bắt đầu. Sau đó bạn sẽ chọn giữa Chế độ Solo cho các thử thách toán học một người chơi, hoặc Chế độ Chiến đấu cho các trận chiến nhiều người chơi theo thời gian thực qua Bluetooth. Hãy khám phá cả hai tùy chọn!",
+  "tourInstantStartTitle": "Bắt Đầu Nhanh - Chơi Ngay",
+  "tourInstantStartDesc": "Muốn bắt đầu ngay? Nhấn nút **Bắt Đầu Nhanh** để bắt đầu trò chơi solo ngay lập tức với cùng độ khó bạn đã chơi lần trước. Đây là cách nhanh nhất để tiếp tục tiến trình của bạn!",
   "tourSoloTitle": "Chế độ Solo - Chơi một mình",
   "tourSoloDesc": "Trong Chế độ Solo, thách thức bản thân với các phương trình toán học! Chọn từ 4 cấp độ khó (Dễ đến Cực khó). Bạn bắt đầu với 3 mạng - mỗi câu trả lời sai hoặc hết thời gian tốn 1 mạng. Độ khó cao hơn có nghĩa là nhiều điểm hơn! Bây giờ hãy xem tùy chọn nhiều người chơi.",
   "tourCombatTitle": "Chế độ Chiến đấu - Nhiều người chơi Bluetooth",

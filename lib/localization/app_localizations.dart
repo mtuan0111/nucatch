@@ -144,6 +144,12 @@ abstract class AppLocalizations {
   /// **'Start'**
   String get start;
 
+  /// Instant start button label for quick game start
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Start'**
+  String get instantStart;
+
   /// Label for the top score
   ///
   /// In en, this message translates to:
@@ -317,6 +323,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Only show my recorded'**
   String get onlyShowMyRecorded;
+
+  /// Label for global ranking view
+  ///
+  /// In en, this message translates to:
+  /// **'Global'**
+  String get global;
+
+  /// Label for personal ranking view
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get personal;
+
+  /// Label for ranking position
+  ///
+  /// In en, this message translates to:
+  /// **'Rank'**
+  String get rank;
+
+  /// Label for share button
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
 
   /// Label for language setting
   ///
@@ -1327,6 +1357,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap the **Start button** to begin. You\'ll then choose between **Solo Mode** for single-player mathematical challenges, or **Combat Mode** for real-time **Bluetooth** multiplayer battles. Let\'s explore both options!'**
   String get tourStartDesc;
+
+  /// Title for the instant start button tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Start - Quick Play'**
+  String get tourInstantStartTitle;
+
+  /// Description for the instant start button tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Want to jump right in? Tap the **Instant Start button** to begin a solo game immediately with the same difficulty level you played last time. It\'s the fastest way to continue your progress!'**
+  String get tourInstantStartDesc;
 
   /// Title for solo mode tour step
   ///

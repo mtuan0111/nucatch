@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "インスタントスタート",
+  "@instantStart": {
+    "description": "クイックゲーム開始のためのインスタントスタートボタン"
+  },
   "topScore": "最高スコア",
   "@topScore": {
     "description": "Label for the top score"
@@ -143,6 +147,26 @@
   "numberOfTopScores": "ハイスコア表示数",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
+  },
+  "onlyShowMyRecorded": "自分の記録のみ表示",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "グローバル",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "個人",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "ランク",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "共有",
+  "@share": {
+    "description": "Label for share button"
   },
   "language": "言語",
   "@language": {
@@ -939,6 +963,8 @@
   "tourWelcomeDesc": "ようこそ! この簡単なツアーは、**NuCatch**をスムーズに始めるのに役立ちます。**主要な機能**をすべてお見せしますので、すぐにプレイを始められます。始めましょう!",
   "tourStartTitle": "スタート - ゲームを始める",
   "tourStartDesc": "スタートボタンをタップして始めましょう。次に、シングルプレイヤーの数学チャレンジ用のソロモード、またはBluetoothを介したリアルタイムマルチプレイヤーバトル用のコンバットモードを選択します。両方のオプションを見てみましょう!",
+  "tourInstantStartTitle": "クイックスタート - 素早くプレイ",
+  "tourInstantStartDesc": "すぐに始めたいですか？**クイックスタートボタン**をタップすると、前回プレイした難易度でソロゲームをすぐに開始できます。進行状況を続ける最速の方法です！",
   "tourSoloTitle": "ソロモード - 一人でプレイ",
   "tourSoloDesc": "ソロモードでは、数学の方程式で自分に挑戦してください! 4つの難易度レベル(簡単から非常に難しいまで)から選択します。3つのライフで始まり、間違った答えやタイムアウトごとに1ライフを失います。難易度が高いほど、より多くのポイントを獲得できます! 次はマルチプレイヤーオプションを見てみましょう。",
   "tourCombatTitle": "コンバットモード - Bluetoothマルチプレイヤー",

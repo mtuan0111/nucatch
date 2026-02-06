@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "Démarrage instantané",
+  "@instantStart": {
+    "description": "Bouton de démarrage instantané pour démarrage rapide du jeu"
+  },
   "topScore": "Meilleur Score",
   "@topScore": {
     "description": "Label for the top score"
@@ -143,6 +147,26 @@
   "numberOfTopScores": "Nombre de meilleurs scores",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
+  },
+  "onlyShowMyRecorded": "Afficher uniquement mes enregistrements",
+  "@onlyShowMyRecorded": {
+    "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "Global",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "Personnel",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "Rang",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "Partager",
+  "@share": {
+    "description": "Label for share button"
   },
   "language": "Langue",
   "@language": {
@@ -939,6 +963,8 @@
   "tourWelcomeDesc": "Bienvenue! Cette visite rapide vous aidera à démarrer en douceur avec **NuCatch**. Nous vous montrerons toutes les **fonctionnalités principales** pour que vous puissiez vous lancer et commencer à jouer immédiatement. Commençons!",
   "tourStartTitle": "Démarrer - Commencez votre jeu",
   "tourStartDesc": "Appuyez sur le bouton Démarrer pour commencer. Vous choisirez ensuite entre le Mode Solo pour des défis mathématiques en solo, ou le Mode Combat pour des batailles multijoueurs en temps réel via Bluetooth. Explorons les deux options!",
+  "tourInstantStartTitle": "Démarrage Rapide - Jeu Rapide",
+  "tourInstantStartDesc": "Vous voulez commencer tout de suite ? Appuyez sur le bouton **Démarrage Rapide** pour commencer immédiatement un jeu solo avec le même niveau de difficulté que vous avez joué la dernière fois. C'est le moyen le plus rapide de continuer votre progression !",
   "tourSoloTitle": "Mode Solo - Jouez seul",
   "tourSoloDesc": "En Mode Solo, défiez-vous avec des équations mathématiques! Choisissez parmi 4 niveaux de difficulté (Facile à Extrêmement Difficile). Vous commencez avec 3 vies - chaque mauvaise réponse ou expiration coûte 1 vie. Plus la difficulté est élevée, plus vous gagnez de points! Voyons maintenant l'option multijoueur.",
   "tourCombatTitle": "Mode Combat - Multijoueur Bluetooth",

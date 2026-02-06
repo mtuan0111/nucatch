@@ -20,6 +20,14 @@ class PlayerNavCubit extends Cubit<PlayerNavState> {
     }
   }
 
+  /// Select play mode for instant start feature
+  /// Emits SetDifficultyState with isInstantStart flag set to true
+  void selectPlayModeForInstantStart(PlayMode mode) {
+    _currentPlayMode = mode;
+    // For instant start, always emit SetDifficultyState with isInstantStart = true
+    emit(SetDifficultyState(playMode: mode, isInstantStart: true));
+  }
+
   void showCombatModeSetup() => emit(CombatModeSetupState());
 
   void showPairingRoom({required bool isHost, String? roomCode}) {
@@ -33,5 +41,17 @@ class PlayerNavCubit extends Cubit<PlayerNavState> {
 
   void showSetDifficulty({PlayMode? playMode}) {
     emit(SetDifficultyState(playMode: playMode ?? _currentPlayMode));
+  }
+
+  /// Start game instantly without showing difficulty selection
+  /// Used for instant start feature
+  void startInstant(
+      {PlayMode playMode = PlayMode.solo, Difficulty? difficulty}) {
+    _currentPlayMode = playMode;
+    if (difficulty != null) {
+      emit(SetDifficultyState(playMode: playMode, difficulty: difficulty));
+    } else {
+      emit(PlayingState(playMode: playMode));
+    }
   }
 }

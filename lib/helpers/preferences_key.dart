@@ -18,5 +18,6 @@ class PreferencesKey {
   static const POINT = "point";
   static const RECORDED_TIME = "recorded_time";
   static const DIFFICULTY = "difficulty";
+  static const LAST_USED_DIFFICULTY = "last_used_difficulty";
   static const FIREBASE_USERID = "firebase_user_id";
 }

@@ -27,6 +27,10 @@
   "@start": {
     "description": "Start button label"
   },
+  "instantStart": "Instant Start",
+  "@instantStart": {
+    "description": "Instant start button label for quick game start"
+  },
   "topScore": "Top score",
   "@topScore": {
     "description": "Label for the top score"
@@ -147,6 +151,22 @@
   "onlyShowMyRecorded": "Only show my recorded",
   "@onlyShowMyRecorded": {
     "description": "Label for filter to show only user's own recorded scores"
+  },
+  "global": "Global",
+  "@global": {
+    "description": "Label for global ranking view"
+  },
+  "personal": "Personal",
+  "@personal": {
+    "description": "Label for personal ranking view"
+  },
+  "rank": "Rank",
+  "@rank": {
+    "description": "Label for ranking position"
+  },
+  "share": "Share",
+  "@share": {
+    "description": "Label for share button"
   },
   "language": "Language",
   "@language": {
@@ -976,6 +996,14 @@
   "tourStartDesc": "Tap the **Start button** to begin. You'll then choose between **Solo Mode** for single-player mathematical challenges, or **Combat Mode** for real-time **Bluetooth** multiplayer battles. Let's explore both options!",
   "@tourStartDesc": {
     "description": "Description for the start button tour step"
+  },
+  "tourInstantStartTitle": "Instant Start - Quick Play",
+  "@tourInstantStartTitle": {
+    "description": "Title for the instant start button tour step"
+  },
+  "tourInstantStartDesc": "Want to jump right in? Tap the **Instant Start button** to begin a solo game immediately with the same difficulty level you played last time. It's the fastest way to continue your progress!",
+  "@tourInstantStartDesc": {
+    "description": "Description for the instant start button tour step"
   },
   "tourSoloTitle": "Solo Mode - Play Alone",
   "@tourSoloTitle": {

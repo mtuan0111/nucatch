@@ -26,6 +26,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get start => 'Comenzar';
 
   @override
+  String get instantStart => 'Inicio instantáneo';
+
+  @override
   String get topScore => 'Mejor puntuación';
 
   @override
@@ -111,7 +114,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get numberOfTopScores => 'Número de mejores puntuaciones';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => 'Solo mostrar mis registros';
+
+  @override
+  String get global => 'Global';
+
+  @override
+  String get personal => 'Personal';
+
+  @override
+  String get rank => 'Rango';
+
+  @override
+  String get share => 'Compartir';
 
   @override
   String get language => 'Idioma';
@@ -684,6 +699,13 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'Toca el **botón Comenzar** para iniciar. Luego elegirás entre **Modo Solo** para desafíos matemáticos individuales, o **Modo Combate** para batallas multijugador en tiempo real por **Bluetooth**. ¡Exploremos ambas opciones!';
+
+  @override
+  String get tourInstantStartTitle => 'Inicio Rápido - Juego Rápido';
+
+  @override
+  String get tourInstantStartDesc =>
+      '¿Quieres empezar ya? Toca el botón **Inicio Rápido** para comenzar un juego en solitario inmediatamente con el mismo nivel de dificultad que jugaste la última vez. ¡Es la forma más rápida de continuar tu progreso!';
 
   @override
   String get tourSoloTitle => 'Modo Solo - Juega Solo';

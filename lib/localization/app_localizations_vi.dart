@@ -26,6 +26,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get start => 'Bắt đầu';
 
   @override
+  String get instantStart => 'Bắt đầu nhanh';
+
+  @override
   String get topScore => 'Điểm cao nhất';
 
   @override
@@ -111,7 +114,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String get numberOfTopScores => 'Số điểm cao nhất';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => 'Chỉ hiển thị bản ghi của tôi';
+
+  @override
+  String get global => 'Toàn cầu';
+
+  @override
+  String get personal => 'Cá nhân';
+
+  @override
+  String get rank => 'Hạng';
+
+  @override
+  String get share => 'Chia sẻ';
 
   @override
   String get language => 'Ngôn ngữ';
@@ -682,6 +697,13 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'Nhấn nút Bắt đầu để bắt đầu. Sau đó bạn sẽ chọn giữa Chế độ Solo cho các thử thách toán học một người chơi, hoặc Chế độ Chiến đấu cho các trận chiến nhiều người chơi theo thời gian thực qua Bluetooth. Hãy khám phá cả hai tùy chọn!';
+
+  @override
+  String get tourInstantStartTitle => 'Bắt Đầu Nhanh - Chơi Ngay';
+
+  @override
+  String get tourInstantStartDesc =>
+      'Muốn bắt đầu ngay? Nhấn nút **Bắt Đầu Nhanh** để bắt đầu trò chơi solo ngay lập tức với cùng độ khó bạn đã chơi lần trước. Đây là cách nhanh nhất để tiếp tục tiến trình của bạn!';
 
   @override
   String get tourSoloTitle => 'Chế độ Solo - Chơi một mình';

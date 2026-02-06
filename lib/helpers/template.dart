@@ -15,12 +15,14 @@ class RankingItem extends StatelessWidget {
     super.key,
     required this.turnRecordedModel,
     required this.ranking,
+    this.iconData,
     this.isCurrentUser = false,
     this.heroTagSuffix,
   });
 
   final TurnRecordedModel? turnRecordedModel;
   final int? ranking;
+  final IconData? iconData;
   final bool isCurrentUser;
   final String? heroTagSuffix;
 
@@ -35,6 +37,7 @@ class RankingItem extends StatelessWidget {
       tag: "ranking-${turnRecordedModel!.turnId}${heroTagSuffix ?? ''}",
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         // mainAxisAlignment: MainAxisAlignment.spaceAround,
         // crossAxisAlignment: WrapCrossAlignment.center,
         // alignment: WrapAlignment.center,
@@ -43,14 +46,25 @@ class RankingItem extends StatelessWidget {
         // runSpacing: 20,
         children: [
           if (ranking != null)
-            RankingSortingWidget(
-              position: ranking!,
+            Expanded(
+              flex: 2,
+              child: RankingSortingWidget(
+                position: ranking!,
+              ),
+            )
+          else
+            Expanded(
+              flex: 2,
+              child: RankingSortingWidget(
+                position: 0,
+                childElement: Icon(iconData),
+              ),
             ),
           // const SizedBox(
           //   width: 20,
           // ),
-          Flexible(
-            fit: FlexFit.loose,
+          Expanded(
+            // fit: FlexFit.loose,
             flex: 2,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -91,7 +105,8 @@ class RankingItem extends StatelessWidget {
                 ),
                 RankingInfoRow(
                   icon: Icons.calendar_today,
-                  text: createdAt.formatClient(),
+                  text: createdAt.formatClient().replaceFirst(
+                      ' ', '\n'), // Split date and time into 2 lines
                 ),
                 RankingInfoRow(
                   icon: Helper.getIconFromDifficulty(context, difficulty),
@@ -563,14 +578,6 @@ enum ButtonSize {
   large,
 }
 
-enum RoundedWithShapeAt {
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight,
-  all,
-}
-
 class CustomElevatedButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget? child;
@@ -679,44 +686,11 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
 
   BorderRadius getBorderRadius(RoundedWithShapeAt? shapeAt,
       {double adjustment = 0}) {
-    double adjustedRadius =
-        (widget.buttonRadius ?? LayoutConfig.layoutBorderRadius) + adjustment;
-    BorderRadius baseRadius = BorderRadius.only(
-      topLeft: Radius.circular(adjustedRadius),
-      topRight: Radius.circular(adjustedRadius),
-      bottomLeft: Radius.circular(adjustedRadius),
-      bottomRight: Radius.circular(adjustedRadius),
+    return Helper.getBorderRadius(
+      radius: widget.buttonRadius,
+      shapeAt: shapeAt,
+      adjustment: adjustment,
     );
-
-    switch (shapeAt) {
-      case RoundedWithShapeAt.topLeft:
-        baseRadius = baseRadius.copyWith(
-          topLeft: Radius.circular(adjustedRadius / 5),
-        );
-      case RoundedWithShapeAt.topRight:
-        baseRadius = baseRadius.copyWith(
-          topRight: Radius.circular(adjustedRadius / 5),
-        );
-      case RoundedWithShapeAt.bottomLeft:
-        baseRadius = baseRadius.copyWith(
-          bottomLeft: Radius.circular(adjustedRadius / 5),
-        );
-      case RoundedWithShapeAt.bottomRight:
-        baseRadius = baseRadius.copyWith(
-          bottomRight: Radius.circular(adjustedRadius / 5),
-        );
-      case RoundedWithShapeAt.all:
-        baseRadius = baseRadius.copyWith(
-          topLeft: Radius.circular(adjustedRadius),
-          topRight: Radius.circular(adjustedRadius),
-          bottomLeft: Radius.circular(adjustedRadius),
-          bottomRight: Radius.circular(adjustedRadius),
-        );
-      default:
-        break;
-    }
-
-    return baseRadius;
   }
 
   TextStyle getTextStyle(BuildContext context) {

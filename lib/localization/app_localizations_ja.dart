@@ -26,6 +26,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get start => 'スタート';
 
   @override
+  String get instantStart => 'インスタントスタート';
+
+  @override
   String get topScore => '最高スコア';
 
   @override
@@ -110,7 +113,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get numberOfTopScores => 'ハイスコア表示数';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => '自分の記録のみ表示';
+
+  @override
+  String get global => 'グローバル';
+
+  @override
+  String get personal => '個人';
+
+  @override
+  String get rank => 'ランク';
+
+  @override
+  String get share => '共有';
 
   @override
   String get language => '言語';
@@ -659,6 +674,13 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'スタートボタンをタップして始めましょう。次に、シングルプレイヤーの数学チャレンジ用のソロモード、またはBluetoothを介したリアルタイムマルチプレイヤーバトル用のコンバットモードを選択します。両方のオプションを見てみましょう!';
+
+  @override
+  String get tourInstantStartTitle => 'クイックスタート - 素早くプレイ';
+
+  @override
+  String get tourInstantStartDesc =>
+      'すぐに始めたいですか？**クイックスタートボタン**をタップすると、前回プレイした難易度でソロゲームをすぐに開始できます。進行状況を続ける最速の方法です！';
 
   @override
   String get tourSoloTitle => 'ソロモード - 一人でプレイ';
