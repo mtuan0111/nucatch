@@ -1358,6 +1358,18 @@ abstract class AppLocalizations {
   /// **'Tap the **Start button** to begin. You\'ll then choose between **Solo Mode** for single-player mathematical challenges, or **Combat Mode** for real-time **Bluetooth** multiplayer battles. Let\'s explore both options!'**
   String get tourStartDesc;
 
+  /// Title for the instant start button tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Start - Quick Play'**
+  String get tourInstantStartTitle;
+
+  /// Description for the instant start button tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Want to jump right in? Tap the **Instant Start button** to begin a solo game immediately with the same difficulty level you played last time. It\'s the fastest way to continue your progress!'**
+  String get tourInstantStartDesc;
+
   /// Title for solo mode tour step
   ///
   /// In en, this message translates to:

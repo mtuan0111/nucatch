@@ -1,46 +1,46 @@
 {
     "android": {
         "dev": {
-            "versionName": "2.5.6",
-            "versionCode": 67,
+            "versionName": "2.7.1",
+            "versionCode": 71,
             "releaseNotes": {
-                "en-US": "Bug fixes and performance improvements",
-                "vi-VN": "Sửa lỗi và cải thiện hiệu suất",
-                "ja-JP": "バグ修正とパフォーマンス改善"
+                "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
+                "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
+                "ja-JP": "リーダーボードでランクを表示・管理し、UIの更新とインスタントスコア画面の改善を実施しました。"
             }
         },
         "prod": {
-            "versionName": "2.5.7",
-            "versionCode": 67,
+            "versionName": "2.7.1",
+            "versionCode": 71,
             "releaseNotes": {
-                "en-US": "View your current rank on the top score screen.",
-                "vi-VN": "Hiển thị thứ hạng của bạn trên màn hình bảng xếp hạng.",
-                "ja-JP": "トップスコア画面で現在の順位を確認できます。"
+                "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
+                "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
+                "ja-JP": "リーダーボードでランクを表示・管理し、UIの更新とインスタントスコア画面の改善を実施しました。"
             }
         }
     },
     "ios": {
         "dev": {
-            "versionName": "2.5.6",
-            "buildNumber": "67.1",
+            "versionName": "2.7.1",
+            "buildNumber": "71",
             "releaseNotes": {
-                "en-US": "Bug fixes and performance improvements",
-                "vi-VN": "Sửa lỗi và cải thiện hiệu suất",
-                "ja-JP": "バグ修正とパフォーマンス改善"
+                "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
+                "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
+                "ja-JP": "リーダーボードでランクを表示・管理し、UIの更新とインスタントスコア画面の改善を実施しました。"
             }
         },
         "prod": {
-            "versionName": "2.5.7",
-            "buildNumber": "67",
+            "versionName": "2.7.1",
+            "buildNumber": "71",
             "releaseNotes": {
-                "en-US": "View your current rank on the top score screen.",
-                "vi-VN": "Hiển thị thứ hạng của bạn trên màn hình bảng xếp hạng.",
-                "ja-JP": "トップスコア画面で現在の順位を確認できます。"
+                "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
+                "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
+                "ja-JP": "リーダーボードでランクを表示・管理し、UIの更新とインスタントスコア画面の改善を実施しました。"
             }
         }
     },
     "metadata": {
-        "lastUpdated": "2026-01-27T00:00:00Z",
+        "lastUpdated": "2026-02-06T15:00:00Z",
         "updatedBy": "CI/CD Pipeline"
     }
 }

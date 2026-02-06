@@ -4,6 +4,7 @@ import 'dart:io';
 enum TourStep {
   welcome, // Welcome and introduce the tour
   startButton, // Point to Start button on main menu
+  instantStart, // Point to Instant Start button on main menu
   soloMode, // Explain solo mode on SelectPlayMode screen
   combatMode, // Explain combat mode on SelectPlayMode screen
   createRoom, // Explain create room on CombatModeSetup screen

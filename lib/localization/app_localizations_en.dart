@@ -697,6 +697,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Tap the **Start button** to begin. You\'ll then choose between **Solo Mode** for single-player mathematical challenges, or **Combat Mode** for real-time **Bluetooth** multiplayer battles. Let\'s explore both options!';
 
   @override
+  String get tourInstantStartTitle => 'Instant Start - Quick Play';
+
+  @override
+  String get tourInstantStartDesc =>
+      'Want to jump right in? Tap the **Instant Start button** to begin a solo game immediately with the same difficulty level you played last time. It\'s the fastest way to continue your progress!';
+
+  @override
   String get tourSoloTitle => 'Solo Mode - Play Alone';
 
   @override
