@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,6 +16,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:nucatch/widgets/admob_banner.dart';
 import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 import 'package:nucatch/services/auth_services.dart';
@@ -237,7 +240,18 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                       ),
                     ),
                     SliverFillRemaining(
-                      child: _buildRankingList(turnRecordedListState),
+                      child: Column(
+                        children: [
+                          Expanded(
+                              child: _buildRankingList(turnRecordedListState)),
+                          AdMobBanner(
+                            adUnitId: Platform.isAndroid
+                                ? AdMobConfig.androidTopScoreBannerId
+                                : AdMobConfig.iosTopScoreBannerId,
+                            useTestAds: AdMobConfig.useTestAds,
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),

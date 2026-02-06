@@ -20,6 +20,19 @@ import 'package:nucatch/helpers/template/custome_alert.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+/// Enum to specify which corner(s) should have a smaller radius
+enum RoundedWithShapeAt {
+  topLeft,
+  topRight,
+  bottomLeft,
+  bottomRight,
+  top,
+  bottom,
+  left,
+  right,
+  all,
+}
+
 class Helper {
   String generateRandomNumber(int length, {int minLengthOfNumber = 1}) {
     var randomNumber = "";
@@ -496,6 +509,78 @@ class Helper {
       default:
         return lang(context).difficultyEasyTitle;
     }
+  }
+
+  /// Creates a BorderRadius with customizable corner shapes
+  ///
+  /// [radius] - Base radius for all corners (defaults to LayoutConfig.layoutBorderRadius)
+  /// [shapeAt] - Which corner(s) to apply a smaller radius to (1/5 of base radius)
+  /// [adjustment] - Additional adjustment to add to the base radius
+  ///
+  /// Returns a BorderRadius with the specified configuration
+  static BorderRadius getBorderRadius({
+    double? radius,
+    RoundedWithShapeAt? shapeAt,
+    double adjustment = 0,
+  }) {
+    double adjustedRadius =
+        (radius ?? LayoutConfig.layoutBorderRadius) + adjustment;
+    BorderRadius baseRadius = BorderRadius.only(
+      topLeft: Radius.circular(adjustedRadius),
+      topRight: Radius.circular(adjustedRadius),
+      bottomLeft: Radius.circular(adjustedRadius),
+      bottomRight: Radius.circular(adjustedRadius),
+    );
+
+    switch (shapeAt) {
+      case RoundedWithShapeAt.topLeft:
+        baseRadius = baseRadius.copyWith(
+          topLeft: Radius.circular(adjustedRadius / 5),
+        );
+      case RoundedWithShapeAt.topRight:
+        baseRadius = baseRadius.copyWith(
+          topRight: Radius.circular(adjustedRadius / 5),
+        );
+      case RoundedWithShapeAt.bottomLeft:
+        baseRadius = baseRadius.copyWith(
+          bottomLeft: Radius.circular(adjustedRadius / 5),
+        );
+      case RoundedWithShapeAt.bottomRight:
+        baseRadius = baseRadius.copyWith(
+          bottomRight: Radius.circular(adjustedRadius / 5),
+        );
+      case RoundedWithShapeAt.top:
+        baseRadius = baseRadius.copyWith(
+          topLeft: Radius.circular(adjustedRadius / 5),
+          topRight: Radius.circular(adjustedRadius / 5),
+        );
+      case RoundedWithShapeAt.bottom:
+        baseRadius = baseRadius.copyWith(
+          bottomLeft: Radius.circular(adjustedRadius / 5),
+          bottomRight: Radius.circular(adjustedRadius / 5),
+        );
+      case RoundedWithShapeAt.left:
+        baseRadius = baseRadius.copyWith(
+          topLeft: Radius.circular(adjustedRadius / 5),
+          bottomLeft: Radius.circular(adjustedRadius / 5),
+        );
+      case RoundedWithShapeAt.right:
+        baseRadius = baseRadius.copyWith(
+          topRight: Radius.circular(adjustedRadius / 5),
+          bottomRight: Radius.circular(adjustedRadius / 5),
+        );
+      case RoundedWithShapeAt.all:
+        baseRadius = baseRadius.copyWith(
+          topLeft: Radius.circular(adjustedRadius),
+          topRight: Radius.circular(adjustedRadius),
+          bottomLeft: Radius.circular(adjustedRadius),
+          bottomRight: Radius.circular(adjustedRadius),
+        );
+      default:
+        break;
+    }
+
+    return baseRadius;
   }
 
   bool randomBool() {

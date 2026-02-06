@@ -1412,3 +1412,35 @@ feat: Indicated your rank, and able to set your rank in the top score screen, up
     Flutter build for iOS
     ```flutter build ios --build-name=2.6.2 --build-number=70 --release```
     
+---
+## Released on: 06/02/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 71           | 2.6.3   |
+| iOS      | 71           | 2.6.3   |
+
+### Release note:
+feat: Indicated your rank, and able to set your rank in the top score screen, update UI
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+    [Builded] Version 2.6.2 - 70 / 2.6.2 - 70 _ feat: Indicated your rank, and able to set your rank in the top score screen, update UI
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - View and manage your rank on the top score screen with UI improvements.
+
+    - **Tiếng Việt:**  
+        - Xem và quản lý thứ hạng trên bảng xếp hạng cùng giao diện mới.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.6.2 --build-number=70 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.6.2 --build-number=70 --release```
+    

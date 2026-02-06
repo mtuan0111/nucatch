@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:io' show Platform;
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
@@ -16,6 +17,7 @@ import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/navs/menu_nav.dart';
+import 'package:nucatch/widgets/admob_banner.dart';
 
 class GameOverScreen extends StatefulWidget {
   const GameOverScreen({super.key});
@@ -67,69 +69,79 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        lang(context).gameOver,
-                        style: AppTextStyles.displayLarge(context).copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: kSpace3XL),
-                      if (turnState.expect != turnState.requirementString)
-                        Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: kSpace2XL),
-                          child: Text(
-                            turnState.requirementString ?? '',
-                            style: AppTextStyles.displayLarge(context).copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              fontSize: kFontSizeXL,
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              lang(context).gameOver,
+                              style:
+                                  AppTextStyles.displayLarge(context).copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      const SizedBox(height: kSpaceL),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            lang(context).theCorrectIs,
-                            style: AppTextStyles.withColor(
-                                AppTextStyles.bodyLargeMedium(context),
-                                Theme.of(context).colorScheme.onPrimary),
-                          ),
-                          const SizedBox(width: kSpaceS),
-                          Text(
-                            turnState.expect ?? '',
-                            style: AppTextStyles.displayLarge(context).copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary,
+                            const SizedBox(height: kSpace3XL),
+                            if (turnState.expect != turnState.requirementString)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: kSpace2XL),
+                                child: Text(
+                                  turnState.requirementString ?? '',
+                                  style: AppTextStyles.displayLarge(context)
+                                      .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    fontSize: kFontSizeXL,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            const SizedBox(height: kSpaceL),
+                            Text(
+                              lang(context).theCorrectIs,
+                              style: AppTextStyles.withColor(
+                                  AppTextStyles.bodyLargeMedium(context),
+                                  Theme.of(context).colorScheme.onPrimary),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: kSpaceXL,
-                      ),
-                      BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
-                        builder: (context, state) {
-                          if (state.isLoading ||
-                              turnState.recordedItem == null) {
-                            return const LoadingWidget();
-                          }
+                            const SizedBox(width: kSpaceS),
+                            Text(
+                              turnState.expect ?? '',
+                              style:
+                                  AppTextStyles.displayLarge(context).copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: kSpaceXL,
+                            ),
+                            BlocBuilder<TurnRecordedListBloc,
+                                TurnRecordedListState>(
+                              builder: (context, state) {
+                                if (state.isLoading ||
+                                    turnState.recordedItem == null) {
+                                  return const LoadingWidget();
+                                }
 
-                          int? indexOfItem = state.listModel!
-                              .indexOfTurn(turnState.recordedItem!);
+                                int? indexOfItem = state.listModel!
+                                    .indexOfTurn(turnState.recordedItem!);
 
-                          return RankingItem(
-                            ranking: indexOfItem,
-                            turnRecordedModel: turnState.recordedItem!,
-                            // playerName: turnState.recordedItem!.playedUsername ??
-                            //     lang(context).anonymous,
-                            // createdAt: turnState.recordedItem!.recordedTime,
-                            // turnedPoint: turnState.recordedItem!.point,
-                          );
-                        },
+                                return RankingItem(
+                                  ranking: indexOfItem,
+                                  turnRecordedModel: turnState.recordedItem!,
+                                  iconData: FontAwesomeIcons.trophy,
+
+                                  // playerName: turnState.recordedItem!.playedUsername ??
+                                  //     lang(context).anonymous,
+                                  // createdAt: turnState.recordedItem!.recordedTime,
+                                  // turnedPoint: turnState.recordedItem!.point,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
+
                       const SizedBox(
                         height: kSpace4XL,
                       ),
@@ -150,6 +162,16 @@ class _GameOverScreenState extends State<GameOverScreen> {
                             iconData: FontAwesomeIcons.arrowRotateLeft,
                           );
                         },
+                      ),
+                      const SizedBox(
+                        height: kSpace4XL,
+                      ),
+                      // AdMob Banner Ad
+                      AdMobBanner(
+                        adUnitId: Platform.isIOS
+                            ? AdMobConfig.iosGameOverBannerId
+                            : AdMobConfig.androidGameOverBannerId,
+                        useTestAds: AdMobConfig.useTestAds,
                       ),
                     ],
                   ),

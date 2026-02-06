@@ -48,167 +48,185 @@ class _MenuScreenState extends State<MenuScreen> {
   Future<void> _loadSavedDifficulty() async {
     final prefs = await SharedPreferences.getInstance();
     final savedDifficultyName = prefs.getString(
-      PreferencesKey.LAST_USED_DIFFICULTY,
-    );
+          PreferencesKey.LAST_USED_DIFFICULTY,
+        ) ??
+        Difficulty.easy.name;
 
-    if (savedDifficultyName != null) {
-      try {
-        final difficulty = Difficulty.values.firstWhere(
-          (d) => d.name == savedDifficultyName,
-        );
+    try {
+      final difficulty = Difficulty.values.firstWhere(
+        (d) => d.name == savedDifficultyName,
+      );
+      if (mounted)
         setState(() {
           savedDifficulty = difficulty;
         });
-      } catch (e) {
-        // If parsing fails, keep savedDifficulty as null (will use default)
-      }
+    } catch (e) {
+      // If parsing fails, keep savedDifficulty as null (will use default)
     }
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Reload saved difficulty whenever the screen becomes active
+    // This ensures the Instant Start button updates when user changes difficulty
+    _loadSavedDifficulty();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
-      builder: (context, state) {
-        return Scaffold(
-          body: Container(
-            decoration: LayoutConfig(context).gradientDecoration,
-            child: SafeArea(
-              child: CustomScrollView(
-                slivers: [
-                  SliverAppBar(
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    backgroundColor: Colors.transparent,
-                    shadowColor: Colors.transparent,
-                    surfaceTintColor: Colors.transparent,
-                    pinned: true,
-                    flexibleSpace: const Center(
-                      child: MainLogo(),
-                    ),
-                    expandedHeight: 240,
-                    toolbarHeight: 80,
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
+    return BlocListener<MenuBloc, MenuState>(
+      listener: (context, menuState) {
+        // Reload saved difficulty whenever we navigate to the menu
+        if (menuState is Menu) {
+          _loadSavedDifficulty();
+        }
+      },
+      child: BlocBuilder<UserBloc, UserState>(
+        builder: (context, state) {
+          return Scaffold(
+            body: Container(
+              decoration: LayoutConfig(context).gradientDecoration,
+              child: SafeArea(
+                child: CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      surfaceTintColor: Colors.transparent,
+                      pinned: true,
+                      flexibleSpace: const Center(
+                        child: MainLogo(),
                       ),
-                      child: Center(
-                        child: Text(
-                          state.username != null
-                              ? lang(context).welcomeUser(state.username!)
-                              : lang(context).welcome,
-                          style: AppTextStyles.titleLarge(context),
-                        ),
-                      ),
+                      expandedHeight: 240,
+                      toolbarHeight: 80,
                     ),
-                  ),
-                  if (SeasonalTheme.current != ThemeType.defaultTheme)
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 10,
-                          left: 20,
-                          right: 20,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 20,
                         ),
                         child: Center(
                           child: Text(
-                            _getHolidayMessage(context),
-                            style: AppTextStyles.bodyLargeMedium(context),
-                            textAlign: TextAlign.center,
+                            state.username != null
+                                ? lang(context).welcomeUser(state.username!)
+                                : lang(context).welcome,
+                            style: AppTextStyles.titleLarge(context),
                           ),
                         ),
                       ),
                     ),
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 20,
-                    ),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final entry =
-                              menuArray(context).entries.elementAt(index);
-
-                          // Get color and icon for instant start button based on saved difficulty
-                          Color backgroundColor =
-                              Theme.of(context).primaryColor;
-                          IconData iconData = entry.value['icon'] as IconData;
-
-                          if (entry.key == MenuOption.instantStart &&
-                              savedDifficulty != null) {
-                            backgroundColor = Helper.getColorIconFromDifficulty(
-                              context,
-                              savedDifficulty!,
-                            );
-                            iconData = Helper.getIconFromDifficulty(
-                              context,
-                              savedDifficulty!,
-                            );
-                          }
-
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 16.0),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: AnimatedButton(
-                                context,
-                                text: (entry.value['text'] as String)
-                                    .toUpperCase(),
-                                style: AppTextStyles.titleLargeItalic(context),
-                                iconData: iconData,
-                                backgroundColor: backgroundColor,
-                                // textDirection: TextDirection.rtl,
-                                // color: Colors.black87,
-                                onPressed: () => menuBloc.add(
-                                  SelectOption(
-                                    option: entry.key,
-                                  ),
-                                ),
-                                buttonSize: ButtonSize.small,
-                              ),
+                    if (SeasonalTheme.current != ThemeType.defaultTheme)
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 10,
+                            left: 20,
+                            right: 20,
+                          ),
+                          child: Center(
+                            child: Text(
+                              _getHolidayMessage(context),
+                              style: AppTextStyles.bodyLargeMedium(context),
+                              textAlign: TextAlign.center,
                             ),
-                          );
-                        },
-                        childCount: menuArray(context).length,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  if (version?.isNotEmpty ?? false)
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Container(
-                        margin: const EdgeInsets.all(kPaddingM),
-                        alignment: Alignment.bottomCenter,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              "${lang(context).version}: ",
-                              style: AppTextStyles.bodyLarge(context),
-                              // style: LayoutConfig(context).titleSectionStyle(),
-                            ),
-                            Text(
-                              version ?? "",
-                              style: AppTextStyles.bodyLarge(context),
-                            ),
-                          ],
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 20,
+                      ),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final entry =
+                                menuArray(context).entries.elementAt(index);
+
+                            // Get color and icon for instant start button based on saved difficulty
+                            Color backgroundColor =
+                                Theme.of(context).primaryColor;
+                            IconData iconData = entry.value['icon'] as IconData;
+
+                            if (entry.key == MenuOption.instantStart) {
+                              backgroundColor =
+                                  Helper.getColorIconFromDifficulty(
+                                context,
+                                savedDifficulty,
+                              );
+                              iconData = Helper.getIconFromDifficulty(
+                                context,
+                                savedDifficulty,
+                              );
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: AnimatedButton(
+                                  context,
+                                  text: (entry.value['text'] as String)
+                                      .toUpperCase(),
+                                  style:
+                                      AppTextStyles.titleLargeItalic(context),
+                                  iconData: iconData,
+                                  backgroundColor: backgroundColor,
+                                  // textDirection: TextDirection.rtl,
+                                  // color: Colors.black87,
+                                  onPressed: () => menuBloc.add(
+                                    SelectOption(
+                                      option: entry.key,
+                                    ),
+                                  ),
+                                  buttonSize: ButtonSize.small,
+                                ),
+                              ),
+                            );
+                          },
+                          childCount: menuArray(context).length,
                         ),
                       ),
                     ),
-                ],
+                    if (version?.isNotEmpty ?? false)
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Container(
+                          margin: const EdgeInsets.all(kPaddingM),
+                          alignment: Alignment.bottomCenter,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                "${lang(context).version}: ",
+                                style: AppTextStyles.bodyLarge(context),
+                                // style: LayoutConfig(context).titleSectionStyle(),
+                              ),
+                              Text(
+                                version ?? "",
+                                style: AppTextStyles.bodyLarge(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
-          ),
-          // Tour button positioned on the left
-          floatingActionButton: const Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: TourButton(),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-        );
-      },
+            // Tour button positioned on the left
+            floatingActionButton: const Padding(
+              padding: EdgeInsets.only(left: 30),
+              child: TourButton(),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.startFloat,
+          );
+        },
+      ),
     );
   }
 
