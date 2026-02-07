@@ -322,6 +322,10 @@ jobs:
               <true/>
               <key>compileBitcode</key>
               <false/>
+              <key>stripSwiftSymbols</key>
+              <true/>
+              <key>manageAppVersionAndBuildNumber</key>
+              <false/>
               <key>provisioningProfiles</key>
               <dict>
                   <key>${{ env.IOS_BUNDLE_IDENTIFIER }}</key>
