@@ -125,6 +125,7 @@
   },
 
   "theCorrectIs": "正确答案是",
+  "whichOneIsCorrect": "哪个是正确的？",
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },

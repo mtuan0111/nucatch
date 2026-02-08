@@ -54,6 +54,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<TapTimerResume>(_onTapTimerResume);
     on<TapTimerReset>(_onTapTimerReset);
     on<Renew>(_onRenew);
+    on<PickRightButtonTap>(_onPickRightButtonTap);
   }
 
   @override
@@ -65,7 +66,11 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   void _startTapTimer() {
     _tapTimer?.cancel();
     const tickDuration = Duration(milliseconds: kAnimationDurationFast);
-    double remainingTime = tapTimerDuration;
+    // Use difficulty model's timer for Pick Right mode, otherwise use global constant
+    double remainingTime = state.difficultyModel?.isPickRightMode == true
+        ? (state.difficultyModel?.timeLimitPerTurn.toDouble() ??
+            tapTimerDuration)
+        : tapTimerDuration;
 
     _tapTimer = Timer.periodic(tickDuration, (timer) {
       if (isClosed) {
@@ -230,7 +235,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         //     : state.lifeRemaining + event.addPoint,
         // expect: Helper().generateRandomNumber(event.level + 2),
         typing: "",
-        tapTimerRemaining: tapTimerDuration,
+        tapTimerRemaining: state.effectiveTimerDuration,
       ),
     );
 
@@ -360,6 +365,29 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
           requiredString = result['expression']!;
         }
         break;
+      case Difficulty.pickRight:
+        // Pick Right mode - generate three equations (one true, two false)
+        Map<String, dynamic> equationsData =
+            Helper().generatePickRightEquations(state.level);
+
+        // Store equations in state
+        emitter(
+          state.copyWith(
+            trueEquation: equationsData['trueEquation'],
+            falseEquation: equationsData['falseEquation'],
+            isLeftCorrect: equationsData['isLeftCorrect'],
+            correctIndex: equationsData['correctIndex'],
+            equations: List<String>.from(equationsData['equations']),
+            selectedOption: null, // Reset selection
+          ),
+        );
+
+        // For Pick Right mode, the "expect" is which button is correct (0, 1, or 2)
+        // The "requirementString" shows all equations
+        expectString = equationsData['correctIndex'].toString();
+        final eqs = equationsData['equations'] as List<String>;
+        requiredString = eqs.join(' | ');
+        break;
       case Difficulty.easy:
         // Generate a random number for easy difficulty
         expectString = Helper().generateRandomNumber(state.level + 2);
@@ -376,6 +404,91 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       ),
     );
     return requiredString;
+  }
+
+  /// Handles Pick Right mode button tap
+  Future<void> _onPickRightButtonTap(
+    PickRightButtonTap event,
+    Emitter<TurnState> emitter,
+  ) async {
+    if (!state.isAbleToTap) {
+      return;
+    }
+
+    if (state.expect == null || state.expect!.isEmpty) {
+      return;
+    }
+
+    // Stop timer on selection
+    _stopTapTimer();
+
+    // Update state with selected option
+    emitter(
+      state.copyWith(
+        selectedOption: event.buttonIndex,
+      ),
+    );
+
+    // Check if selection is correct
+    final expectedButton = int.tryParse(state.expect!) ?? -1;
+    final isCorrect = event.buttonIndex == expectedButton;
+
+    if (isCorrect) {
+      // Correct selection
+      _audioBloc.add(PlayCorrectAudio());
+      _vibrationBloc.add(VibrateShort());
+
+      // Mark as finished
+      emitter(
+        state.copyWith(
+          typing: state.expect, // Mark as complete
+        ),
+      );
+
+      // await Future.delayed(const Duration(milliseconds: 500));
+      if (isClosed) return;
+
+      // Add point and proceed
+      add(AddPoint());
+
+      // Increment timesCorrect for progression tracking
+      emitter(
+        state.copyWith(
+          timesCorrect: state.timesCorrect + 1,
+          lifeRemaining: state.timesCorrect >= 2
+              ? state.lifeRemaining + 1
+              : state.lifeRemaining,
+        ),
+      );
+
+      // await Future.delayed(const Duration(milliseconds: 500));
+      if (isClosed) return;
+
+      // Progress to next turn
+      if (state.isAbleToLevelUp) {
+        add(SetLevel(level: state.level + 1));
+      } else {
+        add(SetLevel(level: state.level));
+      }
+    } else {
+      // Wrong selection
+      _audioBloc.add(PlayWrongAudio());
+      add(LifeLost(lifeRemaining: state.lifeRemaining - 1));
+
+      if (state.lifeRemaining > 1) {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        if (isClosed) return;
+
+        // Reset and show new challenge
+        add(SetLevel(level: state.level));
+      } else {
+        // Game over - last life lost
+        await Future.delayed(const Duration(milliseconds: 1000));
+        if (isClosed) return;
+
+        add(End(isCauseGameOver: true));
+      }
+    }
   }
 
   Future<void> _onShowExpect(
@@ -851,7 +964,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     _startTapTimer();
     emitter(
       state.copyWith(
-        tapTimerRemaining: tapTimerDuration,
+        tapTimerRemaining: state.effectiveTimerDuration,
         isTimerPaused: false,
       ),
     );

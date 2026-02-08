@@ -99,6 +99,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get theCorrectIs => 'คำตอบที่ถูกต้องคือ';
 
   @override
+  String get whichOneIsCorrect => 'ข้อไหนถูกต้อง?';
+
+  @override
   String get name => 'ชื่อ';
 
   @override
@@ -229,6 +232,10 @@ class AppLocalizationsTh extends AppLocalizations {
       'สุ่มเลือกระหว่างโจทย์บวก/ลบที่ซับซ้อน ตัวเลขสุ่มระดับสูง หรือโจทย์คูณ/หาร เพื่อประสบการณ์ที่ท้าทายที่สุด';
 
   @override
+  String get pickRightDescription =>
+      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+
+  @override
   String get difficultyEasyTitle => 'โหมดง่าย';
 
   @override
@@ -239,6 +246,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => 'โหมดสุดโหด';
+
+  @override
+  String get pickRightTitle => 'Pick Right';
 
   @override
   String get confirmChangeDifficulty =>

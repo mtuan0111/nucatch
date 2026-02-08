@@ -125,6 +125,7 @@
   },
 
   "theCorrectIs": "Das Richtige ist",
+  "whichOneIsCorrect": "Welche ist richtig?",
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },

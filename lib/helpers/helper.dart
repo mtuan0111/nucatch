@@ -268,6 +268,217 @@ class Helper {
     }
   }
 
+  /// Generates equations for Pick Right mode with 3 options (1 true, 2 false)
+  /// Returns a map with:
+  /// - trueEquation: The correct equation
+  /// - falseEquation1: First incorrect equation
+  /// - falseEquation2: Second incorrect equation
+  /// - correctIndex: Index of the correct button (0, 1, or 2)
+  /// - equations: List of equations in display order
+  Map<String, dynamic> generatePickRightEquations(int level) {
+    final random = Random();
+
+    // Generate random numbers based on level
+    // Level 1-2: max 100 (two-digit numbers)
+    // Level 3-4: max 1000 (three-digit numbers)
+    // Level 5-6: max 10000 (four-digit numbers)
+    // Level 7-8: max 100000 (five-digit numbers)
+    int maxNumber;
+    if (level <= 2) {
+      maxNumber = 20 + level * 20; // 40-60
+    } else if (level <= 4) {
+      maxNumber = 100 + (level - 2) * 200; // 300-500
+    } else if (level <= 6) {
+      maxNumber = 1000 + (level - 4) * 2000; // 3000-5000
+    } else if (level <= 8) {
+      maxNumber = 10000 + (level - 6) * 20000; // 30000-50000
+    } else {
+      maxNumber = 100000; // Cap at 100000
+    }
+    final a = random.nextInt(maxNumber) + 1;
+    final b = random.nextInt(maxNumber) + 1;
+
+    // Choose operator
+    final operators = ['+', '-', '×'];
+    final operator = operators[random.nextInt(operators.length)];
+
+    // Calculate correct result
+    int correctResult;
+    switch (operator) {
+      case '+':
+        correctResult = a + b;
+        break;
+      case '-':
+        correctResult = a - b;
+        break;
+      case '×':
+        correctResult = a * b;
+        break;
+      default:
+        correctResult = a + b;
+    }
+
+    final trueEq = '$a $operator $b = $correctResult';
+
+    // Helper function to generate false equation
+    // Cumulative difficulty progression:
+    // Level 1: Large (20-70)
+    // Level 2: Medium (1-10) + Level 1
+    // Level 3: (5-9)*10 = 50-90 + Level 2
+    // Level 4: (1-2)*10 = 10-20 + Level 3
+    // Level 5: (5-9)*100 = 500-900 + Level 4
+    // Level 6: (1-2)*100 = 100-200 + Level 5
+    // And so on...
+    String generateFalseEquation(List<int> usedA, List<int> usedB) {
+      int aFalse, bFalse;
+      String opFalse;
+      int correctResFalse;
+      int falseRes;
+
+      do {
+        aFalse = random.nextInt(maxNumber) + 1;
+        bFalse = random.nextInt(maxNumber) + 1;
+      } while (usedA.contains(aFalse) && usedB.contains(bFalse));
+
+      // Operator selection based on level
+      List<String> availableOps;
+      if (level <= 2) {
+        availableOps = ['+', '-']; // Basic operators for beginners
+      } else {
+        availableOps = ['+', '-', '×']; // All operators for higher levels
+      }
+      opFalse = availableOps[random.nextInt(availableOps.length)];
+
+      switch (opFalse) {
+        case '+':
+          correctResFalse = aFalse + bFalse;
+          break;
+        case '-':
+          correctResFalse = aFalse - bFalse;
+          break;
+        case '×':
+          correctResFalse = aFalse * bFalse;
+          break;
+        default:
+          correctResFalse = aFalse + bFalse;
+      }
+
+      // Build cumulative deviation pool based on level
+      List<int> deviationPool = [];
+
+      // Level 1: Large (20-70)
+      if (level >= 1) {
+        for (int i = 20; i <= 70; i++) {
+          deviationPool.add(i);
+          deviationPool.add(-i);
+        }
+      }
+
+      // Level 2: Medium (1-10)
+      if (level >= 2) {
+        for (int i = 1; i <= 10; i++) {
+          deviationPool.add(i);
+          deviationPool.add(-i);
+        }
+      }
+
+      // Level 3: (5-9) * 10 = 50-90
+      if (level >= 3) {
+        for (int i = 5; i <= 9; i++) {
+          deviationPool.add(i * 10);
+          deviationPool.add(-i * 10);
+        }
+      }
+
+      // Level 4: (1-2) * 10 = 10-20
+      if (level >= 4) {
+        for (int i = 1; i <= 2; i++) {
+          deviationPool.add(i * 10);
+          deviationPool.add(-i * 10);
+        }
+      }
+
+      // Level 5: (5-9) * 100 = 500-900
+      if (level >= 5) {
+        for (int i = 5; i <= 9; i++) {
+          deviationPool.add(i * 100);
+          deviationPool.add(-i * 100);
+        }
+      }
+
+      // Level 6: (1-2) * 100 = 100-200
+      if (level >= 6) {
+        for (int i = 1; i <= 2; i++) {
+          deviationPool.add(i * 100);
+          deviationPool.add(-i * 100);
+        }
+      }
+
+      // Level 7+: (5-9) * 1000 = 5000-9000
+      if (level >= 7) {
+        for (int i = 5; i <= 9; i++) {
+          deviationPool.add(i * 1000);
+          deviationPool.add(-i * 1000);
+        }
+      }
+
+      // Level 8+: (1-2) * 1000 = 1000-2000
+      if (level >= 8) {
+        for (int i = 1; i <= 2; i++) {
+          deviationPool.add(i * 1000);
+          deviationPool.add(-i * 1000);
+        }
+      }
+
+      // Pick a random deviation from the pool
+      final deviation = deviationPool[random.nextInt(deviationPool.length)];
+      falseRes = correctResFalse + deviation;
+
+      // Ensure false result is different from correct and positive
+      if (falseRes == correctResFalse) {
+        falseRes = correctResFalse + (random.nextBool() ? 1 : -1);
+      }
+      if (falseRes < 0) {
+        falseRes = correctResFalse + deviation.abs();
+      }
+
+      usedA.add(aFalse);
+      usedB.add(bFalse);
+      return '$aFalse $opFalse $bFalse = $falseRes';
+    }
+
+    List<int> usedA = [a];
+    List<int> usedB = [b];
+    final falseEq1 = generateFalseEquation(usedA, usedB);
+    final falseEq2 = generateFalseEquation(usedA, usedB);
+
+    // Randomly assign correct position (0, 1, or 2)
+    final correctIndex = random.nextInt(3);
+
+    // Create list of equations in display order
+    List<String> equations = ['', '', ''];
+    equations[correctIndex] = trueEq;
+
+    // Fill remaining positions with false equations
+    int falseIdx = 0;
+    List<String> falseEquations = [falseEq1, falseEq2];
+    for (int i = 0; i < 3; i++) {
+      if (i != correctIndex) {
+        equations[i] = falseEquations[falseIdx++];
+      }
+    }
+
+    return {
+      'trueEquation': trueEq,
+      'falseEquation': falseEq1, // Keep for backward compatibility
+      'falseEquation1': falseEq1,
+      'falseEquation2': falseEq2,
+      'isLeftCorrect': correctIndex == 0, // Keep for backward compatibility
+      'correctIndex': correctIndex,
+      'equations': equations,
+    };
+  }
+
   // lengthOfExpect: 3
   // numberCount: 2
   // generate the expect is 100,100,100
@@ -451,6 +662,9 @@ class Helper {
       case Difficulty.extreme:
         difficultyIcon = FontAwesomeIcons.skullCrossbones;
         break;
+      case Difficulty.pickRight:
+        difficultyIcon = FontAwesomeIcons.handPointer;
+        break;
       default:
         difficultyIcon = FontAwesomeIcons.faceSmileBeam;
     }
@@ -473,6 +687,9 @@ class Helper {
       case Difficulty.extreme:
         difficultyColor = Colors.purple;
         break;
+      case Difficulty.pickRight:
+        difficultyColor = Colors.blue;
+        break;
       default:
         difficultyColor = Theme.of(context).colorScheme.primary;
     }
@@ -490,6 +707,8 @@ class Helper {
         return lang(context).difficultyHardDescription;
       case Difficulty.extreme:
         return lang(context).difficultyExtremeDescription;
+      case Difficulty.pickRight:
+        return lang(context).pickRightDescription;
       default:
         return lang(context).difficultyEasyDescription;
     }
@@ -506,6 +725,8 @@ class Helper {
         return lang(context).difficultyHardTitle;
       case Difficulty.extreme:
         return lang(context).difficultyExtremeTitle;
+      case Difficulty.pickRight:
+        return lang(context).pickRightTitle;
       default:
         return lang(context).difficultyEasyTitle;
     }

@@ -125,6 +125,7 @@
   },
 
   "theCorrectIs": "正解は",
+  "whichOneIsCorrect": "どちらが正しい？",
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },

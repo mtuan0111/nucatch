@@ -98,6 +98,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get theCorrectIs => '正确答案是';
 
   @override
+  String get whichOneIsCorrect => '哪个是正确的？';
+
+  @override
   String get name => '名字';
 
   @override
@@ -223,6 +226,10 @@ class AppLocalizationsZh extends AppLocalizations {
       '随机会生成复杂的加减法计算、更高等级的随机数或乘除法计算，带来最具挑战性的体验。';
 
   @override
+  String get pickRightDescription =>
+      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+
+  @override
   String get difficultyEasyTitle => '简单模式';
 
   @override
@@ -233,6 +240,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => '极限模式';
+
+  @override
+  String get pickRightTitle => 'Pick Right';
 
   @override
   String get confirmChangeDifficulty => '你的回合将被重置。你确定要更改难度吗？';

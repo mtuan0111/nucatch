@@ -99,6 +99,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get theCorrectIs => 'Đáp án đúng là';
 
   @override
+  String get whichOneIsCorrect => 'Đáp án nào đúng?';
+
+  @override
   String get name => 'Tên người chơi';
 
   @override
@@ -229,6 +232,10 @@ class AppLocalizationsVi extends AppLocalizations {
       'Câu hỏi đa dạng, số lớn, phép tính phức tạp, mang đến thử thách thực sự cho bạn.';
 
   @override
+  String get pickRightDescription =>
+      'Chọn phương trình đúng! Trò chơi lựa chọn nhanh với bộ đếm thời gian 5 giây.';
+
+  @override
   String get difficultyEasyTitle => 'Dễ';
 
   @override
@@ -239,6 +246,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => 'Cực kỳ khó';
+
+  @override
+  String get pickRightTitle => 'Chọn Đúng';
 
   @override
   String get confirmChangeDifficulty =>

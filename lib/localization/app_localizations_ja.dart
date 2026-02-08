@@ -98,6 +98,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get theCorrectIs => '正解は';
 
   @override
+  String get whichOneIsCorrect => 'どちらが正しい？';
+
+  @override
   String get name => '名前';
 
   @override
@@ -225,6 +228,10 @@ class AppLocalizationsJa extends AppLocalizations {
       '複雑な足し算/引き算、より高いレベルのランダムな数字、または掛け算/割り算の計算式からランダムに選択する、最もやりがいのある体験です。';
 
   @override
+  String get pickRightDescription =>
+      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+
+  @override
   String get difficultyEasyTitle => 'かんたんモード';
 
   @override
@@ -235,6 +242,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => '究極モード';
+
+  @override
+  String get pickRightTitle => 'Pick Right';
 
   @override
   String get confirmChangeDifficulty => 'ターンはリセットされます。本当に難易度を変更しますか？';

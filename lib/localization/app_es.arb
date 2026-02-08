@@ -125,6 +125,7 @@
   },
 
   "theCorrectIs": "Lo correcto es",
+  "whichOneIsCorrect": "¿Cuál es correcta?",
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },

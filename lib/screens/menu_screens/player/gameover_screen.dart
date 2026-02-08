@@ -18,6 +18,8 @@ import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 import 'package:nucatch/widgets/admob_banner.dart';
+import 'package:nucatch/widgets/game_over_regular.dart';
+import 'package:nucatch/widgets/game_over_pick_right.dart';
 
 class GameOverScreen extends StatefulWidget {
   const GameOverScreen({super.key});
@@ -70,76 +72,10 @@ class _GameOverScreenState extends State<GameOverScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              lang(context).gameOver,
-                              style:
-                                  AppTextStyles.displayLarge(context).copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: kSpace3XL),
-                            if (turnState.expect != turnState.requirementString)
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: kSpace2XL),
-                                child: Text(
-                                  turnState.requirementString ?? '',
-                                  style: AppTextStyles.displayLarge(context)
-                                      .copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                    fontSize: kFontSizeXL,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            const SizedBox(height: kSpaceL),
-                            Text(
-                              lang(context).theCorrectIs,
-                              style: AppTextStyles.withColor(
-                                  AppTextStyles.bodyLargeMedium(context),
-                                  Theme.of(context).colorScheme.onPrimary),
-                            ),
-                            const SizedBox(width: kSpaceS),
-                            Text(
-                              turnState.expect ?? '',
-                              style:
-                                  AppTextStyles.displayLarge(context).copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: kSpaceXL,
-                            ),
-                            BlocBuilder<TurnRecordedListBloc,
-                                TurnRecordedListState>(
-                              builder: (context, state) {
-                                if (state.isLoading ||
-                                    turnState.recordedItem == null) {
-                                  return const LoadingWidget();
-                                }
-
-                                int? indexOfItem = state.listModel!
-                                    .indexOfTurn(turnState.recordedItem!);
-
-                                return RankingItem(
-                                  ranking: indexOfItem,
-                                  turnRecordedModel: turnState.recordedItem!,
-                                  iconData: FontAwesomeIcons.trophy,
-
-                                  // playerName: turnState.recordedItem!.playedUsername ??
-                                  //     lang(context).anonymous,
-                                  // createdAt: turnState.recordedItem!.recordedTime,
-                                  // turnedPoint: turnState.recordedItem!.point,
-                                );
-                              },
-                            ),
-                          ],
-                        ),
+                        child:
+                            turnState.difficultyModel?.isPickRightMode == true
+                                ? GameOverPickRight(turnState: turnState)
+                                : GameOverRegular(turnState: turnState),
                       ),
 
                       const SizedBox(

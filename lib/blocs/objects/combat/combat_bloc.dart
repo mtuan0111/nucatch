@@ -844,6 +844,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           requiredString = result['expression']!;
         }
         break;
+      case Difficulty.pickRight:
+        // Pick Right mode - generate two equations (one true, one false)
+        // For now, use simple number generation as placeholder
+        expectString = Helper().generateRandomNumber(state.level + 2);
+        requiredString = expectString;
+        break;
       case Difficulty.easy:
         expectString = Helper().generateRandomNumber(state.level + 2);
         requiredString = expectString;

@@ -125,6 +125,7 @@
   },
 
   "theCorrectIs": "Jawaban yang benar adalah",
+  "whichOneIsCorrect": "Mana yang benar?",
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },

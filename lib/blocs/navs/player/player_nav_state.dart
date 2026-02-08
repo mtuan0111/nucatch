@@ -11,6 +11,7 @@ enum Difficulty {
   medium,
   hard,
   extreme,
+  pickRight,
 }
 
 class PlayerNavInitial extends PlayerNavState {}
@@ -52,6 +53,7 @@ class DifficultyModel {
   final int numberTurnEachLevel;
   final int timeLimitPerTurn; // in seconds
   final int numberOfCharacters;
+  final bool isPickRightMode; // True for Pick Right mode
 
   const DifficultyModel({
     required this.difficulty,
@@ -59,6 +61,7 @@ class DifficultyModel {
     this.numberTurnEachLevel = 3,
     required this.timeLimitPerTurn,
     required this.numberOfCharacters,
+    this.isPickRightMode = false,
   });
 
   static Map<Difficulty, DifficultyModel> models = {
@@ -86,6 +89,14 @@ class DifficultyModel {
       pointEachTurn: 8,
       timeLimitPerTurn: 5,
       numberOfCharacters: 10,
+    ),
+    Difficulty.pickRight: const DifficultyModel(
+      difficulty: Difficulty.pickRight,
+      pointEachTurn: 2,
+      numberTurnEachLevel: 5,
+      timeLimitPerTurn: 5,
+      numberOfCharacters: 6, // Used for equation complexity
+      isPickRightMode: true,
     ),
   };
 

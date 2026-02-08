@@ -288,6 +288,12 @@ abstract class AppLocalizations {
   /// **'The correct is'**
   String get theCorrectIs;
 
+  /// Prompt in Pick Right mode asking user to choose correct equation
+  ///
+  /// In en, this message translates to:
+  /// **'Which one is correct?'**
+  String get whichOneIsCorrect;
+
   /// Label for name input
   ///
   /// In en, this message translates to:
@@ -512,6 +518,12 @@ abstract class AppLocalizations {
   /// **'Randomly selects between generating a complex plus/minus calculation, a higher-level random number, or a multiplication/division calculation for the most challenging experience.'**
   String get difficultyExtremeDescription;
 
+  /// Description for pick right difficulty mode
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the correct equation! Fast-paced selection game with 5-second timer.'**
+  String get pickRightDescription;
+
   /// Title for easy difficulty mode
   ///
   /// In en, this message translates to:
@@ -535,6 +547,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Extreme Mode'**
   String get difficultyExtremeTitle;
+
+  /// Title for pick right difficulty mode
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Right'**
+  String get pickRightTitle;
 
   /// Warning when the user changes the difficulty
   ///

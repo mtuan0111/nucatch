@@ -69,6 +69,12 @@ class CombatState extends TurnState {
     super.saveSuccess = false,
     super.tapTimerRemaining = 20.0,
     super.isTimerPaused = false,
+    super.trueEquation,
+    super.falseEquation,
+    super.isLeftCorrect,
+    super.selectedOption,
+    super.correctIndex,
+    super.equations,
   });
 
   @override
@@ -108,6 +114,12 @@ class CombatState extends TurnState {
     bool? saveSuccess,
     double? tapTimerRemaining,
     bool? isTimerPaused,
+    String? trueEquation,
+    String? falseEquation,
+    bool? isLeftCorrect,
+    int? selectedOption,
+    int? correctIndex,
+    List<String>? equations,
   }) {
     return CombatState(
       // Combat-specific
@@ -146,6 +158,12 @@ class CombatState extends TurnState {
       saveSuccess: saveSuccess ?? this.saveSuccess,
       tapTimerRemaining: tapTimerRemaining ?? this.tapTimerRemaining,
       isTimerPaused: isTimerPaused ?? this.isTimerPaused,
+      trueEquation: trueEquation ?? this.trueEquation,
+      falseEquation: falseEquation ?? this.falseEquation,
+      isLeftCorrect: isLeftCorrect ?? this.isLeftCorrect,
+      selectedOption: selectedOption ?? this.selectedOption,
+      correctIndex: correctIndex ?? this.correctIndex,
+      equations: equations ?? this.equations,
     );
   }
 

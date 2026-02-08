@@ -125,6 +125,7 @@
   },
 
   "theCorrectIs": "คำตอบที่ถูกต้องคือ",
+  "whichOneIsCorrect": "ข้อไหนถูกต้อง?",
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },

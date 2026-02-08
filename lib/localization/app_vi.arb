@@ -125,6 +125,7 @@
   },
 
   "theCorrectIs": "Đáp án đúng là",
+  "whichOneIsCorrect": "Đáp án nào đúng?",
   "@theCorrectIs": {
     "description": "Hiển thị đáp án đúng"
   },
@@ -340,6 +341,10 @@
   "@difficultyExtremeDescription": {
     "description": "Mô tả cấp độ cực kỳ khó, thân thiện và tự nhiên cho người Việt"
   },
+  "pickRightDescription": "Chọn phương trình đúng! Trò chơi lựa chọn nhanh với bộ đếm thời gian 5 giây.",
+  "@pickRightDescription": {
+    "description": "Mô tả cho chế độ chọn đúng"
+  },
   
   "difficultyEasyTitle": "Dễ",
   "@difficultyEasyTitle": {
@@ -356,6 +361,10 @@
   "difficultyExtremeTitle": "Cực kỳ khó",
   "@difficultyExtremeTitle": {
     "description": "Tiêu đề cho chế độ cực kỳ khó"
+  },
+  "pickRightTitle": "Chọn Đúng",
+  "@pickRightTitle": {
+    "description": "Tiêu đề cho chế độ chọn đúng"
   },
 
   "confirmChangeDifficulty": "Lượt chơi sẽ bị reset. Bạn có chắc chắn muốn thay đổi không?",

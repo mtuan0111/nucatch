@@ -99,6 +99,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get theCorrectIs => 'Lo correcto es';
 
   @override
+  String get whichOneIsCorrect => '¿Cuál es correcta?';
+
+  @override
   String get name => 'Nombre';
 
   @override
@@ -230,6 +233,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Selecciona aleatoriamente entre generar un cálculo complejo de suma/resta, un número aleatorio de mayor nivel o un cálculo de multiplicación/división para la experiencia más desafiante.';
 
   @override
+  String get pickRightDescription =>
+      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+
+  @override
   String get difficultyEasyTitle => 'Modo Fácil';
 
   @override
@@ -240,6 +247,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => 'Modo Extremo';
+
+  @override
+  String get pickRightTitle => 'Pick Right';
 
   @override
   String get confirmChangeDifficulty =>

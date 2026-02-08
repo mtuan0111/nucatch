@@ -134,3 +134,10 @@ class TapTimerResume extends TurnEvent {}
 class TapTimerReset extends TurnEvent {}
 
 class Renew extends TurnEvent {}
+
+/// Pick Right mode: button tap event (0=left, 1=right)
+class PickRightButtonTap extends TurnEvent {
+  final int buttonIndex;
+
+  PickRightButtonTap({required this.buttonIndex});
+}
