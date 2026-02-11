@@ -65,6 +65,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatOpponentSuccessReceived>(_onCombatOpponentSuccessReceived);
     on<CombatOpponentLifeUpdate>(_onCombatOpponentLifeUpdate);
     on<CombatBlocReset>(_onCombatBlocReset);
+    on<CombatPickRightButtonTap>(_onCombatPickRightButtonTap);
 
     // Listen to BLE messages
     _messageSubscription = _roomService.incomingDataStream.listen((data) {
@@ -148,12 +149,16 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
             final isMyTurn = data['isHostTurn'] == _roomService.isHost;
             final requirement = data['requirement'] as String;
             final expect = data['expect'] as String;
+            final equations = data['equations'] as List?;
+            final correctIndex = data['correctIndex'] as int?;
             print(
                 '🎮 [Combat] turn_start received - isHostTurn: ${data['isHostTurn']}, _roomService.isHost: ${_roomService.isHost}, calculated isMyTurn: $isMyTurn');
             add(CombatTurnReceived(
               isMyTurn: isMyTurn,
               requirement: requirement,
               expect: expect,
+              equations: equations?.cast<String>(),
+              correctIndex: correctIndex,
             ));
             break;
           case CombatMessageType.typingUpdate:
@@ -175,12 +180,18 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
             }
             break;
           case CombatMessageType.moveCompleted:
+            final wasCorrect = data['wasCorrect'] as bool;
             add(CombatOpponentMoveReceived(
               opponentInput: data['input'],
-              wasOpponentCorrect: data['correct'],
+              wasOpponentCorrect: wasCorrect,
               opponentScore: data['score'],
               opponentLives: data['lives'],
             ));
+
+            // Trigger firework animation when opponent picks correct button
+            if (wasCorrect) {
+              add(CombatOpponentSuccessReceived());
+            }
             break;
           case CombatMessageType.gameEnded:
             // Don't send message back - this prevents infinite loop
@@ -334,6 +345,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       'isHostTurn': isHostTurn,
       'requirement': requirement,
       'expect': expect,
+      'equations': state.equations, // For Pick Right mode
+      'correctIndex': state.correctIndex, // For Pick Right mode
     });
 
     // Calculate show time based on level (similar to solo mode)
@@ -367,6 +380,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       isMyTurn: event.isMyTurn,
       requirementString: event.requirement,
       expect: event.expect,
+      equations: event.equations, // For Pick Right mode
+      correctIndex: event.correctIndex, // For Pick Right mode
       typing: '',
       opponentInput: null,
       isWaitingForOpponent: false,
@@ -686,6 +701,69 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
   }
 
+  /// Handle Pick Right button tap in Combat mode
+  Future<void> _onCombatPickRightButtonTap(
+    CombatPickRightButtonTap event,
+    Emitter<CombatState> emit,
+  ) async {
+    if (!state.isMyTurn) return;
+    if (!state.isAbleToTap) return;
+
+    final correctIndex = state.correctIndex ?? -1;
+    final isCorrect = event.buttonIndex == correctIndex;
+
+    developer.log(
+        '🎮 [Combat] Pick Right button tap: ${event.buttonIndex}, correct: $correctIndex, isCorrect: $isCorrect');
+
+    // Update selected option for UI feedback
+    emit(state.copyWith(selectedOption: event.buttonIndex));
+
+    // Stop tap timer
+    _stopTapTimer();
+
+    if (isCorrect) {
+      // Correct answer - add point and proceed
+      _audioBloc.add(PlayCorrectAudio());
+      _vibrationBloc.add(VibrateShort());
+
+      // Send correct move to opponent
+      await _sendMessage({
+        'type': _messageTypeToString(CombatMessageType.moveCompleted),
+        'input': event.buttonIndex.toString(),
+        'wasCorrect': true,
+        'score': state.point + 1,
+        'lives': state.lifeRemaining,
+      });
+
+      await _onCombatAddPoint(CombatAddPoint(), emit);
+    } else {
+      // Wrong answer - lose life
+      _audioBloc.add(PlayWrongAudio());
+      _vibrationBloc.add(VibrateLong());
+
+      // Send wrong move to opponent
+      await _sendMessage({
+        'type': _messageTypeToString(CombatMessageType.moveCompleted),
+        'input': event.buttonIndex.toString(),
+        'wasCorrect': false,
+        'score': state.point,
+        'lives': state.lifeRemaining - 1,
+      });
+
+      add(CombatLostLife());
+
+      if (!state.isAbleToContinue) {
+        add(CombatGameEnded(isWinner: false, reason: GameEndReason.myLivesOut));
+        return;
+      }
+
+      // Generate new equations for next attempt
+      emit(state.copyWith(selectedOption: null));
+      add(CombatRequiredStringGenerated());
+      _startTapTimer();
+    }
+  }
+
   Future<void> _onCombatSetLevel(
     CombatLevelChanged event,
     Emitter<CombatState> emitter,
@@ -845,11 +923,39 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         }
         break;
       case Difficulty.pickRight:
-        // Pick Right mode - generate two equations (one true, one false)
-        // For now, use simple number generation as placeholder
-        expectString = Helper().generateRandomNumber(state.level + 2);
-        requiredString = expectString;
-        break;
+        // Pick Right mode - generate three equations (one true, two false)
+        Map<String, dynamic> equationsData =
+            Helper().generatePickRightEquations(state.level);
+
+        // expectString stores the correct button index (0, 1, or 2)
+        expectString = equationsData['correctIndex'].toString();
+        // requirementString shows all equations separated by pipe
+        final eqs = equationsData['equations'] as List<String>;
+        requiredString = eqs.join(' | ');
+
+        developer.log(
+            '🎮 [Combat] Generated Pick Right equations: $requiredString, correctIndex: $expectString');
+        emit(
+          state.copyWith(
+            requirementString: requiredString,
+            trueEquation: equationsData['trueEquation'],
+            falseEquation: equationsData['falseEquation'],
+            isLeftCorrect: equationsData['isLeftCorrect'],
+            correctIndex: equationsData['correctIndex'],
+            equations: List<String>.from(equationsData['equations']),
+            selectedOption: null,
+          ),
+        );
+
+        await Future.delayed(
+            const Duration(milliseconds: kAnimationDurationSlow));
+
+        emit(
+          state.copyWith(
+            expect: expectString,
+          ),
+        );
+        return requiredString;
       case Difficulty.easy:
         expectString = Helper().generateRandomNumber(state.level + 2);
         requiredString = expectString;

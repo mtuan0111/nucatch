@@ -40,6 +40,13 @@ class CombatTap extends CombatEvent {
   CombatTap({required this.keyValue});
 }
 
+/// Event for Pick Right mode button taps in Combat
+class CombatPickRightButtonTap extends CombatEvent {
+  final int buttonIndex;
+
+  CombatPickRightButtonTap({required this.buttonIndex});
+}
+
 class CombatLevelChanged extends CombatEvent {
   final int level;
 
@@ -118,11 +125,15 @@ class CombatTurnReceived extends CombatEvent {
   final bool isMyTurn;
   final String requirement;
   final String expect;
+  final List<String>? equations; // For Pick Right mode
+  final int? correctIndex; // For Pick Right mode
 
   CombatTurnReceived({
     required this.isMyTurn,
     required this.requirement,
     required this.expect,
+    this.equations,
+    this.correctIndex,
   });
 }
 

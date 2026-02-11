@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
@@ -16,6 +17,7 @@ import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:nucatch/widgets/pick_right_buttons.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
 class CombatPlayScreen extends StatefulWidget {
@@ -286,7 +288,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                             ),
 
                             // Keyboard
-                            _buildKeyboard(combatState),
+                            Expanded(
+                              flex: 3,
+                              child: _buildKeyboard(combatState),
+                            ),
                           ],
                         ),
                       ),
@@ -775,199 +780,19 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     }
 
     // Show requirement string (what to memorize/solve)
-    if (combatState.isShowExpect) {
-      return Expanded(
-        child: Center(
-          child: Wrap(
-            children: List.generate(
-              combatState.requirementString!.length,
-              (index) {
-                String char = combatState.requirementString![index];
-                return SizedBox(
-                  width: (AppTextStyles.forChallenge(
-                              combatState.requirementString!.length, context)
-                          .fontSize! *
-                      0.65),
-                  child: Column(
-                    children: [
-                      Text(
-                        char,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.forChallenge(
-                          combatState.requirementString!.length,
-                          context,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      );
-    }
+    // Skip for Pick Right mode - it shows equations in the button area instead
+    final isPickRightMode =
+        combatState.difficultyModel?.difficulty == Difficulty.pickRight;
 
-    // Show typing area with animations (user input) - ONLY when it's my turn
-    if (combatState.isMyTurn && combatState.isTimeForTyping) {
-      return Expanded(
-        child: Center(
-          child: Wrap(
-            children: List.generate(
-              combatState.expect!.length,
-              (index) {
-                double hide = combatState.isTypingNotEmpty &&
-                        index < combatState.typing.length
-                    ? 1
-                    : 0;
-
-                String inputted = combatState.expect![index];
-
-                dev.log("inputted: $inputted");
-                dev.log("hide: $hide");
-                dev.log("index: $index");
-                dev.log(
-                    "combatState.expect!.length: ${combatState.expect!.length}");
-                dev.log("combatState.typing: ${combatState.typing}");
-
-                return SizedBox(
-                  width: (AppTextStyles.forChallenge(
-                              combatState.requirementString!.length, context)
-                          .fontSize! *
-                      0.65),
-                  child: Builder(
-                    builder: (context) {
-                      // Trigger firework animation at character position when finished
-                      // Only trigger once per character index
-                      if (combatState.isFinishTarget &&
-                          hide == 1 &&
-                          !_triggeredFireworkIndices.contains(index)) {
-                        _triggeredFireworkIndices.add(index);
-                        dev.log(
-                            "Trigger firework animation at character position when finished - index: $index");
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          final RenderBox? renderBox =
-                              context.findRenderObject() as RenderBox?;
-                          if (renderBox != null) {
-                            final position =
-                                renderBox.localToGlobal(Offset.zero);
-                            final size = renderBox.size;
-                            final center = position +
-                                Offset(size.width / 2, size.height / 2);
-
-                            // Trigger firework with cascading delay
-                            Future.delayed(Duration(milliseconds: index * 50),
-                                () {
-                              if (mounted &&
-                                  _animationKey.currentState != null) {
-                                dev.log("firework at index $index");
-                                _animationKey.currentState!.triggers
-                                    .onAddPoint(center);
-                              }
-                            });
-                          }
-                        });
-                      } else if (!combatState.isFinishTarget) {
-                        // Reset set when starting a new turn
-                        _triggeredFireworkIndices.clear();
-                      }
-
-                      return Column(
-                        children: [
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 200),
-                            opacity: hide,
-                            child: AnimatedOpacity(
-                              curve: Curves.easeOutQuart,
-                              opacity: combatState.isFinishTarget ? 0 : 1,
-                              duration: const Duration(milliseconds: 400),
-                              child: AnimatedScale(
-                                curve: Curves.easeOutQuart,
-                                scale: combatState.isFinishTarget ? 2 : 1,
-                                duration: const Duration(milliseconds: 400),
-                                child: Text(
-                                  inputted,
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.forChallenge(
-                                    combatState.requirementString!.length,
-                                    context,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          AnimatedOpacity(
-                            opacity: (hide == 0) ? 1 : 0,
-                            duration: const Duration(milliseconds: 200),
-                            child: Icon(
-                              FontAwesomeIcons.minus,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      );
-    }
-
-    // Waiting/watching opponent - show mirror view
-    if (combatState.isOpponentActive && !combatState.isMyTurn) {
-      // Show the opponent's challenge and progress as a mirror
-      if (combatState.requirementString != null && combatState.expect != null) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // const SizedBox(height: kSpaceXL),
-            // // Show opponent's challenge (mirrored)
-            // Wrap(
-            //   children: List.generate(
-            //     combatState.requirementString!.length,
-            //     (index) {
-            //       String char = combatState.requirementString![index];
-            //       return SizedBox(
-            //         width: (boldedStyleFont(
-            //                     numberOfCharactor:
-            //                         combatState.requirementString!.length)
-            //                 .fontSize! *
-            //             0.65),
-            //         child: Column(
-            //           children: [
-            //             Opacity(
-            //               opacity: 0.6, // Dimmed to show it's opponent's
-            //               child: Text(
-            //                 char,
-            //                 textAlign: TextAlign.center,
-            //                 style: boldedStyleFont(
-            //                   numberOfCharactor:
-            //                       combatState.requirementString!.length,
-            //                 ),
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
-            // const SizedBox(height: kSpaceXL),
-            // Show opponent's typing progress (always show when watching)
-            Wrap(
+    if (!isPickRightMode) {
+      if (combatState.isShowExpect) {
+        return Expanded(
+          child: Center(
+            child: Wrap(
               children: List.generate(
-                combatState.expect!.length,
+                combatState.requirementString!.length,
                 (index) {
-                  double hide = combatState.opponentInput != null &&
-                          index < combatState.opponentInput!.length
-                      ? 1
-                      : 0;
-
-                  String inputted = combatState.expect![index];
-
+                  String char = combatState.requirementString![index];
                   return SizedBox(
                     width: (AppTextStyles.forChallenge(
                                 combatState.requirementString!.length, context)
@@ -975,24 +800,12 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                         0.65),
                     child: Column(
                       children: [
-                        AnimatedOpacity(
-                          duration: const Duration(milliseconds: 200),
-                          opacity: hide * 0.6, // Dimmed
-                          child: Text(
-                            inputted,
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.forChallenge(
-                              combatState.requirementString!.length,
-                              context,
-                            ),
-                          ),
-                        ),
-                        AnimatedOpacity(
-                          opacity: (hide == 0) ? 0.6 : 0,
-                          duration: const Duration(milliseconds: 200),
-                          child: Icon(
-                            FontAwesomeIcons.minus,
-                            color: Theme.of(context).colorScheme.onPrimary,
+                        Text(
+                          char,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.forChallenge(
+                            combatState.requirementString!.length,
+                            context,
                           ),
                         ),
                       ],
@@ -1001,49 +814,257 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                 },
               ),
             ),
-          ],
+          ),
         );
       }
 
-      // Fallback if no challenge data
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            const SizedBox(height: kSpaceXL),
-            Text(
-              lang(context).watchingOpponent,
-              style: AppTextStyles.bodyLarge(context).copyWith(
-                color: Colors.orange,
-                fontSize: kFontSizeXL,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+      // Show typing area with animations (user input) - ONLY when it's my turn
+      // Skip for Pick Right mode - it uses button taps instead of typing
+      if (combatState.isMyTurn && combatState.isTimeForTyping) {
+        return Expanded(
+          child: Center(
+            child: Wrap(
+              children: List.generate(
+                combatState.expect!.length,
+                (index) {
+                  double hide = combatState.isTypingNotEmpty &&
+                          index < combatState.typing.length
+                      ? 1
+                      : 0;
 
-    // Waiting for opponent to finish their move
-    if (combatState.isWaitingForOpponent) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            const SizedBox(height: kSpaceXL),
-            Text(
-              lang(context).waitingForOpponent,
-              style: AppTextStyles.bodyLarge(context).copyWith(
-                color: Colors.yellow,
-                fontSize: kFontSizeXL,
+                  String inputted = combatState.expect![index];
+
+                  dev.log("inputted: $inputted");
+                  dev.log("hide: $hide");
+                  dev.log("index: $index");
+                  dev.log(
+                      "combatState.expect!.length: ${combatState.expect!.length}");
+                  dev.log("combatState.typing: ${combatState.typing}");
+
+                  return SizedBox(
+                    width: (AppTextStyles.forChallenge(
+                                combatState.requirementString!.length, context)
+                            .fontSize! *
+                        0.65),
+                    child: Builder(
+                      builder: (context) {
+                        // Trigger firework animation at character position when finished
+                        // Only trigger once per character index
+                        if (combatState.isFinishTarget &&
+                            hide == 1 &&
+                            !_triggeredFireworkIndices.contains(index)) {
+                          _triggeredFireworkIndices.add(index);
+                          dev.log(
+                              "Trigger firework animation at character position when finished - index: $index");
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            final RenderBox? renderBox =
+                                context.findRenderObject() as RenderBox?;
+                            if (renderBox != null) {
+                              final position =
+                                  renderBox.localToGlobal(Offset.zero);
+                              final size = renderBox.size;
+                              final center = position +
+                                  Offset(size.width / 2, size.height / 2);
+
+                              // Trigger firework with cascading delay
+                              Future.delayed(Duration(milliseconds: index * 50),
+                                  () {
+                                if (mounted &&
+                                    _animationKey.currentState != null) {
+                                  dev.log("firework at index $index");
+                                  _animationKey.currentState!.triggers
+                                      .onAddPoint(center);
+                                }
+                              });
+                            }
+                          });
+                        } else if (!combatState.isFinishTarget) {
+                          // Reset set when starting a new turn
+                          _triggeredFireworkIndices.clear();
+                        }
+
+                        return Column(
+                          children: [
+                            AnimatedOpacity(
+                              duration: const Duration(milliseconds: 200),
+                              opacity: hide,
+                              child: AnimatedOpacity(
+                                curve: Curves.easeOutQuart,
+                                opacity: combatState.isFinishTarget ? 0 : 1,
+                                duration: const Duration(milliseconds: 400),
+                                child: AnimatedScale(
+                                  curve: Curves.easeOutQuart,
+                                  scale: combatState.isFinishTarget ? 2 : 1,
+                                  duration: const Duration(milliseconds: 400),
+                                  child: Text(
+                                    inputted,
+                                    textAlign: TextAlign.center,
+                                    style: AppTextStyles.forChallenge(
+                                      combatState.requirementString!.length,
+                                      context,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            AnimatedOpacity(
+                              opacity: (hide == 0) ? 1 : 0,
+                              duration: const Duration(milliseconds: 200),
+                              child: Icon(
+                                FontAwesomeIcons.minus,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
             ),
-          ],
+          ),
+        );
+      }
+
+      // Waiting/watching opponent - show mirror view
+      if (combatState.isOpponentActive && !combatState.isMyTurn) {
+        // Show the opponent's challenge and progress as a mirror
+        if (combatState.requirementString != null &&
+            combatState.expect != null) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // const SizedBox(height: kSpaceXL),
+              // // Show opponent's challenge (mirrored)
+              // Wrap(
+              //   children: List.generate(
+              //     combatState.requirementString!.length,
+              //     (index) {
+              //       String char = combatState.requirementString![index];
+              //       return SizedBox(
+              //         width: (boldedStyleFont(
+              //                     numberOfCharactor:
+              //                         combatState.requirementString!.length)
+              //                 .fontSize! *
+              //             0.65),
+              //         child: Column(
+              //           children: [
+              //             Opacity(
+              //               opacity: 0.6, // Dimmed to show it's opponent's
+              //               child: Text(
+              //                 char,
+              //                 textAlign: TextAlign.center,
+              //                 style: boldedStyleFont(
+              //                   numberOfCharactor:
+              //                       combatState.requirementString!.length,
+              //                 ),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
+              // const SizedBox(height: kSpaceXL),
+              // Show opponent's typing progress (always show when watching)
+              Wrap(
+                children: List.generate(
+                  combatState.expect!.length,
+                  (index) {
+                    double hide = combatState.opponentInput != null &&
+                            index < combatState.opponentInput!.length
+                        ? 1
+                        : 0;
+
+                    String inputted = combatState.expect![index];
+
+                    return SizedBox(
+                      width: (AppTextStyles.forChallenge(
+                                  combatState.requirementString!.length,
+                                  context)
+                              .fontSize! *
+                          0.65),
+                      child: Column(
+                        children: [
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 200),
+                            opacity: hide * 0.6, // Dimmed
+                            child: Text(
+                              inputted,
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.forChallenge(
+                                combatState.requirementString!.length,
+                                context,
+                              ),
+                            ),
+                          ),
+                          AnimatedOpacity(
+                            opacity: (hide == 0) ? 0.6 : 0,
+                            duration: const Duration(milliseconds: 200),
+                            child: Icon(
+                              FontAwesomeIcons.minus,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        }
+
+        // Fallback if no challenge data
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              const SizedBox(height: kSpaceXL),
+              Text(
+                lang(context).watchingOpponent,
+                style: AppTextStyles.bodyLarge(context).copyWith(
+                  color: Colors.orange,
+                  fontSize: kFontSizeXL,
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+
+      // Waiting for opponent to finish their move
+      if (combatState.isWaitingForOpponent) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              const SizedBox(height: kSpaceXL),
+              Text(
+                lang(context).waitingForOpponent,
+                style: AppTextStyles.bodyLarge(context).copyWith(
+                  color: Colors.yellow,
+                  fontSize: kFontSizeXL,
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    } else {
+      return Center(
+        child: Text(
+          lang(context).whichOneIsCorrect,
+          style: AppTextStyles.titleLarge(context),
         ),
       );
     }
@@ -1052,113 +1073,170 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   }
 
   Widget _buildKeyboard(CombatState combatState) {
-    return Expanded(
-      flex: 1,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final keys = keyboardArray.entries.toList();
-          const columns = 3;
-          const rows = 4;
-          final buttonWidth = constraints.maxWidth / columns;
-          final buttonHeight = constraints.maxHeight / rows;
-          const buttonSpacing = 20.0;
-          const tableGap = 10.0;
+    // Check if Pick Right mode
+    final isPickRightMode =
+        combatState.difficultyModel?.difficulty == Difficulty.pickRight;
 
-          List<TableRow> tableRows = [];
-          for (int r = 0; r < rows; r++) {
-            List<Widget> rowChildren = [];
-            for (int c = 0; c < columns; c++) {
-              int idx = r * columns + c;
-              Widget cell;
-              if (idx < keys.length) {
-                final e = keys[idx];
-                Duration duration = const Duration(milliseconds: 200);
-                Widget button;
-                if (e.key == KeyboardOption.reset) {
-                  button = AnimatedButton(
-                    context,
-                    iconData: FontAwesomeIcons.arrowsRotate,
-                    isEnable:
-                        combatState.isAbleToReset && combatState.isAbleToTap,
-                    onPressed: () {
-                      context.read<CombatBloc>().add(
-                            CombatNumberReset(duration: duration),
-                          );
-                    },
-                  );
-                } else if (e.key == KeyboardOption.mainMenu) {
-                  button = AnimatedButton(
-                    context,
-                    iconData: FontAwesomeIcons.bars,
-                    onPressed: () => _handleMenuButton(context),
-                  );
-                } else {
-                  button = AnimatedButton(
-                    context,
-                    text: e.value.toString(),
-                    style: AppTextStyles.displayLarge(context),
-                    isEnable: combatState.isAbleToTap,
-                    onPressed: () {
-                      context.read<CombatBloc>().add(
-                            CombatTap(keyValue: e.key),
-                          );
-                    },
-                  );
-                }
-                cell = SizedBox(
-                  width: buttonWidth - buttonSpacing,
-                  height: buttonHeight - buttonSpacing,
-                  child: button,
+    if (isPickRightMode) {
+      return _buildPickRightControls(combatState);
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final keys = keyboardArray.entries.toList();
+        const columns = 3;
+        const rows = 4;
+        final buttonWidth = constraints.maxWidth / columns;
+        final buttonHeight = constraints.maxHeight / rows;
+        const buttonSpacing = 20.0;
+        const tableGap = 10.0;
+
+        List<TableRow> tableRows = [];
+        for (int r = 0; r < rows; r++) {
+          List<Widget> rowChildren = [];
+          for (int c = 0; c < columns; c++) {
+            int idx = r * columns + c;
+            Widget cell;
+            if (idx < keys.length) {
+              final e = keys[idx];
+              Duration duration = const Duration(milliseconds: 200);
+              Widget button;
+              if (e.key == KeyboardOption.reset) {
+                button = AnimatedButton(
+                  context,
+                  iconData: FontAwesomeIcons.arrowsRotate,
+                  isEnable:
+                      combatState.isAbleToReset && combatState.isAbleToTap,
+                  onPressed: () {
+                    context.read<CombatBloc>().add(
+                          CombatNumberReset(duration: duration),
+                        );
+                  },
+                );
+              } else if (e.key == KeyboardOption.mainMenu) {
+                button = AnimatedButton(
+                  context,
+                  iconData: FontAwesomeIcons.bars,
+                  onPressed: () => _handleMenuButton(context),
                 );
               } else {
-                cell = Padding(
-                  padding: const EdgeInsets.all(buttonSpacing / 2),
-                  child: SizedBox(
-                    width: buttonWidth - buttonSpacing,
-                    height: buttonHeight - buttonSpacing,
-                  ),
+                button = AnimatedButton(
+                  context,
+                  text: e.value.toString(),
+                  style: AppTextStyles.displayLarge(context),
+                  isEnable: combatState.isAbleToTap,
+                  onPressed: () {
+                    context.read<CombatBloc>().add(
+                          CombatTap(keyValue: e.key),
+                        );
+                  },
                 );
               }
-              // Add gap to the right except for last column
-              if (c < columns - 1) {
-                rowChildren.add(Padding(
-                  padding: const EdgeInsets.only(right: tableGap),
-                  child: cell,
-                ));
-              } else {
-                rowChildren.add(cell);
-              }
-            }
-            // Add gap to the bottom except for last row
-            if (r < rows - 1) {
-              tableRows.add(
-                TableRow(
-                  children: rowChildren,
-                ),
-              );
-              // Add a gap row
-              tableRows.add(
-                TableRow(
-                  children: List.generate(
-                    columns,
-                    (_) => const SizedBox(height: tableGap),
-                  ),
-                ),
+              cell = SizedBox(
+                width: buttonWidth - buttonSpacing,
+                height: buttonHeight - buttonSpacing,
+                child: button,
               );
             } else {
-              tableRows.add(
-                TableRow(
-                  children: rowChildren,
+              cell = Padding(
+                padding: const EdgeInsets.all(buttonSpacing / 2),
+                child: SizedBox(
+                  width: buttonWidth - buttonSpacing,
+                  height: buttonHeight - buttonSpacing,
                 ),
               );
             }
+            // Add gap to the right except for last column
+            if (c < columns - 1) {
+              rowChildren.add(Padding(
+                padding: const EdgeInsets.only(right: tableGap),
+                child: cell,
+              ));
+            } else {
+              rowChildren.add(cell);
+            }
           }
+          // Add gap to the bottom except for last row
+          if (r < rows - 1) {
+            tableRows.add(
+              TableRow(
+                children: rowChildren,
+              ),
+            );
+            // Add a gap row
+            tableRows.add(
+              TableRow(
+                children: List.generate(
+                  columns,
+                  (_) => const SizedBox(height: tableGap),
+                ),
+              ),
+            );
+          } else {
+            tableRows.add(
+              TableRow(
+                children: rowChildren,
+              ),
+            );
+          }
+        }
 
-          return Table(
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: tableRows,
-          );
-        },
+        return Table(
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: tableRows,
+        );
+      },
+    );
+  }
+
+  /// Build Pick Right controls for Combat mode
+  /// Reuses PickRightButtons widget for consistency with Solo mode
+  Widget _buildPickRightControls(CombatState combatState) {
+    return Expanded(
+      flex: 1,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: kSpaceL),
+        child: Column(
+          children: [
+            // Three equation buttons (same widget as Solo mode)
+            Expanded(
+              child: PickRightButtons(
+                equations: combatState.equations ?? [],
+                selectedOption: combatState.selectedOption,
+                isEnabled: combatState.isAbleToTap && combatState.isMyTurn,
+                onButtonTap: (buttonIndex, position) {
+                  context.read<CombatBloc>().add(
+                        CombatPickRightButtonTap(buttonIndex: buttonIndex),
+                      );
+
+                  // Trigger firework if correct
+                  if (buttonIndex == combatState.correctIndex &&
+                      position != null) {
+                    _animationKey.currentState?.triggers.onAddPoint(position);
+                  }
+                },
+              ),
+            ),
+            // Menu button row
+            Padding(
+              padding: const EdgeInsets.only(top: kSpaceM, bottom: kSpaceS),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: AnimatedButton(
+                      context,
+                      iconData: FontAwesomeIcons.bars,
+                      onPressed: () => _handleMenuButton(context),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
