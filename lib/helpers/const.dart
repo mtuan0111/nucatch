@@ -11,6 +11,11 @@ const double tapTimerDuration = 60.0; // Seconds for each tap countdown
 const String timeDateClient = "dd/MM/yyyy hh:mm a";
 const String timeDateServer = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
+// BLE Combat Mode constants
+const String kBleAppPrefix = 'nucatch';
+const String kBlePlayerNamePrefix = 'Nuca';
+const String kBleAdvertisingPrefix = 'Nucatch-';
+
 const Map<String, String> languages = {
   'en': "English",
   'vi': "Tiếng Việt",

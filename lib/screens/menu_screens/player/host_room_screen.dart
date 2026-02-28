@@ -44,7 +44,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
     _myPlayerId = _generatePlayerId();
     _myEndpointName =
-        'Nuca-${Random().nextInt(9999).toString().padLeft(4, '0')}';
+        '$kBlePlayerNamePrefix-${Random().nextInt(9999).toString().padLeft(4, '0')}';
 
     // Initialize on next frame to ensure context is available
     WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -5,6 +5,7 @@ import 'package:nucatch/blocs/navs/combat/combat_nav_state.dart';
 import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
+import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_game_end_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_mode_setup_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_play_screen.dart';
@@ -26,7 +27,7 @@ class CombatNav extends StatelessWidget {
     // when users go back to Select Play Mode and re-enter combat.
     return BlocProvider<CombatBloc>(
       create: (context) {
-        final bleDataSource = BleDataSource(appPrefix: 'nucatch');
+        final bleDataSource = BleDataSource(appPrefix: kBleAppPrefix);
         final bluetoothRepository = BluetoothRepositoryImpl(
           dataSource: bleDataSource,
         );

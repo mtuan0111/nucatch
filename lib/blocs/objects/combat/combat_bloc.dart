@@ -263,9 +263,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       opponentLives: 3,
       point: 0,
       opponentScore: 0,
-      countDown: combatStatus == CombatStatus.intro
-          ? 4
-          : 0, // Set countdown if intro status
+      countDown: 60,
       willStartFirst: combatStatus == CombatStatus.intro
           ? false // Guest (this player) does not start first in initial game
           : null, // Unknown for other statuses
@@ -287,7 +285,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(state.copyWith(
       difficultyModel: difficultyModel,
       combatStatus: CombatStatus.intro,
-      countDown: 6, // Start countdown at 6 (will show 5-4-3-2-1-GO)
+      countDown: 60, // Start countdown at 6 (will show 5-4-3-2-1-GO)
       willStartFirst: state.isHost, // Host always starts first in initial game
     ));
 
@@ -298,9 +296,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         'difficulty': event.difficulty.toString(),
       });
     }
+    ;
 
     // Wait for countdown to finish (4 seconds)
-    for (int i = 4; i > 0; i--) {
+    for (int i = state.countDown; i > 0; i--) {
       await Future.delayed(const Duration(seconds: 1));
       if (isClosed) return;
     }
@@ -553,7 +552,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // First, reset the state with intro status and countdown
     emit(state.copyWith(
       combatStatus: CombatStatus.intro,
-      countDown: 6, // Start countdown at 6 (will show 5-4-3-2-1-GO)
+      countDown: 60, // Start countdown at 6 (will show 5-4-3-2-1-GO)
       isWinner: null,
       gameEndReason: null,
       isRestartRequested: true,
@@ -577,7 +576,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     ));
 
     // Wait for countdown to finish (4 seconds)
-    for (int i = 4; i > 0; i--) {
+    for (int i = state.countDown; i > 0; i--) {
       await Future.delayed(const Duration(seconds: 1));
       if (isClosed) return;
     }

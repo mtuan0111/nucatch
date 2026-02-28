@@ -205,8 +205,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         ),
       );
 
-      // Extract room code from device name (format: "ChatApp-XXXX")
-      final roomCode = device.name.replaceFirst('ChatApp-', '');
+      // Extract room code from device name (format: "${kBleAdvertisingPrefix}XXXX")
+      final roomCode = device.name.replaceFirst(kBleAdvertisingPrefix, '');
 
       await _bleService!.connectToDevice(
         endpointId: device.id,
@@ -389,7 +389,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                               _discoveredDevices[index];
                                           // Extract room code from device name
                                           final roomCode = device.name
-                                              .replaceFirst('ChatApp-', '');
+                                              .replaceFirst(
+                                                  kBleAdvertisingPrefix, '');
 
                                           return ListTile(
                                             leading: CircleAvatar(

@@ -1024,27 +1024,27 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
         );
       }
 
-      // Waiting for opponent to finish their move
-      if (combatState.isWaitingForOpponent) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-              const SizedBox(height: kSpaceXL),
-              Text(
-                lang(context).waitingForOpponent,
-                style: AppTextStyles.bodyLarge(context).copyWith(
-                  color: Colors.yellow,
-                  fontSize: kFontSizeXL,
-                ),
-              ),
-            ],
-          ),
-        );
-      }
+      // // Waiting for opponent to finish their move
+      // if (combatState.isWaitingForOpponent) {
+      //   return Center(
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: [
+      //         CircularProgressIndicator(
+      //           color: Theme.of(context).colorScheme.onSurface,
+      //         ),
+      //         const SizedBox(height: kSpaceXL),
+      //         Text(
+      //           lang(context).waitingForOpponent,
+      //           style: AppTextStyles.bodyLarge(context).copyWith(
+      //             color: Colors.yellow,
+      //             fontSize: kFontSizeXL,
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   );
+      // }
     } else {
       return Center(
         child: Text(
