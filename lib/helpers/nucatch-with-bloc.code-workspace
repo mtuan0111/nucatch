@@ -8,9 +8,6 @@
 		},
 		{
 			"path": "../../../ble_plat_services"
-		},
-		{
-			"path": "../../../../../MM_DATA/flutter_projects/mmsea-mobile"
 		}
 	],
 	"settings": {}

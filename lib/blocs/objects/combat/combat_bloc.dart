@@ -56,7 +56,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatRestartReady>(_onCombatRestartReady);
     on<CombatRestartReadyReceived>(_onCombatRestartReadyReceived);
     on<CombatDifficultyChanged>(_onCombatDifficultySelected);
-    on<CombatLevelChanged>(_onCombatSetLevel);
+    on<CombatLevelChanged>(_onCombatLevelChanged);
     on<CombatRequiredStringGenerated>(_onCombatGeneratedRequiredString);
     on<CombatExpectShown>(_onCombatShowExpect);
     on<CombatNumberReset>(_onCombatResetNewNumber);
@@ -74,9 +74,13 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   }
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
     _messageSubscription?.cancel();
     _tapTimer?.cancel();
+    _typingUpdateDebounceTimer?.cancel();
+    // Clean up BLE connections and stream subscriptions
+    await _roomService.reset();
+    _roomService.dispose();
     return super.close();
   }
 
@@ -189,9 +193,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
             ));
 
             // Trigger firework animation when opponent picks correct button
-            if (wasCorrect) {
+            // TODO: if type is Pick Right mode
+            if (state.difficultyModel?.difficulty == Difficulty.pickRight &&
+                wasCorrect) {
               add(CombatOpponentSuccessReceived());
             }
+
             break;
           case CombatMessageType.gameEnded:
             // Don't send message back - this prevents infinite loop
@@ -392,7 +399,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Calculate show time based on level (similar to solo mode)
     final level = state.level;
-    final diffShowLevelMilisecond = 100; // Increase by 100ms per level
+    const diffShowLevelMilisecond = 100; // Increase by 100ms per level
     final showTime = 1000 + level * diffShowLevelMilisecond;
 
     // Wait for the show time, then transition to typing mode
@@ -723,10 +730,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     if (isCorrect) {
       // Correct answer - add point and proceed
-      _audioBloc.add(PlayCorrectAudio());
-      _vibrationBloc.add(VibrateShort());
+      // Note: Audio and vibration are handled by _onCombatAddPoint to avoid duplicates
 
-      // Send correct move to opponent
+      // Send correct move to opponent immediately for instant firework
       await _sendMessage({
         'type': _messageTypeToString(CombatMessageType.moveCompleted),
         'input': event.buttonIndex.toString(),
@@ -764,7 +770,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
   }
 
-  Future<void> _onCombatSetLevel(
+  Future<void> _onCombatLevelChanged(
     CombatLevelChanged event,
     Emitter<CombatState> emitter,
   ) async {
@@ -785,23 +791,26 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     );
 
     // Send move completion to opponent
-    final newScore = state.point;
-    final newLives = state.lifeRemaining;
+    // Skip for Pick Right mode - it already sent moveCompleted instantly
+    // in _onCombatPickRightButtonTap for immediate firework on opponent's screen
+    if (state.difficultyModel?.difficulty != Difficulty.pickRight) {
+      final newScore = state.point;
+      final newLives = state.lifeRemaining;
 
-    await _sendMessage({
-      'type': _messageTypeToString(CombatMessageType.moveCompleted),
-      'input': state.typing,
-      'correct': true,
-      'score': newScore,
-      'lives': newLives,
-    });
+      await _sendMessage({
+        'type': _messageTypeToString(CombatMessageType.moveCompleted),
+        'input': state.typing,
+        'wasCorrect': true,
+        'score': newScore,
+        'lives': newLives,
+      });
+    }
 
-    // await _onCombatShowExpect(
-    //     CombatExpectShown(Duration(milliseconds: state.getTimeShowTarget)),
-    //     emitter);
-
-    // Start timer after showing challenge
-    _startTapTimer();
+    // Yield the turn to the opponent - wait for their move
+    emitter(state.copyWith(
+      isMyTurn: false,
+      isWaitingForOpponent: true,
+    ));
   }
 
   Future<void> _onCombatLostLife(
@@ -845,18 +854,13 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   ) async {
     _vibrationBloc.add(VibrateShort());
 
-    emit(
-      state.copyWith(
-        point: state.point + state.difficultyModel!.pointEachTurn,
-      ),
-    );
-
     // Note: move_success is now auto-detected by opponent from typing_update
     // when opponentInput.length == expect.length
 
     // Increment timesCorrect and add life bonus (every 3 correct turns)
     emit(
       state.copyWith(
+        point: state.point + state.difficultyModel!.pointEachTurn,
         timesCorrect: state.timesCorrect + 1,
         lifeRemaining: state.timesCorrect >= 2
             ? state.lifeRemaining + 1
@@ -1045,11 +1049,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     await Future.delayed(
         Duration(milliseconds: event.duration.inMilliseconds + 500));
-    await _onCombatSetLevel(
+    add(
       CombatLevelChanged(
         level: state.level,
       ),
-      emit,
     );
   }
 
@@ -1114,23 +1117,28 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       return;
     } else {
       _audioBloc.add(PlayWrongAudio());
-      await Future.delayed(
-          const Duration(milliseconds: kAnimationDurationSlow));
 
-      // Send timeout notification to opponent
-      await _sendMessage({
-        'type': _messageTypeToString(CombatMessageType.moveCompleted),
-        'input': '',
-        'correct': false,
-        'score': state.point,
-        'lives': state.lifeRemaining,
-      });
+      // Lose a life
+      // add(CombatLostLife());
+      add(CombatNumberReset(duration: const Duration(microseconds: 100)));
 
-      // Wait for opponent to finish their turn
-      emit(state.copyWith(
-        isWaitingForOpponent: true,
-        isMyTurn: false,
-      ));
+      // await Future.delayed(
+      //     const Duration(milliseconds: kAnimationDurationSlow));
+
+      // // Send timeout notification to opponent
+      // await _sendMessage({
+      //   'type': _messageTypeToString(CombatMessageType.moveCompleted),
+      //   'input': '',
+      //   'correct': false,
+      //   'score': state.point,
+      //   'lives': state.lifeRemaining,
+      // });
+
+      // // Wait for opponent to finish their turn
+      // emit(state.copyWith(
+      //   isWaitingForOpponent: true,
+      //   isMyTurn: false,
+      // ));
     }
   }
 
@@ -1139,6 +1147,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     Emitter<CombatState> emit,
   ) async {
     // Set flag that opponent just succeeded - this will trigger firework in UI
+    _vibrationBloc.add(VibrateShort());
     emit(state.copyWith(
       opponentJustSucceeded: true,
     ));

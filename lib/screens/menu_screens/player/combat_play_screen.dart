@@ -554,226 +554,211 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (!context.read<CombatBloc>().isClosed)
-                    Builder(
-                      builder: (widgetContext) {
-                        // Capture localized strings using the widget context
-                        final readyText = "${lang(widgetContext).ready}!!";
-                        final goText = lang(widgetContext).go;
+            if (!context.read<CombatBloc>().isClosed)
+              Builder(
+                builder: (widgetContext) {
+                  // Capture localized strings using the widget context
+                  final readyText = "${lang(widgetContext).ready}!!";
+                  final goText = lang(widgetContext).go;
 
-                        return Countdown(
-                          seconds: combatState.countDown,
-                          interval: const Duration(milliseconds: 10),
-                          build: (BuildContext context, double time) {
-                            // Calculate progress within current second (0.0 to 1.0)
-                            final secondProgress = time - time.floor();
+                  return Countdown(
+                    seconds: combatState.countDown,
+                    interval: const Duration(milliseconds: 10),
+                    build: (BuildContext context, double time) {
+                      // Calculate progress within current second (0.0 to 1.0)
+                      final secondProgress = time - time.floor();
 
-                            Gradient getCountdownGradient(double time) {
-                              if (time >= 5) {
-                                return LinearGradient(
-                                  colors: [
-                                    Colors.green.shade300,
-                                    Colors.green.shade700
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                );
-                              }
-                              if (time >= 3) {
-                                return LinearGradient(
-                                  colors: [
-                                    Colors.blue.shade300,
-                                    Colors.blue.shade700
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                );
-                              }
-                              if (time >= 1) {
-                                return LinearGradient(
-                                  colors: [
-                                    Colors.orange.shade300,
-                                    Colors.orange.shade700
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                );
-                              }
-                              return LinearGradient(
-                                colors: [
-                                  Colors.red.shade300,
-                                  Colors.red.shade700
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              );
-                            }
+                      Gradient getCountdownGradient(double time) {
+                        if (time >= 5) {
+                          return LinearGradient(
+                            colors: [
+                              Colors.green.shade300,
+                              Colors.green.shade700
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          );
+                        }
+                        if (time >= 3) {
+                          return LinearGradient(
+                            colors: [
+                              Colors.blue.shade300,
+                              Colors.blue.shade700
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          );
+                        }
+                        if (time >= 1) {
+                          return LinearGradient(
+                            colors: [
+                              Colors.orange.shade300,
+                              Colors.orange.shade700
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          );
+                        }
+                        return LinearGradient(
+                          colors: [Colors.red.shade300, Colors.red.shade700],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        );
+                      }
 
-                            return AnimatedScale(
-                              duration: const Duration(
-                                  milliseconds: kAnimationDurationSlow),
-                              scale: time > 0.5 ? 1.0 : 5,
-                              curve: Curves.easeOutQuart,
-                              child: AnimatedOpacity(
-                                duration: const Duration(
-                                    milliseconds: kAnimationDurationSlow),
-                                opacity: time > 0.5 ? 1.0 : 0.0,
-                                curve: Curves.easeOutQuart,
-                                child: Container(
-                                  width: kCountdownCircleSize,
-                                  height: kCountdownCircleSize,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: getCountdownGradient(time),
-                                  ),
+                      return AnimatedScale(
+                        duration: const Duration(
+                            milliseconds: kAnimationDurationSlow),
+                        scale: time > 0.5 ? 1.0 : 5,
+                        curve: Curves.easeOutQuart,
+                        child: AnimatedOpacity(
+                          duration: const Duration(
+                              milliseconds: kAnimationDurationSlow),
+                          opacity: time > 0.5 ? 1.0 : 0.0,
+                          curve: Curves.easeOutQuart,
+                          child: Container(
+                            width: kCountdownCircleSize,
+                            height: kCountdownCircleSize,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: getCountdownGradient(time),
+                            ),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Positioned.fill(
+                                  child: CustomElevatedButton(
+                                      buttonRadius: kBorderRadiusCircular,
+                                      shapeAt: RoundedWithShapeAt.all,
+                                      gradient: LinearGradient(
+                                          colors: getCountdownGradient(time)
+                                              .colors)),
+                                ),
+                                // Circular progress indicator
+                                SizedBox(
+                                  width: kCountdownCircleInnerSize,
+                                  height: kCountdownCircleInnerSize,
                                   child: Stack(
-                                    alignment: Alignment.center,
                                     children: [
                                       Positioned.fill(
-                                        child: CustomElevatedButton(
-                                            buttonRadius: kBorderRadiusCircular,
-                                            shapeAt: RoundedWithShapeAt.all,
-                                            gradient: LinearGradient(
-                                                colors:
-                                                    getCountdownGradient(time)
-                                                        .colors)),
-                                      ),
-                                      // Circular progress indicator
-                                      SizedBox(
-                                        width: kCountdownCircleInnerSize,
-                                        height: kCountdownCircleInnerSize,
-                                        child: Stack(
-                                          children: [
-                                            Positioned.fill(
-                                              child: CircularProgressIndicator(
-                                                value: secondProgress,
-                                                strokeWidth:
-                                                    kProgressStrokeWidth,
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .onSurface
-                                                        .withOpacity(0.3),
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                        Color>(
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                        child: CircularProgressIndicator(
+                                          value: secondProgress,
+                                          strokeWidth: kProgressStrokeWidth,
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                              .withOpacity(0.3),
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
                                         ),
-                                      ),
-                                      // Text content
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          if (time >= 1)
-                                            AnimatedDefaultTextStyle(
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                              style: AppTextStyles.forCountdown(
-                                                  context),
-                                              child: Text(
-                                                time.truncate().toString(),
-                                                style:
-                                                    AppTextStyles.forCountdown(
-                                                        context),
-                                              ),
-                                            ),
-                                          if (time >= 1)
-                                            AnimatedDefaultTextStyle(
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                              style: AppTextStyles
-                                                  .forCountdownReady(context),
-                                              child: Text(
-                                                readyText,
-                                                style: AppTextStyles
-                                                    .forCountdownReady(context),
-                                              ),
-                                            )
-                                          else
-                                            AnimatedDefaultTextStyle(
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                              style:
-                                                  AppTextStyles.forCountdownGo(
-                                                      context),
-                                              child: Text(
-                                                goText,
-                                                style: AppTextStyles
-                                                    .forCountdownGo(context),
-                                              ),
-                                            ),
-                                        ],
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                          onFinished: () {},
-                        );
-                      },
-                    ),
-                  // Show turn order notice if available
-                  if (combatState.willStartFirst != null) ...[
-                    const SizedBox(height: kSpaceL),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: kSpaceL,
-                        vertical: kSpaceS,
-                      ),
-                      decoration: BoxDecoration(
-                        color: combatState.willStartFirst!
-                            ? Colors.green.withOpacity(0.2)
-                            : Colors.orange.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(kBorderRadiusL),
-                        border: Border.all(
-                          color: combatState.willStartFirst!
-                              ? Colors.green
-                              : Colors.orange,
-                          width: 2,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            combatState.willStartFirst!
-                                ? Icons.emoji_events
-                                : Icons.hourglass_bottom,
-                            color: combatState.willStartFirst!
-                                ? Colors.green
-                                : Colors.orange,
-                            size: kFontSizeL,
-                          ),
-                          const SizedBox(width: kSpaceS),
-                          Flexible(
-                            child: Text(
-                              combatState.willStartFirst!
-                                  ? lang(context).youWillTakeFirst
-                                  : lang(context).opponentWillTakeFirst,
-                              style: AppTextStyles.bodyMediumBold(context),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                                // Text content
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (time >= 1)
+                                      AnimatedDefaultTextStyle(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        style:
+                                            AppTextStyles.forCountdown(context),
+                                        child: Text(
+                                          time.truncate().toString(),
+                                          style: AppTextStyles.forCountdown(
+                                              context),
+                                        ),
+                                      ),
+                                    if (time >= 1)
+                                      AnimatedDefaultTextStyle(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        style: AppTextStyles.forCountdownReady(
+                                            context),
+                                        child: Text(
+                                          readyText,
+                                          style:
+                                              AppTextStyles.forCountdownReady(
+                                                  context),
+                                        ),
+                                      )
+                                    else
+                                      AnimatedDefaultTextStyle(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        style: AppTextStyles.forCountdownGo(
+                                            context),
+                                        child: Text(
+                                          goText,
+                                          style: AppTextStyles.forCountdownGo(
+                                              context),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
+                      );
+                    },
+                    onFinished: () {},
+                  );
+                },
+              ),
+            // Show turn order notice if available
+            if (combatState.willStartFirst != null) ...[
+              const SizedBox(height: kSpaceL),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: kSpaceL,
+                  vertical: kSpaceS,
+                ),
+                decoration: BoxDecoration(
+                  color: combatState.willStartFirst!
+                      ? Colors.green.withOpacity(0.2)
+                      : Colors.orange.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(kBorderRadiusL),
+                  border: Border.all(
+                    color: combatState.willStartFirst!
+                        ? Colors.green
+                        : Colors.orange,
+                    width: 2,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      combatState.willStartFirst!
+                          ? Icons.emoji_events
+                          : Icons.hourglass_bottom,
+                      color: combatState.willStartFirst!
+                          ? Colors.green
+                          : Colors.orange,
+                      size: kFontSizeL,
+                    ),
+                    const SizedBox(width: kSpaceS),
+                    Flexible(
+                      child: Text(
+                        combatState.willStartFirst!
+                            ? lang(context).youWillTakeFirst
+                            : lang(context).opponentWillTakeFirst,
+                        style: AppTextStyles.bodyMediumBold(context),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
-                ],
+                ),
               ),
-            ),
+            ],
           ],
         ),
       );
@@ -1198,14 +1183,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: AnimatedButton(
-                      context,
-                      iconData: FontAwesomeIcons.bars,
-                      onPressed: () => _handleMenuButton(context),
-                    ),
+                  AnimatedButton(
+                    context,
+                    iconData: FontAwesomeIcons.bars,
+                    onPressed: () => _handleMenuButton(context),
                   ),
                 ],
               ),
