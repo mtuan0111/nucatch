@@ -230,12 +230,11 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       state.copyWith(
         level: event.level,
         timesCorrect: state.level != event.level ? 0 : null,
-        // lifeRemaining: state.level != event.level
-        //     ? state.lifeRemaining
-        //     : state.lifeRemaining + event.addPoint,
-        // expect: Helper().generateRandomNumber(event.level + 2),
         typing: "",
         tapTimerRemaining: state.effectiveTimerDuration,
+        pickRightJustCorrect:
+            false, // Reset animation flag after new equations ready
+        selectedOption: null, // Clear selection highlight
       ),
     );
 
@@ -438,14 +437,16 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       _audioBloc.add(PlayCorrectAudio());
       _vibrationBloc.add(VibrateShort());
 
-      // Mark as finished
+      // Trigger scale+fade-out animation
       emitter(
         state.copyWith(
           typing: state.expect, // Mark as complete
+          pickRightJustCorrect: true,
         ),
       );
 
-      // await Future.delayed(const Duration(milliseconds: 500));
+      // Wait for fade-out animation to complete
+      await Future.delayed(const Duration(milliseconds: 400));
       if (isClosed) return;
 
       // Add point and proceed
@@ -461,10 +462,13 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         ),
       );
 
-      // await Future.delayed(const Duration(milliseconds: 500));
       if (isClosed) return;
 
-      // Progress to next turn
+      // Rest 0.5s between rounds
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (isClosed) return;
+
+      // Progress to next turn (SetLevel will generate new equations then reset flag)
       if (state.isAbleToLevelUp) {
         add(SetLevel(level: state.level + 1));
       } else {

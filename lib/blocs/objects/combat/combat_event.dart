@@ -25,12 +25,15 @@ class CombatGameEnded extends CombatEvent {
   final bool isWinner;
   final GameEndReason? reason;
   final bool sendMessage;
+  final String?
+      correctEquation; // For pick-right mode: sync correct answer text
 
   CombatGameEnded({
     this.isCauseGameOver = true,
     required this.isWinner,
     required this.reason,
     this.sendMessage = true,
+    this.correctEquation,
   });
 }
 

@@ -44,6 +44,7 @@ class TurnState {
       selectedOption; // 0, 1, or 2 for selected button, null=not selected
   final int? correctIndex; // Index of correct button (0, 1, or 2)
   final List<String>? equations; // List of 3 equations in display order
+  final bool pickRightJustCorrect; // Animation flag: scale+fade-out on correct
 
   const TurnState({
     this.level = 0,
@@ -68,6 +69,7 @@ class TurnState {
     this.selectedOption,
     this.correctIndex,
     this.equations,
+    this.pickRightJustCorrect = false,
   });
 
   TurnState copyWith({
@@ -93,6 +95,7 @@ class TurnState {
     int? selectedOption,
     int? correctIndex,
     List<String>? equations,
+    bool? pickRightJustCorrect,
   }) {
     return TurnState(
       level: level ?? this.level,
@@ -119,6 +122,7 @@ class TurnState {
       selectedOption: selectedOption ?? this.selectedOption,
       correctIndex: correctIndex ?? this.correctIndex,
       equations: equations ?? this.equations,
+      pickRightJustCorrect: pickRightJustCorrect ?? this.pickRightJustCorrect,
     );
   }
 

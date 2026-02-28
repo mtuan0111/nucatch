@@ -96,14 +96,20 @@ class CombatGameEndScreen extends StatelessWidget {
               style: AppTextStyles.bodyMediumBold(context),
             ),
             const SizedBox(height: kSpaceS),
-            Text(
-              combatState.expect!,
-              style: AppTextStyles.forChallenge(
-                combatState.expect!.length,
-                context,
-              ),
-              textAlign: TextAlign.center,
-            ),
+            Builder(builder: (context) {
+              // Use synced correctEquationDisplay for pick-right mode
+              // This value is the same on both user and opponent screens
+              final displayText =
+                  combatState.correctEquationDisplay ?? combatState.expect!;
+              return Text(
+                displayText,
+                style: AppTextStyles.forChallenge(
+                  displayText.length,
+                  context,
+                ),
+                textAlign: TextAlign.center,
+              );
+            }),
             const SizedBox(height: kSpaceXL),
           ],
 

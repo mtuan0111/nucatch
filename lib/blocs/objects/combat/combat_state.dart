@@ -32,6 +32,10 @@ class CombatState extends TurnState {
       opponentJustSucceeded; // Track when opponent successfully completes for firework animation
   final bool
       opponentJustLostLife; // Track when opponent loses life for red blink animation
+  final bool
+      pickRightJustCorrect; // Track when pick-right answer is correct for scale+fade animation
+  final String?
+      correctEquationDisplay; // Synced correct equation text for game over screen
 
   const CombatState({
     // Combat-specific parameters
@@ -52,6 +56,8 @@ class CombatState extends TurnState {
     this.willStartFirst,
     this.opponentJustSucceeded = false,
     this.opponentJustLostLife = false,
+    this.pickRightJustCorrect = false,
+    this.correctEquationDisplay,
     // TurnState parameters
     super.level = 0,
     super.timesCorrect = 0,
@@ -97,6 +103,9 @@ class CombatState extends TurnState {
     bool? willStartFirst,
     bool? opponentJustSucceeded,
     bool? opponentJustLostLife,
+    bool? pickRightJustCorrect,
+    String? correctEquationDisplay,
+    bool clearCorrectEquationDisplay = false,
     // TurnState parameters
     int? level,
     int? timesCorrect,
@@ -141,6 +150,10 @@ class CombatState extends TurnState {
       opponentJustSucceeded:
           opponentJustSucceeded ?? this.opponentJustSucceeded,
       opponentJustLostLife: opponentJustLostLife ?? this.opponentJustLostLife,
+      pickRightJustCorrect: pickRightJustCorrect ?? this.pickRightJustCorrect,
+      correctEquationDisplay: clearCorrectEquationDisplay
+          ? null
+          : (correctEquationDisplay ?? this.correctEquationDisplay),
       // TurnState
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,

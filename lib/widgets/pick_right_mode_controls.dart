@@ -37,9 +37,11 @@ class PickRightModeControls extends StatelessWidget {
             SizedBox(
               height: buttonHeight * 2 - buttonSpacing,
               child: PickRightButtons(
+                key: ValueKey(turnState.equations?.join(',')),
                 equations: turnState.equations ?? [],
                 selectedOption: turnState.selectedOption,
                 isEnabled: turnState.isAbleToTap,
+                isCorrectAnimating: turnState.pickRightJustCorrect,
                 onButtonTap: (buttonIndex, position) {
                   context.read<TurnBloc>().add(
                         PickRightButtonTap(buttonIndex: buttonIndex),

@@ -1113,9 +1113,13 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           // Three equation buttons (same widget as Solo mode)
           Expanded(
             child: PickRightButtons(
+              key: ValueKey(combatState.equations?.join(',')),
               equations: combatState.equations ?? [],
               selectedOption: combatState.selectedOption,
-              isEnabled: combatState.isAbleToTap && combatState.isMyTurn,
+              isEnabled: combatState.isAbleToTap &&
+                  combatState.isMyTurn &&
+                  combatState.tapTimerRemaining > 0,
+              isCorrectAnimating: combatState.pickRightJustCorrect,
               onButtonTap: (buttonIndex, position) {
                 context.read<CombatBloc>().add(
                       CombatPickRightButtonTap(buttonIndex: buttonIndex),
