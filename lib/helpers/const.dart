@@ -15,6 +15,14 @@ const String timeDateServer = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 const String kBleAppPrefix = 'nucatch';
 const String kBlePlayerNamePrefix = 'Nuca';
 const String kBleAdvertisingPrefix = 'Nucatch-';
+const int kCombatCountDown =
+    6; // Countdown seconds for combat intro (5-4-3-2-1-GO)
+const int kSoloCountDown = 6; // Countdown seconds for solo intro (4-3-2-1-GO)
+const int kCombatInitialLives =
+    3; // Starting lives for each player in combat mode
+const int kSoloInitialLives = 3; // Starting lives in solo mode
+const int kCombatPickRightTimerPerTurn =
+    10; // Seconds per turn for combat pick-right mode
 
 const Map<String, String> languages = {
   'en': "English",

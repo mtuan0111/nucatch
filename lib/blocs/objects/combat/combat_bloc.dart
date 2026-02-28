@@ -259,11 +259,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       combatStatus: combatStatus,
       isGameActive: true,
       level: 1, // Start from level 1 like solo mode
-      lifeRemaining: 3,
-      opponentLives: 3,
+      lifeRemaining: kCombatInitialLives,
+      opponentLives: kCombatInitialLives,
       point: 0,
       opponentScore: 0,
-      countDown: 60,
+      countDown: kCombatCountDown,
       willStartFirst: combatStatus == CombatStatus.intro
           ? false // Guest (this player) does not start first in initial game
           : null, // Unknown for other statuses
@@ -285,7 +285,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(state.copyWith(
       difficultyModel: difficultyModel,
       combatStatus: CombatStatus.intro,
-      countDown: 60, // Start countdown at 6 (will show 5-4-3-2-1-GO)
+      countDown:
+          kCombatCountDown, // Start countdown at 6 (will show 5-4-3-2-1-GO)
       willStartFirst: state.isHost, // Host always starts first in initial game
     ));
 
@@ -552,7 +553,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // First, reset the state with intro status and countdown
     emit(state.copyWith(
       combatStatus: CombatStatus.intro,
-      countDown: 60, // Start countdown at 6 (will show 5-4-3-2-1-GO)
+      countDown:
+          kCombatCountDown, // Start countdown at 6 (will show 5-4-3-2-1-GO)
       isWinner: null,
       gameEndReason: null,
       isRestartRequested: true,
@@ -562,9 +564,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       level: 1, // Always start from level 1
       timesCorrect: 0,
       point: 0,
-      lifeRemaining: 3,
+      lifeRemaining: kCombatInitialLives,
       opponentScore: 0,
-      opponentLives: 3,
+      opponentLives: kCombatInitialLives,
       requirementString: null,
       expect: null,
       typing: '',
@@ -785,7 +787,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         level: event.level,
         timesCorrect: state.level != event.level ? 0 : null,
         typing: "",
-        tapTimerRemaining: tapTimerDuration, // Reset timer on level change
+        tapTimerRemaining:
+            state.difficultyModel?.difficulty == Difficulty.pickRight
+                ? kCombatPickRightTimerPerTurn.toDouble()
+                : tapTimerDuration, // Reset timer on level change
       ),
     );
 
@@ -1060,7 +1065,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   void _startTapTimer() {
     _tapTimer?.cancel();
     const tickDuration = Duration(milliseconds: kAnimationDurationFast);
-    double remainingTime = tapTimerDuration;
+    final isPickRight =
+        state.difficultyModel?.difficulty == Difficulty.pickRight;
+    double remainingTime = isPickRight
+        ? kCombatPickRightTimerPerTurn.toDouble()
+        : tapTimerDuration;
 
     _tapTimer = Timer.periodic(tickDuration, (timer) {
       if (isClosed) {
@@ -1116,28 +1125,26 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       return;
     } else {
       _audioBloc.add(PlayWrongAudio());
+      _vibrationBloc.add(VibrateMultiple());
 
-      // Lose a life
-      // add(CombatLostLife());
-      add(CombatNumberReset(duration: const Duration(microseconds: 100)));
+      await Future.delayed(
+          const Duration(milliseconds: kAnimationDurationSlow));
+      if (isClosed) return;
 
-      // await Future.delayed(
-      //     const Duration(milliseconds: kAnimationDurationSlow));
+      // Send timeout notification to opponent
+      await _sendMessage({
+        'type': _messageTypeToString(CombatMessageType.moveCompleted),
+        'input': '',
+        'wasCorrect': false,
+        'score': state.point,
+        'lives': state.lifeRemaining,
+      });
 
-      // // Send timeout notification to opponent
-      // await _sendMessage({
-      //   'type': _messageTypeToString(CombatMessageType.moveCompleted),
-      //   'input': '',
-      //   'correct': false,
-      //   'score': state.point,
-      //   'lives': state.lifeRemaining,
-      // });
-
-      // // Wait for opponent to finish their turn
-      // emit(state.copyWith(
-      //   isWaitingForOpponent: true,
-      //   isMyTurn: false,
-      // ));
+      // Yield the turn to the opponent
+      emit(state.copyWith(
+        isMyTurn: false,
+        isWaitingForOpponent: true,
+      ));
     }
   }
 

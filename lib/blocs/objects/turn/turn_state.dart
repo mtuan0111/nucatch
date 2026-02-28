@@ -50,7 +50,7 @@ class TurnState {
     this.timesCorrect = 0,
     this.point = 0,
     this.difficultyModel,
-    this.lifeRemaining = 3,
+    this.lifeRemaining = kSoloInitialLives,
     this.requirementString,
     this.expect,
     this.status = TurnStatus.initial,

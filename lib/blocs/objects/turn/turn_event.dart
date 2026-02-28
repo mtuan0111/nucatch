@@ -1,6 +1,7 @@
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/models/setting_model.dart';
+import 'package:nucatch/helpers/const.dart';
 
 abstract class TurnEvent {}
 
@@ -16,7 +17,7 @@ class Start extends TurnEvent {
   int seconds;
 
   Start({
-    this.seconds = 5,
+    this.seconds = kSoloCountDown,
   });
 }
 
