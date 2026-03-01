@@ -11,6 +11,19 @@ const double tapTimerDuration = 60.0; // Seconds for each tap countdown
 const String timeDateClient = "dd/MM/yyyy hh:mm a";
 const String timeDateServer = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
+// BLE Combat Mode constants
+const String kBleAppPrefix = 'nucatch';
+const String kBlePlayerNamePrefix = 'Nuca';
+const String kBleAdvertisingPrefix = 'Nucatch-';
+const int kCombatCountDown =
+    6; // Countdown seconds for combat intro (5-4-3-2-1-GO)
+const int kSoloCountDown = 6; // Countdown seconds for solo intro (4-3-2-1-GO)
+const int kCombatInitialLives =
+    3; // Starting lives for each player in combat mode
+const int kSoloInitialLives = 3; // Starting lives in solo mode
+const int kCombatPickRightTimerPerTurn =
+    10; // Seconds per turn for combat pick-right mode
+
 const Map<String, String> languages = {
   'en': "English",
   'vi': "Tiếng Việt",
@@ -95,4 +108,32 @@ class LayoutConfig {
           color: Theme.of(context).scaffoldBackgroundColor,
         ),
       );
+}
+
+// AdMob Configuration
+class AdMobConfig {
+  // AdMob App IDs (used in AndroidManifest.xml and Info.plist)
+  static const String androidAppId = 'ca-app-pub-7979935537603411~2676193632';
+  static const String iosAppId = 'ca-app-pub-7979935537603411~5942915481';
+
+// Game over
+  // Ad Unit IDs - Android
+  static const String androidGameOverBannerId =
+      'ca-app-pub-7979935537603411/6405949912';
+
+  // Ad Unit IDs - iOS
+  static const String iosGameOverBannerId =
+      'ca-app-pub-7979935537603411/5196375251';
+
+// Top Score
+  // Ad Unit IDs - Android
+  static const String androidTopScoreBannerId =
+      'ca-app-pub-7979935537603411/3370267625';
+
+  // Ad Unit IDs - iOS
+  static const String iosTopScoreBannerId =
+      'ca-app-pub-7979935537603411/1322679044';
+
+  // Test mode flag - set to false when AdMob account is approved
+  static const bool useTestAds = true;
 }

@@ -99,6 +99,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get theCorrectIs => 'Jawaban yang benar adalah';
 
   @override
+  String get whichOneIsCorrect => 'Mana yang benar?';
+
+  @override
   String get name => 'Nama';
 
   @override
@@ -230,6 +233,10 @@ class AppLocalizationsId extends AppLocalizations {
       'Memilih secara acak antara menghasilkan perhitungan penjumlahan/pengurangan yang kompleks, angka acak level yang lebih tinggi, atau perhitungan perkalian/pembagian untuk pengalaman yang paling menantang.';
 
   @override
+  String get pickRightDescription =>
+      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+
+  @override
   String get difficultyEasyTitle => 'Mode Mudah';
 
   @override
@@ -240,6 +247,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => 'Mode Ekstrem';
+
+  @override
+  String get pickRightTitle => 'Pick Right';
 
   @override
   String get confirmChangeDifficulty =>
@@ -697,6 +707,13 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'Ketuk tombol Mulai untuk memulai. Anda kemudian akan memilih antara Mode Solo untuk tantangan matematika pemain tunggal, atau Mode Pertarungan untuk pertempuran multipemain waktu nyata melalui Bluetooth. Mari jelajahi kedua opsi!';
+
+  @override
+  String get tourInstantStartTitle => 'Mulai Cepat - Main Cepat';
+
+  @override
+  String get tourInstantStartDesc =>
+      'Ingin langsung mulai? Ketuk tombol **Mulai Cepat** untuk memulai permainan solo segera dengan tingkat kesulitan yang sama seperti terakhir kali Anda bermain. Ini adalah cara tercepat untuk melanjutkan kemajuan Anda!';
 
   @override
   String get tourSoloTitle => 'Mode Solo - Main Sendiri';

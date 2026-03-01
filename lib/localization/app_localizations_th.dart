@@ -99,6 +99,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get theCorrectIs => 'คำตอบที่ถูกต้องคือ';
 
   @override
+  String get whichOneIsCorrect => 'ข้อไหนถูกต้อง?';
+
+  @override
   String get name => 'ชื่อ';
 
   @override
@@ -229,6 +232,10 @@ class AppLocalizationsTh extends AppLocalizations {
       'สุ่มเลือกระหว่างโจทย์บวก/ลบที่ซับซ้อน ตัวเลขสุ่มระดับสูง หรือโจทย์คูณ/หาร เพื่อประสบการณ์ที่ท้าทายที่สุด';
 
   @override
+  String get pickRightDescription =>
+      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+
+  @override
   String get difficultyEasyTitle => 'โหมดง่าย';
 
   @override
@@ -239,6 +246,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => 'โหมดสุดโหด';
+
+  @override
+  String get pickRightTitle => 'Pick Right';
 
   @override
   String get confirmChangeDifficulty =>
@@ -689,6 +699,13 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'แตะ**ปุ่มเริ่ม**เพื่อเริ่มต้น จากนั้นคุณจะเลือกระหว่าง**โหมดเดี่ยว**สำหรับความท้าทายทางคณิตศาสตร์ผู้เล่นเดียว หรือ**โหมดต่อสู้**สำหรับการต่อสู้แบบผู้เล่นหลายคนแบบเรียลไทม์ผ่าน**บลูทูธ** มาสำรวจทั้งสองตัวเลือกกัน!';
+
+  @override
+  String get tourInstantStartTitle => 'เริ่มด่วน - เล่นเร็ว';
+
+  @override
+  String get tourInstantStartDesc =>
+      'ต้องการเริ่มเลยไหม? แตะ**ปุ่มเริ่มด่วน**เพื่อเริ่มเกมเดี่ยวทันทีด้วยระดับความยากเดียวกับที่คุณเล่นครั้งล่าสุด นี่เป็นวิธีที่เร็วที่สุดในการดำเนินความคืบหน้าของคุณต่อ!';
 
   @override
   String get tourSoloTitle => 'โหมดเดี่ยว - เล่นคนเดียว';

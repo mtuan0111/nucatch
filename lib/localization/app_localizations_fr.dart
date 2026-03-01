@@ -99,6 +99,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get theCorrectIs => 'La bonne réponse est';
 
   @override
+  String get whichOneIsCorrect => 'Laquelle est correcte ?';
+
+  @override
   String get name => 'Nom';
 
   @override
@@ -229,6 +232,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Choisit aléatoirement entre générer un calcul complexe d\'addition/soustraction, un nombre aléatoire de plus haut niveau ou un calcul de multiplication/division pour l\'expérience la plus difficile.';
 
   @override
+  String get pickRightDescription =>
+      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+
+  @override
   String get difficultyEasyTitle => 'Mode Facile';
 
   @override
@@ -239,6 +246,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => 'Mode Extrême';
+
+  @override
+  String get pickRightTitle => 'Pick Right';
 
   @override
   String get confirmChangeDifficulty =>
@@ -699,6 +709,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'Appuyez sur le bouton Démarrer pour commencer. Vous choisirez ensuite entre le Mode Solo pour des défis mathématiques en solo, ou le Mode Combat pour des batailles multijoueurs en temps réel via Bluetooth. Explorons les deux options!';
+
+  @override
+  String get tourInstantStartTitle => 'Démarrage Rapide - Jeu Rapide';
+
+  @override
+  String get tourInstantStartDesc =>
+      'Vous voulez commencer tout de suite ? Appuyez sur le bouton **Démarrage Rapide** pour commencer immédiatement un jeu solo avec le même niveau de difficulté que vous avez joué la dernière fois. C\'est le moyen le plus rapide de continuer votre progression !';
 
   @override
   String get tourSoloTitle => 'Mode Solo - Jouez seul';

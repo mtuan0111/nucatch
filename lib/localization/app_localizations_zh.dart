@@ -98,6 +98,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get theCorrectIs => '正确答案是';
 
   @override
+  String get whichOneIsCorrect => '哪个是正确的？';
+
+  @override
   String get name => '名字';
 
   @override
@@ -223,6 +226,10 @@ class AppLocalizationsZh extends AppLocalizations {
       '随机会生成复杂的加减法计算、更高等级的随机数或乘除法计算，带来最具挑战性的体验。';
 
   @override
+  String get pickRightDescription =>
+      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+
+  @override
   String get difficultyEasyTitle => '简单模式';
 
   @override
@@ -233,6 +240,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => '极限模式';
+
+  @override
+  String get pickRightTitle => 'Pick Right';
 
   @override
   String get confirmChangeDifficulty => '你的回合将被重置。你确定要更改难度吗？';
@@ -668,6 +678,13 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get tourStartDesc =>
       '点击开始按钮开始。然后您将在单人数学挑战的单人模式，或通过蓝牙进行实时多人对战的战斗模式之间进行选择。让我们探索这两个选项!';
+
+  @override
+  String get tourInstantStartTitle => '快速开始 - 快速游戏';
+
+  @override
+  String get tourInstantStartDesc =>
+      '想立即开始吗？点击**快速开始按钮**，立即以上次玩的难度级别开始单人游戏。这是继续进度的最快方式！';
 
   @override
   String get tourSoloTitle => '单人模式 - 单独游戏';

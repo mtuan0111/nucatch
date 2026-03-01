@@ -68,7 +68,7 @@ class CombatBleService {
       _handleIncomingData(data);
     });
 
-    // Transform devices stream to endpoints stream (deviceId -> "ChatApp-XXXX")
+    // Transform devices stream to endpoints stream (deviceId -> "Nucatch-XXXX")
     _devicesSubscription = repository.devicesStream.listen((devices) {
       final endpoints = <String, String>{};
       for (final device in devices) {

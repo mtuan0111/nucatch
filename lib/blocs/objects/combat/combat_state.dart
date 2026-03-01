@@ -32,6 +32,10 @@ class CombatState extends TurnState {
       opponentJustSucceeded; // Track when opponent successfully completes for firework animation
   final bool
       opponentJustLostLife; // Track when opponent loses life for red blink animation
+  final bool
+      pickRightJustCorrect; // Track when pick-right answer is correct for scale+fade animation
+  final String?
+      correctEquationDisplay; // Synced correct equation text for game over screen
 
   const CombatState({
     // Combat-specific parameters
@@ -52,6 +56,8 @@ class CombatState extends TurnState {
     this.willStartFirst,
     this.opponentJustSucceeded = false,
     this.opponentJustLostLife = false,
+    this.pickRightJustCorrect = false,
+    this.correctEquationDisplay,
     // TurnState parameters
     super.level = 0,
     super.timesCorrect = 0,
@@ -69,6 +75,12 @@ class CombatState extends TurnState {
     super.saveSuccess = false,
     super.tapTimerRemaining = 20.0,
     super.isTimerPaused = false,
+    super.trueEquation,
+    super.falseEquation,
+    super.isLeftCorrect,
+    super.selectedOption,
+    super.correctIndex,
+    super.equations,
   });
 
   @override
@@ -91,6 +103,9 @@ class CombatState extends TurnState {
     bool? willStartFirst,
     bool? opponentJustSucceeded,
     bool? opponentJustLostLife,
+    bool? pickRightJustCorrect,
+    String? correctEquationDisplay,
+    bool clearCorrectEquationDisplay = false,
     // TurnState parameters
     int? level,
     int? timesCorrect,
@@ -108,6 +123,12 @@ class CombatState extends TurnState {
     bool? saveSuccess,
     double? tapTimerRemaining,
     bool? isTimerPaused,
+    String? trueEquation,
+    String? falseEquation,
+    bool? isLeftCorrect,
+    int? selectedOption,
+    int? correctIndex,
+    List<String>? equations,
   }) {
     return CombatState(
       // Combat-specific
@@ -129,6 +150,10 @@ class CombatState extends TurnState {
       opponentJustSucceeded:
           opponentJustSucceeded ?? this.opponentJustSucceeded,
       opponentJustLostLife: opponentJustLostLife ?? this.opponentJustLostLife,
+      pickRightJustCorrect: pickRightJustCorrect ?? this.pickRightJustCorrect,
+      correctEquationDisplay: clearCorrectEquationDisplay
+          ? null
+          : (correctEquationDisplay ?? this.correctEquationDisplay),
       // TurnState
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,
@@ -146,6 +171,12 @@ class CombatState extends TurnState {
       saveSuccess: saveSuccess ?? this.saveSuccess,
       tapTimerRemaining: tapTimerRemaining ?? this.tapTimerRemaining,
       isTimerPaused: isTimerPaused ?? this.isTimerPaused,
+      trueEquation: trueEquation ?? this.trueEquation,
+      falseEquation: falseEquation ?? this.falseEquation,
+      isLeftCorrect: isLeftCorrect ?? this.isLeftCorrect,
+      selectedOption: selectedOption ?? this.selectedOption,
+      correctIndex: correctIndex ?? this.correctIndex,
+      equations: equations ?? this.equations,
     );
   }
 

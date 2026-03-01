@@ -1412,3 +1412,99 @@ feat: Indicated your rank, and able to set your rank in the top score screen, up
     Flutter build for iOS
     ```flutter build ios --build-name=2.6.2 --build-number=70 --release```
     
+---
+## Released on: 06/02/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 71           | 2.7.1   |
+| iOS      | 71           | 2.7.1   |
+
+### Release note:
+feat: Indicated your rank, and able to set your rank in the top score screen, update UI, update the instant score screen
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+    [Builded] Version 2.7.1 - 71 / 2.7.1 - 71 _ feat: Indicated your rank, and able to set your rank in the top score screen, update UI, update the instant score screen
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.
+
+    - **Tiếng Việt:**  
+        - Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.7.1 --build-number=71 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.7.1 --build-number=71 --release```
+---
+## Released on: 06/02/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 72           | 2.7.2   |
+| iOS      | 72           | 2.7.2   |
+
+### Release note:
+feat: Indicated your rank, and able to set your rank in the top score screen, update UI, update the instant score screen
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+    [Builded] Version 2.7.2 - 72 / 2.7.2 - 72 _ feat: Indicated your rank, and able to set your rank in the top score screen, update UI, update the instant score screen
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.
+
+    - **Tiếng Việt:**  
+        - Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.7.2 --build-number=72 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.7.2 --build-number=72 --release```
+    
+---
+## Released on: 01/03/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 73           | 2.7.3   |
+| iOS      | 73           | 2.7.3   |
+
+### Release note:
+feat: Utilize the pick right mode
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+    [Builded] Version 2.7.3 - 73 / 2.7.3 - 73 _ feat: Utilize the pick right mode
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Experience the new "Pick Right" mode with optimized gameplay and performance.
+
+    - **Tiếng Việt:**  
+        - Trải nghiệm chế độ "Chọn Đúng" mới với lối chơi và hiệu suất được tối ưu hóa.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.7.3 --build-number=73 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.7.3 --build-number=73 --release```
+
+    

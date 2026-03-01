@@ -169,6 +169,7 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                   RankingItem(
                                     ranking: ranking,
                                     turnRecordedModel: turnRecordedModel,
+                                    iconData: FontAwesomeIcons.trophy,
                                   ),
                                   const SizedBox(height: kSpace3XL),
                                   CustomElevatedButton(

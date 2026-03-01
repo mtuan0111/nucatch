@@ -8,6 +8,7 @@ import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/app_text_styles.dart';
+import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
@@ -95,14 +96,20 @@ class CombatGameEndScreen extends StatelessWidget {
               style: AppTextStyles.bodyMediumBold(context),
             ),
             const SizedBox(height: kSpaceS),
-            Text(
-              combatState.expect!,
-              style: AppTextStyles.forChallenge(
-                combatState.expect!.length,
-                context,
-              ),
-              textAlign: TextAlign.center,
-            ),
+            Builder(builder: (context) {
+              // Use synced correctEquationDisplay for pick-right mode
+              // This value is the same on both user and opponent screens
+              final displayText =
+                  combatState.correctEquationDisplay ?? combatState.expect!;
+              return Text(
+                displayText,
+                style: AppTextStyles.forChallenge(
+                  displayText.length,
+                  context,
+                ),
+                textAlign: TextAlign.center,
+              );
+            }),
             const SizedBox(height: kSpaceXL),
           ],
 

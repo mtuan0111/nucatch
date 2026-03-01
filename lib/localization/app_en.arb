@@ -128,6 +128,10 @@
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },
+  "whichOneIsCorrect": "Which one is correct?",
+  "@whichOneIsCorrect": {
+    "description": "Prompt in Pick Right mode asking user to choose correct equation"
+  },
   "name": "Name",
   "@name": {
     "description": "Label for name input"
@@ -341,6 +345,10 @@
   "@difficultyExtremeDescription": {
     "description": "Description for extreme difficulty level logic"
   },
+  "pickRightDescription": "Choose the correct equation! Fast-paced selection game with 5-second timer.",
+  "@pickRightDescription": {
+    "description": "Description for pick right difficulty mode"
+  },
 
   "difficultyEasyTitle": "Easy Mode",
   "@difficultyEasyTitle": {
@@ -357,6 +365,10 @@
   "difficultyExtremeTitle": "Extreme Mode",
   "@difficultyExtremeTitle": {
     "description": "Title for extreme difficulty mode"
+  },
+  "pickRightTitle": "Pick Right",
+  "@pickRightTitle": {
+    "description": "Title for pick right difficulty mode"
   },
 
   "confirmChangeDifficulty": "Your turn will be reset. Are you sure you want to change the difficulty?",
@@ -996,6 +1008,14 @@
   "tourStartDesc": "Tap the **Start button** to begin. You'll then choose between **Solo Mode** for single-player mathematical challenges, or **Combat Mode** for real-time **Bluetooth** multiplayer battles. Let's explore both options!",
   "@tourStartDesc": {
     "description": "Description for the start button tour step"
+  },
+  "tourInstantStartTitle": "Instant Start - Quick Play",
+  "@tourInstantStartTitle": {
+    "description": "Title for the instant start button tour step"
+  },
+  "tourInstantStartDesc": "Want to jump right in? Tap the **Instant Start button** to begin a solo game immediately with the same difficulty level you played last time. It's the fastest way to continue your progress!",
+  "@tourInstantStartDesc": {
+    "description": "Description for the instant start button tour step"
   },
   "tourSoloTitle": "Solo Mode - Play Alone",
   "@tourSoloTitle": {

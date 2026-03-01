@@ -35,12 +35,23 @@ class TurnState {
   final double tapTimerRemaining; // Remaining time in seconds (0-20)
   final bool isTimerPaused;
 
+  // Pick Right mode fields
+  final String? trueEquation; // The correct equation
+  final String? falseEquation; // The incorrect equation (backward compatible)
+  final bool?
+      isLeftCorrect; // True if left button has correct answer (backward compatible)
+  final int?
+      selectedOption; // 0, 1, or 2 for selected button, null=not selected
+  final int? correctIndex; // Index of correct button (0, 1, or 2)
+  final List<String>? equations; // List of 3 equations in display order
+  final bool pickRightJustCorrect; // Animation flag: scale+fade-out on correct
+
   const TurnState({
     this.level = 0,
     this.timesCorrect = 0,
     this.point = 0,
     this.difficultyModel,
-    this.lifeRemaining = 3,
+    this.lifeRemaining = kSoloInitialLives,
     this.requirementString,
     this.expect,
     this.status = TurnStatus.initial,
@@ -52,6 +63,13 @@ class TurnState {
     this.saveSuccess = false,
     this.tapTimerRemaining = tapTimerDuration,
     this.isTimerPaused = false,
+    this.trueEquation,
+    this.falseEquation,
+    this.isLeftCorrect,
+    this.selectedOption,
+    this.correctIndex,
+    this.equations,
+    this.pickRightJustCorrect = false,
   });
 
   TurnState copyWith({
@@ -71,6 +89,13 @@ class TurnState {
     bool? saveSuccess,
     double? tapTimerRemaining,
     bool? isTimerPaused,
+    String? trueEquation,
+    String? falseEquation,
+    bool? isLeftCorrect,
+    int? selectedOption,
+    int? correctIndex,
+    List<String>? equations,
+    bool? pickRightJustCorrect,
   }) {
     return TurnState(
       level: level ?? this.level,
@@ -91,6 +116,13 @@ class TurnState {
       saveSuccess: saveSuccess ?? this.saveSuccess,
       tapTimerRemaining: tapTimerRemaining ?? this.tapTimerRemaining,
       isTimerPaused: isTimerPaused ?? this.isTimerPaused,
+      trueEquation: trueEquation ?? this.trueEquation,
+      falseEquation: falseEquation ?? this.falseEquation,
+      isLeftCorrect: isLeftCorrect ?? this.isLeftCorrect,
+      selectedOption: selectedOption ?? this.selectedOption,
+      correctIndex: correctIndex ?? this.correctIndex,
+      equations: equations ?? this.equations,
+      pickRightJustCorrect: pickRightJustCorrect ?? this.pickRightJustCorrect,
     );
   }
 
@@ -138,8 +170,12 @@ class TurnState {
       return 0.0;
     }
 
-    return tapTimerRemaining / tapTimerDuration * 100;
+    return tapTimerRemaining / effectiveTimerDuration * 100;
   }
+
+  /// Get the effective timer duration from DifficultyModel, or fallback to global constant
+  double get effectiveTimerDuration =>
+      difficultyModel?.timeLimitPerTurn.toDouble() ?? tapTimerDuration;
 }
 
 // class InitialState extends TurnState {}

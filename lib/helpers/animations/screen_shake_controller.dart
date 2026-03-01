@@ -8,12 +8,25 @@ class ScreenShakeController {
   double _trauma = 0.0;
   final Random _random = Random();
 
+  /// Callback for red flash overlay
+  VoidCallback? onRedFlashStart;
+  VoidCallback? onRedFlashEnd;
+  bool _isFlashing = false;
+
   /// Initialize with an AnimationController
   void initialize(TickerProvider vsync) {
     _controller = AnimationController(
       vsync: vsync,
       duration: kShakeDuration,
     )..addListener(_onTick);
+
+    // Add status listener for flash end
+    _controller?.addStatusListener((status) {
+      if (status == AnimationStatus.completed && _isFlashing) {
+        _isFlashing = false;
+        onRedFlashEnd?.call();
+      }
+    });
   }
 
   /// Dispose the controller
@@ -22,8 +35,14 @@ class ScreenShakeController {
   }
 
   /// Trigger a screen shake with given intensity (0.0 to 1.0)
-  void shake([double intensity = kShakeDefaultIntensity]) {
+  /// If withRedFlash is true, triggers the red flash overlay
+  void shake(
+      [double intensity = kShakeDefaultIntensity, bool withRedFlash = false]) {
     _trauma = (intensity).clamp(0.0, 1.0);
+    if (withRedFlash) {
+      _isFlashing = true;
+      onRedFlashStart?.call();
+    }
     _controller?.forward(from: 0.0);
   }
 
@@ -97,6 +116,8 @@ class ScreenShakeWidget extends StatefulWidget {
 
 class _ScreenShakeWidgetState extends State<ScreenShakeWidget>
     with SingleTickerProviderStateMixin {
+  bool _showRedFlash = false;
+
   @override
   void initState() {
     super.initState();
@@ -104,6 +125,14 @@ class _ScreenShakeWidgetState extends State<ScreenShakeWidget>
     widget.controller._controller?.addListener(() {
       setState(() {}); // Rebuild on every shake update
     });
+
+    // Set up red flash callbacks
+    widget.controller.onRedFlashStart = () {
+      setState(() => _showRedFlash = true);
+    };
+    widget.controller.onRedFlashEnd = () {
+      setState(() => _showRedFlash = false);
+    };
   }
 
   @override
@@ -117,11 +146,29 @@ class _ScreenShakeWidgetState extends State<ScreenShakeWidget>
     final offset = widget.controller.getShakeOffset();
     final rotation = widget.controller.getShakeRotation();
 
+    // Calculate flash opacity based on trauma (fade out as shake subsides)
+    final flashOpacity =
+        _showRedFlash ? (widget.controller._trauma * 0.4).clamp(0.0, 0.4) : 0.0;
+
     return Transform.translate(
       offset: offset,
       child: Transform.rotate(
         angle: rotation,
-        child: widget.child,
+        child: Stack(
+          children: [
+            widget.child,
+            // Red flash overlay
+            if (_showRedFlash)
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 100),
+                    color: Colors.red.withOpacity(flashOpacity),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

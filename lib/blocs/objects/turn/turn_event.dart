@@ -1,6 +1,7 @@
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/models/setting_model.dart';
+import 'package:nucatch/helpers/const.dart';
 
 abstract class TurnEvent {}
 
@@ -16,7 +17,7 @@ class Start extends TurnEvent {
   int seconds;
 
   Start({
-    this.seconds = 5,
+    this.seconds = kSoloCountDown,
   });
 }
 
@@ -134,3 +135,10 @@ class TapTimerResume extends TurnEvent {}
 class TapTimerReset extends TurnEvent {}
 
 class Renew extends TurnEvent {}
+
+/// Pick Right mode: button tap event (0=left, 1=right)
+class PickRightButtonTap extends TurnEvent {
+  final int buttonIndex;
+
+  PickRightButtonTap({required this.buttonIndex});
+}

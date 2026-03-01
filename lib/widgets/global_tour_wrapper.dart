@@ -76,6 +76,7 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
     switch (step) {
       case TourStep.welcome:
       case TourStep.startButton:
+      case TourStep.instantStart:
       case TourStep.leaderboard:
       case TourStep.settings:
         // These steps are on menu screen - navigate to menu if not there
@@ -190,6 +191,8 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
         return lang(context).tourWelcomeTitle;
       case TourStep.startButton:
         return lang(context).tourStartTitle;
+      case TourStep.instantStart:
+        return lang(context).tourInstantStartTitle;
       case TourStep.soloMode:
         return lang(context).tourSoloTitle;
       case TourStep.combatMode:
@@ -211,6 +214,8 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
         return lang(context).tourWelcomeDesc;
       case TourStep.startButton:
         return lang(context).tourStartDesc;
+      case TourStep.instantStart:
+        return lang(context).tourInstantStartDesc;
       case TourStep.soloMode:
         return lang(context).tourSoloDesc;
       case TourStep.combatMode:

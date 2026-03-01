@@ -21,8 +21,8 @@ class GameAnimationTriggers {
   /// Position should be in screen coordinates (e.g., score counter position)
   void onAddPoint(Offset position, {List<Color>? colors}) {
     particleController.triggerSmallBurst(position, colors: colors);
-    // Add light screen shake for impact
-    shakeController.shake(kShakeLightIntensity);
+    // Add light screen shake for impact (no red flash for positive feedback)
+    shakeController.shake(kShakeLightIntensity, false);
   }
 
   /// Trigger large explosion when life is gained
@@ -31,9 +31,9 @@ class GameAnimationTriggers {
     particleController.triggerConfetti(position, colors: colors);
   }
 
-  /// Trigger screen shake when life is lost
+  /// Trigger screen shake with red flash when life is lost
   /// Intensity: 0.0 (no shake) to 1.0 (maximum shake)
   void onLostLife([double intensity = kShakeDefaultIntensity]) {
-    shakeController.shake(intensity);
+    shakeController.shake(intensity, true); // Enable red flash
   }
 }

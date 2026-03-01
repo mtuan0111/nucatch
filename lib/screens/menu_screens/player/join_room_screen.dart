@@ -9,6 +9,8 @@ import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/combat_dialogs.dart';
 import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/helper.dart';
+
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
@@ -203,8 +205,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         ),
       );
 
-      // Extract room code from device name (format: "ChatApp-XXXX")
-      final roomCode = device.name.replaceFirst('ChatApp-', '');
+      // Extract room code from device name (format: "${kBleAdvertisingPrefix}XXXX")
+      final roomCode = device.name.replaceFirst(kBleAdvertisingPrefix, '');
 
       await _bleService!.connectToDevice(
         endpointId: device.id,
@@ -387,7 +389,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                               _discoveredDevices[index];
                                           // Extract room code from device name
                                           final roomCode = device.name
-                                              .replaceFirst('ChatApp-', '');
+                                              .replaceFirst(
+                                                  kBleAdvertisingPrefix, '');
 
                                           return ListTile(
                                             leading: CircleAvatar(

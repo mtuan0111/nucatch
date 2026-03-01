@@ -1,4 +1,5 @@
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 
 enum GameStatus {
@@ -29,7 +30,7 @@ class GameState {
     this.timesCorrect = 0,
     this.point = 0,
     this.difficultyModel,
-    this.lifeRemaining = 3,
+    this.lifeRemaining = kSoloInitialLives,
     this.requirementString,
     this.expect,
     this.status = GameStatus.initial,

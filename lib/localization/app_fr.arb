@@ -125,6 +125,7 @@
   },
 
   "theCorrectIs": "La bonne réponse est",
+  "whichOneIsCorrect": "Laquelle est correcte ?",
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },
@@ -963,6 +964,8 @@
   "tourWelcomeDesc": "Bienvenue! Cette visite rapide vous aidera à démarrer en douceur avec **NuCatch**. Nous vous montrerons toutes les **fonctionnalités principales** pour que vous puissiez vous lancer et commencer à jouer immédiatement. Commençons!",
   "tourStartTitle": "Démarrer - Commencez votre jeu",
   "tourStartDesc": "Appuyez sur le bouton Démarrer pour commencer. Vous choisirez ensuite entre le Mode Solo pour des défis mathématiques en solo, ou le Mode Combat pour des batailles multijoueurs en temps réel via Bluetooth. Explorons les deux options!",
+  "tourInstantStartTitle": "Démarrage Rapide - Jeu Rapide",
+  "tourInstantStartDesc": "Vous voulez commencer tout de suite ? Appuyez sur le bouton **Démarrage Rapide** pour commencer immédiatement un jeu solo avec le même niveau de difficulté que vous avez joué la dernière fois. C'est le moyen le plus rapide de continuer votre progression !",
   "tourSoloTitle": "Mode Solo - Jouez seul",
   "tourSoloDesc": "En Mode Solo, défiez-vous avec des équations mathématiques! Choisissez parmi 4 niveaux de difficulté (Facile à Extrêmement Difficile). Vous commencez avec 3 vies - chaque mauvaise réponse ou expiration coûte 1 vie. Plus la difficulté est élevée, plus vous gagnez de points! Voyons maintenant l'option multijoueur.",
   "tourCombatTitle": "Mode Combat - Multijoueur Bluetooth",

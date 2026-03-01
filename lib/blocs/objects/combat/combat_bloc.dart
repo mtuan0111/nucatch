@@ -56,7 +56,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatRestartReady>(_onCombatRestartReady);
     on<CombatRestartReadyReceived>(_onCombatRestartReadyReceived);
     on<CombatDifficultyChanged>(_onCombatDifficultySelected);
-    on<CombatLevelChanged>(_onCombatSetLevel);
+    on<CombatLevelChanged>(_onCombatLevelChanged);
     on<CombatRequiredStringGenerated>(_onCombatGeneratedRequiredString);
     on<CombatExpectShown>(_onCombatShowExpect);
     on<CombatNumberReset>(_onCombatResetNewNumber);
@@ -65,6 +65,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatOpponentSuccessReceived>(_onCombatOpponentSuccessReceived);
     on<CombatOpponentLifeUpdate>(_onCombatOpponentLifeUpdate);
     on<CombatBlocReset>(_onCombatBlocReset);
+    on<CombatPickRightButtonTap>(_onCombatPickRightButtonTap);
 
     // Listen to BLE messages
     _messageSubscription = _roomService.incomingDataStream.listen((data) {
@@ -73,9 +74,13 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   }
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
     _messageSubscription?.cancel();
     _tapTimer?.cancel();
+    _typingUpdateDebounceTimer?.cancel();
+    // Clean up BLE connections and stream subscriptions
+    await _roomService.reset();
+    _roomService.dispose();
     return super.close();
   }
 
@@ -148,12 +153,16 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
             final isMyTurn = data['isHostTurn'] == _roomService.isHost;
             final requirement = data['requirement'] as String;
             final expect = data['expect'] as String;
+            final equations = data['equations'] as List?;
+            final correctIndex = data['correctIndex'] as int?;
             print(
                 '🎮 [Combat] turn_start received - isHostTurn: ${data['isHostTurn']}, _roomService.isHost: ${_roomService.isHost}, calculated isMyTurn: $isMyTurn');
             add(CombatTurnReceived(
               isMyTurn: isMyTurn,
               requirement: requirement,
               expect: expect,
+              equations: equations?.cast<String>(),
+              correctIndex: correctIndex,
             ));
             break;
           case CombatMessageType.typingUpdate:
@@ -175,12 +184,21 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
             }
             break;
           case CombatMessageType.moveCompleted:
+            final wasCorrect = data['wasCorrect'] as bool;
             add(CombatOpponentMoveReceived(
               opponentInput: data['input'],
-              wasOpponentCorrect: data['correct'],
+              wasOpponentCorrect: wasCorrect,
               opponentScore: data['score'],
               opponentLives: data['lives'],
             ));
+
+            // Trigger firework animation when opponent picks correct button
+            // TODO: if type is Pick Right mode
+            if (state.difficultyModel?.difficulty == Difficulty.pickRight &&
+                wasCorrect) {
+              add(CombatOpponentSuccessReceived());
+            }
+
             break;
           case CombatMessageType.gameEnded:
             // Don't send message back - this prevents infinite loop
@@ -190,10 +208,19 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
                 receivedReasonString,
                 swapPerspective: true);
 
+            // For pick-right mode, sync the correct equation from opponent
+            // so both players see the same answer on game over screen
+            final opponentCorrectEquation = data['correctEquation'] as String?;
+            if (opponentCorrectEquation != null) {
+              print(
+                  '🏁 [Combat] Received opponent correctEquation: $opponentCorrectEquation');
+            }
+
             add(CombatGameEnded(
               isWinner: !data['isWinner'], // Opponent sends their win status
               reason: myReason,
               sendMessage: false, // Don't echo the message back
+              correctEquation: opponentCorrectEquation,
             ));
             break;
           case CombatMessageType.restartRequested:
@@ -241,13 +268,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       combatStatus: combatStatus,
       isGameActive: true,
       level: 1, // Start from level 1 like solo mode
-      lifeRemaining: 3,
-      opponentLives: 3,
+      lifeRemaining: kCombatInitialLives,
+      opponentLives: kCombatInitialLives,
       point: 0,
       opponentScore: 0,
-      countDown: combatStatus == CombatStatus.intro
-          ? 4
-          : 0, // Set countdown if intro status
+      countDown: kCombatCountDown,
       willStartFirst: combatStatus == CombatStatus.intro
           ? false // Guest (this player) does not start first in initial game
           : null, // Unknown for other statuses
@@ -269,7 +294,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     emit(state.copyWith(
       difficultyModel: difficultyModel,
       combatStatus: CombatStatus.intro,
-      countDown: 6, // Start countdown at 6 (will show 5-4-3-2-1-GO)
+      countDown:
+          kCombatCountDown, // Start countdown at 6 (will show 5-4-3-2-1-GO)
       willStartFirst: state.isHost, // Host always starts first in initial game
     ));
 
@@ -280,9 +306,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         'difficulty': event.difficulty.toString(),
       });
     }
+    ;
 
     // Wait for countdown to finish (4 seconds)
-    for (int i = 4; i > 0; i--) {
+    for (int i = state.countDown; i > 0; i--) {
       await Future.delayed(const Duration(seconds: 1));
       if (isClosed) return;
     }
@@ -323,7 +350,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       status: TurnStatus.initial, // Show requirement first
       countDown: 0, // Reset countdown when turn starts
       isGameActive: true, // Mark game as active when turn starts
+      pickRightJustCorrect: false, // Reset animation flag - new equations ready
     ));
+    print(
+        '🎬 [Combat] pickRightJustCorrect → FALSE (turn started, equations: ${state.equations})');
 
     // Send turn start message to opponent
     final isHostTurn = state.isHost ? event.isMyTurn : !event.isMyTurn;
@@ -334,6 +364,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       'isHostTurn': isHostTurn,
       'requirement': requirement,
       'expect': expect,
+      'equations': state.equations, // For Pick Right mode
+      'correctIndex': state.correctIndex, // For Pick Right mode
     });
 
     // Calculate show time based on level (similar to solo mode)
@@ -367,6 +399,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       isMyTurn: event.isMyTurn,
       requirementString: event.requirement,
       expect: event.expect,
+      equations: event.equations, // For Pick Right mode
+      correctIndex: event.correctIndex, // For Pick Right mode
       typing: '',
       opponentInput: null,
       isWaitingForOpponent: false,
@@ -377,7 +411,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Calculate show time based on level (similar to solo mode)
     final level = state.level;
-    final diffShowLevelMilisecond = 100; // Increase by 100ms per level
+    const diffShowLevelMilisecond = 100; // Increase by 100ms per level
     final showTime = 1000 + level * diffShowLevelMilisecond;
 
     // Wait for the show time, then transition to typing mode
@@ -406,8 +440,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // Check if opponent lost
     if (event.opponentLives <= 0) {
+      // Don't sendMessage - the opponent will send game_ended with the correct equation
       add(CombatGameEnded(
-          isWinner: true, reason: GameEndReason.opponentLivesOut));
+          isWinner: true,
+          reason: GameEndReason.opponentLivesOut,
+          sendMessage: false));
       return;
     }
 
@@ -434,11 +471,38 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatGameEnded event,
     Emitter<CombatState> emit,
   ) async {
+    // Determine correct equation to display:
+    // 1. If BLE provides correctEquation (from opponent), ALWAYS use it (override)
+    // 2. If this is a local game end (sendMessage: true), use our own equations
+    // 3. If we detected opponent's game end from move_completed (sendMessage: false,
+    //    no correctEquation), leave null - the game_ended BLE message will fill it
+    String? finalCorrectEquation;
+    if (event.correctEquation != null) {
+      // Path 1: BLE-synced - always trust this
+      finalCorrectEquation = event.correctEquation;
+    } else if (event.sendMessage) {
+      // Path 2: Local game end - use own equations
+      if (state.difficultyModel?.difficulty == Difficulty.pickRight &&
+          state.correctIndex != null &&
+          state.equations != null &&
+          state.correctIndex! < state.equations!.length) {
+        finalCorrectEquation = state.equations![state.correctIndex!];
+      }
+    }
+    // Path 3: sendMessage=false, no correctEquation → leave null, wait for BLE
+
+    print(
+        '🏁 [Combat] Game ended - isWinner: ${event.isWinner}, reason: ${event.reason}, sendMessage: ${event.sendMessage}, correctEquation: $finalCorrectEquation, existing: ${state.correctEquationDisplay}');
+
     emit(state.copyWith(
       combatStatus: CombatStatus.ended,
       isWinner: event.isWinner,
       gameEndReason: event.reason,
       isGameActive: false,
+      // BLE-provided value always overrides; otherwise keep existing or use new
+      correctEquationDisplay: event.correctEquation != null
+          ? event.correctEquation // BLE always wins
+          : (state.correctEquationDisplay ?? finalCorrectEquation),
     ));
 
     // Only send game ended message if this is a local game end (not from opponent)
@@ -449,6 +513,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         'type': _messageTypeToString(CombatMessageType.gameEnded),
         'isWinner': event.isWinner,
         'reason': reasonString,
+        // Include correct equation for pick-right mode sync
+        if (finalCorrectEquation != null)
+          'correctEquation': finalCorrectEquation,
       });
     }
   }
@@ -531,7 +598,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // First, reset the state with intro status and countdown
     emit(state.copyWith(
       combatStatus: CombatStatus.intro,
-      countDown: 6, // Start countdown at 6 (will show 5-4-3-2-1-GO)
+      countDown:
+          kCombatCountDown, // Start countdown at 6 (will show 5-4-3-2-1-GO)
       isWinner: null,
       gameEndReason: null,
       isRestartRequested: true,
@@ -541,9 +609,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       level: 1, // Always start from level 1
       timesCorrect: 0,
       point: 0,
-      lifeRemaining: 3,
+      lifeRemaining: kCombatInitialLives,
       opponentScore: 0,
-      opponentLives: 3,
+      opponentLives: kCombatInitialLives,
       requirementString: null,
       expect: null,
       typing: '',
@@ -552,10 +620,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       isWaitingForOpponent: false,
       difficultyModel: currentDifficulty, // Keep the same difficulty
       willStartFirst: iLost, // Set to true if I lost (I will start first)
+      clearCorrectEquationDisplay: true, // Clear for new match
     ));
 
     // Wait for countdown to finish (4 seconds)
-    for (int i = 4; i > 0; i--) {
+    for (int i = state.countDown; i > 0; i--) {
       await Future.delayed(const Duration(seconds: 1));
       if (isClosed) return;
     }
@@ -686,7 +755,82 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
   }
 
-  Future<void> _onCombatSetLevel(
+  /// Handle Pick Right button tap in Combat mode
+  Future<void> _onCombatPickRightButtonTap(
+    CombatPickRightButtonTap event,
+    Emitter<CombatState> emit,
+  ) async {
+    if (!state.isMyTurn) return;
+    if (!state.isAbleToTap) return;
+
+    final correctIndex = state.correctIndex ?? -1;
+    final isCorrect = event.buttonIndex == correctIndex;
+
+    developer.log(
+        '🎮 [Combat] Pick Right button tap: ${event.buttonIndex}, correct: $correctIndex, isCorrect: $isCorrect');
+
+    // Update selected option for UI feedback
+    emit(state.copyWith(selectedOption: event.buttonIndex));
+
+    // Stop tap timer
+    _stopTapTimer();
+
+    if (isCorrect) {
+      // Correct answer - add point and proceed
+      // Note: Audio and vibration are handled by _onCombatAddPoint to avoid duplicates
+
+      // Trigger scale+fade animation on current buttons
+      print('🎬 [Combat] pickRightJustCorrect → TRUE (user correct tap)');
+      emit(state.copyWith(pickRightJustCorrect: true));
+
+      // Send correct move to opponent immediately for instant firework
+      await _sendMessage({
+        'type': _messageTypeToString(CombatMessageType.moveCompleted),
+        'input': event.buttonIndex.toString(),
+        'wasCorrect': true,
+        'score': state.point + 1,
+        'lives': state.lifeRemaining,
+      });
+
+      // Wait for fade-out animation to complete before proceeding
+      await Future.delayed(const Duration(milliseconds: 400));
+      if (isClosed) return;
+
+      // NOTE: pickRightJustCorrect stays true until _onCombatLevelChanged
+      // emits new state, so buttons won't fade back in with old equations
+      print(
+          '🎬 [Combat] pickRightJustCorrect staying TRUE - proceeding to addPoint');
+
+      await _onCombatAddPoint(CombatAddPoint(), emit);
+    } else {
+      // Wrong answer - lose life
+      _audioBloc.add(PlayWrongAudio());
+      _vibrationBloc.add(VibrateLong());
+
+      // Send wrong move to opponent
+      await _sendMessage({
+        'type': _messageTypeToString(CombatMessageType.moveCompleted),
+        'input': event.buttonIndex.toString(),
+        'wasCorrect': false,
+        'score': state.point,
+        'lives': state.lifeRemaining - 1,
+      });
+
+      add(CombatLostLife());
+
+      if (!state.isAbleToContinue) {
+        add(CombatGameEnded(isWinner: false, reason: GameEndReason.myLivesOut));
+        return;
+      }
+
+      // Generate new equations for next attempt
+      emit(state.copyWith(selectedOption: null));
+      add(CombatRequiredStringGenerated());
+      _startTapTimer();
+    }
+  }
+
+  Future<void> _onCombatLevelChanged(
     CombatLevelChanged event,
     Emitter<CombatState> emitter,
   ) async {
@@ -702,28 +846,47 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         level: event.level,
         timesCorrect: state.level != event.level ? 0 : null,
         typing: "",
-        tapTimerRemaining: tapTimerDuration, // Reset timer on level change
+        tapTimerRemaining:
+            state.difficultyModel?.difficulty == Difficulty.pickRight
+                ? kCombatPickRightTimerPerTurn.toDouble()
+                : tapTimerDuration, // Reset timer on level change
       ),
     );
 
     // Send move completion to opponent
-    final newScore = state.point;
-    final newLives = state.lifeRemaining;
+    // Skip for Pick Right mode - it already sent moveCompleted instantly
+    // in _onCombatPickRightButtonTap for immediate firework on opponent's screen
+    if (state.difficultyModel?.difficulty != Difficulty.pickRight) {
+      final newScore = state.point;
+      final newLives = state.lifeRemaining;
 
-    await _sendMessage({
-      'type': _messageTypeToString(CombatMessageType.moveCompleted),
-      'input': state.typing,
-      'correct': true,
-      'score': newScore,
-      'lives': newLives,
-    });
+      await _sendMessage({
+        'type': _messageTypeToString(CombatMessageType.moveCompleted),
+        'input': state.typing,
+        'wasCorrect': true,
+        'score': newScore,
+        'lives': newLives,
+      });
+    }
 
-    // await _onCombatShowExpect(
-    //     CombatExpectShown(Duration(milliseconds: state.getTimeShowTarget)),
-    //     emitter);
+    // For Pick Right mode: generate new equations BEFORE making buttons visible
+    // This prevents the blink where old equations appear then update to new ones
+    if (state.difficultyModel?.difficulty == Difficulty.pickRight) {
+      await _onCombatGeneratedRequiredString(
+          CombatRequiredStringGenerated(), emitter);
+      print(
+          '🎬 [Combat] Pick Right: new equations generated: ${state.equations}');
+    }
 
-    // Start timer after showing challenge
-    _startTapTimer();
+    // Yield the turn to the opponent - wait for their move
+    print(
+        '🎬 [Combat] Level changed - yielding turn, pickRightJustCorrect → false');
+    emitter(state.copyWith(
+      isMyTurn: false,
+      isWaitingForOpponent: true,
+      pickRightJustCorrect: false,
+      selectedOption: null, // Clear selection highlight for clean appearance
+    ));
   }
 
   Future<void> _onCombatLostLife(
@@ -767,18 +930,13 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   ) async {
     _vibrationBloc.add(VibrateShort());
 
-    emit(
-      state.copyWith(
-        point: state.point + state.difficultyModel!.pointEachTurn,
-      ),
-    );
-
     // Note: move_success is now auto-detected by opponent from typing_update
     // when opponentInput.length == expect.length
 
     // Increment timesCorrect and add life bonus (every 3 correct turns)
     emit(
       state.copyWith(
+        point: state.point + state.difficultyModel!.pointEachTurn,
         timesCorrect: state.timesCorrect + 1,
         lifeRemaining: state.timesCorrect >= 2
             ? state.lifeRemaining + 1
@@ -844,6 +1002,40 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           requiredString = result['expression']!;
         }
         break;
+      case Difficulty.pickRight:
+        // Pick Right mode - generate three equations (one true, two false)
+        Map<String, dynamic> equationsData =
+            Helper().generatePickRightEquations(state.level);
+
+        // expectString stores the correct button index (0, 1, or 2)
+        expectString = equationsData['correctIndex'].toString();
+        // requirementString shows all equations separated by pipe
+        final eqs = equationsData['equations'] as List<String>;
+        requiredString = eqs.join(' | ');
+
+        developer.log(
+            '🎮 [Combat] Generated Pick Right equations: $requiredString, correctIndex: $expectString');
+        emit(
+          state.copyWith(
+            requirementString: requiredString,
+            trueEquation: equationsData['trueEquation'],
+            falseEquation: equationsData['falseEquation'],
+            isLeftCorrect: equationsData['isLeftCorrect'],
+            correctIndex: equationsData['correctIndex'],
+            equations: List<String>.from(equationsData['equations']),
+            selectedOption: null,
+          ),
+        );
+
+        await Future.delayed(
+            const Duration(milliseconds: kAnimationDurationSlow));
+
+        emit(
+          state.copyWith(
+            expect: expectString,
+          ),
+        );
+        return requiredString;
       case Difficulty.easy:
         expectString = Helper().generateRandomNumber(state.level + 2);
         requiredString = expectString;
@@ -933,11 +1125,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     await Future.delayed(
         Duration(milliseconds: event.duration.inMilliseconds + 500));
-    await _onCombatSetLevel(
+    add(
       CombatLevelChanged(
         level: state.level,
       ),
-      emit,
     );
   }
 
@@ -946,7 +1137,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   void _startTapTimer() {
     _tapTimer?.cancel();
     const tickDuration = Duration(milliseconds: kAnimationDurationFast);
-    double remainingTime = tapTimerDuration;
+    final isPickRight =
+        state.difficultyModel?.difficulty == Difficulty.pickRight;
+    double remainingTime = isPickRight
+        ? kCombatPickRightTimerPerTurn.toDouble()
+        : tapTimerDuration;
 
     _tapTimer = Timer.periodic(tickDuration, (timer) {
       if (isClosed) {
@@ -990,34 +1185,84 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     Emitter<CombatState> emit,
   ) async {
     if (isClosed) return;
-    if (!state.isAbleToTap) return;
+
+    print(
+        '⏰ [Combat] TapTimerTimeout fired - isMyTurn: ${state.isMyTurn}, isAbleToTap: ${state.isAbleToTap}, lives: ${state.lifeRemaining}, isGameActive: ${state.isGameActive}');
+
+    if (!state.isAbleToTap) {
+      print('⏰ [Combat] TapTimerTimeout skipped - isAbleToTap is false');
+      return;
+    }
 
     _stopTapTimer();
 
-    // Lose a life
-    add(CombatLostLife());
+    // Inline life loss (don't use add() - it's async and state won't update before we check it)
+    emit(state.copyWith(
+      lifeRemaining: state.lifeRemaining - 1,
+    ));
+    _vibrationBloc.add(VibrateShort());
+
+    print(
+        '⏰ [Combat] Life decremented: ${state.lifeRemaining}, isAbleToContinue: ${state.isAbleToContinue}');
+
+    // Send life_update to opponent
+    await _sendMessage({
+      'type': 'life_update',
+      'lives': state.lifeRemaining,
+      'score': state.point,
+      'wrongTap': true,
+    });
 
     if (!state.isAbleToContinue) {
+      // Game over - send game_ended and navigate
+      print('⏰ [Combat] Timeout → Game Over! Lives: ${state.lifeRemaining}');
+
+      // Send move_completed so opponent knows this turn is done
+      await _sendMessage({
+        'type': _messageTypeToString(CombatMessageType.moveCompleted),
+        'input': '',
+        'wasCorrect': false,
+        'score': state.point,
+        'lives': state.lifeRemaining,
+      });
+
       add(CombatGameEnded(isWinner: false, reason: GameEndReason.timeout));
       return;
     } else {
+      // Still alive - yield turn
       _audioBloc.add(PlayWrongAudio());
+      _vibrationBloc.add(VibrateMultiple());
+
+      print(
+          '⏰ [Combat] Timeout but still alive (${state.lifeRemaining} lives) - yielding turn');
+
       await Future.delayed(
           const Duration(milliseconds: kAnimationDurationSlow));
+      if (isClosed) return;
 
       // Send timeout notification to opponent
       await _sendMessage({
         'type': _messageTypeToString(CombatMessageType.moveCompleted),
         'input': '',
-        'correct': false,
+        'wasCorrect': false,
         'score': state.point,
         'lives': state.lifeRemaining,
       });
 
-      // Wait for opponent to finish their turn
+      // For pick-right mode, generate new equations before yielding turn
+      if (state.difficultyModel?.difficulty == Difficulty.pickRight) {
+        await _onCombatGeneratedRequiredString(
+            CombatRequiredStringGenerated(), emit);
+        print(
+            '⏰ [Combat] Pick Right timeout: new equations generated: ${state.equations}');
+      }
+
+      // Yield the turn to the opponent
       emit(state.copyWith(
-        isWaitingForOpponent: true,
         isMyTurn: false,
+        isWaitingForOpponent: true,
+        pickRightJustCorrect: false,
+        selectedOption: null,
       ));
     }
   }
@@ -1027,17 +1272,31 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     Emitter<CombatState> emit,
   ) async {
     // Set flag that opponent just succeeded - this will trigger firework in UI
+    _vibrationBloc.add(VibrateShort());
+
+    // Check if pick-right mode for additional animation
+    final isPickRight =
+        state.difficultyModel?.difficulty == Difficulty.pickRight;
+
     emit(state.copyWith(
       opponentJustSucceeded: true,
+      pickRightJustCorrect: isPickRight ? true : null,
     ));
+    print(
+        '🎬 [Combat] pickRightJustCorrect → ${isPickRight ? "TRUE" : "unchanged"} (opponent success)');
 
-    // Reset the flag after a short delay
-    await Future.delayed(const Duration(milliseconds: 10));
-    if (isClosed) return;
-
-    emit(state.copyWith(
-      opponentJustSucceeded: false,
-    ));
+    // For non-pick-right, reset quickly; for pick-right, keep flag until turn starts
+    if (!isPickRight) {
+      await Future.delayed(const Duration(milliseconds: 10));
+      if (isClosed) return;
+      emit(state.copyWith(opponentJustSucceeded: false));
+    } else {
+      // Reset opponentJustSucceeded quickly (firework already triggered)
+      // but keep pickRightJustCorrect true until new turn starts
+      await Future.delayed(const Duration(milliseconds: 10));
+      if (isClosed) return;
+      emit(state.copyWith(opponentJustSucceeded: false));
+    }
   }
 
   Future<void> _onCombatOpponentLifeUpdate(

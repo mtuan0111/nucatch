@@ -288,6 +288,12 @@ abstract class AppLocalizations {
   /// **'The correct is'**
   String get theCorrectIs;
 
+  /// Prompt in Pick Right mode asking user to choose correct equation
+  ///
+  /// In en, this message translates to:
+  /// **'Which one is correct?'**
+  String get whichOneIsCorrect;
+
   /// Label for name input
   ///
   /// In en, this message translates to:
@@ -512,6 +518,12 @@ abstract class AppLocalizations {
   /// **'Randomly selects between generating a complex plus/minus calculation, a higher-level random number, or a multiplication/division calculation for the most challenging experience.'**
   String get difficultyExtremeDescription;
 
+  /// Description for pick right difficulty mode
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the correct equation! Fast-paced selection game with 5-second timer.'**
+  String get pickRightDescription;
+
   /// Title for easy difficulty mode
   ///
   /// In en, this message translates to:
@@ -535,6 +547,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Extreme Mode'**
   String get difficultyExtremeTitle;
+
+  /// Title for pick right difficulty mode
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Right'**
+  String get pickRightTitle;
 
   /// Warning when the user changes the difficulty
   ///
@@ -1357,6 +1375,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap the **Start button** to begin. You\'ll then choose between **Solo Mode** for single-player mathematical challenges, or **Combat Mode** for real-time **Bluetooth** multiplayer battles. Let\'s explore both options!'**
   String get tourStartDesc;
+
+  /// Title for the instant start button tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Start - Quick Play'**
+  String get tourInstantStartTitle;
+
+  /// Description for the instant start button tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Want to jump right in? Tap the **Instant Start button** to begin a solo game immediately with the same difficulty level you played last time. It\'s the fastest way to continue your progress!'**
+  String get tourInstantStartDesc;
 
   /// Title for solo mode tour step
   ///

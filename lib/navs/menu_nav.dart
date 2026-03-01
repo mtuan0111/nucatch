@@ -10,15 +10,12 @@ import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show PlayMode;
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
 import 'package:nucatch/blocs/objects/audio/audio_event.dart';
-import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
 import 'package:nucatch/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/user/user_bloc.dart';
-import 'package:nucatch/services/combat_ble_service.dart';
-import 'package:ble_plat_services/ble_plat_services.dart';
 import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
 import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
@@ -119,26 +116,6 @@ class _MenuNavState extends State<MenuNav> {
                             }),
                             BlocProvider(
                               create: (context) => CombatNavCubit(),
-                            ),
-                            BlocProvider(
-                              create: (context) {
-                                // Create BLE infrastructure
-                                final bleDataSource =
-                                    BleDataSource(appPrefix: 'nucatch');
-                                final bluetoothRepository =
-                                    BluetoothRepositoryImpl(
-                                  dataSource: bleDataSource,
-                                );
-                                final combatBleService = CombatBleService(
-                                  repository: bluetoothRepository,
-                                );
-
-                                return CombatBloc(
-                                  roomService: combatBleService,
-                                  audioBloc: context.read<AudioBloc>(),
-                                  vibrationBloc: context.read<VibrationBloc>(),
-                                );
-                              },
                             ),
                           ],
                           child: const PlayerNav(),

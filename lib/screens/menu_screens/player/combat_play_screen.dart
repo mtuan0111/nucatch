@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
@@ -16,6 +17,8 @@ import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
 import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:nucatch/widgets/pick_right_buttons.dart';
+import 'package:nucatch/widgets/combat_status_badge.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
 class CombatPlayScreen extends StatefulWidget {
@@ -141,7 +144,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                         child: Column(
                           children: [
                             Expanded(
-                              flex: 1,
+                              flex: 2,
                               child: Column(
                                 children: [
                                   // Tap timer countdown bar
@@ -150,13 +153,23 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                     children: [
                                       Builder(
                                         builder: (context) {
-                                          // Calculate time values using the same formulas
+                                          // Calculate effective timer duration based on difficulty
+                                          final isPickRight = combatState
+                                                  .difficultyModel
+                                                  ?.difficulty ==
+                                              Difficulty.pickRight;
+                                          final effectiveDuration = isPickRight
+                                              ? kCombatPickRightTimerPerTurn
+                                                  .toDouble()
+                                              : tapTimerDuration;
+
+                                          // Calculate time values using the effective duration
                                           final totalSeconds =
-                                              tapTimerDuration.toInt();
+                                              effectiveDuration.toInt();
                                           final halfSeconds =
-                                              (tapTimerDuration / 2).toInt();
+                                              (effectiveDuration / 2).toInt();
                                           final quarterSeconds =
-                                              (tapTimerDuration / 4).toInt();
+                                              (effectiveDuration / 4).toInt();
 
                                           return Tooltip(
                                             message:
@@ -180,18 +193,18 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                                               double time) {
                                                         // Calculate percentage (0-100)
                                                         final percent = (time /
-                                                                tapTimerDuration *
+                                                                effectiveDuration *
                                                                 100)
                                                             .toInt();
 
                                                         // Determine color based on remaining time
                                                         Color backgroundColor = time >
-                                                                tapTimerDuration /
+                                                                effectiveDuration /
                                                                     2
                                                             ? Theme.of(context)
                                                                 .primaryColor
                                                             : time >
-                                                                    tapTimerDuration /
+                                                                    effectiveDuration /
                                                                         4
                                                                 ? Colors.orange
                                                                 : Colors.red;
@@ -278,15 +291,37 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                   _buildLifeDisplay(combatState),
 
                                   // Game area - shows challenge or typing
+
                                   Expanded(
-                                    child: _buildGameArea(combatState),
+                                    child: Stack(
+                                      children: [
+                                        _buildGameArea(combatState),
+                                        Positioned(
+                                          child: _buildCountDown(combatState),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
 
                             // Keyboard
-                            _buildKeyboard(combatState),
+                            Builder(builder: (context) {
+                              // Check if Pick Right mode
+                              final isPickRightMode =
+                                  combatState.difficultyModel?.difficulty ==
+                                      Difficulty.pickRight;
+
+                              if (isPickRightMode) {
+                                return Expanded(
+                                    flex: 3,
+                                    child:
+                                        _buildPickRightControls(combatState));
+                              }
+                              return Expanded(
+                                  flex: 2, child: _buildKeyboard(combatState));
+                            }),
                           ],
                         ),
                       ),
@@ -363,20 +398,14 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                 Opacity(
                   opacity:
                       combatState.combatStatus != CombatStatus.intro ? 1 : 0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: kPaddingL, vertical: kPaddingSM),
-                    decoration: BoxDecoration(
-                      color:
-                          combatState.isMyTurn ? Colors.green : Colors.orange,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      combatState.isMyTurn
-                          ? lang(context).yourTurn
-                          : lang(context).opponentTurn,
-                      style: AppTextStyles.bodyLargeBold(context),
-                    ),
+                  child: CombatStatusBadge(
+                    text: combatState.isMyTurn
+                        ? lang(context).yourTurn
+                        : lang(context).opponentTurn,
+                    isPositive: combatState.isMyTurn,
+                    icon: combatState.isMyTurn
+                        ? Icons.emoji_events
+                        : Icons.hourglass_bottom,
                   ),
                 ),
               ],
@@ -543,431 +572,23 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   }
 
   Widget _buildGameArea(CombatState combatState) {
-    // Show countdown intro animation
     if (combatState.combatStatus == CombatStatus.intro) {
-      return Expanded(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (!context.read<CombatBloc>().isClosed)
-                    Builder(
-                      builder: (widgetContext) {
-                        // Capture localized strings using the widget context
-                        final readyText = "${lang(widgetContext).ready}!!";
-                        final goText = lang(widgetContext).go;
-
-                        return Countdown(
-                          seconds: combatState.countDown,
-                          interval: const Duration(milliseconds: 10),
-                          build: (BuildContext context, double time) {
-                            // Calculate progress within current second (0.0 to 1.0)
-                            final secondProgress = time - time.floor();
-
-                            Gradient getCountdownGradient(double time) {
-                              if (time >= 5) {
-                                return LinearGradient(
-                                  colors: [
-                                    Colors.green.shade300,
-                                    Colors.green.shade700
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                );
-                              }
-                              if (time >= 3) {
-                                return LinearGradient(
-                                  colors: [
-                                    Colors.blue.shade300,
-                                    Colors.blue.shade700
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                );
-                              }
-                              if (time >= 1) {
-                                return LinearGradient(
-                                  colors: [
-                                    Colors.orange.shade300,
-                                    Colors.orange.shade700
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                );
-                              }
-                              return LinearGradient(
-                                colors: [
-                                  Colors.red.shade300,
-                                  Colors.red.shade700
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              );
-                            }
-
-                            return AnimatedScale(
-                              duration: const Duration(
-                                  milliseconds: kAnimationDurationSlow),
-                              scale: time > 0.5 ? 1.0 : 5,
-                              curve: Curves.easeOutQuart,
-                              child: AnimatedOpacity(
-                                duration: const Duration(
-                                    milliseconds: kAnimationDurationSlow),
-                                opacity: time > 0.5 ? 1.0 : 0.0,
-                                curve: Curves.easeOutQuart,
-                                child: Container(
-                                  width: kCountdownCircleSize,
-                                  height: kCountdownCircleSize,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: getCountdownGradient(time),
-                                  ),
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Positioned.fill(
-                                        child: CustomElevatedButton(
-                                            buttonRadius: kBorderRadiusCircular,
-                                            shapeAt: RoundedWithShapeAt.all,
-                                            gradient: LinearGradient(
-                                                colors:
-                                                    getCountdownGradient(time)
-                                                        .colors)),
-                                      ),
-                                      // Circular progress indicator
-                                      SizedBox(
-                                        width: kCountdownCircleInnerSize,
-                                        height: kCountdownCircleInnerSize,
-                                        child: Stack(
-                                          children: [
-                                            Positioned.fill(
-                                              child: CircularProgressIndicator(
-                                                value: secondProgress,
-                                                strokeWidth:
-                                                    kProgressStrokeWidth,
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .onSurface
-                                                        .withOpacity(0.3),
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                        Color>(
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      // Text content
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          if (time >= 1)
-                                            AnimatedDefaultTextStyle(
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                              style: AppTextStyles.forCountdown(
-                                                  context),
-                                              child: Text(
-                                                time.truncate().toString(),
-                                                style:
-                                                    AppTextStyles.forCountdown(
-                                                        context),
-                                              ),
-                                            ),
-                                          if (time >= 1)
-                                            AnimatedDefaultTextStyle(
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                              style: AppTextStyles
-                                                  .forCountdownReady(context),
-                                              child: Text(
-                                                readyText,
-                                                style: AppTextStyles
-                                                    .forCountdownReady(context),
-                                              ),
-                                            )
-                                          else
-                                            AnimatedDefaultTextStyle(
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                              style:
-                                                  AppTextStyles.forCountdownGo(
-                                                      context),
-                                              child: Text(
-                                                goText,
-                                                style: AppTextStyles
-                                                    .forCountdownGo(context),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          onFinished: () {},
-                        );
-                      },
-                    ),
-                  // Show turn order notice if available
-                  if (combatState.willStartFirst != null) ...[
-                    const SizedBox(height: kSpaceL),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: kSpaceL,
-                        vertical: kSpaceS,
-                      ),
-                      decoration: BoxDecoration(
-                        color: combatState.willStartFirst!
-                            ? Colors.green.withOpacity(0.2)
-                            : Colors.orange.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(kBorderRadiusL),
-                        border: Border.all(
-                          color: combatState.willStartFirst!
-                              ? Colors.green
-                              : Colors.orange,
-                          width: 2,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            combatState.willStartFirst!
-                                ? Icons.emoji_events
-                                : Icons.hourglass_bottom,
-                            color: combatState.willStartFirst!
-                                ? Colors.green
-                                : Colors.orange,
-                            size: kFontSizeL,
-                          ),
-                          const SizedBox(width: kSpaceS),
-                          Flexible(
-                            child: Text(
-                              combatState.willStartFirst!
-                                  ? lang(context).youWillTakeFirst
-                                  : lang(context).opponentWillTakeFirst,
-                              style: AppTextStyles.bodyMediumBold(context),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
+      return const SizedBox.shrink();
     }
-
     // Show requirement string (what to memorize/solve)
-    if (combatState.isShowExpect) {
-      return Expanded(
-        child: Center(
-          child: Wrap(
-            children: List.generate(
-              combatState.requirementString!.length,
-              (index) {
-                String char = combatState.requirementString![index];
-                return SizedBox(
-                  width: (AppTextStyles.forChallenge(
-                              combatState.requirementString!.length, context)
-                          .fontSize! *
-                      0.65),
-                  child: Column(
-                    children: [
-                      Text(
-                        char,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.forChallenge(
-                          combatState.requirementString!.length,
-                          context,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      );
-    }
+    // Skip for Pick Right mode - it shows equations in the button area instead
+    final isPickRightMode =
+        combatState.difficultyModel?.difficulty == Difficulty.pickRight;
 
-    // Show typing area with animations (user input) - ONLY when it's my turn
-    if (combatState.isMyTurn && combatState.isTimeForTyping) {
-      return Expanded(
-        child: Center(
-          child: Wrap(
-            children: List.generate(
-              combatState.expect!.length,
-              (index) {
-                double hide = combatState.isTypingNotEmpty &&
-                        index < combatState.typing.length
-                    ? 1
-                    : 0;
-
-                String inputted = combatState.expect![index];
-
-                dev.log("inputted: $inputted");
-                dev.log("hide: $hide");
-                dev.log("index: $index");
-                dev.log(
-                    "combatState.expect!.length: ${combatState.expect!.length}");
-                dev.log("combatState.typing: ${combatState.typing}");
-
-                return SizedBox(
-                  width: (AppTextStyles.forChallenge(
-                              combatState.requirementString!.length, context)
-                          .fontSize! *
-                      0.65),
-                  child: Builder(
-                    builder: (context) {
-                      // Trigger firework animation at character position when finished
-                      // Only trigger once per character index
-                      if (combatState.isFinishTarget &&
-                          hide == 1 &&
-                          !_triggeredFireworkIndices.contains(index)) {
-                        _triggeredFireworkIndices.add(index);
-                        dev.log(
-                            "Trigger firework animation at character position when finished - index: $index");
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          final RenderBox? renderBox =
-                              context.findRenderObject() as RenderBox?;
-                          if (renderBox != null) {
-                            final position =
-                                renderBox.localToGlobal(Offset.zero);
-                            final size = renderBox.size;
-                            final center = position +
-                                Offset(size.width / 2, size.height / 2);
-
-                            // Trigger firework with cascading delay
-                            Future.delayed(Duration(milliseconds: index * 50),
-                                () {
-                              if (mounted &&
-                                  _animationKey.currentState != null) {
-                                dev.log("firework at index $index");
-                                _animationKey.currentState!.triggers
-                                    .onAddPoint(center);
-                              }
-                            });
-                          }
-                        });
-                      } else if (!combatState.isFinishTarget) {
-                        // Reset set when starting a new turn
-                        _triggeredFireworkIndices.clear();
-                      }
-
-                      return Column(
-                        children: [
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 200),
-                            opacity: hide,
-                            child: AnimatedOpacity(
-                              curve: Curves.easeOutQuart,
-                              opacity: combatState.isFinishTarget ? 0 : 1,
-                              duration: const Duration(milliseconds: 400),
-                              child: AnimatedScale(
-                                curve: Curves.easeOutQuart,
-                                scale: combatState.isFinishTarget ? 2 : 1,
-                                duration: const Duration(milliseconds: 400),
-                                child: Text(
-                                  inputted,
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.forChallenge(
-                                    combatState.requirementString!.length,
-                                    context,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          AnimatedOpacity(
-                            opacity: (hide == 0) ? 1 : 0,
-                            duration: const Duration(milliseconds: 200),
-                            child: Icon(
-                              FontAwesomeIcons.minus,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      );
-    }
-
-    // Waiting/watching opponent - show mirror view
-    if (combatState.isOpponentActive && !combatState.isMyTurn) {
-      // Show the opponent's challenge and progress as a mirror
-      if (combatState.requirementString != null && combatState.expect != null) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // const SizedBox(height: kSpaceXL),
-            // // Show opponent's challenge (mirrored)
-            // Wrap(
-            //   children: List.generate(
-            //     combatState.requirementString!.length,
-            //     (index) {
-            //       String char = combatState.requirementString![index];
-            //       return SizedBox(
-            //         width: (boldedStyleFont(
-            //                     numberOfCharactor:
-            //                         combatState.requirementString!.length)
-            //                 .fontSize! *
-            //             0.65),
-            //         child: Column(
-            //           children: [
-            //             Opacity(
-            //               opacity: 0.6, // Dimmed to show it's opponent's
-            //               child: Text(
-            //                 char,
-            //                 textAlign: TextAlign.center,
-            //                 style: boldedStyleFont(
-            //                   numberOfCharactor:
-            //                       combatState.requirementString!.length,
-            //                 ),
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
-            // const SizedBox(height: kSpaceXL),
-            // Show opponent's typing progress (always show when watching)
-            Wrap(
+    if (!isPickRightMode) {
+      if (combatState.isShowExpect) {
+        return Expanded(
+          child: Center(
+            child: Wrap(
               children: List.generate(
-                combatState.expect!.length,
+                combatState.requirementString!.length,
                 (index) {
-                  double hide = combatState.opponentInput != null &&
-                          index < combatState.opponentInput!.length
-                      ? 1
-                      : 0;
-
-                  String inputted = combatState.expect![index];
-
+                  String char = combatState.requirementString![index];
                   return SizedBox(
                     width: (AppTextStyles.forChallenge(
                                 combatState.requirementString!.length, context)
@@ -975,24 +596,12 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                         0.65),
                     child: Column(
                       children: [
-                        AnimatedOpacity(
-                          duration: const Duration(milliseconds: 200),
-                          opacity: hide * 0.6, // Dimmed
-                          child: Text(
-                            inputted,
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.forChallenge(
-                              combatState.requirementString!.length,
-                              context,
-                            ),
-                          ),
-                        ),
-                        AnimatedOpacity(
-                          opacity: (hide == 0) ? 0.6 : 0,
-                          duration: const Duration(milliseconds: 200),
-                          child: Icon(
-                            FontAwesomeIcons.minus,
-                            color: Theme.of(context).colorScheme.onPrimary,
+                        Text(
+                          char,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.forChallenge(
+                            combatState.requirementString!.length,
+                            context,
                           ),
                         ),
                       ],
@@ -1001,49 +610,224 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                 },
               ),
             ),
-          ],
+          ),
         );
       }
 
-      // Fallback if no challenge data
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            const SizedBox(height: kSpaceXL),
-            Text(
-              lang(context).watchingOpponent,
-              style: AppTextStyles.bodyLarge(context).copyWith(
-                color: Colors.orange,
-                fontSize: kFontSizeXL,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+      // Show typing area with animations (user input) - ONLY when it's my turn
+      // Skip for Pick Right mode - it uses button taps instead of typing
+      if (combatState.isMyTurn && combatState.isTimeForTyping) {
+        return Expanded(
+          child: Center(
+            child: Wrap(
+              children: List.generate(
+                combatState.expect!.length,
+                (index) {
+                  double hide = combatState.isTypingNotEmpty &&
+                          index < combatState.typing.length
+                      ? 1
+                      : 0;
 
-    // Waiting for opponent to finish their move
-    if (combatState.isWaitingForOpponent) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            const SizedBox(height: kSpaceXL),
-            Text(
-              lang(context).waitingForOpponent,
-              style: AppTextStyles.bodyLarge(context).copyWith(
-                color: Colors.yellow,
-                fontSize: kFontSizeXL,
+                  String inputted = combatState.expect![index];
+
+                  dev.log("inputted: $inputted");
+                  dev.log("hide: $hide");
+                  dev.log("index: $index");
+                  dev.log(
+                      "combatState.expect!.length: ${combatState.expect!.length}");
+                  dev.log("combatState.typing: ${combatState.typing}");
+
+                  return SizedBox(
+                    width: (AppTextStyles.forChallenge(
+                                combatState.requirementString!.length, context)
+                            .fontSize! *
+                        0.65),
+                    child: Builder(
+                      builder: (context) {
+                        // Trigger firework animation at character position when finished
+                        // Only trigger once per character index
+                        if (combatState.isFinishTarget &&
+                            hide == 1 &&
+                            !_triggeredFireworkIndices.contains(index)) {
+                          _triggeredFireworkIndices.add(index);
+                          dev.log(
+                              "Trigger firework animation at character position when finished - index: $index");
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            final RenderBox? renderBox =
+                                context.findRenderObject() as RenderBox?;
+                            if (renderBox != null) {
+                              final position =
+                                  renderBox.localToGlobal(Offset.zero);
+                              final size = renderBox.size;
+                              final center = position +
+                                  Offset(size.width / 2, size.height / 2);
+
+                              // Trigger firework with cascading delay
+                              Future.delayed(Duration(milliseconds: index * 50),
+                                  () {
+                                if (mounted &&
+                                    _animationKey.currentState != null) {
+                                  dev.log("firework at index $index");
+                                  _animationKey.currentState!.triggers
+                                      .onAddPoint(center);
+                                }
+                              });
+                            }
+                          });
+                        } else if (!combatState.isFinishTarget) {
+                          // Reset set when starting a new turn
+                          _triggeredFireworkIndices.clear();
+                        }
+
+                        return Column(
+                          children: [
+                            AnimatedOpacity(
+                              duration: const Duration(milliseconds: 200),
+                              opacity: hide,
+                              child: AnimatedOpacity(
+                                curve: Curves.easeOutQuart,
+                                opacity: combatState.isFinishTarget ? 0 : 1,
+                                duration: const Duration(milliseconds: 400),
+                                child: AnimatedScale(
+                                  curve: Curves.easeOutQuart,
+                                  scale: combatState.isFinishTarget ? 2 : 1,
+                                  duration: const Duration(milliseconds: 400),
+                                  child: Text(
+                                    inputted,
+                                    textAlign: TextAlign.center,
+                                    style: AppTextStyles.forChallenge(
+                                      combatState.requirementString!.length,
+                                      context,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            AnimatedOpacity(
+                              opacity: (hide == 0) ? 1 : 0,
+                              duration: const Duration(milliseconds: 200),
+                              child: Icon(
+                                FontAwesomeIcons.minus,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
             ),
-          ],
+          ),
+        );
+      }
+
+      // Waiting/watching opponent - show mirror view
+      if (combatState.isOpponentActive && !combatState.isMyTurn) {
+        // Show the opponent's challenge and progress as a mirror
+        if (combatState.requirementString != null &&
+            combatState.expect != null) {
+          return Expanded(
+            child: Center(
+              child: Wrap(
+                children: List.generate(
+                  combatState.expect!.length,
+                  (index) {
+                    double hide = combatState.opponentInput != null &&
+                            index < combatState.opponentInput!.length
+                        ? 1
+                        : 0;
+
+                    String inputted = combatState.expect![index];
+
+                    return SizedBox(
+                      width: (AppTextStyles.forChallenge(
+                                  combatState.requirementString!.length,
+                                  context)
+                              .fontSize! *
+                          0.65),
+                      child: Column(
+                        children: [
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 200),
+                            opacity: hide * 0.6, // Dimmed
+                            child: Text(
+                              inputted,
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.forChallenge(
+                                combatState.requirementString!.length,
+                                context,
+                              ),
+                            ),
+                          ),
+                          AnimatedOpacity(
+                            opacity: (hide == 0) ? 0.6 : 0,
+                            duration: const Duration(milliseconds: 200),
+                            child: Icon(
+                              FontAwesomeIcons.minus,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        }
+
+        // Fallback if no challenge data
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              const SizedBox(height: kSpaceXL),
+              Text(
+                lang(context).watchingOpponent,
+                style: AppTextStyles.bodyLarge(context).copyWith(
+                  color: Colors.orange,
+                  fontSize: kFontSizeXL,
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+
+      // // Waiting for opponent to finish their move
+      // if (combatState.isWaitingForOpponent) {
+      //   return Center(
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: [
+      //         CircularProgressIndicator(
+      //           color: Theme.of(context).colorScheme.onSurface,
+      //         ),
+      //         const SizedBox(height: kSpaceXL),
+      //         Text(
+      //           lang(context).waitingForOpponent,
+      //           style: AppTextStyles.bodyLarge(context).copyWith(
+      //             color: Colors.yellow,
+      //             fontSize: kFontSizeXL,
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   );
+      // }
+    } else {
+      return Expanded(
+        child: Center(
+          child: Text(
+            lang(context).whichOneIsCorrect,
+            style: AppTextStyles.titleLarge(context),
+          ),
         ),
       );
     }
@@ -1051,114 +835,319 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     return const SizedBox.shrink();
   }
 
-  Widget _buildKeyboard(CombatState combatState) {
-    return Expanded(
-      flex: 1,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final keys = keyboardArray.entries.toList();
-          const columns = 3;
-          const rows = 4;
-          final buttonWidth = constraints.maxWidth / columns;
-          final buttonHeight = constraints.maxHeight / rows;
-          const buttonSpacing = 20.0;
-          const tableGap = 10.0;
+  Widget _buildCountDown(CombatState combatState) {
+    // Show countdown intro animation
+    if (combatState.combatStatus == CombatStatus.intro) {
+      return Expanded(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (!context.read<CombatBloc>().isClosed)
+              Builder(
+                builder: (widgetContext) {
+                  // Capture localized strings using the widget context
+                  final readyText = "${lang(widgetContext).ready}!!";
+                  final goText = lang(widgetContext).go;
 
-          List<TableRow> tableRows = [];
-          for (int r = 0; r < rows; r++) {
-            List<Widget> rowChildren = [];
-            for (int c = 0; c < columns; c++) {
-              int idx = r * columns + c;
-              Widget cell;
-              if (idx < keys.length) {
-                final e = keys[idx];
-                Duration duration = const Duration(milliseconds: 200);
-                Widget button;
-                if (e.key == KeyboardOption.reset) {
-                  button = AnimatedButton(
-                    context,
-                    iconData: FontAwesomeIcons.arrowsRotate,
-                    isEnable:
-                        combatState.isAbleToReset && combatState.isAbleToTap,
-                    onPressed: () {
-                      context.read<CombatBloc>().add(
-                            CombatNumberReset(duration: duration),
+                  return Countdown(
+                    seconds: combatState.countDown,
+                    interval: const Duration(milliseconds: 10),
+                    build: (BuildContext context, double time) {
+                      // Calculate progress within current second (0.0 to 1.0)
+                      final secondProgress = time - time.floor();
+
+                      Gradient getCountdownGradient(double time) {
+                        if (time >= 5) {
+                          return LinearGradient(
+                            colors: [
+                              Colors.green.shade300,
+                              Colors.green.shade700
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                           );
-                    },
-                  );
-                } else if (e.key == KeyboardOption.mainMenu) {
-                  button = AnimatedButton(
-                    context,
-                    iconData: FontAwesomeIcons.bars,
-                    onPressed: () => _handleMenuButton(context),
-                  );
-                } else {
-                  button = AnimatedButton(
-                    context,
-                    text: e.value.toString(),
-                    style: AppTextStyles.displayLarge(context),
-                    isEnable: combatState.isAbleToTap,
-                    onPressed: () {
-                      context.read<CombatBloc>().add(
-                            CombatTap(keyValue: e.key),
+                        }
+                        if (time >= 3) {
+                          return LinearGradient(
+                            colors: [
+                              Colors.blue.shade300,
+                              Colors.blue.shade700
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                           );
+                        }
+                        if (time >= 1) {
+                          return LinearGradient(
+                            colors: [
+                              Colors.orange.shade300,
+                              Colors.orange.shade700
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          );
+                        }
+                        return LinearGradient(
+                          colors: [Colors.red.shade300, Colors.red.shade700],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        );
+                      }
+
+                      return AnimatedScale(
+                        duration: const Duration(
+                            milliseconds: kAnimationDurationSlow),
+                        scale: time > 0.5 ? 1.0 : 5,
+                        curve: Curves.easeOutQuart,
+                        child: AnimatedOpacity(
+                          duration: const Duration(
+                              milliseconds: kAnimationDurationSlow),
+                          opacity: time > 0.5 ? 1.0 : 0.0,
+                          curve: Curves.easeOutQuart,
+                          child: Container(
+                            width: kCountdownCircleSize,
+                            height: kCountdownCircleSize,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: getCountdownGradient(time),
+                            ),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Positioned.fill(
+                                  child: CustomElevatedButton(
+                                      buttonRadius: kBorderRadiusCircular,
+                                      shapeAt: RoundedWithShapeAt.all,
+                                      gradient: LinearGradient(
+                                          colors: getCountdownGradient(time)
+                                              .colors)),
+                                ),
+                                // Circular progress indicator
+                                SizedBox(
+                                  width: kCountdownCircleInnerSize,
+                                  height: kCountdownCircleInnerSize,
+                                  child: Stack(
+                                    children: [
+                                      Positioned.fill(
+                                        child: CircularProgressIndicator(
+                                          value: secondProgress,
+                                          strokeWidth: kProgressStrokeWidth,
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                              .withOpacity(0.3),
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Text content
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (time >= 1)
+                                      AnimatedDefaultTextStyle(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        style:
+                                            AppTextStyles.forCountdown(context),
+                                        child: Text(
+                                          time.truncate().toString(),
+                                          style: AppTextStyles.forCountdown(
+                                              context),
+                                        ),
+                                      ),
+                                    if (time >= 1)
+                                      AnimatedDefaultTextStyle(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        style: AppTextStyles.forCountdownReady(
+                                            context),
+                                        child: Text(
+                                          readyText,
+                                          style:
+                                              AppTextStyles.forCountdownReady(
+                                                  context),
+                                        ),
+                                      )
+                                    else
+                                      AnimatedDefaultTextStyle(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        style: AppTextStyles.forCountdownGo(
+                                            context),
+                                        child: Text(
+                                          goText,
+                                          style: AppTextStyles.forCountdownGo(
+                                              context),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
                     },
+                    onFinished: () {},
                   );
-                }
-                cell = SizedBox(
-                  width: buttonWidth - buttonSpacing,
-                  height: buttonHeight - buttonSpacing,
-                  child: button,
+                },
+              ),
+            // Show turn order notice if available
+            if (combatState.willStartFirst != null) ...[
+              const SizedBox(height: kSpaceL),
+              CombatStatusBadge(
+                text: combatState.willStartFirst!
+                    ? lang(context).youWillTakeFirst
+                    : lang(context).opponentWillTakeFirst,
+                isPositive: combatState.willStartFirst!,
+                icon: combatState.willStartFirst!
+                    ? Icons.emoji_events
+                    : Icons.hourglass_bottom,
+              ),
+            ],
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  Widget _buildKeyboard(CombatState combatState) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final keys = keyboardArray.entries.toList();
+        const columns = 3;
+        const rows = 4;
+        final buttonWidth = constraints.maxWidth / columns;
+        final buttonHeight = constraints.maxHeight / rows;
+        const buttonSpacing = 20.0;
+
+        List<Widget> columnChildren = [];
+        for (int r = 0; r < rows; r++) {
+          List<Widget> rowChildren = [];
+          for (int c = 0; c < columns; c++) {
+            int idx = r * columns + c;
+            Widget cell;
+            if (idx < keys.length) {
+              final e = keys[idx];
+              Duration duration = const Duration(milliseconds: 200);
+              Widget button;
+              if (e.key == KeyboardOption.reset) {
+                button = AnimatedButton(
+                  context,
+                  iconData: FontAwesomeIcons.arrowsRotate,
+                  isEnable:
+                      combatState.isAbleToReset && combatState.isAbleToTap,
+                  onPressed: () {
+                    context.read<CombatBloc>().add(
+                          CombatNumberReset(duration: duration),
+                        );
+                  },
+                );
+              } else if (e.key == KeyboardOption.mainMenu) {
+                button = AnimatedButton(
+                  context,
+                  iconData: FontAwesomeIcons.bars,
+                  onPressed: () => _handleMenuButton(context),
                 );
               } else {
-                cell = Padding(
-                  padding: const EdgeInsets.all(buttonSpacing / 2),
-                  child: SizedBox(
-                    width: buttonWidth - buttonSpacing,
-                    height: buttonHeight - buttonSpacing,
-                  ),
+                button = AnimatedButton(
+                  context,
+                  text: e.value.toString(),
+                  style: AppTextStyles.displayLarge(context),
+                  isEnable: combatState.isAbleToTap,
+                  onPressed: () {
+                    context.read<CombatBloc>().add(
+                          CombatTap(keyValue: e.key),
+                        );
+                  },
                 );
               }
-              // Add gap to the right except for last column
-              if (c < columns - 1) {
-                rowChildren.add(Padding(
-                  padding: const EdgeInsets.only(right: tableGap),
-                  child: cell,
-                ));
-              } else {
-                rowChildren.add(cell);
-              }
-            }
-            // Add gap to the bottom except for last row
-            if (r < rows - 1) {
-              tableRows.add(
-                TableRow(
-                  children: rowChildren,
-                ),
-              );
-              // Add a gap row
-              tableRows.add(
-                TableRow(
-                  children: List.generate(
-                    columns,
-                    (_) => const SizedBox(height: tableGap),
-                  ),
-                ),
+              cell = SizedBox(
+                width: buttonWidth - buttonSpacing,
+                height: buttonHeight - buttonSpacing,
+                child: button,
               );
             } else {
-              tableRows.add(
-                TableRow(
-                  children: rowChildren,
-                ),
+              cell = SizedBox(
+                width: buttonWidth - buttonSpacing,
+                height: buttonHeight - buttonSpacing,
               );
             }
+
+            rowChildren.add(cell);
           }
 
-          return Table(
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: tableRows,
+          columnChildren.add(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: rowChildren,
+            ),
           );
-        },
+        }
+
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: columnChildren,
+        );
+      },
+    );
+  }
+
+  /// Build Pick Right controls for Combat mode
+  /// Reuses PickRightButtons widget for consistency with Solo mode
+  Widget _buildPickRightControls(CombatState combatState) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: kSpaceL),
+      child: Column(
+        children: [
+          // Three equation buttons (same widget as Solo mode)
+          Expanded(
+            child: PickRightButtons(
+              key: ValueKey(combatState.equations?.join(',')),
+              equations: combatState.equations ?? [],
+              selectedOption: combatState.selectedOption,
+              isEnabled: combatState.isAbleToTap &&
+                  combatState.isMyTurn &&
+                  combatState.tapTimerRemaining > 0,
+              isCorrectAnimating: combatState.pickRightJustCorrect,
+              onButtonTap: (buttonIndex, position) {
+                context.read<CombatBloc>().add(
+                      CombatPickRightButtonTap(buttonIndex: buttonIndex),
+                    );
+
+                // Trigger firework if correct
+                if (buttonIndex == combatState.correctIndex &&
+                    position != null) {
+                  _animationKey.currentState?.triggers.onAddPoint(position);
+                }
+              },
+            ),
+          ),
+          // Menu button row
+          Padding(
+            padding: const EdgeInsets.only(top: kSpaceM, bottom: kSpaceS),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AnimatedButton(
+                  context,
+                  iconData: FontAwesomeIcons.bars,
+                  onPressed: () => _handleMenuButton(context),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

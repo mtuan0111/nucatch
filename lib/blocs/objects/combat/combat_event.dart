@@ -25,12 +25,15 @@ class CombatGameEnded extends CombatEvent {
   final bool isWinner;
   final GameEndReason? reason;
   final bool sendMessage;
+  final String?
+      correctEquation; // For pick-right mode: sync correct answer text
 
   CombatGameEnded({
     this.isCauseGameOver = true,
     required this.isWinner,
     required this.reason,
     this.sendMessage = true,
+    this.correctEquation,
   });
 }
 
@@ -38,6 +41,13 @@ class CombatTap extends CombatEvent {
   final KeyboardOption keyValue;
 
   CombatTap({required this.keyValue});
+}
+
+/// Event for Pick Right mode button taps in Combat
+class CombatPickRightButtonTap extends CombatEvent {
+  final int buttonIndex;
+
+  CombatPickRightButtonTap({required this.buttonIndex});
 }
 
 class CombatLevelChanged extends CombatEvent {
@@ -118,11 +128,15 @@ class CombatTurnReceived extends CombatEvent {
   final bool isMyTurn;
   final String requirement;
   final String expect;
+  final List<String>? equations; // For Pick Right mode
+  final int? correctIndex; // For Pick Right mode
 
   CombatTurnReceived({
     required this.isMyTurn,
     required this.requirement,
     required this.expect,
+    this.equations,
+    this.correctIndex,
   });
 }
 

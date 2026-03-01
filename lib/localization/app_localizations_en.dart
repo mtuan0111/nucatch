@@ -99,6 +99,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get theCorrectIs => 'The correct is';
 
   @override
+  String get whichOneIsCorrect => 'Which one is correct?';
+
+  @override
   String get name => 'Name';
 
   @override
@@ -229,6 +232,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Randomly selects between generating a complex plus/minus calculation, a higher-level random number, or a multiplication/division calculation for the most challenging experience.';
 
   @override
+  String get pickRightDescription =>
+      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+
+  @override
   String get difficultyEasyTitle => 'Easy Mode';
 
   @override
@@ -239,6 +246,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => 'Extreme Mode';
+
+  @override
+  String get pickRightTitle => 'Pick Right';
 
   @override
   String get confirmChangeDifficulty =>
@@ -695,6 +705,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'Tap the **Start button** to begin. You\'ll then choose between **Solo Mode** for single-player mathematical challenges, or **Combat Mode** for real-time **Bluetooth** multiplayer battles. Let\'s explore both options!';
+
+  @override
+  String get tourInstantStartTitle => 'Instant Start - Quick Play';
+
+  @override
+  String get tourInstantStartDesc =>
+      'Want to jump right in? Tap the **Instant Start button** to begin a solo game immediately with the same difficulty level you played last time. It\'s the fastest way to continue your progress!';
 
   @override
   String get tourSoloTitle => 'Solo Mode - Play Alone';

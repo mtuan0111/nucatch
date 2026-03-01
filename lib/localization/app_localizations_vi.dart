@@ -99,6 +99,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get theCorrectIs => 'Đáp án đúng là';
 
   @override
+  String get whichOneIsCorrect => 'Đáp án nào đúng?';
+
+  @override
   String get name => 'Tên người chơi';
 
   @override
@@ -229,6 +232,10 @@ class AppLocalizationsVi extends AppLocalizations {
       'Câu hỏi đa dạng, số lớn, phép tính phức tạp, mang đến thử thách thực sự cho bạn.';
 
   @override
+  String get pickRightDescription =>
+      'Chọn phương trình đúng! Trò chơi lựa chọn nhanh với bộ đếm thời gian 5 giây.';
+
+  @override
   String get difficultyEasyTitle => 'Dễ';
 
   @override
@@ -239,6 +246,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get difficultyExtremeTitle => 'Cực kỳ khó';
+
+  @override
+  String get pickRightTitle => 'Chọn Đúng';
 
   @override
   String get confirmChangeDifficulty =>
@@ -697,6 +707,13 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get tourStartDesc =>
       'Nhấn nút Bắt đầu để bắt đầu. Sau đó bạn sẽ chọn giữa Chế độ Solo cho các thử thách toán học một người chơi, hoặc Chế độ Chiến đấu cho các trận chiến nhiều người chơi theo thời gian thực qua Bluetooth. Hãy khám phá cả hai tùy chọn!';
+
+  @override
+  String get tourInstantStartTitle => 'Bắt Đầu Nhanh - Chơi Ngay';
+
+  @override
+  String get tourInstantStartDesc =>
+      'Muốn bắt đầu ngay? Nhấn nút **Bắt Đầu Nhanh** để bắt đầu trò chơi solo ngay lập tức với cùng độ khó bạn đã chơi lần trước. Đây là cách nhanh nhất để tiếp tục tiến trình của bạn!';
 
   @override
   String get tourSoloTitle => 'Chế độ Solo - Chơi một mình';
