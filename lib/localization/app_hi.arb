@@ -75,21 +75,18 @@
   "@gameOver": {
     "description": "Game over message"
   },
-  
   "difficultySetting": "कठिनाई सेटिंग",
   "@difficultySetting": {
     "description": "Label for difficulty setting in the game"
   },
-
   "difficulty": "कठिनाई",
   "@difficulty": {
     "description": "Difficulty level of the game"
   },
-  
   "easy": "आसान",
   "@easy": {
     "description": "Easy difficulty level of the game"
-  },  
+  },
   "medium": "मध्यम",
   "@medium": {
     "description": "Medium difficulty level of the game"
@@ -118,12 +115,10 @@
   "@selectLevelMessage": {
     "description": "Message guiding the user to select a level"
   },
-
   "yourScoreIs": "आपका वर्तमान स्कोर है",
   "@yourScoreIs": {
     "description": "Thông báo điểm số của người chơi"
   },
-
   "theCorrectIs": "सही जवाब है",
   "whichOneIsCorrect": "कौन सा सही है?",
   "@theCorrectIs": {
@@ -226,7 +221,6 @@
     "description": "Subject of the message for sharing the score",
     "placeholders": {}
   },
-
   "messageSharePlayedLeaderSubjectWithUsername": "#NuCatch पर {username} के साथ अनुभव",
   "@messageSharePlayedLeaderSubjectWithUsername": {
     "description": "Subject of the message for sharing the score with username",
@@ -237,8 +231,6 @@
       }
     }
   },
-  
-
   "messageSharePlayedLeaderBody": "{username} ने {timeCreated} पर {point} अंक प्राप्त किए। {username} के साथ #NuCatch में शामिल हों!!",
   "@messageSharePlayedLeaderBody": {
     "description": "Message for sharing the score of a player",
@@ -271,7 +263,6 @@
       }
     }
   },
-
   "confirmExit": "क्या आप वाकई छोड़ना चाहते हैं?",
   "@confirmExit": {
     "description": "Warning when the user presses the exit button",
@@ -287,7 +278,6 @@
     "description": "Yes button in the confirmation dialog",
     "placeholders": {}
   },
-
   "insertedSuccess": "आपकी बारी सफलतापूर्वक रिकॉर्ड की गई",
   "@insertedSuccess": {
     "description": "Notification when data is added successfully",
@@ -298,19 +288,16 @@
     "description": "Notification when data addition fails",
     "placeholders": {}
   },
-
   "scanQrToViewDetails": "विवरण देखने के लिए क्यूआर कोड स्कैन करें",
   "@scanQrToViewDetails": {
     "description": "Instruction to scan QR code for details",
     "placeholders": {}
   },
-
   "doYouWantToExit": "क्या आप बाहर निकलना चाहते हैं?",
   "@doYouWantToExit": {
     "description": "Prompt asking the user if they want to exit",
     "placeholders": {}
   },
-
   "difficultyEasyDescription": "साधारण चुनौतियों के लिए थोड़े बढ़े हुए स्तर के साथ एक यादृच्छिक संख्या उत्पन्न करता है।",
   "@difficultyEasyDescription": {
     "description": "Description for easy difficulty level logic"
@@ -327,7 +314,6 @@
   "@difficultyExtremeDescription": {
     "description": "Description for extreme difficulty level logic"
   },
-
   "difficultyEasyTitle": "आसान मोड",
   "@difficultyEasyTitle": {
     "description": "Title for easy difficulty mode"
@@ -344,25 +330,21 @@
   "@difficultyExtremeTitle": {
     "description": "Title for extreme difficulty mode"
   },
-
   "confirmChangeDifficulty": "आपकी बारी रीसेट कर दी जाएगी। क्या आप वाकई कठिनाई बदलना चाहते हैं?",
   "@confirmChangeDifficulty": {
     "description": "Warning when the user changes the difficulty",
     "placeholders": {}
   },
-
   "areYouSure": "क्या आपको यकीन है?",
   "@areYouSure": {
     "description": "Warning when the user performs an important action",
     "placeholders": {}
   },
-
   "no_turn_yet": "अभी तक कोई बारी नहीं",
   "@no_turn_yet": {
     "description": "Notification when there are no turns yet",
     "placeholders": {}
   },
-    
   "daily": "एक दिन में",
   "@daily": {
     "description": "Daily leaderboard"
@@ -371,8 +353,7 @@
   "@dailyDescription": {
     "description": "Description for daily leaderboard"
   },
-
-  "weekly": "एक सप्ताह में", 
+  "weekly": "एक सप्ताह में",
   "@weekly": {
     "description": "Weekly leaderboard"
   },
@@ -388,7 +369,6 @@
   "@allTimeDescription": {
     "description": "Description for all-time leaderboard"
   },
-  
   "updateRequired": "अपडेट आवश्यक",
   "@updateRequired": {
     "description": "Title for force update dialog"
@@ -425,7 +405,6 @@
   "@update": {
     "description": "Button to update app"
   },
-  
   "checkForUpdates": "अपडेट देखें",
   "@checkForUpdates": {
     "description": "Button to check for app updates"
@@ -482,7 +461,6 @@
   "@updatePostponed": {
     "description": "Message when user dismissed update"
   },
-  
   "tapTimerTooltip": "संख्या पर टैप करने के लिए आपके पास {totalSeconds} सेकंड हैं। बार समय के साथ रंग बदलता है: हरा ({halfSeconds} से अधिक), नारंगी ({quarterSeconds}-{halfSeconds}s), लाल ({quarterSeconds} से कम)।",
   "@tapTimerTooltip": {
     "description": "Tooltip explaining the tap timer progress bar",
@@ -501,7 +479,6 @@
       }
     }
   },
-  
   "selectPlayMode": "खेल मोड चुनें",
   "@selectPlayMode": {
     "description": "Title for play mode selection screen"
@@ -608,7 +585,6 @@
   "@openSettings": {
     "description": "Button to open app settings"
   },
-
   "yourTurn": "आपकी बारी",
   "@yourTurn": {
     "description": "Indicates it's the player's turn in combat mode"
@@ -986,5 +962,7 @@
   "restartGame": "गेम पुनः आरंभ करें",
   "confirmRestart": "क्या आप वाकई गेम को पुनः आरंभ करना चाहते हैं?",
   "tourRestartFromSettings": "टूर पुनः आरंभ करें",
-  "tourResetMessage": "टूर रीसेट हो गया है। शुरू करने के लिए मुख्य मेनू पर वापस जाएं।"
+  "tourResetMessage": "टूर रीसेट हो गया है। शुरू करने के लिए मुख्य मेनू पर वापस जाएं।",
+  "pickRightTitle": "Pick Right",
+  "pickRightDescription": "सही समीकरण चुनें! 5 सेकंड के टाइमर के साथ तेज़ चयन खेल।"
 }

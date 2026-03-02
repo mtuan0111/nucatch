@@ -75,21 +75,18 @@
   "@gameOver": {
     "description": "Game over message"
   },
-  
   "difficultySetting": "難易度設定",
   "@difficultySetting": {
     "description": "Label for difficulty setting in the game"
   },
-
   "difficulty": "難易度",
   "@difficulty": {
     "description": "Difficulty level of the game"
   },
-  
   "easy": "かんたん",
   "@easy": {
     "description": "Easy difficulty level of the game"
-  },  
+  },
   "medium": "ふつう",
   "@medium": {
     "description": "Medium difficulty level of the game"
@@ -118,12 +115,10 @@
   "@selectLevelMessage": {
     "description": "Message guiding the user to select a level"
   },
-
   "yourScoreIs": "現在のスコアは",
   "@yourScoreIs": {
     "description": "Thông báo điểm số của người chơi"
   },
-
   "theCorrectIs": "正解は",
   "whichOneIsCorrect": "どちらが正しい？",
   "@theCorrectIs": {
@@ -226,7 +221,6 @@
     "description": "Subject of the message for sharing the score",
     "placeholders": {}
   },
-
   "messageSharePlayedLeaderSubjectWithUsername": "#NuCatch での {username} との体験",
   "@messageSharePlayedLeaderSubjectWithUsername": {
     "description": "Subject of the message for sharing the score with username",
@@ -237,8 +231,6 @@
       }
     }
   },
-  
-
   "messageSharePlayedLeaderBody": "{username} が {timeCreated} に {point} 点を獲得しました。{username} と一緒に #NuCatch に参加しましょう！！",
   "@messageSharePlayedLeaderBody": {
     "description": "Message for sharing the score of a player",
@@ -271,7 +263,6 @@
       }
     }
   },
-
   "confirmExit": "本当に終了しますか？",
   "@confirmExit": {
     "description": "Warning when the user presses the exit button",
@@ -287,7 +278,6 @@
     "description": "Yes button in the confirmation dialog",
     "placeholders": {}
   },
-
   "insertedSuccess": "ターンの記録に成功しました",
   "@insertedSuccess": {
     "description": "Notification when data is added successfully",
@@ -298,19 +288,16 @@
     "description": "Notification when data addition fails",
     "placeholders": {}
   },
-
   "scanQrToViewDetails": "QRコードをスキャンして詳細を表示",
   "@scanQrToViewDetails": {
     "description": "Instruction to scan QR code for details",
     "placeholders": {}
   },
-
   "doYouWantToExit": "終了しますか？",
   "@doYouWantToExit": {
     "description": "Prompt asking the user if they want to exit",
     "placeholders": {}
   },
-
   "difficultyEasyDescription": "レベルが少し高いランダムな数字を生成する、シンプルなチャレンジです。",
   "@difficultyEasyDescription": {
     "description": "Description for easy difficulty level logic"
@@ -327,7 +314,6 @@
   "@difficultyExtremeDescription": {
     "description": "Description for extreme difficulty level logic"
   },
-
   "difficultyEasyTitle": "かんたんモード",
   "@difficultyEasyTitle": {
     "description": "Title for easy difficulty mode"
@@ -344,25 +330,21 @@
   "@difficultyExtremeTitle": {
     "description": "Title for extreme difficulty mode"
   },
-
   "confirmChangeDifficulty": "ターンはリセットされます。本当に難易度を変更しますか？",
   "@confirmChangeDifficulty": {
     "description": "Warning when the user changes the difficulty",
     "placeholders": {}
   },
-
   "areYouSure": "よろしいですか？",
   "@areYouSure": {
     "description": "Warning when the user performs an important action",
     "placeholders": {}
   },
-
   "no_turn_yet": "まだターンがありません",
   "@no_turn_yet": {
     "description": "Notification when there are no turns yet",
     "placeholders": {}
   },
-    
   "daily": "1日以内",
   "@daily": {
     "description": "Daily leaderboard"
@@ -371,8 +353,7 @@
   "@dailyDescription": {
     "description": "Description for daily leaderboard"
   },
-
-  "weekly": "1週間以内", 
+  "weekly": "1週間以内",
   "@weekly": {
     "description": "Weekly leaderboard"
   },
@@ -388,7 +369,6 @@
   "@allTimeDescription": {
     "description": "Description for all-time leaderboard"
   },
-  
   "updateRequired": "アップデートが必要です",
   "@updateRequired": {
     "description": "Title for force update dialog"
@@ -425,7 +405,6 @@
   "@update": {
     "description": "Button to update app"
   },
-  
   "checkForUpdates": "更新を確認",
   "@checkForUpdates": {
     "description": "Button to check for app updates"
@@ -482,7 +461,6 @@
   "@updatePostponed": {
     "description": "Message when user dismissed update"
   },
-  
   "tapTimerTooltip": "数字をタップするのに {totalSeconds} 秒時間が与えられます。時間が経つにつれてバーの色が変わります：緑（{halfSeconds}秒以上）、オレンジ（{quarterSeconds}-{halfSeconds}秒）、赤（{quarterSeconds}秒未満）。",
   "@tapTimerTooltip": {
     "description": "Tooltip explaining the tap timer progress bar",
@@ -501,7 +479,6 @@
       }
     }
   },
-  
   "selectPlayMode": "プレイモード選択",
   "@selectPlayMode": {
     "description": "Title for play mode selection screen"
@@ -608,7 +585,6 @@
   "@openSettings": {
     "description": "Button to open app settings"
   },
-
   "yourTurn": "あなたのターン",
   "@yourTurn": {
     "description": "Indicates it's the player's turn in combat mode"
@@ -986,5 +962,7 @@
   "restartGame": "ゲームを再起動",
   "confirmRestart": "本当にゲームを再起動しますか？",
   "tourRestartFromSettings": "ツアーを再開",
-  "tourResetMessage": "ツアーがリセットされました。開始するにはメインメニューに戻ってください。"
+  "tourResetMessage": "ツアーがリセットされました。開始するにはメインメニューに戻ってください。",
+  "pickRightTitle": "Pick Right",
+  "pickRightDescription": "正しい方程式を選べ！5秒タイマーのスピード選択ゲーム。"
 }

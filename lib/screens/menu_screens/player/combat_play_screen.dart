@@ -148,141 +148,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                               child: Column(
                                 children: [
                                   // Tap timer countdown bar
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Builder(
-                                        builder: (context) {
-                                          // Calculate effective timer duration based on difficulty
-                                          final isPickRight = combatState
-                                                  .difficultyModel
-                                                  ?.difficulty ==
-                                              Difficulty.pickRight;
-                                          final effectiveDuration = isPickRight
-                                              ? kCombatPickRightTimerPerTurn
-                                                  .toDouble()
-                                              : tapTimerDuration;
-
-                                          // Calculate time values using the effective duration
-                                          final totalSeconds =
-                                              effectiveDuration.toInt();
-                                          final halfSeconds =
-                                              (effectiveDuration / 2).toInt();
-                                          final quarterSeconds =
-                                              (effectiveDuration / 4).toInt();
-
-                                          return Tooltip(
-                                            message:
-                                                lang(context).tapTimerTooltip(
-                                              totalSeconds,
-                                              halfSeconds,
-                                              quarterSeconds,
-                                            ),
-                                            child: SizedBox(
-                                              height: kTimerBarHeight,
-                                              child: combatState.combatStatus ==
-                                                      CombatStatus.playing
-                                                  ? Countdown(
-                                                      seconds: combatState
-                                                          .tapTimerRemaining
-                                                          .toInt(),
-                                                      interval: const Duration(
-                                                          milliseconds: 100),
-                                                      build:
-                                                          (BuildContext context,
-                                                              double time) {
-                                                        // Calculate percentage (0-100)
-                                                        final percent = (time /
-                                                                effectiveDuration *
-                                                                100)
-                                                            .toInt();
-
-                                                        // Determine color based on remaining time
-                                                        Color backgroundColor = time >
-                                                                effectiveDuration /
-                                                                    2
-                                                            ? Theme.of(context)
-                                                                .primaryColor
-                                                            : time >
-                                                                    effectiveDuration /
-                                                                        4
-                                                                ? Colors.orange
-                                                                : Colors.red;
-
-                                                        return Stack(
-                                                          clipBehavior:
-                                                              Clip.hardEdge,
-                                                          children: [
-                                                            Positioned.fill(
-                                                              child:
-                                                                  CustomElevatedButton(
-                                                                shapeAt:
-                                                                    RoundedWithShapeAt
-                                                                        .all,
-                                                                backgroundColor:
-                                                                    Theme.of(
-                                                                            context)
-                                                                        .secondaryHeaderColor,
-                                                              ),
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                if (percent > 0)
-                                                                  Expanded(
-                                                                    flex:
-                                                                        percent,
-                                                                    child:
-                                                                        CustomElevatedButton(
-                                                                      onPressed:
-                                                                          () {},
-                                                                      shapeAt:
-                                                                          RoundedWithShapeAt
-                                                                              .all,
-                                                                      backgroundColor:
-                                                                          backgroundColor,
-                                                                    ),
-                                                                  ),
-                                                                Expanded(
-                                                                  flex: 100 -
-                                                                      percent,
-                                                                  child:
-                                                                      Opacity(
-                                                                    opacity: 0,
-                                                                    child:
-                                                                        Container(),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                      onFinished: () {},
-                                                    )
-                                                  : Stack(
-                                                      clipBehavior:
-                                                          Clip.hardEdge,
-                                                      children: [
-                                                        Positioned.fill(
-                                                          child:
-                                                              CustomElevatedButton(
-                                                            shapeAt:
-                                                                RoundedWithShapeAt
-                                                                    .all,
-                                                            backgroundColor: Theme
-                                                                    .of(context)
-                                                                .secondaryHeaderColor,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      const SizedBox(height: kSpaceM),
-                                    ],
-                                  ),
+                                  _buildCountDownBar(combatState),
 
                                   // Combat header with scores and turn indicator
                                   _buildCombatHeader(combatState),
@@ -313,7 +179,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                   combatState.difficultyModel?.difficulty ==
                                       Difficulty.pickRight;
 
-                              if (isPickRightMode) {
+                              if (isPickRightMode
+                                  //  &&
+                                  //     !combatState.opponentJustSucceeded
+                                  ) {
                                 return Expanded(
                                     flex: 3,
                                     child:
@@ -333,6 +202,104 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildCountDownBar(CombatState combatState) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Builder(
+          builder: (context) {
+            // Calculate effective timer duration based on difficulty
+            final isPickRight =
+                combatState.difficultyModel?.difficulty == Difficulty.pickRight;
+            final effectiveDuration = isPickRight
+                ? kCombatPickRightTimerPerTurn.toDouble()
+                : tapTimerDuration;
+
+            // Calculate time values using the effective duration
+            final totalSeconds = effectiveDuration.toInt();
+            final halfSeconds = (effectiveDuration / 2).toInt();
+            final quarterSeconds = (effectiveDuration / 4).toInt();
+
+            return Tooltip(
+              message: lang(context).tapTimerTooltip(
+                totalSeconds,
+                halfSeconds,
+                quarterSeconds,
+              ),
+              child: SizedBox(
+                height: kTimerBarHeight,
+                child: combatState.combatStatus == CombatStatus.playing
+                    ? Countdown(
+                        seconds: combatState.tapTimerRemaining.toInt(),
+                        interval: const Duration(milliseconds: 10),
+                        build: (BuildContext context, double time) {
+                          // Calculate percentage (0-100)
+                          final percent =
+                              (time / effectiveDuration * 100).toInt();
+
+                          // Determine color based on remaining time
+                          Color backgroundColor = time > effectiveDuration / 2
+                              ? Theme.of(context).primaryColor
+                              : time > effectiveDuration / 4
+                                  ? Colors.orange
+                                  : Colors.red;
+
+                          return Stack(
+                            clipBehavior: Clip.hardEdge,
+                            children: [
+                              Positioned.fill(
+                                child: CustomElevatedButton(
+                                  shapeAt: RoundedWithShapeAt.all,
+                                  backgroundColor:
+                                      Theme.of(context).secondaryHeaderColor,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  if (percent > 0)
+                                    Expanded(
+                                      flex: percent,
+                                      child: CustomElevatedButton(
+                                        onPressed: () {},
+                                        shapeAt: RoundedWithShapeAt.all,
+                                        backgroundColor: backgroundColor,
+                                      ),
+                                    ),
+                                  Expanded(
+                                    flex: 100 - percent,
+                                    child: Opacity(
+                                      opacity: 0,
+                                      child: Container(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                        onFinished: () {},
+                      )
+                    : Stack(
+                        clipBehavior: Clip.hardEdge,
+                        children: [
+                          Positioned.fill(
+                            child: CustomElevatedButton(
+                              shapeAt: RoundedWithShapeAt.all,
+                              backgroundColor:
+                                  Theme.of(context).secondaryHeaderColor,
+                            ),
+                          ),
+                        ],
+                      ),
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: kSpaceM),
+      ],
     );
   }
 
@@ -1125,10 +1092,15 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       CombatPickRightButtonTap(buttonIndex: buttonIndex),
                     );
 
-                // Trigger firework if correct
+                // Trigger fireworks simultaneously if correct
                 if (buttonIndex == combatState.correctIndex &&
                     position != null) {
+                  // Firework at the correct button position
                   _animationKey.currentState?.triggers.onAddPoint(position);
+                  // Firework at the life star position (same timing)
+                  final heartPosition = _getWidgetPosition(_heartKey);
+                  _animationKey.currentState?.triggers
+                      .onGainLife(heartPosition);
                 }
               },
             ),
@@ -1189,7 +1161,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     // }
 
     // Trigger life gain animation
-    if (wasLifeIncreasedForAnimation) {
+    // Skip for Pick Right mode - already triggered simultaneously in onButtonTap
+    final isPickRight =
+        state.difficultyModel?.difficulty == Difficulty.pickRight;
+    if (wasLifeIncreasedForAnimation && !isPickRight) {
       final heartPosition = _getWidgetPosition(_heartKey);
       _animationKey.currentState?.triggers.onGainLife(heartPosition);
     }

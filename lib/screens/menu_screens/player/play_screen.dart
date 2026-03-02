@@ -221,7 +221,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                         interval:
                                                             const Duration(
                                                                 milliseconds:
-                                                                    100),
+                                                                    10),
                                                         build: (BuildContext
                                                                 context,
                                                             double time) {

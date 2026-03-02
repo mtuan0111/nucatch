@@ -66,6 +66,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatOpponentLifeUpdate>(_onCombatOpponentLifeUpdate);
     on<CombatBlocReset>(_onCombatBlocReset);
     on<CombatPickRightButtonTap>(_onCombatPickRightButtonTap);
+    on<CombatChangeDifficultyReceived>(_onCombatChangeDifficultyReceived);
 
     // Listen to BLE messages
     _messageSubscription = _roomService.incomingDataStream.listen((data) {
@@ -229,7 +230,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           case CombatMessageType.restartReady:
             add(CombatRestartReadyReceived(
               opponentReady: data['isReady'] as bool,
+              changeDifficulty: data['changeDifficulty'] as bool? ?? false,
             ));
+            break;
+          case CombatMessageType.changeDifficulty:
+            // Host wants to change difficulty - guest navigates to waiting screen
+            add(CombatChangeDifficultyReceived());
             break;
           case CombatMessageType.opponentDisconnected:
             add(CombatOpponentDisconnected());
@@ -291,12 +297,27 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   ) async {
     final difficultyModel = DifficultyModel.models[event.difficulty]!;
 
+    // Reset game state for new match (handles both initial and re-selection)
     emit(state.copyWith(
       difficultyModel: difficultyModel,
       combatStatus: CombatStatus.intro,
-      countDown:
-          kCombatCountDown, // Start countdown at 6 (will show 5-4-3-2-1-GO)
-      willStartFirst: state.isHost, // Host always starts first in initial game
+      countDown: kCombatCountDown,
+      willStartFirst: state.isHost,
+      // Reset game stats for re-selection after game over
+      level: 1,
+      timesCorrect: 0,
+      point: 0,
+      lifeRemaining: kCombatInitialLives,
+      opponentScore: 0,
+      opponentLives: kCombatInitialLives,
+      isGameActive: false,
+      isMyTurn: false,
+      isWaitingForOpponent: false,
+      typing: '',
+      opponentInput: null,
+      requirementString: null,
+      expect: null,
+      clearCorrectEquationDisplay: true,
     ));
 
     // Only HOST sends the difficulty selection message
@@ -306,7 +327,6 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         'difficulty': event.difficulty.toString(),
       });
     }
-    ;
 
     // Wait for countdown to finish (4 seconds)
     for (int i = state.countDown; i > 0; i--) {
@@ -316,7 +336,6 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // After countdown, host starts their turn first
     if (state.isHost) {
-      print('🎮 [Host] Starting my turn first (host goes first)');
       add(CombatTurnStarted(isMyTurn: true));
     }
     // Guest waits for turn_start message from host
@@ -332,8 +351,16 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // Generate new challenge based on difficulty and level using event handler
     await _onCombatGeneratedRequiredString(
         CombatRequiredStringGenerated(), emit);
-    await Future.delayed(
-        const Duration(milliseconds: kAnimationDurationSlow)); // Slight delay
+
+    final isPickRight =
+        state.difficultyModel?.difficulty == Difficulty.pickRight;
+
+    // For non-pick-right modes, add slight delay for UI transition
+    // Pick right skips this to avoid disabled-button gap during turn swap
+    if (!isPickRight) {
+      await Future.delayed(
+          const Duration(milliseconds: kAnimationDurationSlow));
+    }
     final requirement = state.requirementString ?? "";
     final expect = state.expect ?? "";
 
@@ -369,17 +396,20 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     });
 
     // Calculate show time based on level (similar to solo mode)
-    final level = state.level;
-    final diffShowLevelMilisecond = 100; // Increase by 100ms per level
-    final showTime = 1000 + level * diffShowLevelMilisecond;
+    // Skip for Pick Right mode - equations ARE the buttons, no memorization needed
+    if (!isPickRight) {
+      final level = state.level;
+      final diffShowLevelMilisecond = 100; // Increase by 100ms per level
+      final showTime = 1000 + level * diffShowLevelMilisecond;
 
-    // Wait for the show time, then transition to typing mode
-    await Future.delayed(Duration(milliseconds: showTime));
+      // Wait for the show time, then transition to typing mode
+      await Future.delayed(Duration(milliseconds: showTime));
 
-    if (isClosed) return;
+      if (isClosed) return;
+    }
 
     emit(state.copyWith(
-      status: TurnStatus.playing, // Now allow typing
+      status: TurnStatus.playing, // Now allow typing/tapping
     ));
 
     // Start tap timer when typing begins
@@ -407,20 +437,28 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       combatStatus: CombatStatus.playing,
       status: TurnStatus.initial, // Show requirement first
       isGameActive: true, // Mark game as active when turn received
+      pickRightJustCorrect: false, // Reset animation flag - new equations ready
+      selectedOption: null, // Clear selection highlight
     ));
 
     // Calculate show time based on level (similar to solo mode)
-    final level = state.level;
-    const diffShowLevelMilisecond = 100; // Increase by 100ms per level
-    final showTime = 1000 + level * diffShowLevelMilisecond;
+    // Skip for Pick Right mode - equations ARE the buttons, no memorization needed
+    final isPickRight =
+        state.difficultyModel?.difficulty == Difficulty.pickRight;
 
-    // Wait for the show time, then transition to typing mode
-    await Future.delayed(Duration(milliseconds: showTime));
+    if (!isPickRight) {
+      final level = state.level;
+      const diffShowLevelMilisecond = 100; // Increase by 100ms per level
+      final showTime = 1000 + level * diffShowLevelMilisecond;
 
-    if (isClosed) return;
+      // Wait for the show time, then transition to typing mode
+      await Future.delayed(Duration(milliseconds: showTime));
+
+      if (isClosed) return;
+    }
 
     emit(state.copyWith(
-      status: TurnStatus.playing, // Now allow typing
+      status: TurnStatus.playing, // Now allow typing/tapping
     ));
 
     // Start tap timer when typing begins
@@ -536,7 +574,23 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatRestartRequested event,
     Emitter<CombatState> emit,
   ) async {
-    print('🔄 [Combat] Restart requested');
+    if (event.changeDifficulty) {
+      // Host wants to change difficulty - notify guest and navigate to difficulty screen
+      emit(state.copyWith(
+        combatStatus: CombatStatus.choosingDifficulty,
+        isRestartRequested: false,
+        isPlayerReady: false,
+        isOpponentReady: false,
+        clearCorrectEquationDisplay: true,
+      ));
+
+      await _sendMessage({
+        'type': _messageTypeToString(CombatMessageType.changeDifficulty),
+      });
+      return;
+    }
+
+    // Normal restart - same difficulty
     emit(state.copyWith(
       isRestartRequested: true,
       isPlayerReady: false,
@@ -549,24 +603,59 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     });
   }
 
+  Future<void> _onCombatChangeDifficultyReceived(
+    CombatChangeDifficultyReceived event,
+    Emitter<CombatState> emit,
+  ) async {
+    // Guest received change difficulty from host - navigate to waiting screen
+    emit(state.copyWith(
+      combatStatus: CombatStatus.choosingDifficulty,
+      isRestartRequested: false,
+      isPlayerReady: false,
+      isOpponentReady: false,
+      clearCorrectEquationDisplay: true,
+    ));
+  }
+
   Future<void> _onCombatRestartReady(
     CombatRestartReady event,
     Emitter<CombatState> emit,
   ) async {
-    print('🔄 [Combat] Player ready: ${event.isReady}');
+    print(
+        '🔄 [Combat] Player ready: ${event.isReady}, changeDifficulty: ${event.changeDifficulty}');
+
+    // If host is requesting difficulty change, store that intent
+    final wantsChange = event.changeDifficulty
+        ? true
+        : (event.isReady ? state.wantsChangeDifficulty : false);
+
     emit(state.copyWith(
       isPlayerReady: event.isReady,
+      wantsChangeDifficulty: wantsChange,
     ));
 
-    // Send ready status to opponent
+    // Send ready status to opponent (include changeDifficulty flag)
     await _sendMessage({
       'type': _messageTypeToString(CombatMessageType.restartReady),
       'isReady': event.isReady,
+      'changeDifficulty': wantsChange,
     });
 
     // Check if both players are ready
     if (event.isReady && state.isOpponentReady) {
-      await _restartGame(emit);
+      if (state.wantsChangeDifficulty) {
+        // Navigate to difficulty selection instead of restarting
+        emit(state.copyWith(
+          combatStatus: CombatStatus.choosingDifficulty,
+          isRestartRequested: false,
+          isPlayerReady: false,
+          isOpponentReady: false,
+          wantsChangeDifficulty: false,
+          clearCorrectEquationDisplay: true,
+        ));
+      } else {
+        await _restartGame(emit);
+      }
     }
   }
 
@@ -574,14 +663,32 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatRestartReadyReceived event,
     Emitter<CombatState> emit,
   ) async {
-    print('🔄 [Combat] Opponent ready: ${event.opponentReady}');
+    print(
+        '🔄 [Combat] Opponent ready: ${event.opponentReady}, changeDifficulty: ${event.changeDifficulty}');
+
+    // Store opponent's changeDifficulty intent
+    final wantsChange = event.changeDifficulty || state.wantsChangeDifficulty;
+
     emit(state.copyWith(
       isOpponentReady: event.opponentReady,
+      wantsChangeDifficulty: wantsChange,
     ));
 
     // Check if both players are ready
     if (state.isPlayerReady && event.opponentReady) {
-      await _restartGame(emit);
+      if (wantsChange) {
+        // Navigate to difficulty selection instead of restarting
+        emit(state.copyWith(
+          combatStatus: CombatStatus.choosingDifficulty,
+          isRestartRequested: false,
+          isPlayerReady: false,
+          isOpponentReady: false,
+          wantsChangeDifficulty: false,
+          clearCorrectEquationDisplay: true,
+        ));
+      } else {
+        await _restartGame(emit);
+      }
     }
   }
 
@@ -621,6 +728,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       difficultyModel: currentDifficulty, // Keep the same difficulty
       willStartFirst: iLost, // Set to true if I lost (I will start first)
       clearCorrectEquationDisplay: true, // Clear for new match
+      // Clear pick right state from previous round
+      equations: [],
+      correctIndex: null,
+      selectedOption: null,
+      pickRightJustCorrect: false,
     ));
 
     // Wait for countdown to finish (4 seconds)
@@ -803,29 +915,16 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
       await _onCombatAddPoint(CombatAddPoint(), emit);
     } else {
-      // Wrong answer - lose life
+      // Wrong answer - lose life but keep same turn and same equations
       _audioBloc.add(PlayWrongAudio());
       _vibrationBloc.add(VibrateLong());
 
-      // Send wrong move to opponent
-      await _sendMessage({
-        'type': _messageTypeToString(CombatMessageType.moveCompleted),
-        'input': event.buttonIndex.toString(),
-        'wasCorrect': false,
-        'score': state.point,
-        'lives': state.lifeRemaining - 1,
-      });
-
+      // Don't send moveCompleted - that would trigger turn swap on guest side.
+      // CombatLostLife already sends life_update to sync opponent's UI.
       add(CombatLostLife());
 
-      if (!state.isAbleToContinue) {
-        add(CombatGameEnded(isWinner: false, reason: GameEndReason.myLivesOut));
-        return;
-      }
-
-      // Generate new equations for next attempt
+      // Keep same equations (no regeneration) - clear selection and restart timer
       emit(state.copyWith(selectedOption: null));
-      add(CombatRequiredStringGenerated());
       _startTapTimer();
     }
   }
@@ -869,13 +968,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       });
     }
 
-    // For Pick Right mode: generate new equations BEFORE making buttons visible
-    // This prevents the blink where old equations appear then update to new ones
-    if (state.difficultyModel?.difficulty == Difficulty.pickRight) {
-      await _onCombatGeneratedRequiredString(
-          CombatRequiredStringGenerated(), emitter);
-      print(
-          '🎬 [Combat] Pick Right: new equations generated: ${state.equations}');
+    // For non-Pick-Right modes: generate new equations before yielding turn
+    // For Pick Right mode: DON'T generate equations here.
+    // The opponent will generate them in _onCombatTurnStarted and send via BLE.
+    // Generating locally would create a desync (two different equation sets).
+    if (state.difficultyModel?.difficulty != Difficulty.pickRight) {
+      // (non-pick-right modes don't use equations, but keeping for consistency)
     }
 
     // Yield the turn to the opponent - wait for their move
@@ -1365,6 +1463,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatMessageType.gameEnded: 'game_ended',
     CombatMessageType.restartRequested: 'restart_requested',
     CombatMessageType.restartReady: 'restart_ready',
+    CombatMessageType.changeDifficulty: 'change_difficulty',
     CombatMessageType.opponentDisconnected: 'opponent_disconnected',
   };
 
@@ -1376,6 +1475,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     'game_ended': CombatMessageType.gameEnded,
     'restart_requested': CombatMessageType.restartRequested,
     'restart_ready': CombatMessageType.restartReady,
+    'change_difficulty': CombatMessageType.changeDifficulty,
     'opponent_disconnected': CombatMessageType.opponentDisconnected,
   };
 

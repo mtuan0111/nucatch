@@ -1508,3 +1508,37 @@ feat: Utilize the pick right mode
     ```flutter build ios --build-name=2.7.3 --build-number=73 --release```
 
     
+---
+## Released on: 02/03/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 74           | 2.7.4   |
+| iOS      | 74           | 2.7.4   |
+
+### Release note:
+feat: Utilize the pick right mode
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+```markdown
+    [Builded] Version 2.7.4 - 74 / 2.7.4 - 74 _ feat: Utilize the pick right mode
+
+    **Store notices / What's new / Summary:**
+
+    - **English:**  
+        - Enhanced gameplay experience with the new Pick Right mode and performance improvements.
+
+    - **Tiếng Việt:**  
+        - Nâng cao trải nghiệm với chế độ Chọn Đúng mới và cải thiện hiệu suất.
+
+    Flutter build for Android
+    ```flutter build appbundle --build-name=2.7.4 --build-number=74 --release```
+
+    Flutter build for iOS
+    ```flutter build ios --build-name=2.7.4 --build-number=74 --release```
+```
+    

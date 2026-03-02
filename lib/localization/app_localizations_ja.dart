@@ -228,8 +228,7 @@ class AppLocalizationsJa extends AppLocalizations {
       '複雑な足し算/引き算、より高いレベルのランダムな数字、または掛け算/割り算の計算式からランダムに選択する、最もやりがいのある体験です。';
 
   @override
-  String get pickRightDescription =>
-      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+  String get pickRightDescription => '正しい方程式を選べ！5秒タイマーのスピード選択ゲーム。';
 
   @override
   String get difficultyEasyTitle => 'かんたんモード';

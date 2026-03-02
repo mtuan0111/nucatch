@@ -105,37 +105,6 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
   @override
   Widget build(BuildContext context) {
     final playerNavCubit = context.read<PlayerNavCubit>();
-    final playMode = playerNavCubit.currentPlayMode;
-
-    // In combat mode, only host should see difficulty selection
-    if (playMode == PlayMode.combat) {
-      final combatBloc = context.read<CombatBloc>();
-      if (!combatBloc.isHost) {
-        // Guest should never reach this screen in combat mode
-        // Show waiting screen with message
-        return Scaffold(
-          body: Container(
-            decoration: LayoutConfig(context).gradientDecoration,
-            child: SafeArea(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const CircularProgressIndicator(),
-                    const SizedBox(height: kSpaceXL),
-                    Text(
-                      'Waiting for host to select difficulty...',
-                      style: AppTextStyles.titleLarge(context),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      }
-    }
 
     return Scaffold(
       body: Container(
