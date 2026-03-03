@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_event.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show PlayMode;
 
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
-import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
-import 'package:nucatch/blocs/objects/audio/audio_event.dart';
-import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
-import 'package:nucatch/blocs/objects/setting/setting_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
-import 'package:nucatch/blocs/objects/user/user_bloc.dart';
-import 'package:nucatch/blocs/objects/user/user_state.dart';
-import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
-import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/navs/player_nav.dart';
 import 'package:nucatch/navs/top_score_nav.dart';
@@ -26,6 +16,7 @@ import 'package:nucatch/screens/menu_screens/about_screen.dart';
 
 import 'package:nucatch/screens/menu_screen.dart';
 import 'package:nucatch/screens/menu_screens/setting_screen.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class MenuNav extends StatefulWidget {
   const MenuNav({super.key});

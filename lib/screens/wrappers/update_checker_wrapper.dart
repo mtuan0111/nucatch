@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch/blocs/app_version/app_version_bloc.dart';
-import 'package:nucatch/blocs/app_version/app_version_event.dart';
-import 'package:nucatch/blocs/app_version/app_version_state.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/screens/dialogs/update_notice_dialog.dart';
 
 class UpdateCheckerWrapper extends StatefulWidget {

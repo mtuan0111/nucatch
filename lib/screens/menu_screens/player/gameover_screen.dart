@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,13 +11,11 @@ import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
-import 'package:nucatch/blocs/objects/user/user_bloc.dart';
+import 'package:skeleton_core/skeleton_core.dart' hide LoadData;
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/extension.dart';
 
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 import 'package:nucatch/widgets/admob_banner.dart';
 import 'package:nucatch/widgets/game_over_regular.dart';

@@ -3,8 +3,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
-import 'package:nucatch/helpers/preferences_key.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/models/turn_record_model.dart';
+import 'package:nucatch/helpers/preferences_key.dart';
 
 class TurnRecordedServices {
   late final FirebaseFirestore? firebaseFirestore;
@@ -129,8 +130,8 @@ class TurnRecordedServices {
     }
 
     query = query
-        .orderBy(PreferencesKey.POINT, descending: true)
-        .orderBy(PreferencesKey.RECORDED_TIME)
+        .orderBy(NucatchPreferencesKey.POINT, descending: true)
+        .orderBy(NucatchPreferencesKey.RECORDED_TIME)
         .limit(limit);
 
     return _queryFirestore(
@@ -151,9 +152,9 @@ class TurnRecordedServices {
 
     Query<Map<String, dynamic>> query = firebaseFirestore!
         .collection('turn_records')
-        .where(PreferencesKey.RECORDED_TIME,
+        .where(NucatchPreferencesKey.RECORDED_TIME,
             isGreaterThanOrEqualTo: startOfDayMillis)
-        .where(PreferencesKey.RECORDED_TIME, isLessThan: endOfDayMillis);
+        .where(NucatchPreferencesKey.RECORDED_TIME, isLessThan: endOfDayMillis);
 
     // Filter by user ID if provided
     if (userId != null) {
@@ -161,8 +162,8 @@ class TurnRecordedServices {
     }
 
     query = query
-        .orderBy(PreferencesKey.POINT, descending: true)
-        .orderBy(PreferencesKey.RECORDED_TIME)
+        .orderBy(NucatchPreferencesKey.POINT, descending: true)
+        .orderBy(NucatchPreferencesKey.RECORDED_TIME)
         .limit(limit);
 
     return _queryFirestore(
@@ -180,7 +181,7 @@ class TurnRecordedServices {
 
     Query<Map<String, dynamic>> query = firebaseFirestore!
         .collection('turn_records')
-        .where(PreferencesKey.RECORDED_TIME,
+        .where(NucatchPreferencesKey.RECORDED_TIME,
             isGreaterThanOrEqualTo: weekAgoMillis);
 
     // Filter by user ID if provided
@@ -189,8 +190,8 @@ class TurnRecordedServices {
     }
 
     query = query
-        .orderBy(PreferencesKey.POINT, descending: true)
-        .orderBy(PreferencesKey.RECORDED_TIME)
+        .orderBy(NucatchPreferencesKey.POINT, descending: true)
+        .orderBy(NucatchPreferencesKey.RECORDED_TIME)
         .limit(limit);
 
     return _queryFirestore(

@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/blocs/objects/tour/tour_bloc.dart';
 import 'package:nucatch/blocs/objects/tour/tour_event.dart';
 import 'package:nucatch/blocs/objects/tour/tour_state.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 
 /// Spotlight overlay that highlights a target widget during the tour
 /// and allows users to tap the actual element to proceed

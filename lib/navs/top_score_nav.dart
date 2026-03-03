@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_event.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_state.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_state.dart';
 import 'package:nucatch/screens/menu_screens/top_score_details_screen.dart';
 import 'package:nucatch/screens/menu_screens/top_score_screen.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class TopScoreNav extends StatefulWidget {
   const TopScoreNav({super.key});

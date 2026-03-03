@@ -32,6 +32,7 @@ class CombatState extends TurnState {
       opponentJustSucceeded; // Track when opponent successfully completes for firework animation
   final bool
       opponentJustLostLife; // Track when opponent loses life for red blink animation
+
   final bool
       pickRightJustCorrect; // Track when pick-right answer is correct for scale+fade animation
   final String?

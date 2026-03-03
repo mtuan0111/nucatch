@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'dart:math' as math;
 
 import 'package:nucatch/helpers/extension.dart';

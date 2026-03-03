@@ -3,23 +3,18 @@ import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
-import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
-import 'package:nucatch/blocs/objects/audio/audio_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
-import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
-import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/preferences_key.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/models/turn_record_model.dart';
-import 'package:nucatch/services/user_services.dart';
 import 'package:nucatch/services/turn_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:nucatch/helpers/preferences_key.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class TurnBloc extends Bloc<TurnEvent, TurnState> {
   final TurnRecordedServices _turnedServices = TurnRecordedServices();
@@ -559,7 +554,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     // Save the last used difficulty for instant start feature
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(
-      PreferencesKey.LAST_USED_DIFFICULTY,
+      NucatchPreferencesKey.LAST_USED_DIFFICULTY,
       event.difficulty.name,
     );
 

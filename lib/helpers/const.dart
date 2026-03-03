@@ -1,15 +1,19 @@
 // ignore: constant_identifier_names
+// ignore_for_file: unused_import
+
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:nucatch/localization/app_localizations.dart';
 
+// Re-export common constants from skeleton_core
+export 'package:skeleton_core/skeleton_core.dart'
+    show LayoutConfig, languages, timeDateClient, timeDateServer;
+
+// Game-specific constants
 const diffShowLevelMilisecond = 250;
 const double tapTimerDuration = 60.0; // Seconds for each tap countdown
-
-const String timeDateClient = "dd/MM/yyyy hh:mm a";
-const String timeDateServer = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
 // BLE Combat Mode constants
 const String kBleAppPrefix = 'nucatch';
@@ -24,19 +28,6 @@ const int kSoloInitialLives = 3; // Starting lives in solo mode
 const int kCombatPickRightTimerPerTurn =
     10; // Seconds per turn for combat pick-right mode
 
-const Map<String, String> languages = {
-  'en': "English",
-  'vi': "Tiếng Việt",
-  'es': "Español",
-  'zh': "中文",
-  'fr': "Français",
-  'de': "Deutsch",
-  'ja': "日本語",
-  'th': "ไทย",
-  'id': "Bahasa Indonesia",
-  'hi': "हिन्दी",
-};
-
 const String secretKey = "NUCATCH_NO_NEED_TO_CHEAT_ME";
 const int luckyNumber = 11;
 String encodedKey = md5.convert(utf8.encode(secretKey)).toString();
@@ -47,68 +38,6 @@ String profileUrlShareWithKey(profileUrl) =>
 String defaultUsername(context) => lang(context).anonymous;
 
 AppLocalizations lang(context) => AppLocalizations.of(context)!;
-
-class LayoutConfig {
-  final BuildContext context;
-
-// Layout
-  static double boxSize = 80;
-  static double layoutBorderRadius = 30;
-
-  static double opacityDisabled = 0.5;
-
-  LayoutConfig(this.context);
-
-  // TextStyle methods removed - now using AppTextStyles class
-  // See lib/helpers/app_text_styles.dart for centralized TextStyle system
-
-  static ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(
-        LayoutConfig.layoutBorderRadius,
-      ),
-    ),
-    foregroundColor: const Color.fromARGB(
-      221,
-      126,
-      109,
-      109,
-    ),
-
-    shadowColor: Colors.grey, // Added background grey
-  );
-
-  BoxDecoration get gradientDecoration => BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Theme.of(context).primaryColor,
-            Theme.of(context).secondaryHeaderColor,
-          ],
-        ),
-      );
-
-  BoxDecoration get gradientDecorationReverted => BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Theme.of(context).primaryColor,
-            Theme.of(context).secondaryHeaderColor,
-          ].reversed.toList(),
-        ),
-      );
-
-  BoxDecoration get boxDecoration => BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          LayoutConfig.layoutBorderRadius,
-        ),
-        border: Border.all(
-          color: Theme.of(context).scaffoldBackgroundColor,
-        ),
-      );
-}
 
 // AdMob Configuration
 class AdMobConfig {

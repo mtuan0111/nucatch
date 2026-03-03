@@ -5,21 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/animations/animated_game_wrapper.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/widgets/pick_right_buttons.dart';
 import 'package:nucatch/widgets/combat_status_badge.dart';
 import 'package:timer_count_down/timer_count_down.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class CombatPlayScreen extends StatefulWidget {
   const CombatPlayScreen({super.key});
@@ -1139,8 +1138,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
         state.lifeRemaining < _prevLifeForAnimation!;
 
     // Track opponent score changes
-    final wasOpponentScoreIncreased = _prevOpponentScoreForAnimation != null &&
-        state.opponentScore > _prevOpponentScoreForAnimation!;
 
     // // Trigger point animation
     // if (wasPointIncreased) {

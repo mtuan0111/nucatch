@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../../../ble_plat_services"
+		},
+		{
+			"path": "../../../skeleton_core"
 		}
 	],
 	"settings": {}

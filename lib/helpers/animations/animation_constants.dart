@@ -2,7 +2,7 @@
 /// All size, width, height, and dimension values are centralized here
 library;
 
-import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 
 // ============================================================================
 // SCREEN SHAKE CONSTANTS

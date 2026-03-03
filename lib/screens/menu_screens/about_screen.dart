@@ -2,22 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:nucatch/blocs/app_version/app_version_bloc.dart';
-import 'package:nucatch/blocs/app_version/app_version_event.dart';
-import 'package:nucatch/blocs/app_version/app_version_state.dart';
-import 'package:nucatch/blocs/objects/setting/setting_bloc.dart';
-import 'package:nucatch/blocs/objects/setting/setting_state.dart';
-import 'package:nucatch/blocs/objects/user/user_bloc.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
-import 'package:nucatch/blocs/objects/user/user_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
-import 'package:nucatch/models/setting_model.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key, required this.title});
@@ -32,7 +23,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
   SettingBloc get settingBloc => context.read<SettingBloc>();
   SettingState get settingState => settingBloc.state;
-  SettingModel get settingModel => settingState.model;
+  BaseSettingModel get settingModel => settingState.model;
 
   UserBloc get userBloc => context.read<UserBloc>();
   UserState get userState => userBloc.state;

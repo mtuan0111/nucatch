@@ -2,19 +2,15 @@ import 'dart:async';
 import 'dart:developer' as developer;
 import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
-import 'package:nucatch/blocs/objects/audio/audio_bloc.dart';
-import 'package:nucatch/blocs/objects/audio/audio_event.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
-import 'package:nucatch/blocs/objects/vibration/vibration_bloc.dart';
-import 'package:nucatch/blocs/objects/vibration/vibration_event.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class CombatBloc extends Bloc<CombatEvent, CombatState> {
   final CombatBleService _roomService;

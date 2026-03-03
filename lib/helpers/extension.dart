@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/models/turn_record_model.dart';
+
+// Re-export common extensions from skeleton_core
+export 'package:skeleton_core/skeleton_core.dart'
+    show ColorCustome, LinearGradientCustom, StringExtensions;
 
 extension DateTimeExtensions on DateTime {
   String formatClient() {
@@ -49,7 +52,7 @@ extension ListOfTurnRecordedModel on List<TurnRecordedModel> {
   }
 }
 
-extension StringExtensions on String {
+extension NucatchStringExtensions on String {
   DateTime toDate() {
     try {
       return DateFormat(timeDateClient).parse(this);
@@ -66,15 +69,6 @@ extension StringExtensions on String {
     }
   }
 
-  // Add quotes to the keys of a JSON string
-  // Example: {key: value} -> {"key": value}
-  // This is useful for parsing JSON strings that are not properly formatted
-  // as valid JSON
-  // Note: This function assumes that the input string is a valid JSON string
-  // with keys that are not quoted
-  // and that the values are not strings that contain colons
-  // Example: {key: "value: with colon"} -> {"key": "value: with colon"}
-  // This function will not work for nested JSON objects
   String fixJsonString() {
     final regex = RegExp(r'(\w+):\s*([^,{}\[\]]+)');
     return replaceAllMapped(
@@ -105,85 +99,5 @@ extension StringExtensions on String {
     }
 
     return evenString + oddString;
-  }
-
-  String snakeCaseToCamel() {
-    if (isEmpty) return this;
-
-    List<String> parts = split('_');
-    String camelCaseString = parts[0];
-
-    for (int i = 1; i < parts.length; i++) {
-      String part = parts[i];
-      if (part.isNotEmpty) {
-        camelCaseString +=
-            part[0].toUpperCase() + part.substring(1).toLowerCase();
-      }
-    }
-
-    return camelCaseString;
-  }
-}
-
-extension ColorCustome on Color {
-  Color getDarker({int percentage = 50}) {
-    int r =
-        (((this.r * 255.0).round() & 0xff) * (100 - percentage) / 100).round();
-    int g =
-        (((this.g * 255.0).round() & 0xff) * (100 - percentage) / 100).round();
-    int b =
-        (((this.b * 255.0).round() & 0xff) * (100 - percentage) / 100).round();
-    int a = (this.a * 255.0).round() & 0xff;
-    return Color.fromARGB(a, r, g, b);
-  }
-
-  Color getLighter({int percentage = 50}) {
-    int r = (((this.r * 255.0).round() & 0xff) +
-            ((255 - ((this.r * 255.0).round() & 0xff)) * percentage / 100))
-        .round();
-    int g = (((this.g * 255.0).round() & 0xff) +
-            ((255 - ((this.g * 255.0).round() & 0xff)) * percentage / 100))
-        .round();
-    int b = (((this.b * 255.0).round() & 0xff) +
-            ((255 - ((this.b * 255.0).round() & 0xff)) * percentage / 100))
-        .round();
-    int a = (this.a * 255.0).round() & 0xff;
-    return Color.fromARGB(a, r, g, b);
-  }
-
-  Color getTheOpposite({double percent = 30}) {
-    int r = 255 - (((this.r * 255.0).round() & 0xff) * percent / 100).round();
-    int g = 255 - (((this.g * 255.0).round() & 0xff) * percent / 100).round();
-    int b = 255 - (((this.b * 255.0).round() & 0xff) * percent / 100).round();
-    int a = (this.a * 255.0).round() & 0xff;
-    return Color.fromARGB(a, r, g, b);
-  }
-
-  /// Returns a smart contrasting color based on the luminance of this color.
-  /// If this color is light (luminance > 0.5), returns a dark color from the theme.
-  /// If this color is dark (luminance <= 0.5), returns a light color from the theme.
-  Color getSmartColor(BuildContext context) {
-    final luminance = computeLuminance();
-    final theme = Theme.of(context);
-    // If background is light (luminance > 0.5), use dark/black text
-    // If background is dark (luminance <= 0.5), use scaffoldBackgroundColor (light) text
-    return luminance > 0.5
-        ? theme.colorScheme.onSurface
-        : theme.scaffoldBackgroundColor;
-  }
-}
-
-extension LinearGradientCustom on LinearGradient {
-  getDarker({int percentage = 50}) {
-    return LinearGradient(
-      begin: begin,
-      end: end,
-      colors: colors
-          .map((color) => color.getDarker(percentage: percentage))
-          .toList(),
-      stops: stops,
-      tileMode: tileMode,
-      transform: transform,
-    );
   }
 }

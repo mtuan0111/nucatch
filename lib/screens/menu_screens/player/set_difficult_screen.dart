@@ -1,9 +1,10 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
-import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_event.dart';
+import 'package:skeleton_core/skeleton_core.dart' hide LoadData;
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
@@ -14,16 +15,13 @@ import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
-import 'package:nucatch/blocs/objects/user/user_bloc.dart';
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/preferences_key.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
+import 'package:nucatch/helpers/preferences_key.dart';
 
 class SetDifficultScreen extends StatefulWidget {
   const SetDifficultScreen({super.key});
@@ -69,7 +67,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
         if (difficulty == null) {
           final prefs = await SharedPreferences.getInstance();
           final savedDifficulty = prefs.getString(
-            PreferencesKey.LAST_USED_DIFFICULTY,
+            NucatchPreferencesKey.LAST_USED_DIFFICULTY,
           );
 
           difficulty = Difficulty.easy;

@@ -7,15 +7,11 @@ import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_event.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
-import 'package:nucatch/blocs/objects/user/user_bloc.dart';
-import 'package:nucatch/blocs/objects/user/user_state.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/models/turn_record_model.dart';
-import 'package:nucatch/services/auth_services.dart';
 import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 

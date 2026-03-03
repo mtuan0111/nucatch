@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
@@ -10,6 +10,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/screens/menu_screens/player/gameover_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/set_difficult_screen.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 /// Navigator for Solo Mode screens
 class SoloNav extends StatelessWidget {

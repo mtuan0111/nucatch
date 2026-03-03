@@ -1,13 +1,15 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 /// Playing controls widget for Regular (normal) difficulty modes
 /// Displays 3x4 numeric keypad with numbers 0-9, Reset, and Main Menu buttons

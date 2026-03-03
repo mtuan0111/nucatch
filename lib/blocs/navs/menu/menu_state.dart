@@ -1,18 +1,25 @@
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 
-abstract class MenuState {}
+// Re-export menu types from skeleton_core
+export 'package:skeleton_core/skeleton_core.dart'
+    show
+        MenuState,
+        MenuOption,
+        Menu,
+        Play,
+        InstantStart,
+        TopScore,
+        Setting,
+        About,
+        Exit,
+        MenuItemConfig,
+        buildMenuItems,
+        defaultMenuIcons;
 
-enum MenuOption {
-  start,
-  instantStart,
-  topScore,
-  setting,
-  about,
-  exit,
-}
-
+/// Game-specific: Builds the localized menu array for nucatch.
 Map<MenuOption, Map<String, dynamic>> menuArray(BuildContext context) => {
       MenuOption.instantStart: {
         "text": lang(context).instantStart,
@@ -40,6 +47,7 @@ Map<MenuOption, Map<String, dynamic>> menuArray(BuildContext context) => {
       },
     };
 
+/// Game-specific: Keyboard options for the nuCatch game.
 enum KeyboardOption {
   one,
   two,
@@ -70,17 +78,3 @@ const Map<KeyboardOption, int> keyboardArray = {
   KeyboardOption.zero: 0,
   KeyboardOption.mainMenu: 11,
 };
-
-class Menu extends MenuState {}
-
-class Play extends MenuState {}
-
-class InstantStart extends MenuState {}
-
-class TopScore extends MenuState {}
-
-class Setting extends MenuState {}
-
-class About extends MenuState {}
-
-class Exit extends MenuState {}

@@ -4,7 +4,7 @@ import 'dart:io' show Platform;
 
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 
 /// A reusable widget that displays a Google AdMob banner ad.
 ///

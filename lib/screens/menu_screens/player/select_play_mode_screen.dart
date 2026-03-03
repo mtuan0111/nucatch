@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_event.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 
 class SelectPlayModeScreen extends StatefulWidget {

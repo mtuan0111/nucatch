@@ -5,9 +5,8 @@ import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 
 /// Combat Mode Setup Screen - Choose to host or join a room

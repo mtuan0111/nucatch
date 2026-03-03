@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_bloc.dart';
-import 'package:nucatch/blocs/navs/menu/menu_event.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/objects/tour/tour_bloc.dart';
 import 'package:nucatch/blocs/objects/tour/tour_event.dart';
 import 'package:nucatch/blocs/objects/tour/tour_state.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 
 /// Global tour wrapper that manages all tour dialogs from the root level
 /// This eliminates dialog stacking issues and centralizes tour logic

@@ -1,17 +1,12 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
-class PreferencesKey {
-  static const USERNAME = "username";
-  static const FIREBASE_USER_ID = "firebase_user_id";
+// Re-export common keys from skeleton_core
+export 'package:skeleton_core/skeleton_core.dart' show PreferencesKey;
 
-  static const NUMBER_OF_TOP_BOARD = "number_of_top_board";
-  static const ONLY_SHOW_MY_RECORDED = "only_show_my_recorded";
-  static const FONT_SIZE = "font_size";
-  static const VOL = "vol";
-  static const IS_VIBRATE = "is_variant";
-  static const LOCALE = "locale";
-  static const THEME_MODE = "theme_mode";
-
+/// Game-specific preference keys for nuCatch.
+/// Common keys (USERNAME, FIREBASE_USER_ID, VOL, IS_VIBRATE, etc.)
+/// are available via [PreferencesKey] from skeleton_core.
+class NucatchPreferencesKey {
   static const TURN_ID = "turn_id";
   static const LIST_TURN_RECORDED = "list_turn_recorded";
   static const PLAYED_USERNAME = "played_username";

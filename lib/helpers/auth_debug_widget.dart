@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
-import 'package:nucatch/services/auth_services.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 
 /// Debug widget to verify Firebase Anonymous Authentication
 ///

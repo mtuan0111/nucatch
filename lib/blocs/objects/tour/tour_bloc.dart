@@ -1,7 +1,9 @@
+// ignore_for_file: unused_import
+
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'tour_event.dart';
 import 'tour_state.dart';
@@ -163,36 +165,6 @@ class TourBloc extends Bloc<TourEvent, TourState> {
           const Duration(milliseconds: kAnimationDurationSlow));
       add(TourStarted());
     }
-  }
-
-  /// Get next step that is not combat-related for iOS
-  int _getNextNonCombatStep(int step) {
-    final currentTourStep = TourStep.values[step];
-
-    // Skip combat mode, create room, and join room steps for iOS
-    if (currentTourStep == TourStep.combatMode ||
-        currentTourStep == TourStep.createRoom ||
-        currentTourStep == TourStep.joinRoom) {
-      // Skip to leaderboard (step after joinRoom)
-      return TourStep.leaderboard.index;
-    }
-
-    return step;
-  }
-
-  /// Get previous step that is not combat-related for iOS
-  int _getPreviousNonCombatStep(int step) {
-    final currentTourStep = TourStep.values[step];
-
-    // If going back from leaderboard, skip combat steps and go to soloMode
-    if (currentTourStep == TourStep.leaderboard ||
-        currentTourStep == TourStep.joinRoom ||
-        currentTourStep == TourStep.createRoom ||
-        currentTourStep == TourStep.combatMode) {
-      return TourStep.soloMode.index;
-    }
-
-    return step;
   }
 }
 

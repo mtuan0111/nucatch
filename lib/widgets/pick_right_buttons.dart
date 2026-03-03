@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 
 /// Three-button vertical layout for Pick Right difficulty mode
 /// Displays three equations for the player to choose from

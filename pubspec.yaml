@@ -75,6 +75,9 @@ dependencies:
     #   url: git@github.com:mtuan0111/blue_plat_services.git
     #   ref: main
   google_mobile_ads: ^5.2.0
+  # Common game-shell package
+  skeleton_core:
+    path: ../skeleton_core
 
 
 dependency_overrides:

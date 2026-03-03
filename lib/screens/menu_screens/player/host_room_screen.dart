@@ -6,12 +6,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/helpers/combat_dialogs.dart';
-import 'package:nucatch/helpers/app_text_styles.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/helpers/ui_constants.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
 import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 

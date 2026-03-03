@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../ui_constants.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'animated_game_wrapper.dart';
 
 /// Example integration of the animation system into Solo Playing Mode
@@ -52,7 +52,8 @@ class _AnimationExampleScreenState extends State<AnimationExampleScreen> {
           // Score counter
           Container(
             key: _scoreKey,
-            padding: const EdgeInsets.symmetric(horizontal: kPaddingL, vertical: kPaddingSM),
+            padding: const EdgeInsets.symmetric(
+                horizontal: kPaddingL, vertical: kPaddingSM),
             decoration: BoxDecoration(
               color: Colors.amber[700],
               borderRadius: BorderRadius.circular(20),
