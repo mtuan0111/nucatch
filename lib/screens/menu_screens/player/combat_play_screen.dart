@@ -137,64 +137,63 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   return true;
                 },
                 builder: (context, combatState) {
-                  return Container(
-                    decoration: LayoutConfig(context).gradientDecoration,
-                    child: SafeArea(
-                      child: DeviceWrapper(
-                        child: Column(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  // Tap timer countdown bar
-                                  _buildCountDownBar(combatState),
+                  return Stack(
+                    children: [
+                      Container(
+                        decoration: LayoutConfig(context).gradientDecoration,
+                        child: SafeArea(
+                          child: DeviceWrapper(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    children: [
+                                      // Tap timer countdown bar
+                                      _buildCountDownBar(combatState),
 
-                                  // Combat header with scores and turn indicator
-                                  _buildCombatHeader(combatState),
+                                      // Combat header with scores and turn indicator
+                                      _buildCombatHeader(combatState),
 
-                                  // Life display with animation
-                                  _buildLifeDisplay(combatState),
+                                      // Life display with animation
+                                      _buildLifeDisplay(combatState),
 
-                                  // Game area - shows challenge or typing
-
-                                  Expanded(
-                                    child: Stack(
-                                      children: [
-                                        _buildGameArea(combatState),
-                                        Positioned(
-                                          child: _buildCountDown(combatState),
-                                        ),
-                                      ],
-                                    ),
+                                      // Game area - shows challenge or typing
+                                      Expanded(
+                                        child: _buildGameArea(combatState),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+
+                                // Keyboard
+                                Builder(builder: (context) {
+                                  // Check if Pick Right mode
+                                  final isPickRightMode =
+                                      combatState.difficultyModel?.difficulty ==
+                                          Difficulty.pickRight;
+
+                                  if (isPickRightMode
+                                      //  &&
+                                      //     !combatState.opponentJustSucceeded
+                                      ) {
+                                    return Expanded(
+                                        flex: 3,
+                                        child: _buildPickRightControls(
+                                            combatState));
+                                  }
+                                  return Expanded(
+                                      flex: 2,
+                                      child: _buildKeyboard(combatState));
+                                }),
+                              ],
                             ),
-
-                            // Keyboard
-                            Builder(builder: (context) {
-                              // Check if Pick Right mode
-                              final isPickRightMode =
-                                  combatState.difficultyModel?.difficulty ==
-                                      Difficulty.pickRight;
-
-                              if (isPickRightMode
-                                  //  &&
-                                  //     !combatState.opponentJustSucceeded
-                                  ) {
-                                return Expanded(
-                                    flex: 3,
-                                    child:
-                                        _buildPickRightControls(combatState));
-                              }
-                              return Expanded(
-                                  flex: 2, child: _buildKeyboard(combatState));
-                            }),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                      // Full-screen countdown overlay (blur + centered)
+                      _buildCountDown(combatState),
+                    ],
                   );
                 },
               ),
@@ -805,27 +804,23 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   Widget _buildCountDown(CombatState combatState) {
     // Show countdown intro animation
     if (combatState.combatStatus == CombatStatus.intro) {
-      return Expanded(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (!context.read<CombatBloc>().isClosed)
-              CountdownOverlay(seconds: combatState.countDown),
-            // Show turn order notice if available
-            if (combatState.willStartFirst != null) ...[
-              const SizedBox(height: kSpaceL),
-              CombatStatusBadge(
-                text: combatState.willStartFirst!
-                    ? lang(context).youWillTakeFirst
-                    : lang(context).opponentWillTakeFirst,
-                isPositive: combatState.willStartFirst!,
-                icon: combatState.willStartFirst!
-                    ? Icons.emoji_events
-                    : Icons.hourglass_bottom,
-              ),
-            ],
+      return CountdownOverlay(
+        seconds: combatState.countDown,
+        bottomChildren: [
+          // Show turn order notice if available
+          if (combatState.willStartFirst != null) ...[
+            const SizedBox(height: kSpaceL),
+            CombatStatusBadge(
+              text: combatState.willStartFirst!
+                  ? lang(context).youWillTakeFirst
+                  : lang(context).opponentWillTakeFirst,
+              isPositive: combatState.willStartFirst!,
+              icon: combatState.willStartFirst!
+                  ? Icons.emoji_events
+                  : Icons.hourglass_bottom,
+            ),
           ],
-        ),
+        ],
       );
     } else {
       return const SizedBox.shrink();

@@ -320,6 +320,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                         const SizedBox(height: kSpaceM),
                                       ],
                                     ),
+
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -836,18 +837,7 @@ class _PlayScreenState extends State<PlayScreen> {
                       ),
                     ),
                     if (turnState.status == TurnStatus.intro)
-                      Positioned(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              if (!context.read<TurnBloc>().isClosed)
-                                CountdownOverlay(seconds: turnState.countDown),
-                            ],
-                          ),
-                        ),
-                      ),
+                      CountdownOverlay(seconds: turnState.countDown),
                   ],
                 );
               },
