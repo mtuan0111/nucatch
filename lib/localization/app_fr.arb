@@ -75,21 +75,18 @@
   "@gameOver": {
     "description": "Game over message"
   },
-  
   "difficultySetting": "Réglage de la difficulté",
   "@difficultySetting": {
     "description": "Label for difficulty setting in the game"
   },
-
   "difficulty": "Difficulté",
   "@difficulty": {
     "description": "Difficulty level of the game"
   },
-  
   "easy": "Facile",
   "@easy": {
     "description": "Easy difficulty level of the game"
-  },  
+  },
   "medium": "Moyen",
   "@medium": {
     "description": "Medium difficulty level of the game"
@@ -118,12 +115,10 @@
   "@selectLevelMessage": {
     "description": "Message guiding the user to select a level"
   },
-
   "yourScoreIs": "Votre score actuel est",
   "@yourScoreIs": {
     "description": "Thông báo điểm số của người chơi"
   },
-
   "theCorrectIs": "La bonne réponse est",
   "whichOneIsCorrect": "Laquelle est correcte ?",
   "@theCorrectIs": {
@@ -226,7 +221,6 @@
     "description": "Subject of the message for sharing the score",
     "placeholders": {}
   },
-
   "messageSharePlayedLeaderSubjectWithUsername": "Expérience avec {username} sur #NuCatch",
   "@messageSharePlayedLeaderSubjectWithUsername": {
     "description": "Subject of the message for sharing the score with username",
@@ -237,8 +231,6 @@
       }
     }
   },
-  
-
   "messageSharePlayedLeaderBody": "{username} a obtenu {point} points à {timeCreated}. Rejoignez #NuCatch avec {username} !!",
   "@messageSharePlayedLeaderBody": {
     "description": "Message for sharing the score of a player",
@@ -271,7 +263,6 @@
       }
     }
   },
-
   "confirmExit": "Êtes-vous sûr de vouloir quitter ?",
   "@confirmExit": {
     "description": "Warning when the user presses the exit button",
@@ -287,7 +278,6 @@
     "description": "Yes button in the confirmation dialog",
     "placeholders": {}
   },
-
   "insertedSuccess": "Tour enregistré avec succès",
   "@insertedSuccess": {
     "description": "Notification when data is added successfully",
@@ -298,19 +288,16 @@
     "description": "Notification when data addition fails",
     "placeholders": {}
   },
-
   "scanQrToViewDetails": "Scannez le code QR pour voir les détails",
   "@scanQrToViewDetails": {
     "description": "Instruction to scan QR code for details",
     "placeholders": {}
   },
-
   "doYouWantToExit": "Voulez-vous quitter ?",
   "@doYouWantToExit": {
     "description": "Prompt asking the user if they want to exit",
     "placeholders": {}
   },
-
   "difficultyEasyDescription": "Génère un nombre aléatoire avec un niveau légèrement augmenté pour des défis simples.",
   "@difficultyEasyDescription": {
     "description": "Description for easy difficulty level logic"
@@ -327,7 +314,6 @@
   "@difficultyExtremeDescription": {
     "description": "Description for extreme difficulty level logic"
   },
-
   "difficultyEasyTitle": "Mode Facile",
   "@difficultyEasyTitle": {
     "description": "Title for easy difficulty mode"
@@ -344,25 +330,21 @@
   "@difficultyExtremeTitle": {
     "description": "Title for extreme difficulty mode"
   },
-
   "confirmChangeDifficulty": "Votre tour sera réinitialisé. Êtes-vous sûr de vouloir changer la difficulté ?",
   "@confirmChangeDifficulty": {
     "description": "Warning when the user changes the difficulty",
     "placeholders": {}
   },
-
   "areYouSure": "Êtes-vous sûr ?",
   "@areYouSure": {
     "description": "Warning when the user performs an important action",
     "placeholders": {}
   },
-
   "no_turn_yet": "Pas encore de tours",
   "@no_turn_yet": {
     "description": "Notification when there are no turns yet",
     "placeholders": {}
   },
-    
   "daily": "En un jour",
   "@daily": {
     "description": "Daily leaderboard"
@@ -371,8 +353,7 @@
   "@dailyDescription": {
     "description": "Description for daily leaderboard"
   },
-
-  "weekly": "En une semaine", 
+  "weekly": "En une semaine",
   "@weekly": {
     "description": "Weekly leaderboard"
   },
@@ -388,7 +369,6 @@
   "@allTimeDescription": {
     "description": "Description for all-time leaderboard"
   },
-  
   "updateRequired": "Mise à jour requise",
   "@updateRequired": {
     "description": "Title for force update dialog"
@@ -425,7 +405,6 @@
   "@update": {
     "description": "Button to update app"
   },
-  
   "checkForUpdates": "Vérifier les mises à jour",
   "@checkForUpdates": {
     "description": "Button to check for app updates"
@@ -482,7 +461,6 @@
   "@updatePostponed": {
     "description": "Message when user dismissed update"
   },
-  
   "tapTimerTooltip": "Vous avez {totalSeconds} secondes pour toucher un nombre. La barre change de couleur au fur et à mesure que le temps s'écoule : vert (plus de {halfSeconds}s), orange ({quarterSeconds}-{halfSeconds}s), rouge (moins de {quarterSeconds}s).",
   "@tapTimerTooltip": {
     "description": "Tooltip explaining the tap timer progress bar",
@@ -501,7 +479,6 @@
       }
     }
   },
-  
   "selectPlayMode": "Sélectionner le mode de jeu",
   "@selectPlayMode": {
     "description": "Title for play mode selection screen"
@@ -608,7 +585,6 @@
   "@openSettings": {
     "description": "Button to open app settings"
   },
-
   "yourTurn": "À votre tour",
   "@yourTurn": {
     "description": "Indicates it's the player's turn in combat mode"
@@ -986,5 +962,7 @@
   "restartGame": "Redémarrer le jeu",
   "confirmRestart": "Êtes-vous sûr de vouloir redémarrer le jeu ?",
   "tourRestartFromSettings": "Redémarrer la visite",
-  "tourResetMessage": "La visite a été réinitialisée. Retournez au menu principal pour commencer."
+  "tourResetMessage": "La visite a été réinitialisée. Retournez au menu principal pour commencer.",
+  "pickRightTitle": "Pick Right",
+  "pickRightDescription": "Choisissez la bonne équation ! Jeu de sélection rapide avec un minuteur de 5 secondes."
 }

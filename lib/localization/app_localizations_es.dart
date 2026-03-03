@@ -234,7 +234,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get pickRightDescription =>
-      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+      '¡Elige la ecuación correcta! Juego de selección rápida con temporizador de 5 segundos.';
 
   @override
   String get difficultyEasyTitle => 'Modo Fácil';

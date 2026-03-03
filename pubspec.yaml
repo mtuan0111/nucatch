@@ -70,9 +70,10 @@ dependencies:
   super_tooltip: ^2.0.8
   # Shared BLE Platform Services (includes flutter_reactive_ble and ble_peripheral)
   ble_plat_services:
-    git:
-      url: git@github.com:mtuan0111/blue_plat_services.git
-      ref: main
+    path: ../ble_plat_services
+    # git:
+    #   url: git@github.com:mtuan0111/blue_plat_services.git
+    #   ref: main
   google_mobile_ads: ^5.2.0
 
 

@@ -75,21 +75,18 @@
   "@gameOver": {
     "description": "Game over message"
   },
-  
   "difficultySetting": "难度设置",
   "@difficultySetting": {
     "description": "Label for difficulty setting in the game"
   },
-
   "difficulty": "难度",
   "@difficulty": {
     "description": "Difficulty level of the game"
   },
-  
   "easy": "简单",
   "@easy": {
     "description": "Easy difficulty level of the game"
-  },  
+  },
   "medium": "中等",
   "@medium": {
     "description": "Medium difficulty level of the game"
@@ -118,12 +115,10 @@
   "@selectLevelMessage": {
     "description": "Message guiding the user to select a level"
   },
-
   "yourScoreIs": "你当前的分数是",
   "@yourScoreIs": {
     "description": "Thông báo điểm số của người chơi"
   },
-
   "theCorrectIs": "正确答案是",
   "whichOneIsCorrect": "哪个是正确的？",
   "@theCorrectIs": {
@@ -226,7 +221,6 @@
     "description": "Subject of the message for sharing the score",
     "placeholders": {}
   },
-
   "messageSharePlayedLeaderSubjectWithUsername": "与 {username} 在 #NuCatch 的体验",
   "@messageSharePlayedLeaderSubjectWithUsername": {
     "description": "Subject of the message for sharing the score with username",
@@ -237,8 +231,6 @@
       }
     }
   },
-  
-
   "messageSharePlayedLeaderBody": "{username} 在 {timeCreated} 获得了 {point} 分。快来和 {username} 一起加入 #NuCatch 吧！！",
   "@messageSharePlayedLeaderBody": {
     "description": "Message for sharing the score of a player",
@@ -271,7 +263,6 @@
       }
     }
   },
-
   "confirmExit": "你确定要退出吗？",
   "@confirmExit": {
     "description": "Warning when the user presses the exit button",
@@ -287,7 +278,6 @@
     "description": "Yes button in the confirmation dialog",
     "placeholders": {}
   },
-
   "insertedSuccess": "成功记录你的回合",
   "@insertedSuccess": {
     "description": "Notification when data is added successfully",
@@ -298,19 +288,16 @@
     "description": "Notification when data addition fails",
     "placeholders": {}
   },
-
   "scanQrToViewDetails": "扫描二维码查看详情",
   "@scanQrToViewDetails": {
     "description": "Instruction to scan QR code for details",
     "placeholders": {}
   },
-
   "doYouWantToExit": "你想退出吗？",
   "@doYouWantToExit": {
     "description": "Prompt asking the user if they want to exit",
     "placeholders": {}
   },
-
   "difficultyEasyDescription": "生成一个随机数，难度略有增加，适合简单的挑战。",
   "@difficultyEasyDescription": {
     "description": "Description for easy difficulty level logic"
@@ -327,7 +314,6 @@
   "@difficultyExtremeDescription": {
     "description": "Description for extreme difficulty level logic"
   },
-
   "difficultyEasyTitle": "简单模式",
   "@difficultyEasyTitle": {
     "description": "Title for easy difficulty mode"
@@ -344,25 +330,21 @@
   "@difficultyExtremeTitle": {
     "description": "Title for extreme difficulty mode"
   },
-
   "confirmChangeDifficulty": "你的回合将被重置。你确定要更改难度吗？",
   "@confirmChangeDifficulty": {
     "description": "Warning when the user changes the difficulty",
     "placeholders": {}
   },
-
   "areYouSure": "你确定吗？",
   "@areYouSure": {
     "description": "Warning when the user performs an important action",
     "placeholders": {}
   },
-
   "no_turn_yet": "暂无记录",
   "@no_turn_yet": {
     "description": "Notification when there are no turns yet",
     "placeholders": {}
   },
-    
   "daily": "一天内",
   "@daily": {
     "description": "Daily leaderboard"
@@ -371,8 +353,7 @@
   "@dailyDescription": {
     "description": "Description for daily leaderboard"
   },
-
-  "weekly": "一周内", 
+  "weekly": "一周内",
   "@weekly": {
     "description": "Weekly leaderboard"
   },
@@ -388,7 +369,6 @@
   "@allTimeDescription": {
     "description": "Description for all-time leaderboard"
   },
-  
   "updateRequired": "需要更新",
   "@updateRequired": {
     "description": "Title for force update dialog"
@@ -425,7 +405,6 @@
   "@update": {
     "description": "Button to update app"
   },
-  
   "checkForUpdates": "检查更新",
   "@checkForUpdates": {
     "description": "Button to check for app updates"
@@ -482,7 +461,6 @@
   "@updatePostponed": {
     "description": "Message when user dismissed update"
   },
-  
   "tapTimerTooltip": "你有 {totalSeconds} 秒的时间点击一个数字。进度条会随着时间流逝改变颜色：绿色（超过 {halfSeconds}秒），橙色（{quarterSeconds}-{halfSeconds}秒），红色（少于 {quarterSeconds}秒）。",
   "@tapTimerTooltip": {
     "description": "Tooltip explaining the tap timer progress bar",
@@ -501,7 +479,6 @@
       }
     }
   },
-  
   "selectPlayMode": "选择游戏模式",
   "@selectPlayMode": {
     "description": "Title for play mode selection screen"
@@ -608,7 +585,6 @@
   "@openSettings": {
     "description": "Button to open app settings"
   },
-
   "yourTurn": "你的回合",
   "@yourTurn": {
     "description": "Indicates it's the player's turn in combat mode"
@@ -986,5 +962,7 @@
   "restartGame": "重新开始游戏",
   "confirmRestart": "您确定要重新开始游戏吗？",
   "tourRestartFromSettings": "重新开始导览",
-  "tourResetMessage": "导览已重置。返回主菜单开始。"
+  "tourResetMessage": "导览已重置。返回主菜单开始。",
+  "pickRightTitle": "Pick Right",
+  "pickRightDescription": "选择正确的等式！快速选择游戏，5秒计时器。"
 }

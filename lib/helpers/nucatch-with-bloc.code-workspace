@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "../.."
+		},
+		{
+			"path": "../../../ble_plat_services"
 		}
 	],
 	"settings": {}

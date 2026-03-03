@@ -75,21 +75,18 @@
   "@gameOver": {
     "description": "Game over message"
   },
-  
   "difficultySetting": "การตั้งค่าความยาก",
   "@difficultySetting": {
     "description": "Label for difficulty setting in the game"
   },
-
   "difficulty": "ความยาก",
   "@difficulty": {
     "description": "Difficulty level of the game"
   },
-  
   "easy": "ง่าย",
   "@easy": {
     "description": "Easy difficulty level of the game"
-  },  
+  },
   "medium": "ปานกลาง",
   "@medium": {
     "description": "Medium difficulty level of the game"
@@ -118,12 +115,10 @@
   "@selectLevelMessage": {
     "description": "Message guiding the user to select a level"
   },
-
   "yourScoreIs": "คะแนนปัจจุบันของคุณคือ",
   "@yourScoreIs": {
     "description": "Thông báo điểm số của người chơi"
   },
-
   "theCorrectIs": "คำตอบที่ถูกต้องคือ",
   "whichOneIsCorrect": "ข้อไหนถูกต้อง?",
   "@theCorrectIs": {
@@ -226,7 +221,6 @@
     "description": "Subject of the message for sharing the score",
     "placeholders": {}
   },
-
   "messageSharePlayedLeaderSubjectWithUsername": "ประสบการณ์กับ {username} บน #NuCatch",
   "@messageSharePlayedLeaderSubjectWithUsername": {
     "description": "Subject of the message for sharing the score with username",
@@ -237,8 +231,6 @@
       }
     }
   },
-  
-
   "messageSharePlayedLeaderBody": "{username} ได้คะแนน {point} ที่ {timeCreated} เข้าร่วม #NuCatch กับ {username} เลย!!",
   "@messageSharePlayedLeaderBody": {
     "description": "Message for sharing the score of a player",
@@ -271,7 +263,6 @@
       }
     }
   },
-
   "confirmExit": "คุณแน่ใจหรือไม่ว่าต้องการออก?",
   "@confirmExit": {
     "description": "Warning when the user presses the exit button",
@@ -287,7 +278,6 @@
     "description": "Yes button in the confirmation dialog",
     "placeholders": {}
   },
-
   "insertedSuccess": "บันทึกรอบของคุณสำเร็จ",
   "@insertedSuccess": {
     "description": "Notification when data is added successfully",
@@ -298,19 +288,16 @@
     "description": "Notification when data addition fails",
     "placeholders": {}
   },
-
   "scanQrToViewDetails": "สแกน QR Code เพื่อดูรายละเอียด",
   "@scanQrToViewDetails": {
     "description": "Instruction to scan QR code for details",
     "placeholders": {}
   },
-
   "doYouWantToExit": "คุณต้องการออกหรือไม่?",
   "@doYouWantToExit": {
     "description": "Prompt asking the user if they want to exit",
     "placeholders": {}
   },
-
   "difficultyEasyDescription": "สร้างตัวเลขสุ่มที่มีระดับเพิ่มขึ้นเล็กน้อยเพื่อความท้าทายง่ายๆ",
   "@difficultyEasyDescription": {
     "description": "Description for easy difficulty level logic"
@@ -327,7 +314,6 @@
   "@difficultyExtremeDescription": {
     "description": "Description for extreme difficulty level logic"
   },
-
   "difficultyEasyTitle": "โหมดง่าย",
   "@difficultyEasyTitle": {
     "description": "Title for easy difficulty mode"
@@ -344,25 +330,21 @@
   "@difficultyExtremeTitle": {
     "description": "Title for extreme difficulty mode"
   },
-
   "confirmChangeDifficulty": "รอบของคุณจะถูกรีเซ็ต คุณแน่ใจหรือไม่ว่าต้องการเปลี่ยนระดับความยาก?",
   "@confirmChangeDifficulty": {
     "description": "Warning when the user changes the difficulty",
     "placeholders": {}
   },
-
   "areYouSure": "คุณแน่ใจหรือไม่?",
   "@areYouSure": {
     "description": "Warning when the user performs an important action",
     "placeholders": {}
   },
-
   "no_turn_yet": "ยังไม่มีรอบที่เล่น",
   "@no_turn_yet": {
     "description": "Notification when there are no turns yet",
     "placeholders": {}
   },
-    
   "daily": "ในหนึ่งวัน",
   "@daily": {
     "description": "Daily leaderboard"
@@ -371,8 +353,7 @@
   "@dailyDescription": {
     "description": "Description for daily leaderboard"
   },
-
-  "weekly": "ในหนึ่งสัปดาห์", 
+  "weekly": "ในหนึ่งสัปดาห์",
   "@weekly": {
     "description": "Weekly leaderboard"
   },
@@ -388,7 +369,6 @@
   "@allTimeDescription": {
     "description": "Description for all-time leaderboard"
   },
-  
   "updateRequired": "จำเป็นต้องอัปเดต",
   "@updateRequired": {
     "description": "Title for force update dialog"
@@ -425,7 +405,6 @@
   "@update": {
     "description": "Button to update app"
   },
-  
   "checkForUpdates": "ตรวจสอบการอัปเดต",
   "@checkForUpdates": {
     "description": "Button to check for app updates"
@@ -482,7 +461,6 @@
   "@updatePostponed": {
     "description": "Message when user dismissed update"
   },
-  
   "tapTimerTooltip": "คุณมีเวลา {totalSeconds} วินาทีในการแตะตัวเลข แถบจะเปลี่ยนสีเมื่อเวลาผ่านไป: สีเขียว (มากกว่า {halfSeconds} วินาที), สีส้ม ({quarterSeconds}-{halfSeconds} วินาที), สีแดง (น้อยกว่า {quarterSeconds} วินาที)",
   "@tapTimerTooltip": {
     "description": "Tooltip explaining the tap timer progress bar",
@@ -501,7 +479,6 @@
       }
     }
   },
-  
   "selectPlayMode": "เลือกโหมดการเล่น",
   "@selectPlayMode": {
     "description": "Title for play mode selection screen"
@@ -608,7 +585,6 @@
   "@openSettings": {
     "description": "Button to open app settings"
   },
-
   "yourTurn": "ตาคุณ",
   "@yourTurn": {
     "description": "Indicates it's the player's turn in combat mode"
@@ -986,5 +962,7 @@
   "restartGame": "เริ่มเกมใหม่",
   "confirmRestart": "คุณแน่ใจหรือไม่ว่าต้องการเริ่มเกมใหม่?",
   "tourRestartFromSettings": "เริ่มทัวร์ใหม่",
-  "tourResetMessage": "รีเซ็ตทัวร์แล้ว กลับไปที่เมนูหลักเพื่อเริ่มต้น"
+  "tourResetMessage": "รีเซ็ตทัวร์แล้ว กลับไปที่เมนูหลักเพื่อเริ่มต้น",
+  "pickRightTitle": "Pick Right",
+  "pickRightDescription": "เลือกสมการที่ถูกต้อง! เกมเลือกตอบแบบรวดเร็วกับตัวจับเวลา 5 วินาที"
 }

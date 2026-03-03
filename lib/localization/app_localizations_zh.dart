@@ -226,8 +226,7 @@ class AppLocalizationsZh extends AppLocalizations {
       '随机会生成复杂的加减法计算、更高等级的随机数或乘除法计算，带来最具挑战性的体验。';
 
   @override
-  String get pickRightDescription =>
-      'Choose the correct equation! Fast-paced selection game with 5-second timer.';
+  String get pickRightDescription => '选择正确的等式！快速选择游戏，5秒计时器。';
 
   @override
   String get difficultyEasyTitle => '简单模式';

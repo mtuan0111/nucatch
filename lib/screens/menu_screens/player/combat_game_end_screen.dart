@@ -24,11 +24,25 @@ class CombatGameEndScreen extends StatelessWidget {
         child: SafeArea(
           child: BlocListener<CombatBloc, CombatState>(
             listenWhen: (previous, current) =>
-                previous.combatStatus != current.combatStatus &&
-                current.combatStatus == CombatStatus.intro,
+                (previous.combatStatus != current.combatStatus &&
+                    current.combatStatus == CombatStatus.intro) ||
+                (previous.combatStatus != current.combatStatus &&
+                    current.combatStatus == CombatStatus.choosingDifficulty),
             listener: (context, state) {
-              // Navigate to playing screen when restart countdown begins
-              context.read<CombatNavCubit>().showPlaying();
+              if (state.combatStatus == CombatStatus.intro) {
+                // Navigate to playing screen when restart countdown begins
+                context.read<CombatNavCubit>().showPlaying();
+              } else if (state.combatStatus ==
+                  CombatStatus.choosingDifficulty) {
+                if (context.read<CombatBloc>().isHost) {
+                  // Host: navigate to difficulty selection screen
+                  context.read<CombatNavCubit>().showSetDifficulty();
+                } else {
+                  // Guest: navigate to JoinRoom (shows "Waiting for host" with
+                  // existing BlocListener that auto-navigates when difficulty arrives)
+                  context.read<CombatNavCubit>().showJoinRoom();
+                }
+              }
             },
             child: BlocBuilder<CombatBloc, CombatState>(
               builder: (context, combatState) {
@@ -158,23 +172,39 @@ class CombatGameEndScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: kSpaceXL),
-                  CustomElevatedButton(
-                    text: combatState.isPlayerReady
-                        ? lang(context).notReady
-                        : '${lang(context).ready} - ${lang(context).playAgain}',
-                    buttonSize: ButtonSize.small,
-                    shapeAt: RoundedWithShapeAt.topRight,
-                    backgroundColor: combatState.isPlayerReady
-                        ? Theme.of(context).colorScheme.error
-                        : Theme.of(context).colorScheme.tertiary,
-                    onPressed: () {
-                      context.read<CombatBloc>().add(
-                            CombatRestartReady(
-                              isReady: !combatState.isPlayerReady,
-                            ),
-                          );
-                    },
-                  ),
+                  if (!combatState.isPlayerReady)
+                    CustomElevatedButton(
+                      text:
+                          '${lang(context).ready} - ${lang(context).playAgain}',
+                      buttonSize: ButtonSize.small,
+                      shapeAt: RoundedWithShapeAt.topRight,
+                      backgroundColor: Theme.of(context).colorScheme.tertiary,
+                      onPressed: () {
+                        context.read<CombatBloc>().add(
+                              CombatRestartReady(isReady: true),
+                            );
+                      },
+                    ),
+                  // Show "Change Difficulty" button for host only
+                  if (context.read<CombatBloc>().isHost &&
+                      !combatState.isPlayerReady) ...[
+                    const SizedBox(height: kSpaceM),
+                    CustomElevatedButton(
+                      text:
+                          '${lang(context).ready} - ${lang(context).difficultySetting}',
+                      buttonSize: ButtonSize.small,
+                      shapeAt: RoundedWithShapeAt.topRight,
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      onPressed: () {
+                        context.read<CombatBloc>().add(
+                              CombatRestartReady(
+                                isReady: true,
+                                changeDifficulty: true,
+                              ),
+                            );
+                      },
+                    ),
+                  ],
                 ],
               ),
             ),

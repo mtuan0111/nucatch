@@ -176,21 +176,32 @@ class CombatOpponentLifeUpdate extends CombatEvent {
 
 class CombatOpponentDisconnected extends CombatEvent {}
 
-class CombatRestartRequested extends CombatEvent {}
+class CombatRestartRequested extends CombatEvent {
+  final bool changeDifficulty;
+
+  CombatRestartRequested({this.changeDifficulty = false});
+}
 
 class CombatRestartReady extends CombatEvent {
   final bool isReady;
+  final bool changeDifficulty;
 
-  CombatRestartReady({required this.isReady});
+  CombatRestartReady({required this.isReady, this.changeDifficulty = false});
 }
 
 class CombatRestartReadyReceived extends CombatEvent {
   final bool opponentReady;
+  final bool changeDifficulty;
 
-  CombatRestartReadyReceived({required this.opponentReady});
+  CombatRestartReadyReceived({
+    required this.opponentReady,
+    this.changeDifficulty = false,
+  });
 }
 
 class CombatBlocReset extends CombatEvent {}
+
+class CombatChangeDifficultyReceived extends CombatEvent {}
 
 // ===== Legacy aliases for backward compatibility =====
 typedef TurnStarted = CombatTurnStarted;

@@ -36,6 +36,8 @@ class CombatState extends TurnState {
       pickRightJustCorrect; // Track when pick-right answer is correct for scale+fade animation
   final String?
       correctEquationDisplay; // Synced correct equation text for game over screen
+  final bool
+      wantsChangeDifficulty; // Host wants to change difficulty when both ready
 
   const CombatState({
     // Combat-specific parameters
@@ -58,6 +60,7 @@ class CombatState extends TurnState {
     this.opponentJustLostLife = false,
     this.pickRightJustCorrect = false,
     this.correctEquationDisplay,
+    this.wantsChangeDifficulty = false,
     // TurnState parameters
     super.level = 0,
     super.timesCorrect = 0,
@@ -106,6 +109,7 @@ class CombatState extends TurnState {
     bool? pickRightJustCorrect,
     String? correctEquationDisplay,
     bool clearCorrectEquationDisplay = false,
+    bool? wantsChangeDifficulty,
     // TurnState parameters
     int? level,
     int? timesCorrect,
@@ -154,6 +158,8 @@ class CombatState extends TurnState {
       correctEquationDisplay: clearCorrectEquationDisplay
           ? null
           : (correctEquationDisplay ?? this.correctEquationDisplay),
+      wantsChangeDifficulty:
+          wantsChangeDifficulty ?? this.wantsChangeDifficulty,
       // TurnState
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,
@@ -205,6 +211,7 @@ class CombatState extends TurnState {
 enum CombatStatus {
   waiting, // Waiting for game to start
   hostSelecting, // Host is selecting difficulty
+  choosingDifficulty, // Host is re-selecting difficulty after game over
   intro, // Countdown before game starts
   playing, // Game in progress
   ended, // Game finished
@@ -225,5 +232,6 @@ enum CombatMessageType {
   gameEnded, // Game ended
   restartRequested, // Restart requested
   restartReady, // Player ready for restart
+  changeDifficulty, // Host wants to change difficulty after game over
   opponentDisconnected, // Opponent disconnected
 }

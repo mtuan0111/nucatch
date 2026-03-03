@@ -59,8 +59,18 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     final combatBloc = context.read<CombatBloc>();
     _bleService = combatBloc.roomService;
 
-    // Reset service state to ensure clean start
-    await _bleService?.reset();
+    final alreadyConnected = _bleService?.isConnected ?? false;
+
+    if (!alreadyConnected) {
+      // Fresh connection - reset service state to ensure clean start
+      await _bleService?.reset();
+    } else {
+      // Re-entry (e.g. difficulty re-selection) - preserve connection
+      // Set _roomState to playing since we're already connected and waiting
+      setState(() {
+        _roomState = RoomState.playing;
+      });
+    }
 
     // Listen to room state
     _roomStateSubscription = _bleService!.roomStateStream.listen((state) async {
@@ -100,7 +110,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       _handleIncomingMessage(message);
     });
 
-    _initializeBle();
+    if (!alreadyConnected) {
+      _initializeBle();
+    } else {
+      setState(() {
+        _isInitialized = true;
+      });
+    }
   }
 
   Future<void> _initializeBle() async {
