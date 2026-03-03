@@ -19,9 +19,9 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';
+import 'package:nucatch/widgets/countdown_bar.dart';
 import 'package:nucatch/widgets/pick_right_mode_controls.dart';
 import 'package:nucatch/widgets/regular_mode_controls.dart';
-import 'package:timer_count_down/timer_count_down.dart';
 
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
@@ -182,143 +182,13 @@ class _PlayScreenState extends State<PlayScreen> {
                                 flex: 1,
                                 child: Column(
                                   children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Builder(
-                                          builder: (context) {
-                                            // Get dynamic timer duration from TurnState
-                                            final timerDuration = turnState
-                                                .effectiveTimerDuration;
-
-                                            // Calculate time values using dynamic duration
-                                            final totalSeconds =
-                                                timerDuration.toInt();
-                                            final halfSeconds =
-                                                (timerDuration / 2).toInt();
-                                            final quarterSeconds =
-                                                (timerDuration / 4).toInt();
-
-                                            return Tooltip(
-                                              message:
-                                                  lang(context).tapTimerTooltip(
-                                                totalSeconds,
-                                                halfSeconds,
-                                                quarterSeconds,
-                                              ),
-                                              child: SizedBox(
-                                                height: kTimerBarHeight,
-                                                child: turnState.status ==
-                                                        TurnStatus.playing
-                                                    ? Countdown(
-                                                        seconds: turnState
-                                                            .tapTimerRemaining
-                                                            .toInt(),
-                                                        interval:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    10),
-                                                        build: (BuildContext
-                                                                context,
-                                                            double time) {
-                                                          // Calculate percentage (0-100)
-                                                          final percent = (time /
-                                                                  timerDuration *
-                                                                  100)
-                                                              .toInt();
-
-                                                          dev.log(percent
-                                                              .toString());
-
-                                                          // Determine color based on remaining time
-                                                          Color backgroundColor = time >
-                                                                  timerDuration /
-                                                                      2
-                                                              ? Theme.of(
-                                                                      context)
-                                                                  .primaryColor
-                                                              : time >
-                                                                      timerDuration /
-                                                                          4
-                                                                  ? Colors
-                                                                      .orange
-                                                                  : Colors.red;
-
-                                                          return Stack(
-                                                            clipBehavior:
-                                                                Clip.hardEdge,
-                                                            children: [
-                                                              Positioned.fill(
-                                                                child:
-                                                                    CustomElevatedButton(
-                                                                  shapeAt:
-                                                                      RoundedWithShapeAt
-                                                                          .all,
-                                                                  backgroundColor:
-                                                                      Theme.of(
-                                                                              context)
-                                                                          .secondaryHeaderColor,
-                                                                ),
-                                                              ),
-                                                              Row(
-                                                                children: [
-                                                                  if (percent >
-                                                                      0)
-                                                                    Expanded(
-                                                                      flex:
-                                                                          percent,
-                                                                      child:
-                                                                          CustomElevatedButton(
-                                                                        onPressed:
-                                                                            () {},
-                                                                        shapeAt:
-                                                                            RoundedWithShapeAt.all,
-                                                                        backgroundColor:
-                                                                            backgroundColor,
-                                                                      ),
-                                                                    ),
-                                                                  Expanded(
-                                                                    flex: 100 -
-                                                                        percent,
-                                                                    child:
-                                                                        Opacity(
-                                                                      opacity:
-                                                                          0,
-                                                                      child:
-                                                                          Container(),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          );
-                                                        },
-                                                        onFinished: () {},
-                                                      )
-                                                    : Stack(
-                                                        clipBehavior:
-                                                            Clip.hardEdge,
-                                                        children: [
-                                                          Positioned.fill(
-                                                            child:
-                                                                CustomElevatedButton(
-                                                              shapeAt:
-                                                                  RoundedWithShapeAt
-                                                                      .all,
-                                                              backgroundColor:
-                                                                  Theme.of(
-                                                                          context)
-                                                                      .secondaryHeaderColor,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                        const SizedBox(height: kSpaceM),
-                                      ],
+                                    CountDownBar(
+                                      timerDuration:
+                                          turnState.effectiveTimerDuration,
+                                      tapTimerRemaining:
+                                          turnState.tapTimerRemaining.toInt(),
+                                      isPlaying: turnState.status ==
+                                          TurnStatus.playing,
                                     ),
 
                                     Row(

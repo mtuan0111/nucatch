@@ -18,7 +18,7 @@ import 'package:nucatch/helpers/template/custome_alert.dart';
 import 'package:nucatch/widgets/pick_right_buttons.dart';
 import 'package:nucatch/widgets/combat_status_badge.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';
-import 'package:timer_count_down/timer_count_down.dart';
+import 'package:nucatch/widgets/countdown_bar.dart';
 import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class CombatPlayScreen extends StatefulWidget {
@@ -205,100 +205,17 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   }
 
   Widget _buildCountDownBar(CombatState combatState) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Builder(
-          builder: (context) {
-            // Calculate effective timer duration based on difficulty
-            final isPickRight =
-                combatState.difficultyModel?.difficulty == Difficulty.pickRight;
-            final effectiveDuration = isPickRight
-                ? kCombatPickRightTimerPerTurn.toDouble()
-                : tapTimerDuration;
+    // Calculate effective timer duration based on difficulty
+    final isPickRight =
+        combatState.difficultyModel?.difficulty == Difficulty.pickRight;
+    final effectiveDuration = isPickRight
+        ? kCombatPickRightTimerPerTurn.toDouble()
+        : tapTimerDuration;
 
-            // Calculate time values using the effective duration
-            final totalSeconds = effectiveDuration.toInt();
-            final halfSeconds = (effectiveDuration / 2).toInt();
-            final quarterSeconds = (effectiveDuration / 4).toInt();
-
-            return Tooltip(
-              message: lang(context).tapTimerTooltip(
-                totalSeconds,
-                halfSeconds,
-                quarterSeconds,
-              ),
-              child: SizedBox(
-                height: kTimerBarHeight,
-                child: combatState.combatStatus == CombatStatus.playing
-                    ? Countdown(
-                        seconds: combatState.tapTimerRemaining.toInt(),
-                        interval: const Duration(milliseconds: 10),
-                        build: (BuildContext context, double time) {
-                          // Calculate percentage (0-100)
-                          final percent =
-                              (time / effectiveDuration * 100).toInt();
-
-                          // Determine color based on remaining time
-                          Color backgroundColor = time > effectiveDuration / 2
-                              ? Theme.of(context).primaryColor
-                              : time > effectiveDuration / 4
-                                  ? Colors.orange
-                                  : Colors.red;
-
-                          return Stack(
-                            clipBehavior: Clip.hardEdge,
-                            children: [
-                              Positioned.fill(
-                                child: CustomElevatedButton(
-                                  shapeAt: RoundedWithShapeAt.all,
-                                  backgroundColor:
-                                      Theme.of(context).secondaryHeaderColor,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  if (percent > 0)
-                                    Expanded(
-                                      flex: percent,
-                                      child: CustomElevatedButton(
-                                        onPressed: () {},
-                                        shapeAt: RoundedWithShapeAt.all,
-                                        backgroundColor: backgroundColor,
-                                      ),
-                                    ),
-                                  Expanded(
-                                    flex: 100 - percent,
-                                    child: Opacity(
-                                      opacity: 0,
-                                      child: Container(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                        onFinished: () {},
-                      )
-                    : Stack(
-                        clipBehavior: Clip.hardEdge,
-                        children: [
-                          Positioned.fill(
-                            child: CustomElevatedButton(
-                              shapeAt: RoundedWithShapeAt.all,
-                              backgroundColor:
-                                  Theme.of(context).secondaryHeaderColor,
-                            ),
-                          ),
-                        ],
-                      ),
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: kSpaceM),
-      ],
+    return CountDownBar(
+      timerDuration: effectiveDuration,
+      tapTimerRemaining: combatState.tapTimerRemaining.toInt(),
+      isPlaying: combatState.combatStatus == CombatStatus.playing,
     );
   }
 

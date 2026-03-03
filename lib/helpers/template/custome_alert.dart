@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
@@ -280,114 +282,112 @@ class AlertTemplate extends StatelessWidget {
         //         ],
         //       ),
         //     ) ??
-        Dialog(
-      // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.circular(20),
-      // ),
-      // clipBehavior: Clip.none,
-      backgroundColor: Colors.transparent,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    Opacity(
-                      opacity: 1,
-                      child: Row(
+        BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+      child: Dialog(
+        backgroundColor: Colors.transparent,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Opacity(
+                        opacity: 1,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: CustomElevatedButton(
+                                text: title,
+                                buttonSize: ButtonSize.small,
+                                shapeAt: RoundedWithShapeAt.topLeft,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Theme.of(context).primaryColor,
+                                    Theme.of(context).secondaryHeaderColor,
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                // Main dialog content
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 30),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
                         children: [
                           Expanded(
                             child: CustomElevatedButton(
-                              text: title,
-                              buttonSize: ButtonSize.small,
-                              shapeAt: RoundedWithShapeAt.topLeft,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Theme.of(context).primaryColor,
-                                  Theme.of(context).secondaryHeaderColor,
-                                ],
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              shapeAt: RoundedWithShapeAt.topRight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0)
+                                    .copyWith(top: 10),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (content != null) content!,
+                                    // const SizedBox(height: 70), // Space for buttons
+                                    if (message != null)
+                                      Text(
+                                        message!,
+                                        style: AppTextStyles.withColor(
+                                            AppTextStyles.bodyLarge(context),
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                                .getDarker()),
+                                      ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              // Main dialog content
-              Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 30),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomElevatedButton(
-                            backgroundColor:
-                                Theme.of(context).scaffoldBackgroundColor,
-                            shapeAt: RoundedWithShapeAt.topRight,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.all(10.0).copyWith(top: 10),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  if (content != null) content!,
-                                  // const SizedBox(height: 70), // Space for buttons
-                                  if (message != null)
-                                    Text(
-                                      message!,
-                                      style: AppTextStyles.withColor(
-                                          AppTextStyles.bodyLarge(context),
-                                          Theme.of(context)
-                                              .colorScheme
-                                              .primary
-                                              .getDarker()),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              // Title positioned on top
-
-              Positioned(
-                  bottom: 0,
-                  left: 20,
-                  right: 20,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      if (negativeButtonLabel != null)
-                        Expanded(child: _buildNegativeButton(context)),
-                      if (negativeButtonLabel != null &&
-                          possitiveButtonLabel != null)
-                        const SizedBox(width: kSpaceM),
-                      if (possitiveButtonLabel != null)
-                        Expanded(child: _buildPossitiveButton(context)),
                     ],
-                  ))
-            ],
-          ),
-        ],
+                  ),
+                ),
+                // Title positioned on top
+
+                Positioned(
+                    bottom: 0,
+                    left: 20,
+                    right: 20,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        if (negativeButtonLabel != null)
+                          Expanded(child: _buildNegativeButton(context)),
+                        if (negativeButtonLabel != null &&
+                            possitiveButtonLabel != null)
+                          const SizedBox(width: kSpaceM),
+                        if (possitiveButtonLabel != null)
+                          Expanded(child: _buildPossitiveButton(context)),
+                      ],
+                    ))
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
