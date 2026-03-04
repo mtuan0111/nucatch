@@ -3,7 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:skeleton_core/skeleton_core.dart' hide UpdateCheckerWrapper;
+import 'package:skeleton_core/skeleton_core.dart'
+    hide UpdateCheckerWrapper, MenuNav, TopScoreNav;
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/const.dart';
