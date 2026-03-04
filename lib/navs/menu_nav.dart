@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeleton_core/skeleton_core.dart'
     hide
         MenuNav,
+        SettingScreen,
         TopScoreNav,
         TopScoreNavCubit,
         TopScoreNavState,
