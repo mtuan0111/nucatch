@@ -105,8 +105,8 @@ class _MenuScreenState extends State<MenuScreen> {
                         child: Center(
                           child: Text(
                             state.username != null
-                                ? lang(context).welcomeUser(state.username!)
-                                : lang(context).welcome,
+                                ? coreLang(context).welcomeUser(state.username!)
+                                : coreLang(context).welcome,
                             style: AppTextStyles.titleLarge(context),
                           ),
                         ),
@@ -196,7 +196,7 @@ class _MenuScreenState extends State<MenuScreen> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                "${lang(context).version}: ",
+                                "${coreLang(context).version}: ",
                                 style: AppTextStyles.bodyLarge(context),
                                 // style: LayoutConfig(context).titleSectionStyle(),
                               ),
@@ -230,64 +230,64 @@ class _MenuScreenState extends State<MenuScreen> {
 
     switch (currentTheme) {
       case ThemeType.newYear:
-        return lang(context).holidayNotification(
-          lang(context).holidayNewYear,
-          lang(context).greetingNewYear,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayNewYear,
+          coreLang(context).greetingNewYear,
         );
       case ThemeType.lunarNewYear:
-        return lang(context).holidayNotification(
-          lang(context).holidayLunarNewYear,
-          lang(context).greetingLunarNewYear,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayLunarNewYear,
+          coreLang(context).greetingLunarNewYear,
         );
       case ThemeType.valentine:
-        return lang(context).holidayNotification(
-          lang(context).holidayValentine,
-          lang(context).greetingValentine,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayValentine,
+          coreLang(context).greetingValentine,
         );
       case ThemeType.holi:
-        return lang(context).holidayNotification(
-          lang(context).holidayHoli,
-          lang(context).greetingHoli,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayHoli,
+          coreLang(context).greetingHoli,
         );
       case ThemeType.earthDay:
-        return lang(context).holidayNotification(
-          lang(context).holidayEarthDay,
-          lang(context).greetingEarthDay,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayEarthDay,
+          coreLang(context).greetingEarthDay,
         );
       case ThemeType.easter:
-        return lang(context).holidayNotification(
-          lang(context).holidayEaster,
-          lang(context).greetingEaster,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayEaster,
+          coreLang(context).greetingEaster,
         );
       case ThemeType.pride:
-        return lang(context).holidayNotification(
-          lang(context).holidayPride,
-          lang(context).greetingPride,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayPride,
+          coreLang(context).greetingPride,
         );
       case ThemeType.halloween:
-        return lang(context).holidayNotification(
-          lang(context).holidayHalloween,
-          lang(context).greetingHalloween,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayHalloween,
+          coreLang(context).greetingHalloween,
         );
       case ThemeType.diwali:
-        return lang(context).holidayNotification(
-          lang(context).holidayDiwali,
-          lang(context).greetingDiwali,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayDiwali,
+          coreLang(context).greetingDiwali,
         );
       case ThemeType.hanukkah:
-        return lang(context).holidayNotification(
-          lang(context).holidayHanukkah,
-          lang(context).greetingHanukkah,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayHanukkah,
+          coreLang(context).greetingHanukkah,
         );
       case ThemeType.christmas:
-        return lang(context).holidayNotification(
-          lang(context).holidayChristmas,
-          lang(context).greetingChristmas,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayChristmas,
+          coreLang(context).greetingChristmas,
         );
       case ThemeType.kwanzaa:
-        return lang(context).holidayNotification(
-          lang(context).holidayKwanzaa,
-          lang(context).greetingKwanzaa,
+        return coreLang(context).holidayNotification(
+          coreLang(context).holidayKwanzaa,
+          coreLang(context).greetingKwanzaa,
         );
       default:
         return '';

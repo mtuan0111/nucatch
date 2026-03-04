@@ -17,7 +17,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
-import 'package:nucatch/navs/menu_nav.dart';
+import 'package:skeleton_core/skeleton_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 export 'package:skeleton_core/src/helpers/helper.dart'

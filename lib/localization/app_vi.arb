@@ -4,111 +4,9 @@
   "@appTitle": {
     "description": "Tiêu đề của ứng dụng"
   },
-  "welcome": "Chào mừng!!",
-  "@welcome": {
-    "description": "Chào mừng người dùng đến với ứng dụng",
-    "placeholders": {}
-  },
-  "welcomeUser": "Chào mừng {username}!!",
-  "@welcomeUser": {
-    "description": "Chào mừng người dùng đến với ứng dụng",
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "Nguyễn Văn A"
-      }
-    }
-  },
-  "mainMenu": "Trang chính",
-  "@mainMenu": {
-    "description": "Tiêu đề của trang chính"
-  },
-  "start": "Bắt đầu",
-  "@start": {
-    "description": "Nút bắt đầu trò chơi"
-  },
   "instantStart": "Bắt đầu nhanh",
   "@instantStart": {
     "description": "Nút bắt đầu nhanh để khởi động trò chơi ngay lập tức"
-  },
-  "topScore": "Điểm cao nhất",
-  "@topScore": {
-    "description": "Hiển thị điểm cao nhất của người chơi"
-  },
-  "setting": "Cài đặt",
-  "@setting": {
-    "description": "Mở màn hình cài đặt"
-  },
-  "about": "Giới thiệu",
-  "@about": {
-    "description": "Mở màn hình giới thiệu ứng dụng"
-  },
-  "exit": "Thoát",
-  "@exit": {
-    "description": "Nút thoát ứng dụng"
-  },
-  "version": "Phiên bản",
-  "@version": {
-    "description": "Version of the app"
-  },
-  "anonymous": "Ẩn danh",
-  "@anonymous": {
-    "description": "Tên người chơi khi không đăng nhập"
-  },
-  "level": "Cấp độ",
-  "@level": {
-    "description": "Cấp độ hiện tại của trò chơi"
-  },
-  "score": "Điểm số",
-  "@score": {
-    "description": "Điểm số hiện tại của người chơi"
-  },
-  "ready": "Sẵn sàng",
-  "@ready": {
-    "description": "Thông báo người chơi sẵn sàng bắt đầu"
-  },
-  "go": "Bắt đầu",
-  "@go": {
-    "description": "Thông báo bắt đầu trò chơi"
-  },
-  "gameOver": "Kết thúc trò chơi",
-  "@gameOver": {
-    "description": "Thông báo kết thúc trò chơi"
-  },
-
-  "difficultySetting": "Cài đặt độ khó",
-  "@difficultySetting": {
-    "description": "Cài đặt độ khó của trò chơi"
-  },
-
-  "difficulty": "Độ khó",
-  "@difficulty": {
-    "description": "Mức độ khó của trò chơi"
-  },
-
-  "easy": "Dễ",
-  "@easy": {
-    "description": "Mức độ dễ của trò chơi"
-  },  
-  "medium": "Trung bình",
-  "@medium": {
-    "description": "Mức độ trung bình của trò chơi"
-  },
-  "hard": "Khó",
-  "@hard": {
-    "description": "Mức độ khó của trò chơi"
-  },
-  "veryHard": "Rất khó",
-  "@veryHard": {
-    "description": "Mức độ rất khó của trò chơi"
-  },
-  "extreme": "Cực kỳ khó",
-  "@extreme": {
-    "description": "Mức độ cực kỳ khó của trò chơi"
-  },
-  "selectDifficulty": "Chọn độ khó",
-  "@selectDifficulty": {
-    "description": "Hướng dẫn người dùng chọn độ khó của trò chơi"
   },
   "selectLevel": "Chọn cấp độ",
   "@selectLevel": {
@@ -118,80 +16,22 @@
   "@selectLevelMessage": {
     "description": "Thông điệp hướng dẫn người dùng chọn cấp độ"
   },
-
   "yourScoreIs": "Điểm của bạn hiện là",
   "@yourScoreIs": {
     "description": "Thông báo điểm số của người chơi"
   },
-
   "theCorrectIs": "Đáp án đúng là",
   "whichOneIsCorrect": "Đáp án nào đúng?",
   "@theCorrectIs": {
     "description": "Hiển thị đáp án đúng"
   },
-  "name": "Tên người chơi",
-  "@name": {
-    "description": "Tên của người chơi"
-  },
-  "fontSize": "Kích thước phông chữ",
-  "@fontSize": {
-    "description": "Cài đặt kích thước phông chữ"
-  },
-  "volume": "Âm lượng",
-  "@volume": {
-    "description": "Cài đặt âm lượng"
-  },
-  "vibrate": "Rung",
-  "@vibrate": {
-    "description": "Cài đặt rung khi có sự kiện"
-  },
   "numberOfTopScores": "Số điểm cao nhất",
   "@numberOfTopScores": {
     "description": "Số lượng điểm cao nhất được hiển thị"
   },
-  "global": "Toàn cầu",
-  "@global": {
-    "description": "Nhãn cho chế độ xem xếp hạng toàn cầu"
-  },
-  "personal": "Cá nhân",
-  "@personal": {
-    "description": "Nhãn cho chế độ xem xếp hạng cá nhân"
-  },
   "onlyShowMyRecorded": "Chỉ hiển thị bản ghi của tôi",
   "@onlyShowMyRecorded": {
     "description": "Nhãn cho bộ lọc chỉ hiển thị điểm số đã ghi của người dùng"
-  },
-  "rank": "Hạng",
-  "@rank": {
-    "description": "Nhãn cho vị trí xếp hạng"
-  },
-  "share": "Chia sẻ",
-  "@share": {
-    "description": "Nhãn cho nút chia sẻ"
-  },
-  "language": "Ngôn ngữ",
-  "@language": {
-    "description": "Cài đặt ngôn ngữ của ứng dụng"
-  },
-  "thankYou": "Cảm ơn bạn!",
-  "@thankYou": {
-    "description": "Lời cảm ơn đến người chơi"
-  },
-  "thankYouMessage": "Cảm ơn bạn đã chơi trò chơi của chúng tôi. Chúng tôi hy vọng bạn đã thích nó. Nếu bạn có bất kỳ phản hồi hoặc đề xuất nào, xin vui lòng cho chúng tôi biết.",
-  "@thankYouMessage": {
-    "description": "Thông điệp cảm ơn người chơi"
-  },
-  "authorName": "Tác giả",
-  "@authorName": {
-    "description": "Tên của tác giả ứng dụng"
-  },
-  "connectWithUs": "Kết nối với chúng tôi",
-  "@connectWithUs": {
-    "description": "Lời mời kết nối với nhóm phát triển"
-  },
-  "connectWithUsMessage": "Nếu bạn có bất kỳ câu hỏi hoặc phản hồi nào, hãy liên hệ với chúng tôi qua các kênh truyền thông xã hội của chúng tôi.",
-  "@connectWithUsMessage": {
-    "description": "Thông điệp mời người chơi kết nối với nhóm phát triển"
   },
   "introductionContent": "NuCatch là một trò chơi đơn giản và thú vị, được thiết kế để giúp bạn rèn luyện trí nhớ và cải thiện sự tập trung. Hãy thử thách bản thân và tận hưởng trò chơi!",
   "@introductionContent": {
@@ -211,7 +51,6 @@
       }
     }
   },
-
   "messageSharePlayedLeaderSubjectWithUsername": "Trải nghiệm cùng {username} tại #NuCatch",
   "@messageSharePlayedLeaderSubjectWithUsername": {
     "description": "Chủ đề của thông điệp chia sẻ điểm số với tên người dùng",
@@ -222,7 +61,6 @@
       }
     }
   },
-
   "messageShareIntro": "Khám phá #NuCatch ngay tại {profileUrl}",
   "@messageShareIntro": {
     "description": "Nó sẽ được thay thế bằng URL thực tế",
@@ -238,7 +76,6 @@
     "description": "Chủ đề của thông điệp chia sẻ điểm số",
     "placeholders": {}
   },
-  
   "messageSharePlayedLeaderBody": "{username} đã đạt được {point} điểm vào lúc {timeCreated}. Hãy tham gia #NuCatch cùng {username}!!",
   "@messageSharePlayedLeaderBody": {
     "description": "Thông điệp chia sẻ điểm số của người chơi",
@@ -271,16 +108,6 @@
       }
     }
   },
-  "confirmExit": "Bạn có chắc chắn muốn thoát không?",
-  "@confirmExit": {
-    "description": "Cảnh báo khi người dùng nhấn nút thoát",
-    "placeholders": {}
-  },
-  "restart": "Chơi lại",
-  "@restart": {
-    "description": "Nhãn nút chơi lại",
-    "placeholders": {}
-  },
   "restartGame": "Chơi lại trò chơi",
   "@restartGame": {
     "description": "Tiêu đề hộp thoại chơi lại trò chơi",
@@ -291,17 +118,6 @@
     "description": "Thông báo xác nhận khi chơi lại trò chơi",
     "placeholders": {}
   },
-  "no": "Không",
-  "@no": {
-    "description": "Nút không trong hộp thoại xác nhận",
-    "placeholders": {}
-  },
-  "yes": "Có",
-  "@yes": {
-    "description": "Nút có trong hộp thoại xác nhận",
-    "placeholders": {}
-  },
-
   "insertedSuccess": "Ghi lượt chơi của bạn thành công",
   "@insertedSuccess": {
     "description": "Thông báo khi dữ liệu được thêm thành công",
@@ -312,19 +128,11 @@
     "description": "Thông báo khi thêm dữ liệu thất bại",
     "placeholders": {}
   },
-
   "scanQrToViewDetails": "Quét mã QR để xem chi tiết",
   "@scanQrToViewDetails": {
     "description": "Hướng dẫn người dùng quét mã QR để xem chi tiết",
     "placeholders": {}
   },
-
-  "doYouWantToExit": "Bạn có muốn thoát không?",
-  "@doYouWantToExit": {
-    "description": "Hỏi người dùng có muốn thoát ứng dụng hay không",
-    "placeholders": {}
-  },
-
   "difficultyEasyDescription": "Bạn sẽ gặp các câu hỏi đơn giản, chủ yếu là số nhỏ, rất phù hợp để làm quen và bắt đầu chơi.",
   "@difficultyEasyDescription": {
     "description": "Mô tả cấp độ dễ, thân thiện và tự nhiên cho người Việt"
@@ -345,7 +153,6 @@
   "@pickRightDescription": {
     "description": "Mô tả cho chế độ chọn đúng"
   },
-  
   "difficultyEasyTitle": "Dễ",
   "@difficultyEasyTitle": {
     "description": "Tiêu đề cho chế độ dễ"
@@ -366,25 +173,16 @@
   "@pickRightTitle": {
     "description": "Tiêu đề cho chế độ chọn đúng"
   },
-
   "confirmChangeDifficulty": "Lượt chơi sẽ bị reset. Bạn có chắc chắn muốn thay đổi không?",
   "@confirmChangeDifficulty": {
     "description": "Cảnh báo khi người dùng thay đổi độ khó",
     "placeholders": {}
   },
-
-  "areYouSure": "Bạn có chắc chắn không?",
-  "@areYouSure": {
-    "description": "Cảnh báo khi người dùng thực hiện một hành động quan trọng",
-    "placeholders": {}
-  },
-
   "no_turn_yet": "Chưa có lượt chơi nào",
   "@no_turn_yet": {
     "description": "Thông báo khi chưa có lượt chơi nào",
     "placeholders": {}
   },
-
   "daily": "Trong ngày",
   "@daily": {
     "description": "Bảng xếp hạng hàng ngày"
@@ -393,7 +191,7 @@
   "@dailyDescription": {
     "description": "Mô tả cho bảng xếp hạng hàng ngày"
   },
-  "weekly": "Trong tuần", 
+  "weekly": "Trong tuần",
   "@weekly": {
     "description": "Bảng xếp hạng hàng tuần"
   },
@@ -409,101 +207,6 @@
   "@allTimeDescription": {
     "description": "Mô tả cho bảng xếp hạng tất cả thời gian"
   },
-  
-  "updateRequired": "Yêu cầu cập nhật",
-  "@updateRequired": {
-    "description": "Tiêu đề cho hộp thoại bắt buộc cập nhật"
-  },
-  "updateAvailable": "Có bản cập nhật",
-  "@updateAvailable": {
-    "description": "Tiêu đề cho hộp thoại cập nhật tùy chọn"
-  },
-  "currentVersion": "Phiên bản hiện tại",
-  "@currentVersion": {
-    "description": "Nhãn cho phiên bản ứng dụng hiện tại"
-  },
-  "newVersion": "Phiên bản mới",
-  "@newVersion": {
-    "description": "Nhãn cho phiên bản có sẵn mới"
-  },
-  "whatsNew": "Có gì mới",
-  "@whatsNew": {
-    "description": "Nhãn cho phần ghi chú phát hành"
-  },
-  "forceUpdateMessage": "Bản cập nhật này là bắt buộc để tiếp tục sử dụng ứng dụng. Vui lòng cập nhật ngay.",
-  "@forceUpdateMessage": {
-    "description": "Thông báo yêu cầu bắt buộc cập nhật"
-  },
-  "later": "Để sau",
-  "@later": {
-    "description": "Nút hoãn cập nhật tùy chọn"
-  },
-  "updateNow": "Cập nhật ngay",
-  "@updateNow": {
-    "description": "Nút tiến hành cập nhật"
-  },
-  "update": "Cập nhật",
-  "@update": {
-    "description": "Nút cập nhật ứng dụng"
-  },
-  
-  "checkForUpdates": "Kiểm tra cập nhật",
-  "@checkForUpdates": {
-    "description": "Nút kiểm tra cập nhật ứng dụng"
-  },
-  "appUpdates": "Cập nhật ứng dụng",
-  "@appUpdates": {
-    "description": "Tiêu đề phần cập nhật ứng dụng"
-  },
-  "tapToCheckUpdates": "Nhấn vào nút bên dưới để kiểm tra cập nhật ứng dụng.",
-  "@tapToCheckUpdates": {
-    "description": "Thông báo nhắc người dùng kiểm tra cập nhật"
-  },
-  "checkingForUpdates": "Đang kiểm tra cập nhật...",
-  "@checkingForUpdates": {
-    "description": "Thông báo đang kiểm tra cập nhật"
-  },
-  "newVersionAvailable": "Phiên bản mới {version} đã có! {forceMessage}",
-  "@newVersionAvailable": {
-    "description": "Thông báo khi có phiên bản mới",
-    "placeholders": {
-      "version": {
-        "type": "String",
-        "example": "1.2.0"
-      },
-      "forceMessage": {
-        "type": "String",
-        "example": "Bản cập nhật này là bắt buộc."
-      }
-    }
-  },
-  "thisUpdateRequired": "Bản cập nhật này là bắt buộc.",
-  "@thisUpdateRequired": {
-    "description": "Thông báo bắt buộc cập nhật"
-  },
-  "usingLatestVersion": "Bạn đang sử dụng phiên bản mới nhất!",
-  "@usingLatestVersion": {
-    "description": "Thông báo khi ứng dụng đã là bản mới nhất"
-  },
-  "unableToCheckUpdates": "Không thể kiểm tra cập nhật. {error}",
-  "@unableToCheckUpdates": {
-    "description": "Thông báo lỗi khi kiểm tra cập nhật thất bại",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Vui lòng thử lại sau."
-      }
-    }
-  },
-  "tryAgainLater": "Vui lòng thử lại sau.",
-  "@tryAgainLater": {
-    "description": "Thông báo lỗi mặc định"
-  },
-  "updatePostponed": "Có bản cập nhật nhưng đã hoãn lại.",
-  "@updatePostponed": {
-    "description": "Thông báo khi người dùng từ chối cập nhật"
-  },
-  
   "tapTimerTooltip": "Bạn có {totalSeconds} giây để chạm vào một số. Thanh đổi màu khi thời gian trôi qua: xanh lá (hơn {halfSeconds} giây), cam ({quarterSeconds}-{halfSeconds} giây), đỏ (dưới {quarterSeconds} giây).",
   "@tapTimerTooltip": {
     "description": "Chú thích giải thích thanh tiến trình thời gian chạm",
@@ -522,7 +225,6 @@
       }
     }
   },
-  
   "selectPlayMode": "Chọn chế độ chơi",
   "@selectPlayMode": {
     "description": "Tiêu đề màn hình chọn chế độ chơi"
@@ -613,10 +315,6 @@
   "@bluetoothDisabledMessage": {
     "description": "Thông báo khi Bluetooth đã tắt"
   },
-  "cancel": "Hủy",
-  "@cancel": {
-    "description": "Nhãn nút hủy"
-  },
   "grantPermission": "Cấp quyền",
   "@grantPermission": {
     "description": "Nút cấp quyền"
@@ -629,7 +327,6 @@
   "@openSettings": {
     "description": "Nút mở cài đặt ứng dụng"
   },
-
   "yourTurn": "Lượt của bạn",
   "@yourTurn": {
     "description": "Thông báo đến lượt người chơi trong chế độ đối kháng"
@@ -674,122 +371,6 @@
   "@youRanOutOfLives": {
     "description": "Lý do thua khi người chơi hết mạng"
   },
-  "holidayNotification": "Hôm nay là {holidayName}, {greeting}",
-  "@holidayNotification": {
-    "description": "Thông báo sự kiện lễ hội với lời chúc",
-    "placeholders": {
-      "holidayName": {
-        "type": "String"
-      },
-      "greeting": {
-        "type": "String"
-      }
-    }
-  },
-  "holidayNewYear": "Tết Dương lịch",
-  "@holidayNewYear": {
-    "description": "Tên lễ hội Năm Mới"
-  },
-  "greetingNewYear": "Chúc mừng năm mới!",
-  "@greetingNewYear": {
-    "description": "Lời chúc Năm Mới"
-  },
-  "holidayLunarNewYear": "Tết Nguyên đán",
-  "@holidayLunarNewYear": {
-    "description": "Tên lễ hội Tết Nguyên đán"
-  },
-  "greetingLunarNewYear": "Chúc mừng năm mới! Vạn sự như ý!",
-  "@greetingLunarNewYear": {
-    "description": "Lời chúc Tết Nguyên đán bằng Tiếng Việt"
-  },
-  "holidayValentine": "Ngày Lễ Tình Nhân",
-  "@holidayValentine": {
-    "description": "Tên lễ hội Valentine"
-  },
-  "greetingValentine": "Chúc mừng ngày lễ tình nhân!",
-  "@greetingValentine": {
-    "description": "Lời chúc ngày Valentine"
-  },
-  "holidayHoli": "Lễ hội Holi",
-  "@holidayHoli": {
-    "description": "Tên lễ hội Holi"
-  },
-  "greetingHoli": "होली की शुभकामनाएं! (Holi Ki Shubhkamnayein!)",
-  "@greetingHoli": {
-    "description": "Lời chúc lễ hội Holi bằng tiếng Hindi"
-  },
-  "holidayEarthDay": "Ngày Trái Đất",
-  "@holidayEarthDay": {
-    "description": "Tên ngày Trái Đất"
-  },
-  "greetingEarthDay": "Chúc mừng Ngày Trái Đất! Bảo vệ hành tinh của chúng ta!",
-  "@greetingEarthDay": {
-    "description": "Lời chúc Ngày Trái Đất"
-  },
-  "holidayEaster": "Lễ Phục Sinh",
-  "@holidayEaster": {
-    "description": "Tên lễ hội Phục Sinh"
-  },
-  "greetingEaster": "Chúc mừng Lễ Phục Sinh!",
-  "@greetingEaster": {
-    "description": "Lời chúc Lễ Phục Sinh"
-  },
-  "holidayPride": "Tháng Tự Hào",
-  "@holidayPride": {
-    "description": "Tên tháng Pride"
-  },
-  "greetingPride": "Tháng Tự Hào Vui Vẻ! Tình Yêu Là Tình Yêu!",
-  "@greetingPride": {
-    "description": "Lời chúc tháng Pride"
-  },
-  "holidayHalloween": "Lễ Halloween",
-  "@holidayHalloween": {
-    "description": "Tên lễ hội Halloween"
-  },
-  "greetingHalloween": "Chúc mừng Halloween!",
-  "@greetingHalloween": {
-    "description": "Lời chúc Halloween"
-  },
-  "holidayDiwali": "Lễ hội Diwali",
-  "@holidayDiwali": {
-    "description": "Tên lễ hội Diwali"
-  },
-  "greetingDiwali": "दीपावली की शुभकामनाएं! (Deepavali Ki Shubhkamnayein!)",
-  "@greetingDiwali": {
-    "description": "Lời chúc lễ hội Diwali bằng tiếng Hindi"
-  },
-  "holidayHanukkah": "Lễ Hanukkah",
-  "@holidayHanukkah": {
-    "description": "Tên lễ hội Hanukkah"
-  },
-  "greetingHanukkah": "חג חנוכה שמח! (Chag Hanukkah Sameach!)",
-  "@greetingHanukkah": {
-    "description": "Lời chúc lễ hội Hanukkah bằng tiếng Do Thái"
-  },
-  "holidayChristmas": "Lễ Giáng Sinh",
-  "@holidayChristmas": {
-    "description": "Tên lễ hội Giáng Sinh"
-  },
-  "greetingChristmas": "Chúc mừng Giáng Sinh!",
-  "@greetingChristmas": {
-    "description": "Lời chúc Giáng Sinh"
-  },
-  "holidayKwanzaa": "Lễ Kwanzaa",
-  "@holidayKwanzaa": {
-    "description": "Tên lễ hội Kwanzaa"
-  },
-  "greetingKwanzaa": "Habari Gani!",
-  "@greetingKwanzaa": {
-    "description": "Lời chúc lễ hội Kwanzaa bằng tiếng Swahili"
-  },
-  "playAgain": "Chơi lại",
-  "@playAgain": {
-    "description": "Nút để bắt đầu lại trò chơi"
-  },
-  "returnToMenu": "Về menu",
-  "@returnToMenu": {
-    "description": "Nút quay về menu chính"
-  },
   "doYouReadyForRestart": "Bạn sẵn sàng chơi lại chưa?",
   "@doYouReadyForRestart": {
     "description": "Câu hỏi xác nhận người chơi sẵn sàng chơi lại"
@@ -805,14 +386,6 @@
   "opponent": "Đối thủ",
   "@opponent": {
     "description": "Nhãn cho đối thủ"
-  },
-  "cancel": "Hủy",
-  "@cancel": {
-    "description": "Nút để hủy hành động"
-  },
-  "waiting": "Đang chờ",
-  "@waiting": {
-    "description": "Trạng thái đang chờ"
   },
   "youWillTakeFirst": "Bạn sẽ đi lượt đầu tiên!",
   "@youWillTakeFirst": {
@@ -833,10 +406,6 @@
   "opponentReady": "Đối thủ sẵn sàng!",
   "@opponentReady": {
     "description": "Tiêu đề hộp thoại khi đối thủ đã sẵn sàng"
-  },
-  "ok": "OK",
-  "@ok": {
-    "description": "Nhãn nút OK"
   },
   "bothPlayersReady": "Cả hai người chơi đã sẵn sàng!",
   "@bothPlayersReady": {

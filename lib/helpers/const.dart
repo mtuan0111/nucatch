@@ -8,8 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:nucatch/localization/app_localizations.dart';
 
 // Re-export common constants from skeleton_core
+import 'package:skeleton_core/skeleton_core.dart';
 export 'package:skeleton_core/skeleton_core.dart'
-    show LayoutConfig, languages, timeDateClient, timeDateServer;
+    show LayoutConfig, languages, timeDateClient, timeDateServer, coreLang;
 
 // Game-specific constants
 const diffShowLevelMilisecond = 250;
@@ -35,7 +36,7 @@ String profileUrlShareWithKey(profileUrl) =>
     profileUrl +
     "&u=%username%&p=%point%&t=%timeCreated%&d=%difficulty%&k=%md5Key%";
 
-String defaultUsername(context) => lang(context).anonymous;
+String defaultUsername(context) => coreLang(context).anonymous;
 
 AppLocalizations lang(context) => AppLocalizations.of(context)!;
 

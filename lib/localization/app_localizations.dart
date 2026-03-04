@@ -120,149 +120,11 @@ abstract class AppLocalizations {
   /// **'new_flutter_template'**
   String get appTitle;
 
-  /// Welcome the user to the application
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome!!'**
-  String get welcome;
-
-  /// Welcome the user to the application
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome {username}!!'**
-  String welcomeUser(String username);
-
-  /// Tiêu đề của trang chính
-  ///
-  /// In en, this message translates to:
-  /// **'Main Menu'**
-  String get mainMenu;
-
-  /// Start button label
-  ///
-  /// In en, this message translates to:
-  /// **'Start'**
-  String get start;
-
   /// Instant start button label for quick game start
   ///
   /// In en, this message translates to:
   /// **'Instant Start'**
   String get instantStart;
-
-  /// Label for the top score
-  ///
-  /// In en, this message translates to:
-  /// **'Top score'**
-  String get topScore;
-
-  /// Settings menu label
-  ///
-  /// In en, this message translates to:
-  /// **'Setting'**
-  String get setting;
-
-  /// About menu label
-  ///
-  /// In en, this message translates to:
-  /// **'About'**
-  String get about;
-
-  /// Exit button label
-  ///
-  /// In en, this message translates to:
-  /// **'Exit'**
-  String get exit;
-
-  /// The version label of the application
-  ///
-  /// In en, this message translates to:
-  /// **'Version'**
-  String get version;
-
-  /// Label for anonymous user
-  ///
-  /// In en, this message translates to:
-  /// **'Anonymous'**
-  String get anonymous;
-
-  /// Label for game level
-  ///
-  /// In en, this message translates to:
-  /// **'Level'**
-  String get level;
-
-  /// Label for game score
-  ///
-  /// In en, this message translates to:
-  /// **'Score'**
-  String get score;
-
-  /// Ready status label
-  ///
-  /// In en, this message translates to:
-  /// **'Ready'**
-  String get ready;
-
-  /// Go status label
-  ///
-  /// In en, this message translates to:
-  /// **'Go'**
-  String get go;
-
-  /// Game over message
-  ///
-  /// In en, this message translates to:
-  /// **'Game Over'**
-  String get gameOver;
-
-  /// Label for difficulty setting in the game
-  ///
-  /// In en, this message translates to:
-  /// **'Difficulty Setting'**
-  String get difficultySetting;
-
-  /// Difficulty level of the game
-  ///
-  /// In en, this message translates to:
-  /// **'Difficulty'**
-  String get difficulty;
-
-  /// Easy difficulty level of the game
-  ///
-  /// In en, this message translates to:
-  /// **'Easy'**
-  String get easy;
-
-  /// Medium difficulty level of the game
-  ///
-  /// In en, this message translates to:
-  /// **'Medium'**
-  String get medium;
-
-  /// Hard difficulty level of the game
-  ///
-  /// In en, this message translates to:
-  /// **'Hard'**
-  String get hard;
-
-  /// Very hard difficulty level of the game
-  ///
-  /// In en, this message translates to:
-  /// **'Very Hard'**
-  String get veryHard;
-
-  /// Extreme difficulty level of the game
-  ///
-  /// In en, this message translates to:
-  /// **'Extreme'**
-  String get extreme;
-
-  /// Prompt for user to select the game difficulty
-  ///
-  /// In en, this message translates to:
-  /// **'Select difficulty'**
-  String get selectDifficulty;
 
   /// Prompt for user to select the game level
   ///
@@ -294,30 +156,6 @@ abstract class AppLocalizations {
   /// **'Which one is correct?'**
   String get whichOneIsCorrect;
 
-  /// Label for name input
-  ///
-  /// In en, this message translates to:
-  /// **'Name'**
-  String get name;
-
-  /// Label for font size setting
-  ///
-  /// In en, this message translates to:
-  /// **'Font size'**
-  String get fontSize;
-
-  /// Label for volume setting
-  ///
-  /// In en, this message translates to:
-  /// **'Volume'**
-  String get volume;
-
-  /// Label for vibration setting
-  ///
-  /// In en, this message translates to:
-  /// **'Vibrate'**
-  String get vibrate;
-
   /// Label for number of top scores setting
   ///
   /// In en, this message translates to:
@@ -329,66 +167,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Only show my recorded'**
   String get onlyShowMyRecorded;
-
-  /// Label for global ranking view
-  ///
-  /// In en, this message translates to:
-  /// **'Global'**
-  String get global;
-
-  /// Label for personal ranking view
-  ///
-  /// In en, this message translates to:
-  /// **'Personal'**
-  String get personal;
-
-  /// Label for ranking position
-  ///
-  /// In en, this message translates to:
-  /// **'Rank'**
-  String get rank;
-
-  /// Label for share button
-  ///
-  /// In en, this message translates to:
-  /// **'Share'**
-  String get share;
-
-  /// Label for language setting
-  ///
-  /// In en, this message translates to:
-  /// **'Language'**
-  String get language;
-
-  /// Thank you message
-  ///
-  /// In en, this message translates to:
-  /// **'Thank you for playing'**
-  String get thankYou;
-
-  /// Detailed thank you message
-  ///
-  /// In en, this message translates to:
-  /// **'Thank you for playing our game. We hope you enjoyed it. If you have any feedback or suggestions, please let us know.'**
-  String get thankYouMessage;
-
-  /// Label for author name
-  ///
-  /// In en, this message translates to:
-  /// **'Author'**
-  String get authorName;
-
-  /// Label for connect with us section
-  ///
-  /// In en, this message translates to:
-  /// **'Connect with us'**
-  String get connectWithUs;
-
-  /// Message encouraging users to connect on social media
-  ///
-  /// In en, this message translates to:
-  /// **'If you have any questions or feedback, feel free to reach out to us on our social media channels.'**
-  String get connectWithUsMessage;
 
   /// Introduction content for the application
   ///
@@ -434,18 +212,6 @@ abstract class AppLocalizations {
   String messageSharePlayedLeaderBodyAnonymousBody(
       num point, String timeCreated);
 
-  /// Warning when the user presses the exit button
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to exit?'**
-  String get confirmExit;
-
-  /// Restart button label
-  ///
-  /// In en, this message translates to:
-  /// **'Restart'**
-  String get restart;
-
   /// Title for restart game dialog
   ///
   /// In en, this message translates to:
@@ -457,18 +223,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to restart the game?'**
   String get confirmRestart;
-
-  /// No button in the confirmation dialog
-  ///
-  /// In en, this message translates to:
-  /// **'No'**
-  String get no;
-
-  /// Yes button in the confirmation dialog
-  ///
-  /// In en, this message translates to:
-  /// **'Yes'**
-  String get yes;
 
   /// Notification when data is added successfully
   ///
@@ -487,12 +241,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scan the QR code to view details'**
   String get scanQrToViewDetails;
-
-  /// Prompt asking the user if they want to exit
-  ///
-  /// In en, this message translates to:
-  /// **'Do you want to exit?'**
-  String get doYouWantToExit;
 
   /// Description for easy difficulty level logic
   ///
@@ -560,12 +308,6 @@ abstract class AppLocalizations {
   /// **'Your turn will be reset. Are you sure you want to change the difficulty?'**
   String get confirmChangeDifficulty;
 
-  /// Warning when the user performs an important action
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure?'**
-  String get areYouSure;
-
   /// Notification when there are no turns yet
   ///
   /// In en, this message translates to:
@@ -607,120 +349,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rankings based on all recorded turns.'**
   String get allTimeDescription;
-
-  /// Title for force update dialog
-  ///
-  /// In en, this message translates to:
-  /// **'Update Required'**
-  String get updateRequired;
-
-  /// Title for optional update dialog
-  ///
-  /// In en, this message translates to:
-  /// **'Update Available'**
-  String get updateAvailable;
-
-  /// Label for current app version
-  ///
-  /// In en, this message translates to:
-  /// **'Current Version'**
-  String get currentVersion;
-
-  /// Label for new available version
-  ///
-  /// In en, this message translates to:
-  /// **'New Version'**
-  String get newVersion;
-
-  /// Label for release notes section
-  ///
-  /// In en, this message translates to:
-  /// **'What\'s New'**
-  String get whatsNew;
-
-  /// Message for force update requirement
-  ///
-  /// In en, this message translates to:
-  /// **'This update is required to continue using the app. Please update now.'**
-  String get forceUpdateMessage;
-
-  /// Button to postpone optional update
-  ///
-  /// In en, this message translates to:
-  /// **'Later'**
-  String get later;
-
-  /// Button to proceed with update
-  ///
-  /// In en, this message translates to:
-  /// **'Update Now'**
-  String get updateNow;
-
-  /// Button to update app
-  ///
-  /// In en, this message translates to:
-  /// **'Update'**
-  String get update;
-
-  /// Button to check for app updates
-  ///
-  /// In en, this message translates to:
-  /// **'Check for Updates'**
-  String get checkForUpdates;
-
-  /// Section title for app updates
-  ///
-  /// In en, this message translates to:
-  /// **'App Updates'**
-  String get appUpdates;
-
-  /// Message prompting user to check for updates
-  ///
-  /// In en, this message translates to:
-  /// **'Tap the button below to check for app updates.'**
-  String get tapToCheckUpdates;
-
-  /// Message while checking for updates
-  ///
-  /// In en, this message translates to:
-  /// **'Checking for updates...'**
-  String get checkingForUpdates;
-
-  /// Message when new version is available
-  ///
-  /// In en, this message translates to:
-  /// **'New version {version} is available! {forceMessage}'**
-  String newVersionAvailable(String version, String forceMessage);
-
-  /// Message for force update
-  ///
-  /// In en, this message translates to:
-  /// **'This update is required.'**
-  String get thisUpdateRequired;
-
-  /// Message when app is up to date
-  ///
-  /// In en, this message translates to:
-  /// **'You\'re using the latest version!'**
-  String get usingLatestVersion;
-
-  /// Error message when update check fails
-  ///
-  /// In en, this message translates to:
-  /// **'Unable to check for updates. {error}'**
-  String unableToCheckUpdates(String error);
-
-  /// Default error message
-  ///
-  /// In en, this message translates to:
-  /// **'Please try again later.'**
-  String get tryAgainLater;
-
-  /// Message when user dismissed update
-  ///
-  /// In en, this message translates to:
-  /// **'Update available but postponed.'**
-  String get updatePostponed;
 
   /// Tooltip explaining the tap timer progress bar
   ///
@@ -854,12 +482,6 @@ abstract class AppLocalizations {
   /// **'Combat Mode requires Bluetooth to be enabled. Please enable Bluetooth in your device settings.'**
   String get bluetoothDisabledMessage;
 
-  /// Button to cancel action
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
-
   /// Button to grant permission
   ///
   /// In en, this message translates to:
@@ -944,168 +566,6 @@ abstract class AppLocalizations {
   /// **'You ran out of lives'**
   String get youRanOutOfLives;
 
-  /// Holiday event notification with greeting
-  ///
-  /// In en, this message translates to:
-  /// **'Today is {holidayName}, {greeting}'**
-  String holidayNotification(String holidayName, String greeting);
-
-  /// New Year holiday name
-  ///
-  /// In en, this message translates to:
-  /// **'New Year'**
-  String get holidayNewYear;
-
-  /// New Year greeting
-  ///
-  /// In en, this message translates to:
-  /// **'Happy New Year!'**
-  String get greetingNewYear;
-
-  /// Lunar New Year holiday name
-  ///
-  /// In en, this message translates to:
-  /// **'Lunar New Year'**
-  String get holidayLunarNewYear;
-
-  /// Lunar New Year greeting in Chinese
-  ///
-  /// In en, this message translates to:
-  /// **'新年快乐! (Xīn Nián Kuài Lè!)'**
-  String get greetingLunarNewYear;
-
-  /// Valentine's Day holiday name
-  ///
-  /// In en, this message translates to:
-  /// **'Valentine\'s Day'**
-  String get holidayValentine;
-
-  /// Valentine's Day greeting
-  ///
-  /// In en, this message translates to:
-  /// **'Happy Valentine\'s Day!'**
-  String get greetingValentine;
-
-  /// Holi holiday name
-  ///
-  /// In en, this message translates to:
-  /// **'Holi'**
-  String get holidayHoli;
-
-  /// Holi greeting in Hindi
-  ///
-  /// In en, this message translates to:
-  /// **'होली की शुभकामनाएं! (Holi Ki Shubhkamnayein!)'**
-  String get greetingHoli;
-
-  /// Earth Day holiday name
-  ///
-  /// In en, this message translates to:
-  /// **'Earth Day'**
-  String get holidayEarthDay;
-
-  /// Earth Day greeting
-  ///
-  /// In en, this message translates to:
-  /// **'Happy Earth Day! Protect our planet!'**
-  String get greetingEarthDay;
-
-  /// Easter holiday name
-  ///
-  /// In en, this message translates to:
-  /// **'Easter'**
-  String get holidayEaster;
-
-  /// Easter greeting
-  ///
-  /// In en, this message translates to:
-  /// **'Happy Easter!'**
-  String get greetingEaster;
-
-  /// Pride Month name
-  ///
-  /// In en, this message translates to:
-  /// **'Pride Month'**
-  String get holidayPride;
-
-  /// Pride Month greeting
-  ///
-  /// In en, this message translates to:
-  /// **'Happy Pride! Love is Love!'**
-  String get greetingPride;
-
-  /// Halloween holiday name
-  ///
-  /// In en, this message translates to:
-  /// **'Halloween'**
-  String get holidayHalloween;
-
-  /// Halloween greeting
-  ///
-  /// In en, this message translates to:
-  /// **'Happy Halloween!'**
-  String get greetingHalloween;
-
-  /// Diwali holiday name
-  ///
-  /// In en, this message translates to:
-  /// **'Diwali'**
-  String get holidayDiwali;
-
-  /// Diwali greeting in Hindi
-  ///
-  /// In en, this message translates to:
-  /// **'दीपावली की शुभकामनाएं! (Deepavali Ki Shubhkamnayein!)'**
-  String get greetingDiwali;
-
-  /// Hanukkah holiday name
-  ///
-  /// In en, this message translates to:
-  /// **'Hanukkah'**
-  String get holidayHanukkah;
-
-  /// Hanukkah greeting in Hebrew
-  ///
-  /// In en, this message translates to:
-  /// **'חג חנוכה שמח! (Chag Hanukkah Sameach!)'**
-  String get greetingHanukkah;
-
-  /// Christmas holiday name
-  ///
-  /// In en, this message translates to:
-  /// **'Christmas'**
-  String get holidayChristmas;
-
-  /// Christmas greeting
-  ///
-  /// In en, this message translates to:
-  /// **'Merry Christmas!'**
-  String get greetingChristmas;
-
-  /// Kwanzaa holiday name
-  ///
-  /// In en, this message translates to:
-  /// **'Kwanzaa'**
-  String get holidayKwanzaa;
-
-  /// Kwanzaa greeting in Swahili
-  ///
-  /// In en, this message translates to:
-  /// **'Habari Gani!'**
-  String get greetingKwanzaa;
-
-  /// Button to restart the game
-  ///
-  /// In en, this message translates to:
-  /// **'Play Again'**
-  String get playAgain;
-
-  /// Button to return to main menu
-  ///
-  /// In en, this message translates to:
-  /// **'Return to Menu'**
-  String get returnToMenu;
-
   /// Question asking if player is ready to restart the match
   ///
   /// In en, this message translates to:
@@ -1129,12 +589,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Opponent'**
   String get opponent;
-
-  /// Waiting status text
-  ///
-  /// In en, this message translates to:
-  /// **'Waiting'**
-  String get waiting;
 
   /// Notice shown during countdown when player will go first
   ///
@@ -1165,12 +619,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Opponent Ready!'**
   String get opponentReady;
-
-  /// OK button label
-  ///
-  /// In en, this message translates to:
-  /// **'OK'**
-  String get ok;
 
   /// Dialog title when both players are ready
   ///

@@ -26,23 +26,23 @@ Map<MenuOption, Map<String, dynamic>> menuArray(BuildContext context) => {
         "icon": FontAwesomeIcons.bolt,
       },
       MenuOption.start: {
-        "text": lang(context).start,
+        "text": coreLang(context).start,
         "icon": FontAwesomeIcons.play,
       },
       MenuOption.topScore: {
-        "text": lang(context).topScore,
+        "text": coreLang(context).topScore,
         "icon": FontAwesomeIcons.trophy,
       },
       MenuOption.setting: {
-        "text": lang(context).setting,
+        "text": coreLang(context).setting,
         "icon": FontAwesomeIcons.gear,
       },
       MenuOption.about: {
-        "text": lang(context).about,
+        "text": coreLang(context).about,
         "icon": FontAwesomeIcons.circleInfo,
       },
       MenuOption.exit: {
-        "text": lang(context).exit,
+        "text": coreLang(context).exit,
         "icon": FontAwesomeIcons.rightFromBracket,
       },
     };

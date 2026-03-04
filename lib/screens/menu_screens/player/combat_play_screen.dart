@@ -76,11 +76,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) => AlertTemplate(
-        title: lang(dialogContext).mainMenu,
+        title: coreLang(dialogContext).mainMenu,
         message: lang(dialogContext).confirmEndCombat,
-        possitiveButtonLabel: lang(dialogContext).yes,
+        possitiveButtonLabel: coreLang(dialogContext).yes,
         onPossitiveButtonPressed: () => Navigator.of(dialogContext).pop(true),
-        negativeButtonLabel: lang(dialogContext).no,
+        negativeButtonLabel: coreLang(dialogContext).no,
         onNegativeButtonPressed: () => Navigator.of(dialogContext).pop(false),
       ),
     ).then((confirmed) {
@@ -245,7 +245,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: "${lang(context).level}: ",
+                            text: "${coreLang(context).level}: ",
                             style: AppTextStyles.bodyLargeBold(context),
                           ),
                           TextSpan(
@@ -268,7 +268,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     ),
                     const SizedBox(width: kSpaceS),
                     Text(
-                      "${lang(context).score}: ",
+                      "${coreLang(context).score}: ",
                       style: AppTextStyles.bodyLargeBold(context),
                     ),
                     Text(
@@ -310,7 +310,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
-                      "${lang(context).score}: ",
+                      "${coreLang(context).score}: ",
                       style: AppTextStyles.bodyLargeBold(context),
                     ),
                     Text(

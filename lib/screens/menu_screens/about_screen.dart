@@ -109,7 +109,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               const SizedBox(width: kSpaceML),
                               Expanded(
                                 child: Text(
-                                  lang(context).thankYou,
+                                  coreLang(context).thankYou,
                                   style: AppTextStyles.titleLarge(context)
                                       .copyWith(fontSize: kFontSizeL),
                                 ),
@@ -123,7 +123,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           ),
                           const SizedBox(height: kSpaceML),
                           Text(
-                            lang(context).thankYouMessage,
+                            coreLang(context).thankYouMessage,
                             style: AppTextStyles.bodyLarge(context).copyWith(
                               fontStyle: FontStyle.italic,
                             ),
@@ -177,7 +177,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               ),
                               const SizedBox(width: kSpaceML),
                               Text(
-                                lang(context).authorName,
+                                coreLang(context).authorName,
                                 style: AppTextStyles.titleLarge(context)
                                     .copyWith(fontSize: kFontSizeL),
                               ),
@@ -187,14 +187,14 @@ class _AboutScreenState extends State<AboutScreen> {
                           _buildInfoRow(
                             context,
                             FontAwesomeIcons.user,
-                            lang(context).authorName,
+                            coreLang(context).authorName,
                             "BOM",
                           ),
                           const SizedBox(height: kSpaceML),
                           _buildInfoRow(
                             context,
                             FontAwesomeIcons.codeBranch,
-                            lang(context).version,
+                            coreLang(context).version,
                             version ?? "N/A",
                           ),
                         ],
@@ -250,7 +250,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                   const SizedBox(width: kSpaceML),
                                   Expanded(
                                     child: Text(
-                                      lang(context).appUpdates,
+                                      coreLang(context).appUpdates,
                                       style: AppTextStyles.titleLarge(context)
                                           .copyWith(fontSize: kFontSizeL),
                                     ),
@@ -321,7 +321,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                           size: kIconSizeS,
                                         ),
                                   label: Text(
-                                    lang(context).checkForUpdates,
+                                    coreLang(context).checkForUpdates,
                                     style: AppTextStyles.withColor(
                                         AppTextStyles.bodyLarge(context),
                                         Theme.of(context)
@@ -404,7 +404,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               const SizedBox(width: kSpaceML),
                               Expanded(
                                 child: Text(
-                                  lang(context).connectWithUs,
+                                  coreLang(context).connectWithUs,
                                   style: AppTextStyles.titleLarge(context)
                                       .copyWith(fontSize: kFontSizeL),
                                 ),
@@ -413,7 +413,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           ),
                           const SizedBox(height: kSpaceL),
                           Text(
-                            lang(context).connectWithUsMessage,
+                            coreLang(context).connectWithUsMessage,
                             style: AppTextStyles.bodyLarge(context),
                           ),
                           const SizedBox(height: kSpaceXL),
@@ -448,7 +448,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                       lang(context)
                                           .messageShareIntroWIthUsername(
                                         userState.username ??
-                                            lang(context).anonymous,
+                                            coreLang(context).anonymous,
                                         dotenv.env['PROFILE_URL']!,
                                       ),
                                       sharePositionOrigin: sharePositionOrigin,
@@ -502,22 +502,22 @@ class _AboutScreenState extends State<AboutScreen> {
   String _getUpdateStatusText(BuildContext context, AppVersionState state) {
     switch (state.status) {
       case AppVersionStatus.initial:
-        return lang(context).tapToCheckUpdates;
+        return coreLang(context).tapToCheckUpdates;
       case AppVersionStatus.checking:
-        return lang(context).checkingForUpdates;
+        return coreLang(context).checkingForUpdates;
       case AppVersionStatus.updateAvailable:
-        return lang(context).newVersionAvailable(
+        return coreLang(context).newVersionAvailable(
           state.availableVersion?.versionName ?? '',
-          state.isForceUpdate ? lang(context).thisUpdateRequired : '',
+          state.isForceUpdate ? coreLang(context).thisUpdateRequired : '',
         );
       case AppVersionStatus.noUpdate:
-        return lang(context).usingLatestVersion;
+        return coreLang(context).usingLatestVersion;
       case AppVersionStatus.error:
-        return lang(context).unableToCheckUpdates(
-          state.errorMessage ?? lang(context).tryAgainLater,
+        return coreLang(context).unableToCheckUpdates(
+          state.errorMessage ?? coreLang(context).tryAgainLater,
         );
       case AppVersionStatus.dismissed:
-        return lang(context).updatePostponed;
+        return coreLang(context).updatePostponed;
     }
   }
 

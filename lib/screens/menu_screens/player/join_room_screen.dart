@@ -512,7 +512,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                     const FaIcon(FontAwesomeIcons.check),
                                     const SizedBox(width: kSpaceS),
                                     Text(
-                                      lang(context).ready,
+                                      coreLang(context).ready,
                                       style:
                                           AppTextStyles.bodyLargeBold(context),
                                     ),
@@ -654,7 +654,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
           style: AppTextStyles.bodyLarge(context),
         ),
         Text(
-          isReady ? lang(context).ready : lang(context).waiting,
+          isReady ? coreLang(context).ready : coreLang(context).waiting,
           style: AppTextStyles.withColor(
               AppTextStyles.bodyLarge(context),
               isReady

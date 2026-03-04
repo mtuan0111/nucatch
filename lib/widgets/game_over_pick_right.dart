@@ -8,7 +8,6 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/navs/menu_nav.dart';
 
 /// Game over content widget for Pick Right difficulty mode
 /// Shows the correct equation instead of button index
@@ -27,7 +26,7 @@ class GameOverPickRight extends StatelessWidget {
       children: [
         // Game Over title
         Text(
-          lang(context).gameOver,
+          coreLang(context).gameOver,
           style: AppTextStyles.displayLarge(context).copyWith(
             color: Theme.of(context).colorScheme.onPrimary,
           ),

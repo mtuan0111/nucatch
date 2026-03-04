@@ -96,7 +96,7 @@ class RankingItem extends StatelessWidget {
                 ),
                 RankingInfoRow(
                   icon: Icons.person,
-                  text: playerName ?? lang(context).anonymous,
+                  text: playerName ?? coreLang(context).anonymous,
                 ),
                 RankingInfoRow(
                   icon: Icons.calendar_today,

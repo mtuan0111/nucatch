@@ -14,7 +14,6 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/widgets/admob_banner.dart';
 import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
-import 'package:nucatch/navs/menu_nav.dart';
 
 class TopScoreScreen extends StatefulWidget {
   const TopScoreScreen({super.key, required this.title});

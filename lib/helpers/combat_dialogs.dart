@@ -49,7 +49,7 @@ class CombatDialogs {
               ),
             ],
           ),
-          possitiveButtonLabel: lang(dialogContext).ok,
+          possitiveButtonLabel: coreLang(dialogContext).ok,
           onPossitiveButtonPressed: () => Navigator.of(dialogContext).pop(),
         ),
       );

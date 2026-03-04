@@ -74,8 +74,8 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
   // Get filter context text
   String _getFilterContext() {
     return topScoreDetailState.isPersonalView
-        ? lang(context).personal
-        : lang(context).global;
+        ? coreLang(context).personal
+        : coreLang(context).global;
   }
 
   @override
@@ -143,7 +143,7 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                     // ),
                     CustomSliverAppBar(
                       title:
-                          '${_getPeriodText()} - ${lang(context).rank} ${ranking ?? ''} - ${_getFilterContext()}',
+                          '${_getPeriodText()} - ${coreLang(context).rank} ${ranking ?? ''} - ${_getFilterContext()}',
                       opacity: state.isCapturing ? 0.0 : 1.0,
                       onBackPressed: () {
                         topScoreCubit.showTopScore();
@@ -257,7 +257,7 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                               // Share.share(
                                               //   lang(context).messageSharePlayedLeaderBody(
                                               //     userState.username ??
-                                              //         lang(context).anonymous,
+                                              //         coreLang(context).anonymous,
                                               //     turnRecordedModel.point,
                                               //     turnRecordedModel.recordedTime
                                               //         .formatClient(),
@@ -273,7 +273,7 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                             );
                                           },
                                           iconData: Icons.share,
-                                          text: lang(context).share,
+                                          text: coreLang(context).share,
                                           buttonSize: ButtonSize.small,
                                         ),
                                       ],

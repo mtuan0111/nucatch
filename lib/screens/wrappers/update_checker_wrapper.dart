@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skeleton_core/skeleton_core.dart';
+import 'package:skeleton_core/skeleton_core.dart'
+    hide UpdateCheckerWrapper; // Use local version that wraps skeleton_core's
+import 'package:skeleton_core/src/widgets/update_checker_wrapper.dart' as core;
 import 'package:nucatch/screens/dialogs/update_notice_dialog.dart';
 
-class UpdateCheckerWrapper extends StatefulWidget {
+/// Nucatch-specific update checker that wraps skeleton_core's
+/// [UpdateCheckerWrapper] with the app's localized [UpdateNoticeDialog].
+class UpdateCheckerWrapper extends StatelessWidget {
   final Widget child;
 
   const UpdateCheckerWrapper({
@@ -11,21 +15,7 @@ class UpdateCheckerWrapper extends StatefulWidget {
     required this.child,
   }) : super(key: key);
 
-  @override
-  State<UpdateCheckerWrapper> createState() => _UpdateCheckerWrapperState();
-}
-
-class _UpdateCheckerWrapperState extends State<UpdateCheckerWrapper> {
-  @override
-  void initState() {
-    super.initState();
-    // Check for updates when the app launches
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AppVersionBloc>().add(CheckForUpdateEvent());
-    });
-  }
-
-  void _showUpdateDialog(AppVersionState state) {
+  void _showUpdateDialog(BuildContext context, AppVersionState state) {
     if (state.availableVersion == null || state.currentVersion == null) {
       return;
     }
@@ -33,7 +23,7 @@ class _UpdateCheckerWrapperState extends State<UpdateCheckerWrapper> {
     showDialog(
       context: context,
       barrierDismissible: !state.isForceUpdate,
-      builder: (context) => UpdateNoticeDialog(
+      builder: (dialogContext) => UpdateNoticeDialog(
         versionInfo: state.availableVersion!,
         currentVersion: state.currentVersion!,
         isForceUpdate: state.isForceUpdate,
@@ -49,18 +39,9 @@ class _UpdateCheckerWrapperState extends State<UpdateCheckerWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AppVersionBloc, AppVersionState>(
-      listenWhen: (previous, current) {
-        // Only show dialog when status changes to updateAvailable
-        return current.status == AppVersionStatus.updateAvailable &&
-            previous.status != AppVersionStatus.updateAvailable;
-      },
-      listener: (context, state) {
-        if (state.shouldShowUpdateDialog) {
-          _showUpdateDialog(state);
-        }
-      },
-      child: widget.child,
+    return core.UpdateCheckerWrapper(
+      onShowUpdateDialog: _showUpdateDialog,
+      child: child,
     );
   }
 }

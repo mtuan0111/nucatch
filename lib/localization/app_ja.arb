@@ -4,108 +4,9 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "welcome": "ようこそ！",
-  "@welcome": {
-    "description": "Welcome the user to the application",
-    "placeholders": {}
-  },
-  "welcomeUser": "ようこそ、{username}さん！",
-  "@welcomeUser": {
-    "description": "Welcome the user to the application",
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "John Doe"
-      }
-    }
-  },
-  "mainMenu": "メインメニュー",
-  "@mainMenu": {
-    "description": "Tiêu đề của trang chính"
-  },
-  "start": "スタート",
-  "@start": {
-    "description": "Start button label"
-  },
   "instantStart": "インスタントスタート",
   "@instantStart": {
     "description": "クイックゲーム開始のためのインスタントスタートボタン"
-  },
-  "topScore": "最高スコア",
-  "@topScore": {
-    "description": "Label for the top score"
-  },
-  "setting": "設定",
-  "@setting": {
-    "description": "Settings menu label"
-  },
-  "about": "アプリについて",
-  "@about": {
-    "description": "About menu label"
-  },
-  "exit": "終了",
-  "@exit": {
-    "description": "Exit button label"
-  },
-  "version": "バージョン",
-  "@version": {
-    "description": "The version label of the application"
-  },
-  "anonymous": "匿名",
-  "@anonymous": {
-    "description": "Label for anonymous user"
-  },
-  "level": "レベル",
-  "@level": {
-    "description": "Label for game level"
-  },
-  "score": "スコア",
-  "@score": {
-    "description": "Label for game score"
-  },
-  "ready": "準備完了",
-  "@ready": {
-    "description": "Ready status label"
-  },
-  "go": "ゴー！",
-  "@go": {
-    "description": "Go status label"
-  },
-  "gameOver": "ゲームオーバー",
-  "@gameOver": {
-    "description": "Game over message"
-  },
-  "difficultySetting": "難易度設定",
-  "@difficultySetting": {
-    "description": "Label for difficulty setting in the game"
-  },
-  "difficulty": "難易度",
-  "@difficulty": {
-    "description": "Difficulty level of the game"
-  },
-  "easy": "かんたん",
-  "@easy": {
-    "description": "Easy difficulty level of the game"
-  },
-  "medium": "ふつう",
-  "@medium": {
-    "description": "Medium difficulty level of the game"
-  },
-  "hard": "むずかしい",
-  "@hard": {
-    "description": "Hard difficulty level of the game"
-  },
-  "veryHard": "激ムズ",
-  "@veryHard": {
-    "description": "Very hard difficulty level of the game"
-  },
-  "extreme": "究極",
-  "@extreme": {
-    "description": "Extreme difficulty level of the game"
-  },
-  "selectDifficulty": "難易度を選択",
-  "@selectDifficulty": {
-    "description": "Prompt for user to select the game difficulty"
   },
   "selectLevel": "レベルを選択",
   "@selectLevel": {
@@ -124,22 +25,6 @@
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },
-  "name": "名前",
-  "@name": {
-    "description": "Label for name input"
-  },
-  "fontSize": "フォントサイズ",
-  "@fontSize": {
-    "description": "Label for font size setting"
-  },
-  "volume": "音量",
-  "@volume": {
-    "description": "Label for volume setting"
-  },
-  "vibrate": "振動",
-  "@vibrate": {
-    "description": "Label for vibration setting"
-  },
   "numberOfTopScores": "ハイスコア表示数",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
@@ -147,46 +32,6 @@
   "onlyShowMyRecorded": "自分の記録のみ表示",
   "@onlyShowMyRecorded": {
     "description": "Label for filter to show only user's own recorded scores"
-  },
-  "global": "グローバル",
-  "@global": {
-    "description": "Label for global ranking view"
-  },
-  "personal": "個人",
-  "@personal": {
-    "description": "Label for personal ranking view"
-  },
-  "rank": "ランク",
-  "@rank": {
-    "description": "Label for ranking position"
-  },
-  "share": "共有",
-  "@share": {
-    "description": "Label for share button"
-  },
-  "language": "言語",
-  "@language": {
-    "description": "Label for language setting"
-  },
-  "thankYou": "プレイありがとうございます",
-  "@thankYou": {
-    "description": "Thank you message"
-  },
-  "thankYouMessage": "当ゲームをプレイいただきありがとうございます。楽しんでいただけたでしょうか。ご意見やご感想がございましたら、お気軽にお寄せください。",
-  "@thankYouMessage": {
-    "description": "Detailed thank you message"
-  },
-  "authorName": "作者",
-  "@authorName": {
-    "description": "Label for author name"
-  },
-  "connectWithUs": "お問い合わせ",
-  "@connectWithUs": {
-    "description": "Label for connect with us section"
-  },
-  "connectWithUsMessage": "ご質問やご意見がございましたら、ソーシャルメディアチャネルからお気軽にお問い合わせください。",
-  "@connectWithUsMessage": {
-    "description": "Message encouraging users to connect on social media"
   },
   "introductionContent": "NuCatchは、記憶力を高め、集中力を向上させるために設計された楽しく魅力的な脳トレゲームです。短時間で数字を素早くキャッチすることに挑戦し、OTP、電話番号、誕生日などを覚えるのに役立ちます。体験を楽しんで、記憶力を向上させましょう！",
   "@introductionContent": {
@@ -263,21 +108,6 @@
       }
     }
   },
-  "confirmExit": "本当に終了しますか？",
-  "@confirmExit": {
-    "description": "Warning when the user presses the exit button",
-    "placeholders": {}
-  },
-  "no": "いいえ",
-  "@no": {
-    "description": "No button in the confirmation dialog",
-    "placeholders": {}
-  },
-  "yes": "はい",
-  "@yes": {
-    "description": "Yes button in the confirmation dialog",
-    "placeholders": {}
-  },
   "insertedSuccess": "ターンの記録に成功しました",
   "@insertedSuccess": {
     "description": "Notification when data is added successfully",
@@ -291,11 +121,6 @@
   "scanQrToViewDetails": "QRコードをスキャンして詳細を表示",
   "@scanQrToViewDetails": {
     "description": "Instruction to scan QR code for details",
-    "placeholders": {}
-  },
-  "doYouWantToExit": "終了しますか？",
-  "@doYouWantToExit": {
-    "description": "Prompt asking the user if they want to exit",
     "placeholders": {}
   },
   "difficultyEasyDescription": "レベルが少し高いランダムな数字を生成する、シンプルなチャレンジです。",
@@ -335,11 +160,6 @@
     "description": "Warning when the user changes the difficulty",
     "placeholders": {}
   },
-  "areYouSure": "よろしいですか？",
-  "@areYouSure": {
-    "description": "Warning when the user performs an important action",
-    "placeholders": {}
-  },
   "no_turn_yet": "まだターンがありません",
   "@no_turn_yet": {
     "description": "Notification when there are no turns yet",
@@ -368,98 +188,6 @@
   "allTimeDescription": "記録されたすべてのターンに基づくランキング。",
   "@allTimeDescription": {
     "description": "Description for all-time leaderboard"
-  },
-  "updateRequired": "アップデートが必要です",
-  "@updateRequired": {
-    "description": "Title for force update dialog"
-  },
-  "updateAvailable": "アップデートがあります",
-  "@updateAvailable": {
-    "description": "Title for optional update dialog"
-  },
-  "currentVersion": "現在のバージョン",
-  "@currentVersion": {
-    "description": "Label for current app version"
-  },
-  "newVersion": "新しいバージョン",
-  "@newVersion": {
-    "description": "Label for new available version"
-  },
-  "whatsNew": "新機能",
-  "@whatsNew": {
-    "description": "Label for release notes section"
-  },
-  "forceUpdateMessage": "アプリを引き続き使用するには、この更新が必要です。今すぐ更新してください。",
-  "@forceUpdateMessage": {
-    "description": "Message for force update requirement"
-  },
-  "later": "後で",
-  "@later": {
-    "description": "Button to postpone optional update"
-  },
-  "updateNow": "今すぐ更新",
-  "@updateNow": {
-    "description": "Button to proceed with update"
-  },
-  "update": "更新",
-  "@update": {
-    "description": "Button to update app"
-  },
-  "checkForUpdates": "更新を確認",
-  "@checkForUpdates": {
-    "description": "Button to check for app updates"
-  },
-  "appUpdates": "アプリアップデート",
-  "@appUpdates": {
-    "description": "Section title for app updates"
-  },
-  "tapToCheckUpdates": "下のボタンをタップして、アプリの更新を確認してください。",
-  "@tapToCheckUpdates": {
-    "description": "Message prompting user to check for updates"
-  },
-  "checkingForUpdates": "更新を確認中...",
-  "@checkingForUpdates": {
-    "description": "Message while checking for updates"
-  },
-  "newVersionAvailable": "新しいバージョン {version} が利用可能です！ {forceMessage}",
-  "@newVersionAvailable": {
-    "description": "Message when new version is available",
-    "placeholders": {
-      "version": {
-        "type": "String",
-        "example": "1.2.0"
-      },
-      "forceMessage": {
-        "type": "String",
-        "example": "This update is required."
-      }
-    }
-  },
-  "thisUpdateRequired": "この更新は必須です。",
-  "@thisUpdateRequired": {
-    "description": "Message for force update"
-  },
-  "usingLatestVersion": "最新バージョンを使用しています！",
-  "@usingLatestVersion": {
-    "description": "Message when app is up to date"
-  },
-  "unableToCheckUpdates": "更新を確認できませんでした。{error}",
-  "@unableToCheckUpdates": {
-    "description": "Error message when update check fails",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Please try again later."
-      }
-    }
-  },
-  "tryAgainLater": "後でもう一度お試しください。",
-  "@tryAgainLater": {
-    "description": "Default error message"
-  },
-  "updatePostponed": "更新は利用可能ですが延期されました。",
-  "@updatePostponed": {
-    "description": "Message when user dismissed update"
   },
   "tapTimerTooltip": "数字をタップするのに {totalSeconds} 秒時間が与えられます。時間が経つにつれてバーの色が変わります：緑（{halfSeconds}秒以上）、オレンジ（{quarterSeconds}-{halfSeconds}秒）、赤（{quarterSeconds}秒未満）。",
   "@tapTimerTooltip": {
@@ -569,10 +297,6 @@
   "@bluetoothDisabledMessage": {
     "description": "Message when Bluetooth is disabled"
   },
-  "cancel": "キャンセル",
-  "@cancel": {
-    "description": "Cancel button label"
-  },
   "grantPermission": "権限を許可",
   "@grantPermission": {
     "description": "Button to grant permission"
@@ -629,122 +353,6 @@
   "@youRanOutOfLives": {
     "description": "Reason for losing when player loses all lives"
   },
-  "holidayNotification": "今日は{holidayName}、{greeting}",
-  "@holidayNotification": {
-    "description": "Holiday event notification with greeting",
-    "placeholders": {
-      "holidayName": {
-        "type": "String"
-      },
-      "greeting": {
-        "type": "String"
-      }
-    }
-  },
-  "holidayNewYear": "お正月",
-  "@holidayNewYear": {
-    "description": "New Year holiday name"
-  },
-  "greetingNewYear": "あけましておめでとうございます！",
-  "@greetingNewYear": {
-    "description": "New Year greeting"
-  },
-  "holidayLunarNewYear": "旧正月",
-  "@holidayLunarNewYear": {
-    "description": "Lunar New Year holiday name"
-  },
-  "greetingLunarNewYear": "旧正月おめでとうございます！",
-  "@greetingLunarNewYear": {
-    "description": "Lunar New Year greeting in Chinese"
-  },
-  "holidayValentine": "バレンタインデー",
-  "@holidayValentine": {
-    "description": "Valentine's Day holiday name"
-  },
-  "greetingValentine": "ハッピーバレンタイン！",
-  "@greetingValentine": {
-    "description": "Valentine's Day greeting"
-  },
-  "holidayHoli": "ホーリー",
-  "@holidayHoli": {
-    "description": "Holi holiday name"
-  },
-  "greetingHoli": "ハッピーホーリー！",
-  "@greetingHoli": {
-    "description": "Holi greeting in Hindi"
-  },
-  "holidayEarthDay": "アースデイ",
-  "@holidayEarthDay": {
-    "description": "Earth Day holiday name"
-  },
-  "greetingEarthDay": "ハッピーアースデイ！地球を守ろう！",
-  "@greetingEarthDay": {
-    "description": "Earth Day greeting"
-  },
-  "holidayEaster": "イースター",
-  "@holidayEaster": {
-    "description": "Easter holiday name"
-  },
-  "greetingEaster": "ハッピーイースター！",
-  "@greetingEaster": {
-    "description": "Easter greeting"
-  },
-  "holidayPride": "プライド月間",
-  "@holidayPride": {
-    "description": "Pride Month name"
-  },
-  "greetingPride": "ハッピープライド！愛は愛！",
-  "@greetingPride": {
-    "description": "Pride Month greeting"
-  },
-  "holidayHalloween": "ハロウィン",
-  "@holidayHalloween": {
-    "description": "Halloween holiday name"
-  },
-  "greetingHalloween": "ハッピーハロウィン！",
-  "@greetingHalloween": {
-    "description": "Halloween greeting"
-  },
-  "holidayDiwali": "ディワリ",
-  "@holidayDiwali": {
-    "description": "Diwali holiday name"
-  },
-  "greetingDiwali": "ハッピーディワリ！",
-  "@greetingDiwali": {
-    "description": "Diwali greeting in Hindi"
-  },
-  "holidayHanukkah": "ハヌカ",
-  "@holidayHanukkah": {
-    "description": "Hanukkah holiday name"
-  },
-  "greetingHanukkah": "ハッピーハヌカ！",
-  "@greetingHanukkah": {
-    "description": "Hanukkah greeting in Hebrew"
-  },
-  "holidayChristmas": "クリスマス",
-  "@holidayChristmas": {
-    "description": "Christmas holiday name"
-  },
-  "greetingChristmas": "メリークリスマス！",
-  "@greetingChristmas": {
-    "description": "Christmas greeting"
-  },
-  "holidayKwanzaa": "クワンザ",
-  "@holidayKwanzaa": {
-    "description": "Kwanzaa holiday name"
-  },
-  "greetingKwanzaa": "ハッピークワンザ！",
-  "@greetingKwanzaa": {
-    "description": "Kwanzaa greeting in Swahili"
-  },
-  "playAgain": "もう一度プレイ",
-  "@playAgain": {
-    "description": "Button to restart the game"
-  },
-  "returnToMenu": "メニューに戻る",
-  "@returnToMenu": {
-    "description": "Button to return to main menu"
-  },
   "doYouReadyForRestart": "再開の準備はできましたか？",
   "@doYouReadyForRestart": {
     "description": "Question asking if player is ready to restart the match"
@@ -760,10 +368,6 @@
   "opponent": "相手",
   "@opponent": {
     "description": "Label for opponent player"
-  },
-  "waiting": "待機中",
-  "@waiting": {
-    "description": "Waiting status text"
   },
   "youWillTakeFirst": "あなたが先攻です！",
   "@youWillTakeFirst": {
@@ -784,10 +388,6 @@
   "opponentReady": "相手の準備完了！",
   "@opponentReady": {
     "description": "Dialog title when opponent is ready"
-  },
-  "ok": "OK",
-  "@ok": {
-    "description": "OK button label"
   },
   "bothPlayersReady": "両プレイヤー準備完了！",
   "@bothPlayersReady": {
@@ -958,7 +558,6 @@
   "tourPrevious": "前へ",
   "tourSkip": "ツアーをスキップ",
   "tourFinish": "完了",
-  "restart": "再起動",
   "restartGame": "ゲームを再起動",
   "confirmRestart": "本当にゲームを再起動しますか？",
   "tourRestartFromSettings": "ツアーを再開",

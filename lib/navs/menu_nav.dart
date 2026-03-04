@@ -36,9 +36,9 @@ class _MenuNavState extends State<MenuNav> {
             onPopInvoked: (involked) {
               if (navState is Menu) {
                 SnackBar snackBar = SnackBar(
-                  content: Text(lang(context).doYouWantToExit),
+                  content: Text(coreLang(context).doYouWantToExit),
                   action: SnackBarAction(
-                    label: lang(context).yes,
+                    label: coreLang(context).yes,
                     onPressed: () {
                       context
                           .read<MenuBloc>()
@@ -139,16 +139,5 @@ class _MenuNavState extends State<MenuNav> {
             ),
           )),
     );
-  }
-}
-
-class LoadingWidget extends StatelessWidget {
-  const LoadingWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: CircularProgressIndicator());
   }
 }

@@ -52,8 +52,8 @@ class UpdateNoticeDialog extends StatelessWidget {
       onWillPop: () async => !isForceUpdate,
       child: AlertTemplate(
         title: isForceUpdate
-            ? lang(context).updateRequired
-            : lang(context).updateAvailable,
+            ? coreLang(context).updateRequired
+            : coreLang(context).updateAvailable,
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -61,19 +61,19 @@ class UpdateNoticeDialog extends StatelessWidget {
             children: [
               _buildInfoRow(
                 context,
-                lang(context).currentVersion,
+                coreLang(context).currentVersion,
                 currentVersion,
               ),
               const SizedBox(height: kSpaceSM),
               _buildInfoRow(
                 context,
-                lang(context).newVersion,
+                coreLang(context).newVersion,
                 versionInfo.versionName,
               ),
               if (localizedMessage != null) ...[
                 const SizedBox(height: kSpaceL),
                 Text(
-                  lang(context).whatsNew,
+                  coreLang(context).whatsNew,
                   style: AppTextStyles.bodyLargeBoldOnDialogBackground(context),
                 ),
                 const SizedBox(height: kSpaceSM),
@@ -104,7 +104,7 @@ class UpdateNoticeDialog extends StatelessWidget {
                       const SizedBox(width: kSpaceSM),
                       Expanded(
                         child: Text(
-                          lang(context).forceUpdateMessage,
+                          coreLang(context).forceUpdateMessage,
                           style: AppTextStyles.withColor(
                               AppTextStyles.bodyLarge(context),
                               Theme.of(context).colorScheme.onSurface),
@@ -118,11 +118,11 @@ class UpdateNoticeDialog extends StatelessWidget {
           ),
         ),
         possitiveButtonLabel:
-            isForceUpdate ? lang(context).updateNow : lang(context).update,
+            isForceUpdate ? coreLang(context).updateNow : coreLang(context).update,
         onPossitiveButtonPressed: () {
           _launchStore();
         },
-        negativeButtonLabel: !isForceUpdate ? lang(context).later : null,
+        negativeButtonLabel: !isForceUpdate ? coreLang(context).later : null,
         onNegativeButtonPressed: !isForceUpdate
             ? () {
                 Navigator.of(context).pop();

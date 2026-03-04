@@ -396,7 +396,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                                   const FaIcon(FontAwesomeIcons.check),
                                   const SizedBox(width: kSpaceSM),
                                   Text(
-                                    lang(context).ready,
+                                    coreLang(context).ready,
                                     style: AppTextStyles.bodyLargeBold(context),
                                   ),
                                 ],
@@ -528,7 +528,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
           style: AppTextStyles.bodyLarge(context),
         ),
         Text(
-          isReady ? lang(context).ready : lang(context).waiting,
+          isReady ? coreLang(context).ready : coreLang(context).waiting,
           style: AppTextStyles.withColor(
               AppTextStyles.bodyLarge(context),
               isReady

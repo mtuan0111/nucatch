@@ -67,8 +67,8 @@ class CountdownOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final readyText = "${lang(context).ready}!!";
-    final goText = lang(context).go;
+    final readyText = "${coreLang(context).ready}!!";
+    final goText = coreLang(context).go;
 
     return Positioned.fill(
       child: ClipRect(

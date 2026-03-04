@@ -31,8 +31,8 @@ class MenuAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertTemplate(
-      title: lang(context).mainMenu,
-      message: lang(context).confirmExit,
+      title: coreLang(context).mainMenu,
+      message: coreLang(context).confirmExit,
       content: Column(
         spacing: 5,
         mainAxisSize: MainAxisSize.min,
@@ -51,7 +51,7 @@ class MenuAlert extends StatelessWidget {
                 Theme.of(context).colorScheme.primary.getDarker()),
           ),
           Text(
-            "${lang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, turnState.difficultyModel!.difficulty)}",
+            "${coreLang(context).difficulty}: ${Helper.getTitleFromDifficulty(context, turnState.difficultyModel!.difficulty)}",
             style: AppTextStyles.withColor(AppTextStyles.bodyLarge(context),
                 Theme.of(context).colorScheme.primary.getDarker()),
           ),
@@ -66,7 +66,7 @@ class MenuAlert extends StatelessWidget {
               context,
               turnState.difficultyModel!.difficulty,
             ),
-            text: lang(context).difficultySetting,
+            text: coreLang(context).difficultySetting,
             shapeAt: RoundedWithShapeAt.topLeft,
             // backgroundColor: Colors.white70,
             // color: Colors.black87,
@@ -79,12 +79,12 @@ class MenuAlert extends StatelessWidget {
                 context: context,
                 barrierDismissible: false,
                 builder: (context) => AlertTemplate(
-                  title: lang(context).difficultySetting,
+                  title: coreLang(context).difficultySetting,
                   message: lang(context).confirmChangeDifficulty,
-                  possitiveButtonLabel: lang(context).yes,
+                  possitiveButtonLabel: coreLang(context).yes,
                   onPossitiveButtonPressed: () =>
                       Navigator.of(context).pop(true),
-                  negativeButtonLabel: lang(context).no,
+                  negativeButtonLabel: coreLang(context).no,
                   onNegativeButtonPressed: () =>
                       Navigator.of(context).pop(false),
                 ),
@@ -109,7 +109,7 @@ class MenuAlert extends StatelessWidget {
           AnimatedButton(
             context,
             iconData: Icons.refresh,
-            text: lang(context).restart,
+            text: coreLang(context).restart,
             backgroundColor: Theme.of(context).colorScheme.tertiary,
             shapeAt: RoundedWithShapeAt.topRight,
             buttonSize: ButtonSize.smallest,
@@ -120,10 +120,10 @@ class MenuAlert extends StatelessWidget {
                 builder: (dialogContext) => AlertTemplate(
                   title: lang(dialogContext).restartGame,
                   message: lang(dialogContext).confirmRestart,
-                  possitiveButtonLabel: lang(dialogContext).yes,
+                  possitiveButtonLabel: coreLang(dialogContext).yes,
                   onPossitiveButtonPressed: () =>
                       Navigator.of(dialogContext).pop(true),
-                  negativeButtonLabel: lang(dialogContext).no,
+                  negativeButtonLabel: coreLang(dialogContext).no,
                   onNegativeButtonPressed: () =>
                       Navigator.of(dialogContext).pop(false),
                 ),
@@ -144,9 +144,9 @@ class MenuAlert extends StatelessWidget {
           const SizedBox(height: kSpaceM),
         ],
       ),
-      possitiveButtonLabel: lang(context).yes,
+      possitiveButtonLabel: coreLang(context).yes,
       onPossitiveButtonPressed: () => Navigator.of(context).pop(true),
-      negativeButtonLabel: lang(context).no,
+      negativeButtonLabel: coreLang(context).no,
       onNegativeButtonPressed: () => Navigator.of(context).pop(false),
     );
   }
@@ -176,7 +176,7 @@ class AlertTemplate extends StatelessWidget {
 
   Widget _buildPossitiveButton(BuildContext context) {
     return CustomElevatedButton(
-      text: possitiveButtonLabel ?? lang(context).yes,
+      text: possitiveButtonLabel ?? coreLang(context).yes,
       onPressed: onPossitiveButtonPressed ?? () => Navigator.of(context).pop(),
       color: Theme.of(context).colorScheme.onPrimary,
       backgroundColor: Theme.of(context).primaryColor,
@@ -187,7 +187,7 @@ class AlertTemplate extends StatelessWidget {
 
   Widget _buildNegativeButton(BuildContext context) {
     return CustomElevatedButton(
-      text: negativeButtonLabel ?? lang(context).no,
+      text: negativeButtonLabel ?? coreLang(context).no,
       onPressed: onNegativeButtonPressed ?? () => Navigator.of(context).pop(),
       color: Theme.of(context).colorScheme.onError,
       backgroundColor: Theme.of(context).colorScheme.error,

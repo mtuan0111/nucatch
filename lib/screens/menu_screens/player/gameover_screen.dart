@@ -16,7 +16,6 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/navs/menu_nav.dart';
 import 'package:nucatch/widgets/admob_banner.dart';
 import 'package:nucatch/widgets/game_over_regular.dart';
 import 'package:nucatch/widgets/game_over_pick_right.dart';

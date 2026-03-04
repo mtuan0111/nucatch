@@ -111,7 +111,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
           child: CustomScrollView(
             slivers: <Widget>[
               CustomSliverAppBar(
-                title: lang(context).difficultySetting,
+                title: coreLang(context).difficultySetting,
                 onBackPressed: () {
                   if (Theme.of(context).platform == TargetPlatform.iOS) {
                     context.read<MenuBloc>().add(ShowMenu());

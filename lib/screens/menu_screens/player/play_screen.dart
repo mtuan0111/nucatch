@@ -218,7 +218,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                 children: [
                                                   TextSpan(
                                                     text:
-                                                        "${lang(context).level}: ",
+                                                        "${coreLang(context).level}: ",
                                                     style: AppTextStyles
                                                         .bodyLargeBold(context),
                                                   ),
@@ -251,7 +251,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                             ),
                                             const SizedBox(width: kSpaceS),
                                             Text(
-                                              "${lang(context).score}: ",
+                                              "${coreLang(context).score}: ",
                                               style:
                                                   AppTextStyles.bodyLargeBold(
                                                       context),

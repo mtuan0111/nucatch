@@ -4,108 +4,9 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "welcome": "स्वागत है!",
-  "@welcome": {
-    "description": "Welcome the user to the application",
-    "placeholders": {}
-  },
-  "welcomeUser": "स्वागत है {username}!",
-  "@welcomeUser": {
-    "description": "Welcome the user to the application",
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "John Doe"
-      }
-    }
-  },
-  "mainMenu": "मुख्य मेनू",
-  "@mainMenu": {
-    "description": "Tiêu đề của trang chính"
-  },
-  "start": "शुरू करें",
-  "@start": {
-    "description": "Start button label"
-  },
   "instantStart": "तत्काल शुरुआत",
   "@instantStart": {
     "description": "त्वरित गेम शुरू करने के लिए तत्काल शुरुआत बटन"
-  },
-  "topScore": "शीर्ष स्कोर",
-  "@topScore": {
-    "description": "Label for the top score"
-  },
-  "setting": "सेटिंग्स",
-  "@setting": {
-    "description": "Settings menu label"
-  },
-  "about": "के बारे में",
-  "@about": {
-    "description": "About menu label"
-  },
-  "exit": "बाहर निकलें",
-  "@exit": {
-    "description": "Exit button label"
-  },
-  "version": "वर्जन",
-  "@version": {
-    "description": "The version label of the application"
-  },
-  "anonymous": "बेनामी",
-  "@anonymous": {
-    "description": "Label for anonymous user"
-  },
-  "level": "स्तर",
-  "@level": {
-    "description": "Label for game level"
-  },
-  "score": "स्कोर",
-  "@score": {
-    "description": "Label for game score"
-  },
-  "ready": "तैयार",
-  "@ready": {
-    "description": "Ready status label"
-  },
-  "go": "जाओ!",
-  "@go": {
-    "description": "Go status label"
-  },
-  "gameOver": "खेल खत्म",
-  "@gameOver": {
-    "description": "Game over message"
-  },
-  "difficultySetting": "कठिनाई सेटिंग",
-  "@difficultySetting": {
-    "description": "Label for difficulty setting in the game"
-  },
-  "difficulty": "कठिनाई",
-  "@difficulty": {
-    "description": "Difficulty level of the game"
-  },
-  "easy": "आसान",
-  "@easy": {
-    "description": "Easy difficulty level of the game"
-  },
-  "medium": "मध्यम",
-  "@medium": {
-    "description": "Medium difficulty level of the game"
-  },
-  "hard": "कठिन",
-  "@hard": {
-    "description": "Hard difficulty level of the game"
-  },
-  "veryHard": "बहुत कठिन",
-  "@veryHard": {
-    "description": "Very hard difficulty level of the game"
-  },
-  "extreme": "अत्यधिक",
-  "@extreme": {
-    "description": "Extreme difficulty level of the game"
-  },
-  "selectDifficulty": "कठिनाई चुनें",
-  "@selectDifficulty": {
-    "description": "Prompt for user to select the game difficulty"
   },
   "selectLevel": "स्तर चुनें",
   "@selectLevel": {
@@ -124,22 +25,6 @@
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },
-  "name": "नाम",
-  "@name": {
-    "description": "Label for name input"
-  },
-  "fontSize": "फ़ॉन्ट आकार",
-  "@fontSize": {
-    "description": "Label for font size setting"
-  },
-  "volume": "वॉल्यूम",
-  "@volume": {
-    "description": "Label for volume setting"
-  },
-  "vibrate": "कंपन",
-  "@vibrate": {
-    "description": "Label for vibration setting"
-  },
   "numberOfTopScores": "शीर्ष स्कोर की संख्या",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
@@ -147,46 +32,6 @@
   "onlyShowMyRecorded": "केवल मेरे रिकॉर्ड दिखाएं",
   "@onlyShowMyRecorded": {
     "description": "Label for filter to show only user's own recorded scores"
-  },
-  "global": "वैश्विक",
-  "@global": {
-    "description": "Label for global ranking view"
-  },
-  "personal": "व्यक्तिगत",
-  "@personal": {
-    "description": "Label for personal ranking view"
-  },
-  "rank": "रैंक",
-  "@rank": {
-    "description": "Label for ranking position"
-  },
-  "share": "साझा करें",
-  "@share": {
-    "description": "Label for share button"
-  },
-  "language": "भाषा",
-  "@language": {
-    "description": "Label for language setting"
-  },
-  "thankYou": "खेलने के लिए धन्यवाद",
-  "@thankYou": {
-    "description": "Thank you message"
-  },
-  "thankYouMessage": "हमारा खेल खेलने के लिए धन्यवाद। हमें उम्मीद है कि आपने इसका आनंद लिया। यदि आपके पास कोई प्रतिक्रिया या सुझाव है, तो कृपया हमें बताएं।",
-  "@thankYouMessage": {
-    "description": "Detailed thank you message"
-  },
-  "authorName": "लेखक",
-  "@authorName": {
-    "description": "Label for author name"
-  },
-  "connectWithUs": "हमसे जुड़ें",
-  "@connectWithUs": {
-    "description": "Label for connect with us section"
-  },
-  "connectWithUsMessage": "यदि आपके पास कोई प्रश्न या टिप्पणी है, तो बेझिझक हमारे सोशल मीडिया चैनलों के माध्यम से हमसे संपर्क करें।",
-  "@connectWithUsMessage": {
-    "description": "Message encouraging users to connect on social media"
   },
   "introductionContent": "NuCatch एक मजेदार और आकर्षक मस्तिष्क खेल है जो आपकी याददाश्त को तेज करने और आपका ध्यान बेहतर बनाने के लिए डिज़ाइन किया गया है। कम समय में संख्याओं को जल्दी से पकड़ने के लिए खुद को चुनौती दें, जिससे आपको ओटीपी, फोन नंबर, जन्मदिन और बहुत कुछ याद रखने में मदद मिलती है। अनुभव का आनंद लें और अपनी याददाश्त कौशल को बढ़ाएं!",
   "@introductionContent": {
@@ -263,21 +108,6 @@
       }
     }
   },
-  "confirmExit": "क्या आप वाकई छोड़ना चाहते हैं?",
-  "@confirmExit": {
-    "description": "Warning when the user presses the exit button",
-    "placeholders": {}
-  },
-  "no": "नहीं",
-  "@no": {
-    "description": "No button in the confirmation dialog",
-    "placeholders": {}
-  },
-  "yes": "हाँ",
-  "@yes": {
-    "description": "Yes button in the confirmation dialog",
-    "placeholders": {}
-  },
   "insertedSuccess": "आपकी बारी सफलतापूर्वक रिकॉर्ड की गई",
   "@insertedSuccess": {
     "description": "Notification when data is added successfully",
@@ -291,11 +121,6 @@
   "scanQrToViewDetails": "विवरण देखने के लिए क्यूआर कोड स्कैन करें",
   "@scanQrToViewDetails": {
     "description": "Instruction to scan QR code for details",
-    "placeholders": {}
-  },
-  "doYouWantToExit": "क्या आप बाहर निकलना चाहते हैं?",
-  "@doYouWantToExit": {
-    "description": "Prompt asking the user if they want to exit",
     "placeholders": {}
   },
   "difficultyEasyDescription": "साधारण चुनौतियों के लिए थोड़े बढ़े हुए स्तर के साथ एक यादृच्छिक संख्या उत्पन्न करता है।",
@@ -335,11 +160,6 @@
     "description": "Warning when the user changes the difficulty",
     "placeholders": {}
   },
-  "areYouSure": "क्या आपको यकीन है?",
-  "@areYouSure": {
-    "description": "Warning when the user performs an important action",
-    "placeholders": {}
-  },
   "no_turn_yet": "अभी तक कोई बारी नहीं",
   "@no_turn_yet": {
     "description": "Notification when there are no turns yet",
@@ -368,98 +188,6 @@
   "allTimeDescription": "रिकॉर्ड की गई सभी बारियों के आधार पर रैंकिंग।",
   "@allTimeDescription": {
     "description": "Description for all-time leaderboard"
-  },
-  "updateRequired": "अपडेट आवश्यक",
-  "@updateRequired": {
-    "description": "Title for force update dialog"
-  },
-  "updateAvailable": "अपडेट उपलब्ध",
-  "@updateAvailable": {
-    "description": "Title for optional update dialog"
-  },
-  "currentVersion": "वर्तमान संस्करण",
-  "@currentVersion": {
-    "description": "Label for current app version"
-  },
-  "newVersion": "नया संस्करण",
-  "@newVersion": {
-    "description": "Label for new available version"
-  },
-  "whatsNew": "नया क्या है",
-  "@whatsNew": {
-    "description": "Label for release notes section"
-  },
-  "forceUpdateMessage": "ऐप का उपयोग जारी रखने के लिए यह अपडेट आवश्यक है। कृपया अभी अपडेट करें।",
-  "@forceUpdateMessage": {
-    "description": "Message for force update requirement"
-  },
-  "later": "बाद में",
-  "@later": {
-    "description": "Button to postpone optional update"
-  },
-  "updateNow": "अभी अपडेट करें",
-  "@updateNow": {
-    "description": "Button to proceed with update"
-  },
-  "update": "अपडेट करें",
-  "@update": {
-    "description": "Button to update app"
-  },
-  "checkForUpdates": "अपडेट देखें",
-  "@checkForUpdates": {
-    "description": "Button to check for app updates"
-  },
-  "appUpdates": "ऐप अपडेट",
-  "@appUpdates": {
-    "description": "Section title for app updates"
-  },
-  "tapToCheckUpdates": "ऐप अपडेट देखने के लिए नीचे दिए गए बटन पर टैप करें।",
-  "@tapToCheckUpdates": {
-    "description": "Message prompting user to check for updates"
-  },
-  "checkingForUpdates": "अपडेट की जांच हो रही है...",
-  "@checkingForUpdates": {
-    "description": "Message while checking for updates"
-  },
-  "newVersionAvailable": "नया संस्करण {version} उपलब्ध है! {forceMessage}",
-  "@newVersionAvailable": {
-    "description": "Message when new version is available",
-    "placeholders": {
-      "version": {
-        "type": "String",
-        "example": "1.2.0"
-      },
-      "forceMessage": {
-        "type": "String",
-        "example": "This update is required."
-      }
-    }
-  },
-  "thisUpdateRequired": "यह अपडेट आवश्यक है।",
-  "@thisUpdateRequired": {
-    "description": "Message for force update"
-  },
-  "usingLatestVersion": "आप नवीनतम संस्करण का उपयोग कर रहे हैं!",
-  "@usingLatestVersion": {
-    "description": "Message when app is up to date"
-  },
-  "unableToCheckUpdates": "अपडेट की जांच करने में असमर्थ। {error}",
-  "@unableToCheckUpdates": {
-    "description": "Error message when update check fails",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Please try again later."
-      }
-    }
-  },
-  "tryAgainLater": "कृपया बाद में पुनः प्रयास करें।",
-  "@tryAgainLater": {
-    "description": "Default error message"
-  },
-  "updatePostponed": "अपडेट उपलब्ध है लेकिन स्थगित कर दिया गया है।",
-  "@updatePostponed": {
-    "description": "Message when user dismissed update"
   },
   "tapTimerTooltip": "संख्या पर टैप करने के लिए आपके पास {totalSeconds} सेकंड हैं। बार समय के साथ रंग बदलता है: हरा ({halfSeconds} से अधिक), नारंगी ({quarterSeconds}-{halfSeconds}s), लाल ({quarterSeconds} से कम)।",
   "@tapTimerTooltip": {
@@ -569,10 +297,6 @@
   "@bluetoothDisabledMessage": {
     "description": "Message when Bluetooth is disabled"
   },
-  "cancel": "रद्द करें",
-  "@cancel": {
-    "description": "Cancel button label"
-  },
   "grantPermission": "अनुमति दें",
   "@grantPermission": {
     "description": "Button to grant permission"
@@ -629,122 +353,6 @@
   "@youRanOutOfLives": {
     "description": "Reason for losing when player loses all lives"
   },
-  "holidayNotification": "आज {holidayName} है, {greeting}",
-  "@holidayNotification": {
-    "description": "Holiday event notification with greeting",
-    "placeholders": {
-      "holidayName": {
-        "type": "String"
-      },
-      "greeting": {
-        "type": "String"
-      }
-    }
-  },
-  "holidayNewYear": "नया साल",
-  "@holidayNewYear": {
-    "description": "New Year holiday name"
-  },
-  "greetingNewYear": "नया साल मुबारक हो!",
-  "@greetingNewYear": {
-    "description": "New Year greeting"
-  },
-  "holidayLunarNewYear": "चंद्र नव वर्ष",
-  "@holidayLunarNewYear": {
-    "description": "Lunar New Year holiday name"
-  },
-  "greetingLunarNewYear": "चंद्र नव वर्ष मुबारक हो!",
-  "@greetingLunarNewYear": {
-    "description": "Lunar New Year greeting in Chinese"
-  },
-  "holidayValentine": "वेलेंटाइन डे",
-  "@holidayValentine": {
-    "description": "Valentine's Day holiday name"
-  },
-  "greetingValentine": "हैप्पी वेलेंटाइन डे!",
-  "@greetingValentine": {
-    "description": "Valentine's Day greeting"
-  },
-  "holidayHoli": "होली",
-  "@holidayHoli": {
-    "description": "Holi holiday name"
-  },
-  "greetingHoli": "होली मुबारक!",
-  "@greetingHoli": {
-    "description": "Holi greeting in Hindi"
-  },
-  "holidayEarthDay": "पृथ्वी दिवस",
-  "@holidayEarthDay": {
-    "description": "Earth Day holiday name"
-  },
-  "greetingEarthDay": "हैप्पी पृथ्वी दिवस! हमारे ग्रह की रक्षा करें!",
-  "@greetingEarthDay": {
-    "description": "Earth Day greeting"
-  },
-  "holidayEaster": "ईस्टर",
-  "@holidayEaster": {
-    "description": "Easter holiday name"
-  },
-  "greetingEaster": "हैप्पी ईस्टर!",
-  "@greetingEaster": {
-    "description": "Easter greeting"
-  },
-  "holidayPride": "प्राइड मंथ",
-  "@holidayPride": {
-    "description": "Pride Month name"
-  },
-  "greetingPride": "हैप्पी प्राइड मंथ! प्यार प्यार है!",
-  "@greetingPride": {
-    "description": "Pride Month greeting"
-  },
-  "holidayHalloween": "हैलोवीन",
-  "@holidayHalloween": {
-    "description": "Halloween holiday name"
-  },
-  "greetingHalloween": "हैप्पी हैलोवीन!",
-  "@greetingHalloween": {
-    "description": "Halloween greeting"
-  },
-  "holidayDiwali": "दीपावली",
-  "@holidayDiwali": {
-    "description": "Diwali holiday name"
-  },
-  "greetingDiwali": "दीपावली मुबारक!",
-  "@greetingDiwali": {
-    "description": "Diwali greeting in Hindi"
-  },
-  "holidayHanukkah": "हनुक्काह",
-  "@holidayHanukkah": {
-    "description": "Hanukkah holiday name"
-  },
-  "greetingHanukkah": "हैप्पी हनुक्काह!",
-  "@greetingHanukkah": {
-    "description": "Hanukkah greeting in Hebrew"
-  },
-  "holidayChristmas": "क्रिसमस",
-  "@holidayChristmas": {
-    "description": "Christmas holiday name"
-  },
-  "greetingChristmas": "मेरी क्रिसमस!",
-  "@greetingChristmas": {
-    "description": "Christmas greeting"
-  },
-  "holidayKwanzaa": "क्वांज़ा",
-  "@holidayKwanzaa": {
-    "description": "Kwanzaa holiday name"
-  },
-  "greetingKwanzaa": "हैप्पी क्वांज़ा!",
-  "@greetingKwanzaa": {
-    "description": "Kwanzaa greeting in Swahili"
-  },
-  "playAgain": "फिर से खेलें",
-  "@playAgain": {
-    "description": "Button to restart the game"
-  },
-  "returnToMenu": "मेनू पर लौटें",
-  "@returnToMenu": {
-    "description": "Button to return to main menu"
-  },
   "doYouReadyForRestart": "क्या आप पुनरारंभ करने के लिए तैयार हैं?",
   "@doYouReadyForRestart": {
     "description": "Question asking if player is ready to restart the match"
@@ -760,10 +368,6 @@
   "opponent": "प्रतिद्वंद्वी",
   "@opponent": {
     "description": "Label for opponent player"
-  },
-  "waiting": "प्रतीक्षा कर रहा है",
-  "@waiting": {
-    "description": "Waiting status text"
   },
   "youWillTakeFirst": "आप पहले लेंगे!",
   "@youWillTakeFirst": {
@@ -784,10 +388,6 @@
   "opponentReady": "प्रतिद्वंद्वी तैयार!",
   "@opponentReady": {
     "description": "Dialog title when opponent is ready"
-  },
-  "ok": "ठीक",
-  "@ok": {
-    "description": "OK button label"
   },
   "bothPlayersReady": "दोनों खिलाड़ी तैयार!",
   "@bothPlayersReady": {
@@ -958,7 +558,6 @@
   "tourPrevious": "पिछला",
   "tourSkip": "टूर छोड़ें",
   "tourFinish": "समाप्त करें",
-  "restart": "पुनः आरंभ करें",
   "restartGame": "गेम पुनः आरंभ करें",
   "confirmRestart": "क्या आप वाकई गेम को पुनः आरंभ करना चाहते हैं?",
   "tourRestartFromSettings": "टूर पुनः आरंभ करें",

@@ -174,7 +174,7 @@ class CombatGameEndScreen extends StatelessWidget {
                   if (!combatState.isPlayerReady)
                     CustomElevatedButton(
                       text:
-                          '${lang(context).ready} - ${lang(context).playAgain}',
+                          '${coreLang(context).ready} - ${coreLang(context).playAgain}',
                       buttonSize: ButtonSize.small,
                       shapeAt: RoundedWithShapeAt.topRight,
                       backgroundColor: Theme.of(context).colorScheme.tertiary,
@@ -190,7 +190,7 @@ class CombatGameEndScreen extends StatelessWidget {
                     const SizedBox(height: kSpaceM),
                     CustomElevatedButton(
                       text:
-                          '${lang(context).ready} - ${lang(context).difficultySetting}',
+                          '${coreLang(context).ready} - ${coreLang(context).difficultySetting}',
                       buttonSize: ButtonSize.small,
                       shapeAt: RoundedWithShapeAt.topRight,
                       backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -209,7 +209,7 @@ class CombatGameEndScreen extends StatelessWidget {
             ),
           ] else ...[
             CustomElevatedButton(
-              text: lang(context).playAgain,
+              text: coreLang(context).playAgain,
               buttonSize: ButtonSize.small,
               shapeAt: RoundedWithShapeAt.topRight,
               onPressed: () {
@@ -221,7 +221,7 @@ class CombatGameEndScreen extends StatelessWidget {
 
           // Return to menu button at bottom
           CustomElevatedButton(
-            text: lang(context).returnToMenu,
+            text: coreLang(context).returnToMenu,
             buttonSize: ButtonSize.small,
             shapeAt: RoundedWithShapeAt.bottomLeft,
             backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -280,7 +280,7 @@ class CombatGameEndScreen extends StatelessWidget {
           style: AppTextStyles.bodyMedium(context),
         ),
         Text(
-          isReady ? lang(context).ready : lang(context).waiting,
+          isReady ? coreLang(context).ready : coreLang(context).waiting,
           style: AppTextStyles.withColor(
             AppTextStyles.bodySmall(context),
             isReady

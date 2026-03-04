@@ -4,108 +4,9 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "welcome": "ยินดีต้อนรับ!",
-  "@welcome": {
-    "description": "Welcome the user to the application",
-    "placeholders": {}
-  },
-  "welcomeUser": "ยินดีต้อนรับ {username}!",
-  "@welcomeUser": {
-    "description": "Welcome the user to the application",
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "John Doe"
-      }
-    }
-  },
-  "mainMenu": "เมนูหลัก",
-  "@mainMenu": {
-    "description": "Tiêu đề của trang chính"
-  },
-  "start": "เริ่ม",
-  "@start": {
-    "description": "Start button label"
-  },
   "instantStart": "เริ่มทันที",
   "@instantStart": {
     "description": "ปุ่มเริ่มทันทีสำหรับเริ่มเกมอย่างรวดเร็ว"
-  },
-  "topScore": "คะแนนสูงสุด",
-  "@topScore": {
-    "description": "Label for the top score"
-  },
-  "setting": "การตั้งค่า",
-  "@setting": {
-    "description": "Settings menu label"
-  },
-  "about": "เกี่ยวกับ",
-  "@about": {
-    "description": "About menu label"
-  },
-  "exit": "ออก",
-  "@exit": {
-    "description": "Exit button label"
-  },
-  "version": "เวอร์ชัน",
-  "@version": {
-    "description": "The version label of the application"
-  },
-  "anonymous": "ไม่ระบุชื่อ",
-  "@anonymous": {
-    "description": "Label for anonymous user"
-  },
-  "level": "ระดับ",
-  "@level": {
-    "description": "Label for game level"
-  },
-  "score": "คะแนน",
-  "@score": {
-    "description": "Label for game score"
-  },
-  "ready": "พร้อม",
-  "@ready": {
-    "description": "Ready status label"
-  },
-  "go": "ไป!",
-  "@go": {
-    "description": "Go status label"
-  },
-  "gameOver": "จบเกม",
-  "@gameOver": {
-    "description": "Game over message"
-  },
-  "difficultySetting": "การตั้งค่าความยาก",
-  "@difficultySetting": {
-    "description": "Label for difficulty setting in the game"
-  },
-  "difficulty": "ความยาก",
-  "@difficulty": {
-    "description": "Difficulty level of the game"
-  },
-  "easy": "ง่าย",
-  "@easy": {
-    "description": "Easy difficulty level of the game"
-  },
-  "medium": "ปานกลาง",
-  "@medium": {
-    "description": "Medium difficulty level of the game"
-  },
-  "hard": "ยาก",
-  "@hard": {
-    "description": "Hard difficulty level of the game"
-  },
-  "veryHard": "ยากมาก",
-  "@veryHard": {
-    "description": "Very hard difficulty level of the game"
-  },
-  "extreme": "สุดโหด",
-  "@extreme": {
-    "description": "Extreme difficulty level of the game"
-  },
-  "selectDifficulty": "เลือกระดับความยาก",
-  "@selectDifficulty": {
-    "description": "Prompt for user to select the game difficulty"
   },
   "selectLevel": "เลือกระดับ",
   "@selectLevel": {
@@ -124,22 +25,6 @@
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },
-  "name": "ชื่อ",
-  "@name": {
-    "description": "Label for name input"
-  },
-  "fontSize": "ขนาดตัวอักษร",
-  "@fontSize": {
-    "description": "Label for font size setting"
-  },
-  "volume": "ระดับเสียง",
-  "@volume": {
-    "description": "Label for volume setting"
-  },
-  "vibrate": "สั่น",
-  "@vibrate": {
-    "description": "Label for vibration setting"
-  },
   "numberOfTopScores": "จำนวนคะแนนสูงสุดที่แสดง",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
@@ -147,46 +32,6 @@
   "onlyShowMyRecorded": "แสดงเฉพาะบันทึกของฉัน",
   "@onlyShowMyRecorded": {
     "description": "Label for filter to show only user's own recorded scores"
-  },
-  "global": "ทั่วโลก",
-  "@global": {
-    "description": "Label for global ranking view"
-  },
-  "personal": "ส่วนตัว",
-  "@personal": {
-    "description": "Label for personal ranking view"
-  },
-  "rank": "อันดับ",
-  "@rank": {
-    "description": "Label for ranking position"
-  },
-  "share": "แชร์",
-  "@share": {
-    "description": "Label for share button"
-  },
-  "language": "ภาษา",
-  "@language": {
-    "description": "Label for language setting"
-  },
-  "thankYou": "ขอบคุณที่เล่น",
-  "@thankYou": {
-    "description": "Thank you message"
-  },
-  "thankYouMessage": "ขอบคุณที่เล่นเกมของเรา เราหวังว่าคุณจะชอบ หากคุณมีข้อเสนอแนะ โปรดแจ้งให้เราทราบ",
-  "@thankYouMessage": {
-    "description": "Detailed thank you message"
-  },
-  "authorName": "ผู้สร้าง",
-  "@authorName": {
-    "description": "Label for author name"
-  },
-  "connectWithUs": "เชื่อมต่อกับเรา",
-  "@connectWithUs": {
-    "description": "Label for connect with us section"
-  },
-  "connectWithUsMessage": "หากคุณมีคำถามหรือความคิดเห็น โปรดติดต่อเราผ่านโซเชียลมีเดียวของเรา",
-  "@connectWithUsMessage": {
-    "description": "Message encouraging users to connect on social media"
   },
   "introductionContent": "NuCatch เป็นเกมฝึกสมองที่สนุกและน่าสนใจ ออกแบบมาเพื่อเพิ่มความจำและสมาธิของคุณ ท้าทายตัวเองให้จับตัวเลขอย่างรวดเร็วในเวลาอันสั้น ช่วยให้คุณจำสิ่งต่างๆ เช่น OTP, เบอร์โทรศัพท์, วันเกิด และอื่นๆ ได้ดียิ่งขึ้น สนุกกับประสบการณ์และเพิ่มทักษะความจำของคุณ!",
   "@introductionContent": {
@@ -263,21 +108,6 @@
       }
     }
   },
-  "confirmExit": "คุณแน่ใจหรือไม่ว่าต้องการออก?",
-  "@confirmExit": {
-    "description": "Warning when the user presses the exit button",
-    "placeholders": {}
-  },
-  "no": "ไม่",
-  "@no": {
-    "description": "No button in the confirmation dialog",
-    "placeholders": {}
-  },
-  "yes": "ใช่",
-  "@yes": {
-    "description": "Yes button in the confirmation dialog",
-    "placeholders": {}
-  },
   "insertedSuccess": "บันทึกรอบของคุณสำเร็จ",
   "@insertedSuccess": {
     "description": "Notification when data is added successfully",
@@ -291,11 +121,6 @@
   "scanQrToViewDetails": "สแกน QR Code เพื่อดูรายละเอียด",
   "@scanQrToViewDetails": {
     "description": "Instruction to scan QR code for details",
-    "placeholders": {}
-  },
-  "doYouWantToExit": "คุณต้องการออกหรือไม่?",
-  "@doYouWantToExit": {
-    "description": "Prompt asking the user if they want to exit",
     "placeholders": {}
   },
   "difficultyEasyDescription": "สร้างตัวเลขสุ่มที่มีระดับเพิ่มขึ้นเล็กน้อยเพื่อความท้าทายง่ายๆ",
@@ -335,11 +160,6 @@
     "description": "Warning when the user changes the difficulty",
     "placeholders": {}
   },
-  "areYouSure": "คุณแน่ใจหรือไม่?",
-  "@areYouSure": {
-    "description": "Warning when the user performs an important action",
-    "placeholders": {}
-  },
   "no_turn_yet": "ยังไม่มีรอบที่เล่น",
   "@no_turn_yet": {
     "description": "Notification when there are no turns yet",
@@ -368,98 +188,6 @@
   "allTimeDescription": "อันดับตามรอบที่บันทึกทั้งหมด",
   "@allTimeDescription": {
     "description": "Description for all-time leaderboard"
-  },
-  "updateRequired": "จำเป็นต้องอัปเดต",
-  "@updateRequired": {
-    "description": "Title for force update dialog"
-  },
-  "updateAvailable": "มีอัปเดตใหม่",
-  "@updateAvailable": {
-    "description": "Title for optional update dialog"
-  },
-  "currentVersion": "เวอร์ชันปัจจุบัน",
-  "@currentVersion": {
-    "description": "Label for current app version"
-  },
-  "newVersion": "เวอร์ชันใหม่",
-  "@newVersion": {
-    "description": "Label for new available version"
-  },
-  "whatsNew": "มีอะไรใหม่",
-  "@whatsNew": {
-    "description": "Label for release notes section"
-  },
-  "forceUpdateMessage": "จำเป็นต้องอัปเดตนี้เพื่อใช้งานแอปต่อ โปรดอัปเดตทันที",
-  "@forceUpdateMessage": {
-    "description": "Message for force update requirement"
-  },
-  "later": "ภายหลัง",
-  "@later": {
-    "description": "Button to postpone optional update"
-  },
-  "updateNow": "อัปเดตทันที",
-  "@updateNow": {
-    "description": "Button to proceed with update"
-  },
-  "update": "อัปเดต",
-  "@update": {
-    "description": "Button to update app"
-  },
-  "checkForUpdates": "ตรวจสอบการอัปเดต",
-  "@checkForUpdates": {
-    "description": "Button to check for app updates"
-  },
-  "appUpdates": "อัปเดตแอป",
-  "@appUpdates": {
-    "description": "Section title for app updates"
-  },
-  "tapToCheckUpdates": "แตะปุ่มด้านล่างเพื่อตรวจสอบการอัปเดตแอป",
-  "@tapToCheckUpdates": {
-    "description": "Message prompting user to check for updates"
-  },
-  "checkingForUpdates": "กำลังตรวจสอบการอัปเดต...",
-  "@checkingForUpdates": {
-    "description": "Message while checking for updates"
-  },
-  "newVersionAvailable": "มีเวอร์ชันใหม่ {version} ให้ใช้งาน! {forceMessage}",
-  "@newVersionAvailable": {
-    "description": "Message when new version is available",
-    "placeholders": {
-      "version": {
-        "type": "String",
-        "example": "1.2.0"
-      },
-      "forceMessage": {
-        "type": "String",
-        "example": "This update is required."
-      }
-    }
-  },
-  "thisUpdateRequired": "การอัปเดตนี้จำเป็น",
-  "@thisUpdateRequired": {
-    "description": "Message for force update"
-  },
-  "usingLatestVersion": "คุณกำลังใช้เวอร์ชันล่าสุด!",
-  "@usingLatestVersion": {
-    "description": "Message when app is up to date"
-  },
-  "unableToCheckUpdates": "ไม่สามารถตรวจสอบการอัปเดตได้ {error}",
-  "@unableToCheckUpdates": {
-    "description": "Error message when update check fails",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Please try again later."
-      }
-    }
-  },
-  "tryAgainLater": "โปรดลองใหม่ในภายหลัง",
-  "@tryAgainLater": {
-    "description": "Default error message"
-  },
-  "updatePostponed": "มีการอัปเดตแต่ถูกเลื่อนออกไป",
-  "@updatePostponed": {
-    "description": "Message when user dismissed update"
   },
   "tapTimerTooltip": "คุณมีเวลา {totalSeconds} วินาทีในการแตะตัวเลข แถบจะเปลี่ยนสีเมื่อเวลาผ่านไป: สีเขียว (มากกว่า {halfSeconds} วินาที), สีส้ม ({quarterSeconds}-{halfSeconds} วินาที), สีแดง (น้อยกว่า {quarterSeconds} วินาที)",
   "@tapTimerTooltip": {
@@ -569,10 +297,6 @@
   "@bluetoothDisabledMessage": {
     "description": "Message when Bluetooth is disabled"
   },
-  "cancel": "ยกเลิก",
-  "@cancel": {
-    "description": "Cancel button label"
-  },
   "grantPermission": "อนุญาตสิทธิ์",
   "@grantPermission": {
     "description": "Button to grant permission"
@@ -629,122 +353,6 @@
   "@youRanOutOfLives": {
     "description": "Reason for losing when player loses all lives"
   },
-  "holidayNotification": "วันนี้เป็นวัน {holidayName}, {greeting}",
-  "@holidayNotification": {
-    "description": "Holiday event notification with greeting",
-    "placeholders": {
-      "holidayName": {
-        "type": "String"
-      },
-      "greeting": {
-        "type": "String"
-      }
-    }
-  },
-  "holidayNewYear": "วันปีใหม่",
-  "@holidayNewYear": {
-    "description": "New Year holiday name"
-  },
-  "greetingNewYear": "สวัสดีปีใหม่!",
-  "@greetingNewYear": {
-    "description": "New Year greeting"
-  },
-  "holidayLunarNewYear": "วันตรุษจีน",
-  "@holidayLunarNewYear": {
-    "description": "Lunar New Year holiday name"
-  },
-  "greetingLunarNewYear": "ซินเจียยู่อี่ ซินนี้ฮวดไช้!",
-  "@greetingLunarNewYear": {
-    "description": "Lunar New Year greeting in Chinese"
-  },
-  "holidayValentine": "วันวาเลนไทน์",
-  "@holidayValentine": {
-    "description": "Valentine's Day holiday name"
-  },
-  "greetingValentine": "สุขสันต์วันวาเลนไทน์!",
-  "@greetingValentine": {
-    "description": "Valentine's Day greeting"
-  },
-  "holidayHoli": "เทศกาลโฮลี",
-  "@holidayHoli": {
-    "description": "Holi holiday name"
-  },
-  "greetingHoli": "สุขสันต์วันโฮลี!",
-  "@greetingHoli": {
-    "description": "Holi greeting in Hindi"
-  },
-  "holidayEarthDay": "วันคุ้มครองโลก",
-  "@holidayEarthDay": {
-    "description": "Earth Day holiday name"
-  },
-  "greetingEarthDay": "สุขสันต์วันคุ้มครองโลก! ช่วยกันรักษาโลกของเรา!",
-  "@greetingEarthDay": {
-    "description": "Earth Day greeting"
-  },
-  "holidayEaster": "วันอีสเตอร์",
-  "@holidayEaster": {
-    "description": "Easter holiday name"
-  },
-  "greetingEaster": "สุขสันต์วันอีสเตอร์!",
-  "@greetingEaster": {
-    "description": "Easter greeting"
-  },
-  "holidayPride": "เดือนแห่งความภาคภูมิใจ",
-  "@holidayPride": {
-    "description": "Pride Month name"
-  },
-  "greetingPride": "สุขสันต์เดือนแห่งความภาคภูมิใจ! รักคือรัก!",
-  "@greetingPride": {
-    "description": "Pride Month greeting"
-  },
-  "holidayHalloween": "วันฮาโลวีน",
-  "@holidayHalloween": {
-    "description": "Halloween holiday name"
-  },
-  "greetingHalloween": "สุขสันต์วันฮาโลวีน!",
-  "@greetingHalloween": {
-    "description": "Halloween greeting"
-  },
-  "holidayDiwali": "เทศกาลดิวาลี",
-  "@holidayDiwali": {
-    "description": "Diwali holiday name"
-  },
-  "greetingDiwali": "สุขสันต์วันดิวาลี!",
-  "@greetingDiwali": {
-    "description": "Diwali greeting in Hindi"
-  },
-  "holidayHanukkah": "เทศกาลฮานุคคา",
-  "@holidayHanukkah": {
-    "description": "Hanukkah holiday name"
-  },
-  "greetingHanukkah": "สุขสันต์วันฮานุคคา!",
-  "@greetingHanukkah": {
-    "description": "Hanukkah greeting in Hebrew"
-  },
-  "holidayChristmas": "วันคริสต์มาส",
-  "@holidayChristmas": {
-    "description": "Christmas holiday name"
-  },
-  "greetingChristmas": "สุขสันต์วันคริสต์มาส!",
-  "@greetingChristmas": {
-    "description": "Christmas greeting"
-  },
-  "holidayKwanzaa": "เทศกาลควอนซา",
-  "@holidayKwanzaa": {
-    "description": "Kwanzaa holiday name"
-  },
-  "greetingKwanzaa": "สุขสันต์วันควอนซา!",
-  "@greetingKwanzaa": {
-    "description": "Kwanzaa greeting in Swahili"
-  },
-  "playAgain": "เล่นอีกครั้ง",
-  "@playAgain": {
-    "description": "Button to restart the game"
-  },
-  "returnToMenu": "กลับสู่เมนู",
-  "@returnToMenu": {
-    "description": "Button to return to main menu"
-  },
   "doYouReadyForRestart": "คุณพร้อมที่จะเริ่มใหม่หรือไม่?",
   "@doYouReadyForRestart": {
     "description": "Question asking if player is ready to restart the match"
@@ -760,10 +368,6 @@
   "opponent": "คู่ต่อสู้",
   "@opponent": {
     "description": "Label for opponent player"
-  },
-  "waiting": "กำลังรอ",
-  "@waiting": {
-    "description": "Waiting status text"
   },
   "youWillTakeFirst": "คุณจะได้เริ่มก่อน!",
   "@youWillTakeFirst": {
@@ -784,10 +388,6 @@
   "opponentReady": "คู่ต่อสู้พร้อม!",
   "@opponentReady": {
     "description": "Dialog title when opponent is ready"
-  },
-  "ok": "ตกลง",
-  "@ok": {
-    "description": "OK button label"
   },
   "bothPlayersReady": "ผู้เล่นทั้งสองพร้อม!",
   "@bothPlayersReady": {
@@ -958,7 +558,6 @@
   "tourPrevious": "ก่อนหน้า",
   "tourSkip": "ข้ามทัวร์",
   "tourFinish": "เสร็จสิ้น",
-  "restart": "เริ่มใหม่",
   "restartGame": "เริ่มเกมใหม่",
   "confirmRestart": "คุณแน่ใจหรือไม่ว่าต้องการเริ่มเกมใหม่?",
   "tourRestartFromSettings": "เริ่มทัวร์ใหม่",

@@ -4,108 +4,9 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "welcome": "¡Bienvenido/a!",
-  "@welcome": {
-    "description": "Welcome the user to the application",
-    "placeholders": {}
-  },
-  "welcomeUser": "¡Bienvenido/a {username}!",
-  "@welcomeUser": {
-    "description": "Welcome the user to the application",
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "John Doe"
-      }
-    }
-  },
-  "mainMenu": "Menú principal",
-  "@mainMenu": {
-    "description": "Tiêu đề của trang chính"
-  },
-  "start": "Comenzar",
-  "@start": {
-    "description": "Start button label"
-  },
   "instantStart": "Inicio instantáneo",
   "@instantStart": {
     "description": "Botón de inicio instantáneo para inicio rápido del juego"
-  },
-  "topScore": "Mejor puntuación",
-  "@topScore": {
-    "description": "Label for the top score"
-  },
-  "setting": "Configuración",
-  "@setting": {
-    "description": "Settings menu label"
-  },
-  "about": "Acerca de",
-  "@about": {
-    "description": "About menu label"
-  },
-  "exit": "Salir",
-  "@exit": {
-    "description": "Exit button label"
-  },
-  "version": "Versión",
-  "@version": {
-    "description": "The version label of the application"
-  },
-  "anonymous": "Anónimo",
-  "@anonymous": {
-    "description": "Label for anonymous user"
-  },
-  "level": "Nivel",
-  "@level": {
-    "description": "Label for game level"
-  },
-  "score": "Puntuación",
-  "@score": {
-    "description": "Label for game score"
-  },
-  "ready": "Listo",
-  "@ready": {
-    "description": "Ready status label"
-  },
-  "go": "¡Ya!",
-  "@go": {
-    "description": "Go status label"
-  },
-  "gameOver": "Juego terminado",
-  "@gameOver": {
-    "description": "Game over message"
-  },
-  "difficultySetting": "Ajuste de dificultad",
-  "@difficultySetting": {
-    "description": "Label for difficulty setting in the game"
-  },
-  "difficulty": "Dificultad",
-  "@difficulty": {
-    "description": "Difficulty level of the game"
-  },
-  "easy": "Fácil",
-  "@easy": {
-    "description": "Easy difficulty level of the game"
-  },
-  "medium": "Medio",
-  "@medium": {
-    "description": "Medium difficulty level of the game"
-  },
-  "hard": "Difícil",
-  "@hard": {
-    "description": "Hard difficulty level of the game"
-  },
-  "veryHard": "Muy difícil",
-  "@veryHard": {
-    "description": "Very hard difficulty level of the game"
-  },
-  "extreme": "Extremo",
-  "@extreme": {
-    "description": "Extreme difficulty level of the game"
-  },
-  "selectDifficulty": "Seleccionar dificultad",
-  "@selectDifficulty": {
-    "description": "Prompt for user to select the game difficulty"
   },
   "selectLevel": "Seleccionar nivel",
   "@selectLevel": {
@@ -124,22 +25,6 @@
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },
-  "name": "Nombre",
-  "@name": {
-    "description": "Label for name input"
-  },
-  "fontSize": "Tamaño de fuente",
-  "@fontSize": {
-    "description": "Label for font size setting"
-  },
-  "volume": "Volumen",
-  "@volume": {
-    "description": "Label for volume setting"
-  },
-  "vibrate": "Vibrar",
-  "@vibrate": {
-    "description": "Label for vibration setting"
-  },
   "numberOfTopScores": "Número de mejores puntuaciones",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
@@ -147,46 +32,6 @@
   "onlyShowMyRecorded": "Solo mostrar mis registros",
   "@onlyShowMyRecorded": {
     "description": "Label for filter to show only user's own recorded scores"
-  },
-  "global": "Global",
-  "@global": {
-    "description": "Label for global ranking view"
-  },
-  "personal": "Personal",
-  "@personal": {
-    "description": "Label for personal ranking view"
-  },
-  "rank": "Rango",
-  "@rank": {
-    "description": "Label for ranking position"
-  },
-  "share": "Compartir",
-  "@share": {
-    "description": "Label for share button"
-  },
-  "language": "Idioma",
-  "@language": {
-    "description": "Label for language setting"
-  },
-  "thankYou": "Gracias por jugar",
-  "@thankYou": {
-    "description": "Thank you message"
-  },
-  "thankYouMessage": "Gracias por jugar nuestro juego. Esperamos que lo hayas disfrutado. Si tienes algún comentario o sugerencia, no dudes en hacérnoslo saber.",
-  "@thankYouMessage": {
-    "description": "Detailed thank you message"
-  },
-  "authorName": "Autor",
-  "@authorName": {
-    "description": "Label for author name"
-  },
-  "connectWithUs": "Conéctate con nosotros",
-  "@connectWithUs": {
-    "description": "Label for connect with us section"
-  },
-  "connectWithUsMessage": "Si tienes alguna pregunta o comentario, no dudes en contactarnos en nuestras redes sociales.",
-  "@connectWithUsMessage": {
-    "description": "Message encouraging users to connect on social media"
   },
   "introductionContent": "NuCatch es un juego mental divertido y atractivo diseñado para agudizar tu memoria y mejorar el enfoque. Desafíate a atrapar números rápidamente en poco tiempo, ayudándote a recordar cosas como OTPs, números de teléfono, cumpleaños y más. ¡Disfruta de la experiencia y mejora tus habilidades de memoria!",
   "@introductionContent": {
@@ -263,21 +108,6 @@
       }
     }
   },
-  "confirmExit": "¿Estás seguro de que quieres salir?",
-  "@confirmExit": {
-    "description": "Warning when the user presses the exit button",
-    "placeholders": {}
-  },
-  "no": "No",
-  "@no": {
-    "description": "No button in the confirmation dialog",
-    "placeholders": {}
-  },
-  "yes": "Sí",
-  "@yes": {
-    "description": "Yes button in the confirmation dialog",
-    "placeholders": {}
-  },
   "insertedSuccess": "Turno registrado con éxito",
   "@insertedSuccess": {
     "description": "Notification when data is added successfully",
@@ -291,11 +121,6 @@
   "scanQrToViewDetails": "Escanea el código QR para ver detalles",
   "@scanQrToViewDetails": {
     "description": "Instruction to scan QR code for details",
-    "placeholders": {}
-  },
-  "doYouWantToExit": "¿Quieres salir?",
-  "@doYouWantToExit": {
-    "description": "Prompt asking the user if they want to exit",
     "placeholders": {}
   },
   "difficultyEasyDescription": "Genera un número aleatorio con un nivel ligeramente aumentado para desafíos simples.",
@@ -335,11 +160,6 @@
     "description": "Warning when the user changes the difficulty",
     "placeholders": {}
   },
-  "areYouSure": "¿Estás seguro?",
-  "@areYouSure": {
-    "description": "Warning when the user performs an important action",
-    "placeholders": {}
-  },
   "no_turn_yet": "Aún no hay turnos",
   "@no_turn_yet": {
     "description": "Notification when there are no turns yet",
@@ -368,98 +188,6 @@
   "allTimeDescription": "Clasificaciones basadas en todos los turnos registrados.",
   "@allTimeDescription": {
     "description": "Description for all-time leaderboard"
-  },
-  "updateRequired": "Actualización requerida",
-  "@updateRequired": {
-    "description": "Title for force update dialog"
-  },
-  "updateAvailable": "Actualización disponible",
-  "@updateAvailable": {
-    "description": "Title for optional update dialog"
-  },
-  "currentVersion": "Versión actual",
-  "@currentVersion": {
-    "description": "Label for current app version"
-  },
-  "newVersion": "Nueva versión",
-  "@newVersion": {
-    "description": "Label for new available version"
-  },
-  "whatsNew": "Novedades",
-  "@whatsNew": {
-    "description": "Label for release notes section"
-  },
-  "forceUpdateMessage": "Esta actualización es necesaria para continuar usando la aplicación. Por favor actualiza ahora.",
-  "@forceUpdateMessage": {
-    "description": "Message for force update requirement"
-  },
-  "later": "Más tarde",
-  "@later": {
-    "description": "Button to postpone optional update"
-  },
-  "updateNow": "Actualizar ahora",
-  "@updateNow": {
-    "description": "Button to proceed with update"
-  },
-  "update": "Actualizar",
-  "@update": {
-    "description": "Button to update app"
-  },
-  "checkForUpdates": "Buscar actualizaciones",
-  "@checkForUpdates": {
-    "description": "Button to check for app updates"
-  },
-  "appUpdates": "Actualizaciones de la aplicación",
-  "@appUpdates": {
-    "description": "Section title for app updates"
-  },
-  "tapToCheckUpdates": "Toque el botón de abajo para buscar actualizaciones de la aplicación.",
-  "@tapToCheckUpdates": {
-    "description": "Message prompting user to check for updates"
-  },
-  "checkingForUpdates": "Buscando actualizaciones...",
-  "@checkingForUpdates": {
-    "description": "Message while checking for updates"
-  },
-  "newVersionAvailable": "¡Nueva versión {version} disponible! {forceMessage}",
-  "@newVersionAvailable": {
-    "description": "Message when new version is available",
-    "placeholders": {
-      "version": {
-        "type": "String",
-        "example": "1.2.0"
-      },
-      "forceMessage": {
-        "type": "String",
-        "example": "This update is required."
-      }
-    }
-  },
-  "thisUpdateRequired": "Esta actualización es obligatoria.",
-  "@thisUpdateRequired": {
-    "description": "Message for force update"
-  },
-  "usingLatestVersion": "¡Estás usando la última versión!",
-  "@usingLatestVersion": {
-    "description": "Message when app is up to date"
-  },
-  "unableToCheckUpdates": "No se pudo buscar actualizaciones. {error}",
-  "@unableToCheckUpdates": {
-    "description": "Error message when update check fails",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Please try again later."
-      }
-    }
-  },
-  "tryAgainLater": "Por favor inténtelo de nuevo más tarde.",
-  "@tryAgainLater": {
-    "description": "Default error message"
-  },
-  "updatePostponed": "Actualización disponible pero pospuesta.",
-  "@updatePostponed": {
-    "description": "Message when user dismissed update"
   },
   "tapTimerTooltip": "Tienes {totalSeconds} segundos para tocar un número. La barra cambia de color a medida que se agota el tiempo: verde (más de {halfSeconds}s), naranja ({quarterSeconds}-{halfSeconds}s), rojo (menos de {quarterSeconds}s).",
   "@tapTimerTooltip": {
@@ -569,10 +297,6 @@
   "@bluetoothDisabledMessage": {
     "description": "Message when Bluetooth is disabled"
   },
-  "cancel": "Cancelar",
-  "@cancel": {
-    "description": "Cancel button label"
-  },
   "grantPermission": "Otorgar Permiso",
   "@grantPermission": {
     "description": "Button to grant permission"
@@ -629,122 +353,6 @@
   "@youRanOutOfLives": {
     "description": "Reason for losing when player loses all lives"
   },
-  "holidayNotification": "Hoy es {holidayName}, {greeting}",
-  "@holidayNotification": {
-    "description": "Holiday event notification with greeting",
-    "placeholders": {
-      "holidayName": {
-        "type": "String"
-      },
-      "greeting": {
-        "type": "String"
-      }
-    }
-  },
-  "holidayNewYear": "Año Nuevo",
-  "@holidayNewYear": {
-    "description": "New Year holiday name"
-  },
-  "greetingNewYear": "¡Feliz Año Nuevo!",
-  "@greetingNewYear": {
-    "description": "New Year greeting"
-  },
-  "holidayLunarNewYear": "Año Nuevo Lunar",
-  "@holidayLunarNewYear": {
-    "description": "Lunar New Year holiday name"
-  },
-  "greetingLunarNewYear": "¡Feliz Año Nuevo Lunar!",
-  "@greetingLunarNewYear": {
-    "description": "Lunar New Year greeting in Chinese"
-  },
-  "holidayValentine": "Día de San Valentín",
-  "@holidayValentine": {
-    "description": "Valentine's Day holiday name"
-  },
-  "greetingValentine": "¡Feliz Día de San Valentín!",
-  "@greetingValentine": {
-    "description": "Valentine's Day greeting"
-  },
-  "holidayHoli": "Holi",
-  "@holidayHoli": {
-    "description": "Holi holiday name"
-  },
-  "greetingHoli": "¡Feliz Holi!",
-  "@greetingHoli": {
-    "description": "Holi greeting in Hindi"
-  },
-  "holidayEarthDay": "Día de la Tierra",
-  "@holidayEarthDay": {
-    "description": "Earth Day holiday name"
-  },
-  "greetingEarthDay": "¡Feliz Día de la Tierra! ¡Protege nuestro planeta!",
-  "@greetingEarthDay": {
-    "description": "Earth Day greeting"
-  },
-  "holidayEaster": "Pascua",
-  "@holidayEaster": {
-    "description": "Easter holiday name"
-  },
-  "greetingEaster": "¡Felices Pascuas!",
-  "@greetingEaster": {
-    "description": "Easter greeting"
-  },
-  "holidayPride": "Mes del Orgullo",
-  "@holidayPride": {
-    "description": "Pride Month name"
-  },
-  "greetingPride": "¡Feliz Orgullo! ¡Amor es Amor!",
-  "@greetingPride": {
-    "description": "Pride Month greeting"
-  },
-  "holidayHalloween": "Halloween",
-  "@holidayHalloween": {
-    "description": "Halloween holiday name"
-  },
-  "greetingHalloween": "¡Feliz Halloween!",
-  "@greetingHalloween": {
-    "description": "Halloween greeting"
-  },
-  "holidayDiwali": "Diwali",
-  "@holidayDiwali": {
-    "description": "Diwali holiday name"
-  },
-  "greetingDiwali": "¡Feliz Diwali!",
-  "@greetingDiwali": {
-    "description": "Diwali greeting in Hindi"
-  },
-  "holidayHanukkah": "Jánuca",
-  "@holidayHanukkah": {
-    "description": "Hanukkah holiday name"
-  },
-  "greetingHanukkah": "¡Feliz Jánuca!",
-  "@greetingHanukkah": {
-    "description": "Hanukkah greeting in Hebrew"
-  },
-  "holidayChristmas": "Navidad",
-  "@holidayChristmas": {
-    "description": "Christmas holiday name"
-  },
-  "greetingChristmas": "¡Feliz Navidad!",
-  "@greetingChristmas": {
-    "description": "Christmas greeting"
-  },
-  "holidayKwanzaa": "Kwanzaa",
-  "@holidayKwanzaa": {
-    "description": "Kwanzaa holiday name"
-  },
-  "greetingKwanzaa": "¡Feliz Kwanzaa!",
-  "@greetingKwanzaa": {
-    "description": "Kwanzaa greeting in Swahili"
-  },
-  "playAgain": "Jugar de Nuevo",
-  "@playAgain": {
-    "description": "Button to restart the game"
-  },
-  "returnToMenu": "Volver al Menú",
-  "@returnToMenu": {
-    "description": "Button to return to main menu"
-  },
   "doYouReadyForRestart": "¿Estás listo para reiniciar?",
   "@doYouReadyForRestart": {
     "description": "Question asking if player is ready to restart the match"
@@ -760,10 +368,6 @@
   "opponent": "Oponente",
   "@opponent": {
     "description": "Label for opponent player"
-  },
-  "waiting": "Esperando",
-  "@waiting": {
-    "description": "Waiting status text"
   },
   "youWillTakeFirst": "¡Tomarás el primer turno!",
   "@youWillTakeFirst": {
@@ -784,10 +388,6 @@
   "opponentReady": "¡Oponente Listo!",
   "@opponentReady": {
     "description": "Dialog title when opponent is ready"
-  },
-  "ok": "OK",
-  "@ok": {
-    "description": "OK button label"
   },
   "bothPlayersReady": "¡Ambos Jugadores Listos!",
   "@bothPlayersReady": {
@@ -958,7 +558,6 @@
   "tourPrevious": "Anterior",
   "tourSkip": "Saltar Tour",
   "tourFinish": "Finalizar",
-  "restart": "Reiniciar",
   "restartGame": "Reiniciar Juego",
   "confirmRestart": "¿Estás seguro de que quieres reiniciar el juego?",
   "tourRestartFromSettings": "Reiniciar Tour",

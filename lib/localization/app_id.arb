@@ -4,108 +4,9 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "welcome": "Selamat Datang!",
-  "@welcome": {
-    "description": "Welcome the user to the application",
-    "placeholders": {}
-  },
-  "welcomeUser": "Selamat Datang {username}!",
-  "@welcomeUser": {
-    "description": "Welcome the user to the application",
-    "placeholders": {
-      "username": {
-        "type": "String",
-        "example": "John Doe"
-      }
-    }
-  },
-  "mainMenu": "Menu Utama",
-  "@mainMenu": {
-    "description": "Tiêu đề của trang chính"
-  },
-  "start": "Mulai",
-  "@start": {
-    "description": "Start button label"
-  },
   "instantStart": "Mulai Instan",
   "@instantStart": {
     "description": "Tombol mulai instan untuk memulai permainan dengan cepat"
-  },
-  "topScore": "Skor Tertinggi",
-  "@topScore": {
-    "description": "Label for the top score"
-  },
-  "setting": "Pengaturan",
-  "@setting": {
-    "description": "Settings menu label"
-  },
-  "about": "Tentang",
-  "@about": {
-    "description": "About menu label"
-  },
-  "exit": "Keluar",
-  "@exit": {
-    "description": "Exit button label"
-  },
-  "version": "Versi",
-  "@version": {
-    "description": "The version label of the application"
-  },
-  "anonymous": "Anonim",
-  "@anonymous": {
-    "description": "Label for anonymous user"
-  },
-  "level": "Level",
-  "@level": {
-    "description": "Label for game level"
-  },
-  "score": "Skor",
-  "@score": {
-    "description": "Label for game score"
-  },
-  "ready": "Siap",
-  "@ready": {
-    "description": "Ready status label"
-  },
-  "go": "Mulai!",
-  "@go": {
-    "description": "Go status label"
-  },
-  "gameOver": "Permainan Berakhir",
-  "@gameOver": {
-    "description": "Game over message"
-  },
-  "difficultySetting": "Pengaturan Kesulitan",
-  "@difficultySetting": {
-    "description": "Label for difficulty setting in the game"
-  },
-  "difficulty": "Kesulitan",
-  "@difficulty": {
-    "description": "Difficulty level of the game"
-  },
-  "easy": "Mudah",
-  "@easy": {
-    "description": "Easy difficulty level of the game"
-  },
-  "medium": "Sedang",
-  "@medium": {
-    "description": "Medium difficulty level of the game"
-  },
-  "hard": "Sulit",
-  "@hard": {
-    "description": "Hard difficulty level of the game"
-  },
-  "veryHard": "Sangat Sulit",
-  "@veryHard": {
-    "description": "Very hard difficulty level of the game"
-  },
-  "extreme": "Ekstrem",
-  "@extreme": {
-    "description": "Extreme difficulty level of the game"
-  },
-  "selectDifficulty": "Pilih Kesulitan",
-  "@selectDifficulty": {
-    "description": "Prompt for user to select the game difficulty"
   },
   "selectLevel": "Pilih Level",
   "@selectLevel": {
@@ -124,22 +25,6 @@
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },
-  "name": "Nama",
-  "@name": {
-    "description": "Label for name input"
-  },
-  "fontSize": "Ukuran Font",
-  "@fontSize": {
-    "description": "Label for font size setting"
-  },
-  "volume": "Volume",
-  "@volume": {
-    "description": "Label for volume setting"
-  },
-  "vibrate": "Getar",
-  "@vibrate": {
-    "description": "Label for vibration setting"
-  },
   "numberOfTopScores": "Jumlah Skor Tertinggi",
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
@@ -147,46 +32,6 @@
   "onlyShowMyRecorded": "Hanya tampilkan rekaman saya",
   "@onlyShowMyRecorded": {
     "description": "Label for filter to show only user's own recorded scores"
-  },
-  "global": "Global",
-  "@global": {
-    "description": "Label for global ranking view"
-  },
-  "personal": "Pribadi",
-  "@personal": {
-    "description": "Label for personal ranking view"
-  },
-  "rank": "Peringkat",
-  "@rank": {
-    "description": "Label for ranking position"
-  },
-  "share": "Bagikan",
-  "@share": {
-    "description": "Label for share button"
-  },
-  "language": "Bahasa",
-  "@language": {
-    "description": "Label for language setting"
-  },
-  "thankYou": "Terima kasih telah bermain",
-  "@thankYou": {
-    "description": "Thank you message"
-  },
-  "thankYouMessage": "Terima kasih telah memainkan permainan kami. Kami harap Anda menyukainya. Jika Anda memiliki umpan balik atau saran, beri tahu kami.",
-  "@thankYouMessage": {
-    "description": "Detailed thank you message"
-  },
-  "authorName": "Penulis",
-  "@authorName": {
-    "description": "Label for author name"
-  },
-  "connectWithUs": "Terhubung dengan Kami",
-  "@connectWithUs": {
-    "description": "Label for connect with us section"
-  },
-  "connectWithUsMessage": "Jika Anda memiliki pertanyaan atau komentar, jangan ragu untuk menghubungi kami melalui saluran media sosial kami.",
-  "@connectWithUsMessage": {
-    "description": "Message encouraging users to connect on social media"
   },
   "introductionContent": "NuCatch adalah permainan otak yang menyenangkan dan menarik yang dirancang untuk mempertajam ingatan dan meningkatkan fokus Anda. Tantang diri Anda untuk menangkap angka dengan cepat dalam waktu singkat, membantu Anda mengingat hal-hal seperti OTP, nomor telepon, ulang tahun, dan lainnya. Nikmati pengalamannya dan tingkatkan keterampilan ingatan Anda!",
   "@introductionContent": {
@@ -263,21 +108,6 @@
       }
     }
   },
-  "confirmExit": "Apakah Anda yakin ingin keluar?",
-  "@confirmExit": {
-    "description": "Warning when the user presses the exit button",
-    "placeholders": {}
-  },
-  "no": "Tidak",
-  "@no": {
-    "description": "No button in the confirmation dialog",
-    "placeholders": {}
-  },
-  "yes": "Ya",
-  "@yes": {
-    "description": "Yes button in the confirmation dialog",
-    "placeholders": {}
-  },
   "insertedSuccess": "Berhasil mencatat giliran Anda",
   "@insertedSuccess": {
     "description": "Notification when data is added successfully",
@@ -291,11 +121,6 @@
   "scanQrToViewDetails": "Pindai Kode QR untuk melihat detail",
   "@scanQrToViewDetails": {
     "description": "Instruction to scan QR code for details",
-    "placeholders": {}
-  },
-  "doYouWantToExit": "Apakah Anda ingin keluar?",
-  "@doYouWantToExit": {
-    "description": "Prompt asking the user if they want to exit",
     "placeholders": {}
   },
   "difficultyEasyDescription": "Menghasilkan angka acak dengan level yang sedikit ditingkatkan untuk tantangan sederhana.",
@@ -335,11 +160,6 @@
     "description": "Warning when the user changes the difficulty",
     "placeholders": {}
   },
-  "areYouSure": "Apakah Anda yakin?",
-  "@areYouSure": {
-    "description": "Warning when the user performs an important action",
-    "placeholders": {}
-  },
   "no_turn_yet": "Belum ada giliran",
   "@no_turn_yet": {
     "description": "Notification when there are no turns yet",
@@ -368,98 +188,6 @@
   "allTimeDescription": "Peringkat berdasarkan semua giliran yang dicatat.",
   "@allTimeDescription": {
     "description": "Description for all-time leaderboard"
-  },
-  "updateRequired": "Pembaruan Diperlukan",
-  "@updateRequired": {
-    "description": "Title for force update dialog"
-  },
-  "updateAvailable": "Pembaruan Tersedia",
-  "@updateAvailable": {
-    "description": "Title for optional update dialog"
-  },
-  "currentVersion": "Versi Saat Ini",
-  "@currentVersion": {
-    "description": "Label for current app version"
-  },
-  "newVersion": "Versi Baru",
-  "@newVersion": {
-    "description": "Label for new available version"
-  },
-  "whatsNew": "Apa yang Baru",
-  "@whatsNew": {
-    "description": "Label for release notes section"
-  },
-  "forceUpdateMessage": "Pembaruan ini diperlukan untuk terus menggunakan aplikasi. Harap perbarui sekarang.",
-  "@forceUpdateMessage": {
-    "description": "Message for force update requirement"
-  },
-  "later": "Nanti",
-  "@later": {
-    "description": "Button to postpone optional update"
-  },
-  "updateNow": "Perbarui Sekarang",
-  "@updateNow": {
-    "description": "Button to proceed with update"
-  },
-  "update": "Perbarui",
-  "@update": {
-    "description": "Button to update app"
-  },
-  "checkForUpdates": "Periksa Pembaruan",
-  "@checkForUpdates": {
-    "description": "Button to check for app updates"
-  },
-  "appUpdates": "Pembaruan Aplikasi",
-  "@appUpdates": {
-    "description": "Section title for app updates"
-  },
-  "tapToCheckUpdates": "Ketuk tombol di bawah untuk memeriksa pembaruan aplikasi.",
-  "@tapToCheckUpdates": {
-    "description": "Message prompting user to check for updates"
-  },
-  "checkingForUpdates": "Memeriksa pembaruan...",
-  "@checkingForUpdates": {
-    "description": "Message while checking for updates"
-  },
-  "newVersionAvailable": "Versi baru {version} tersedia! {forceMessage}",
-  "@newVersionAvailable": {
-    "description": "Message when new version is available",
-    "placeholders": {
-      "version": {
-        "type": "String",
-        "example": "1.2.0"
-      },
-      "forceMessage": {
-        "type": "String",
-        "example": "This update is required."
-      }
-    }
-  },
-  "thisUpdateRequired": "Pembaruan ini diperlukan.",
-  "@thisUpdateRequired": {
-    "description": "Message for force update"
-  },
-  "usingLatestVersion": "Anda menggunakan versi terbaru!",
-  "@usingLatestVersion": {
-    "description": "Message when app is up to date"
-  },
-  "unableToCheckUpdates": "Tidak dapat memeriksa pembaruan. {error}",
-  "@unableToCheckUpdates": {
-    "description": "Error message when update check fails",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Please try again later."
-      }
-    }
-  },
-  "tryAgainLater": "Silakan coba lagi nanti.",
-  "@tryAgainLater": {
-    "description": "Default error message"
-  },
-  "updatePostponed": "Pembaruan tersedia tetapi ditunda.",
-  "@updatePostponed": {
-    "description": "Message when user dismissed update"
   },
   "tapTimerTooltip": "Anda memiliki {totalSeconds} detik untuk mengetuk angka. Bilah berubah warna seiring berjalannya waktu: Hijau (di atas {halfSeconds} detik), Oranye ({quarterSeconds}-{halfSeconds} detik), Merah (di bawah {quarterSeconds} detik).",
   "@tapTimerTooltip": {
@@ -569,10 +297,6 @@
   "@bluetoothDisabledMessage": {
     "description": "Message when Bluetooth is disabled"
   },
-  "cancel": "Batal",
-  "@cancel": {
-    "description": "Cancel button label"
-  },
   "grantPermission": "Berikan Izin",
   "@grantPermission": {
     "description": "Button to grant permission"
@@ -629,122 +353,6 @@
   "@youRanOutOfLives": {
     "description": "Reason for losing when player loses all lives"
   },
-  "holidayNotification": "Hari ini adalah {holidayName}, {greeting}",
-  "@holidayNotification": {
-    "description": "Holiday event notification with greeting",
-    "placeholders": {
-      "holidayName": {
-        "type": "String"
-      },
-      "greeting": {
-        "type": "String"
-      }
-    }
-  },
-  "holidayNewYear": "Tahun Baru",
-  "@holidayNewYear": {
-    "description": "New Year holiday name"
-  },
-  "greetingNewYear": "Selamat Tahun Baru!",
-  "@greetingNewYear": {
-    "description": "New Year greeting"
-  },
-  "holidayLunarNewYear": "Tahun Baru Imlek",
-  "@holidayLunarNewYear": {
-    "description": "Lunar New Year holiday name"
-  },
-  "greetingLunarNewYear": "Selamat Tahun Baru Imlek!",
-  "@greetingLunarNewYear": {
-    "description": "Lunar New Year greeting in Chinese"
-  },
-  "holidayValentine": "Hari Valentine",
-  "@holidayValentine": {
-    "description": "Valentine's Day holiday name"
-  },
-  "greetingValentine": "Selamat Hari Valentine!",
-  "@greetingValentine": {
-    "description": "Valentine's Day greeting"
-  },
-  "holidayHoli": "Holi",
-  "@holidayHoli": {
-    "description": "Holi holiday name"
-  },
-  "greetingHoli": "Selamat Holi!",
-  "@greetingHoli": {
-    "description": "Holi greeting in Hindi"
-  },
-  "holidayEarthDay": "Hari Bumi",
-  "@holidayEarthDay": {
-    "description": "Earth Day holiday name"
-  },
-  "greetingEarthDay": "Selamat Hari Bumi! Lindungi planet kita!",
-  "@greetingEarthDay": {
-    "description": "Earth Day greeting"
-  },
-  "holidayEaster": "Paskah",
-  "@holidayEaster": {
-    "description": "Easter holiday name"
-  },
-  "greetingEaster": "Selamat Paskah!",
-  "@greetingEaster": {
-    "description": "Easter greeting"
-  },
-  "holidayPride": "Bulan Kebanggaan",
-  "@holidayPride": {
-    "description": "Pride Month name"
-  },
-  "greetingPride": "Selamat Bulan Kebanggaan! Cinta adalah Cinta!",
-  "@greetingPride": {
-    "description": "Pride Month greeting"
-  },
-  "holidayHalloween": "Halloween",
-  "@holidayHalloween": {
-    "description": "Halloween holiday name"
-  },
-  "greetingHalloween": "Selamat Halloween!",
-  "@greetingHalloween": {
-    "description": "Halloween greeting"
-  },
-  "holidayDiwali": "Diwali",
-  "@holidayDiwali": {
-    "description": "Diwali holiday name"
-  },
-  "greetingDiwali": "Selamat Diwali!",
-  "@greetingDiwali": {
-    "description": "Diwali greeting in Hindi"
-  },
-  "holidayHanukkah": "Hanukkah",
-  "@holidayHanukkah": {
-    "description": "Hanukkah holiday name"
-  },
-  "greetingHanukkah": "Selamat Hanukkah!",
-  "@greetingHanukkah": {
-    "description": "Hanukkah greeting in Hebrew"
-  },
-  "holidayChristmas": "Natal",
-  "@holidayChristmas": {
-    "description": "Christmas holiday name"
-  },
-  "greetingChristmas": "Selamat Natal!",
-  "@greetingChristmas": {
-    "description": "Christmas greeting"
-  },
-  "holidayKwanzaa": "Kwanzaa",
-  "@holidayKwanzaa": {
-    "description": "Kwanzaa holiday name"
-  },
-  "greetingKwanzaa": "Selamat Kwanzaa!",
-  "@greetingKwanzaa": {
-    "description": "Kwanzaa greeting in Swahili"
-  },
-  "playAgain": "Main Lagi",
-  "@playAgain": {
-    "description": "Button to restart the game"
-  },
-  "returnToMenu": "Kembali ke Menu",
-  "@returnToMenu": {
-    "description": "Button to return to main menu"
-  },
   "doYouReadyForRestart": "Apakah Anda siap untuk memulai ulang?",
   "@doYouReadyForRestart": {
     "description": "Question asking if player is ready to restart the match"
@@ -760,10 +368,6 @@
   "opponent": "Lawan",
   "@opponent": {
     "description": "Label for opponent player"
-  },
-  "waiting": "Menunggu",
-  "@waiting": {
-    "description": "Waiting status text"
   },
   "youWillTakeFirst": "Anda akan mulai duluan!",
   "@youWillTakeFirst": {
@@ -784,10 +388,6 @@
   "opponentReady": "Lawan Siap!",
   "@opponentReady": {
     "description": "Dialog title when opponent is ready"
-  },
-  "ok": "OKE",
-  "@ok": {
-    "description": "OK button label"
   },
   "bothPlayersReady": "Kedua Pemain Siap!",
   "@bothPlayersReady": {
@@ -958,7 +558,6 @@
   "tourPrevious": "Sebelumnya",
   "tourSkip": "Lewati Tur",
   "tourFinish": "Selesai",
-  "restart": "Mulai Ulang",
   "restartGame": "Mulai Ulang Permainan",
   "confirmRestart": "Apakah Anda yakin ingin memulai ulang permainan?",
   "tourRestartFromSettings": "Mulai Ulang Tur",

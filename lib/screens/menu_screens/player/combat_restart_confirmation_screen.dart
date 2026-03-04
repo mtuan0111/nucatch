@@ -82,7 +82,7 @@ class CombatRestartConfirmationScreen extends StatelessWidget {
                             CustomElevatedButton(
                               text: combatState.isPlayerReady
                                   ? lang(context).notReady
-                                  : lang(context).ready,
+                                  : coreLang(context).ready,
                               shapeAt: RoundedWithShapeAt.all,
                               backgroundColor: combatState.isPlayerReady
                                   ? Theme.of(context).colorScheme.error
@@ -147,7 +147,7 @@ class CombatRestartConfirmationScreen extends StatelessWidget {
           style: AppTextStyles.bodyLarge(context),
         ),
         Text(
-          isReady ? lang(context).ready : lang(context).waiting,
+          isReady ? coreLang(context).ready : coreLang(context).waiting,
           style: AppTextStyles.withColor(
             AppTextStyles.bodyLarge(context),
             isReady

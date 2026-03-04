@@ -88,8 +88,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 .colorScheme
                                                 .onPrimary,
                                           ),
-                                          labelText: lang(context).name,
-                                          hintText: lang(context).anonymous,
+                                          labelText: coreLang(context).name,
+                                          hintText: coreLang(context).anonymous,
                                           labelStyle:
                                               AppTextStyles.titleLarge(context),
                                           hintStyle: AppTextStyles.withColor(
@@ -182,7 +182,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 const SizedBox(width: kSpaceML),
                                                 Expanded(
                                                   child: Text(
-                                                    lang(context).fontSize,
+                                                    coreLang(context).fontSize,
                                                     style: AppTextStyles
                                                         .titleLarge(context),
                                                   ),
@@ -291,7 +291,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 ),
                                                 const SizedBox(width: kSpaceML),
                                                 Text(
-                                                  lang(context).volume,
+                                                  coreLang(context).volume,
                                                   style:
                                                       AppTextStyles.titleLarge(
                                                           context),
@@ -383,7 +383,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             ),
                                             const SizedBox(width: kSpaceML),
                                             Text(
-                                              lang(context).vibrate,
+                                              coreLang(context).vibrate,
                                               style: AppTextStyles.titleLarge(
                                                   context),
                                             ),
@@ -612,7 +612,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 ),
                                                 const SizedBox(width: kSpaceML),
                                                 Text(
-                                                  lang(context).language,
+                                                  coreLang(context).language,
                                                   style:
                                                       AppTextStyles.titleLarge(
                                                           context),
