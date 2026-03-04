@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skeleton_core/skeleton_core.dart';
+import 'package:skeleton_core/skeleton_core.dart'
+    hide TopScoreNavCubit, TopScoreNavState, TopScoreRootState, TopScoreDetailState;
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/top_score/top_score_nav_state.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_bloc.dart';

@@ -20,7 +20,6 @@ import 'package:nucatch/helpers/helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
 
 class SetDifficultScreen extends StatefulWidget {

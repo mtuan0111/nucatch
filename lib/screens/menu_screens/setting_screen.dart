@@ -11,7 +11,6 @@ import 'package:nucatch/blocs/objects/tour/tour_event.dart';
 
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({

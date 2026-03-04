@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skeleton_core/skeleton_core.dart';
+import 'package:skeleton_core/skeleton_core.dart'
+    hide TopScoreNavCubit, TopScoreNavState, TopScoreRootState, TopScoreDetailState;
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show PlayMode;

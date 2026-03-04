@@ -14,7 +14,6 @@ import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
 import 'package:ble_plat_services/ble_plat_services.dart';
-import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 
 /// Guest room screen for discovering and joining BLE combat rooms
 class JoinRoomScreen extends StatefulWidget {

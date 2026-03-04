@@ -7,12 +7,12 @@ import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_event.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
-import 'package:skeleton_core/skeleton_core.dart';
+import 'package:skeleton_core/skeleton_core.dart'
+    hide TopScoreNavCubit, TopScoreNavState, TopScoreRootState, TopScoreDetailState;
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/models/turn_record_model.dart';
-import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class TopScoreDetailScreen extends StatefulWidget {

@@ -13,7 +13,6 @@ import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/helper.dart';
 
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 
 class CombatRestartConfirmationScreen extends StatelessWidget {
   const CombatRestartConfirmationScreen({super.key});

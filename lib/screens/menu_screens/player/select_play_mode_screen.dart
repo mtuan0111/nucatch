@@ -6,7 +6,6 @@ import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/widgets/custom_sliver_app_bar.dart';
 
 class SelectPlayModeScreen extends StatefulWidget {
   const SelectPlayModeScreen({super.key});
