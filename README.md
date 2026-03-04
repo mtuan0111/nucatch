@@ -1542,3 +1542,36 @@ feat: Utilize the pick right mode
     ```flutter build ios --build-name=2.7.4 --build-number=74 --release```
 ```
     
+---
+## Released on: 04/03/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 75           | 2.7.5   |
+| iOS      | 75           | 2.7.5   |
+
+### Release note:
+feat: Update the UI of the game screen
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+```markdown
+[Builded] Version 2.7.5 - 75 / 2.7.5 - 75 _ feat: Update the UI of the game screen
+
+**Store notices / What's new / Summary:**
+
+- **English:**  
+    - Improved game screen UI for a more polished and intuitive user experience.
+
+- **Tiếng Việt:**  
+    - Cải thiện giao diện màn hình trò chơi để mang lại trải nghiệm người dùng tốt hơn.
+
+Flutter build for Android
+```flutter build appbundle --build-name=2.7.5 --build-number=75 --release```
+
+Flutter build for iOS
+```flutter build ios --build-name=2.7.5 --build-number=75 --release```
+```
