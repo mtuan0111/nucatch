@@ -14,7 +14,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:nucatch/screens/menu_screens/top_score_details_screen.dart';
 import 'package:nucatch/screens/menu_screens/top_score_screen.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/helpers/const.dart';
 
 /// Nucatch-specific TopScoreNav that delegates to skeleton_core's
 /// generic [TopScoreNav] with game-specific screen builders.

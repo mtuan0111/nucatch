@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/localization/app_localizations.dart';
 
 // Re-export common constants from skeleton_core
@@ -67,3 +68,67 @@ class AdMobConfig {
   // Test mode flag - set to false when AdMob account is approved
   static const bool useTestAds = true;
 }
+
+// ============================================================================
+// Game-specific menu configuration (moved from blocs/navs/menu/menu_state.dart)
+// ============================================================================
+
+/// Builds the localized menu array for nucatch.
+Map<MenuOption, Map<String, dynamic>> menuArray(BuildContext context) => {
+      MenuOption.instantStart: {
+        "text": lang(context).instantStart,
+        "icon": FontAwesomeIcons.bolt,
+      },
+      MenuOption.start: {
+        "text": coreLang(context).start,
+        "icon": FontAwesomeIcons.play,
+      },
+      MenuOption.topScore: {
+        "text": coreLang(context).topScore,
+        "icon": FontAwesomeIcons.trophy,
+      },
+      MenuOption.setting: {
+        "text": coreLang(context).setting,
+        "icon": FontAwesomeIcons.gear,
+      },
+      MenuOption.about: {
+        "text": coreLang(context).about,
+        "icon": FontAwesomeIcons.circleInfo,
+      },
+      MenuOption.exit: {
+        "text": coreLang(context).exit,
+        "icon": FontAwesomeIcons.rightFromBracket,
+      },
+    };
+
+/// Keyboard options for the nuCatch game.
+enum KeyboardOption {
+  one,
+  two,
+  three,
+  four,
+  five,
+  six,
+  eleven,
+  eight,
+  nine,
+  //
+  reset,
+  zero,
+  mainMenu,
+}
+
+const Map<KeyboardOption, int> keyboardArray = {
+  KeyboardOption.one: 1,
+  KeyboardOption.two: 2,
+  KeyboardOption.three: 3,
+  KeyboardOption.four: 4,
+  KeyboardOption.five: 5,
+  KeyboardOption.six: 6,
+  KeyboardOption.eleven: 7,
+  KeyboardOption.eight: 8,
+  KeyboardOption.nine: 9,
+  KeyboardOption.reset: 10,
+  KeyboardOption.zero: 0,
+  KeyboardOption.mainMenu: 11,
+};

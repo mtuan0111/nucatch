@@ -1,5 +1,7 @@
-// Re-export generic TopScore nav types from skeleton_core
-// and provide nucatch-specific type aliases.
+// Nucatch-specific TopScore nav types
+// These provide typed versions of skeleton_core's generic TopScore types
+// using TurnRecordedModel and RankingPeriod.
+
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:skeleton_core/skeleton_core.dart' as core;
@@ -32,5 +34,24 @@ class TopScoreNavCubit
 
 /// Convenience getter for accessing the record from TopScoreDetailState.
 extension TopScoreDetailStateExtension on NucatchTopScoreDetailState {
+  TurnRecordedModel get turnRecordedModel => record;
+}
+
+/// Backward-compatible TopScoreDetailState for nucatch.
+class TopScoreDetailState
+    extends core.TopScoreDetailState<TurnRecordedModel, RankingPeriod> {
+  TopScoreDetailState({
+    required TurnRecordedModel turnRecordedModel,
+    required int? ranking,
+    required RankingPeriod period,
+    required bool isPersonalView,
+  }) : super(
+          record: turnRecordedModel,
+          ranking: ranking,
+          period: period,
+          isPersonalView: isPersonalView,
+        );
+
+  /// Backward-compatible getter.
   TurnRecordedModel get turnRecordedModel => record;
 }

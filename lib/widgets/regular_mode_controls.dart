@@ -9,7 +9,7 @@ import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/helpers/const.dart';
 
 /// Playing controls widget for Regular (normal) difficulty modes
 /// Displays 3x4 numeric keypad with numbers 0-9, Reset, and Main Menu buttons

@@ -23,7 +23,6 @@ import 'package:nucatch/widgets/countdown_bar.dart';
 import 'package:nucatch/widgets/pick_right_mode_controls.dart';
 import 'package:nucatch/widgets/regular_mode_controls.dart';
 
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class PlayScreen extends StatefulWidget {
   const PlayScreen({

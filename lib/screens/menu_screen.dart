@@ -11,7 +11,6 @@ import 'package:nucatch/widgets/tour_button.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});

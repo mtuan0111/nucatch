@@ -19,7 +19,6 @@ import 'package:nucatch/widgets/pick_right_buttons.dart';
 import 'package:nucatch/widgets/combat_status_badge.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';
 import 'package:nucatch/widgets/countdown_bar.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class CombatPlayScreen extends StatefulWidget {
   const CombatPlayScreen({super.key});

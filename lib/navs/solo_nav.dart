@@ -10,7 +10,6 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/screens/menu_screens/player/gameover_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/set_difficult_screen.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 /// Navigator for Solo Mode screens
 class SoloNav extends StatelessWidget {

@@ -14,7 +14,6 @@ import 'package:nucatch/services/turn_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class TurnBloc extends Bloc<TurnEvent, TurnState> {
   final TurnRecordedServices _turnedServices = TurnRecordedServices();

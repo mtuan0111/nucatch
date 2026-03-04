@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeleton_core/skeleton_core.dart'
     hide TopScoreNavCubit, TopScoreNavState, TopScoreRootState, TopScoreDetailState;
-import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
+import 'package:nucatch/helpers/top_score_nav_types.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';

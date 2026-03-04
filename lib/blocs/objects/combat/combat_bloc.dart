@@ -10,7 +10,6 @@ import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
 
 class CombatBloc extends Bloc<CombatEvent, CombatState> {
   final CombatBleService _roomService;

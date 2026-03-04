@@ -12,7 +12,7 @@ import 'package:skeleton_core/src/navs/menu_nav.dart' as core_nav;
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show PlayMode;
-import 'package:nucatch/blocs/navs/top_score/top_score_nav_cubit.dart';
+import 'package:nucatch/helpers/top_score_nav_types.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
@@ -21,7 +21,7 @@ import 'package:nucatch/navs/top_score_nav.dart';
 import 'package:nucatch/screens/menu_screens/about_screen.dart';
 import 'package:nucatch/screens/menu_screen.dart';
 import 'package:nucatch/screens/menu_screens/setting_screen.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/helpers/const.dart';
 
 /// Nucatch-specific MenuNav that delegates to skeleton_core's
 /// generic [MenuNav] with game-specific screen builders.

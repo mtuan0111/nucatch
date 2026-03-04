@@ -3,7 +3,7 @@
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
-import 'package:nucatch/blocs/navs/menu/menu_state.dart';
+import 'package:nucatch/helpers/const.dart';
 
 abstract class CombatEvent {}
 
