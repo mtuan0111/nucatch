@@ -92,8 +92,8 @@ Future<void> main() async {
       scaffoldBackgroundColor: Colors.white,
     ),
 
-    // ----- Home screen blocs -----
-    homeBlocProviders: (context, settingState) => [
+    // ----- App-specific blocs -----
+    appBlocProviders: [
       BlocProvider(
         create: (context) => TurnRecordedListBloc(
           TurnRecordedListState(
