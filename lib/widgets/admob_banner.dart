@@ -133,7 +133,7 @@ class _AdMobBannerState extends State<AdMobBanner> {
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
-          borderRadius: Helper.getBorderRadius(
+          borderRadius: CoreHelper.getBorderRadius(
             radius:
                 kPaddingS, // Optional, defaults to LayoutConfig.layoutBorderRadius
             shapeAt: RoundedWithShapeAt.bottom,
