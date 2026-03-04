@@ -9,9 +9,7 @@ import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/combat_dialogs.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/helper.dart';
 
-import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
 import 'package:ble_plat_services/ble_plat_services.dart';
 

@@ -471,7 +471,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     } else {
       // Wrong selection
       _audioBloc.add(PlayWrongAudio());
-      add(LifeLost(lifeRemaining: state.lifeRemaining - 1));
+      add(LifeLost(lifeRemaining: 1));
 
       if (state.lifeRemaining > 1) {
         await Future.delayed(const Duration(milliseconds: 1000));

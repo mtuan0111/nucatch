@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "../../../skeleton_core"
+		},
+		{
+			"path": "../../../hanoi_tower"
 		}
 	],
 	"settings": {}

@@ -9,6 +9,10 @@ import 'package:skeleton_core/skeleton_core.dart'
         TopScoreRootState,
         TopScoreDetailState;
 import 'package:skeleton_core/src/navs/menu_nav.dart' as core_nav;
+import 'package:skeleton_core/src/blocs/top_score_nav/top_score_nav_cubit.dart'
+    as core_ts;
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
+import 'package:nucatch/models/turn_record_model.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show PlayMode;
@@ -72,7 +76,8 @@ class MenuNav extends StatelessWidget {
           child: const PlayerNav(),
         );
       },
-      topScoreScreenBuilder: (ctx) => BlocProvider(
+      topScoreScreenBuilder: (ctx) => BlocProvider<
+          core_ts.TopScoreNavCubit<TurnRecordedModel, RankingPeriod>>(
         create: (context) => TopScoreNavCubit(),
         child: const TopScoreNav(),
       ),
