@@ -7,6 +7,7 @@ import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/extension.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/helper.dart';
 
@@ -66,12 +67,7 @@ class MenuAlert extends StatelessWidget {
             ),
             text: coreLang(context).difficultySetting,
             shapeAt: RoundedWithShapeAt.topLeft,
-            // backgroundColor: Colors.white70,
-            // color: Colors.black87,
             buttonSize: ButtonSize.smallest,
-
-            // icon: Icon(Helper.getIconFromDifficulty(
-            //     context, turnState.difficultyModel!.difficulty)),
             onPressed: () {
               showDialog<bool>(
                 context: context,

@@ -6,6 +6,7 @@ import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/widgets/pick_right_buttons.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 
 /// Playing controls widget for Pick Right difficulty mode
 /// Displays equation buttons and control buttons (Reset & Main Menu)
@@ -83,12 +84,30 @@ class PickRightModeControls extends StatelessWidget {
                                 duration: const Duration(milliseconds: 200)),
                           );
                     },
+                    backgroundBuilder: (context, borderRadius) {
+                      return CustomPaint(
+                        painter: LightningPainter(
+                          baseColor: Theme.of(context).primaryColor,
+                          seed: 'Reset'.hashCode,
+                        ),
+                        size: Size.infinite,
+                      );
+                    },
                   ),
                   // Main Menu button
                   AnimatedButton(
                     context,
                     iconData: FontAwesomeIcons.bars,
                     onPressed: onMenuPressed,
+                    backgroundBuilder: (context, borderRadius) {
+                      return CustomPaint(
+                        painter: LightningPainter(
+                          baseColor: Theme.of(context).primaryColor,
+                          seed: 'Menu'.hashCode,
+                        ),
+                        size: Size.infinite,
+                      );
+                    },
                   ),
                 ],
               ),

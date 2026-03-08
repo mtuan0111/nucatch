@@ -4,6 +4,7 @@ import 'package:nucatch/blocs/navs/player/player_nav_state.dart'
     show Difficulty;
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:nucatch/widgets/tour_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
@@ -100,6 +101,17 @@ class _MenuScreenState extends State<MenuScreen> {
                 SelectOption(option: entry.key),
               ),
               buttonSize: skeleton.ButtonSize.small,
+              backgroundBuilder: (context, borderRadius) {
+                return CustomPaint(
+                  painter: LightningPainter(
+                    baseColor:
+                        backgroundColor, // Use the button's background color
+                    seed: (entry.value['text'] as String)
+                        .hashCode, // Distinct seed based on button text
+                  ),
+                  size: Size.infinite,
+                );
+              },
             ),
           );
         }).toList(),

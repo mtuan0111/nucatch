@@ -14,6 +14,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.
 import 'package:skeleton_core/skeleton_core.dart' hide LoadData;
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 
 import 'package:nucatch/widgets/admob_banner.dart';
 import 'package:nucatch/widgets/game_over_regular.dart';
@@ -94,6 +95,15 @@ class _GameOverScreenState extends State<GameOverScreen> {
                               );
                             },
                             iconData: FontAwesomeIcons.arrowRotateLeft,
+                            backgroundBuilder: (context, borderRadius) {
+                              return CustomPaint(
+                                painter: LightningPainter(
+                                  baseColor: Theme.of(context).primaryColor,
+                                  seed: 'Restart'.hashCode,
+                                ),
+                                size: Size.infinite,
+                              );
+                            },
                           );
                         },
                       ),

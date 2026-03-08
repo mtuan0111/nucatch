@@ -9,6 +9,7 @@ import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 
 /// Playing controls widget for Regular (normal) difficulty modes
 /// Displays 3x4 numeric keypad with numbers 0-9, Reset, and Main Menu buttons
@@ -57,12 +58,30 @@ class RegularModeControls extends StatelessWidget {
                           ResetNewNumber(duration: duration),
                         );
                   },
+                  backgroundBuilder: (context, borderRadius) {
+                    return CustomPaint(
+                      painter: LightningPainter(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: 'Reset'.hashCode,
+                      ),
+                      size: Size.infinite,
+                    );
+                  },
                 );
               } else if (e.key == KeyboardOption.mainMenu) {
                 button = AnimatedButton(
                   context,
                   iconData: FontAwesomeIcons.bars,
                   onPressed: onMenuPressed,
+                  backgroundBuilder: (context, borderRadius) {
+                    return CustomPaint(
+                      painter: LightningPainter(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: 'Menu'.hashCode,
+                      ),
+                      size: Size.infinite,
+                    );
+                  },
                 );
               } else {
                 button = AnimatedButton(
@@ -74,6 +93,15 @@ class RegularModeControls extends StatelessWidget {
                     context.read<TurnBloc>().add(
                           Tap(keyValue: e.key),
                         );
+                  },
+                  backgroundBuilder: (context, borderRadius) {
+                    return CustomPaint(
+                      painter: LightningPainter(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: e.value.toString().hashCode,
+                      ),
+                      size: Size.infinite,
+                    );
                   },
                 );
               }

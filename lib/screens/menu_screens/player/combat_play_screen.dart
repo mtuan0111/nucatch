@@ -17,6 +17,7 @@ import 'package:nucatch/widgets/pick_right_buttons.dart';
 import 'package:nucatch/widgets/combat_status_badge.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';
 import 'package:nucatch/widgets/countdown_bar.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 
 class CombatPlayScreen extends StatefulWidget {
   const CombatPlayScreen({super.key});
@@ -772,12 +773,30 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                           CombatNumberReset(duration: duration),
                         );
                   },
+                  backgroundBuilder: (context, borderRadius) {
+                    return CustomPaint(
+                      painter: LightningPainter(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: 'Reset'.hashCode,
+                      ),
+                      size: Size.infinite,
+                    );
+                  },
                 );
               } else if (e.key == KeyboardOption.mainMenu) {
                 button = AnimatedButton(
                   context,
                   iconData: FontAwesomeIcons.bars,
                   onPressed: () => _handleMenuButton(context),
+                  backgroundBuilder: (context, borderRadius) {
+                    return CustomPaint(
+                      painter: LightningPainter(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: 'Menu'.hashCode,
+                      ),
+                      size: Size.infinite,
+                    );
+                  },
                 );
               } else {
                 button = AnimatedButton(
@@ -789,6 +808,15 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     context.read<CombatBloc>().add(
                           CombatTap(keyValue: e.key),
                         );
+                  },
+                  backgroundBuilder: (context, borderRadius) {
+                    return CustomPaint(
+                      painter: LightningPainter(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: e.value.toString().hashCode,
+                      ),
+                      size: Size.infinite,
+                    );
                   },
                 );
               }
@@ -868,6 +896,15 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   context,
                   iconData: FontAwesomeIcons.bars,
                   onPressed: () => _handleMenuButton(context),
+                  backgroundBuilder: (context, borderRadius) {
+                    return CustomPaint(
+                      painter: LightningPainter(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: 'Menu'.hashCode,
+                      ),
+                      size: Size.infinite,
+                    );
+                  },
                 ),
               ],
             ),

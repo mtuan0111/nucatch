@@ -15,6 +15,7 @@ import 'package:skeleton_core/skeleton_core.dart'
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -301,8 +302,21 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                               ),
                                             );
                                           },
-                                          iconData: Icons.share,
                                           text: coreLang(context).share,
+                                          iconData: FontAwesomeIcons.shareNodes,
+                                          backgroundBuilder:
+                                              (context, borderRadius) {
+                                            return CustomPaint(
+                                              painter: LightningPainter(
+                                                baseColor: Theme.of(context)
+                                                    .primaryColor,
+                                                seed: coreLang(context)
+                                                    .share
+                                                    .hashCode,
+                                              ),
+                                              size: Size.infinite,
+                                            );
+                                          },
                                           buttonSize: ButtonSize.small,
                                         ),
                                       ],
