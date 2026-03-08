@@ -7,7 +7,6 @@ import 'package:skeleton_core/skeleton_core.dart'
     hide UpdateCheckerWrapper, MenuNav, TopScoreNav;
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
-import 'package:nucatch/helpers/theme_config.dart';
 import 'package:nucatch/localization/app_localizations.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 import 'package:nucatch/screens/wrappers/update_checker_wrapper.dart';
@@ -27,7 +26,7 @@ Future<void> main() async {
         await Firebase.initializeApp(
           options: DefaultFirebaseOptions.currentPlatform,
         );
-        print('✅ Firebase initialized successfully');
+        debugPrint('✅ Firebase initialized successfully');
 
         try {
           final firestore = FirebaseFirestore.instance;
@@ -35,27 +34,27 @@ Future<void> main() async {
             persistenceEnabled: true,
             cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
           );
-          print('✅ Firestore offline persistence enabled');
+          debugPrint('✅ Firestore offline persistence enabled');
         } catch (e) {
-          print('⚠️ Failed to enable Firestore persistence: $e');
+          debugPrint('⚠️ Failed to enable Firestore persistence: $e');
         }
       } catch (e) {
-        print('⚠️ Firebase initialization failed (offline mode): $e');
+        debugPrint('⚠️ Firebase initialization failed (offline mode): $e');
       }
 
       // Dotenv
       try {
         await dotenv.load(fileName: ".env");
       } catch (e) {
-        print('⚠️ Failed to load .env file: $e');
+        debugPrint('⚠️ Failed to load .env file: $e');
       }
 
       // Google Mobile Ads
       try {
         await MobileAds.instance.initialize();
-        print('✅ Google Mobile Ads initialized successfully');
+        debugPrint('✅ Google Mobile Ads initialized successfully');
       } catch (e) {
-        print('⚠️ Failed to initialize Google Mobile Ads: $e');
+        debugPrint('⚠️ Failed to initialize Google Mobile Ads: $e');
       }
     },
 

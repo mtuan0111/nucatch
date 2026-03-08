@@ -109,6 +109,6 @@ class DifficultyModel {
 /// 
 /// ```dart
 /// final model = DifficultyModel.getModel(Difficulty.medium);
-/// print(model.timeLimitPerTurn); // 20
-/// print(model.numberOfCharacters); // 6
+/// debugPrint(model.timeLimitPerTurn); // 20
+/// debugPrint(model.numberOfCharacters); // 6
 /// ```

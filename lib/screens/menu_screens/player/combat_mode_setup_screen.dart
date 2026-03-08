@@ -6,7 +6,6 @@ import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 
 import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
-import 'package:nucatch/helpers/template.dart';
 
 /// Combat Mode Setup Screen - Choose to host or join a room
 class CombatModeSetupScreen extends StatefulWidget {
@@ -102,7 +101,7 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                                           color: Theme.of(context)
                                               .colorScheme
                                               .error
-                                              .withOpacity(0.5),
+                                              .withValues(alpha: 0.5),
                                           blurRadius: 8,
                                           spreadRadius: 2,
                                         ),

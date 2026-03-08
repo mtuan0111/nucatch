@@ -14,10 +14,8 @@ import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
-import 'package:nucatch/helpers/animations/animated_game_wrapper.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';
 import 'package:nucatch/widgets/countdown_bar.dart';
 import 'package:nucatch/widgets/pick_right_mode_controls.dart';
@@ -405,12 +403,13 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                 false;
                                                             shouldAnimateRemove =
                                                                 false;
-                                                            if (mounted)
+                                                            if (mounted) {
                                                               setState(() {
                                                                 _currentLifeRemaining =
                                                                     _prevLifeRemaining ??
                                                                         _currentLifeRemaining;
                                                               });
+                                                            }
                                                           });
                                                           // setState(() {
                                                           //   _currentLifeRemaining =

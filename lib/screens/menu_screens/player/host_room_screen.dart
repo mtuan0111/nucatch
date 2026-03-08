@@ -8,9 +8,7 @@ import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/helpers/combat_dialogs.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/helper.dart';
 
-import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
 
 /// Host room screen for advertising via BLE
@@ -73,7 +71,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
       // Handle state transitions
       if (state == RoomState.bothReady) {
-        print('🚀 [Host] Both players ready!');
+        debugPrint('🚀 [Host] Both players ready!');
         // Show dialog and wait for it to dismiss before navigating
         await CombatDialogs.showBothReadyDialog(context);
         await _startGameAndNavigate();
@@ -85,7 +83,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
     // Listen to connection state
     _connectionStateSubscription =
         _bleService!.connectionStateStream.listen((state) {
-      print('🔗 [Host] Connection state: $state');
+      debugPrint('🔗 [Host] Connection state: $state');
     });
 
     // Listen to connection requests (BLE specific)
@@ -99,11 +97,11 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
   Future<void> _initializeBle() async {
     try {
-      print('📡 [Host] Requesting Bluetooth permissions...');
+      debugPrint('📡 [Host] Requesting Bluetooth permissions...');
 
       final permissionsGranted = await _bleService!.requestPermissions();
       if (!permissionsGranted) {
-        print(
+        debugPrint(
             '⚠️ [Host] Bluetooth permissions denied, but continuing anyway...');
         // Note: On iOS, BLE advertising can still work even with "denied" permissions
         // The permission_handler package may report "denied" but iOS BLE stack allows it
@@ -115,7 +113,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
       await _startAdvertising();
     } catch (e) {
-      print('❌ [Host] BLE initialization failed: $e');
+      debugPrint('❌ [Host] BLE initialization failed: $e');
       _showError('Failed to initialize: $e');
     }
   }
@@ -160,11 +158,11 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
     final endpointName = request['endpointName'] as String?;
 
     if (endpointId == null || endpointName == null) {
-      print('⚠️ [Host] Invalid connection request');
+      debugPrint('⚠️ [Host] Invalid connection request');
       return;
     }
 
-    print('🔔 [Host] Connection request from: $endpointName ($endpointId)');
+    debugPrint('🔔 [Host] Connection request from: $endpointName ($endpointId)');
 
     // Show dialog to accept/reject connection
     showDialog(
@@ -180,7 +178,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
             onPressed: () {
               Navigator.of(context).pop();
               _bleService?.rejectConnection(endpointId);
-              print('❌ [Host] Connection rejected');
+              debugPrint('❌ [Host] Connection rejected');
             },
             child: const Text('Reject'),
           ),
@@ -188,7 +186,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
             onPressed: () {
               Navigator.of(context).pop();
               _bleService?.acceptConnection(endpointId, endpointName);
-              print('✅ [Host] Connection accepted');
+              debugPrint('✅ [Host] Connection accepted');
             },
             child: const Text('Accept'),
           ),
@@ -211,8 +209,8 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       await _bleService!.startAdvertising(_myEndpointName!, _myPlayerId!);
       _roomCode = _bleService!.currentRoomCode;
 
-      print('✅ [Host] Advertising started as: $_myEndpointName');
-      print('📱 [Host] Room code: $_roomCode');
+      debugPrint('✅ [Host] Advertising started as: $_myEndpointName');
+      debugPrint('📱 [Host] Room code: $_roomCode');
 
       if (mounted) {
         setState(() {}); // Update UI with room code
@@ -237,7 +235,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
       });
 
       await _bleService!.setPlayerReady();
-      print('✅ Host marked as ready');
+      debugPrint('✅ Host marked as ready');
     } catch (e) {
       setState(() {
         _myPlayerReady = false;
@@ -260,19 +258,19 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
 
   Future<void> _startGameAndNavigate() async {
     try {
-      print('🎮 [Host] Starting game with Easy difficulty...');
+      debugPrint('🎮 [Host] Starting game with Easy difficulty...');
 
       await _bleService!.startGame();
 
       if (mounted) {
-        print(
+        debugPrint(
             '📤 [Host] Initializing combat game and navigating to play screen');
 
         // Initialize combat game with Easy difficulty (default)
         context.read<CombatNavCubit>().showSetDifficulty();
       }
     } catch (e) {
-      print('❌ [Host] Failed to start game: $e');
+      debugPrint('❌ [Host] Failed to start game: $e');
       _showError('Failed to start game: $e');
     }
   }
@@ -346,7 +344,7 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: kPadding2XL, vertical: kPaddingML),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.1),
+                              color: Colors.white.withValues(alpha: 0.1),
                               borderRadius:
                                   BorderRadius.circular(kBorderRadiusL),
                             ),
@@ -411,13 +409,13 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                             color: Theme.of(context)
                                 .colorScheme
                                 .error
-                                .withOpacity(0.1),
+                                .withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(kBorderRadiusM),
                             border: Border.all(
                               color: Theme.of(context)
                                   .colorScheme
                                   .error
-                                  .withOpacity(0.3),
+                                  .withValues(alpha: 0.3),
                               width: kStrokeWidthThin,
                             ),
                           ),
@@ -501,11 +499,11 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isReady
-                ? Theme.of(context).colorScheme.tertiary.withOpacity(0.3)
+                ? Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.3)
                 : Theme.of(context)
                     .colorScheme
                     .onSurfaceVariant
-                    .withOpacity(0.3),
+                    .withValues(alpha: 0.3),
             border: Border.all(
               color: isReady
                   ? Theme.of(context).colorScheme.tertiary

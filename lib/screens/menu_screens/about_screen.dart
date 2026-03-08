@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/template.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:skeleton_core/skeleton_core.dart';
@@ -77,7 +76,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         color: Theme.of(context)
                             .colorScheme
                             .surface
-                            .withOpacity(0.1),
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(
                               LayoutConfig.layoutBorderRadius / 5),
@@ -92,7 +91,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           color: Theme.of(context)
                               .colorScheme
                               .onPrimary
-                              .withOpacity(0.2),
+                              .withValues(alpha: 0.2),
                         ),
                       ),
                       child: Column(
@@ -146,7 +145,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         color: Theme.of(context)
                             .colorScheme
                             .surface
-                            .withOpacity(0.1),
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.only(
                           topLeft:
                               Radius.circular(LayoutConfig.layoutBorderRadius),
@@ -161,7 +160,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           color: Theme.of(context)
                               .colorScheme
                               .onPrimary
-                              .withOpacity(0.2),
+                              .withValues(alpha: 0.2),
                         ),
                       ),
                       child: Column(
@@ -215,7 +214,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         color: Theme.of(context)
                             .colorScheme
                             .surface
-                            .withOpacity(0.1),
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(
                               LayoutConfig.layoutBorderRadius / 5),
@@ -230,7 +229,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           color: Theme.of(context)
                               .colorScheme
                               .onPrimary
-                              .withOpacity(0.2),
+                              .withValues(alpha: 0.2),
                         ),
                       ),
                       child: BlocBuilder<AppVersionBloc, AppVersionState>(
@@ -262,8 +261,8 @@ class _AboutScreenState extends State<AboutScreen> {
                                 decoration: BoxDecoration(
                                   color: Theme.of(context)
                                       .primaryColor
-                                      .withOpacity(0.1),
-                                  borderRadius: BorderRadius.only(
+                                      .withValues(alpha: 0.1),
+                                  borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(kBorderRadiusL),
                                     topRight: Radius.circular(kBorderRadiusL),
                                     bottomLeft: Radius.circular(kBorderRadiusL),
@@ -315,7 +314,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                             ),
                                           ),
                                         )
-                                      : Icon(
+                                      : const Icon(
                                           FontAwesomeIcons.arrowsRotate,
                                           size: kIconSizeS,
                                         ),
@@ -336,7 +335,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                       horizontal: kSpace2XL,
                                       vertical: kSpaceML,
                                     ),
-                                    shape: RoundedRectangleBorder(
+                                    shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.only(
                                         topLeft:
                                             Radius.circular(kBorderRadiusL / 5),
@@ -372,7 +371,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         color: Theme.of(context)
                             .colorScheme
                             .surface
-                            .withOpacity(0.1),
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.only(
                           topLeft:
                               Radius.circular(LayoutConfig.layoutBorderRadius),
@@ -387,7 +386,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           color: Theme.of(context)
                               .colorScheme
                               .onPrimary
-                              .withOpacity(0.2),
+                              .withValues(alpha: 0.2),
                         ),
                       ),
                       child: Column(
@@ -578,7 +577,7 @@ class _AboutScreenState extends State<AboutScreen> {
             onPressed: onTap,
             shapeAt: RoundedWithShapeAt.all,
             backgroundColor:
-                Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
+                Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.1),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Row(

@@ -73,7 +73,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get restartGame => '重新开始游戏';
 
   @override
-  String get confirmRestart => '您确定要重新开始游戏吗？';
+  String get confirmRestart => '您确定要重新启动游戏吗？';
 
   @override
   String get insertedSuccess => '成功记录你的回合';
@@ -98,7 +98,7 @@ class AppLocalizationsZh extends AppLocalizations {
       '随机会生成复杂的加减法计算、更高等级的随机数或乘除法计算，带来最具挑战性的体验。';
 
   @override
-  String get pickRightDescription => '选择正确的等式！快速选择游戏，5秒计时器。';
+  String get pickRightDescription => '选择正确的等式！ 极速反应的5秒限时游戏。';
 
   @override
   String get difficultyEasyTitle => '简单模式';
@@ -113,7 +113,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get difficultyExtremeTitle => '极限模式';
 
   @override
-  String get pickRightTitle => 'Pick Right';
+  String get pickRightTitle => '选出正确答案';
 
   @override
   String get confirmChangeDifficulty => '你的回合将被重置。你确定要更改难度吗？';
@@ -378,70 +378,70 @@ class AppLocalizationsZh extends AppLocalizations {
   String get distanceWarning => '请确保设备距离在 10 米以内';
 
   @override
-  String get tourButtonLabel => '开始导览';
+  String get tourButtonLabel => '开始教程';
 
   @override
-  String get tourWelcomeTitle => '欢迎来到 NuCatch!';
+  String get tourWelcomeTitle => '欢迎来到 NuCatch！';
 
   @override
   String get tourWelcomeDesc =>
-      '欢迎! 这个快速导览将帮助您顺利开始使用**NuCatch**。我们将向您展示所有**主要功能**，让您立即开始游戏。让我们开始吧!';
+      '欢迎！这个简短的导览将帮助您顺利上手 **NuCatch**。我们将向您展示所有**主要功能**，让您可以立即投入游戏。';
 
   @override
-  String get tourStartTitle => '开始 - 开始您的游戏';
+  String get tourStartTitle => '开始 - 启动游戏';
 
   @override
   String get tourStartDesc =>
-      '点击开始按钮开始。然后您将在单人数学挑战的单人模式，或通过蓝牙进行实时多人对战的战斗模式之间进行选择。让我们探索这两个选项!';
+      '点击**开始按钮**启动应用。然后选择**单人模式**进行单独算术挑战，或者选择**战斗模式**通过**蓝牙**进行实时对战。';
 
   @override
-  String get tourInstantStartTitle => '快速开始 - 快速游戏';
+  String get tourInstantStartTitle => '快速开始';
 
   @override
   String get tourInstantStartDesc =>
-      '想立即开始吗？点击**快速开始按钮**，立即以上次玩的难度级别开始单人游戏。这是继续进度的最快方式！';
+      '点击**即时开始**按钮，即可立即以与上次游玩相同的难度开始单人游戏。这是您继续游戏进程的最快方式！';
 
   @override
-  String get tourSoloTitle => '单人模式 - 单独游戏';
+  String get tourSoloTitle => '单人模式';
 
   @override
   String get tourSoloDesc =>
-      '在单人模式中，用数学方程式挑战自己! 从4个难度级别中选择（简单到极难）。您从3条生命开始 - 每个错误答案或超时花费1条生命。更高的难度意味着更多的分数! 现在让我们看看多人游戏选项。';
+      '在**单人模式**中挑战自己。在 **4个体能等级** 中选择。您拥有**3条生命**-每次答错或超时扣1生命。**难度越高**积分越多！';
 
   @override
-  String get tourCombatTitle => '战斗模式 - 蓝牙多人游戏';
+  String get tourCombatTitle => '战斗模式 - 蓝牙对战';
 
   @override
   String get tourCombatDesc =>
-      '战斗模式让您通过蓝牙与朋友对战! 两名玩家轮流解决方程式 - 不需要WiFi，只需保持在10米范围内。主机最初先玩，但在复赛中失败者先玩。您有两种方式开始比赛:';
+      '**战斗模式**允许您通过**蓝牙**与朋友对决！**两名玩家**轮流解算术题 - **无需WiFi**，只需保持在**10米**范围内。';
 
   @override
   String get tourCreateRoomTitle => '战斗模式 → 创建房间';
 
   @override
   String get tourCreateRoomDesc =>
-      '第一个选项: 创建房间使您成为主机! 授予蓝牙权限后，您将等待客人加入您的房间，然后选择难度级别。作为主机，您在初始比赛中先玩。或者您可以加入其他人的游戏:';
+      '**创建房间**让您成为**主机**。授予**蓝牙权限**后，您将等待客人加入，然后选择**难度级别**。作为主机，您先玩。';
 
   @override
   String get tourJoinRoomTitle => '战斗模式 → 加入房间';
 
   @override
   String get tourJoinRoomDesc =>
-      '第二个选项: 加入房间使您成为客人! 授予权限后，您将扫描附近的房间，选择一个并点击准备。主机选择难度，您将在初始比赛中第二个玩。现在让我们检查其他菜单功能。';
+      '**加入房间**让您成为**客人**。您将扫描附近房间，选择一个并点击**准备**。主机选择难度，您后手游戏。';
 
   @override
-  String get tourLeaderboardTitle => '最高分 - 排行榜';
+  String get tourLeaderboardTitle => '排行榜';
 
   @override
   String get tourLeaderboardDesc =>
-      '在这里跟踪您的进度! 查看全球排名、您的个人记录和统计数据，包括玩过的游戏、胜率、准确性和按难度级别的分数。与朋友比较，看看您如何随时间改进。最后，让我们访问设置。';
+      '在这里追踪您的进度！查看**全球排行榜**，您的**个人记录**和**统计数据**。与朋友比较分数！';
 
   @override
-  String get tourSettingsTitle => '设置 - 自定义';
+  String get tourSettingsTitle => '设置';
 
   @override
   String get tourSettingsDesc =>
-      '在这里自定义一切! 更改您的用户名，选择主题，调整声音/音乐，选择您的语言并管理隐私设置。您可以随时从这里重新启动此导览。就是这样 - 您准备好玩了!';
+      '这里可以自定义所有内容！更改您的**用户名**、选择**主题**、调节**声音**和**语言**。您随时能重启此导览。';
 
   @override
   String get tourNext => '下一步';
@@ -456,8 +456,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tourFinish => '完成';
 
   @override
-  String get tourRestartFromSettings => '重新开始导览';
+  String get tourRestartFromSettings => '重置导览';
 
   @override
-  String get tourResetMessage => '导览已重置。返回主菜单开始。';
+  String get tourResetMessage => '导览已重置。返回主菜单查看。';
 }

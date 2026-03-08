@@ -10,10 +10,8 @@ import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
-import 'package:nucatch/helpers/animations/animated_game_wrapper.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
 import 'package:nucatch/widgets/pick_right_buttons.dart';
 import 'package:nucatch/widgets/combat_status_badge.dart';
@@ -323,7 +321,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   duration: const Duration(milliseconds: 500),
                   decoration: BoxDecoration(
                     color: combatState.opponentJustLostLife
-                        ? Colors.red.withOpacity(0.5)
+                        ? Colors.red.withValues(alpha: 0.5)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(kBorderRadiusL),
                   ),

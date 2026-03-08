@@ -71,10 +71,10 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get restartGame => 'Redémarrer le jeu';
+  String get restartGame => 'Recommencer';
 
   @override
-  String get confirmRestart => 'Êtes-vous sûr de vouloir redémarrer le jeu ?';
+  String get confirmRestart => 'Voulez-vous vraiment recommencer le jeu ?';
 
   @override
   String get insertedSuccess => 'Tour enregistré avec succès';
@@ -103,7 +103,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pickRightDescription =>
-      'Choisissez la bonne équation ! Jeu de sélection rapide avec un minuteur de 5 secondes.';
+      'Choisissez la bonne équation ! Jeu de sélection rapide avec minuteur de 5 secondes.';
 
   @override
   String get difficultyEasyTitle => 'Mode Facile';
@@ -118,7 +118,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get difficultyExtremeTitle => 'Mode Extrême';
 
   @override
-  String get pickRightTitle => 'Pick Right';
+  String get pickRightTitle => 'Choisissez Bien';
 
   @override
   String get confirmChangeDifficulty =>
@@ -404,70 +404,70 @@ class AppLocalizationsFr extends AppLocalizations {
       'Assurez-vous que les appareils sont à moins de 10 mètres de distance';
 
   @override
-  String get tourButtonLabel => 'Démarrer la visite';
+  String get tourButtonLabel => 'Démarrer la Visite';
 
   @override
-  String get tourWelcomeTitle => 'Bienvenue sur NuCatch!';
+  String get tourWelcomeTitle => 'Bienvenue sur NuCatch !';
 
   @override
   String get tourWelcomeDesc =>
-      'Bienvenue! Cette visite rapide vous aidera à démarrer en douceur avec **NuCatch**. Nous vous montrerons toutes les **fonctionnalités principales** pour que vous puissiez vous lancer et commencer à jouer immédiatement. Commençons!';
+      'Bienvenue ! Cette courte visite vous aidera à bien démarrer avec **NuCatch**. Nous allons vous montrer toutes les **fonctionnalités principales** pour que vous puissiez plonger et commencer à jouer  immédiatement.';
 
   @override
-  String get tourStartTitle => 'Démarrer - Commencez votre jeu';
+  String get tourStartTitle => 'Démarrer - Lancez votre Partie';
 
   @override
   String get tourStartDesc =>
-      'Appuyez sur le bouton Démarrer pour commencer. Vous choisirez ensuite entre le Mode Solo pour des défis mathématiques en solo, ou le Mode Combat pour des batailles multijoueurs en temps réel via Bluetooth. Explorons les deux options!';
+      'Appuyez sur le **bouton Démarrer** pour lancer. Vous choisirez ensuite entre le **Mode Solo** pour des défis mathématiques individuels, ou le **Mode Combat** pour des batailles multijoueurs via **Bluetooth**.';
 
   @override
-  String get tourInstantStartTitle => 'Démarrage Rapide - Jeu Rapide';
+  String get tourInstantStartTitle => 'Démarrage Rapide';
 
   @override
   String get tourInstantStartDesc =>
-      'Vous voulez commencer tout de suite ? Appuyez sur le bouton **Démarrage Rapide** pour commencer immédiatement un jeu solo avec le même niveau de difficulté que vous avez joué la dernière fois. C\'est le moyen le plus rapide de continuer votre progression !';
+      'Appuyez sur le bouton **Démarrage Rapide** pour lancer immédiatement une partie en solo avec le même niveau de difficulté que vous avez joué la dernière fois. C\'est le moyen le plus rapide de continuer votre progression !';
 
   @override
-  String get tourSoloTitle => 'Mode Solo - Jouez seul';
+  String get tourSoloTitle => 'Mode Solo - Jouez Seul';
 
   @override
   String get tourSoloDesc =>
-      'En Mode Solo, défiez-vous avec des équations mathématiques! Choisissez parmi 4 niveaux de difficulté (Facile à Extrêmement Difficile). Vous commencez avec 3 vies - chaque mauvaise réponse ou expiration coûte 1 vie. Plus la difficulté est élevée, plus vous gagnez de points! Voyons maintenant l\'option multijoueur.';
+      'En **Mode Solo**, mettez-vous au défi. Choisissez parmi **4 niveaux de difficulté**. Vous commencez avec **3 vies** - chaque mauvaise réponse ou dépassement de temps coûte 1 vie. Une **difficulté plus élevée** signifie plus de points !';
 
   @override
   String get tourCombatTitle => 'Mode Combat - Multijoueur Bluetooth';
 
   @override
   String get tourCombatDesc =>
-      'Le Mode Combat vous permet de vous battre contre un ami via Bluetooth! Deux joueurs résolvent à tour de rôle des équations - pas besoin de WiFi, restez juste à moins de 10 mètres. L\'hôte joue en premier initialement, mais lors des revanches, le perdant commence. Vous avez deux façons de commencer un match:';
+      'Le **Mode Combat** vous permet de combattre un ami via **Bluetooth** ! **Deux joueurs** résolvent des équations tour à tour - **pas de WiFi nécessaire**, restez juste dans un rayon de **10 mètres**.';
 
   @override
-  String get tourCreateRoomTitle => 'Mode Combat → Créer une salle';
+  String get tourCreateRoomTitle => 'Mode Combat → Créer un Salon';
 
   @override
   String get tourCreateRoomDesc =>
-      'Première option: Créer une salle fait de vous l\'hôte! Après avoir accordé les autorisations Bluetooth, vous attendrez qu\'un invité rejoigne votre salle, puis vous choisirez le niveau de difficulté. En tant qu\'hôte, vous jouez en premier dans le match initial. Ou vous pouvez rejoindre la partie de quelqu\'un d\'autre:';
+      'Première option : **Créer un Salon** fait de vous l\'**hôte**. Après avoir accordé les **autorisations Bluetooth**, vous attendrez qu\'un invité vous rejoigne, puis choisirez la **difficulté**. En tant qu\'hôte, vous **jouez en premier**.';
 
   @override
-  String get tourJoinRoomTitle => 'Mode Combat → Rejoindre une salle';
+  String get tourJoinRoomTitle => 'Mode Combat → Rejoindre un Salon';
 
   @override
   String get tourJoinRoomDesc =>
-      'Deuxième option: Rejoindre une salle fait de vous l\'invité! Après avoir accordé les autorisations, vous rechercherez les salles à proximité, en sélectionnerez une et appuierez sur prêt. L\'hôte choisit la difficulté, et vous jouerez en deuxième dans le match initial. Vérifions maintenant les autres fonctionnalités du menu.';
+      'Deuxième option : **Rejoindre un Salon** fait de vous l\'**invité**. Vous **scannerez** les salons à proximité, en sélectionnerez un et appuierez sur **prêt**. L\'hôte choisit la difficulté, et vous **jouerez en second**.';
 
   @override
-  String get tourLeaderboardTitle => 'Meilleur score - Classements';
+  String get tourLeaderboardTitle => 'Meilleurs Scores';
 
   @override
   String get tourLeaderboardDesc =>
-      'Suivez vos progrès ici! Consultez les classements mondiaux, vos records personnels et les statistiques, y compris les parties jouées, le taux de victoire, la précision et les scores par niveau de difficulté. Comparez avec des amis et observez comment vous vous améliorez au fil du temps. Enfin, visitons les Paramètres.';
+      'Suivez vos progrès ici ! Voir les **classements mondiaux**, vos **records personnels** et les **statistiques**. Comparez avec vos amis et voyez comment vous vous améliorez au fil du temps.';
 
   @override
   String get tourSettingsTitle => 'Paramètres - Personnaliser';
 
   @override
   String get tourSettingsDesc =>
-      'Personnalisez tout ici! Changez votre nom d\'utilisateur, sélectionnez un thème, ajustez le son/la musique, choisissez votre langue et gérez les paramètres de confidentialité. Vous pouvez redémarrer cette visite à tout moment depuis ici. C\'est tout - vous êtes prêt à jouer!';
+      'Personnalisez tout ici ! Changez votre **nom d\'utilisateur**, sélectionnez un **thème**, ajustez le **son**, choisissez votre **langue** et gérez la confidentialité. Vous pouvez redémarrer cette visite à tout moment à partir d\'ici.';
 
   @override
   String get tourNext => 'Suivant';
@@ -476,13 +476,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get tourPrevious => 'Précédent';
 
   @override
-  String get tourSkip => 'Passer la visite';
+  String get tourSkip => 'Passer';
 
   @override
   String get tourFinish => 'Terminer';
 
   @override
-  String get tourRestartFromSettings => 'Redémarrer la visite';
+  String get tourRestartFromSettings => 'Redémarrer la Visite';
 
   @override
   String get tourResetMessage =>

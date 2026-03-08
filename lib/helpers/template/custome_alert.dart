@@ -8,9 +8,7 @@ import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
-import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/template.dart';
 
 class MenuAlert extends StatelessWidget {
   final int point;

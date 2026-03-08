@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:skeleton_core/skeleton_core.dart';
-import 'animated_game_wrapper.dart';
 
 /// Example integration of the animation system into Solo Playing Mode
 ///

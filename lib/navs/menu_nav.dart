@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeleton_core/skeleton_core.dart'
     hide
+        MenuScreen,
         MenuNav,
         SettingScreen,
         TopScoreNav,

@@ -15,11 +15,9 @@ import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
-import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:nucatch/helpers/template.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
 
 class SetDifficultScreen extends StatefulWidget {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
@@ -81,7 +82,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   }
 
   void _handleRoomMessage(Map<String, dynamic> data) {
-    print('🎮 [Combat] Received message: $data');
+    debugPrint('🎮 [Combat] Received message: $data');
 
     try {
       // Ignore messages sent by myself
@@ -97,24 +98,25 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         if (messageType == null) {
           // Handle special cases like move_typed_* events and life_update
           if (typeString.startsWith('move_typed_')) {
-            print(
+            debugPrint(
                 '📥 [Combat] Received move_typed event: $typeString, isMyTurn: ${state.isMyTurn}');
             final currentInput = data['currentInput'] as String?;
-            print('📥 [Combat] currentInput from message: $currentInput');
+            debugPrint('📥 [Combat] currentInput from message: $currentInput');
             if (currentInput != null && !state.isMyTurn) {
-              print('✅ [Combat] Updating opponent input to: $currentInput');
+              debugPrint(
+                  '✅ [Combat] Updating opponent input to: $currentInput');
               add(CombatOpponentTypingUpdate(currentInput: currentInput));
             } else if (state.isMyTurn) {
-              print('⏭️ [Combat] Skipping - it\'s my turn');
+              debugPrint('⏭️ [Combat] Skipping - it\'s my turn');
             }
           } else if (typeString == 'life_update') {
             // Handle life update from opponent
-            print('💔 [Combat] Received life_update from opponent');
+            debugPrint('💔 [Combat] Received life_update from opponent');
             final opponentLives = data['lives'] as int?;
             final opponentScore = data['score'] as int?;
             final wrongTap = data['wrongTap'] as bool? ?? false;
             if (opponentLives != null) {
-              print(
+              debugPrint(
                   '💔 [Combat] Updating opponent lives to: $opponentLives, score: $opponentScore, wrongTap: $wrongTap');
               // Use existing event to update opponent stats
               add(CombatOpponentLifeUpdate(
@@ -151,7 +153,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
             final expect = data['expect'] as String;
             final equations = data['equations'] as List?;
             final correctIndex = data['correctIndex'] as int?;
-            print(
+            debugPrint(
                 '🎮 [Combat] turn_start received - isHostTurn: ${data['isHostTurn']}, _roomService.isHost: ${_roomService.isHost}, calculated isMyTurn: $isMyTurn');
             add(CombatTurnReceived(
               isMyTurn: isMyTurn,
@@ -208,7 +210,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
             // so both players see the same answer on game over screen
             final opponentCorrectEquation = data['correctEquation'] as String?;
             if (opponentCorrectEquation != null) {
-              print(
+              debugPrint(
                   '🏁 [Combat] Received opponent correctEquation: $opponentCorrectEquation');
             }
 
@@ -238,18 +240,18 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         }
       }
     } catch (e) {
-      print('❌ [Combat] Failed to parse message: $e');
+      debugPrint('❌ [Combat] Failed to parse message: $e');
     }
   }
 
   Future<void> _sendMessage(Map<String, dynamic> data) async {
     try {
-      print('📤 [Combat] Attempting to send message: ${data['type']}');
+      debugPrint('📤 [Combat] Attempting to send message: ${data['type']}');
       await _roomService.sendData(data);
-      print(
+      debugPrint(
           '✅ [Combat] Successfully sent message: ${data['type']}, data: $data');
     } catch (e) {
-      print('❌ [Combat] Failed to send message: $e');
+      debugPrint('❌ [Combat] Failed to send message: $e');
     }
   }
 
@@ -257,7 +259,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatGameStarted event,
     Emitter<CombatState> emit,
   ) async {
-    print(
+    debugPrint(
         '🎮 [Combat] CombatGameStarted - event.isHost: ${event.isHost}, current state.isHost: ${state.isHost}');
 
     final combatStatus = event.combatStatus ??
@@ -279,7 +281,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           : null, // Unknown for other statuses
     ));
 
-    print(
+    debugPrint(
         '🎮 [Combat] After CombatGameStarted - state.isHost: ${state.isHost}');
 
     // Turn will be started after difficulty is selected
@@ -340,7 +342,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatTurnStarted event,
     Emitter<CombatState> emit,
   ) async {
-    print(
+    debugPrint(
         '🎮 [Combat] TurnStarted - isHost: ${state.isHost}, isMyTurn: ${event.isMyTurn}');
 
     // Generate new challenge based on difficulty and level using event handler
@@ -374,12 +376,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       isGameActive: true, // Mark game as active when turn starts
       pickRightJustCorrect: false, // Reset animation flag - new equations ready
     ));
-    print(
+    debugPrint(
         '🎬 [Combat] pickRightJustCorrect → FALSE (turn started, equations: ${state.equations})');
 
     // Send turn start message to opponent
     final isHostTurn = state.isHost ? event.isMyTurn : !event.isMyTurn;
-    print('🎮 [Combat] Sending turn_start - isHostTurn: $isHostTurn');
+    debugPrint('🎮 [Combat] Sending turn_start - isHostTurn: $isHostTurn');
 
     await _sendMessage({
       'type': _messageTypeToString(CombatMessageType.turnStart),
@@ -394,7 +396,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // Skip for Pick Right mode - equations ARE the buttons, no memorization needed
     if (!isPickRight) {
       final level = state.level;
-      final diffShowLevelMilisecond = 100; // Increase by 100ms per level
+      const diffShowLevelMilisecond = 100; // Increase by 100ms per level
       final showTime = 1000 + level * diffShowLevelMilisecond;
 
       // Wait for the show time, then transition to typing mode
@@ -415,7 +417,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatTurnReceived event,
     Emitter<CombatState> emit,
   ) async {
-    print(
+    debugPrint(
         '🎮 [Combat] TurnReceived - isHost: ${state.isHost}, isMyTurn: ${event.isMyTurn}');
 
     // Receive challenge from opponent - NO new message sent
@@ -489,14 +491,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatOpponentTypingUpdate event,
     Emitter<CombatState> emit,
   ) async {
-    print(
+    debugPrint(
         '🔄 [Combat] OpponentTypingUpdate event - updating opponentInput to: ${event.currentInput}');
     emit(state.copyWith(
       opponentInput: event.currentInput,
     ));
-    print(
+    debugPrint(
         '✅ [Combat] State updated - opponentInput is now: ${state.opponentInput}');
-    print(
+    debugPrint(
         '🔍 [Combat] UI State: isMyTurn=${state.isMyTurn}, isGameActive=${state.isGameActive}, isOpponentActive=${state.isOpponentActive}');
   }
 
@@ -524,7 +526,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
     // Path 3: sendMessage=false, no correctEquation → leave null, wait for BLE
 
-    print(
+    debugPrint(
         '🏁 [Combat] Game ended - isWinner: ${event.isWinner}, reason: ${event.reason}, sendMessage: ${event.sendMessage}, correctEquation: $finalCorrectEquation, existing: ${state.correctEquationDisplay}');
 
     emit(state.copyWith(
@@ -533,9 +535,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       gameEndReason: event.reason,
       isGameActive: false,
       // BLE-provided value always overrides; otherwise keep existing or use new
-      correctEquationDisplay: event.correctEquation != null
-          ? event.correctEquation // BLE always wins
-          : (state.correctEquationDisplay ?? finalCorrectEquation),
+      correctEquationDisplay: event.correctEquation ??
+          (state.correctEquationDisplay ?? finalCorrectEquation),
     ));
 
     // Only send game ended message if this is a local game end (not from opponent)
@@ -616,7 +617,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatRestartReady event,
     Emitter<CombatState> emit,
   ) async {
-    print(
+    debugPrint(
         '🔄 [Combat] Player ready: ${event.isReady}, changeDifficulty: ${event.changeDifficulty}');
 
     // If host is requesting difficulty change, store that intent
@@ -658,7 +659,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatRestartReadyReceived event,
     Emitter<CombatState> emit,
   ) async {
-    print(
+    debugPrint(
         '🔄 [Combat] Opponent ready: ${event.opponentReady}, changeDifficulty: ${event.changeDifficulty}');
 
     // Store opponent's changeDifficulty intent
@@ -688,14 +689,16 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   }
 
   Future<void> _restartGame(Emitter<CombatState> emit) async {
-    print('🔄 [Combat] Both players ready - restarting game with countdown');
+    debugPrint(
+        '🔄 [Combat] Both players ready - restarting game with countdown');
 
     // Save current difficulty to preserve it
     final currentDifficulty = state.difficultyModel;
 
     // Save who lost - they will start first in the next match
     final iLost = state.isWinner == false;
-    print('🔄 [Combat] I lost previous match: $iLost, isHost: ${state.isHost}');
+    debugPrint(
+        '🔄 [Combat] I lost previous match: $iLost, isHost: ${state.isHost}');
 
     // First, reset the state with intro status and countdown
     emit(state.copyWith(
@@ -741,11 +744,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     if (state.isHost) {
       if (iLost) {
         // I lost, so I (host) start first
-        print('🎮 [Host] I lost previous match - starting my turn first');
+        debugPrint('🎮 [Host] I lost previous match - starting my turn first');
         add(CombatTurnStarted(isMyTurn: true));
       } else {
         // I won, so guest (opponent) starts first
-        print('🎮 [Host] I won previous match - guest starts first');
+        debugPrint('🎮 [Host] I won previous match - guest starts first');
         add(CombatTurnStarted(isMyTurn: false));
       }
     }
@@ -825,7 +828,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     final tappedNumber = keyboardArray[keyValue].toString();
     final newTyping = "${state.typing}$tappedNumber";
 
-    print('⌨️ [Combat] Correct tap: $tappedNumber, newTyping: $newTyping');
+    debugPrint('⌨️ [Combat] Correct tap: $tappedNumber, newTyping: $newTyping');
 
     emit(
       state.copyWith(typing: newTyping),
@@ -840,7 +843,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         final inputToSend = _pendingTypingUpdate!;
         _pendingTypingUpdate = null;
 
-        print(
+        debugPrint(
             '📤 [Combat] Sending debounced typing_update with currentInput: $inputToSend');
         await _sendMessage({
           'type': _messageTypeToString(CombatMessageType.typingUpdate),
@@ -887,7 +890,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       // Note: Audio and vibration are handled by _onCombatAddPoint to avoid duplicates
 
       // Trigger scale+fade animation on current buttons
-      print('🎬 [Combat] pickRightJustCorrect → TRUE (user correct tap)');
+      debugPrint('🎬 [Combat] pickRightJustCorrect → TRUE (user correct tap)');
       emit(state.copyWith(pickRightJustCorrect: true));
 
       // Send correct move to opponent immediately for instant firework
@@ -905,7 +908,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
       // NOTE: pickRightJustCorrect stays true until _onCombatLevelChanged
       // emits new state, so buttons won't fade back in with old equations
-      print(
+      debugPrint(
           '🎬 [Combat] pickRightJustCorrect staying TRUE - proceeding to addPoint');
 
       await _onCombatAddPoint(CombatAddPoint(), emit);
@@ -972,7 +975,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
 
     // Yield the turn to the opponent - wait for their move
-    print(
+    debugPrint(
         '🎬 [Combat] Level changed - yielding turn, pickRightJustCorrect → false');
     emitter(state.copyWith(
       isMyTurn: false,
@@ -1279,11 +1282,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   ) async {
     if (isClosed) return;
 
-    print(
+    debugPrint(
         '⏰ [Combat] TapTimerTimeout fired - isMyTurn: ${state.isMyTurn}, isAbleToTap: ${state.isAbleToTap}, lives: ${state.lifeRemaining}, isGameActive: ${state.isGameActive}');
 
     if (!state.isAbleToTap) {
-      print('⏰ [Combat] TapTimerTimeout skipped - isAbleToTap is false');
+      debugPrint('⏰ [Combat] TapTimerTimeout skipped - isAbleToTap is false');
       return;
     }
 
@@ -1295,7 +1298,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     ));
     _vibrationBloc.add(VibrateShort());
 
-    print(
+    debugPrint(
         '⏰ [Combat] Life decremented: ${state.lifeRemaining}, isAbleToContinue: ${state.isAbleToContinue}');
 
     // Send life_update to opponent
@@ -1308,7 +1311,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     if (!state.isAbleToContinue) {
       // Game over - send game_ended and navigate
-      print('⏰ [Combat] Timeout → Game Over! Lives: ${state.lifeRemaining}');
+      debugPrint(
+          '⏰ [Combat] Timeout → Game Over! Lives: ${state.lifeRemaining}');
 
       // Send move_completed so opponent knows this turn is done
       await _sendMessage({
@@ -1326,7 +1330,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       _audioBloc.add(PlayWrongAudio());
       _vibrationBloc.add(VibrateMultiple());
 
-      print(
+      debugPrint(
           '⏰ [Combat] Timeout but still alive (${state.lifeRemaining} lives) - yielding turn');
 
       await Future.delayed(
@@ -1346,7 +1350,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       if (state.difficultyModel?.difficulty == Difficulty.pickRight) {
         await _onCombatGeneratedRequiredString(
             CombatRequiredStringGenerated(), emit);
-        print(
+        debugPrint(
             '⏰ [Combat] Pick Right timeout: new equations generated: ${state.equations}');
       }
 
@@ -1375,7 +1379,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       opponentJustSucceeded: true,
       pickRightJustCorrect: isPickRight ? true : null,
     ));
-    print(
+    debugPrint(
         '🎬 [Combat] pickRightJustCorrect → ${isPickRight ? "TRUE" : "unchanged"} (opponent success)');
 
     // For non-pick-right, reset quickly; for pick-right, keep flag until turn starts
@@ -1396,7 +1400,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatOpponentLifeUpdate event,
     Emitter<CombatState> emit,
   ) async {
-    print(
+    debugPrint(
         '💔 [Combat] Handling opponent life update: lives=${event.opponentLives}, score=${event.opponentScore}, wrongTap=${event.wrongTap}');
 
     // Update opponent stats
@@ -1423,7 +1427,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatBlocReset event,
     Emitter<CombatState> emit,
   ) async {
-    print('🔄 [Combat] Resetting CombatBloc to initial state');
+    debugPrint('🔄 [Combat] Resetting CombatBloc to initial state');
 
     // Cancel any active timers
     _tapTimer?.cancel();
@@ -1432,7 +1436,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // Reset to fresh initial state
     emit(const CombatState());
 
-    print('✅ [Combat] CombatBloc reset complete');
+    debugPrint('✅ [Combat] CombatBloc reset complete');
   }
 
   // Constant maps for enum-to-string conversions

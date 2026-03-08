@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:super_tooltip/super_tooltip.dart';
-import 'package:nucatch/blocs/objects/tour/tour_bloc.dart';
-import 'package:nucatch/blocs/objects/tour/tour_event.dart';
-import 'package:nucatch/blocs/objects/tour/tour_state.dart';
 import 'package:nucatch/helpers/tour_content.dart';
 
 /// Tour overlay that manages SuperTooltip display

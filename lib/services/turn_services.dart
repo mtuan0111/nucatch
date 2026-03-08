@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
-import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
 
@@ -19,7 +19,8 @@ class TurnRecordedServices {
     try {
       firebaseFirestore = FirebaseFirestore.instance;
     } catch (e) {
-      print('⚠️ Firestore not available for turn services (offline mode): $e');
+      debugPrint(
+          '⚠️ Firestore not available for turn services (offline mode): $e');
       firebaseFirestore = null;
     }
   }
@@ -76,7 +77,7 @@ class TurnRecordedServices {
 
     // Firestore not available
     if (firebaseFirestore == null) {
-      print('⚠️ Firestore not initialized');
+      debugPrint('⚠️ Firestore not initialized');
       return [];
     }
 
@@ -231,7 +232,7 @@ class TurnRecordedServices {
   Future<bool> addItemToFirebase(TurnRecordedModel item) async {
     // Skip Firebase upload if Firestore is not available
     if (firebaseFirestore == null) {
-      print('📱 Skipping Firebase upload (Firestore not available)');
+      debugPrint('📱 Skipping Firebase upload (Firestore not available)');
       return false;
     }
 

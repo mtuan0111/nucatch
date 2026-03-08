@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
@@ -122,7 +123,7 @@ class TurnRecordedListBloc
     Emitter<TurnRecordedListState> emitter,
   ) async {
     // No-op: Database debugging not needed with Firestore offline persistence
-    print(
+    debugPrint(
         'ℹ️ Database debugging not available - using Firestore offline persistence');
   }
 }

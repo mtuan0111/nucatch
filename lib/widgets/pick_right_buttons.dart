@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/template.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 
 /// Three-button vertical layout for Pick Right difficulty mode
@@ -58,7 +56,7 @@ class _PickRightButtonsState extends State<PickRightButtons>
     // Trigger entrance animation after build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        print(
+        debugPrint(
             '🎬 [PickRight] Entrance animation START - equations: ${widget.equations}');
         _entranceController.forward();
       }
@@ -84,7 +82,7 @@ class _PickRightButtonsState extends State<PickRightButtons>
 
   @override
   Widget build(BuildContext context) {
-    print(
+    debugPrint(
         '🎬 [PickRight] build - isCorrectAnimating: ${widget.isCorrectAnimating}, isEnabled: ${widget.isEnabled}, equations: ${widget.equations}');
     // Exit animation: scale up + fade out on correct answer
     return AnimatedScale(
@@ -142,7 +140,7 @@ class _PickRightButtonsState extends State<PickRightButtons>
             }
           : null,
       backgroundColor:
-          isSelected ? color.withOpacity(0.8) : color.withOpacity(0.6),
+          isSelected ? color.withValues(alpha: 0.8) : color.withValues(alpha: 0.6),
       shapeAt: RoundedWithShapeAt.all,
       buttonRadius: kBorderRadiusL,
       child: Container(

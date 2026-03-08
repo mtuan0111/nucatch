@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:skeleton_core/skeleton_core.dart';
-import 'package:nucatch/blocs/objects/tour/tour_state.dart';
 
 /// Tour step data structure
 class TourStepData {

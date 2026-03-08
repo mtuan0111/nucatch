@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 /// Service for managing combat room connections via Firestore
 /// BLE is used only for proximity detection, Firestore handles all data exchange
@@ -33,7 +34,7 @@ class CombatRoomService {
     _playerId = hostId;
     _isHost = true;
 
-    print('🏠 [Room] Creating room: $roomCode');
+    debugPrint('🏠 [Room] Creating room: $roomCode');
 
     try {
       // Create room document
@@ -51,10 +52,10 @@ class CombatRoomService {
       // Listen to room changes
       _subscribeToRoom(roomCode);
 
-      print('✅ [Room] Room created successfully');
+      debugPrint('✅ [Room] Room created successfully');
       return roomCode;
     } catch (e) {
-      print('❌ [Room] Failed to create room: $e');
+      debugPrint('❌ [Room] Failed to create room: $e');
       rethrow;
     }
   }
@@ -65,7 +66,7 @@ class CombatRoomService {
     _playerId = guestId;
     _isHost = false;
 
-    print('🚪 [Room] Joining room: $roomCode');
+    debugPrint('🚪 [Room] Joining room: $roomCode');
 
     try {
       final roomRef = _firestore.collection('combat_rooms').doc(roomCode);
@@ -91,9 +92,9 @@ class CombatRoomService {
       // Listen to room changes
       _subscribeToRoom(roomCode);
 
-      print('✅ [Room] Joined room successfully');
+      debugPrint('✅ [Room] Joined room successfully');
     } catch (e) {
-      print('❌ [Room] Failed to join room: $e');
+      debugPrint('❌ [Room] Failed to join room: $e');
       rethrow;
     }
   }
@@ -185,7 +186,7 @@ class CombatRoomService {
         'lastActivity': FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      print('❌ [Room] Failed to send message: $e');
+      debugPrint('❌ [Room] Failed to send message: $e');
       rethrow;
     }
   }
@@ -205,9 +206,9 @@ class CombatRoomService {
         'lastActivity': FieldValue.serverTimestamp(),
       });
 
-      print('✅ [Room] Player marked as ready');
+      debugPrint('✅ [Room] Player marked as ready');
     } catch (e) {
-      print('❌ [Room] Failed to set ready state: $e');
+      debugPrint('❌ [Room] Failed to set ready state: $e');
       rethrow;
     }
   }
@@ -228,9 +229,9 @@ class CombatRoomService {
         'lastActivity': FieldValue.serverTimestamp(),
       });
 
-      print('✅ [Room] Game started');
+      debugPrint('✅ [Room] Game started');
     } catch (e) {
-      print('❌ [Room] Failed to start game: $e');
+      debugPrint('❌ [Room] Failed to start game: $e');
       rethrow;
     }
   }
@@ -252,9 +253,9 @@ class CombatRoomService {
         'lastActivity': FieldValue.serverTimestamp(),
       });
 
-      print('✅ [Room] Game ended');
+      debugPrint('✅ [Room] Game ended');
     } catch (e) {
-      print('❌ [Room] Failed to end game: $e');
+      debugPrint('❌ [Room] Failed to end game: $e');
       rethrow;
     }
   }
@@ -265,7 +266,7 @@ class CombatRoomService {
       return;
     }
 
-    print('👋 [Room] Leaving room: $_currentRoomCode');
+    debugPrint('👋 [Room] Leaving room: $_currentRoomCode');
 
     try {
       final roomRef =
@@ -292,9 +293,9 @@ class CombatRoomService {
       _playerId = null;
       _isHost = false;
 
-      print('✅ [Room] Left room successfully');
+      debugPrint('✅ [Room] Left room successfully');
     } catch (e) {
-      print('❌ [Room] Failed to leave room: $e');
+      debugPrint('❌ [Room] Failed to leave room: $e');
     }
   }
 
@@ -312,10 +313,10 @@ class CombatRoomService {
       }
 
       if (oldRooms.docs.isNotEmpty) {
-        print('🧹 [Room] Cleaned up ${oldRooms.docs.length} old rooms');
+        debugPrint('🧹 [Room] Cleaned up ${oldRooms.docs.length} old rooms');
       }
     } catch (e) {
-      print('❌ [Room] Failed to cleanup old rooms: $e');
+      debugPrint('❌ [Room] Failed to cleanup old rooms: $e');
     }
   }
 

@@ -7,10 +7,14 @@ import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_event.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:skeleton_core/skeleton_core.dart'
-    hide TopScoreNavCubit, TopScoreNavState, TopScoreRootState, TopScoreDetailState;
+    hide
+        TopScoreNavCubit,
+        TopScoreNavState,
+        TopScoreRootState,
+        TopScoreDetailState;
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
-import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -163,8 +167,34 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                 children: [
                                   RankingItem(
                                     ranking: ranking,
-                                    turnRecordedModel: turnRecordedModel,
                                     iconData: FontAwesomeIcons.trophy,
+                                    heroTag:
+                                        "ranking-${turnRecordedModel.turnId}",
+                                    titleIcon: Icons.star,
+                                    titleText: '${turnRecordedModel.point}',
+                                    currentUserLabel: lang(context).you,
+                                    infoRows: [
+                                      RankingInfoRow(
+                                        icon: Icons.person,
+                                        text:
+                                            turnRecordedModel.playedUsername ??
+                                                coreLang(context).anonymous,
+                                      ),
+                                      RankingInfoRow(
+                                        icon: Icons.calendar_today,
+                                        text: turnRecordedModel.recordedTime
+                                            .formatClient()
+                                            .replaceFirst(' ', '\n'),
+                                      ),
+                                      RankingInfoRow(
+                                        icon: Helper.getIconFromDifficulty(
+                                            context,
+                                            turnRecordedModel.difficulty),
+                                        text: Helper.getTitleFromDifficulty(
+                                            context,
+                                            turnRecordedModel.difficulty),
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(height: kSpace3XL),
                                   CustomElevatedButton(

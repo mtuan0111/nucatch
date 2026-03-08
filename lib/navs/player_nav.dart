@@ -25,6 +25,7 @@ class _PlayerNavState extends State<PlayerNav> {
         return PopScope(
           canPop: false,
           child: Navigator(
+            // ignore: deprecated_member_use
             onPopPage: (route, result) {
               return false;
             },

@@ -3,7 +3,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'dart:io' show Platform;
 
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/helper.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 
 /// A reusable widget that displays a Google AdMob banner ad.
@@ -70,7 +69,7 @@ class _AdMobBannerState extends State<AdMobBanner> {
 
   void _loadAd() {
     final adUnitId = _adUnitId;
-    print(
+    debugPrint(
         '📱 Loading AdMob Banner with ID: $adUnitId (Test mode: ${widget.useTestAds})');
 
     _bannerAd = BannerAd(
@@ -84,10 +83,10 @@ class _AdMobBannerState extends State<AdMobBanner> {
               _isAdLoaded = true;
             });
           }
-          print('✅ AdMob Banner loaded successfully');
+          debugPrint('✅ AdMob Banner loaded successfully');
         },
         onAdFailedToLoad: (ad, error) {
-          print('❌ AdMob Banner failed to load: $error');
+          debugPrint('❌ AdMob Banner failed to load: $error');
           ad.dispose();
           if (mounted) {
             setState(() {
@@ -96,10 +95,10 @@ class _AdMobBannerState extends State<AdMobBanner> {
           }
         },
         onAdOpened: (ad) {
-          print('📱 AdMob Banner opened');
+          debugPrint('📱 AdMob Banner opened');
         },
         onAdClosed: (ad) {
-          print('🔒 AdMob Banner closed');
+          debugPrint('🔒 AdMob Banner closed');
         },
       ),
     );

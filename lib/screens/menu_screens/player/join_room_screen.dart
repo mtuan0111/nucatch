@@ -78,7 +78,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
       // Handle state transitions
       if (state == RoomState.bothReady) {
-        print('🚀 [Guest] Both players ready!');
+        debugPrint('🚀 [Guest] Both players ready!');
         await CombatDialogs.showBothReadyDialog(context);
       } else if (state == RoomState.playing) {
         _handleGameStarted();
@@ -92,13 +92,13 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       setState(() {
         _discoveredDevices = devices;
       });
-      print('📡 [Guest] Discovered ${devices.length} devices');
+      debugPrint('📡 [Guest] Discovered ${devices.length} devices');
     });
 
     // Listen to connection state
     _connectionStateSubscription =
         _bleService!.connectionStateStream.listen((state) {
-      print('🔗 [Guest] Connection state: $state');
+      debugPrint('🔗 [Guest] Connection state: $state');
     });
 
     // Listen to incoming messages
@@ -117,11 +117,11 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
   Future<void> _initializeBle() async {
     try {
-      print('📡 [Join] Requesting Bluetooth permissions...');
+      debugPrint('📡 [Join] Requesting Bluetooth permissions...');
 
       final permissionsGranted = await _bleService!.requestPermissions();
       if (!permissionsGranted) {
-        print(
+        debugPrint(
             '⚠️ [Join] Bluetooth permissions denied, but continuing anyway...');
         // Note: On iOS, BLE scanning can still work even with "denied" permissions
       }
@@ -132,7 +132,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
       await _startDiscovery();
     } catch (e) {
-      print('❌ [Guest] BLE initialization failed: $e');
+      debugPrint('❌ [Guest] BLE initialization failed: $e');
       _showError('Failed to initialize: $e');
     }
   }
@@ -187,7 +187,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       });
 
       await _bleService!.startDiscovery(_myEndpointName!, _myPlayerId!);
-      print('✅ [Guest] Discovery started');
+      debugPrint('✅ [Guest] Discovery started');
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -208,7 +208,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
   Future<void> _connectToDevice(BluetoothDeviceInfo device) async {
     try {
-      print('🤝 [Guest] Connecting to: ${device.name} (${device.id})');
+      debugPrint('🤝 [Guest] Connecting to: ${device.name} (${device.id})');
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -237,7 +237,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
       });
 
       await _bleService!.setPlayerReady();
-      print('✅ Guest marked as ready');
+      debugPrint('✅ Guest marked as ready');
     } catch (e) {
       setState(() {
         _myPlayerReady = false;
@@ -247,7 +247,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   }
 
   void _handleGameStarted() {
-    print('🎮 [Guest] Game started - waiting for difficulty');
+    debugPrint('🎮 [Guest] Game started - waiting for difficulty');
     if (mounted) {
       setState(() {
         // UI will show "Waiting for host to select difficulty"
@@ -291,7 +291,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
         if (combatState.difficultyModel != null &&
             (combatState.combatStatus == CombatStatus.playing ||
                 combatState.combatStatus == CombatStatus.intro)) {
-          print(
+          debugPrint(
               '🎮 [Guest] Navigating to play screen with difficulty: ${combatState.difficultyModel?.difficulty}');
 
           // Navigate to play screen using CombatNavCubit
@@ -456,7 +456,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSurfaceVariant
-                                        .withOpacity(0.4),
+                                        .withValues(alpha: 0.4),
                                   ),
                                   const SizedBox(height: kSpaceXL),
                                   Text(
@@ -474,7 +474,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                         Theme.of(context)
                                             .colorScheme
                                             .onSurfaceVariant
-                                            .withOpacity(0.7)),
+                                            .withValues(alpha: 0.7)),
                                   ),
                                 ],
                               ),
@@ -527,14 +527,14 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                               color: Theme.of(context)
                                   .colorScheme
                                   .error
-                                  .withOpacity(0.1),
+                                  .withValues(alpha: 0.1),
                               borderRadius:
                                   BorderRadius.circular(kBorderRadiusM),
                               border: Border.all(
                                 color: Theme.of(context)
                                     .colorScheme
                                     .error
-                                    .withOpacity(0.3),
+                                    .withValues(alpha: 0.3),
                                 width: kStrokeWidthThin,
                               ),
                             ),
@@ -625,11 +625,11 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isReady
-                ? Theme.of(context).colorScheme.tertiary.withOpacity(0.3)
+                ? Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.3)
                 : Theme.of(context)
                     .colorScheme
                     .onSurfaceVariant
-                    .withOpacity(0.3),
+                    .withValues(alpha: 0.3),
             border: Border.all(
               color: isReady
                   ? Theme.of(context).colorScheme.tertiary

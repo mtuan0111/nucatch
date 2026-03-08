@@ -71,7 +71,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get restartGame => 'Spiel neu starten';
+  String get restartGame => 'Neustart';
 
   @override
   String get confirmRestart => 'Möchten Sie das Spiel wirklich neu starten?';
@@ -118,7 +118,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get difficultyExtremeTitle => 'Extrem';
 
   @override
-  String get pickRightTitle => 'Pick Right';
+  String get pickRightTitle => 'Richtig Wählen';
 
   @override
   String get confirmChangeDifficulty =>
@@ -406,70 +406,70 @@ class AppLocalizationsDe extends AppLocalizations {
       'Stelle sicher, dass die Geräte weniger als 10 Meter entfernt sind';
 
   @override
-  String get tourButtonLabel => 'Tour starten';
+  String get tourButtonLabel => 'Tour Starten';
 
   @override
   String get tourWelcomeTitle => 'Willkommen bei NuCatch!';
 
   @override
   String get tourWelcomeDesc =>
-      'Willkommen! Diese kurze Tour hilft Ihnen, problemlos mit **NuCatch** zu beginnen. Wir zeigen Ihnen alle **Hauptfunktionen**, damit Sie sofort loslegen und spielen können. Los geht\'s!';
+      'Willkommen! Diese kurze Tour hilft dir, reibungslos mit **NuCatch** zu beginnen. Wir zeigen dir alle **Hauptfunktionen**, damit du sofort einsteigen und losspielen kannst.';
 
   @override
   String get tourStartTitle => 'Start - Beginne dein Spiel';
 
   @override
   String get tourStartDesc =>
-      'Tippe auf die **Start-Schaltfläche**, um zu beginnen. Dann wählst du zwischen **Einzelmodus** für mathematische Herausforderungen oder **Kampfmodus** für Echtzeit-Multiplayer-Kämpfe über **Bluetooth**. Lass uns beide Optionen erkunden!';
+      'Tippe auf den **Start-Button**, um zu beginnen. Du wählst dann zwischen dem **Solo-Modus** für einzelne Mathe-Herausforderungen oder dem **Kampf-Modus** für Echtzeit-Multiplayer über **Bluetooth**.';
 
   @override
-  String get tourInstantStartTitle => 'Schnellstart - Schnelles Spiel';
+  String get tourInstantStartTitle => 'Sofortstart';
 
   @override
   String get tourInstantStartDesc =>
-      'Möchten Sie sofort loslegen? Tippen Sie auf die **Schnellstart-Schaltfläche**, um sofort ein Solo-Spiel mit dem gleichen Schwierigkeitsgrad zu beginnen, den Sie zuletzt gespielt haben. Das ist der schnellste Weg, um Ihren Fortschritt fortzusetzen!';
+      'Tippe auf den Button **Sofortstart**, um sofort ein Solo-Spiel mit dem gleichen Schwierigkeitsgrad wie beim letzten Mal zu beginnen. Es ist der schnellste Weg, um deinen Fortschritt fortzusetzen!';
 
   @override
-  String get tourSoloTitle => 'Einzelmodus - Alleine spielen';
+  String get tourSoloTitle => 'Solo-Modus';
 
   @override
   String get tourSoloDesc =>
-      'Im Einzelmodus fordere dich selbst mit mathematischen Gleichungen heraus! Wähle aus 4 Schwierigkeitsgraden (Leicht bis Extrem Schwer). Du startest mit 3 Leben - jede falsche Antwort oder Zeitüberschreitung kostet 1 Leben. Höhere Schwierigkeit bedeutet mehr Punkte! Schauen wir uns jetzt die Multiplayer-Option an.';
+      'Fordere dich im **Solo-Modus** heraus. Wähle aus **4 Schwierigkeitsgraden**. Du startest mit **3 Leben** - jede falsche Antwort oder Zeitüberschreitung kostet 1 Leben. **Höhere Schwierigkeit** bedeutet mehr Punkte!';
 
   @override
-  String get tourCombatTitle => 'Kampfmodus - Bluetooth-Multiplayer';
+  String get tourCombatTitle => 'Kampf-Modus - Bluetooth Multiplayer';
 
   @override
   String get tourCombatDesc =>
-      'Der Kampfmodus ermöglicht dir, gegen einen Freund über Bluetooth zu kämpfen! Zwei Spieler lösen abwechselnd Gleichungen - kein WLAN erforderlich, bleibe nur innerhalb von 10 Metern. Der Gastgeber spielt zunächst zuerst, aber bei Rückspielen beginnt der Verlierer. Du hast zwei Möglichkeiten, ein Match zu starten:';
+      'Mit dem **Kampf-Modus** kannst du über **Bluetooth** gegen einen Freund antreten! **Zwei Spieler** lösen abwechselnd Gleichungen - **kein WLAN erforderlich**, bleib einfach innerhalb von **10 Metern**.';
 
   @override
-  String get tourCreateRoomTitle => 'Kampfmodus → Raum erstellen';
+  String get tourCreateRoomTitle => 'Kampf-Modus → Raum Erstellen';
 
   @override
   String get tourCreateRoomDesc =>
-      'Erste Option: Raum erstellen macht dich zum Gastgeber! Nach Erteilung der Bluetooth-Berechtigungen wartest du auf einen Gast, der deinem Raum beitritt, dann wählst du den Schwierigkeitsgrad. Als Gastgeber spielst du im ersten Match zuerst. Oder du kannst dem Spiel eines anderen beitreten:';
+      '**Raum Erstellen** macht dich zum **Gastgeber**. Nachdem du **Bluetooth-Berechtigungen** erteilt hast, wartest du darauf, dass ein Gast beigetreten ist, und wählst dann den **Schwierigkeitsgrad**. Du spielst als Erster.';
 
   @override
-  String get tourJoinRoomTitle => 'Kampfmodus → Raum beitreten';
+  String get tourJoinRoomTitle => 'Kampf-Modus → Raum Beitreten';
 
   @override
   String get tourJoinRoomDesc =>
-      'Zweite Option: Raum beitreten macht dich zum Gast! Nach Erteilung der Berechtigungen scannst du nach nahegelegenen Räumen, wählst einen aus und tippst auf Bereit. Der Gastgeber wählt die Schwierigkeit, und du spielst im ersten Match als Zweiter. Schauen wir uns jetzt die anderen Menüfunktionen an.';
+      '**Raum Beitreten** macht dich zum **Gast**. Du scannst nach Räumen in der Nähe, wählst einen aus und tippst auf **Bereit**. Der Gastgeber wählt die Schwierigkeit, und du spielst als Zweiter.';
 
   @override
-  String get tourLeaderboardTitle => 'Top-Score - Bestenlisten';
+  String get tourLeaderboardTitle => 'Bestenliste';
 
   @override
   String get tourLeaderboardDesc =>
-      'Verfolge hier deinen Fortschritt! Sieh dir globale Rankings, deine persönlichen Rekorde und Statistiken an, einschließlich gespielter Spiele, Gewinnrate, Genauigkeit und Punktzahlen nach Schwierigkeitsgrad. Vergleiche dich mit Freunden und beobachte, wie du dich im Laufe der Zeit verbesserst. Abschließend besuchen wir die Einstellungen.';
+      'Verfolge hier deinen Fortschritt! Sieh dir **globale Ranglisten**, deine **persönlichen Rekorde** und **Statistiken** an. Vergleiche dich mit Freunden und beobachte, wie du dich verbesserst.';
 
   @override
-  String get tourSettingsTitle => 'Einstellungen - Anpassen';
+  String get tourSettingsTitle => 'Einstellungen';
 
   @override
   String get tourSettingsDesc =>
-      'Passe hier alles an! Ändere deinen Benutzernamen, wähle ein Design, passe Sound/Musik an, wähle deine Sprache und verwalte Datenschutzeinstellungen. Du kannst diese Tour jederzeit von hier aus neu starten. Das war\'s - du bist bereit zum Spielen!';
+      'Passe alles hier an! Ändere deinen **Benutzernamen**, wähle ein **Theme**, passe **Ton** an, wähle deine **Sprache**. Du kannst diese Tour von hier aus jederzeit neu starten.';
 
   @override
   String get tourNext => 'Weiter';
@@ -478,15 +478,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tourPrevious => 'Zurück';
 
   @override
-  String get tourSkip => 'Tour überspringen';
+  String get tourSkip => 'Überspringen';
 
   @override
   String get tourFinish => 'Fertig';
 
   @override
-  String get tourRestartFromSettings => 'Tour neu starten';
+  String get tourRestartFromSettings => 'Tour Neustarten';
 
   @override
   String get tourResetMessage =>
-      'Die Tour wurde zurückgesetzt. Kehren Sie zum Hauptmenü zurück, um zu beginnen.';
+      'Die Tour wurde zurückgesetzt. Kehre zum Hauptmenü zurück, um zu beginnen.';
 }

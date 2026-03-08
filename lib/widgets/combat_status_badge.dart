@@ -29,7 +29,7 @@ class CombatStatusBadge extends StatelessWidget {
         vertical: kSpaceS,
       ),
       decoration: BoxDecoration(
-        color: filled ? color : color.withOpacity(0.2),
+        color: filled ? color : color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(kBorderRadiusL),
         border: filled
             ? null

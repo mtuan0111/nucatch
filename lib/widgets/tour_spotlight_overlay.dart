@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nucatch/blocs/objects/tour/tour_bloc.dart';
-import 'package:nucatch/blocs/objects/tour/tour_event.dart';
-import 'package:nucatch/blocs/objects/tour/tour_state.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 
 /// Spotlight overlay that highlights a target widget during the tour
@@ -111,7 +108,7 @@ class TourSpotlightOverlay extends StatelessWidget {
         borderRadius: BorderRadius.circular(kBorderRadiusL),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 10,
             spreadRadius: 2,
           ),
@@ -183,7 +180,7 @@ class TourSpotlightOverlay extends StatelessWidget {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
@@ -234,7 +231,7 @@ class SpotlightPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Draw dark overlay
     final paint = Paint()
-      ..color = Colors.black.withOpacity(0.7)
+      ..color = Colors.black.withValues(alpha: 0.7)
       ..style = PaintingStyle.fill;
 
     // Create path for the entire screen

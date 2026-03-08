@@ -7,7 +7,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.
 import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/extension.dart';
-import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/helper.dart';
 
 /// Game over content widget for Pick Right difficulty mode
 /// Shows the correct equation instead of button index
@@ -63,8 +63,30 @@ class GameOverPickRight extends StatelessWidget {
 
             return RankingItem(
               ranking: indexOfItem,
-              turnRecordedModel: turnState.recordedItem!,
               iconData: FontAwesomeIcons.trophy,
+              heroTag: "ranking-${turnState.recordedItem!.turnId}",
+              titleIcon: Icons.star,
+              titleText: '${turnState.recordedItem!.point}',
+              currentUserLabel: lang(context).you,
+              infoRows: [
+                RankingInfoRow(
+                  icon: Icons.person,
+                  text: turnState.recordedItem!.playedUsername ??
+                      coreLang(context).anonymous,
+                ),
+                RankingInfoRow(
+                  icon: Icons.calendar_today,
+                  text: (turnState.recordedItem!.recordedTime)
+                      .formatClient()
+                      .replaceFirst(' ', '\n'),
+                ),
+                RankingInfoRow(
+                  icon: Helper.getIconFromDifficulty(
+                      context, turnState.recordedItem!.difficulty),
+                  text: Helper.getTitleFromDifficulty(
+                      context, turnState.recordedItem!.difficulty),
+                ),
+              ],
             );
           },
         ),

@@ -8,8 +8,6 @@ import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
-import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/template.dart';
 
 class CombatGameEndScreen extends StatelessWidget {
   const CombatGameEndScreen({super.key});
@@ -138,7 +136,7 @@ class CombatGameEndScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(kPaddingL),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
                   topRight: Radius.circular(LayoutConfig.layoutBorderRadius),
@@ -147,7 +145,7 @@ class CombatGameEndScreen extends StatelessWidget {
                 ),
                 border: Border.all(
                   color:
-                      Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                      Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                 ),
               ),
               child: Column(

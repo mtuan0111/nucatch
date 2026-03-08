@@ -51,6 +51,7 @@ class PickRightModeControls extends StatelessWidget {
                   if (position != null) {
                     // Delay slightly to allow state update
                     Future.delayed(const Duration(milliseconds: 100), () {
+                      if (!context.mounted) return;
                       final turnState = context.read<TurnBloc>().state;
                       final expectedButton =
                           int.tryParse(turnState.expect!) ?? -1;

@@ -108,12 +108,12 @@
       }
     }
   },
-  "restartGame": "Chơi lại trò chơi",
+  "restartGame": "Chơi Lại",
   "@restartGame": {
     "description": "Tiêu đề hộp thoại chơi lại trò chơi",
     "placeholders": {}
   },
-  "confirmRestart": "Bạn có chắc chắn muốn chơi lại không?",
+  "confirmRestart": "Bạn có muốn khởi động lại trò chơi?",
   "@confirmRestart": {
     "description": "Thông báo xác nhận khi chơi lại trò chơi",
     "placeholders": {}
@@ -149,7 +149,7 @@
   "@difficultyExtremeDescription": {
     "description": "Mô tả cấp độ cực kỳ khó, thân thiện và tự nhiên cho người Việt"
   },
-  "pickRightDescription": "Chọn phương trình đúng! Trò chơi lựa chọn nhanh với bộ đếm thời gian 5 giây.",
+  "pickRightDescription": "Chọn câu trả lời đúng! Mini-game lựa chọn nhanh 5 giây.",
   "@pickRightDescription": {
     "description": "Mô tả cho chế độ chọn đúng"
   },
@@ -553,29 +553,29 @@
   "@distanceWarning": {
     "description": "Cảnh báo về khoảng cách thiết bị cho Nearby Connections"
   },
-  "tourButtonLabel": "Bắt đầu Tour",
+  "tourButtonLabel": "Bắt đầu Hướng dẫn",
   "tourWelcomeTitle": "Chào mừng đến với NuCatch!",
-  "tourWelcomeDesc": "Chào mừng! Tour nhanh này sẽ giúp bạn bắt đầu một cách suôn sẻ với **NuCatch**. Chúng tôi sẽ chỉ cho bạn tất cả các **tính năng chính** để bạn có thể bắt đầu chơi ngay. Bắt đầu thôi!",
-  "tourStartTitle": "Bắt đầu - Bắt đầu trò chơi của bạn",
-  "tourStartDesc": "Nhấn nút Bắt đầu để bắt đầu. Sau đó bạn sẽ chọn giữa Chế độ Solo cho các thử thách toán học một người chơi, hoặc Chế độ Chiến đấu cho các trận chiến nhiều người chơi theo thời gian thực qua Bluetooth. Hãy khám phá cả hai tùy chọn!",
-  "tourInstantStartTitle": "Bắt Đầu Nhanh - Chơi Ngay",
-  "tourInstantStartDesc": "Muốn bắt đầu ngay? Nhấn nút **Bắt Đầu Nhanh** để bắt đầu trò chơi solo ngay lập tức với cùng độ khó bạn đã chơi lần trước. Đây là cách nhanh nhất để tiếp tục tiến trình của bạn!",
-  "tourSoloTitle": "Chế độ Solo - Chơi một mình",
-  "tourSoloDesc": "Trong Chế độ Solo, thách thức bản thân với các phương trình toán học! Chọn từ 4 cấp độ khó (Dễ đến Cực khó). Bạn bắt đầu với 3 mạng - mỗi câu trả lời sai hoặc hết thời gian tốn 1 mạng. Độ khó cao hơn có nghĩa là nhiều điểm hơn! Bây giờ hãy xem tùy chọn nhiều người chơi.",
-  "tourCombatTitle": "Chế độ Chiến đấu - Nhiều người chơi Bluetooth",
-  "tourCombatDesc": "Chế độ Chiến đấu cho phép bạn chiến đấu với bạn bè qua Bluetooth! Hai người chơi thay phiên nhau giải phương trình - không cần WiFi, chỉ cần ở trong phạm vi 10 mét. Chủ phòng chơi trước ban đầu, nhưng trong các trận tái đấu, người thua chơi trước. Bạn có hai cách để bắt đầu trận đấu:",
-  "tourCreateRoomTitle": "Chế độ Chiến đấu → Tạo phòng",
-  "tourCreateRoomDesc": "Tùy chọn đầu tiên: Tạo phòng làm cho bạn trở thành chủ phòng! Sau khi cấp quyền Bluetooth, bạn sẽ đợi khách tham gia phòng của mình, sau đó chọn cấp độ khó. Là chủ phòng, bạn chơi trước trong trận đấu ban đầu. Hoặc bạn có thể tham gia trò chơi của người khác:",
-  "tourJoinRoomTitle": "Chế độ Chiến đấu → Tham gia phòng",
-  "tourJoinRoomDesc": "Tùy chọn thứ hai: Tham gia phòng làm cho bạn trở thành khách! Sau khi cấp quyền, bạn sẽ quét các phòng gần đó, chọn một phòng và nhấn sẵn sàng. Chủ phòng chọn độ khó, và bạn sẽ chơi thứ hai trong trận đấu ban đầu. Bây giờ hãy kiểm tra các tính năng menu khác.",
-  "tourLeaderboardTitle": "Điểm cao nhất - Bảng xếp hạng",
-  "tourLeaderboardDesc": "Theo dõi tiến trình của bạn tại đây! Xem bảng xếp hạng toàn cầu, kỷ lục cá nhân của bạn và số liệu thống kê bao gồm các trò chơi đã chơi, tỷ lệ thắng, độ chính xác và điểm số theo cấp độ khó. So sánh với bạn bè và xem bạn cải thiện như thế nào theo thời gian. Cuối cùng, hãy truy cập Cài đặt.",
-  "tourSettingsTitle": "Cài đặt - Tùy chỉnh",
-  "tourSettingsDesc": "Tùy chỉnh mọi thứ tại đây! Thay đổi tên người dùng của bạn, chọn chủ đề, điều chỉnh âm thanh/nhạc, chọn ngôn ngữ của bạn và quản lý cài đặt quyền riêng tư. Bạn có thể khởi động lại tour này bất cứ lúc nào từ đây. Đó là tất cả - bạn đã sẵn sàng chơi!",
+  "tourWelcomeDesc": "Chào bạn! Đây là hướng dẫn ngắn để bạn bắt đầu chơi **NuCatch**. Chúng tôi sẽ chỉ cho bạn tất cả các **tính năng chính** để bạn có thể sẵn sàng ngay lập tức.",
+  "tourStartTitle": "Bắt đầu - Vào Game",
+  "tourStartDesc": "Nhấn **Nút Bắt Đầu** để chơi. Bạn có thể chọn giữa **Chế độ Solo** để chơi một mình, hoặc **Chế độ Đối Kháng** cho Bluetooth nhiều người chơi.",
+  "tourInstantStartTitle": "Bắt Đầu Nhanh",
+  "tourInstantStartDesc": "Nhấn nút **Bắt Đầu Nhanh** để vào ngay trò chơi solo với cùng mức độ khó như lần trước. Đây là cách nhanh nhất để tiếp tục!",
+  "tourSoloTitle": "Chế độ Solo",
+  "tourSoloDesc": "Ở **Chế độ Solo**, hãy thử thách chính mình. Chọn giữa **4 mức độ khó**. Trò chơi cung cấp **3 mạng** - mỗi câu hỏi sai bạn sẽ mất 1 mạng. **Khó hơn** tức là sẽ nhiều điểm hơn!",
+  "tourCombatTitle": "Chế độ Đối Kháng - Qua Bluetooth",
+  "tourCombatDesc": "**Chế độ Đối Kháng** cho phép bạn kết nối với bạn bè thông qua **Bluetooth**! Hai người sẽ lần lượt giải các phương trình - **không cần thiết có Mạng**, chỉ cần thiết bị trong phạm vi 10 mét.",
+  "tourCreateRoomTitle": "Chế độ Đối Kháng → Tạo Phòng",
+  "tourCreateRoomDesc": "**Tạo Phòng** biến bạn thành **Chủ Phòng**. Sau khi chia sẻ Bluetooth, hãy chờ khách kết nối với bạn và chọn **mức độ khó**. Bạn chơi trước.",
+  "tourJoinRoomTitle": "Chế độ Đối Kháng → Vào Phòng",
+  "tourJoinRoomDesc": "**Vào Phòng** khiến bạn là **Khách**. Hãy quét xung quanh phòng hiển thị, chọn và ấn **Sẵn Sàng**. Bạn chơi sau người tạo phòng.",
+  "tourLeaderboardTitle": "Bảng Xếp Hạng",
+  "tourLeaderboardDesc": "Theo dõi kỷ lục của bạn trong trang này! Cả điểm số **toàn cầu** cũng như **kỷ lục cá nhân** của bạn, và **thống kê**. Hãy khoe bạn bè !",
+  "tourSettingsTitle": "Cài Đặt",
+  "tourSettingsDesc": "Mọi thay đổi hiển thị ở đây! Từ **tên**, **giao diện**, **âm thanh**, **ngôn ngữ**.",
   "tourNext": "Tiếp theo",
-  "tourPrevious": "Trước đó",
-  "tourSkip": "Bỏ qua Tour",
+  "tourPrevious": "Trở lại",
+  "tourSkip": "Bỏ qua",
   "tourFinish": "Hoàn thành",
-  "tourRestartFromSettings": "Khởi động lại Tour",
-  "tourResetMessage": "Tour đã được đặt lại. Quay lại menu chính để bắt đầu."
+  "tourRestartFromSettings": "Khởi động lại hướng dẫn",
+  "tourResetMessage": "Đã tạo lại hướng dẫn. Xin quay về Màn hình Chính để xem."
 }

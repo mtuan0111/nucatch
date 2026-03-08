@@ -10,9 +10,7 @@ import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
-import 'package:nucatch/helpers/helper.dart';
 
-import 'package:nucatch/helpers/template.dart';
 
 class CombatRestartConfirmationScreen extends StatelessWidget {
   const CombatRestartConfirmationScreen({super.key});
@@ -120,11 +118,11 @@ class CombatRestartConfirmationScreen extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isReady
-                ? Theme.of(context).colorScheme.tertiary.withOpacity(0.3)
+                ? Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.3)
                 : Theme.of(context)
                     .colorScheme
                     .onSurfaceVariant
-                    .withOpacity(0.3),
+                    .withValues(alpha: 0.3),
             border: Border.all(
               color: isReady
                   ? Theme.of(context).colorScheme.tertiary

@@ -75,6 +75,7 @@ class SoloNav extends StatelessWidget {
                 ),
               ],
             ],
+            // ignore: deprecated_member_use
             onPopPage: (route, result) {
               if (!route.didPop(result)) {
                 return false;

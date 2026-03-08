@@ -16,6 +16,7 @@ typedef NucatchTopScoreDetailState
 /// Nucatch-specific TopScoreNavCubit using TurnRecordedModel and RankingPeriod.
 class TopScoreNavCubit
     extends core.TopScoreNavCubit<TurnRecordedModel, RankingPeriod> {
+  @override
   void showTopScoreDetail(
     TurnRecordedModel turnRecordedModel,
     int? ranking,

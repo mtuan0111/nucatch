@@ -6,13 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeleton_core/skeleton_core.dart'
-    hide TopScoreNavCubit, TopScoreNavState, TopScoreRootState, TopScoreDetailState;
+    hide
+        TopScoreNavCubit,
+        TopScoreNavState,
+        TopScoreRootState,
+        TopScoreDetailState;
 import 'package:nucatch/helpers/top_score_nav_types.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/extension.dart';
+import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/models/turn_record_model.dart';
 import 'package:nucatch/widgets/admob_banner.dart';
 
 class TopScoreScreen extends StatefulWidget {
@@ -205,7 +211,8 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                             children: [
                               Switch(
                                 value: settingState.onlyShowMyRecorded,
-                                activeColor: Theme.of(context).primaryColor,
+                                activeThumbColor:
+                                    Theme.of(context).primaryColor,
                                 onChanged: (val) {
                                   context.read<SettingBloc>().add(
                                         ChangedOnlyShowMyRecorded(
@@ -317,13 +324,32 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                                   },
                                   child: RankingItem(
                                     ranking: index + 1,
-                                    turnRecordedModel: e,
+                                    heroTag:
+                                        "ranking-${e.turnId}${settingState.onlyShowMyRecorded ? '-filtered' : ''}",
+                                    titleIcon: Icons.star,
+                                    titleText: '${e.point}',
+                                    currentUserLabel: lang(context).you,
                                     isCurrentUser: _currentUserId != null &&
                                         e.firebaseUserId == _currentUserId,
-                                    heroTagSuffix:
-                                        settingState.onlyShowMyRecorded
-                                            ? '-filtered'
-                                            : '',
+                                    infoRows: [
+                                      RankingInfoRow(
+                                        icon: Icons.person,
+                                        text: e.playedUsername ??
+                                            coreLang(context).anonymous,
+                                      ),
+                                      RankingInfoRow(
+                                        icon: Icons.calendar_today,
+                                        text: (e.recordedTime)
+                                            .formatClient()
+                                            .replaceFirst(' ', '\n'),
+                                      ),
+                                      RankingInfoRow(
+                                        icon: Helper.getIconFromDifficulty(
+                                            context, e.difficulty),
+                                        text: Helper.getTitleFromDifficulty(
+                                            context, e.difficulty),
+                                      ),
+                                    ],
                                   ),
                                 );
                               },

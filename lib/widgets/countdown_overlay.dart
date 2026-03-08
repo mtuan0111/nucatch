@@ -3,9 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:timer_count_down/timer_count_down.dart';
-import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/template.dart';
-import 'package:nucatch/helpers/helper.dart';
 
 /// Shared countdown overlay widget used before game starts.
 ///

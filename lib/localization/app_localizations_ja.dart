@@ -70,7 +70,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get restartGame => 'ゲームを再起動';
+  String get restartGame => 'ゲームをリスタート';
 
   @override
   String get confirmRestart => '本当にゲームを再起動しますか？';
@@ -98,7 +98,7 @@ class AppLocalizationsJa extends AppLocalizations {
       '複雑な足し算/引き算、より高いレベルのランダムな数字、または掛け算/割り算の計算式からランダムに選択する、最もやりがいのある体験です。';
 
   @override
-  String get pickRightDescription => '正しい方程式を選べ！5秒タイマーのスピード選択ゲーム。';
+  String get pickRightDescription => '正しい数式を選択してください！5秒タイマーのクイック選択ゲーム。';
 
   @override
   String get difficultyEasyTitle => 'かんたんモード';
@@ -113,7 +113,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get difficultyExtremeTitle => '究極モード';
 
   @override
-  String get pickRightTitle => 'Pick Right';
+  String get pickRightTitle => '正しい方を選べ';
 
   @override
   String get confirmChangeDifficulty => 'ターンはリセットされます。本当に難易度を変更しますか？';
@@ -385,67 +385,67 @@ class AppLocalizationsJa extends AppLocalizations {
   String get tourButtonLabel => 'ツアーを開始';
 
   @override
-  String get tourWelcomeTitle => 'NuCatchへようこそ!';
+  String get tourWelcomeTitle => 'NuCatchへようこそ！';
 
   @override
   String get tourWelcomeDesc =>
-      'ようこそ! この簡単なツアーは、**NuCatch**をスムーズに始めるのに役立ちます。**主要な機能**をすべてお見せしますので、すぐにプレイを始められます。始めましょう!';
+      '歓迎します！この短いツアーで **NuCatch** の基本を学びましょう。 今すぐプレイを始められるよう、**主な機能**をすべてご案内します。';
 
   @override
-  String get tourStartTitle => 'スタート - ゲームを始める';
+  String get tourStartTitle => 'スタート - ゲームを開始';
 
   @override
   String get tourStartDesc =>
-      'スタートボタンをタップして始めましょう。次に、シングルプレイヤーの数学チャレンジ用のソロモード、またはBluetoothを介したリアルタイムマルチプレイヤーバトル用のコンバットモードを選択します。両方のオプションを見てみましょう!';
+      '**スタートボタン**をタップしてください。その後、**ソロモード**か、**Bluetooth**を使った**対戦モード**を選択します。';
 
   @override
-  String get tourInstantStartTitle => 'クイックスタート - 素早くプレイ';
+  String get tourInstantStartTitle => 'インスタントスタート';
 
   @override
   String get tourInstantStartDesc =>
-      'すぐに始めたいですか？**クイックスタートボタン**をタップすると、前回プレイした難易度でソロゲームをすぐに開始できます。進行状況を続ける最速の方法です！';
+      '**インスタントスタート**ボタンをタップすると、前回と同じ難易度ですぐにソロゲームを開始できます。 スコアを伸ばす最速の手段です！';
 
   @override
-  String get tourSoloTitle => 'ソロモード - 一人でプレイ';
+  String get tourSoloTitle => 'ソロモード';
 
   @override
   String get tourSoloDesc =>
-      'ソロモードでは、数学の方程式で自分に挑戦してください! 4つの難易度レベル(簡単から非常に難しいまで)から選択します。3つのライフで始まり、間違った答えやタイムアウトごとに1ライフを失います。難易度が高いほど、より多くのポイントを獲得できます! 次はマルチプレイヤーオプションを見てみましょう。';
+      '**ソロモード**で自分自身に挑戦！ **4つの難易度**から選べます。**ライフは3つ** - 不正解や時間切れで1つ減ります。**難易度が高い**ほど高得点！';
 
   @override
-  String get tourCombatTitle => 'コンバットモード - Bluetoothマルチプレイヤー';
+  String get tourCombatTitle => '対戦モード - Bluetooth通信';
 
   @override
   String get tourCombatDesc =>
-      'コンバットモードでは、Bluetoothを介して友達とバトルできます! 2人のプレイヤーが交互に方程式を解きます - WiFiは不要で、10メートル以内にいるだけです。ホストが最初に最初にプレイしますが、再戦では敗者が最初にプレイします。マッチを開始する2つの方法があります:';
+      '**Bluetooth**を使って友達と**対戦モード**！**2人のプレイヤー**が交互に数式を解きます。**WiFi不要**。10メートル以内でプレイ。';
 
   @override
-  String get tourCreateRoomTitle => 'コンバットモード → ルームを作成';
+  String get tourCreateRoomTitle => '対戦モード → ルーム作成';
 
   @override
   String get tourCreateRoomDesc =>
-      '最初のオプション: ルームを作成すると、あなたがホストになります! Bluetoothの許可を与えた後、ゲストがあなたのルームに参加するのを待ち、その後難易度レベルを選択します。ホストとして、最初のマッチで最初にプレイします。または、他の人のゲームに参加できます:';
+      '**ルーム作成**で**ホスト**になります。Bluetoothを許可してゲストを待ち、**難易度**を選択。あなたが先攻です。';
 
   @override
-  String get tourJoinRoomTitle => 'コンバットモード → ルームに参加';
+  String get tourJoinRoomTitle => '対戦モード → ルーム参加';
 
   @override
   String get tourJoinRoomDesc =>
-      '2番目のオプション: ルームに参加すると、あなたがゲストになります! 許可を与えた後、近くのルームをスキャンし、1つを選択して準備完了をタップします。ホストが難易度を選択し、最初のマッチで2番目にプレイします。それでは、他のメニュー機能を確認しましょう。';
+      '**ルーム参加**で**ゲスト**になります。近くのルームから選び、**準備完了**をタップ。あなたは後攻です。';
 
   @override
-  String get tourLeaderboardTitle => 'トップスコア - リーダーボード';
+  String get tourLeaderboardTitle => 'リーダーボード';
 
   @override
   String get tourLeaderboardDesc =>
-      'ここで進捗を追跡しましょう! グローバルランキング、個人記録、プレイしたゲーム、勝率、精度、難易度レベル別のスコアなどの統計を表示します。友達と比較し、時間の経過とともにどのように向上するかを確認してください。最後に、設定にアクセスしましょう。';
+      '進捗を確認！**グローバルランキング**や**自己ベスト**、**統計**を見られます。友達と競い合いましょう。';
 
   @override
   String get tourSettingsTitle => '設定 - カスタマイズ';
 
   @override
   String get tourSettingsDesc =>
-      'ここですべてをカスタマイズしましょう! ユーザー名を変更し、テーマを選択し、サウンド/音楽を調整し、言語を選択し、プライバシー設定を管理します。ここからいつでもこのツアーを再開できます。以上です - プレイする準備ができました!';
+      '**ユーザー名**、**テーマ**、**サウンド**、**言語**などを変更できます。このツアーは設定からいつでも再開できます。';
 
   @override
   String get tourNext => '次へ';
@@ -454,14 +454,14 @@ class AppLocalizationsJa extends AppLocalizations {
   String get tourPrevious => '前へ';
 
   @override
-  String get tourSkip => 'ツアーをスキップ';
+  String get tourSkip => 'スキップ';
 
   @override
   String get tourFinish => '完了';
 
   @override
-  String get tourRestartFromSettings => 'ツアーを再開';
+  String get tourRestartFromSettings => 'ツアーを再確認';
 
   @override
-  String get tourResetMessage => 'ツアーがリセットされました。開始するにはメインメニューに戻ってください。';
+  String get tourResetMessage => 'ツアーがリセットされました。メインメニューから始めましょう。';
 }
