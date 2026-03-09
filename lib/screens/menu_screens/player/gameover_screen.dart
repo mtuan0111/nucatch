@@ -96,13 +96,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                             },
                             iconData: FontAwesomeIcons.arrowRotateLeft,
                             backgroundBuilder: (context, borderRadius) {
-                              return CustomPaint(
-                                painter: LightningPainter(
-                                  baseColor: Theme.of(context).primaryColor,
-                                  seed: 'Restart'.hashCode,
-                                ),
-                                size: Size.infinite,
-                              );
+                              return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: 'Restart'.hashCode, borderRadius: borderRadius);
                             },
                           );
                         },

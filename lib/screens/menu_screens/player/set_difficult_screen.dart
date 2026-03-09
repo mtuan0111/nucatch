@@ -16,6 +16,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.d
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:nucatch/helpers/preferences_key.dart';
@@ -186,6 +187,13 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                               icon: difficultyIcon,
                               color: difficultyColor,
                               onTap: onTap,
+                              backgroundBuilder: (context, borderRadius) {
+                                return LightningWidget(
+                                  baseColor: difficultyColor,
+                                  seed: difficulty.hashCode,
+                                  borderRadius: borderRadius,
+                                );
+                              },
                             );
                           }).toList(),
                         ),

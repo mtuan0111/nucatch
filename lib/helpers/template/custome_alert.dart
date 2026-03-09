@@ -10,6 +10,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 
 class MenuAlert extends StatelessWidget {
   final int point;
@@ -97,6 +98,16 @@ class MenuAlert extends StatelessWidget {
                 }
               });
             },
+            backgroundBuilder: (context, borderRadius) {
+              return LightningWidget(
+                baseColor: Helper.getColorIconFromDifficulty(
+                  context,
+                  turnState.difficultyModel!.difficulty,
+                ),
+                seed: coreLang(context).difficultySetting.hashCode,
+                borderRadius: borderRadius,
+              );
+            },
           ),
           const SizedBox(height: kSpaceM),
           // Restart button
@@ -133,6 +144,13 @@ class MenuAlert extends StatelessWidget {
                   ));
                 }
               });
+            },
+            backgroundBuilder: (context, borderRadius) {
+              return LightningWidget(
+                baseColor: Theme.of(context).colorScheme.tertiary,
+                seed: coreLang(context).restart.hashCode,
+                borderRadius: borderRadius,
+              );
             },
           ),
           const SizedBox(height: kSpaceM),

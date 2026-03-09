@@ -306,16 +306,10 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                           iconData: FontAwesomeIcons.shareNodes,
                                           backgroundBuilder:
                                               (context, borderRadius) {
-                                            return CustomPaint(
-                                              painter: LightningPainter(
-                                                baseColor: Theme.of(context)
-                                                    .primaryColor,
-                                                seed: coreLang(context)
+                                            return LightningWidget(baseColor: Theme.of(context)
+                                                    .primaryColor, seed: coreLang(context)
                                                     .share
-                                                    .hashCode,
-                                              ),
-                                              size: Size.infinite,
-                                            );
+                                                    .hashCode, borderRadius: borderRadius);
                                           },
                                           buttonSize: ButtonSize.small,
                                         ),

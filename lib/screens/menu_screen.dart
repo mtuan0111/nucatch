@@ -102,14 +102,12 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
               buttonSize: skeleton.ButtonSize.small,
               backgroundBuilder: (context, borderRadius) {
-                return CustomPaint(
-                  painter: LightningPainter(
-                    baseColor:
-                        backgroundColor, // Use the button's background color
-                    seed: (entry.value['text'] as String)
-                        .hashCode, // Distinct seed based on button text
-                  ),
-                  size: Size.infinite,
+                return LightningWidget(
+                  baseColor:
+                      backgroundColor, // Use the button's background color
+                  seed: (entry.value['text'] as String)
+                      .hashCode, // Distinct seed based on button text
+                  borderRadius: borderRadius,
                 );
               },
             ),

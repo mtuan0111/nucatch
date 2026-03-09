@@ -5,6 +5,7 @@ import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 
 class SelectPlayModeScreen extends StatefulWidget {
   const SelectPlayModeScreen({super.key});
@@ -55,6 +56,14 @@ class _SelectPlayModeScreenState extends State<SelectPlayModeScreen> {
                                     .read<PlayerNavCubit>()
                                     .selectPlayMode(PlayMode.solo);
                               },
+                              backgroundBuilder: (context, borderRadius) {
+                                return LightningWidget(
+                                  baseColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  seed: lang(context).soloMode.hashCode,
+                                  borderRadius: borderRadius,
+                                );
+                              },
                             ),
                             // Combat Mode Option
                             OptionCard(
@@ -67,6 +76,14 @@ class _SelectPlayModeScreenState extends State<SelectPlayModeScreen> {
                                 context
                                     .read<PlayerNavCubit>()
                                     .selectPlayMode(PlayMode.combat);
+                              },
+                              backgroundBuilder: (context, borderRadius) {
+                                return LightningWidget(
+                                  baseColor:
+                                      Theme.of(context).colorScheme.error,
+                                  seed: lang(context).combatMode.hashCode,
+                                  borderRadius: borderRadius,
+                                );
                               },
                             ),
                           ],

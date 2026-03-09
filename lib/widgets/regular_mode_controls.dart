@@ -59,13 +59,7 @@ class RegularModeControls extends StatelessWidget {
                         );
                   },
                   backgroundBuilder: (context, borderRadius) {
-                    return CustomPaint(
-                      painter: LightningPainter(
-                        baseColor: Theme.of(context).primaryColor,
-                        seed: 'Reset'.hashCode,
-                      ),
-                      size: Size.infinite,
-                    );
+                    return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: 'Reset'.hashCode, borderRadius: borderRadius);
                   },
                 );
               } else if (e.key == KeyboardOption.mainMenu) {
@@ -74,13 +68,7 @@ class RegularModeControls extends StatelessWidget {
                   iconData: FontAwesomeIcons.bars,
                   onPressed: onMenuPressed,
                   backgroundBuilder: (context, borderRadius) {
-                    return CustomPaint(
-                      painter: LightningPainter(
-                        baseColor: Theme.of(context).primaryColor,
-                        seed: 'Menu'.hashCode,
-                      ),
-                      size: Size.infinite,
-                    );
+                    return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: 'Menu'.hashCode, borderRadius: borderRadius);
                   },
                 );
               } else {
@@ -95,13 +83,7 @@ class RegularModeControls extends StatelessWidget {
                         );
                   },
                   backgroundBuilder: (context, borderRadius) {
-                    return CustomPaint(
-                      painter: LightningPainter(
-                        baseColor: Theme.of(context).primaryColor,
-                        seed: e.value.toString().hashCode,
-                      ),
-                      size: Size.infinite,
-                    );
+                    return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: e.value.toString().hashCode, borderRadius: borderRadius);
                   },
                 );
               }

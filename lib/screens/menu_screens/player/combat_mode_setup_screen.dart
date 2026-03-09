@@ -6,6 +6,7 @@ import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 
 import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 
 /// Combat Mode Setup Screen - Choose to host or join a room
 class CombatModeSetupScreen extends StatefulWidget {
@@ -68,6 +69,14 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                                       .read<PlayerNavCubit>()
                                       .showSelectPlayMode();
                                 },
+                                backgroundBuilder: (context, borderRadius) {
+                                  return LightningWidget(
+                                    baseColor:
+                                        Theme.of(context).colorScheme.primary,
+                                    seed: lang(context).soloMode.hashCode,
+                                    borderRadius: borderRadius,
+                                  );
+                                },
                               ),
                             ),
                             // Combat Mode - Selected/Marked
@@ -85,6 +94,14 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                                     context
                                         .read<PlayerNavCubit>()
                                         .showSelectPlayMode();
+                                  },
+                                  backgroundBuilder: (context, borderRadius) {
+                                    return LightningWidget(
+                                      baseColor:
+                                          Theme.of(context).colorScheme.error,
+                                      seed: lang(context).combatMode.hashCode,
+                                      borderRadius: borderRadius,
+                                    );
                                   },
                                 ),
                                 Positioned(
@@ -155,6 +172,15 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                                     color:
                                         Theme.of(context).colorScheme.primary,
                                     onTap: () => _navigateToHostRoom(context),
+                                    backgroundBuilder: (context, borderRadius) {
+                                      return LightningWidget(
+                                        baseColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        seed: lang(context).createRoom.hashCode,
+                                        borderRadius: borderRadius,
+                                      );
+                                    },
                                   ),
                                   // Join Room Option
                                   OptionCard(
@@ -166,6 +192,15 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                                     color:
                                         Theme.of(context).colorScheme.tertiary,
                                     onTap: () => _navigateToJoinRoom(context),
+                                    backgroundBuilder: (context, borderRadius) {
+                                      return LightningWidget(
+                                        baseColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
+                                        seed: lang(context).joinRoom.hashCode,
+                                        borderRadius: borderRadius,
+                                      );
+                                    },
                                   ),
                                 ],
                               ),

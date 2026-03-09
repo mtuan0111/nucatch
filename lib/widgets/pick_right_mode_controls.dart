@@ -85,13 +85,7 @@ class PickRightModeControls extends StatelessWidget {
                           );
                     },
                     backgroundBuilder: (context, borderRadius) {
-                      return CustomPaint(
-                        painter: LightningPainter(
-                          baseColor: Theme.of(context).primaryColor,
-                          seed: 'Reset'.hashCode,
-                        ),
-                        size: Size.infinite,
-                      );
+                      return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: 'Reset'.hashCode, borderRadius: borderRadius);
                     },
                   ),
                   // Main Menu button
@@ -100,13 +94,7 @@ class PickRightModeControls extends StatelessWidget {
                     iconData: FontAwesomeIcons.bars,
                     onPressed: onMenuPressed,
                     backgroundBuilder: (context, borderRadius) {
-                      return CustomPaint(
-                        painter: LightningPainter(
-                          baseColor: Theme.of(context).primaryColor,
-                          seed: 'Menu'.hashCode,
-                        ),
-                        size: Size.infinite,
-                      );
+                      return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: 'Menu'.hashCode, borderRadius: borderRadius);
                     },
                   ),
                 ],

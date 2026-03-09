@@ -1608,3 +1608,36 @@ Flutter build for Android
 Flutter build for iOS
 ```flutter build ios --build-name=2.7.6 --build-number=76 --release```
 ```
+---
+## Released on: 04/03/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 77           | 2.7.7   |
+| iOS      | 77           | 2.7.7   |
+
+### Release note:
+feat: Update the UI of the game screen
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+```markdown
+[Builded] Version 2.7.7 - 77 / 2.7.7 - 77 _ feat: Update the UI of the game screen
+
+**Store notices / What's new / Summary:**
+
+- **English:**  
+    - Enhanced game screen UI for a more intuitive and seamless user experience.
+
+- **Tiếng Việt:**  
+    - Cập nhật giao diện màn hình trò chơi giúp trải nghiệm người dùng trực quan và mượt mà hơn.
+
+Flutter build for Android
+```flutter build appbundle --build-name=2.7.7 --build-number=77 --release```
+
+Flutter build for iOS
+```flutter build ios --build-name=2.7.7 --build-number=77 --release```
+```
