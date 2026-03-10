@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io' show Platform;
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
@@ -14,7 +15,9 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.
 import 'package:skeleton_core/skeleton_core.dart' hide LoadData;
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
+import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
+import 'package:nucatch/helpers/template/custome_alert.dart';
 
 import 'package:nucatch/widgets/admob_banner.dart';
 import 'package:nucatch/widgets/game_over_regular.dart';
@@ -96,10 +99,71 @@ class _GameOverScreenState extends State<GameOverScreen> {
                             },
                             iconData: FontAwesomeIcons.arrowRotateLeft,
                             backgroundBuilder: (context, borderRadius) {
-                              return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: 'Restart'.hashCode, borderRadius: borderRadius);
+                              return LightningWidget(
+                                  baseColor: Theme.of(context).primaryColor,
+                                  seed: 'Restart'.hashCode,
+                                  borderRadius: borderRadius);
                             },
                           );
                         },
+                      ),
+                      const SizedBox(height: kSpaceL),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Change Difficulty button
+                          AnimatedButton(
+                            context,
+                            iconData: Helper.getIconFromDifficulty(
+                              context,
+                              turnState.difficultyModel?.difficulty,
+                            ),
+                            backgroundColor: Helper.getColorIconFromDifficulty(
+                              context,
+                              turnState.difficultyModel?.difficulty,
+                            ),
+                            text: coreLang(context).difficultySetting,
+                            shapeAt: RoundedWithShapeAt.topLeft,
+                            buttonSize: ButtonSize.smallest,
+                            onPressed: () {
+                              playerNavCubit.selectPlayMode(
+                                PlayMode.solo,
+                              );
+                            },
+                            backgroundBuilder: (context, borderRadius) {
+                              return LightningWidget(
+                                baseColor: Helper.getColorIconFromDifficulty(
+                                  context,
+                                  turnState.difficultyModel?.difficulty,
+                                ),
+                                seed: coreLang(context)
+                                    .difficultySetting
+                                    .hashCode,
+                                borderRadius: borderRadius,
+                              );
+                            },
+                          ),
+                          const SizedBox(width: kSpaceM),
+                          // Main Menu button
+                          AnimatedButton(
+                            context,
+                            iconData: FontAwesomeIcons.bars,
+                            text: coreLang(context).mainMenu,
+                            shapeAt: RoundedWithShapeAt.topRight,
+                            buttonSize: ButtonSize.smallest,
+                            onPressed: () {
+                              context.read<MenuBloc>().add(ShowMenu());
+                            },
+                            backgroundBuilder: (context, borderRadius) {
+                              return LightningWidget(
+                                baseColor: Theme.of(context).primaryColor,
+                                seed: 'Menu'.hashCode,
+                                borderRadius: borderRadius,
+                              );
+                            },
+                          ),
+                        ],
                       ),
                       const SizedBox(
                         height: kSpace4XL,
