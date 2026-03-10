@@ -785,9 +785,7 @@ class _PlayScreenState extends State<PlayScreen> {
     final wasPointIncreased =
         _prevPointForAnimation != null && state.point > _prevPointForAnimation!;
 
-    // Track level changes (level-up = firework; correct answer only = lightning)
-    final wasLevelIncreased = _prevLevelForAnimation != null &&
-        state.level > _prevLevelForAnimation!;
+
 
     // Track life changes using same pattern as existing life animation
     final wasLifeIncreasedForAnimation = _prevLifeForAnimation != null &&
@@ -802,11 +800,7 @@ class _PlayScreenState extends State<PlayScreen> {
       _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
     }
 
-    if (wasLevelIncreased) {
-      final scorePosition = _getWidgetPosition(_scoreKey);
-      // Level-up: full firework explosion
-      _animationKey.currentState?.triggers.onAddPoint(scorePosition);
-    }
+
 
     // Trigger life gain animation
     if (wasLifeIncreasedForAnimation) {

@@ -974,9 +974,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     final wasPointIncreased =
         _prevPointForAnimation != null && state.point > _prevPointForAnimation!;
 
-    // Track level changes
-    final wasLevelIncreased =
-        _prevLevelForAnimation != null && state.level > _prevLevelForAnimation!;
 
     // Track life changes
     final wasLifeIncreasedForAnimation = _prevLifeForAnimation != null &&
@@ -993,11 +990,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
     }
 
-    if (wasLevelIncreased) {
-      final scorePosition = _getWidgetPosition(_scoreKey);
-      // Level-up: full firework explosion
-      _animationKey.currentState?.triggers.onAddPoint(scorePosition);
-    }
 
     // Trigger opponent score animation (lightning only; opponent does not trigger level-up locally)
     if (state.opponentJustSucceeded) {
