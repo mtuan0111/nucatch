@@ -46,12 +46,22 @@ class MenuNav extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => AudioBloc()
-                ..add(SetAudioVolume(volume: settingState.vol / 10)),
+              create: (context) {
+                final audioBloc = AudioBloc()
+                  ..add(SetAudioVolume(volume: settingState.vol / 10));
+                // Wire this AudioBloc into SettingBloc so ToggleMute reaches it
+                settingBloc.audioBloc = audioBloc;
+                return audioBloc;
+              },
             ),
             BlocProvider(
-              create: (context) => VibrationBloc()
-                ..add(SetVibrationEnabled(enabled: settingState.isVibrate)),
+              create: (context) {
+                final vibrationBloc = VibrationBloc()
+                  ..add(SetVibrationEnabled(enabled: settingState.isVibrate));
+                // Wire into SettingBloc so ChangedIsVibrate takes effect immediately
+                settingBloc.vibrationBloc = vibrationBloc;
+                return vibrationBloc;
+              },
             ),
             BlocProvider<TurnBloc>(
               create: (context) {

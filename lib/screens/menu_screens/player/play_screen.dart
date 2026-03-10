@@ -708,6 +708,58 @@ class _PlayScreenState extends State<PlayScreen> {
                     ),
                     if (turnState.status == TurnStatus.intro)
                       CountdownOverlay(seconds: turnState.countDown),
+                    // Quick settings overlay — always accessible, not affected by layout
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.all(kSpaceS),
+                          child: BlocBuilder<SettingBloc, SettingState>(
+                            builder: (context, settingState) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Volume toggle
+                                  _QuickSettingButton(
+                                    icon: settingState.isMuted
+                                        ? FontAwesomeIcons.volumeXmark
+                                        : settingState.vol > 7
+                                            ? FontAwesomeIcons.volumeHigh
+                                            : settingState.vol > 4
+                                                ? FontAwesomeIcons.volumeLow
+                                                : settingState.vol > 0
+                                                    ? FontAwesomeIcons.volumeOff
+                                                    : FontAwesomeIcons.volumeXmark,
+                                    onTap: () {
+                                      context.read<SettingBloc>().add(
+                                            ToggleMute(),
+                                          );
+                                    },
+                                    isActive: !settingState.isMuted,
+                                  ),
+                                  const SizedBox(height: kSpaceXS),
+                                  // Vibration toggle
+                                  _QuickSettingButton(
+                                    icon: settingState.isVibrate
+                                        ? FontAwesomeIcons.mobileScreenButton
+                                        : FontAwesomeIcons.mobile,
+                                    onTap: () {
+                                      context.read<SettingBloc>().add(
+                                            ChangedIsVibrate(
+                                              isVibrate: !settingState.isVibrate,
+                                            ),
+                                          );
+                                    },
+                                    isActive: settingState.isVibrate,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 );
               },
@@ -817,6 +869,49 @@ class LifeStar extends StatelessWidget {
         FontAwesomeIcons.solidStar,
         color: Theme.of(context).colorScheme.onPrimary,
         size: Theme.of(context).textTheme.titleLarge!.fontSize,
+      ),
+    );
+  }
+}
+
+/// Small semi-transparent toggle button used in the quick settings overlay
+class _QuickSettingButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  final bool isActive;
+
+  const _QuickSettingButton({
+    required this.icon,
+    required this.onTap,
+    this.isActive = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme.onPrimary;
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          color: isActive
+              ? color.withValues(alpha: 0.2)
+              : Colors.black.withValues(alpha: 0.35),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: color.withValues(alpha: isActive ? 0.6 : 0.2),
+            width: 1,
+          ),
+        ),
+        child: Center(
+          child: Icon(
+            icon,
+            size: 14,
+            color: color.withValues(alpha: isActive ? 1.0 : 0.35),
+          ),
+        ),
       ),
     );
   }
