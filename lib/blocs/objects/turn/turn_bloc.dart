@@ -821,6 +821,12 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    // Guard: skip if we are already in gameOver state to prevent duplicate saves
+    if (state.status == TurnStatus.gameOver) {
+      debugPrint('⚠️ End skipped: already in gameOver state');
+      return;
+    }
+
     if (state.isLoading) {
       return;
     }
@@ -917,10 +923,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     await _onLostLife(LifeLost(), emitter);
 
-    if (!state.isAbleToContinue) {
-      add(End());
-      return;
-    } else {
+    // NOTE: Do NOT also call add(End()) here.
+    // _onLostLife already dispatches add(End(isCauseGameOver: true)) internally
+    // when !isAbleToContinue. Adding it here caused a double-End -> double SaveRecorded.
+    if (state.isAbleToContinue) {
       _audioBloc.add(PlayWrongAudio());
       await Future.delayed(
           const Duration(milliseconds: kAnimationDurationSlow));

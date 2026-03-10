@@ -1641,3 +1641,41 @@ Flutter build for Android
 Flutter build for iOS
 ```flutter build ios --build-name=2.7.7 --build-number=77 --release```
 ```
+
+
+---
+## Released on: 04/03/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 78           | 2.7.8   |
+| iOS      | 78           | 2.7.8   |
+
+### Release note:
+feat: Fixed the error
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+```markdown
+[Builded] Version 2.7.8 - 78 / 2.7.8 - 78 _ feat: Fixed the error
+
+**Store notices / What's new / Summary:**
+
+- **English:**  
+    - Fixed an issue where game records were occasionally saved more than once.
+    - Standardized tap timer duration across all difficulty levels for a consistent experience.
+
+- **Tiếng Việt:**  
+    - Sửa lỗi khiến kết quả trò chơi đôi khi được lưu nhiều lần.
+    - Đồng nhất thời gian đếm ngược giữa các cấp độ khó để trải nghiệm nhất quán hơn.
+
+Flutter build for Android
+```flutter build appbundle --build-name=2.7.8 --build-number=78 --release```
+
+Flutter build for iOS
+```flutter build ios --build-name=2.7.8 --build-number=78 --release```
+```

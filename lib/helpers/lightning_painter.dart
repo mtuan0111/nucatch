@@ -23,7 +23,7 @@ class LightningWidget extends StatelessWidget {
     return ClipRRect(
       borderRadius: borderRadius ?? BorderRadius.zero,
       child: Image.asset(
-        'assets/images/lightening-texture-2.png',
+        'assets/images/lightening-texture.png',
         fit: BoxFit.none,
         alignment: Alignment(alignmentX, alignmentY),
         color: baseColor,

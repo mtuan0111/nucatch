@@ -68,7 +68,7 @@ class DifficultyModel {
     Difficulty.easy: const DifficultyModel(
       difficulty: Difficulty.easy,
       pointEachTurn: 1,
-      timeLimitPerTurn: 30,
+      timeLimitPerTurn: 20,
       numberOfCharacters: 4,
     ),
     Difficulty.medium: const DifficultyModel(
@@ -81,13 +81,13 @@ class DifficultyModel {
     Difficulty.hard: const DifficultyModel(
       difficulty: Difficulty.hard,
       pointEachTurn: 4,
-      timeLimitPerTurn: 10,
+      timeLimitPerTurn: 20,
       numberOfCharacters: 8,
     ),
     Difficulty.extreme: const DifficultyModel(
       difficulty: Difficulty.extreme,
       pointEachTurn: 8,
-      timeLimitPerTurn: 5,
+      timeLimitPerTurn: 20,
       numberOfCharacters: 10,
     ),
     Difficulty.pickRight: const DifficultyModel(
