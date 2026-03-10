@@ -20,6 +20,7 @@ import 'package:nucatch/widgets/countdown_overlay.dart';
 import 'package:nucatch/widgets/countdown_bar.dart';
 import 'package:nucatch/widgets/pick_right_mode_controls.dart';
 import 'package:nucatch/widgets/regular_mode_controls.dart';
+import 'package:nucatch/widgets/quick_setting_button.dart';
 
 
 class PlayScreen extends StatefulWidget {
@@ -721,7 +722,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   // Volume toggle
-                                  _QuickSettingButton(
+                                  QuickSettingButton(
                                     icon: settingState.isMuted
                                         ? FontAwesomeIcons.volumeXmark
                                         : settingState.vol > 7
@@ -740,7 +741,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                   ),
                                   const SizedBox(height: kSpaceXS),
                                   // Vibration toggle
-                                  _QuickSettingButton(
+                                  QuickSettingButton(
                                     icon: settingState.isVibrate
                                         ? FontAwesomeIcons.mobileScreenButton
                                         : FontAwesomeIcons.mobile,
@@ -797,13 +798,14 @@ class _PlayScreenState extends State<PlayScreen> {
     // Trigger animation based on what happened:
     if (wasPointIncreased) {
       final scorePosition = _getWidgetPosition(_scoreKey);
-      if (wasLevelIncreased) {
-        // Level-up: full firework explosion
-        _animationKey.currentState?.triggers.onAddPoint(scorePosition);
-      } else {
-        // Correct answer only: lightning glow without explosion
-        _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
-      }
+      // Correct answer only: lightning glow without explosion
+      _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
+    }
+
+    if (wasLevelIncreased) {
+      final scorePosition = _getWidgetPosition(_scoreKey);
+      // Level-up: full firework explosion
+      _animationKey.currentState?.triggers.onAddPoint(scorePosition);
     }
 
     // Trigger life gain animation
@@ -869,49 +871,6 @@ class LifeStar extends StatelessWidget {
         FontAwesomeIcons.solidStar,
         color: Theme.of(context).colorScheme.onPrimary,
         size: Theme.of(context).textTheme.titleLarge!.fontSize,
-      ),
-    );
-  }
-}
-
-/// Small semi-transparent toggle button used in the quick settings overlay
-class _QuickSettingButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-  final bool isActive;
-
-  const _QuickSettingButton({
-    required this.icon,
-    required this.onTap,
-    this.isActive = true,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.onPrimary;
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: 36,
-        height: 36,
-        decoration: BoxDecoration(
-          color: isActive
-              ? color.withValues(alpha: 0.2)
-              : Colors.black.withValues(alpha: 0.35),
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: color.withValues(alpha: isActive ? 0.6 : 0.2),
-            width: 1,
-          ),
-        ),
-        child: Center(
-          child: Icon(
-            icon,
-            size: 14,
-            color: color.withValues(alpha: isActive ? 1.0 : 0.35),
-          ),
-        ),
       ),
     );
   }

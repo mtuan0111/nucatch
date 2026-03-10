@@ -171,9 +171,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       emitter(
         state.copyWith(
           timesCorrect: state.timesCorrect + 1,
-          lifeRemaining: state.timesCorrect >= 2
-              ? state.lifeRemaining + 1
-              : state.lifeRemaining,
+          lifeRemaining:
+              state.timesCorrect > state.difficultyModel!.numberTurnEachLevel
+                  ? state.lifeRemaining + 1
+                  : state.lifeRemaining,
         ),
       );
 
@@ -451,9 +452,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       emitter(
         state.copyWith(
           timesCorrect: state.timesCorrect + 1,
-          lifeRemaining: state.timesCorrect >= 2
-              ? state.lifeRemaining + 1
-              : state.lifeRemaining,
+          lifeRemaining:
+              state.timesCorrect > state.difficultyModel!.numberTurnEachLevel
+                  ? state.lifeRemaining + 1
+                  : state.lifeRemaining,
         ),
       );
 

@@ -1034,9 +1034,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       state.copyWith(
         point: state.point + state.difficultyModel!.pointEachTurn,
         timesCorrect: state.timesCorrect + 1,
-        lifeRemaining: state.timesCorrect >= 2
-            ? state.lifeRemaining + 1
-            : state.lifeRemaining,
+        lifeRemaining:
+            state.timesCorrect > state.difficultyModel!.numberTurnEachLevel
+                ? state.lifeRemaining + 1
+                : state.lifeRemaining,
       ),
     );
 
@@ -1047,19 +1048,20 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       _audioBloc.add(PlayCorrectAudio());
     }
 
-    await Future.delayed(const Duration(milliseconds: 1000));
-    if (isClosed) return;
+    await Future.delayed(const Duration(milliseconds: 1000)).then((_) {
+      if (isClosed) return;
 
-    // Check if player should level up
-    if (state.isAbleToLevelUp) {
-      add(CombatLevelChanged(
-        level: state.level + 1,
-      ));
-    } else {
-      add(CombatLevelChanged(
-        level: state.level,
-      ));
-    }
+      // Check if player should level up
+      if (state.isAbleToLevelUp) {
+        add(CombatLevelChanged(
+          level: state.level + 1,
+        ));
+      } else {
+        add(CombatLevelChanged(
+          level: state.level,
+        ));
+      }
+    });
   }
 
   Future<String> _onCombatGeneratedRequiredString(

@@ -74,7 +74,6 @@ class DifficultyModel {
     Difficulty.medium: const DifficultyModel(
       difficulty: Difficulty.medium,
       pointEachTurn: 2,
-      numberTurnEachLevel: 5,
       timeLimitPerTurn: 20,
       numberOfCharacters: 6,
     ),
@@ -93,7 +92,6 @@ class DifficultyModel {
     Difficulty.pickRight: const DifficultyModel(
       difficulty: Difficulty.pickRight,
       pointEachTurn: 2,
-      numberTurnEachLevel: 5,
       timeLimitPerTurn: 5,
       numberOfCharacters: 6, // Used for equation complexity
       isPickRightMode: true,

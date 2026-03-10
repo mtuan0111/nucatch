@@ -18,6 +18,7 @@ import 'package:nucatch/widgets/combat_status_badge.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';
 import 'package:nucatch/widgets/countdown_bar.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
+import 'package:nucatch/widgets/quick_setting_button.dart';
 
 class CombatPlayScreen extends StatefulWidget {
   const CombatPlayScreen({super.key});
@@ -191,6 +192,61 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       ),
                       // Full-screen countdown overlay (blur + centered)
                       _buildCountDown(combatState),
+                      // Quick settings overlay — always accessible
+                      Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.all(kSpaceS),
+                            child: BlocBuilder<SettingBloc, SettingState>(
+                              builder: (context, settingState) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    // Volume toggle
+                                    QuickSettingButton(
+                                      icon: settingState.isMuted
+                                          ? FontAwesomeIcons.volumeXmark
+                                          : settingState.vol > 7
+                                              ? FontAwesomeIcons.volumeHigh
+                                              : settingState.vol > 4
+                                                  ? FontAwesomeIcons.volumeLow
+                                                  : settingState.vol > 0
+                                                      ? FontAwesomeIcons
+                                                          .volumeOff
+                                                      : FontAwesomeIcons
+                                                          .volumeXmark,
+                                      onTap: () {
+                                        context.read<SettingBloc>().add(
+                                              ToggleMute(),
+                                            );
+                                      },
+                                      isActive: !settingState.isMuted,
+                                    ),
+                                    const SizedBox(height: kSpaceXS),
+                                    // Vibration toggle
+                                    QuickSettingButton(
+                                      icon: settingState.isVibrate
+                                          ? FontAwesomeIcons.mobileScreenButton
+                                          : FontAwesomeIcons.mobile,
+                                      onTap: () {
+                                        context.read<SettingBloc>().add(
+                                              ChangedIsVibrate(
+                                                isVibrate:
+                                                    !settingState.isVibrate,
+                                              ),
+                                            );
+                                      },
+                                      isActive: settingState.isVibrate,
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   );
                 },
@@ -247,7 +303,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                             style: AppTextStyles.bodyLargeBold(context),
                           ),
                           TextSpan(
-                            text: combatState.levelAndTimeCorrect,
+                            text:
+                                "${combatState.levelAndTimeCorrect} / ${combatState.difficultyModel?.numberTurnEachLevel}",
                             style: AppTextStyles.bodyLarge(context),
                           ),
                         ],
@@ -776,7 +833,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                         );
                   },
                   backgroundBuilder: (context, borderRadius) {
-                    return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: 'Reset'.hashCode, borderRadius: borderRadius);
+                    return LightningWidget(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: 'Reset'.hashCode,
+                        borderRadius: borderRadius);
                   },
                 );
               } else if (e.key == KeyboardOption.mainMenu) {
@@ -785,7 +845,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   iconData: FontAwesomeIcons.bars,
                   onPressed: () => _handleMenuButton(context),
                   backgroundBuilder: (context, borderRadius) {
-                    return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: 'Menu'.hashCode, borderRadius: borderRadius);
+                    return LightningWidget(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: 'Menu'.hashCode,
+                        borderRadius: borderRadius);
                   },
                 );
               } else {
@@ -800,7 +863,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                         );
                   },
                   backgroundBuilder: (context, borderRadius) {
-                    return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: e.value.toString().hashCode, borderRadius: borderRadius);
+                    return LightningWidget(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: e.value.toString().hashCode,
+                        borderRadius: borderRadius);
                   },
                 );
               }
@@ -857,12 +923,14 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       CombatPickRightButtonTap(buttonIndex: buttonIndex),
                     );
 
-                // Trigger fireworks simultaneously if correct
+                // Trigger animations simultaneously if correct
                 if (buttonIndex == combatState.correctIndex &&
                     position != null) {
-                  // Firework at the correct button position
-                  _animationKey.currentState?.triggers.onAddPoint(position);
-                  // Firework at the life star position (same timing)
+                  // Lightning only at the correct button position
+                  // (full firework fires via _handleAnimationEvents on level-up)
+                  _animationKey.currentState?.triggers
+                      .onLightningOnly(position);
+                  // Life gain animation
                   final heartPosition = _getWidgetPosition(_heartKey);
                   _animationKey.currentState?.triggers
                       .onGainLife(heartPosition);
@@ -881,7 +949,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   iconData: FontAwesomeIcons.bars,
                   onPressed: () => _handleMenuButton(context),
                   backgroundBuilder: (context, borderRadius) {
-                    return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: 'Menu'.hashCode, borderRadius: borderRadius);
+                    return LightningWidget(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: 'Menu'.hashCode,
+                        borderRadius: borderRadius);
                   },
                 ),
               ],
@@ -900,12 +971,12 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
   void _handleAnimationEvents(BuildContext context, CombatState state) {
     // Track point changes
-    final wasPointIncreased = _prevPointForAnimation != null &&
-        state.point > _prevPointForAnimation!;
+    final wasPointIncreased =
+        _prevPointForAnimation != null && state.point > _prevPointForAnimation!;
 
     // Track level changes
-    final wasLevelIncreased = _prevLevelForAnimation != null &&
-        state.level > _prevLevelForAnimation!;
+    final wasLevelIncreased =
+        _prevLevelForAnimation != null && state.level > _prevLevelForAnimation!;
 
     // Track life changes
     final wasLifeIncreasedForAnimation = _prevLifeForAnimation != null &&
@@ -918,19 +989,21 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     // Trigger my score animation based on whether it's a level-up or just a correct answer
     if (wasPointIncreased) {
       final scorePosition = _getWidgetPosition(_scoreKey);
-      if (wasLevelIncreased) {
-        // Level-up: full firework explosion
-        _animationKey.currentState?.triggers.onAddPoint(scorePosition);
-      } else {
-        // Correct answer only: lightning glow without explosion
-        _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
-      }
+      // Correct answer only: lightning glow without explosion
+      _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
+    }
+
+    if (wasLevelIncreased) {
+      final scorePosition = _getWidgetPosition(_scoreKey);
+      // Level-up: full firework explosion
+      _animationKey.currentState?.triggers.onAddPoint(scorePosition);
     }
 
     // Trigger opponent score animation (lightning only; opponent does not trigger level-up locally)
     if (state.opponentJustSucceeded) {
       final opponentScorePosition = _getWidgetPosition(_opponentScoreKey);
-      _animationKey.currentState?.triggers.onLightningOnly(opponentScorePosition);
+      _animationKey.currentState?.triggers
+          .onLightningOnly(opponentScorePosition);
     }
 
     // Trigger life gain animation
