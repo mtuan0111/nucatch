@@ -569,10 +569,12 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                   _animationKey
                                                                           .currentState !=
                                                                       null) {
+                                                                // Per-character cascade: lightning only
+                                                                // Full firework fires via _handleAnimationEvents on level-up
                                                                 _animationKey
                                                                     .currentState!
                                                                     .triggers
-                                                                    .onAddPoint(
+                                                                    .onLightningOnly(
                                                                         center);
                                                               }
                                                             });
@@ -723,11 +725,16 @@ class _PlayScreenState extends State<PlayScreen> {
   // Animation event handler
   int? _prevPointForAnimation;
   int? _prevLifeForAnimation;
+  int? _prevLevelForAnimation;
 
   void _handleAnimationEvents(BuildContext context, TurnState state) {
     // Track point changes using same pattern as life changes
     final wasPointIncreased =
         _prevPointForAnimation != null && state.point > _prevPointForAnimation!;
+
+    // Track level changes (level-up = firework; correct answer only = lightning)
+    final wasLevelIncreased = _prevLevelForAnimation != null &&
+        state.level > _prevLevelForAnimation!;
 
     // Track life changes using same pattern as existing life animation
     final wasLifeIncreasedForAnimation = _prevLifeForAnimation != null &&
@@ -735,10 +742,16 @@ class _PlayScreenState extends State<PlayScreen> {
     final wasLifeDecreasedForAnimation = _prevLifeForAnimation != null &&
         state.lifeRemaining < _prevLifeForAnimation!;
 
-    // Trigger point animation
+    // Trigger animation based on what happened:
     if (wasPointIncreased) {
       final scorePosition = _getWidgetPosition(_scoreKey);
-      _animationKey.currentState?.triggers.onAddPoint(scorePosition);
+      if (wasLevelIncreased) {
+        // Level-up: full firework explosion
+        _animationKey.currentState?.triggers.onAddPoint(scorePosition);
+      } else {
+        // Correct answer only: lightning glow without explosion
+        _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
+      }
     }
 
     // Trigger life gain animation
@@ -760,6 +773,10 @@ class _PlayScreenState extends State<PlayScreen> {
     if (_prevLifeForAnimation == null ||
         state.lifeRemaining != _prevLifeForAnimation) {
       _prevLifeForAnimation = state.lifeRemaining;
+    }
+    if (_prevLevelForAnimation == null ||
+        state.level != _prevLevelForAnimation) {
+      _prevLevelForAnimation = state.level;
     }
   }
 

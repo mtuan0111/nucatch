@@ -549,8 +549,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                 if (mounted &&
                                     _animationKey.currentState != null) {
                                   dev.log("firework at index $index");
+                                  // Per-character cascade: lightning only
+                                  // Full firework fires via _handleAnimationEvents on level-up
                                   _animationKey.currentState!.triggers
-                                      .onAddPoint(center);
+                                      .onLightningOnly(center);
                                 }
                               });
                             }
@@ -894,9 +896,16 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   int? _prevPointForAnimation;
   int? _prevLifeForAnimation;
   int? _prevOpponentScoreForAnimation;
+  int? _prevLevelForAnimation;
 
   void _handleAnimationEvents(BuildContext context, CombatState state) {
     // Track point changes
+    final wasPointIncreased = _prevPointForAnimation != null &&
+        state.point > _prevPointForAnimation!;
+
+    // Track level changes
+    final wasLevelIncreased = _prevLevelForAnimation != null &&
+        state.level > _prevLevelForAnimation!;
 
     // Track life changes
     final wasLifeIncreasedForAnimation = _prevLifeForAnimation != null &&
@@ -906,23 +915,23 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
     // Track opponent score changes
 
-    // // Trigger point animation
-    // if (wasPointIncreased) {
-    //   final scorePosition = _getWidgetPosition(_scoreKey);
-    //   _animationKey.currentState?.triggers.onAddPoint(scorePosition);
-    // }
+    // Trigger my score animation based on whether it's a level-up or just a correct answer
+    if (wasPointIncreased) {
+      final scorePosition = _getWidgetPosition(_scoreKey);
+      if (wasLevelIncreased) {
+        // Level-up: full firework explosion
+        _animationKey.currentState?.triggers.onAddPoint(scorePosition);
+      } else {
+        // Correct answer only: lightning glow without explosion
+        _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
+      }
+    }
 
-    // Trigger opponent score animation (small firework)
-    // This triggers IMMEDIATELY when opponent succeeds, before score updates
+    // Trigger opponent score animation (lightning only; opponent does not trigger level-up locally)
     if (state.opponentJustSucceeded) {
       final opponentScorePosition = _getWidgetPosition(_opponentScoreKey);
-      _animationKey.currentState?.triggers.onAddPoint(opponentScorePosition);
+      _animationKey.currentState?.triggers.onLightningOnly(opponentScorePosition);
     }
-    // // Also trigger if score actually increased (fallback)
-    // else if (wasOpponentScoreIncreased) {
-    //   final opponentScorePosition = _getWidgetPosition(_opponentScoreKey);
-    //   _animationKey.currentState?.triggers.onAddPoint(opponentScorePosition);
-    // }
 
     // Trigger life gain animation
     // Skip for Pick Right mode - already triggered simultaneously in onButtonTap
@@ -950,6 +959,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     if (_prevOpponentScoreForAnimation == null ||
         state.opponentScore != _prevOpponentScoreForAnimation) {
       _prevOpponentScoreForAnimation = state.opponentScore;
+    }
+    if (_prevLevelForAnimation == null ||
+        state.level != _prevLevelForAnimation) {
+      _prevLevelForAnimation = state.level;
     }
   }
 
