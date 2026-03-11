@@ -1780,3 +1780,39 @@ Flutter build for Android
 Flutter build for iOS
 ```flutter build ios --build-name=2.7.11 --build-number=81 --release```
 ```
+
+---
+## Released on: 12/03/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 82           | 2.8.1   |
+| iOS      | 82           | 2.8.1   |
+
+### Release note:
+- feat: AI-generated greeting messages on the menu screen (Gemini AI)
+- feat: Daily reminder notifications with AI-generated messages (7:30 PM)
+- feat: Smarter Pick Right mode with trick mutations (Off-By-One, Ones Column, Transposition, Wrong Operator)
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+```markdown
+[Builded] Version 2.8.1 - 82 / 2.8.1 - 82 _ feat: AI greeting, daily reminder & smarter Pick Right mode
+
+**Store notices / What's new / Summary:**
+
+- **English:**  
+    - Added personalized AI-powered greeting messages on the home screen. Daily reminder notifications at 7:30 PM to keep you engaged. Upgraded Pick Right mode with smarter trick options that challenge your math skills in a more fun and competitive way.
+
+- **Tiếng Việt:**  
+    - Thêm lời chào cá nhân hoá bằng AI trên màn hình chính. Thông báo nhắc nhở hàng ngày lúc 19:30 để giữ bạn chơi đều đặn. Nâng cấp chế độ Chọn Đúng với các đáp án đánh lừa thông minh hơn, giúp thử thách kỹ năng toán học vui và hấp dẫn hơn.
+
+Flutter build for Android
+```flutter build appbundle --build-name=2.8.1 --build-number=82 --release```
+
+Flutter build for iOS
+```flutter build ios --build-name=2.8.1 --build-number=82 --release```
+``` , `Flutter build for Android`, `Flutter build for iOS`
