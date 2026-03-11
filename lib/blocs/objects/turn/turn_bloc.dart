@@ -42,7 +42,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<Start>(_onStart);
     on<End>(_onEnd);
     on<CountDownIntro>(_onCountDownIntro);
-    on<ApplySetting>(_onApplySetting);
+
     on<TapTimerTick>(_onTapTimerTick);
     on<TapTimerTimeout>(_onTapTimerTimeout);
     on<TapTimerPause>(_onTapTimerPause);
@@ -885,15 +885,6 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (state.isLoading) {
       return;
     }
-  }
-
-  Future<void> _onApplySetting(
-    ApplySetting event,
-    Emitter<TurnState> emitter,
-  ) async {
-    _audioBloc.add(SetAudioVolume(volume: event.settingModel.vol / 10));
-    _vibrationBloc
-        .add(SetVibrationEnabled(enabled: event.settingModel.isVibrate));
   }
 
   void _onTapTimerTick(

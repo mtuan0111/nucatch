@@ -1746,3 +1746,37 @@ Flutter build for Android
 Flutter build for iOS
 ```flutter build ios --build-name=2.7.10 --build-number=80 --release```
 ```
+
+---
+## Released on: 11/03/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 81           | 2.7.11   |
+| iOS      | 81           | 2.7.11   |
+
+### Release note:
+feat: Fixed the muted and vibration in quick setting during playing
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+```markdown
+[Builded] Version 2.7.11 - 81 / 2.7.11 - 81 _ feat: Fixed the muted and vibration in quick setting during playing
+
+**Store notices / What's new / Summary:**
+
+- **English:**  
+    - Fixed an issue where the quick settings menu for audio and vibration was not working properly during gameplay.
+
+- **Tiếng Việt:**  
+    - Sửa lỗi menu cài đặt nhanh cho âm thanh và rung không hoạt động đúng cách trong quá trình chơi game.
+
+Flutter build for Android
+```flutter build appbundle --build-name=2.7.11 --build-number=81 --release```
+
+Flutter build for iOS
+```flutter build ios --build-name=2.7.11 --build-number=81 --release```
+```

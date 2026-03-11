@@ -48,7 +48,9 @@ class MenuNav extends StatelessWidget {
             BlocProvider(
               create: (context) {
                 final audioBloc = AudioBloc()
-                  ..add(SetAudioVolume(volume: settingState.vol / 10));
+                  ..add(SetAudioVolume(
+                      volume:
+                          settingState.isMuted ? 0.0 : settingState.vol / 10));
                 // Wire this AudioBloc into SettingBloc so ToggleMute reaches it
                 settingBloc.audioBloc = audioBloc;
                 return audioBloc;
@@ -69,7 +71,7 @@ class MenuNav extends StatelessWidget {
                   const TurnState(),
                   audioBloc: context.read<AudioBloc>(),
                   vibrationBloc: context.read<VibrationBloc>(),
-                )..add(ApplySetting(settingModel: settingState.model));
+                );
                 return turnBloc;
               },
             ),

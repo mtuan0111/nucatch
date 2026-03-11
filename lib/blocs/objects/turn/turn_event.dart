@@ -95,14 +95,6 @@ class SaveRecorded extends TurnEvent {
   SaveRecorded({this.callback});
 }
 
-class ApplySetting extends TurnEvent {
-  final BaseSettingModel settingModel;
-
-  ApplySetting({
-    required this.settingModel,
-  });
-}
-
 // Legacy event aliases for backward compatibility
 // These should be gradually replaced in the codebase
 // typedef CountDownIntro = CountDownIntro;
