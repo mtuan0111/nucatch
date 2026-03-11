@@ -259,20 +259,17 @@ class Helper {
   }
 
   /// Generates equations for Pick Right mode with 3 options (1 true, 2 false)
-  /// Returns a map with:
-  /// - trueEquation: The correct equation
-  /// - falseEquation1: First incorrect equation
-  /// - falseEquation2: Second incorrect equation
-  /// - correctIndex: Index of the correct button (0, 1, or 2)
-  /// - equations: List of equations in display order
+  /// False equations reuse the same operands but apply trick mutations to the result.
+  ///
+  /// Mutation types (level-gated):
+  /// 1. Off-By-One Trap: correctResult ± 1 (all levels)
+  /// 2. Ones Column Trap: correctResult ± 10 (all levels)
+  /// 3. Transposition Trap: swap tens/ones digits of result (level 3+)
+  /// 4. Wrong Operator Trap: show result of a different operator (level 5+)
   Map<String, dynamic> generatePickRightEquations(int level) {
     final random = Random();
 
     // Generate random numbers based on level
-    // Level 1-2: max 100 (two-digit numbers)
-    // Level 3-4: max 1000 (three-digit numbers)
-    // Level 5-6: max 10000 (four-digit numbers)
-    // Level 7-8: max 100000 (five-digit numbers)
     int maxNumber;
     if (level <= 2) {
       maxNumber = 20 + level * 20; // 40-60
@@ -283,14 +280,15 @@ class Helper {
     } else if (level <= 8) {
       maxNumber = 10000 + (level - 6) * 20000; // 30000-50000
     } else {
-      maxNumber = 100000; // Cap at 100000
+      maxNumber = 100000;
     }
     final a = random.nextInt(maxNumber) + 1;
     final b = random.nextInt(maxNumber) + 1;
 
     // Choose operator
-    final operators = ['+', '-', '×'];
-    final operator = operators[random.nextInt(operators.length)];
+    final List<String> operators =
+        level <= 2 ? ['+', '-'] : ['+', '-', '×'];
+    final String operator = operators[random.nextInt(operators.length)];
 
     // Calculate correct result
     int correctResult;
@@ -310,137 +308,91 @@ class Helper {
 
     final trueEq = '$a $operator $b = $correctResult';
 
-    // Helper function to generate false equation
-    // Cumulative difficulty progression:
-    // Level 1: Large (20-70)
-    // Level 2: Medium (1-10) + Level 1
-    // Level 3: (5-9)*10 = 50-90 + Level 2
-    // Level 4: (1-2)*10 = 10-20 + Level 3
-    // Level 5: (5-9)*100 = 500-900 + Level 4
-    // Level 6: (1-2)*100 = 100-200 + Level 5
-    // And so on...
-    String generateFalseEquation(List<int> usedA, List<int> usedB) {
-      int aFalse, bFalse;
-      String opFalse;
-      int correctResFalse;
-      int falseRes;
+    // ── Mutation helpers ──
 
-      do {
-        aFalse = random.nextInt(maxNumber) + 1;
-        bFalse = random.nextInt(maxNumber) + 1;
-      } while (usedA.contains(aFalse) && usedB.contains(bFalse));
-
-      // Operator selection based on level
-      List<String> availableOps;
-      if (level <= 2) {
-        availableOps = ['+', '-']; // Basic operators for beginners
-      } else {
-        availableOps = ['+', '-', '×']; // All operators for higher levels
-      }
-      opFalse = availableOps[random.nextInt(availableOps.length)];
-
-      switch (opFalse) {
-        case '+':
-          correctResFalse = aFalse + bFalse;
-          break;
-        case '-':
-          correctResFalse = aFalse - bFalse;
-          break;
-        case '×':
-          correctResFalse = aFalse * bFalse;
-          break;
-        default:
-          correctResFalse = aFalse + bFalse;
-      }
-
-      // Build cumulative deviation pool based on level
-      List<int> deviationPool = [];
-
-      // Level 1: Large (20-70)
-      if (level >= 1) {
-        for (int i = 20; i <= 70; i++) {
-          deviationPool.add(i);
-          deviationPool.add(-i);
-        }
-      }
-
-      // Level 2: Medium (1-10)
-      if (level >= 2) {
-        for (int i = 1; i <= 10; i++) {
-          deviationPool.add(i);
-          deviationPool.add(-i);
-        }
-      }
-
-      // Level 3: (5-9) * 10 = 50-90
-      if (level >= 3) {
-        for (int i = 5; i <= 9; i++) {
-          deviationPool.add(i * 10);
-          deviationPool.add(-i * 10);
-        }
-      }
-
-      // Level 4: (1-2) * 10 = 10-20
-      if (level >= 4) {
-        for (int i = 1; i <= 2; i++) {
-          deviationPool.add(i * 10);
-          deviationPool.add(-i * 10);
-        }
-      }
-
-      // Level 5: (5-9) * 100 = 500-900
-      if (level >= 5) {
-        for (int i = 5; i <= 9; i++) {
-          deviationPool.add(i * 100);
-          deviationPool.add(-i * 100);
-        }
-      }
-
-      // Level 6: (1-2) * 100 = 100-200
-      if (level >= 6) {
-        for (int i = 1; i <= 2; i++) {
-          deviationPool.add(i * 100);
-          deviationPool.add(-i * 100);
-        }
-      }
-
-      // Level 7+: (5-9) * 1000 = 5000-9000
-      if (level >= 7) {
-        for (int i = 5; i <= 9; i++) {
-          deviationPool.add(i * 1000);
-          deviationPool.add(-i * 1000);
-        }
-      }
-
-      // Level 8+: (1-2) * 1000 = 1000-2000
-      if (level >= 8) {
-        for (int i = 1; i <= 2; i++) {
-          deviationPool.add(i * 1000);
-          deviationPool.add(-i * 1000);
-        }
-      }
-
-      // Pick a random deviation from the pool
-      final deviation = deviationPool[random.nextInt(deviationPool.length)];
-      falseRes = correctResFalse + deviation;
-
-      // Ensure false result is different from correct and positive
-      if (falseRes == correctResFalse) {
-        falseRes = correctResFalse + (random.nextBool() ? 1 : -1);
-      }
-      if (falseRes < 0) {
-        falseRes = correctResFalse + deviation.abs();
-      }
-
-      usedA.add(aFalse);
-      usedB.add(bFalse);
-      return '$aFalse $opFalse $bFalse = $falseRes';
+    /// 1. Off-By-One Trap: ±1
+    int? offByOne() {
+      final mutated = correctResult + (random.nextBool() ? 1 : -1);
+      return mutated;
     }
 
-    List<int> usedA = [a];
-    List<int> usedB = [b];
-    final falseEq1 = generateFalseEquation(usedA, usedB);
-    final falseEq2 = generateFalseEquation(usedA, usedB);
+    /// 2. Ones Column Trap: ±10
+    int? onesColumn() {
+      final mutated = correctResult + (random.nextBool() ? 10 : -10);
+      return mutated;
+    }
+
+    /// 3. Transposition Trap: swap tens and ones digits
+    int? transposition() {
+      final abs = correctResult.abs();
+      if (abs < 10) return null; // single digit — can't transpose
+      final tens = (abs ~/ 10) % 10;
+      final ones = abs % 10;
+      if (tens == ones) return null; // palindrome digits — no visible change
+      final swapped = (abs ~/ 100) * 100 + ones * 10 + tens;
+      return correctResult < 0 ? -swapped : swapped;
+    }
+
+    /// 4. Wrong Operator Trap: compute with a different operator
+    int? wrongOperator() {
+      final altOps = ['+', '-', '×'].where((o) => o != operator).toList();
+      final altOp = altOps[random.nextInt(altOps.length)];
+      int altResult;
+      switch (altOp) {
+        case '+':
+          altResult = a + b;
+          break;
+        case '-':
+          altResult = a - b;
+          break;
+        case '×':
+          altResult = a * b;
+          break;
+        default:
+          altResult = a + b;
+      }
+      if (altResult == correctResult) return null;
+      return altResult;
+    }
+
+    // Build the pool of available mutations based on level
+    List<int? Function()> mutationPool = [offByOne, onesColumn];
+
+    if (level >= 3) {
+      mutationPool.add(transposition);
+    }
+    if (level >= 5) {
+      mutationPool.add(wrongOperator);
+    }
+
+    /// Generate a false result using trick mutations, with fallback
+    String generateTrickFalseEquation(Set<int> usedResults) {
+      // Shuffle mutations and try each one
+      final shuffled = List<int? Function()>.from(mutationPool)..shuffle(random);
+
+      for (final mutation in shuffled) {
+        final mutated = mutation();
+        if (mutated != null &&
+            mutated != correctResult &&
+            !usedResults.contains(mutated)) {
+          usedResults.add(mutated);
+          return '$a $operator $b = $mutated';
+        }
+      }
+
+      // Fallback: random deviation if no mutation worked
+      int fallback;
+      do {
+        final deviation = random.nextInt(20) + 1;
+        fallback = correctResult + (random.nextBool() ? deviation : -deviation);
+      } while (fallback == correctResult || usedResults.contains(fallback));
+      usedResults.add(fallback);
+      return '$a $operator $b = $fallback';
+    }
+
+    final Set<int> usedResults = {correctResult};
+    final falseEq1 = generateTrickFalseEquation(usedResults);
+    final falseEq2 = generateTrickFalseEquation(usedResults);
 
     // Randomly assign correct position (0, 1, or 2)
     final correctIndex = random.nextInt(3);
@@ -449,7 +401,6 @@ class Helper {
     List<String> equations = ['', '', ''];
     equations[correctIndex] = trueEq;
 
-    // Fill remaining positions with false equations
     int falseIdx = 0;
     List<String> falseEquations = [falseEq1, falseEq2];
     for (int i = 0; i < 3; i++) {
@@ -460,10 +411,10 @@ class Helper {
 
     return {
       'trueEquation': trueEq,
-      'falseEquation': falseEq1, // Keep for backward compatibility
+      'falseEquation': falseEq1,
       'falseEquation1': falseEq1,
       'falseEquation2': falseEq2,
-      'isLeftCorrect': correctIndex == 0, // Keep for backward compatibility
+      'isLeftCorrect': correctIndex == 0,
       'correctIndex': correctIndex,
       'equations': equations,
     };
