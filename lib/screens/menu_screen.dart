@@ -11,6 +11,7 @@ import 'package:nucatch/helpers/preferences_key.dart';
 import 'package:skeleton_core/skeleton_core.dart' as skeleton;
 import 'package:skeleton_core/skeleton_core.dart' hide MenuScreen;
 import 'package:nucatch/services/ai_greeting_service.dart';
+import 'package:nucatch/services/notification_service.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -23,6 +24,8 @@ class _MenuScreenState extends State<MenuScreen> {
   Difficulty? savedDifficulty;
   MenuBloc get menuBloc => context.read<MenuBloc>();
   MenuState get menuState => menuBloc.state;
+
+  static bool _hasScheduledReminder = false;
 
   @override
   void initState() {
@@ -66,6 +69,22 @@ class _MenuScreenState extends State<MenuScreen> {
             context,
             lang(context).menuGreeting,
           ),
+        ),
+      );
+    }
+
+    if (!_hasScheduledReminder) {
+      _hasScheduledReminder = true;
+      userBloc.add(
+        skeleton.ScheduleDailyReminder(
+          fetchReminder: () => AiGreetingService.getReminderMessage(
+            context,
+            "Don't forget to play your daily NuCatch brain training!",
+          ),
+          summarizeToTitle: (message) =>
+              AiGreetingService.getReminderTitle(message),
+          scheduleNotification: (title, body) => NotificationService()
+              .scheduleDailyReminder(title: title, body: body),
         ),
       );
     }
