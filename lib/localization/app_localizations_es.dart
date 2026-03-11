@@ -488,4 +488,7 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get tourResetMessage =>
       'El tour ha sido reiniciado. Regresa al menú principal para comenzar.';
+
+  @override
+  String get menuGreeting => 'Test your memory and math skills today!';
 }

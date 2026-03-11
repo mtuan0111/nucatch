@@ -487,4 +487,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get tourResetMessage =>
       'La visite a été réinitialisée. Retournez au menu principal pour commencer.';
+
+  @override
+  String get menuGreeting => 'Test your memory and math skills today!';
 }

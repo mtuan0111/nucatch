@@ -563,5 +563,9 @@
   "tourRestartFromSettings": "重置导览",
   "tourResetMessage": "导览已重置。返回主菜单查看。",
   "pickRightTitle": "选出正确答案",
-  "pickRightDescription": "选择正确的等式！ 极速反应的5秒限时游戏。"
+  "pickRightDescription": "选择正确的等式！ 极速反应的5秒限时游戏。",
+  "menuGreeting": "Test your memory and math skills today!",
+  "@menuGreeting": {
+    "description": "Greeting message on the main menu"
+  }
 }

@@ -563,5 +563,9 @@
   "tourRestartFromSettings": "टूर रीसेट करें",
   "tourResetMessage": "टूर को रीसेट कर दिया गया है। शुरू करने के लिए मुख्य मेनू पर लौटें।",
   "pickRightTitle": "सही चुनें",
-  "pickRightDescription": "सही समीकरण चुनें! 5-सेकंड टाइमर के साथ त्वरित चयन गेम।"
+  "pickRightDescription": "सही समीकरण चुनें! 5-सेकंड टाइमर के साथ त्वरित चयन गेम।",
+  "menuGreeting": "Test your memory and math skills today!",
+  "@menuGreeting": {
+    "description": "Greeting message on the main menu"
+  }
 }

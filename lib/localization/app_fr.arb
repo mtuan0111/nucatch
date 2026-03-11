@@ -563,5 +563,9 @@
   "tourRestartFromSettings": "Redémarrer la Visite",
   "tourResetMessage": "La visite a été réinitialisée. Retournez au menu principal pour commencer.",
   "pickRightTitle": "Choisissez Bien",
-  "pickRightDescription": "Choisissez la bonne équation ! Jeu de sélection rapide avec minuteur de 5 secondes."
+  "pickRightDescription": "Choisissez la bonne équation ! Jeu de sélection rapide avec minuteur de 5 secondes.",
+  "menuGreeting": "Test your memory and math skills today!",
+  "@menuGreeting": {
+    "description": "Greeting message on the main menu"
+  }
 }

@@ -577,5 +577,9 @@
   "tourSkip": "Bỏ qua",
   "tourFinish": "Hoàn thành",
   "tourRestartFromSettings": "Khởi động lại hướng dẫn",
-  "tourResetMessage": "Đã tạo lại hướng dẫn. Xin quay về Màn hình Chính để xem."
+  "tourResetMessage": "Đã tạo lại hướng dẫn. Xin quay về Màn hình Chính để xem.",
+  "menuGreeting": "Thử thách trí nhớ và kỹ năng tính toán của bạn ngay lúc này!",
+  "@menuGreeting": {
+    "description": "Greeting message on the main menu"
+  }
 }

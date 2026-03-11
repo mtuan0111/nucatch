@@ -563,5 +563,9 @@
   "tourRestartFromSettings": "Tour Neustarten",
   "tourResetMessage": "Die Tour wurde zurückgesetzt. Kehre zum Hauptmenü zurück, um zu beginnen.",
   "pickRightTitle": "Richtig Wählen",
-  "pickRightDescription": "Wähle die richtige Gleichung! Schnelles Auswahlspiel mit 5-Sekunden-Timer."
+  "pickRightDescription": "Wähle die richtige Gleichung! Schnelles Auswahlspiel mit 5-Sekunden-Timer.",
+  "menuGreeting": "Test your memory and math skills today!",
+  "@menuGreeting": {
+    "description": "Greeting message on the main menu"
+  }
 }

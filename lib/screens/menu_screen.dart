@@ -69,6 +69,17 @@ class _MenuScreenState extends State<MenuScreen> {
       child: skeleton.MenuScreen(
         title: '', // Custom logo is provided in headerIcon
         headerIcon: const MainLogo(),
+        greetingMessage: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+          child: Text(
+            lang(context).menuGreeting,
+            style: skeleton.AppTextStyles.bodyLarge(context).copyWith(
+              fontStyle: FontStyle.italic,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
         floatingActionButton: const Padding(
           padding: EdgeInsets.only(left: 30),
           child: TourButton(),

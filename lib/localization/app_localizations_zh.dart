@@ -460,4 +460,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tourResetMessage => '导览已重置。返回主菜单查看。';
+
+  @override
+  String get menuGreeting => 'Test your memory and math skills today!';
 }

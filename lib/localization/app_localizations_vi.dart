@@ -485,4 +485,8 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get tourResetMessage =>
       'Đã tạo lại hướng dẫn. Xin quay về Màn hình Chính để xem.';
+
+  @override
+  String get menuGreeting =>
+      'Thử thách trí nhớ và kỹ năng tính toán của bạn ngay lúc này!';
 }

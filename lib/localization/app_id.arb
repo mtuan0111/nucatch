@@ -563,5 +563,9 @@
   "tourRestartFromSettings": "Ulangi Tur",
   "tourResetMessage": "Tur diatur ulang. Kembali ke menu utama untuk mulai.",
   "pickRightTitle": "Pilih Benar",
-  "pickRightDescription": "Pilih persamaan yang benar! Permainan ketangkasan waktu 5 detik."
+  "pickRightDescription": "Pilih persamaan yang benar! Permainan ketangkasan waktu 5 detik.",
+  "menuGreeting": "Test your memory and math skills today!",
+  "@menuGreeting": {
+    "description": "Greeting message on the main menu"
+  }
 }

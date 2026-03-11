@@ -943,6 +943,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tour has been reset. Return to the main menu to start.'**
   String get tourResetMessage;
+
+  /// Greeting message on the main menu
+  ///
+  /// In en, this message translates to:
+  /// **'Test your memory and math skills today!'**
+  String get menuGreeting;
 }
 
 class _AppLocalizationsDelegate

@@ -478,4 +478,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get tourResetMessage => 'รีเซ็ตทัวร์แล้ว กลับไปที่เมนูหลัก.';
+
+  @override
+  String get menuGreeting => 'Test your memory and math skills today!';
 }

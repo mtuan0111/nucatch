@@ -655,5 +655,9 @@
   "tourResetMessage": "Tour has been reset. Return to the main menu to start.",
   "@tourResetMessage": {
     "description": "Message shown when tour is reset"
+  },
+  "menuGreeting": "Test your memory and math skills today!",
+  "@menuGreeting": {
+    "description": "Greeting message on the main menu"
   }
 }

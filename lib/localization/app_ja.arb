@@ -563,5 +563,9 @@
   "tourRestartFromSettings": "ツアーを再確認",
   "tourResetMessage": "ツアーがリセットされました。メインメニューから始めましょう。",
   "pickRightTitle": "正しい方を選べ",
-  "pickRightDescription": "正しい数式を選択してください！5秒タイマーのクイック選択ゲーム。"
+  "pickRightDescription": "正しい数式を選択してください！5秒タイマーのクイック選択ゲーム。",
+  "menuGreeting": "Test your memory and math skills today!",
+  "@menuGreeting": {
+    "description": "Greeting message on the main menu"
+  }
 }

@@ -486,4 +486,7 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get tourResetMessage =>
       'टूर को रीसेट कर दिया गया है। शुरू करने के लिए मुख्य मेनू पर लौटें।';
+
+  @override
+  String get menuGreeting => 'Test your memory and math skills today!';
 }

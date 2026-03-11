@@ -464,4 +464,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get tourResetMessage => 'ツアーがリセットされました。メインメニューから始めましょう。';
+
+  @override
+  String get menuGreeting => 'Test your memory and math skills today!';
 }

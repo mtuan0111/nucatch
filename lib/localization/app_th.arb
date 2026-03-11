@@ -563,5 +563,9 @@
   "tourRestartFromSettings": "เริ่มต้นทัวร์ใหม่",
   "tourResetMessage": "รีเซ็ตทัวร์แล้ว กลับไปที่เมนูหลัก.",
   "pickRightTitle": "เลือกคำตอบที่ถูก",
-  "pickRightDescription": "เลือกสมการที่ถูกต้อง เกมเดาสุ่มภายในเวลา 5 วินาที"
+  "pickRightDescription": "เลือกสมการที่ถูกต้อง เกมเดาสุ่มภายในเวลา 5 วินาที",
+  "menuGreeting": "Test your memory and math skills today!",
+  "@menuGreeting": {
+    "description": "Greeting message on the main menu"
+  }
 }

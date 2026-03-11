@@ -486,4 +486,7 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get tourResetMessage =>
       'Tur diatur ulang. Kembali ke menu utama untuk mulai.';
+
+  @override
+  String get menuGreeting => 'Test your memory and math skills today!';
 }

@@ -563,5 +563,9 @@
   "tourRestartFromSettings": "Reiniciar Tour",
   "tourResetMessage": "El tour ha sido reiniciado. Regresa al menú principal para comenzar.",
   "pickRightTitle": "Pick Right",
-  "pickRightDescription": "¡Elige la ecuación correcta! Juego de selección rápida con temporizador de 5 segundos."
+  "pickRightDescription": "¡Elige la ecuación correcta! Juego de selección rápida con temporizador de 5 segundos.",
+  "menuGreeting": "Test your memory and math skills today!",
+  "@menuGreeting": {
+    "description": "Greeting message on the main menu"
+  }
 }

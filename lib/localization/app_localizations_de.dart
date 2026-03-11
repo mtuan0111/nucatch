@@ -489,4 +489,7 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get tourResetMessage =>
       'Die Tour wurde zurückgesetzt. Kehre zum Hauptmenü zurück, um zu beginnen.';
+
+  @override
+  String get menuGreeting => 'Test your memory and math skills today!';
 }
