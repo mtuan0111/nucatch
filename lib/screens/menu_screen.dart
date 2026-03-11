@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
 import 'package:skeleton_core/skeleton_core.dart' as skeleton;
 import 'package:skeleton_core/skeleton_core.dart' hide MenuScreen;
+import 'package:nucatch/services/ai_greeting_service.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -56,6 +57,18 @@ class _MenuScreenState extends State<MenuScreen> {
     // Reload saved difficulty whenever the screen becomes active
     // This ensures the Instant Start button updates when user changes difficulty
     _loadSavedDifficulty();
+
+    final userBloc = context.read<skeleton.UserBloc>();
+    if (userBloc.state.greetingMessage == null) {
+      userBloc.add(
+        skeleton.GetGreetingMessage(
+          fetchGreeting: () => AiGreetingService.getGreeting(
+            context,
+            lang(context).menuGreeting,
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -69,16 +82,24 @@ class _MenuScreenState extends State<MenuScreen> {
       child: skeleton.MenuScreen(
         title: '', // Custom logo is provided in headerIcon
         headerIcon: const MainLogo(),
-        greetingMessage: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-          child: Text(
-            lang(context).menuGreeting,
-            style: skeleton.AppTextStyles.bodyLarge(context).copyWith(
-              fontStyle: FontStyle.italic,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-            textAlign: TextAlign.center,
-          ),
+        greetingMessage: BlocBuilder<skeleton.UserBloc, skeleton.UserState>(
+          builder: (context, userState) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                child: Text(
+                  userState.greetingMessage ?? lang(context).menuGreeting,
+                  key: ValueKey(userState.greetingMessage),
+                  style: skeleton.AppTextStyles.bodyLarge(context).copyWith(
+                    fontStyle: FontStyle.italic,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          },
         ),
         floatingActionButton: const Padding(
           padding: EdgeInsets.only(left: 30),

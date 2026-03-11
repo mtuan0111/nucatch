@@ -78,6 +78,7 @@ dependencies:
   # Common game-shell package
   skeleton_core:
     path: ../skeleton_core
+  google_generative_ai: ^0.4.7
 
 
 dependency_overrides:
