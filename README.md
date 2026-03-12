@@ -1816,3 +1816,38 @@ Flutter build for Android
 Flutter build for iOS
 ```flutter build ios --build-name=2.8.1 --build-number=82 --release```
 ``` , `Flutter build for Android`, `Flutter build for iOS`
+
+
+---
+## Released on: 13/03/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 83           | 2.8.2   |
+| iOS      | 83           | 2.8.2   |
+
+### Release note:
+- feat: Optimize AI-generated greeting messages.
+
+### Git note release: 
+#### Command for copilot
+
+    Generate the message using the `Git message template`, `Store notices, what is news? sumarry and more general message, in vi and en, brief it short and summary, don't mention any things could make the concern by information security converning, which could be risk in Apple Store, and Play Store` , `Flutter build for Android`, `Flutter build for iOS`
+
+```markdown
+[Builded] Version 2.8.2 - 83 / 2.8.2 - 83 _ feat: Optimize AI-generated greeting messages
+
+**Store notices / What's new / Summary:**
+
+- **English:**  
+    - Optimized AI-generated greeting messages to improve user experience.
+
+- **Tiếng Việt:**  
+    - Tối ưu hóa lời chào AI để cải thiện trải nghiệm người dùng.
+
+Flutter build for Android
+```flutter build appbundle --build-name=2.8.2 --build-number=83 --release```
+
+Flutter build for iOS
+```flutter build ios --build-name=2.8.2 --build-number=83 --release```
+```

@@ -1,19 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AiGreetingService {
+  static const String _greetingCacheKey = 'ai_greeting_message';
+  static const String _greetingDateKey = 'ai_greeting_date';
+
+  /// Returns today's date as a string (yyyy-MM-dd)
+  static String _todayKey() {
+    final now = DateTime.now();
+    return '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+  }
+
   static Future<String> getGreeting(
       BuildContext context, String fallbackText) async {
     try {
+      // Check cache first
+      final prefs = await SharedPreferences.getInstance();
+      final cachedDate = prefs.getString(_greetingDateKey);
+      final cachedMessage = prefs.getString(_greetingCacheKey);
+
+      if (cachedDate == _todayKey() &&
+          cachedMessage != null &&
+          cachedMessage.isNotEmpty) {
+        return cachedMessage;
+      }
+
       final apiKey = dotenv.env['GEMINI_API_KEY'];
+      String geminiModel = dotenv.env['GEMINI_MODEL']!;
 
       if (apiKey == null || apiKey.isEmpty || apiKey == 'abc_xyz') {
         return fallbackText;
       }
 
       final model = GenerativeModel(
-        model: 'gemini-2.5-flash',
+        model: geminiModel,
         apiKey: apiKey,
       );
 
@@ -33,6 +55,9 @@ The language code to write the message in is: "$locale".
       final result = response.text?.trim();
 
       if (result != null && result.isNotEmpty) {
+        // Cache the result with today's date
+        await prefs.setString(_greetingCacheKey, result);
+        await prefs.setString(_greetingDateKey, _todayKey());
         return result;
       }
 
@@ -47,13 +72,14 @@ The language code to write the message in is: "$locale".
       BuildContext context, String fallbackText) async {
     try {
       final apiKey = dotenv.env['GEMINI_API_KEY'];
+      String geminiModel = dotenv.env['GEMINI_MODEL']!;
 
       if (apiKey == null || apiKey.isEmpty || apiKey == 'abc_xyz') {
         return fallbackText;
       }
 
       final model = GenerativeModel(
-        model: 'gemini-2.5-flash',
+        model: geminiModel,
         apiKey: apiKey,
       );
 
@@ -85,13 +111,14 @@ The language code to write the message in is: "$locale".
   static Future<String> getReminderTitle(String message) async {
     try {
       final apiKey = dotenv.env['GEMINI_API_KEY'];
+      String geminiModel = dotenv.env['GEMINI_MODEL']!;
 
       if (apiKey == null || apiKey.isEmpty || apiKey == 'abc_xyz') {
         return "NuCatch Daily Reminder";
       }
 
       final model = GenerativeModel(
-        model: 'gemini-2.5-flash',
+        model: geminiModel,
         apiKey: apiKey,
       );
 
