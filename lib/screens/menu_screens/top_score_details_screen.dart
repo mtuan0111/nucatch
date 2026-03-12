@@ -34,8 +34,8 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
   String get screenTitle => widget.title;
 
   TopScoreNavCubit get topScoreCubit => context.read<TopScoreNavCubit>();
-  TopScoreDetailState get topScoreDetailState =>
-      topScoreCubit.state as TopScoreDetailState;
+  NucatchTopScoreDetailState get topScoreDetailState =>
+      topScoreCubit.state as NucatchTopScoreDetailState;
 
   TurnRecordedModel get turnRecordedModel =>
       topScoreDetailState.turnRecordedModel;
@@ -73,13 +73,6 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
       case RankingPeriod.all:
         return lang(context).allTime;
     }
-  }
-
-  // Get filter context text
-  String _getFilterContext() {
-    return topScoreDetailState.isPersonalView
-        ? coreLang(context).personal
-        : coreLang(context).global;
   }
 
   @override
@@ -147,7 +140,7 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                     // ),
                     CustomSliverAppBar(
                       title:
-                          '${_getPeriodText()} - ${coreLang(context).rank} ${ranking ?? ''} - ${_getFilterContext()}',
+                          '${_getPeriodText()} - ${coreLang(context).rank} ${ranking ?? ''}',
                       opacity: state.isCapturing ? 0.0 : 1.0,
                       onBackPressed: () {
                         topScoreCubit.showTopScore();
@@ -306,10 +299,13 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                           iconData: FontAwesomeIcons.shareNodes,
                                           backgroundBuilder:
                                               (context, borderRadius) {
-                                            return LightningWidget(baseColor: Theme.of(context)
-                                                    .primaryColor, seed: coreLang(context)
+                                            return LightningWidget(
+                                                baseColor: Theme.of(context)
+                                                    .primaryColor,
+                                                seed: coreLang(context)
                                                     .share
-                                                    .hashCode, borderRadius: borderRadius);
+                                                    .hashCode,
+                                                borderRadius: borderRadius);
                                           },
                                           buttonSize: ButtonSize.small,
                                         ),

@@ -11,7 +11,7 @@ import 'package:nucatch/localization/app_localizations.dart';
 import 'package:nucatch/navs/menu_nav.dart';
 import 'package:nucatch/screens/wrappers/update_checker_wrapper.dart';
 import 'package:nucatch/widgets/global_tour_wrapper.dart';
-import 'package:nucatch/services/notification_service.dart';
+import 'package:nucatch/services/fcm_service.dart';
 
 import 'package:nucatch/firebase_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -58,12 +58,12 @@ Future<void> main() async {
         debugPrint('⚠️ Failed to initialize Google Mobile Ads: $e');
       }
 
-      // Notifications
+      // Firebase Cloud Messaging
       try {
-        await NotificationService().init();
-        debugPrint('✅ Notification Service initialized successfully');
+        await FcmService().init();
+        debugPrint('✅ FCM Service initialized successfully');
       } catch (e) {
-        debugPrint('⚠️ Failed to initialize Notification Service: $e');
+        debugPrint('⚠️ Failed to initialize FCM Service: $e');
       }
     },
 

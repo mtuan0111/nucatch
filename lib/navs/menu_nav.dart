@@ -20,7 +20,6 @@ import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show PlayMode;
 import 'package:nucatch/helpers/top_score_nav_types.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
-import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/navs/player_nav.dart';
 import 'package:nucatch/navs/top_score_nav.dart';
@@ -90,11 +89,21 @@ class MenuNav extends StatelessWidget {
           child: const PlayerNav(),
         );
       },
-      topScoreScreenBuilder: (ctx) => BlocProvider<
-          core_ts.TopScoreNavCubit<TurnRecordedModel, RankingPeriod>>(
-        create: (context) => TopScoreNavCubit(),
-        child: const TopScoreNav(),
-      ),
+      topScoreScreenBuilder: (ctx) {
+        final cubit = TopScoreNavCubit();
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<TopScoreNavCubit>(
+              create: (_) => cubit,
+            ),
+            BlocProvider<
+                core_ts.TopScoreNavCubit<TurnRecordedModel, RankingPeriod>>(
+              create: (_) => cubit,
+            ),
+          ],
+          child: const TopScoreNav(),
+        );
+      },
       settingScreenBuilder: (ctx, title) => SettingScreen(title: title),
       aboutScreenBuilder: (ctx, title) => AboutScreen(title: title),
     );
