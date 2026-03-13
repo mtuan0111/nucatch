@@ -913,17 +913,33 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
       await _onCombatAddPoint(CombatAddPoint(), emit);
     } else {
-      // Wrong answer - lose life but keep same turn and same equations
+      // Wrong answer - show correct answer, block taps, then lose life
       _audioBloc.add(PlayWrongAudio());
       _vibrationBloc.add(VibrateLong());
+
+      // Immediately block taps and highlight correct answer
+      emit(state.copyWith(
+        pickRightShowCorrect: true,
+      ));
 
       // Don't send moveCompleted - that would trigger turn swap on guest side.
       // CombatLostLife already sends life_update to sync opponent's UI.
       add(CombatLostLife());
 
-      // Keep same equations (no regeneration) - clear selection and restart timer
-      emit(state.copyWith(selectedOption: null));
-      _startTapTimer();
+      // Wait 2s so user can see the correct answer highlighted
+      await Future.delayed(const Duration(milliseconds: 2000));
+      if (isClosed) return;
+
+      // Reset the flag
+      emit(state.copyWith(
+        pickRightShowCorrect: false,
+        selectedOption: null,
+      ));
+
+      if (state.isAbleToContinue) {
+        // Keep same equations - restart timer
+        _startTapTimer();
+      }
     }
   }
 
@@ -1120,6 +1136,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
             isLeftCorrect: equationsData['isLeftCorrect'],
             correctIndex: equationsData['correctIndex'],
             equations: List<String>.from(equationsData['equations']),
+            questionExpression: equationsData['questionExpression'],
             selectedOption: null,
           ),
         );

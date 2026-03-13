@@ -286,8 +286,7 @@ class Helper {
     final b = random.nextInt(maxNumber) + 1;
 
     // Choose operator
-    final List<String> operators =
-        level <= 2 ? ['+', '-'] : ['+', '-', '×'];
+    final List<String> operators = level <= 2 ? ['+', '-'] : ['+', '-', '×'];
     final String operator = operators[random.nextInt(operators.length)];
 
     // Calculate correct result
@@ -307,6 +306,7 @@ class Helper {
     }
 
     final trueEq = '$a $operator $b = $correctResult';
+    final questionExpression = '$a $operator $b = ?';
 
     // ── Mutation helpers ──
 
@@ -365,10 +365,11 @@ class Helper {
       mutationPool.add(wrongOperator);
     }
 
-    /// Generate a false result using trick mutations, with fallback
-    String generateTrickFalseEquation(Set<int> usedResults) {
+    /// Generate a false result value using trick mutations, with fallback
+    int generateTrickFalseResult(Set<int> usedResults) {
       // Shuffle mutations and try each one
-      final shuffled = List<int? Function()>.from(mutationPool)..shuffle(random);
+      final shuffled = List<int? Function()>.from(mutationPool)
+        ..shuffle(random);
 
       for (final mutation in shuffled) {
         final mutated = mutation();
@@ -376,7 +377,7 @@ class Helper {
             mutated != correctResult &&
             !usedResults.contains(mutated)) {
           usedResults.add(mutated);
-          return '$a $operator $b = $mutated';
+          return mutated;
         }
       }
 
@@ -387,29 +388,36 @@ class Helper {
         fallback = correctResult + (random.nextBool() ? deviation : -deviation);
       } while (fallback == correctResult || usedResults.contains(fallback));
       usedResults.add(fallback);
-      return '$a $operator $b = $fallback';
+      return fallback;
     }
 
     final Set<int> usedResults = {correctResult};
-    final falseEq1 = generateTrickFalseEquation(usedResults);
-    final falseEq2 = generateTrickFalseEquation(usedResults);
+    final falseResult1 = generateTrickFalseResult(usedResults);
+    final falseResult2 = generateTrickFalseResult(usedResults);
+
+    final falseEq1 = '$a $operator $b = $falseResult1';
+    final falseEq2 = '$a $operator $b = $falseResult2';
 
     // Randomly assign correct position (0, 1, or 2)
     final correctIndex = random.nextInt(3);
 
-    // Create list of equations in display order
+    // Create list of result-only options in display order
     List<String> equations = ['', '', ''];
-    equations[correctIndex] = trueEq;
+    equations[correctIndex] = correctResult.toString();
 
     int falseIdx = 0;
-    List<String> falseEquations = [falseEq1, falseEq2];
+    List<String> falseResults = [
+      falseResult1.toString(),
+      falseResult2.toString()
+    ];
     for (int i = 0; i < 3; i++) {
       if (i != correctIndex) {
-        equations[i] = falseEquations[falseIdx++];
+        equations[i] = falseResults[falseIdx++];
       }
     }
 
     return {
+      'questionExpression': questionExpression,
       'trueEquation': trueEq,
       'falseEquation': falseEq1,
       'falseEquation1': falseEq1,

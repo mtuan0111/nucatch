@@ -43,8 +43,10 @@ class TurnState {
   final int?
       selectedOption; // 0, 1, or 2 for selected button, null=not selected
   final int? correctIndex; // Index of correct button (0, 1, or 2)
-  final List<String>? equations; // List of 3 equations in display order
+  final List<String>? equations; // List of 3 result options in display order
+  final String? questionExpression; // Shared calculation question (e.g. '5 + 3 = ?')
   final bool pickRightJustCorrect; // Animation flag: scale+fade-out on correct
+  final bool pickRightShowCorrect; // Flag: show correct answer after wrong pick
 
   const TurnState({
     this.level = 0,
@@ -69,7 +71,9 @@ class TurnState {
     this.selectedOption,
     this.correctIndex,
     this.equations,
+    this.questionExpression,
     this.pickRightJustCorrect = false,
+    this.pickRightShowCorrect = false,
   });
 
   TurnState copyWith({
@@ -95,7 +99,9 @@ class TurnState {
     int? selectedOption,
     int? correctIndex,
     List<String>? equations,
+    String? questionExpression,
     bool? pickRightJustCorrect,
+    bool? pickRightShowCorrect,
   }) {
     return TurnState(
       level: level ?? this.level,
@@ -122,7 +128,9 @@ class TurnState {
       selectedOption: selectedOption ?? this.selectedOption,
       correctIndex: correctIndex ?? this.correctIndex,
       equations: equations ?? this.equations,
+      questionExpression: questionExpression ?? this.questionExpression,
       pickRightJustCorrect: pickRightJustCorrect ?? this.pickRightJustCorrect,
+      pickRightShowCorrect: pickRightShowCorrect ?? this.pickRightShowCorrect,
     );
   }
 
