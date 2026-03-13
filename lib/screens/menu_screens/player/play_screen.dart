@@ -295,39 +295,42 @@ class _PlayScreenState extends State<PlayScreen> {
                                     // ),
                                     BlocListener<TurnBloc, TurnState>(
                                       listener: (context, state) {
-                                        // Update _currentLifeRemaining only when lifeRemaining changes
-                                        wasLifeIncreased =
-                                            _prevLifeRemaining != null &&
-                                                state.lifeRemaining >
-                                                    _prevLifeRemaining!;
-                                        wasLifeDecreased =
-                                            _prevLifeRemaining != null &&
-                                                state.lifeRemaining <
-                                                    _prevLifeRemaining!;
-                                        if (_prevLifeRemaining == null ||
-                                            state.lifeRemaining !=
-                                                _prevLifeRemaining) {
+                                        if (_prevLifeRemaining == null) {
+                                          // First time: just sync both values
                                           setState(() {
                                             _prevLifeRemaining =
                                                 state.lifeRemaining;
-                                            // Don't update _currentLifeRemaining here, let animation handle it
+                                            _currentLifeRemaining =
+                                                state.lifeRemaining;
                                           });
-
-                                          // Update current life remaining for both increases and decreases
-                                          if (wasLifeIncreased ||
-                                              wasLifeDecreased) {
-                                            setState(() {
-                                              _currentLifeRemaining =
-                                                  state.lifeRemaining;
-                                            });
-                                          }
+                                          return;
                                         }
-                                        // if (wasLifeIncreased) {
-                                        //   setState(() {
-                                        //     _prevLifeRemaining = state.lifeRemaining;
-                                        //     _currentLifeRemaining = state.lifeRemaining;
-                                        //   });
-                                        // }
+
+                                        if (state.lifeRemaining ==
+                                            _prevLifeRemaining) {
+                                          return; // No change
+                                        }
+
+                                        final increased = state.lifeRemaining >
+                                            _prevLifeRemaining!;
+                                        final decreased = state.lifeRemaining <
+                                            _prevLifeRemaining!;
+
+                                        setState(() {
+                                          wasLifeIncreased = increased;
+                                          wasLifeDecreased = decreased;
+                                          // Store the NEW target value
+                                          _prevLifeRemaining =
+                                              state.lifeRemaining;
+
+                                          if (increased) {
+                                            // For increase: show new count immediately so new star appears & scales in
+                                            _currentLifeRemaining =
+                                                state.lifeRemaining;
+                                          }
+                                          // For decrease: keep _currentLifeRemaining at OLD value
+                                          // so the last star can animate its shrink, then onEnd will update it.
+                                        });
                                       },
                                       child: Row(
                                         mainAxisAlignment:
@@ -345,20 +348,9 @@ class _PlayScreenState extends State<PlayScreen> {
                                                         _currentLifeRemaining -
                                                             1;
 
-                                                    bool shouldAnimateAdd =
-                                                        wasLifeIncreased &&
-                                                            isLast;
-                                                    bool shouldAnimateRemove =
-                                                        wasLifeDecreased &&
-                                                            isLast;
-
-                                                    if (isLast) {
-                                                      // Handle last life icon specific logic
-                                                      dev.log(
-                                                          "message: Last life icon at index $index, shouldAnimateAdd: $shouldAnimateAdd, shouldAnimateRemove: $shouldAnimateRemove");
-                                                    }
-
-                                                    if (shouldAnimateAdd) {
+                                                    // Life gained: animate the newly added last star scaling in
+                                                    if (wasLifeIncreased &&
+                                                        isLast) {
                                                       return TweenAnimationBuilder<
                                                           double>(
                                                         tween: Tween<double>(
@@ -367,23 +359,37 @@ class _PlayScreenState extends State<PlayScreen> {
                                                         duration:
                                                             const Duration(
                                                                 milliseconds:
-                                                                    300),
+                                                                    400),
                                                         curve:
                                                             Curves.elasticOut,
-                                                        onEnd: () {},
+                                                        onEnd: () {
+                                                          if (mounted) {
+                                                            setState(() {
+                                                              wasLifeIncreased =
+                                                                  false;
+                                                            });
+                                                          }
+                                                        },
                                                         builder: (context,
                                                             value, child) {
-                                                          return Transform
-                                                              .scale(
-                                                            scale: value,
-                                                            child: LifeStar(
-                                                              value: value,
+                                                          return Opacity(
+                                                            opacity: value
+                                                                .clamp(0.0, 1.0),
+                                                            child: Transform
+                                                                .scale(
+                                                              scale: value,
+                                                              child: LifeStar(
+                                                                value: value,
+                                                              ),
                                                             ),
                                                           );
                                                         },
                                                       );
                                                     }
-                                                    if (shouldAnimateRemove) {
+
+                                                    // Life lost: animate the last star shrinking out
+                                                    if (wasLifeDecreased &&
+                                                        isLast) {
                                                       return TweenAnimationBuilder<
                                                           double>(
                                                         tween: Tween<double>(
@@ -392,44 +398,38 @@ class _PlayScreenState extends State<PlayScreen> {
                                                         duration:
                                                             const Duration(
                                                                 milliseconds:
-                                                                    300),
-                                                        curve: Curves.elasticIn,
-                                                        onEnd: () async {
-                                                          await Future.delayed(
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    300),
-                                                          ).then((_) {
-                                                            wasLifeDecreased =
-                                                                false;
-                                                            shouldAnimateRemove =
-                                                                false;
-                                                            if (mounted) {
-                                                              setState(() {
-                                                                _currentLifeRemaining =
-                                                                    _prevLifeRemaining ??
-                                                                        _currentLifeRemaining;
-                                                              });
-                                                            }
-                                                          });
-                                                          // setState(() {
-                                                          //   _currentLifeRemaining =
-                                                          //       _prevLifeRemaining ??
-                                                          //           _currentLifeRemaining;
-                                                          // });
+                                                                    400),
+                                                        curve:
+                                                            Curves.easeInBack,
+                                                        onEnd: () {
+                                                          if (mounted) {
+                                                            setState(() {
+                                                              wasLifeDecreased =
+                                                                  false;
+                                                              // NOW remove the star from the list
+                                                              _currentLifeRemaining =
+                                                                  _prevLifeRemaining ??
+                                                                      _currentLifeRemaining;
+                                                            });
+                                                          }
                                                         },
                                                         builder: (context,
                                                             value, child) {
-                                                          return Transform
-                                                              .scale(
-                                                            scale: value,
-                                                            child: LifeStar(
-                                                              value: value,
+                                                          return Opacity(
+                                                            opacity: value
+                                                                .clamp(0.0, 1.0),
+                                                            child: Transform
+                                                                .scale(
+                                                              scale: value,
+                                                              child: LifeStar(
+                                                                value: value,
+                                                              ),
                                                             ),
                                                           );
                                                         },
                                                       );
                                                     }
+
                                                     return const LifeStar();
                                                   },
                                                 ),

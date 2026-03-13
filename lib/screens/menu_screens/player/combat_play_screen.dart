@@ -420,24 +420,35 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   Widget _buildLifeDisplay(CombatState combatState) {
     return BlocListener<CombatBloc, CombatState>(
       listener: (context, state) {
-        // Update life animation tracking
-        wasLifeIncreased = _prevLifeRemaining != null &&
-            state.lifeRemaining > _prevLifeRemaining!;
-        wasLifeDecreased = _prevLifeRemaining != null &&
-            state.lifeRemaining < _prevLifeRemaining!;
-        if (_prevLifeRemaining == null ||
-            state.lifeRemaining != _prevLifeRemaining) {
+        if (_prevLifeRemaining == null) {
+          // First time: just sync both values
           setState(() {
             _prevLifeRemaining = state.lifeRemaining;
+            _currentLifeRemaining = state.lifeRemaining;
           });
-
-          // Update current life remaining for both increases and decreases
-          if (wasLifeIncreased || wasLifeDecreased) {
-            setState(() {
-              _currentLifeRemaining = state.lifeRemaining;
-            });
-          }
+          return;
         }
+
+        if (state.lifeRemaining == _prevLifeRemaining) {
+          return; // No change
+        }
+
+        final increased = state.lifeRemaining > _prevLifeRemaining!;
+        final decreased = state.lifeRemaining < _prevLifeRemaining!;
+
+        setState(() {
+          wasLifeIncreased = increased;
+          wasLifeDecreased = decreased;
+          // Store the NEW target value
+          _prevLifeRemaining = state.lifeRemaining;
+
+          if (increased) {
+            // For increase: show new count immediately so new star appears & scales in
+            _currentLifeRemaining = state.lifeRemaining;
+          }
+          // For decrease: keep _currentLifeRemaining at OLD value
+          // so the last star can animate its shrink, then onEnd will update it.
+        });
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -452,52 +463,59 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   (index) {
                     final isLast = index == _currentLifeRemaining - 1;
 
-                    bool shouldAnimateAdd = wasLifeIncreased && isLast;
-                    bool shouldAnimateRemove = wasLifeDecreased && isLast;
-
-                    if (shouldAnimateAdd) {
+                    // Life gained: animate the newly added last star scaling in
+                    if (wasLifeIncreased && isLast) {
                       return TweenAnimationBuilder<double>(
                         tween: Tween<double>(begin: 0.0, end: 1.0),
-                        duration: const Duration(
-                            milliseconds: kAnimationDurationMedium),
+                        duration: const Duration(milliseconds: 400),
                         curve: Curves.elasticOut,
-                        onEnd: () {},
+                        onEnd: () {
+                          if (mounted) {
+                            setState(() {
+                              wasLifeIncreased = false;
+                            });
+                          }
+                        },
                         builder: (context, value, child) {
-                          return Transform.scale(
-                            scale: value,
-                            child: LifeStar(value: value),
+                          return Opacity(
+                            opacity: value.clamp(0.0, 1.0),
+                            child: Transform.scale(
+                              scale: value,
+                              child: LifeStar(value: value),
+                            ),
                           );
                         },
                       );
                     }
-                    if (shouldAnimateRemove) {
+
+                    // Life lost: animate the last star shrinking out
+                    if (wasLifeDecreased && isLast) {
                       return TweenAnimationBuilder<double>(
                         tween: Tween<double>(begin: 1.0, end: 0.0),
-                        duration: const Duration(
-                            milliseconds: kAnimationDurationMedium),
-                        curve: Curves.elasticIn,
-                        onEnd: () async {
-                          await Future.delayed(
-                            const Duration(
-                                milliseconds: kAnimationDurationMedium),
-                          ).then((_) {
-                            if (!mounted) return;
-                            wasLifeDecreased = false;
-                            shouldAnimateRemove = false;
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.easeInBack,
+                        onEnd: () {
+                          if (mounted) {
                             setState(() {
+                              wasLifeDecreased = false;
+                              // NOW remove the star from the list
                               _currentLifeRemaining =
                                   _prevLifeRemaining ?? _currentLifeRemaining;
                             });
-                          });
+                          }
                         },
                         builder: (context, value, child) {
-                          return Transform.scale(
-                            scale: value,
-                            child: LifeStar(value: value),
+                          return Opacity(
+                            opacity: value.clamp(0.0, 1.0),
+                            child: Transform.scale(
+                              scale: value,
+                              child: LifeStar(value: value),
+                            ),
                           );
                         },
                       );
                     }
+
                     return const LifeStar();
                   },
                 ),
