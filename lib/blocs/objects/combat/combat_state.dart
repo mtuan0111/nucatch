@@ -86,6 +86,8 @@ class CombatState extends TurnState {
     super.selectedOption,
     super.correctIndex,
     super.equations,
+    super.questionExpression,
+    super.pickRightShowCorrect,
   });
 
   @override
@@ -135,6 +137,8 @@ class CombatState extends TurnState {
     int? selectedOption,
     int? correctIndex,
     List<String>? equations,
+    String? questionExpression,
+    bool? pickRightShowCorrect,
   }) {
     return CombatState(
       // Combat-specific
@@ -185,6 +189,8 @@ class CombatState extends TurnState {
       selectedOption: selectedOption ?? this.selectedOption,
       correctIndex: correctIndex ?? this.correctIndex,
       equations: equations ?? this.equations,
+      questionExpression: questionExpression ?? this.questionExpression,
+      pickRightShowCorrect: pickRightShowCorrect ?? this.pickRightShowCorrect,
     );
   }
 

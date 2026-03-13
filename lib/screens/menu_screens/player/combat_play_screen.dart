@@ -765,7 +765,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       return Expanded(
         child: Center(
           child: Text(
-            lang(context).whichOneIsCorrect,
+            combatState.questionExpression ??
+                lang(context).whichOneIsCorrect,
             style: AppTextStyles.titleLarge(context),
           ),
         ),
@@ -918,6 +919,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   combatState.isMyTurn &&
                   combatState.tapTimerRemaining > 0,
               isCorrectAnimating: combatState.pickRightJustCorrect,
+              showCorrectAnswer: combatState.pickRightShowCorrect,
+              correctIndex: combatState.correctIndex,
               onButtonTap: (buttonIndex, position) {
                 context.read<CombatBloc>().add(
                       CombatPickRightButtonTap(buttonIndex: buttonIndex),

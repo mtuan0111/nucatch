@@ -674,7 +674,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                       Expanded(
                                         child: Center(
                                           child: Text(
-                                            lang(context).whichOneIsCorrect,
+                                            turnState.questionExpression ??
+                                                lang(context).whichOneIsCorrect,
                                             style: AppTextStyles.titleLarge(
                                                 context),
                                           ),

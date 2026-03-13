@@ -8,6 +8,7 @@ import 'package:skeleton_core/skeleton_core.dart';
 /// 1. Correct tap → [isCorrectAnimating] = true → scale up (1.3x) + fade out
 /// 2. New equations generated → widget rebuilds via [ValueKey]
 /// 3. New widget mounts → entrance fade-in + scale from 0.8 → 1.0
+/// 4. Wrong tap → [showCorrectAnswer] = true → highlight correct, fade wrong to 10%
 class PickRightButtons extends StatefulWidget {
   final List<String> equations; // List of 3 equations
   final Function(int, Offset?)
@@ -15,6 +16,8 @@ class PickRightButtons extends StatefulWidget {
   final bool isEnabled;
   final int? selectedOption; // Highlight selected button
   final bool isCorrectAnimating; // Drive scale+fade-out animation
+  final bool showCorrectAnswer; // Show correct answer after wrong pick
+  final int? correctIndex; // Index of the correct button (0, 1, or 2)
 
   const PickRightButtons({
     super.key,
@@ -23,6 +26,8 @@ class PickRightButtons extends StatefulWidget {
     this.isEnabled = true,
     this.selectedOption,
     this.isCorrectAnimating = false,
+    this.showCorrectAnswer = false,
+    this.correctIndex,
   });
 
   @override
@@ -83,7 +88,7 @@ class _PickRightButtonsState extends State<PickRightButtons>
   @override
   Widget build(BuildContext context) {
     debugPrint(
-        '🎬 [PickRight] build - isCorrectAnimating: ${widget.isCorrectAnimating}, isEnabled: ${widget.isEnabled}, equations: ${widget.equations}');
+        '🎬 [PickRight] build - isCorrectAnimating: ${widget.isCorrectAnimating}, isEnabled: ${widget.isEnabled}, showCorrect: ${widget.showCorrectAnswer}, equations: ${widget.equations}');
     // Exit animation: scale up + fade out on correct answer
     return AnimatedScale(
       duration: const Duration(milliseconds: 400),
@@ -130,33 +135,57 @@ class _PickRightButtonsState extends State<PickRightButtons>
     required GlobalKey buttonKey,
   }) {
     final isSelected = widget.selectedOption == buttonIndex;
+    final isCorrectButton = widget.correctIndex == buttonIndex;
+    final isShowingCorrect = widget.showCorrectAnswer;
 
-    return CustomElevatedButton(
-      key: buttonKey,
-      onPressed: widget.isEnabled
-          ? () {
-              final position = _getButtonCenter(buttonKey);
-              widget.onButtonTap(buttonIndex, position);
-            }
-          : null,
-      backgroundColor:
-          isSelected ? color.withValues(alpha: 0.8) : color.withValues(alpha: 0.6),
-      shapeAt: RoundedWithShapeAt.all,
-      buttonRadius: kBorderRadiusL,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: kSpaceL,
-          horizontal: kSpaceM,
-        ),
-        child: Center(
-          child: Text(
-            equation,
-            style: AppTextStyles.titleLarge(context).copyWith(
-              fontSize: kFontSizeXL,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).scaffoldBackgroundColor,
+    // Determine button color based on state
+    Color backgroundColor;
+    if (isShowingCorrect && isCorrectButton) {
+      // Highlight correct answer in green
+      backgroundColor = color.withValues(alpha: 0.85);
+    } else if (isSelected) {
+      backgroundColor = color.withValues(alpha: 0.8);
+    } else {
+      backgroundColor = color.withValues(alpha: 0.6);
+    }
+
+    // Determine opacity: wrong options fade to 10% when showing correct
+    final double buttonOpacity =
+        (isShowingCorrect && !isCorrectButton) ? 0.1 : 1.0;
+
+    // Disable taps when showing correct answer
+    final bool canTap = widget.isEnabled && !isShowingCorrect;
+
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+      opacity: buttonOpacity,
+      child: CustomElevatedButton(
+        key: buttonKey,
+        onPressed: canTap
+            ? () {
+                final position = _getButtonCenter(buttonKey);
+                widget.onButtonTap(buttonIndex, position);
+              }
+            : null,
+        backgroundColor: backgroundColor,
+        shapeAt: RoundedWithShapeAt.all,
+        buttonRadius: kBorderRadiusL,
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: kSpaceL,
+            horizontal: kSpaceM,
+          ),
+          child: Center(
+            child: Text(
+              equation,
+              style: AppTextStyles.titleLarge(context).copyWith(
+                fontSize: kFontSizeXL,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).scaffoldBackgroundColor,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
         ),
       ),

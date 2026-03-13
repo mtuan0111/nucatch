@@ -61,11 +61,9 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   void _startTapTimer() {
     _tapTimer?.cancel();
     const tickDuration = Duration(milliseconds: kAnimationDurationFast);
-    // Use difficulty model's timer for Pick Right mode, otherwise use global constant
-    double remainingTime = state.difficultyModel?.isPickRightMode == true
-        ? (state.difficultyModel?.timeLimitPerTurn.toDouble() ??
-            tapTimerDuration)
-        : tapTimerDuration;
+    // Use difficulty model's timeLimitPerTurn for all modes
+    double remainingTime =
+        state.difficultyModel?.timeLimitPerTurn.toDouble() ?? tapTimerDuration;
 
     _tapTimer = Timer.periodic(tickDuration, (timer) {
       if (isClosed) {
@@ -84,7 +82,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         add(TapTimerTick(0));
         add(TapTimerTimeout());
       } else {
-        // add(TapTimerTick(remainingTime));
+        add(TapTimerTick(remainingTime));
       }
     });
   }
@@ -373,6 +371,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
             isLeftCorrect: equationsData['isLeftCorrect'],
             correctIndex: equationsData['correctIndex'],
             equations: List<String>.from(equationsData['equations']),
+            questionExpression: equationsData['questionExpression'],
             selectedOption: null, // Reset selection
           ),
         );
@@ -472,21 +471,33 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         add(SetLevel(level: state.level));
       }
     } else {
-      // Wrong selection
+      // Wrong selection - immediately block taps and show correct answer
       _audioBloc.add(PlayWrongAudio());
+
+      emitter(
+        state.copyWith(
+          pickRightShowCorrect: true, // Block taps + highlight correct answer
+        ),
+      );
+
       add(LifeLost(lifeRemaining: 1));
 
-      if (state.lifeRemaining > 1) {
-        await Future.delayed(const Duration(milliseconds: 1000));
-        if (isClosed) return;
+      // Wait 2s so user can see the correct answer highlighted
+      await Future.delayed(const Duration(milliseconds: 2000));
+      if (isClosed) return;
 
+      // Reset the flag
+      emitter(
+        state.copyWith(
+          pickRightShowCorrect: false,
+        ),
+      );
+
+      if (state.lifeRemaining > 0) {
         // Reset and show new challenge
         add(SetLevel(level: state.level));
       } else {
         // Game over - last life lost
-        await Future.delayed(const Duration(milliseconds: 1000));
-        if (isClosed) return;
-
         add(End(isCauseGameOver: true));
       }
     }
