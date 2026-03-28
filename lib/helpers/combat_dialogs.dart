@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
-import 'package:nucatch/helpers/template/custome_alert.dart';
 
 /// Shared dialog utilities for combat room screens
 class CombatDialogs {

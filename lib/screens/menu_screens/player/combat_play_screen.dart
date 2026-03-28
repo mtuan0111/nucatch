@@ -12,7 +12,6 @@ import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/template/custome_alert.dart';
 import 'package:nucatch/widgets/pick_right_buttons.dart';
 import 'package:nucatch/widgets/combat_status_badge.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';

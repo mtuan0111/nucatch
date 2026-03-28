@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/template/custome_alert.dart';
 
 /// Global tour wrapper that manages all tour dialogs from the root level
 /// This eliminates dialog stacking issues and centralizes tour logic

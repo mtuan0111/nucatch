@@ -144,8 +144,10 @@ class CombatGameEndScreen extends StatelessWidget {
                   bottomRight: Radius.circular(LayoutConfig.layoutBorderRadius),
                 ),
                 border: Border.all(
-                  color:
-                      Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onPrimary
+                      .withValues(alpha: 0.2),
                 ),
               ),
               child: Column(

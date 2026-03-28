@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:skeleton_core/skeleton_core.dart';
-import 'package:nucatch/helpers/template/custome_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UpdateNoticeDialog extends StatelessWidget {
