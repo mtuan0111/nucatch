@@ -31,64 +31,34 @@ class SettingScreen extends StatelessWidget {
       },
       additionalSettingsBuilder: (context, settingState) => [
         // Restart Tour Button
-        Container(
-          padding: const EdgeInsets.all(kPaddingL),
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor.withValues(alpha: 0.2),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(LayoutConfig.layoutBorderRadius),
-              bottomRight: Radius.circular(LayoutConfig.layoutBorderRadius),
-            ),
-            border: Border.all(
-              color: Theme.of(context)
-                  .colorScheme
-                  .onPrimary
-                  .withValues(alpha: 0.2),
-            ),
-          ),
-          child: Row(
-            children: [
-              Icon(
-                FontAwesomeIcons.compass,
-                color: Theme.of(context).colorScheme.onPrimary,
-                size: kIconSizeM,
-              ),
-              const SizedBox(width: kSpaceML),
-              Expanded(
-                child: Text(
-                  lang(context).tourRestartFromSettings,
-                  style: AppTextStyles.titleLarge(context),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              const SizedBox(width: kSpaceM),
-              ElevatedButton(
-                onPressed: () {
-                  final tourBloc = context.read<TourBloc>();
-                  tourBloc.add(TourReset());
-                  tourBloc.add(TourStarted());
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        lang(context).tourResetMessage,
-                        style: AppTextStyles.bodyLarge(context),
-                      ),
-                      backgroundColor: Theme.of(context).primaryColor,
-                    ),
-                  );
-                  context.read<MenuBloc>().add(ShowMenu());
-                },
-                style: ElevatedButton.styleFrom(
+        CustomWrapContainer(
+          icon: FontAwesomeIcons.compass,
+          title: lang(context).tourRestartFromSettings,
+          child: ElevatedButton(
+            onPressed: () {
+              final tourBloc = context.read<TourBloc>();
+              tourBloc.add(TourReset());
+              tourBloc.add(TourStarted());
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    lang(context).tourResetMessage,
+                    style: AppTextStyles.bodyLarge(context),
+                  ),
                   backgroundColor: Theme.of(context).primaryColor,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
                 ),
-                child: const Icon(
-                  FontAwesomeIcons.play,
-                  size: kIconSizeS,
-                ),
-              ),
-            ],
+              );
+              context.read<MenuBloc>().add(ShowMenu());
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+            ),
+            child: const Icon(
+              FontAwesomeIcons.play,
+              size: kIconSizeS,
+            ),
           ),
         ),
       ],

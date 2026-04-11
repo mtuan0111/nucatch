@@ -70,51 +70,12 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 sliver: SliverToBoxAdapter(
                   child: DeviceWrapper(
-                    child: Container(
-                      padding: const EdgeInsets.all(kPaddingXL),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surface
-                            .withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(
-                              LayoutConfig.layoutBorderRadius / 5),
-                          topRight:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                          bottomLeft:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                          bottomRight:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                        ),
-                        border: Border.all(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onPrimary
-                              .withValues(alpha: 0.2),
-                        ),
-                      ),
+                    child: CustomWrapContainer(
+                      icon: FontAwesomeIcons.solidHeart,
+                      title: coreLang(context).thankYou,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.solidHeart,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                size: kIconSizeM,
-                              ),
-                              const SizedBox(width: kSpaceML),
-                              Expanded(
-                                child: Text(
-                                  coreLang(context).thankYou,
-                                  style: AppTextStyles.titleLarge(context)
-                                      .copyWith(fontSize: kFontSizeL),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: kSpaceL),
                           Text(
                             lang(context).introductionContent,
                             style: AppTextStyles.bodyLarge(context),
@@ -139,49 +100,12 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 sliver: SliverToBoxAdapter(
                   child: DeviceWrapper(
-                    child: Container(
-                      padding: const EdgeInsets.all(kPaddingXL),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surface
-                            .withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.only(
-                          topLeft:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                          topRight:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                          bottomLeft:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                          bottomRight: Radius.circular(
-                              LayoutConfig.layoutBorderRadius / 5),
-                        ),
-                        border: Border.all(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onPrimary
-                              .withValues(alpha: 0.2),
-                        ),
-                      ),
+                    child: CustomWrapContainer(
+                      icon: FontAwesomeIcons.circleInfo,
+                      title: coreLang(context).authorName,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.circleInfo,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                size: kIconSizeM,
-                              ),
-                              const SizedBox(width: kSpaceML),
-                              Text(
-                                coreLang(context).authorName,
-                                style: AppTextStyles.titleLarge(context)
-                                    .copyWith(fontSize: kFontSizeL),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: kSpaceL),
                           _buildInfoRow(
                             context,
                             FontAwesomeIcons.user,
@@ -208,54 +132,14 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 sliver: SliverToBoxAdapter(
                   child: DeviceWrapper(
-                    child: Container(
-                      padding: const EdgeInsets.all(kPaddingXL),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surface
-                            .withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(
-                              LayoutConfig.layoutBorderRadius / 5),
-                          topRight:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                          bottomLeft:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                          bottomRight:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                        ),
-                        border: Border.all(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onPrimary
-                              .withValues(alpha: 0.2),
-                        ),
-                      ),
+                    child: CustomWrapContainer(
+                      icon: FontAwesomeIcons.arrowsRotate,
+                      title: coreLang(context).appUpdates,
                       child: BlocBuilder<AppVersionBloc, AppVersionState>(
                         builder: (context, state) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.arrowsRotate,
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                    size: kIconSizeM,
-                                  ),
-                                  const SizedBox(width: kSpaceML),
-                                  Expanded(
-                                    child: Text(
-                                      coreLang(context).appUpdates,
-                                      style: AppTextStyles.titleLarge(context)
-                                          .copyWith(fontSize: kFontSizeL),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: kSpaceL),
                               Container(
                                 padding: const EdgeInsets.all(kPaddingL),
                                 decoration: BoxDecoration(
@@ -365,50 +249,12 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 sliver: SliverToBoxAdapter(
                   child: DeviceWrapper(
-                    child: Container(
-                      padding: const EdgeInsets.all(kPaddingXL),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surface
-                            .withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.only(
-                          topLeft:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                          topRight:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                          bottomLeft:
-                              Radius.circular(LayoutConfig.layoutBorderRadius),
-                          bottomRight: Radius.circular(
-                              LayoutConfig.layoutBorderRadius / 5),
-                        ),
-                        border: Border.all(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onPrimary
-                              .withValues(alpha: 0.2),
-                        ),
-                      ),
+                    child: CustomWrapContainer(
+                      icon: FontAwesomeIcons.shareNodes,
+                      title: coreLang(context).connectWithUs,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.shareNodes,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                size: kIconSizeM,
-                              ),
-                              const SizedBox(width: kSpaceML),
-                              Expanded(
-                                child: Text(
-                                  coreLang(context).connectWithUs,
-                                  style: AppTextStyles.titleLarge(context)
-                                      .copyWith(fontSize: kFontSizeL),
-                                ),
-                              ),
-                            ],
-                          ),
                           const SizedBox(height: kSpaceL),
                           Text(
                             coreLang(context).connectWithUsMessage,
