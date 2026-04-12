@@ -34,31 +34,36 @@ class SettingScreen extends StatelessWidget {
         CustomWrapContainer(
           icon: FontAwesomeIcons.compass,
           title: lang(context).tourRestartFromSettings,
-          child: ElevatedButton(
-            onPressed: () {
-              final tourBloc = context.read<TourBloc>();
-              tourBloc.add(TourReset());
-              tourBloc.add(TourStarted());
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    lang(context).tourResetMessage,
-                    style: AppTextStyles.bodyLarge(context),
-                  ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  final tourBloc = context.read<TourBloc>();
+                  tourBloc.add(TourReset());
+                  tourBloc.add(TourStarted());
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        lang(context).tourResetMessage,
+                        style: AppTextStyles.bodyLarge(context),
+                      ),
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
+                  );
+                  context.read<MenuBloc>().add(ShowMenu());
+                },
+                style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).primaryColor,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                 ),
-              );
-              context.read<MenuBloc>().add(ShowMenu());
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).primaryColor,
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-            ),
-            child: const Icon(
-              FontAwesomeIcons.play,
-              size: kIconSizeS,
-            ),
+                child: const Icon(
+                  FontAwesomeIcons.play,
+                  size: kIconSizeS,
+                ),
+              ),
+            ],
           ),
         ),
       ],
