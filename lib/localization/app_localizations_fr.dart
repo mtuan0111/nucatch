@@ -470,6 +470,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Personnalisez tout ici ! Changez votre **nom d\'utilisateur**, sélectionnez un **thème**, ajustez le **son**, choisissez votre **langue** et gérez la confidentialité. Vous pouvez redémarrer cette visite à tout moment à partir d\'ici.';
 
   @override
+  String get tourAboutTitle => 'History & Rules';
+
+  @override
+  String get tourAboutDesc =>
+      'Discover the ancient legend behind the tower and learn the rules of the game.';
+
+  @override
   String get tourNext => 'Suivant';
 
   @override

@@ -326,8 +326,6 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                                     ranking: index + 1,
                                     heroTag:
                                         "ranking-${e.turnId}${settingState.onlyShowMyRecorded ? '-filtered' : ''}",
-                                    titleIcon: Icons.star,
-                                    titleText: '${e.point}',
                                     currentUserLabel: lang(context).you,
                                     isCurrentUser: _currentUserId != null &&
                                         e.firebaseUserId == _currentUserId,

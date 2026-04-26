@@ -31,7 +31,7 @@ class MenuAlert extends StatelessWidget {
     return AlertTemplate(
       title: coreLang(context).mainMenu,
       message: coreLang(context).confirmExit,
-      content: Column(
+      headerContent: Column(
         spacing: 5,
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -161,4 +161,3 @@ class MenuAlert extends StatelessWidget {
     );
   }
 }
-

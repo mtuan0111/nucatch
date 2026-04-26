@@ -469,6 +469,13 @@ class AppLocalizationsId extends AppLocalizations {
       'Sesuaikan semuanya! Ubah **nama pengguna**, **tema**, **suara**, **bahasa**. Anda bisa ulangi tur ini kapan saja di sini.';
 
   @override
+  String get tourAboutTitle => 'History & Rules';
+
+  @override
+  String get tourAboutDesc =>
+      'Discover the ancient legend behind the tower and learn the rules of the game.';
+
+  @override
   String get tourNext => 'Lanjut';
 
   @override

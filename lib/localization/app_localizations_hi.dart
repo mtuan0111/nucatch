@@ -469,6 +469,13 @@ class AppLocalizationsHi extends AppLocalizations {
       'यहां सब कुछ वैयक्तिकृत करें! अपना **उपयोगकर्ता नाम** बदलें, **थीम** चुनें, **ध्वनि/संगीत** निकालें और **भाषा** चुनें। आप यहां से कभी भी इस टूर को पुनः आरंभ कर सकते हैं।';
 
   @override
+  String get tourAboutTitle => 'History & Rules';
+
+  @override
+  String get tourAboutDesc =>
+      'Discover the ancient legend behind the tower and learn the rules of the game.';
+
+  @override
   String get tourNext => 'अगला';
 
   @override

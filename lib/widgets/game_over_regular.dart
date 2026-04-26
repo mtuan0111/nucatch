@@ -82,8 +82,6 @@ class GameOverRegular extends StatelessWidget {
               ranking: indexOfItem,
               iconData: FontAwesomeIcons.trophy,
               heroTag: "ranking-${turnState.recordedItem!.turnId}",
-              titleIcon: Icons.star,
-              titleText: '${turnState.recordedItem!.point}',
               currentUserLabel: lang(context).you,
               infoRows: [
                 RankingInfoRow(

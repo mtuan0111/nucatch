@@ -448,6 +448,13 @@ class AppLocalizationsJa extends AppLocalizations {
       '**ユーザー名**、**テーマ**、**サウンド**、**言語**などを変更できます。このツアーは設定からいつでも再開できます。';
 
   @override
+  String get tourAboutTitle => 'History & Rules';
+
+  @override
+  String get tourAboutDesc =>
+      'Discover the ancient legend behind the tower and learn the rules of the game.';
+
+  @override
   String get tourNext => '次へ';
 
   @override

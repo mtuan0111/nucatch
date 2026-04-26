@@ -626,11 +626,19 @@
   },
   "tourSettingsTitle": "Settings - Customize",
   "@tourSettingsTitle": {
-    "description": "Title for settings tour step"
+    "description": "Title for settings step"
   },
   "tourSettingsDesc": "Customize everything here! Change your **username**, select a **theme**, adjust **sound/music**, choose your **language**, and manage **privacy settings**. You can restart this tour anytime from here. That's it - you're ready to play!",
   "@tourSettingsDesc": {
     "description": "Description for settings tour step"
+  },
+  "tourAboutTitle": "History & Rules",
+  "@tourAboutTitle": {
+    "description": "Title for about tour step"
+  },
+  "tourAboutDesc": "Discover the ancient legend behind the tower and learn the rules of the game.",
+  "@tourAboutDesc": {
+    "description": "Description for about tour step"
   },
   "tourNext": "Next",
   "@tourNext": {

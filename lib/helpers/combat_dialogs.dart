@@ -20,7 +20,7 @@ class CombatDialogs {
         barrierDismissible: true,
         builder: (dialogContext) => AlertTemplate(
           title: title,
-          content: Column(
+          headerContent: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
@@ -63,7 +63,7 @@ class CombatDialogs {
       barrierDismissible: false,
       builder: (context) => AlertTemplate(
         title: lang(context).bothPlayersReady,
-        content: Column(
+        headerContent: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(

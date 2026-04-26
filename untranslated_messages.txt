@@ -1,1 +1,46 @@
-{}
+{
+  "de": [
+    "tourAboutTitle",
+    "tourAboutDesc"
+  ],
+
+  "es": [
+    "tourAboutTitle",
+    "tourAboutDesc"
+  ],
+
+  "fr": [
+    "tourAboutTitle",
+    "tourAboutDesc"
+  ],
+
+  "hi": [
+    "tourAboutTitle",
+    "tourAboutDesc"
+  ],
+
+  "id": [
+    "tourAboutTitle",
+    "tourAboutDesc"
+  ],
+
+  "ja": [
+    "tourAboutTitle",
+    "tourAboutDesc"
+  ],
+
+  "th": [
+    "tourAboutTitle",
+    "tourAboutDesc"
+  ],
+
+  "vi": [
+    "tourAboutTitle",
+    "tourAboutDesc"
+  ],
+
+  "zh": [
+    "tourAboutTitle",
+    "tourAboutDesc"
+  ]
+}

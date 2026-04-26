@@ -51,7 +51,7 @@ class UpdateNoticeDialog extends StatelessWidget {
         title: isForceUpdate
             ? coreLang(context).updateRequired
             : coreLang(context).updateAvailable,
-        content: SingleChildScrollView(
+        headerContent: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,8 +114,9 @@ class UpdateNoticeDialog extends StatelessWidget {
             ],
           ),
         ),
-        possitiveButtonLabel:
-            isForceUpdate ? coreLang(context).updateNow : coreLang(context).update,
+        possitiveButtonLabel: isForceUpdate
+            ? coreLang(context).updateNow
+            : coreLang(context).update,
         onPossitiveButtonPressed: () {
           _launchStore();
         },

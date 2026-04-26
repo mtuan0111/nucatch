@@ -471,6 +471,13 @@ class AppLocalizationsEs extends AppLocalizations {
       '¡Personaliza todo aquí! Cambia tu **nombre de usuario**, selecciona un **tema**, ajusta **sonido/música**, elige tu **idioma** y administra la privacidad. Puedes reiniciar este tour en cualquier momento desde aquí. ¡Estás listo para jugar!';
 
   @override
+  String get tourAboutTitle => 'History & Rules';
+
+  @override
+  String get tourAboutDesc =>
+      'Discover the ancient legend behind the tower and learn the rules of the game.';
+
+  @override
   String get tourNext => 'Siguiente';
 
   @override

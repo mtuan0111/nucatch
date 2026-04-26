@@ -70,6 +70,7 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
       case TourStep.instantStart:
       case TourStep.leaderboard:
       case TourStep.settings:
+      case TourStep.about:
         // These steps are on menu screen - navigate to menu if not there
         _navigateToMenu();
         break;
@@ -116,7 +117,7 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
           Center(
             child: AlertTemplate(
               title: _getTitleForStep(tourState.currentTourStep),
-              content: Column(
+              headerContent: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -196,6 +197,8 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
         return lang(context).tourLeaderboardTitle;
       case TourStep.settings:
         return lang(context).tourSettingsTitle;
+      case TourStep.about:
+        return lang(context).tourAboutTitle;
     }
   }
 
@@ -219,6 +222,8 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
         return lang(context).tourLeaderboardDesc;
       case TourStep.settings:
         return lang(context).tourSettingsDesc;
+      case TourStep.about:
+        return lang(context).tourAboutDesc;
     }
   }
 
@@ -251,7 +256,7 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
 
     return RichText(
       text: TextSpan(
-        style: AppTextStyles.withColor(AppTextStyles.bodyLarge(context),
+        style: AppTextStyles.withColor(AppTextStyles.bodyLargeBold(context),
             Theme.of(context).colorScheme.primary.getDarker()),
         children: parts,
       ),

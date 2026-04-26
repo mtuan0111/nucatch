@@ -164,8 +164,6 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                     iconData: FontAwesomeIcons.trophy,
                                     heroTag:
                                         "ranking-${turnRecordedModel.turnId}",
-                                    titleIcon: Icons.star,
-                                    titleText: '${turnRecordedModel.point}',
                                     currentUserLabel: lang(context).you,
                                     infoRows: [
                                       RankingInfoRow(

@@ -472,6 +472,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Passe alles hier an! Ändere deinen **Benutzernamen**, wähle ein **Theme**, passe **Ton** an, wähle deine **Sprache**. Du kannst diese Tour von hier aus jederzeit neu starten.';
 
   @override
+  String get tourAboutTitle => 'History & Rules';
+
+  @override
+  String get tourAboutDesc =>
+      'Discover the ancient legend behind the tower and learn the rules of the game.';
+
+  @override
   String get tourNext => 'Weiter';
 
   @override

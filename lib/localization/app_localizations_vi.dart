@@ -468,6 +468,13 @@ class AppLocalizationsVi extends AppLocalizations {
       'Mọi thay đổi hiển thị ở đây! Từ **tên**, **giao diện**, **âm thanh**, **ngôn ngữ**.';
 
   @override
+  String get tourAboutTitle => 'History & Rules';
+
+  @override
+  String get tourAboutDesc =>
+      'Discover the ancient legend behind the tower and learn the rules of the game.';
+
+  @override
   String get tourNext => 'Tiếp theo';
 
   @override

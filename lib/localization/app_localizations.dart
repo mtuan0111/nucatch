@@ -896,7 +896,7 @@ abstract class AppLocalizations {
   /// **'Track your progress here! View **global rankings**, your **personal records**, and **statistics** including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Finally, let\'s visit Settings.'**
   String get tourLeaderboardDesc;
 
-  /// Title for settings tour step
+  /// Title for settings step
   ///
   /// In en, this message translates to:
   /// **'Settings - Customize'**
@@ -907,6 +907,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Customize everything here! Change your **username**, select a **theme**, adjust **sound/music**, choose your **language**, and manage **privacy settings**. You can restart this tour anytime from here. That\'s it - you\'re ready to play!'**
   String get tourSettingsDesc;
+
+  /// Title for about tour step
+  ///
+  /// In en, this message translates to:
+  /// **'History & Rules'**
+  String get tourAboutTitle;
+
+  /// Description for about tour step
+  ///
+  /// In en, this message translates to:
+  /// **'Discover the ancient legend behind the tower and learn the rules of the game.'**
+  String get tourAboutDesc;
 
   /// Next button in tour
   ///

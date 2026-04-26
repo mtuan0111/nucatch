@@ -444,6 +444,13 @@ class AppLocalizationsZh extends AppLocalizations {
       '这里可以自定义所有内容！更改您的**用户名**、选择**主题**、调节**声音**和**语言**。您随时能重启此导览。';
 
   @override
+  String get tourAboutTitle => 'History & Rules';
+
+  @override
+  String get tourAboutDesc =>
+      'Discover the ancient legend behind the tower and learn the rules of the game.';
+
+  @override
   String get tourNext => '下一步';
 
   @override
