@@ -22,7 +22,6 @@ import 'package:nucatch/widgets/pick_right_mode_controls.dart';
 import 'package:nucatch/widgets/regular_mode_controls.dart';
 import 'package:nucatch/widgets/quick_setting_button.dart';
 
-
 class PlayScreen extends StatefulWidget {
   const PlayScreen({
     super.key,
@@ -373,10 +372,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                                         builder: (context,
                                                             value, child) {
                                                           return Opacity(
-                                                            opacity: value
-                                                                .clamp(0.0, 1.0),
-                                                            child: Transform
-                                                                .scale(
+                                                            opacity:
+                                                                value.clamp(
+                                                                    0.0, 1.0),
+                                                            child:
+                                                                Transform.scale(
                                                               scale: value,
                                                               child: LifeStar(
                                                                 value: value,
@@ -416,10 +416,11 @@ class _PlayScreenState extends State<PlayScreen> {
                                                         builder: (context,
                                                             value, child) {
                                                           return Opacity(
-                                                            opacity: value
-                                                                .clamp(0.0, 1.0),
-                                                            child: Transform
-                                                                .scale(
+                                                            opacity:
+                                                                value.clamp(
+                                                                    0.0, 1.0),
+                                                            child:
+                                                                Transform.scale(
                                                               scale: value,
                                                               child: LifeStar(
                                                                 value: value,
@@ -732,7 +733,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                                 ? FontAwesomeIcons.volumeLow
                                                 : settingState.vol > 0
                                                     ? FontAwesomeIcons.volumeOff
-                                                    : FontAwesomeIcons.volumeXmark,
+                                                    : FontAwesomeIcons
+                                                        .volumeXmark,
                                     onTap: () {
                                       context.read<SettingBloc>().add(
                                             ToggleMute(),
@@ -744,12 +746,13 @@ class _PlayScreenState extends State<PlayScreen> {
                                   // Vibration toggle
                                   QuickSettingButton(
                                     icon: settingState.isVibrate
-                                        ? FontAwesomeIcons.mobileScreenButton
+                                        ? Icons.vibration_rounded
                                         : FontAwesomeIcons.mobile,
                                     onTap: () {
                                       context.read<SettingBloc>().add(
                                             ChangedIsVibrate(
-                                              isVibrate: !settingState.isVibrate,
+                                              isVibrate:
+                                                  !settingState.isVibrate,
                                             ),
                                           );
                                     },
@@ -786,8 +789,6 @@ class _PlayScreenState extends State<PlayScreen> {
     final wasPointIncreased =
         _prevPointForAnimation != null && state.point > _prevPointForAnimation!;
 
-
-
     // Track life changes using same pattern as existing life animation
     final wasLifeIncreasedForAnimation = _prevLifeForAnimation != null &&
         state.lifeRemaining > _prevLifeForAnimation!;
@@ -800,8 +801,6 @@ class _PlayScreenState extends State<PlayScreen> {
       // Correct answer only: lightning glow without explosion
       _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
     }
-
-
 
     // Trigger life gain animation
     if (wasLifeIncreasedForAnimation) {

@@ -41,7 +41,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.1.4
-  font_awesome_flutter: ^10.7.0
   timer_count_down: ^2.2.2
   lunar: ^1.7.8
   
@@ -54,7 +53,6 @@ dependencies:
   sqflite: ^2.4.1
   vibration: ^3.1.3
   audioplayers: ^5.2.1
-  share_plus: ^7.2.2
   flutter_dotenv: ^5.2.1
   url_launcher: ^6.3.1
   fluttertoast: ^8.2.12
