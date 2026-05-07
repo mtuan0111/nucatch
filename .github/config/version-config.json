@@ -1,46 +1,42 @@
 {
     "android": {
         "dev": {
-            "versionName": "2.7.2",
-            "versionCode": 72,
+            "versionName": "2.8.5.0",
+            "versionCode": 86,
             "releaseNotes": {
-                "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
-                "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
-                "ja-JP": "リーダーボードでランクを表示・管理し、UIの更新とインスタントスコア画面の改善を実施しました。"
+                "en-US": "Improved app interface and user experience with refined visual design and smoother navigation.",
+                "vi-VN": "Cải thiện giao diện và trải nghiệm người dùng với thiết kế trực quan hơn và điều hướng mượt mà hơn."
             }
         },
         "prod": {
-            "versionName": "2.7.2",
-            "versionCode": 72,
+            "versionName": "2.8.5",
+            "versionCode": 86,
             "releaseNotes": {
-                "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
-                "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
-                "ja-JP": "リーダーボードでランクを表示・管理し、UIの更新とインスタントスコア画面の改善を実施しました。"
+                "en-US": "Improved app interface and user experience with refined visual design and smoother navigation.",
+                "vi-VN": "Cải thiện giao diện và trải nghiệm người dùng với thiết kế trực quan hơn và điều hướng mượt mà hơn."
             }
         }
     },
     "ios": {
         "dev": {
-            "versionName": "2.7.2",
-            "buildNumber": "72",
+            "versionName": "2.8.4",
+            "buildNumber": "85.0",
             "releaseNotes": {
-                "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
-                "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
-                "ja-JP": "リーダーボードでランクを表示・管理し、UIの更新とインスタントスコア画面の改善を実施しました。"
+                "en-US": "Improved app interface and user experience with refined visual design and smoother navigation.",
+                "vi-VN": "Cải thiện giao diện và trải nghiệm người dùng với thiết kế trực quan hơn và điều hướng mượt mà hơn."
             }
         },
         "prod": {
-            "versionName": "2.7.2",
-            "buildNumber": "72",
+            "versionName": "2.8.4",
+            "buildNumber": "85",
             "releaseNotes": {
-                "en-US": "View and manage your rank on the leaderboard with UI updates and an enhanced instant score screen.",
-                "vi-VN": "Xem và quản lý thứ hạng trên bảng xếp hạng, cập nhật giao diện và cải thiện màn hình điểm số tức thì.",
-                "ja-JP": "リーダーボードでランクを表示・管理し、UIの更新とインスタントスコア画面の改善を実施しました。"
+                "en-US": "Improved app interface and user experience with refined visual design and smoother navigation.",
+                "vi-VN": "Cải thiện giao diện và trải nghiệm người dùng với thiết kế trực quan hơn và điều hướng mượt mà hơn."
             }
         }
     },
     "metadata": {
-        "lastUpdated": "2026-02-06T17:06:00Z",
+        "lastUpdated": "2026-05-07T00:00:00+07:00",
         "updatedBy": "CI/CD Pipeline"
     }
 }
