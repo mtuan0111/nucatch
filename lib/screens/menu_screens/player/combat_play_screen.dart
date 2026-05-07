@@ -227,7 +227,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                                     // Vibration toggle
                                     QuickSettingButton(
                                       icon: settingState.isVibrate
-                                          ? FontAwesomeIcons.mobileScreenButton
+                                          ? Icons.vibration_rounded
                                           : FontAwesomeIcons.mobile,
                                       onTap: () {
                                         context.read<SettingBloc>().add(
@@ -782,8 +782,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       return Expanded(
         child: Center(
           child: Text(
-            combatState.questionExpression ??
-                lang(context).whichOneIsCorrect,
+            combatState.questionExpression ?? lang(context).whichOneIsCorrect,
             style: AppTextStyles.titleLarge(context),
           ),
         ),
@@ -994,7 +993,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     final wasPointIncreased =
         _prevPointForAnimation != null && state.point > _prevPointForAnimation!;
 
-
     // Track life changes
     final wasLifeIncreasedForAnimation = _prevLifeForAnimation != null &&
         state.lifeRemaining > _prevLifeForAnimation!;
@@ -1009,7 +1007,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       // Correct answer only: lightning glow without explosion
       _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
     }
-
 
     // Trigger opponent score animation (lightning only; opponent does not trigger level-up locally)
     if (state.opponentJustSucceeded) {
