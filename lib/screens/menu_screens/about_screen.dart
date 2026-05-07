@@ -438,9 +438,7 @@ class _AboutScreenState extends State<AboutScreen> {
                   const SizedBox(width: kSpaceS),
                   Text(
                     label,
-                    style: AppTextStyles.bodyLarge(context).copyWith(
-                      fontSize: kFontSizeXS,
-                    ),
+                    style: AppTextStyles.bodySmall(context),
                   ),
                 ],
               ),

@@ -15,8 +15,6 @@ class TurnRecordedListBloc
     on<LoadDataByPeriod>(_onLoadDataByPeriod);
     on<ChangeNumberOfTopBoard>(_onChangeNumberOfTopBoard);
     on<DebugDatabaseContent>(_onDebugDatabaseContent);
-
-    add(LoadData());
   }
 
   Future<void> _onLoadData(

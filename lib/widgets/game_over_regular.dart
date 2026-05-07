@@ -27,7 +27,7 @@ class GameOverRegular extends StatelessWidget {
         // Game Over title
         Text(
           coreLang(context).gameOver,
-          style: AppTextStyles.displayLarge(context).copyWith(
+          style: AppTextStyles.displaySmallBold(context).copyWith(
             color: Theme.of(context).colorScheme.onPrimary,
           ),
           textAlign: TextAlign.center,
@@ -40,9 +40,8 @@ class GameOverRegular extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: kSpace2XL),
             child: Text(
               turnState.requirementString ?? '',
-              style: AppTextStyles.displayLarge(context).copyWith(
+              style: AppTextStyles.displaySmall(context).copyWith(
                 color: Theme.of(context).colorScheme.onPrimary,
-                fontSize: kFontSizeXL,
               ),
               textAlign: TextAlign.center,
             ),
@@ -62,7 +61,7 @@ class GameOverRegular extends StatelessWidget {
         // Expected answer
         Text(
           turnState.expect ?? '',
-          style: AppTextStyles.displayLarge(context).copyWith(
+          style: AppTextStyles.displaySmallBold(context).copyWith(
             color: Theme.of(context).colorScheme.onPrimary,
           ),
         ),

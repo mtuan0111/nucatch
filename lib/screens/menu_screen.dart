@@ -24,7 +24,6 @@ class _MenuScreenState extends State<MenuScreen> {
   MenuBloc get menuBloc => context.read<MenuBloc>();
   MenuState get menuState => menuBloc.state;
 
-
   @override
   void initState() {
     super.initState();
@@ -86,7 +85,8 @@ class _MenuScreenState extends State<MenuScreen> {
         greetingMessage: BlocBuilder<skeleton.UserBloc, skeleton.UserState>(
           builder: (context, userState) {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 500),
                 child: Text(
@@ -124,10 +124,10 @@ class _MenuScreenState extends State<MenuScreen> {
 
           return Align(
             alignment: Alignment.centerLeft,
-            child: skeleton.AnimatedButton(
+            child: AnimatedButton(
               context,
               text: (entry.value['text'] as String).toUpperCase(),
-              style: AppTextStyles.titleLargeItalic(context),
+              style: AppTextStyles.titleSmallBold(context),
               iconData: iconData,
               backgroundColor: backgroundColor,
               onPressed: () => menuBloc.add(

@@ -872,7 +872,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                 button = AnimatedButton(
                   context,
                   text: e.value.toString(),
-                  style: AppTextStyles.displayLarge(context),
+                  style: AppTextStyles.displaySmallBold(context),
                   isEnable: combatState.isAbleToTap,
                   onPressed: () {
                     context.read<CombatBloc>().add(

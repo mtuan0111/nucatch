@@ -27,7 +27,7 @@ class GameOverPickRight extends StatelessWidget {
         // Game Over title
         Text(
           coreLang(context).gameOver,
-          style: AppTextStyles.displayLarge(context).copyWith(
+          style: AppTextStyles.displaySmallBold(context).copyWith(
             color: Theme.of(context).colorScheme.onPrimary,
           ),
           textAlign: TextAlign.center,

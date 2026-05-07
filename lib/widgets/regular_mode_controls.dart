@@ -59,7 +59,10 @@ class RegularModeControls extends StatelessWidget {
                         );
                   },
                   backgroundBuilder: (context, borderRadius) {
-                    return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: 'Reset'.hashCode, borderRadius: borderRadius);
+                    return LightningWidget(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: 'Reset'.hashCode,
+                        borderRadius: borderRadius);
                   },
                 );
               } else if (e.key == KeyboardOption.mainMenu) {
@@ -68,14 +71,17 @@ class RegularModeControls extends StatelessWidget {
                   iconData: FontAwesomeIcons.bars,
                   onPressed: onMenuPressed,
                   backgroundBuilder: (context, borderRadius) {
-                    return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: 'Menu'.hashCode, borderRadius: borderRadius);
+                    return LightningWidget(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: 'Menu'.hashCode,
+                        borderRadius: borderRadius);
                   },
                 );
               } else {
                 button = AnimatedButton(
                   context,
                   text: e.value.toString(),
-                  style: AppTextStyles.displayLarge(context),
+                  style: AppTextStyles.displaySmallBold(context),
                   isEnable: turnState.isAbleToTap,
                   onPressed: () {
                     context.read<TurnBloc>().add(
@@ -83,7 +89,10 @@ class RegularModeControls extends StatelessWidget {
                         );
                   },
                   backgroundBuilder: (context, borderRadius) {
-                    return LightningWidget(baseColor: Theme.of(context).primaryColor, seed: e.value.toString().hashCode, borderRadius: borderRadius);
+                    return LightningWidget(
+                        baseColor: Theme.of(context).primaryColor,
+                        seed: e.value.toString().hashCode,
+                        borderRadius: borderRadius);
                   },
                 );
               }

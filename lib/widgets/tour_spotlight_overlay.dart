@@ -205,9 +205,8 @@ class TourSpotlightOverlay extends StatelessWidget {
           Center(
             child: Text(
               '${tourState.currentStep + 1} / ${tourState.totalSteps}',
-              style: const TextStyle(
+              style: AppTextStyles.bodySmall(context).copyWith(
                 color: Colors.white70,
-                fontSize: kFontSizeXS,
               ),
             ),
           ),

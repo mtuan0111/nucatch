@@ -180,7 +180,6 @@ class _PickRightButtonsState extends State<PickRightButtons>
             child: Text(
               equation,
               style: AppTextStyles.titleLarge(context).copyWith(
-                fontSize: kFontSizeXL,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).scaffoldBackgroundColor,
               ),
