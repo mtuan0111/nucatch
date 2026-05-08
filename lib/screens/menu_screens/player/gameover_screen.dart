@@ -19,7 +19,6 @@ import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:nucatch/helpers/template/custome_alert.dart';
 
-import 'package:nucatch/widgets/admob_banner.dart';
 import 'package:nucatch/widgets/game_over_regular.dart';
 import 'package:nucatch/widgets/game_over_pick_right.dart';
 
@@ -171,9 +170,8 @@ class _GameOverScreenState extends State<GameOverScreen> {
                       // AdMob Banner Ad
                       AdMobBanner(
                         adUnitId: Platform.isIOS
-                            ? AdMobConfig.iosGameOverBannerId
-                            : AdMobConfig.androidGameOverBannerId,
-                        useTestAds: AdMobConfig.useTestAds,
+                            ? AdMobConfig.instance.iosGameOverBannerId
+                            : AdMobConfig.instance.androidGameOverBannerId,
                       ),
                     ],
                   ),

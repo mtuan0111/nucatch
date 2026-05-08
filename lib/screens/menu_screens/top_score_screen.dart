@@ -16,7 +16,6 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/models/turn_record_model.dart';
-import 'package:nucatch/widgets/admob_banner.dart';
 
 class TopScoreScreen extends StatefulWidget {
   const TopScoreScreen({super.key, required this.title});
@@ -244,9 +243,8 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                               child: _buildRankingList(turnRecordedListState)),
                           AdMobBanner(
                             adUnitId: Platform.isAndroid
-                                ? AdMobConfig.androidTopScoreBannerId
-                                : AdMobConfig.iosTopScoreBannerId,
-                            useTestAds: AdMobConfig.useTestAds,
+                                ? AdMobConfig.instance.androidTopScoreBannerId
+                                : AdMobConfig.instance.iosTopScoreBannerId,
                           )
                         ],
                       ),

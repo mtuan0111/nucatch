@@ -42,31 +42,37 @@ String defaultUsername(context) => coreLang(context).anonymous;
 AppLocalizations lang(context) => AppLocalizations.of(context)!;
 
 // AdMob Configuration
-class AdMobConfig {
-  // AdMob App IDs (used in AndroidManifest.xml and Info.plist)
+class AdMobConfig extends BaseAdMobConfig {
+  AdMobConfig._();
+
+  /// Singleton instance — register at app startup:
+  /// ```dart
+  /// BaseAdMobConfig.register(AdMobConfig.instance);
+  /// ```
+  static final AdMobConfig instance = AdMobConfig._();
+
+  // ── App IDs (AndroidManifest.xml / Info.plist) ───────────────────────────
   static const String androidAppId = 'ca-app-pub-7979935537603411~2676193632';
   static const String iosAppId = 'ca-app-pub-7979935537603411~5942915481';
 
-// Game over
-  // Ad Unit IDs - Android
-  static const String androidGameOverBannerId =
+  // ── BaseAdMobConfig overrides ────────────────────────────────────────────
+
+  @override
+  bool get useTestAds => true; // Set to false once AdMob account is approved.
+
+  @override
+  String get androidGameOverBannerId =>
       'ca-app-pub-7979935537603411/6405949912';
 
-  // Ad Unit IDs - iOS
-  static const String iosGameOverBannerId =
-      'ca-app-pub-7979935537603411/5196375251';
+  @override
+  String get iosGameOverBannerId => 'ca-app-pub-7979935537603411/5196375251';
 
-// Top Score
-  // Ad Unit IDs - Android
-  static const String androidTopScoreBannerId =
+  @override
+  String get androidTopScoreBannerId =>
       'ca-app-pub-7979935537603411/3370267625';
 
-  // Ad Unit IDs - iOS
-  static const String iosTopScoreBannerId =
-      'ca-app-pub-7979935537603411/1322679044';
-
-  // Test mode flag - set to false when AdMob account is approved
-  static const bool useTestAds = true;
+  @override
+  String get iosTopScoreBannerId => 'ca-app-pub-7979935537603411/1322679044';
 }
 
 // ============================================================================

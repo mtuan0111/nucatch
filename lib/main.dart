@@ -14,6 +14,7 @@ import 'package:nucatch/widgets/global_tour_wrapper.dart';
 import 'package:nucatch/services/fcm_service.dart';
 
 import 'package:nucatch/firebase_options.dart';
+import 'package:nucatch/helpers/const.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 Future<void> main() async {
@@ -53,6 +54,7 @@ Future<void> main() async {
       // Google Mobile Ads
       try {
         await MobileAds.instance.initialize();
+        BaseAdMobConfig.register(AdMobConfig.instance);
         debugPrint('✅ Google Mobile Ads initialized successfully');
       } catch (e) {
         debugPrint('⚠️ Failed to initialize Google Mobile Ads: $e');
