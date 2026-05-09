@@ -1832,3 +1832,41 @@ _ Cải thiện giao diện và trải nghiệm người dùng với thiết k�
 #### Flutter build for iOS
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.4 --build-number=85 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+---
+## Released on: 10/05/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 87           | 2.8.6   |
+| iOS      | 86           | 2.8.5   |
+
+### Release note:
+- feat: Optimzie UI UX
+
+### Git note release:
+
+#### Command for copilot
+
+`[Builded] Version 2.8.6 - 87 / 2.8.5 - 86 _ feat: Optimzie UI UX`
+
+#### Brief for Store's new update:
+
+_ Optimized UI and UX for better user interaction and seamless navigation.
+_ Tối ưu hoá giao diện và trải nghiệm người dùng để có sự tương tác mượt mà và điều hướng dễ dàng hơn.
+
+#### Flutter build for Android for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build appbundle --build-name=2.8.6.0 --build-number=87 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for iOS for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build ios --build-name=2.8.5 --build-number=86.0 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for Android
+
+`npm run flutterfire_setup && flutter build appbundle --build-name=2.8.6 --build-number=87 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Flutter build for iOS
+
+`npm run flutterfire_setup && flutter build ios --build-name=2.8.5 --build-number=86 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
