@@ -12,6 +12,7 @@ import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
+import 'package:nucatch/helpers/admob_config.dart';
 import 'package:skeleton_core/skeleton_core.dart' hide LoadData;
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
@@ -78,7 +79,6 @@ class _GameOverScreenState extends State<GameOverScreen> {
                                 ? GameOverPickRight(turnState: turnState)
                                 : GameOverRegular(turnState: turnState),
                       ),
-
                       const SizedBox(
                         height: kSpace4XL,
                       ),

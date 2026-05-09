@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeleton_core/skeleton_core.dart' hide SettingScreen;
 import 'package:skeleton_core/src/screens/setting_screen.dart' as core;
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
@@ -29,10 +28,11 @@ class SettingScreen extends StatelessWidget {
           );
         }
       },
-      additionalSettingsBuilder: (context, settingState) => [
+      additionalSettingsBuilder: (context, settingState, buildField) => [
         // Restart Tour Button
-        CustomWrapContainer(
-          icon: FontAwesomeIcons.compass,
+        buildField(
+          context,
+          iconData: FontAwesomeIcons.compass,
           title: lang(context).tourRestartFromSettings,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,

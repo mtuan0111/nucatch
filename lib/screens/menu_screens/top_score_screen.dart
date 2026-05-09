@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nucatch/helpers/admob_config.dart';
 import 'package:skeleton_core/skeleton_core.dart'
     hide
         TopScoreNavCubit,
@@ -15,7 +16,6 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/models/turn_record_model.dart';
 
 class TopScoreScreen extends StatefulWidget {
   const TopScoreScreen({super.key, required this.title});

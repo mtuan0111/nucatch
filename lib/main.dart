@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nucatch/helpers/admob_config.dart';
 import 'package:skeleton_core/skeleton_core.dart'
     hide UpdateCheckerWrapper, MenuNav, TopScoreNav;
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
@@ -14,7 +15,6 @@ import 'package:nucatch/widgets/global_tour_wrapper.dart';
 import 'package:nucatch/services/fcm_service.dart';
 
 import 'package:nucatch/firebase_options.dart';
-import 'package:nucatch/helpers/const.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 Future<void> main() async {

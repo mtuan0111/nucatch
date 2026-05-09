@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:skeleton_core/skeleton_core.dart';
@@ -16,7 +17,7 @@ class AboutScreen extends StatefulWidget {
   State<AboutScreen> createState() => _AboutScreenState();
 }
 
-class _AboutScreenState extends State<AboutScreen> {
+class _AboutScreenState extends State<AboutScreen> with AppVersionStateMixin {
   String get screenTitle => widget.title;
 
   SettingBloc get settingBloc => context.read<SettingBloc>();
@@ -28,25 +29,10 @@ class _AboutScreenState extends State<AboutScreen> {
 
   AppVersionBloc get appVersionBloc => context.read<AppVersionBloc>();
 
-  String? version;
-  String? buildNumber;
-
   String profileUrl = dotenv.env['PROFILE_URL']!;
   String privacyPolicyUrl = dotenv.env['PRIVACY_POLICY_URL']!;
   String facebookUrl = dotenv.env['FACEBOOK_URL']!;
   String email = dotenv.env['EMAIL_CONTACT']!;
-
-  @override
-  void initState() {
-    super.initState();
-
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      setState(() {
-        version = packageInfo.version;
-        buildNumber = packageInfo.buildNumber;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +103,7 @@ class _AboutScreenState extends State<AboutScreen> {
                             context,
                             FontAwesomeIcons.codeBranch,
                             coreLang(context).version,
-                            version ?? "N/A",
+                            appVersion ?? "N/A",
                           ),
                         ],
                       ),
@@ -175,63 +161,89 @@ class _AboutScreenState extends State<AboutScreen> {
                               ),
                               const SizedBox(height: kSpaceL),
                               Center(
-                                child: ElevatedButton.icon(
-                                  onPressed:
-                                      state.status == AppVersionStatus.checking
-                                          ? null
-                                          : () {
-                                              appVersionBloc
-                                                  .add(CheckForUpdateEvent());
-                                            },
-                                  icon: state.status ==
-                                          AppVersionStatus.checking
-                                      ? SizedBox(
-                                          width: 16,
-                                          height: 16,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                              Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimary,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CustomElevatedButton(
+                                          text:
+                                              coreLang(context).checkForUpdates,
+                                          onPressed: state.status ==
+                                                  AppVersionStatus.checking
+                                              ? null
+                                              : () {
+                                                  appVersionBloc.add(
+                                                      CheckForUpdateEvent());
+                                                },
+                                          iconData:
+                                              FontAwesomeIcons.arrowsRotate,
+                                          shapeAt: RoundedWithShapeAt.topLeft,
+                                          buttonSize: ButtonSize.smallest,
+                                        ) ??
+                                        ElevatedButton.icon(
+                                          onPressed: state.status ==
+                                                  AppVersionStatus.checking
+                                              ? null
+                                              : () {
+                                                  appVersionBloc.add(
+                                                      CheckForUpdateEvent());
+                                                },
+                                          icon: state.status ==
+                                                  AppVersionStatus.checking
+                                              ? SizedBox(
+                                                  width: 16,
+                                                  height: 16,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    strokeWidth: 2,
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .onPrimary,
+                                                    ),
+                                                  ),
+                                                )
+                                              : const Icon(
+                                                  FontAwesomeIcons.arrowsRotate,
+                                                  size: kIconSizeS,
+                                                ),
+                                          label: Text(
+                                            coreLang(context).checkForUpdates,
+                                            style: AppTextStyles.withColor(
+                                                AppTextStyles.bodyLarge(
+                                                    context),
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary),
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                Theme.of(context).primaryColor,
+                                            foregroundColor: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: kSpace2XL,
+                                              vertical: kSpaceML,
+                                            ),
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(
+                                                    kBorderRadiusL / 5),
+                                                topRight: Radius.circular(
+                                                    kBorderRadiusL),
+                                                bottomLeft: Radius.circular(
+                                                    kBorderRadiusL),
+                                                bottomRight: Radius.circular(
+                                                    kBorderRadiusL),
+                                              ),
                                             ),
                                           ),
-                                        )
-                                      : const Icon(
-                                          FontAwesomeIcons.arrowsRotate,
-                                          size: kIconSizeS,
                                         ),
-                                  label: Text(
-                                    coreLang(context).checkForUpdates,
-                                    style: AppTextStyles.withColor(
-                                        AppTextStyles.bodyLarge(context),
-                                        Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor,
-                                    foregroundColor:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: kSpace2XL,
-                                      vertical: kSpaceML,
-                                    ),
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft:
-                                            Radius.circular(kBorderRadiusL / 5),
-                                        topRight:
-                                            Radius.circular(kBorderRadiusL),
-                                        bottomLeft:
-                                            Radius.circular(kBorderRadiusL),
-                                        bottomRight:
-                                            Radius.circular(kBorderRadiusL),
-                                      ),
-                                    ),
-                                  ),
+                                  ],
                                 ),
                               ),
                             ],
