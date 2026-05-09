@@ -167,82 +167,18 @@ class _AboutScreenState extends State<AboutScreen> with AppVersionStateMixin {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     CustomElevatedButton(
-                                          text:
-                                              coreLang(context).checkForUpdates,
-                                          onPressed: state.status ==
-                                                  AppVersionStatus.checking
-                                              ? null
-                                              : () {
-                                                  appVersionBloc.add(
-                                                      CheckForUpdateEvent());
-                                                },
-                                          iconData:
-                                              FontAwesomeIcons.arrowsRotate,
-                                          shapeAt: RoundedWithShapeAt.topLeft,
-                                          buttonSize: ButtonSize.smallest,
-                                        ) ??
-                                        ElevatedButton.icon(
-                                          onPressed: state.status ==
-                                                  AppVersionStatus.checking
-                                              ? null
-                                              : () {
-                                                  appVersionBloc.add(
-                                                      CheckForUpdateEvent());
-                                                },
-                                          icon: state.status ==
-                                                  AppVersionStatus.checking
-                                              ? SizedBox(
-                                                  width: 16,
-                                                  height: 16,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    strokeWidth: 2,
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                            Color>(
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .onPrimary,
-                                                    ),
-                                                  ),
-                                                )
-                                              : const Icon(
-                                                  FontAwesomeIcons.arrowsRotate,
-                                                  size: kIconSizeS,
-                                                ),
-                                          label: Text(
-                                            coreLang(context).checkForUpdates,
-                                            style: AppTextStyles.withColor(
-                                                AppTextStyles.bodyLarge(
-                                                    context),
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                Theme.of(context).primaryColor,
-                                            foregroundColor: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: kSpace2XL,
-                                              vertical: kSpaceML,
-                                            ),
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(
-                                                    kBorderRadiusL / 5),
-                                                topRight: Radius.circular(
-                                                    kBorderRadiusL),
-                                                bottomLeft: Radius.circular(
-                                                    kBorderRadiusL),
-                                                bottomRight: Radius.circular(
-                                                    kBorderRadiusL),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                      text: coreLang(context).checkForUpdates,
+                                      onPressed: state.status ==
+                                              AppVersionStatus.checking
+                                          ? null
+                                          : () {
+                                              appVersionBloc
+                                                  .add(CheckForUpdateEvent());
+                                            },
+                                      iconData: FontAwesomeIcons.arrowsRotate,
+                                      shapeAt: RoundedWithShapeAt.topLeft,
+                                      buttonSize: ButtonSize.smallest,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -274,15 +210,13 @@ class _AboutScreenState extends State<AboutScreen> with AppVersionStateMixin {
                           ),
                           const SizedBox(height: kSpaceXL),
                           Wrap(
-                            // mainAxisAlignment: MainAxisAlignment.,
-                            // crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 5,
-                            runSpacing: 10,
+                            spacing: kSpaceS,
+                            runSpacing: kSpaceM,
                             children: [
                               _buildSocialButton(
                                 context,
                                 icon: FontAwesomeIcons.shareNodes,
-                                label: 'Share',
+                                label: coreLang(context).share,
                                 onTap: () {
                                   // Get the button's position for iPad share sheet
                                   final box =
