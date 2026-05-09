@@ -8,6 +8,7 @@ import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/widgets/nucatch_ranking_item.dart';
 
 /// Game over content widget for Regular (normal) difficulty modes
 /// Displays the requirement string, expected answer, and ranking
@@ -77,30 +78,10 @@ class GameOverRegular extends StatelessWidget {
             int? indexOfItem =
                 state.listModel!.indexOfTurn(turnState.recordedItem!);
 
-            return RankingItem(
+            return NucatchRankingItem(
+              turnRecordedModel: turnState.recordedItem!,
               ranking: indexOfItem,
-              iconData: FontAwesomeIcons.trophy,
               heroTag: "ranking-${turnState.recordedItem!.turnId}",
-              currentUserLabel: lang(context).you,
-              infoRows: [
-                RankingInfoRow(
-                  icon: Icons.person,
-                  text: turnState.recordedItem!.playedUsername ??
-                      coreLang(context).anonymous,
-                ),
-                RankingInfoRow(
-                  icon: Icons.calendar_today,
-                  text: (turnState.recordedItem!.recordedTime)
-                      .formatClient()
-                      .replaceFirst(' ', '\n'),
-                ),
-                RankingInfoRow(
-                  icon: Helper.getIconFromDifficulty(
-                      context, turnState.recordedItem!.difficulty),
-                  text: Helper.getTitleFromDifficulty(
-                      context, turnState.recordedItem!.difficulty),
-                ),
-              ],
             );
           },
         ),

@@ -17,6 +17,7 @@ import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:nucatch/models/turn_record_model.dart';
+import 'package:nucatch/widgets/nucatch_ranking_item.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class TopScoreDetailScreen extends StatefulWidget {
@@ -159,34 +160,12 @@ class _TopScoreDetailScreenState extends State<TopScoreDetailScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  RankingItem(
+                                  NucatchRankingItem(
+                                    turnRecordedModel: turnRecordedModel,
                                     ranking: ranking,
-                                    iconData: FontAwesomeIcons.trophy,
                                     heroTag:
                                         "ranking-${turnRecordedModel.turnId}",
-                                    currentUserLabel: lang(context).you,
-                                    infoRows: [
-                                      RankingInfoRow(
-                                        icon: Icons.person,
-                                        text:
-                                            turnRecordedModel.playedUsername ??
-                                                coreLang(context).anonymous,
-                                      ),
-                                      RankingInfoRow(
-                                        icon: Icons.calendar_today,
-                                        text: turnRecordedModel.recordedTime
-                                            .formatClient()
-                                            .replaceFirst(' ', '\n'),
-                                      ),
-                                      RankingInfoRow(
-                                        icon: Helper.getIconFromDifficulty(
-                                            context,
-                                            turnRecordedModel.difficulty),
-                                        text: Helper.getTitleFromDifficulty(
-                                            context,
-                                            turnRecordedModel.difficulty),
-                                      ),
-                                    ],
+                                    isCurrentUser: isCurrentUser,
                                   ),
                                   const SizedBox(height: kSpace3XL),
                                   CustomElevatedButton(

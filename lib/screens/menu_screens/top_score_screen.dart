@@ -16,6 +16,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/widgets/nucatch_ranking_item.dart';
 
 class TopScoreScreen extends StatefulWidget {
   const TopScoreScreen({super.key, required this.title});
@@ -317,32 +318,13 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                                           settingState.onlyShowMyRecorded,
                                         );
                                   },
-                                  child: RankingItem(
+                                  child: NucatchRankingItem(
+                                    turnRecordedModel: e,
                                     ranking: index + 1,
                                     heroTag:
                                         "ranking-${e.turnId}${settingState.onlyShowMyRecorded ? '-filtered' : ''}",
-                                    currentUserLabel: lang(context).you,
                                     isCurrentUser: _currentUserId != null &&
                                         e.firebaseUserId == _currentUserId,
-                                    infoRows: [
-                                      RankingInfoRow(
-                                        icon: Icons.person,
-                                        text: e.playedUsername ??
-                                            coreLang(context).anonymous,
-                                      ),
-                                      RankingInfoRow(
-                                        icon: Icons.calendar_today,
-                                        text: (e.recordedTime)
-                                            .formatClient()
-                                            .replaceFirst(' ', '\n'),
-                                      ),
-                                      RankingInfoRow(
-                                        icon: Helper.getIconFromDifficulty(
-                                            context, e.difficulty),
-                                        text: Helper.getTitleFromDifficulty(
-                                            context, e.difficulty),
-                                      ),
-                                    ],
                                   ),
                                 );
                               },
