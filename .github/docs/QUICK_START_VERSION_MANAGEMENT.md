@@ -24,8 +24,8 @@ cd .github/scripts
 Output:
 ```
 ℹ️  Current version for android (dev):
-versionName: 2.0.0
-versionCode: 31
+versionName: 3.12.1.3
+versionCode: 416
 ```
 
 ### Step 3: Update Version Before Release
@@ -53,6 +53,7 @@ versionCode: 31
 ```bash
 # Commit the version changes
 git add .github/config/version-config.json
+git add vinaresearch-flutter/distribution/
 git commit -m "chore: bump version and update release notes"
 git push origin development
 ```
@@ -73,7 +74,7 @@ That's it! 🎉 The CI/CD pipeline will automatically use the new version.
 ./version-manager.sh android dev update-notes "Fixed critical authentication bug"
 
 # 3. Commit and push
-git add .github/config/version-config.json
+git add .github/config/version-config.json vinaresearch-flutter/distribution/
 git commit -m "fix: authentication bug - v$(jq -r '.android.dev.versionName' ../config/version-config.json)"
 git push
 ```
@@ -91,7 +92,7 @@ git push
 - Offline mode"
 
 # 3. Commit and push
-git add .github/config/version-config.json
+git add .github/config/version-config.json vinaresearch-flutter/distribution/
 git commit -m "feat: new features - v$(jq -r '.ios.prod.versionName' ../config/version-config.json)"
 git push
 ```
@@ -100,31 +101,24 @@ git push
 
 ```bash
 # If you need a specific version number
-./version-manager.sh android dev set 3.0.0 50
-./version-manager.sh ios prod set 3.0.0 50
+./version-manager.sh android dev set 4.0.0 500
+./version-manager.sh ios prod set 6.0.0 400
 ```
 
 ---
 
 ## 🔄 Workflow Integration
 
-The workflows automatically read versions from the config file.
-
-### Automatic Triggers
-
-| Branch | Workflow | Track |
-|--------|----------|-------|
-| `development` | Android/iOS Internal | Internal Testing |
-| `main` | Android/iOS Release | Production |
+The new workflows (`*_v2.yml`) automatically read versions from the config file.
 
 ### Manual Deployment with Custom Version
 
 You can override the version when manually triggering a workflow:
 
 1. Go to GitHub Actions
-2. Select the workflow (e.g., "Android Internal Test Deployment")
+2. Select "Android Internal Test Deployment (Version Managed)"
 3. Click "Run workflow"
-4. Enter version override: `2.1.0,35` (format: versionName,versionCode)
+4. Enter version override: `3.12.2,417` (format: versionName,versionCode)
 5. Click "Run workflow"
 
 ---
@@ -135,8 +129,8 @@ You can override the version when manually triggering a workflow:
 |------|---------|
 | `.github/config/version-config.json` | Central version configuration |
 | `.github/scripts/version-manager.sh` | Version management script |
-| `distribution/whatsnew/en-US.txt` | Android release notes |
-| `distribution/whatsnew-ios/en-US.txt` | iOS release notes |
+| `vinaresearch-flutter/distribution/whatsnew/en-US.txt` | Android release notes |
+| `vinaresearch-flutter/distribution/whatsnew-ios/en-US.txt` | iOS release notes |
 
 ---
 
@@ -156,7 +150,7 @@ Make sure you:
 ### "Build number must be higher"
 Check the current build number in App Store Connect / Play Console and set a higher number:
 ```bash
-./version-manager.sh ios prod set 2.0.0 45
+./version-manager.sh ios prod set 5.12.1 450
 ```
 
 ---
@@ -172,6 +166,14 @@ Check the current build number in App Store Connect / Play Console and set a hig
 
 ---
 
+## 📞 Need Help?
+
+- 📖 Full documentation: `.github/docs/VERSION_MANAGEMENT.md`
+- 💬 Ask the DevOps team
+- 🐛 Report issues with the script
+
+---
+
 ## 🔗 Quick Links
 
 | Task | Command |
@@ -184,3 +186,4 @@ Check the current build number in App Store Connect / Play Console and set a hig
 ---
 
 **Remember:** Version numbers must always increase for app store submissions!
+

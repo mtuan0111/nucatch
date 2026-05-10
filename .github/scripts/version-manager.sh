@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version Manager Script for NuCatch
+# Version Manager Script
 # Usage: ./version-manager.sh [platform] [environment] [action]
 # Example: ./version-manager.sh android dev bump-patch
 
@@ -73,7 +73,7 @@ bump_version() {
         CURRENT_BUILD=$(jq -r ".ios.$ENVIRONMENT.buildNumber" "$CONFIG_FILE")
     fi
     
-    # Split version into parts (e.g., 2.0.0)
+    # Split version into parts (e.g., 3.12.1)
     IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
     MAJOR=${VERSION_PARTS[0]}
     MINOR=${VERSION_PARTS[1]}
@@ -110,6 +110,7 @@ bump_version() {
         if [ ${#BUILD_PARTS[@]} -eq 1 ]; then
             NEW_BUILD=$((BUILD_PARTS[0] + 1))
         else
+            # If build has decimal (e.g., 355.4), increment the last part
             MAIN_BUILD=${BUILD_PARTS[0]}
             SUB_BUILD=${BUILD_PARTS[1]}
             NEW_BUILD="$MAIN_BUILD.$((SUB_BUILD + 1))"
@@ -248,9 +249,10 @@ case $ACTION in
         echo "Examples:"
         echo "  $0 android dev get"
         echo "  $0 android dev bump-patch"
-        echo "  $0 ios prod set 2.1.0 35"
+        echo "  $0 ios prod set 5.13.0 356"
         echo "  $0 android dev update-notes 'Bug fixes and improvements'"
         echo "  $0 android dev update-notes 'Sửa lỗi và cải thiện hiệu suất' vi-VN"
         exit 1
         ;;
 esac
+
