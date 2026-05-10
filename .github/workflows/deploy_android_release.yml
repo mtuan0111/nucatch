@@ -3,7 +3,7 @@ name: Android Production Deployment
 on:
   push:
     branches:
-      - B18_Auto_deploy
+      - deployment_production
 
 env:
   ENV_TRACK: production # Production release track
