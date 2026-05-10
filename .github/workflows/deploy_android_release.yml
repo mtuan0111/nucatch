@@ -15,7 +15,7 @@ env:
 
 jobs:
   deploy-production:
-    runs-on: macos-latest
+    runs-on: macos-26
     environment: development
     steps:
       - name: Checkout code
