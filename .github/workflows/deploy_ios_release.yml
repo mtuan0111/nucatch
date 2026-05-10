@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - vn_main
+      - deployment_production
 
 env:
   TESTFLIGHT_MODE: release # Internal testing only - no external beta review required
@@ -21,7 +22,7 @@ env:
 
 jobs:
   deploy-release:
-    runs-on: macos-latest
+    runs-on: macos-26
     environment: production
     steps:
       - name: Checkout code
