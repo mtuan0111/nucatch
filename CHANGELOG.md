@@ -1870,3 +1870,41 @@ _ Tối ưu hoá giao diện và trải nghiệm người dùng để có sự t
 #### Flutter build for iOS
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.5 --build-number=86 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+---
+## Released on: 10/05/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 88           | 2.8.6   |
+| iOS      | 87           | 2.8.6   |
+
+### Release note:
+- feat: Test auto deploy
+
+### Git note release:
+
+#### Command for copilot
+
+`[Builded] Version 2.8.6 - 88 / 2.8.6 - 87 _ feat: Test auto deploy`
+
+#### Brief for Store's new update:
+
+_ Added automated deployment testing to streamline release workflows.
+_ Thử nghiệm triển khai tự động để tối ưu hóa quy trình phát hành.
+
+#### Flutter build for Android for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build appbundle --build-name=2.8.6.0 --build-number=88 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for iOS for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build ios --build-name=2.8.6 --build-number=87.0 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for Android
+
+`npm run flutterfire_setup && flutter build appbundle --build-name=2.8.6 --build-number=88 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Flutter build for iOS
+
+`npm run flutterfire_setup && flutter build ios --build-name=2.8.6 --build-number=87 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`

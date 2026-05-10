@@ -2,41 +2,41 @@
     "android": {
         "dev": {
             "versionName": "2.8.6.0",
-            "versionCode": 87,
+            "versionCode": 88,
             "releaseNotes": {
-                "en-US": "Optimized UI and UX for better user interaction and seamless navigation.",
-                "vi-VN": "Tối ưu hoá giao diện và trải nghiệm người dùng để có sự tương tác mượt mà và điều hướng dễ dàng hơn."
+                "en-US": "Added automated deployment testing to streamline release workflows.",
+                "vi-VN": "Thử nghiệm triển khai tự động để tối ưu hóa quy trình phát hành."
             }
         },
         "prod": {
             "versionName": "2.8.6",
-            "versionCode": 87,
+            "versionCode": 88,
             "releaseNotes": {
-                "en-US": "Optimized UI and UX for better user interaction and seamless navigation.",
-                "vi-VN": "Tối ưu hoá giao diện và trải nghiệm người dùng để có sự tương tác mượt mà và điều hướng dễ dàng hơn."
+                "en-US": "Added automated deployment testing to streamline release workflows.",
+                "vi-VN": "Thử nghiệm triển khai tự động để tối ưu hóa quy trình phát hành."
             }
         }
     },
     "ios": {
         "dev": {
-            "versionName": "2.8.5",
-            "buildNumber": "86.0",
+            "versionName": "2.8.6",
+            "buildNumber": "87.0",
             "releaseNotes": {
-                "en-US": "Optimized UI and UX for better user interaction and seamless navigation.",
-                "vi-VN": "Tối ưu hoá giao diện và trải nghiệm người dùng để có sự tương tác mượt mà và điều hướng dễ dàng hơn."
+                "en-US": "Added automated deployment testing to streamline release workflows.",
+                "vi-VN": "Thử nghiệm triển khai tự động để tối ưu hóa quy trình phát hành."
             }
         },
         "prod": {
-            "versionName": "2.8.5",
-            "buildNumber": "86",
+            "versionName": "2.8.6",
+            "buildNumber": "87",
             "releaseNotes": {
-                "en-US": "Optimized UI and UX for better user interaction and seamless navigation.",
-                "vi-VN": "Tối ưu hoá giao diện và trải nghiệm người dùng để có sự tương tác mượt mà và điều hướng dễ dàng hơn."
+                "en-US": "Added automated deployment testing to streamline release workflows.",
+                "vi-VN": "Thử nghiệm triển khai tự động để tối ưu hóa quy trình phát hành."
             }
         }
     },
     "metadata": {
-        "lastUpdated": "2026-05-10T00:00:00+07:00",
+        "lastUpdated": "2026-05-10T21:58:56+07:00",
         "updatedBy": "CI/CD Pipeline"
     }
 }
