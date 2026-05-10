@@ -75,9 +75,7 @@ dependencies:
   google_mobile_ads: ^5.2.0
   # Common game-shell package
   skeleton_core:
-    git:
-      url: git@github.com:mtuan0111/skeleton_core.git
-      ref: deployment_production
+    path: ../skeleton_core
   google_generative_ai: ^0.4.7
   flutter_local_notifications: ^21.0.0
   firebase_messaging: ^16.1.2
