@@ -3,10 +3,10 @@ name: iOS Internal Test Deployment
 on:
   push:
     branches:
-      - development
+      - vn_development
 
 env:
-  TESTFLIGHT_MODE: internal
+  TESTFLIGHT_MODE: internal # Internal testing only - no external beta review required
   IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
   IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
   CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
@@ -15,9 +15,9 @@ env:
   APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
   APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
   SERVICE_ACCOUNT_JSON_BASE64: ${{ secrets.SERVICE_ACCOUNT_JSON_BASE64 }}
-  IOS_BUNDLE_IDENTIFIER: ${{ vars.IOS_BUNDLE_IDENTIFIER }}
-  IOS_PROVISIONING_PROFILE_FILE_NAME: NuCatch_AppStore.mobileprovision
-  IPA_FILE_NAME: nucatch.ipa
+  IOS_BUNDLE_IDENTIFIER: ${{ vars.IOS_BUNDLE_IDENTIFIER }} # e.g., com.macromillsea.vinaresearchDev
+  IOS_PROVISIONING_PROFILE_FILE_NAME: ${{ vars.IOS_PROVISIONING_PROFILE_FILE_NAME }}.mobileprovision # Nusaresearch_Dev_AppStore
+  IPA_FILE_NAME: ${{ vars.IPA_FILE_NAME }}.ipa # nusaresearch.ipa
 
 jobs:
   deploy-internal-test:
@@ -25,61 +25,69 @@ jobs:
     environment: development
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🔢 Load version configuration
         id: version
         run: |
+          # Load from config file
           VERSION_NAME=$(jq -r '.ios.dev.versionName' .github/config/version-config.json)
           BUILD_NUMBER=$(jq -r '.ios.dev.buildNumber' .github/config/version-config.json)
-          
+
+          # Allow manual override
           if [ -n "${{ github.event.inputs.version_override }}" ]; then
             IFS=',' read -r VERSION_NAME BUILD_NUMBER <<< "${{ github.event.inputs.version_override }}"
             echo "⚠️  Using version override: $VERSION_NAME ($BUILD_NUMBER)"
           fi
-          
+
           echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
           echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_OUTPUT
-          
+
           echo "=== Version Information ==="
           echo "Version Name: $VERSION_NAME"
           echo "Build Number: $BUILD_NUMBER"
 
       - name: ✅ Validate version against App Store
         run: |
-          set +e
-          
+          set +e  # Don't exit on error, we'll handle errors manually
+
           echo "=== Validating Version and Build Number ==="
           echo "Checking if version ${{ steps.version.outputs.VERSION_NAME }} (${{ steps.version.outputs.BUILD_NUMBER }}) is valid..."
-          
+
+          # Validate App Store Connect credentials
           if [ -z "$APP_STORE_CONNECT_API_KEY_ID" ]; then
             echo "❌ ERROR: APP_STORE_CONNECT_API_KEY_ID is not set"
             exit 1
           fi
-          
+
           if [ -z "$APP_STORE_CONNECT_API_ISSUER_ID" ]; then
             echo "❌ ERROR: APP_STORE_CONNECT_API_ISSUER_ID is not set"
             exit 1
           fi
-          
+
           if [ -z "$APP_STORE_CONNECT_API_KEY_CONTENT" ]; then
             echo "❌ ERROR: APP_STORE_CONNECT_API_KEY_CONTENT is not set"
             exit 1
           fi
-          
+
           echo "✅ App Store Connect credentials validated"
-          
+
+          # Create the private_keys directory and API key file
           mkdir -p ~/.appstoreconnect/private_keys
+
+          # Decode the base64-encoded API key and save it
           echo "$APP_STORE_CONNECT_API_KEY_CONTENT" | base64 --decode > ~/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8
           chmod 600 ~/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8
-          
+
+          # Verify API key file was created and has content
           if [ ! -f ~/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8 ]; then
             echo "❌ ERROR: Failed to create API key file"
             exit 1
           fi
-          
+
           echo "✅ API key file created successfully"
-          
+
+          # Install dependencies for Python script
           echo "Installing Python dependencies..."
           python3 -m pip install --quiet --user PyJWT cryptography requests 2>/dev/null || \
           python3 -m pip install --quiet --break-system-packages PyJWT cryptography requests 2>/dev/null || {
@@ -87,7 +95,8 @@ jobs:
             rm -rf ~/.appstoreconnect/private_keys
             exit 1
           }
-          
+
+          # Run the version check script
           python3 .github/workflows/check_version_ios.py \
             "${{ env.IOS_BUNDLE_IDENTIFIER }}" \
             "${{ steps.version.outputs.VERSION_NAME }}" \
@@ -95,17 +104,18 @@ jobs:
             "$APP_STORE_CONNECT_API_KEY_ID" \
             "$APP_STORE_CONNECT_API_ISSUER_ID" \
             "$HOME/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8"
-          
+
           VALIDATION_EXIT_CODE=$?
-          
+
+          # Cleanup
           rm -rf ~/.appstoreconnect/private_keys
-          
+
           if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
             echo ""
             echo "❌ Version validation failed!"
             exit 1
           fi
-          
+
           echo ""
           echo "✅ Version validation completed successfully"
         env:
@@ -118,70 +128,190 @@ jobs:
         run: |
           echo "=== Generating Release Notes for All Languages ==="
           mkdir -p distribution/whatsnew-ios
-          
+
+          # Mapping function: Convert locale codes to App Store Connect format
+          # App Store Connect uses specific locale codes that may differ from standard formats
+          map_locale_to_appstore() {
+            local input_locale="$1"
+            case "$input_locale" in
+              # English variants -> en-US
+              "en"|"en-GB"|"en-AU"|"en-CA"|"en-IN")
+                echo "en-US"
+                ;;
+              # Indonesian: id-ID -> id
+              "id-ID"|"id_ID")
+                echo "id"
+                ;;
+              # Japanese
+              "ja-JP"|"ja_JP")
+                echo "ja"
+                ;;
+              # Korean
+              "ko-KR"|"ko_KR")
+                echo "ko"
+                ;;
+              # Vietnamese
+              "vi-VN"|"vi_VN")
+                echo "vi"
+                ;;
+              # Thai
+              "th-TH"|"th_TH")
+                echo "th"
+                ;;
+              # Chinese Simplified
+              "zh-CN"|"zh_CN"|"zh-Hans-CN")
+                echo "zh-Hans"
+                ;;
+              # Chinese Traditional
+              "zh-TW"|"zh_TW"|"zh-Hant-TW")
+                echo "zh-Hant"
+                ;;
+              # Portuguese Brazil
+              "pt-BR"|"pt_BR")
+                echo "pt-BR"
+                ;;
+              # Portuguese Portugal
+              "pt-PT"|"pt_PT")
+                echo "pt-PT"
+                ;;
+              # Spanish variants
+              "es-ES"|"es_ES"|"es")
+                echo "es-ES"
+                ;;
+              "es-MX"|"es_MX")
+                echo "es-MX"
+                ;;
+              # French
+              "fr-FR"|"fr_FR"|"fr")
+                echo "fr-FR"
+                ;;
+              # German
+              "de-DE"|"de_DE"|"de")
+                echo "de-DE"
+                ;;
+              # Italian
+              "it-IT"|"it_IT"|"it")
+                echo "it"
+                ;;
+              # Russian
+              "ru-RU"|"ru_RU"|"ru")
+                echo "ru"
+                ;;
+              # Arabic
+              "ar-SA"|"ar_SA"|"ar")
+                echo "ar-SA"
+                ;;
+              # Hindi
+              "hi-IN"|"hi_IN"|"hi")
+                echo "hi"
+                ;;
+              # Malay
+              "ms-MY"|"ms_MY"|"ms")
+                echo "ms"
+                ;;
+              # Default: return as-is (already in correct format)
+              *)
+                echo "$input_locale"
+                ;;
+            esac
+          }
+
+          # Get all language keys from releaseNotes
           LANGUAGES=$(jq -r '.ios.dev.releaseNotes | keys[]' .github/config/version-config.json)
-          
+
+          # Generate release notes file for each language with proper App Store locale mapping
           for LANG in $LANGUAGES; do
             NOTES=$(jq -r ".ios.dev.releaseNotes[\"$LANG\"]" .github/config/version-config.json)
-            echo "$NOTES" > "distribution/whatsnew-ios/$LANG.txt"
-            echo "✅ Generated release notes for $LANG:"
-            cat "distribution/whatsnew-ios/$LANG.txt"
+            
+            # Map the locale to App Store Connect format
+            APPSTORE_LOCALE=$(map_locale_to_appstore "$LANG")
+            
+            # Write to file with App Store Connect locale name
+            echo "$NOTES" > "distribution/whatsnew-ios/$APPSTORE_LOCALE.txt"
+            echo "✅ Generated release notes: $LANG -> $APPSTORE_LOCALE"
+            cat "distribution/whatsnew-ios/$APPSTORE_LOCALE.txt"
             echo ""
           done
-          
-          echo "✅ Release notes generated for all languages: $LANGUAGES"
+
+          echo ""
+          echo "📁 Generated whatsnew-ios files:"
+          ls -la distribution/whatsnew-ios/
+          echo ""
+          echo "✅ Release notes generated for all languages"
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.38.5'
-          channel: 'stable'
-          cache: true
+          channel: "stable"
+          cache: false # Disable cache to ensure fresh dependencies
 
       - name: Validate iOS Build Environment
         run: |
           echo "=== iOS Build Configuration Check ==="
           echo "Xcode version:"
           xcodebuild -version
-          
+
+          # Ensure we're using a stable Xcode version (not beta)
           if xcodebuild -version | grep -i beta; then
             echo "⚠️ WARNING: Using Beta version of Xcode"
+            echo "⚠️ RECOMMENDATION: Use stable Xcode version for production builds"
           else
             echo "✅ Using stable Xcode version"
           fi
-          
+
           echo "Available iOS SDKs:"
           xcodebuild -showsdks | grep iOS
 
       - name: Clean Build Environment
         run: |
           echo "=== Cleaning Build Environment ==="
+          # Force clean build and clear all caches
           flutter clean
+
+          # Clear Xcode build cache
           rm -rf ios/build/
           rm -rf build/
+
+          # Clear derived data
           rm -rf ~/Library/Developer/Xcode/DerivedData/*
+
+          # Force fresh CocoaPods install so Podfile post_install hooks apply
+          rm -rf ios/Pods
+          rm -f ios/Podfile.lock
+
+          # Clear pub cache for this project
           flutter pub cache clean
+
           echo "✅ Build environment cleaned"
 
       - name: Validate iOS Project Configuration
         run: |
           echo "=== Checking iOS Project Settings ==="
-          
+
+          # Check for problematic linker flags
           if grep -r "fuse-ld" ios/ 2>/dev/null; then
             echo "⚠️ WARNING: Found -fuse-ld flags in iOS project"
+            echo "🔧 Removing problematic linker flags..."
+            # Remove fuse-ld flags from project.pbxproj
             sed -i '' 's/-fuse-ld[^[:space:]]*//' ios/Runner.xcodeproj/project.pbxproj
             echo "✅ Removed -fuse-ld flags"
           else
             echo "✅ No problematic linker flags found"
           fi
-          
+
+          # Verify bitcode is disabled
           echo "=== Checking Bitcode Settings ==="
           if grep -q "ENABLE_BITCODE = YES" ios/Runner.xcodeproj/project.pbxproj; then
+            echo "⚠️ WARNING: Bitcode is enabled, disabling it..."
             sed -i '' 's/ENABLE_BITCODE = YES/ENABLE_BITCODE = NO/g' ios/Runner.xcodeproj/project.pbxproj
             echo "✅ Bitcode disabled"
           else
             echo "✅ Bitcode is already disabled"
           fi
+
+          # Show current bitcode status
+          echo "Current bitcode settings:"
+          grep -i "ENABLE_BITCODE" ios/Runner.xcodeproj/project.pbxproj | head -5
 
       - name: Disable Flutter analytics
         run: flutter config --no-analytics
@@ -196,89 +326,89 @@ jobs:
         env:
           SERVICE_ACCOUNT_JSON_BASE64: ${{ env.SERVICE_ACCOUNT_JSON_BASE64 }}
 
-      - name: Setup SSH for private dependencies
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Setup SSH for private repos
+        uses: webfactory/ssh-agent@v0.10.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: Get Flutter dependencies
-        run: flutter pub get
+        run: |
+          flutter pub get
 
       - name: Install Firebase CLI and FlutterFire CLI
         run: |
+          # Install Firebase CLI using Node.js package manager
           npm install -g firebase-tools
+          # Install FlutterFire CLI
           dart pub global activate flutterfire_cli
+          # Verify installations
           firebase --version
           flutterfire --version
 
       - name: Authenticate Firebase CLI
         run: |
+          # Verify authentication by listing projects
           firebase projects:list
           if firebase projects:list 2>&1 | grep -q "Project ID"; then
             echo "✅ Firebase CLI authenticated successfully"
+            echo "   Key ID: $(jq -r .client_id android/service_account.json)"
           else
             echo "❌ ERROR: Firebase CLI authentication failed"
+            echo "   Key ID: $(jq -r .client_id android/service_account.json)"
             exit 1
           fi
         env:
           GOOGLE_APPLICATION_CREDENTIALS: android/service_account.json
 
-      - name: 🔥 Configure FlutterFire
-        run: |
-          echo "=== Configuring FlutterFire ==="
-          export PATH=$PATH:$HOME/.pub-cache/bin
-          export GOOGLE_APPLICATION_CREDENTIALS="android/service_account.json"
-          
-          # Run FlutterFire configuration script (development)
-          npm run flutterfire_setup_dev_ios
-          
-          echo "✅ FlutterFire configuration completed"
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: android/service_account.json
+      # - name: Build ios app (dev flavor)
+      #   working-directory: ${{ env.WORKING_DIRECTORY }}
+      #   run: |
+      #     export PATH=$PATH:$HOME/.pub-cache/bin
+      #     export GOOGLE_APPLICATION_CREDENTIALS="android/service_account.json"
+      #     # Generate Firebase configuration with FlutterFire
+      #     npm run flutterfire_setup_dev_ios
+      #     npm run refresh && flutter build ios --release --no-codesign --build-name=3.12.1.2 --build-number=415 --dart-define=APP_ENVIRONMENT=DEVELOPMENT
 
       - name: Set up iOS signing
         run: |
+          # Create directory for certificates and provisioning profiles
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          
+
+          # Decode and install certificate
           echo "$IOS_CERTIFICATE_BASE64" | base64 -d > certificate.p12
+
+          # Decode and install provisioning profile
           echo "$IOS_PROVISIONING_PROFILE_BASE64" | base64 -d > ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}
-          
+
+          # Extract provisioning profile details
           PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" /dev/stdin <<< $(security cms -D -i ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}))
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin <<< $(security cms -D -i ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}))
           TEAM_ID=$(/usr/libexec/PlistBuddy -c "Print :TeamIdentifier:0" /dev/stdin <<< $(security cms -D -i ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}))
-          
+
           echo "Provisioning Profile Name: $PROFILE_NAME"
           echo "Provisioning Profile UUID: $PROFILE_UUID"
           echo "Team ID: $TEAM_ID"
-          
+
+          # Copy profile to correct location with BOTH UUID and original filename
+          # Xcode looks for profiles by UUID
           cp ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }} ~/Library/MobileDevice/Provisioning\ Profiles/"$PROFILE_UUID.mobileprovision"
           cp ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }} ~/Library/MobileDevice/Provisioning\ Profiles/${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}
-          
+
           echo "Installed provisioning profiles:"
           ls -al ~/Library/MobileDevice/Provisioning\ Profiles/
-          
+
+          # Import certificate to keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
           security default-keychain -s build.keychain
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-          
-          # Add build.keychain to search list along with system keychain
-          security list-keychains -d user -s build.keychain $(security list-keychains -d user | sed 's/"//g')
-          
-          echo "Importing certificate..."
-          security import certificate.p12 -k build.keychain -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign -A
-          
+          security import certificate.p12 -k build.keychain -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
-          
-          echo "=== Available signing identities in build.keychain ==="
+
+          # List available signing identities
+          echo "Available signing identities:"
           security find-identity -v -p codesigning build.keychain
-          
-          echo "=== Available signing identities (all keychains) ==="
-          security find-identity -v -p codesigning
-          
-          # Capture the signing identity for later use
-          SIGNING_IDENTITY=$(security find-identity -v -p codesigning build.keychain | grep "iPhone Distribution\|Apple Distribution\|iOS Distribution" | head -1 | sed 's/.*"\(.*\)".*/\1/')
-          echo "Detected signing identity: $SIGNING_IDENTITY"
-          echo "SIGNING_IDENTITY=$SIGNING_IDENTITY" >> $GITHUB_ENV
+
+
+          echo "Updated Xcode project to use Manual code signing"
         env:
           IOS_CERTIFICATE_BASE64: ${{ env.IOS_CERTIFICATE_BASE64 }}
           IOS_PROVISIONING_PROFILE_BASE64: ${{ env.IOS_PROVISIONING_PROFILE_BASE64 }}
@@ -287,22 +417,30 @@ jobs:
 
       - name: Update Xcode project for manual signing
         run: |
+          # Update Xcode project to use Manual code signing
           echo "Updating Xcode project settings..."
           sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
-          
+
+          # Verify
           if grep -q "CODE_SIGN_STYLE = Manual" ios/Runner.xcodeproj/project.pbxproj; then
             echo "✅ Updated to Manual code signing"
           fi
 
       - name: Install build tools
         run: |
+          # Install xcpretty for better build output (optional)
           gem install xcpretty || echo "xcpretty installation skipped"
 
       - name: Create ExportOptions.plist
         run: |
+          # Extract provisioning profile details
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin <<< $(security cms -D -i ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}))
           TEAM_ID=$(/usr/libexec/PlistBuddy -c "Print :TeamIdentifier:0" /dev/stdin <<< $(security cms -D -i ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}))
-          
+
+          echo "Team ID: $TEAM_ID"
+          echo "Provisioning Profile: $PROFILE_NAME"
+
+          # Create ExportOptions.plist for IPA export
           cat > ios/ExportOptions.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -327,72 +465,193 @@ jobs:
                   <key>${{ env.IOS_BUNDLE_IDENTIFIER }}</key>
                   <string>$PROFILE_NAME</string>
               </dict>
+              <key>bundleIdentifier</key>
+              <string>${{ env.IOS_BUNDLE_IDENTIFIER }}</string>
+              <key>MARKETING_VERSION</key>
+              <string>${{ steps.version.outputs.VERSION_NAME }}</string>
+              <key>CURRENT_PROJECT_VERSION</key>
+              <string>${{ steps.version.outputs.BUILD_NUMBER }}</string>
           </dict>
           </plist>
           EOF
-          
-          echo "✅ Created ExportOptions.plist"
+
+          echo "✅ Created ExportOptions.plist:"
+          cat ios/ExportOptions.plist
 
       - name: Build iOS app without code signing
         run: |
           export PATH=$PATH:$HOME/.pub-cache/bin
           export GOOGLE_APPLICATION_CREDENTIALS="android/service_account.json"
-          
+
+          # Generate Firebase configuration with FlutterFire
+          npm run flutterfire_setup_dev
+
           echo "=== Building iOS App ==="
           echo "Target version: ${{ steps.version.outputs.VERSION_NAME }} (${{ steps.version.outputs.BUILD_NUMBER }})"
-          
-          flutter build ios --release --no-codesign
-          
-          # Run pod install to ensure Podfile code signing settings are applied
-          cd ios
-          pod install --repo-update
-          cd ..
-          
-          echo "✅ Flutter build completed"
+          echo "Note: Version will be set during xcodebuild archive, not Flutter build"
+
+          # Build the iOS app without code signing
+          # Version will be set by xcodebuild archive step, not here
+          npm run refresh && flutter build ios --release \
+            --no-codesign \
+            --dart-define=APP_ENVIRONMENT=DEVELOPMENT
+
+          echo "✅ Flutter build completed (version will be set in archive step)"
+
+      # - name: Configure Firebase Crashlytics for CI
+      #   working-directory: ${{ env.WORKING_DIRECTORY }}
+      #   run: |
+      #     # Backup the project file before modifications
+      #     if [ -f "ios/Runner.xcodeproj/project.pbxproj" ]; then
+      #       cp ios/Runner.xcodeproj/project.pbxproj ios/Runner.xcodeproj/project.pbxproj.backup
+      #       echo "✅ Backed up project.pbxproj"
+      #     fi
+
+      #     # Run the Python script to disable Crashlytics upload scripts
+      #     python3 ../.github/workflows/disable_crashlytics_upload.py ios/Runner.xcodeproj/project.pbxproj
+
+      #     if [ $? -eq 0 ]; then
+      #       echo ""
+      #       echo "✅ Successfully configured Crashlytics for CI build"
+      #     else
+      #       echo ""
+      #       echo "❌ Failed to configure Crashlytics"
+      #       if [ -f "ios/Runner.xcodeproj/project.pbxproj.backup" ]; then
+      #         echo "   Restoring backup..."
+      #         cp ios/Runner.xcodeproj/project.pbxproj.backup ios/Runner.xcodeproj/project.pbxproj
+      #       fi
+      #       exit 1
+      #     fi
 
       - name: Create xcarchive and export IPA
         run: |
+
           export PATH=$PATH:$HOME/.pub-cache/bin
           export GOOGLE_APPLICATION_CREDENTIALS="android/service_account.json"
-          
+
+          # Verify provisioning profile file exists
           if [ ! -f "${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}" ]; then
-            echo "❌ ERROR: Provisioning profile file not found"
+            echo "❌ ERROR: Provisioning profile file not found: ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}"
+            echo "Working directory: $(pwd)"
+            echo "Files in current directory:"
+            ls -la
             exit 1
           fi
-          
+
+          # Extract provisioning profile details for code signing
           PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" /dev/stdin <<< $(security cms -D -i ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}))
           PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin <<< $(security cms -D -i ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}))
           TEAM_ID=$(/usr/libexec/PlistBuddy -c "Print :TeamIdentifier:0" /dev/stdin <<< $(security cms -D -i ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }}))
-          
+
           echo "=== Code Signing Configuration ==="
           echo "Provisioning Profile Name: $PROFILE_NAME"
           echo "Provisioning Profile UUID: $PROFILE_UUID"
           echo "Team ID: $TEAM_ID"
           echo "Bundle Identifier: ${{ env.IOS_BUNDLE_IDENTIFIER }}"
-          
+          echo ""
+
+          # Check provisioning profile entitlements
+          echo "=== Checking Provisioning Profile Entitlements ==="
+          security cms -D -i ${{ env.IOS_PROVISIONING_PROFILE_FILE_NAME }} > /tmp/profile.plist
+
+          # Check for required capabilities
+          if /usr/libexec/PlistBuddy -c "Print :Entitlements:com.apple.developer.associated-domains" /tmp/profile.plist 2>/dev/null; then
+            echo "✅ Associated Domains: Present"
+          else
+            echo "❌ Associated Domains: MISSING"
+          fi
+
+          if /usr/libexec/PlistBuddy -c "Print :Entitlements:aps-environment" /tmp/profile.plist 2>/dev/null; then
+            echo "✅ Push Notifications: Present"
+          else
+            echo "❌ Push Notifications: MISSING"
+          fi
+
+          if /usr/libexec/PlistBuddy -c "Print :Entitlements:com.apple.developer.applesignin" /tmp/profile.plist 2>/dev/null; then
+            echo "✅ Sign in with Apple: Present"
+          else
+            echo "❌ Sign in with Apple: MISSING"
+          fi
+          echo ""
+
+          echo "Installed provisioning profiles:"
+          ls -al ~/Library/MobileDevice/Provisioning\ Profiles/
+          echo ""
+
+          # Ensure keychain is unlocked
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
           security set-keychain-settings -t 3600 -u build.keychain
-          
+
+          # Set variables
           WORKSPACE="ios/Runner.xcworkspace"
           SCHEME="Runner"
           ARCHIVE_PATH="build/ios/Runner.xcarchive"
           EXPORT_PATH="build/ios/ipa"
-          
+
+          echo "🔨 Creating xcarchive with proper code signing..."
+
+          # Clean up any previous archives and builds to force rebuild
           rm -rf "$ARCHIVE_PATH"
           rm -rf "ios/build"
           rm -rf "build/ios"
-          
-          # Update Info.plist
+
+          echo "Setting version: MARKETING_VERSION=${{ steps.version.outputs.VERSION_NAME }}, CURRENT_PROJECT_VERSION=${{ steps.version.outputs.BUILD_NUMBER }}"
+
+          # Verify Info.plist before update
+          echo "=== Info.plist BEFORE update ==="
+          if [ -f "ios/Runner/Info.plist" ]; then
+            BEFORE_VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" ios/Runner/Info.plist 2>/dev/null || echo "not set")
+            BEFORE_SHORT=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" ios/Runner/Info.plist 2>/dev/null || echo "not set")
+            echo "Info.plist CFBundleVersion: $BEFORE_VERSION"
+            echo "Info.plist CFBundleShortVersionString: $BEFORE_SHORT"
+          fi
+
+          # Directly update Info.plist to ensure correct version
+          echo "=== Updating Info.plist with correct version and bundle identifier ==="
           if [ -f "ios/Runner/Info.plist" ]; then
             /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ steps.version.outputs.BUILD_NUMBER }}" ios/Runner/Info.plist
             /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${{ steps.version.outputs.VERSION_NAME }}" ios/Runner/Info.plist
             /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier ${{ env.IOS_BUNDLE_IDENTIFIER }}" ios/Runner/Info.plist
             echo "✅ Updated Info.plist"
+          else
+            echo "⚠️ WARNING: Info.plist not found at ios/Runner/Info.plist"
           fi
-          
-          echo "=== Creating archive ==="
-          xcodebuild clean -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release
-          
+
+          # Verify Info.plist after update
+          echo "=== Info.plist AFTER update ==="
+          if [ -f "ios/Runner/Info.plist" ]; then
+            AFTER_VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" ios/Runner/Info.plist 2>/dev/null || echo "not set")
+            AFTER_SHORT=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" ios/Runner/Info.plist 2>/dev/null || echo "not set")
+            echo "Info.plist CFBundleVersion: $AFTER_VERSION (should be ${{ steps.version.outputs.BUILD_NUMBER }})"
+            echo "Info.plist CFBundleShortVersionString: $AFTER_SHORT (should be ${{ steps.version.outputs.VERSION_NAME }})"
+            AFTER_IDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" ios/Runner/Info.plist 2>/dev/null || echo "not set")
+            echo "Info.plist CFBundleIdentifier: $AFTER_IDENTIFIER (should be ${{ env.IOS_BUNDLE_IDENTIFIER }})"
+            
+            if [ "$AFTER_VERSION" != "${{ steps.version.outputs.BUILD_NUMBER }}" ]; then
+              echo "❌ ERROR: Failed to update CFBundleVersion!"
+              exit 1
+            fi
+            if [ "$AFTER_SHORT" != "${{ steps.version.outputs.VERSION_NAME }}" ]; then
+              echo "❌ ERROR: Failed to update CFBundleShortVersionString!"
+              exit 1
+            fi
+            if [ "$AFTER_IDENTIFIER" != "${{ env.IOS_BUNDLE_IDENTIFIER }}" ]; then
+              echo "❌ ERROR: Failed to update CFBundleIdentifier!"
+              exit 1
+            fi
+            echo "✅ Info.plist version verified"
+          fi
+
+          # Create archive using xcodebuild with proper code signing
+
+          # Clean build first to ensure version flags are applied
+          echo "=== Cleaning Xcode build ==="
+          xcodebuild clean \
+            -workspace "$WORKSPACE" \
+            -scheme "$SCHEME" \
+            -configuration Release
+
+          echo "=== Creating archive with version flags ==="
           xcodebuild archive \
             -workspace "$WORKSPACE" \
             -scheme "$SCHEME" \
@@ -407,68 +666,143 @@ jobs:
             CURRENT_PROJECT_VERSION="${{ steps.version.outputs.BUILD_NUMBER }}" \
             MARKETING_VERSION="${{ steps.version.outputs.VERSION_NAME }}" \
             PRODUCT_BUNDLE_IDENTIFIER="${{ env.IOS_BUNDLE_IDENTIFIER }}"
-          
+
           if [ ! -d "$ARCHIVE_PATH" ]; then
             echo "❌ ERROR: Archive creation failed"
             exit 1
           fi
-          
+
           echo "✅ Archive created successfully"
-          
+          ls -lh "$ARCHIVE_PATH"
+
+          # Verify version in the archive
+          echo "=== Verifying version in archive ==="
+          ARCHIVE_APP_PATH=$(find "$ARCHIVE_PATH/Products" -name "*.app" | head -1)
+          if [ -n "$ARCHIVE_APP_PATH" ]; then
+            ARCHIVE_VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$ARCHIVE_APP_PATH/Info.plist" 2>/dev/null || echo "not found")
+            ARCHIVE_SHORT=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$ARCHIVE_APP_PATH/Info.plist" 2>/dev/null || echo "not found")
+            echo "Archive CFBundleVersion: $ARCHIVE_VERSION (should be ${{ steps.version.outputs.BUILD_NUMBER }})"
+            echo "Archive CFBundleShortVersionString: $ARCHIVE_SHORT (should be ${{ steps.version.outputs.VERSION_NAME }})"
+            ARCHIVE_BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$ARCHIVE_APP_PATH/Info.plist" 2>/dev/null || echo "not found")
+            echo "Archive CFBundleIdentifier: $ARCHIVE_BUNDLE_ID (should be ${{ env.IOS_BUNDLE_IDENTIFIER }})"
+            
+            if [ "$ARCHIVE_VERSION" != "${{ steps.version.outputs.BUILD_NUMBER }}" ]; then
+              echo "⚠️ WARNING: Archive version doesn't match! Expected ${{ steps.version.outputs.BUILD_NUMBER }}, got $ARCHIVE_VERSION"
+            fi
+          fi
+
+          # Export the archive to IPA
           echo "📦 Exporting IPA from archive..."
+
           xcodebuild -exportArchive \
             -archivePath "$ARCHIVE_PATH" \
             -exportPath "$EXPORT_PATH" \
             -exportOptionsPlist ios/ExportOptions.plist \
             -allowProvisioningUpdates
-          
+
+          # Find the generated IPA (xcodebuild might name it differently)
           IPA_FILE=$(find "$EXPORT_PATH" -name "*.ipa" | head -1)
-          
+
           if [ -z "$IPA_FILE" ]; then
             echo "❌ ERROR: IPA export failed"
+            echo "Contents of export directory:"
+            ls -la "$EXPORT_PATH"
             exit 1
           fi
-          
+
+          # Rename to expected name if needed
           if [ "$IPA_FILE" != "$EXPORT_PATH/${{ env.IPA_FILE_NAME }}" ]; then
             mv "$IPA_FILE" "$EXPORT_PATH/${{ env.IPA_FILE_NAME }}"
           fi
-          
+
           echo "✅ IPA exported successfully:"
           ls -lh "$EXPORT_PATH/${{ env.IPA_FILE_NAME }}"
+
+          # Verify the IPA
+          unzip -q "$EXPORT_PATH/${{ env.IPA_FILE_NAME }}" -d "$EXPORT_PATH/extracted"
+          BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$EXPORT_PATH/extracted/Payload/"*.app/Info.plist)
+          echo "Bundle ID in IPA: $BUNDLE_ID"
+
+          # Verify code signature
+          codesign -vv -d "$EXPORT_PATH/extracted/Payload/"*.app || true
+
+          # Clean up
+          rm -rf "$EXPORT_PATH/extracted"
         env:
           KEYCHAIN_PASSWORD: ${{ env.KEYCHAIN_PASSWORD }}
+          IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
 
       - name: 📦 Upload IPA to TestFlight
         run: |
+          # Ensure keychain is unlocked
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-          
+
+          # Create the private_keys directory and API key file
           mkdir -p ~/.appstoreconnect/private_keys
           echo "$APP_STORE_CONNECT_API_KEY_CONTENT" | base64 -d > ~/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8
           chmod 600 ~/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8
-          
+
+          echo "✅ API Key configured:"
+          ls -l ~/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8
+
           IPA_PATH="build/ios/ipa/${{ env.IPA_FILE_NAME }}"
-          
+
+          # Display bundle version information before upload
+          echo "=== IPA Bundle Information ==="
+          unzip -q "$IPA_PATH" -d "temp_ipa_extract"
+          APP_PATH=$(find temp_ipa_extract/Payload -name "*.app" | head -1)
+          BUNDLE_VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_PATH/Info.plist")
+          BUNDLE_SHORT_VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP_PATH/Info.plist")
+          echo "Bundle Version (CFBundleVersion): $BUNDLE_VERSION"
+          echo "Bundle Short Version (CFBundleShortVersionString): $BUNDLE_SHORT_VERSION"
+          rm -rf temp_ipa_extract
+
+          # Display marketing version information before upload
+          echo "=== Marketing Version Information ==="
+          echo "Configured Version Name: ${{ steps.version.outputs.VERSION_NAME }}"
+          echo "Configured Build Number: ${{ steps.version.outputs.BUILD_NUMBER }}"
+          echo "IPA Bundle Version: $BUNDLE_VERSION"
+          echo "IPA Bundle Short Version: $BUNDLE_SHORT_VERSION"
+          echo ""
+
           if [ ! -f "$IPA_PATH" ]; then
             echo "❌ ERROR: IPA file not found at $IPA_PATH"
             exit 1
           fi
-          
+
           echo "📦 Uploading IPA to TestFlight (Internal Testing)..."
           echo "File: $IPA_PATH"
           echo "Size: $(du -h $IPA_PATH | cut -f1)"
-          
+          echo ""
+          echo "ℹ️  Upload Mode: Internal TestFlight Only"
+          echo "   - Build will be available to internal testers after processing"
+          echo "   - External beta testing requires explicit submission (not included in this workflow)"
+          echo ""
+
+          # Upload to TestFlight using altool with IPA file
+          # Note: By default, builds are available to internal testers only
+          # External testing requires explicit submission for beta review
           xcrun altool --upload-app \
             -f "$IPA_PATH" \
             -t ios \
             --apiKey "$APP_STORE_CONNECT_API_KEY_ID" \
             --apiIssuer "$APP_STORE_CONNECT_API_ISSUER_ID" \
             --verbose
-          
+
           UPLOAD_EXIT_CODE=$?
-          
+
           if [ $UPLOAD_EXIT_CODE -eq 0 ]; then
             echo ""
             echo "✅ Upload to TestFlight completed successfully!"
+            echo ""
+            echo "📋 Next Steps:"
+            echo "   • Apple will process the build (usually 5-15 minutes)"
+            echo "   • Once processed, the build will be available to internal testers"
+            echo "   • Internal testers can install via TestFlight app"
+            echo "   • No beta review required for internal testing"
+            echo ""
+            echo "🔗 View in App Store Connect:"
+            echo "   https://appstoreconnect.apple.com/apps/$(echo '${{ env.IOS_BUNDLE_IDENTIFIER }}' || echo 'YOUR_APP_ID')/testflight/ios"
           else
             echo ""
             echo "❌ ERROR: Upload failed with exit code $UPLOAD_EXIT_CODE"
@@ -479,6 +813,104 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ID: ${{ env.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_CONTENT: ${{ env.APP_STORE_CONNECT_API_KEY_CONTENT }}
           APP_STORE_CONNECT_API_ISSUER_ID: ${{ env.APP_STORE_CONNECT_API_ISSUER_ID }}
+
+      - name: 📝 Set TestFlight "What to Test" Notes
+        if: success()
+        run: |
+          echo "=== Setting TestFlight Release Notes ==="
+          echo ""
+          echo "⏳ Waiting 90 seconds for build to be processed by Apple..."
+          sleep 90
+          echo "✅ Wait complete"
+          echo ""
+
+          # Create the private_keys directory and API key file
+          mkdir -p ~/.appstoreconnect/private_keys
+          echo "$APP_STORE_CONNECT_API_KEY_CONTENT" | base64 -d > ~/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8
+          chmod 600 ~/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8
+
+          echo "✅ API Key configured"
+
+          # Install Fastlane if not already installed
+          echo "Installing Fastlane..."
+          gem install fastlane -NV || echo "Fastlane already installed"
+
+          # Load release notes - use English as the primary "What to Test" text
+          WHAT_TO_TEST=""
+          if [ -f "distribution/whatsnew-ios/en-US.txt" ]; then
+            WHAT_TO_TEST=$(cat "distribution/whatsnew-ios/en-US.txt")
+          elif [ -f "distribution/whatsnew-ios/vi-VN.txt" ]; then
+            WHAT_TO_TEST=$(cat "distribution/whatsnew-ios/vi-VN.txt")
+          fi
+
+          if [ -z "$WHAT_TO_TEST" ]; then
+            echo "⚠️ No release notes found, using default"
+            WHAT_TO_TEST="Bug fixes and performance improvements"
+          fi
+
+          echo "Release notes to set:"
+          echo "$WHAT_TO_TEST"
+          echo ""
+
+          # Use Fastlane pilot to set the changelog/what to test
+          # Navigate to iOS directory
+          cd ios
+
+          # Create a simple Fastfile action if needed, or use pilot directly
+          fastlane run set_changelog \
+            app_identifier:"${{ env.IOS_BUNDLE_IDENTIFIER }}" \
+            version:"${{ steps.version.outputs.VERSION_NAME }}" \
+            build_number:"${{ steps.version.outputs.BUILD_NUMBER }}" \
+            changelog:"$WHAT_TO_TEST" \
+            api_key_path:"$HOME/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8" \
+            api_key_issuer_id:"$APP_STORE_CONNECT_API_ISSUER_ID" || {
+            echo "⚠️ Could not set changelog via Fastlane, trying pilot..."
+            fastlane pilot builds \
+              app_identifier:"${{ env.IOS_BUNDLE_IDENTIFIER }}" \
+              api_key_path:"$HOME/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8" \
+              api_key_issuer_id:"$APP_STORE_CONNECT_API_ISSUER_ID" || true
+          }
+
+          cd ..
+
+          # Cleanup
+          rm -rf ~/.appstoreconnect/private_keys
+
+          echo ""
+          echo "✅ TestFlight release notes configuration completed"
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ env.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_CONTENT: ${{ env.APP_STORE_CONNECT_API_KEY_CONTENT }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ env.APP_STORE_CONNECT_API_ISSUER_ID }}
+
+      # Optional: Explicitly assign to internal testing groups (if needed)
+      # Uncomment this step if you want to automatically assign the build to specific internal testing groups
+      # - name: 🎯 Assign to Internal Testing Groups (Optional)
+      #   if: success()
+      #   run: |
+      #     echo "=== Configuring Internal TestFlight Groups ==="
+      #     echo "Note: This step is optional. By default, builds are available to all internal testers."
+      #     echo "Waiting for build to be processed by Apple..."
+      #
+      #     # Create API key file
+      #     mkdir -p ~/.appstoreconnect/private_keys
+      #     echo "$APP_STORE_CONNECT_API_KEY_CONTENT" | base64 --decode > ~/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8
+      #     chmod 600 ~/.appstoreconnect/private_keys/AuthKey_$APP_STORE_CONNECT_API_KEY_ID.p8
+      #
+      #     # Install Python dependencies
+      #     python3 -m pip install --quiet --user PyJWT cryptography requests 2>/dev/null || \
+      #     python3 -m pip install --quiet --break-system-packages PyJWT cryptography requests 2>/dev/null
+      #
+      #     # Use the check_version_ios.py script's JWT generation or create a separate script
+      #     # to assign the build to internal testing groups via App Store Connect API
+      #     # API endpoint: POST /v1/betaGroups/{id}/relationships/builds
+      #
+      #     echo "✅ Internal testing configuration completed"
+      #     rm -rf ~/.appstoreconnect/private_keys
+      #   env:
+      #     APP_STORE_CONNECT_API_KEY_ID: ${{ vars.APP_STORE_CONNECT_API_KEY_ID }}
+      #     APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
+      #     APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
 
       - name: 📊 Build Summary
         if: success()
@@ -493,13 +925,23 @@ jobs:
           echo "🎯 Distribution: TestFlight - Internal Testing Only"
           echo "⏰ Build Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
           echo ""
+          echo "📝 Release Notes:"
+          for file in distribution/whatsnew-ios/*.txt; do
+            if [ -f "$file" ]; then
+              lang=$(basename "$file" .txt)
+              echo "   [$lang]: $(cat "$file")"
+            fi
+          done
+          echo ""
           echo "📋 What's Next:"
           echo "   • Apple is processing your build (5-15 minutes)"
           echo "   • Internal testers will be notified automatically"
+          echo "   • No external beta review required"
           echo "   • Check App Store Connect for processing status"
           echo ""
           echo "🔗 Links:"
           echo "   • App Store Connect: https://appstoreconnect.apple.com"
+          echo "   • TestFlight Dashboard: https://appstoreconnect.apple.com/apps"
           echo ""
 
       - name: 🧹 Cleanup sensitive files
@@ -512,3 +954,5 @@ jobs:
           rm -rf ~/.appstoreconnect/private_keys
           security delete-keychain build.keychain 2>/dev/null || true
           echo "✅ Sensitive files cleaned up"
+        env:
+          KEYCHAIN_PASSWORD: ${{ env.KEYCHAIN_PASSWORD }}
