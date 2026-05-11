@@ -3,7 +3,6 @@ name: iOS Production Deployment
 on:
   push:
     branches:
-      - vn_main
       - deployment_production
 
 env:
@@ -22,7 +21,7 @@ env:
 
 jobs:
   deploy-release:
-    runs-on: macos-26
+    runs-on: macos-26-arm64
     environment: production
     steps:
       - name: Checkout code
