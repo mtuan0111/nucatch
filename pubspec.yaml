@@ -81,9 +81,6 @@ dependencies:
   firebase_messaging: ^16.1.2
 
 
-dependency_overrides:
-  win32: ^6.2.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
