@@ -100,11 +100,9 @@ packages:
   ble_plat_services:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: "3a8240626b0c686a22dda820c2d921265e0b7af3"
-      url: "git@github.com:mtuan0111/blue_plat_services.git"
-    source: git
+      path: "../ble_plat_services"
+      relative: true
+    source: path
     version: "0.0.2"
   bloc:
     dependency: transitive
@@ -961,11 +959,9 @@ packages:
   skeleton_core:
     dependency: "direct main"
     description:
-      path: "."
-      ref: deployment_production
-      resolved-ref: f1e24d9f78127f5de266499085d489d84f826a6f
-      url: "git@github.com:mtuan0111/skeleton_core.git"
-    source: git
+      path: "../skeleton_core"
+      relative: true
+    source: path
     version: "0.1.0"
   sky_engine:
     dependency: transitive
