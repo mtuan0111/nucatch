@@ -547,7 +547,7 @@ jobs:
           <plist version="1.0">
           <dict>
               <key>method</key>
-              <string>app-store-connect</string>
+              <string>app-store</string>
               <key>teamID</key>
               <string>$TEAM_ID</string>
               <key>signingCertificate</key>
@@ -560,13 +560,17 @@ jobs:
               <true/>
               <key>compileBitcode</key>
               <false/>
-              <key>manageAppThinning</key>
-              <false/>
               <key>provisioningProfiles</key>
               <dict>
                   <key>${{ env.IOS_BUNDLE_IDENTIFIER }}</key>
                   <string>$PROFILE_NAME</string>
               </dict>
+              <key>bundleIdentifier</key>
+              <string>${{ env.IOS_BUNDLE_IDENTIFIER }}</string>
+              <key>MARKETING_VERSION</key>
+              <string>${{ steps.version.outputs.VERSION_NAME }}</string>
+              <key>CURRENT_PROJECT_VERSION</key>
+              <string>${{ steps.version.outputs.BUILD_NUMBER }}</string>
           </dict>
           </plist>
           EOF
@@ -688,7 +692,8 @@ jobs:
           xcodebuild -exportArchive \
             -archivePath "$ARCHIVE_PATH" \
             -exportPath "$EXPORT_PATH" \
-            -exportOptionsPlist ios/ExportOptions.plist
+            -exportOptionsPlist ios/ExportOptions.plist \
+            -allowProvisioningUpdates
 
           # Find the generated IPA
           IPA_FILE=$(find "$EXPORT_PATH" -name "*.ipa" | head -1)
