@@ -81,6 +81,17 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
         // All these steps stay on SelectPlayMode screen to explain options
         _navigateToSelectPlayMode();
         break;
+      case TourStep.gameTutorialStep1:
+      case TourStep.gameTutorialStep2:
+      case TourStep.gameTutorialStep3:
+      case TourStep.gameTutorialStep4:
+      case TourStep.gameTutorialStep5:
+        // These steps are on menu screen - navigate to menu if not there
+        _navigateToMenu();
+        break;
+      case TourStep.gameTutorialWaiting:
+        // TODO: Handle this case.
+        throw UnimplementedError();
     }
   }
 
@@ -199,6 +210,24 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
         return lang(context).tourSettingsTitle;
       case TourStep.about:
         return lang(context).tourAboutTitle;
+      case TourStep.gameTutorialStep1:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case TourStep.gameTutorialStep2:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case TourStep.gameTutorialWaiting:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case TourStep.gameTutorialStep3:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case TourStep.gameTutorialStep4:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case TourStep.gameTutorialStep5:
+        // TODO: Handle this case.
+        throw UnimplementedError();
     }
   }
 
@@ -224,6 +253,24 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
         return lang(context).tourSettingsDesc;
       case TourStep.about:
         return lang(context).tourAboutDesc;
+      case TourStep.gameTutorialStep1:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case TourStep.gameTutorialStep2:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case TourStep.gameTutorialWaiting:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case TourStep.gameTutorialStep3:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case TourStep.gameTutorialStep4:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case TourStep.gameTutorialStep5:
+        // TODO: Handle this case.
+        throw UnimplementedError();
     }
   }
 

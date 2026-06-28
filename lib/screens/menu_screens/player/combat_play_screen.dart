@@ -287,7 +287,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                 Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    Icon(
+                    FaIcon(
                       Helper.getIconFromDifficulty(
                           context, combatState.difficultyModel?.difficulty),
                       color: Theme.of(context).colorScheme.onPrimary,
@@ -315,7 +315,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   key: _scoreKey,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    Icon(
+                    FaIcon(
                       FontAwesomeIcons.chartLine,
                       color: Theme.of(context).colorScheme.onPrimary,
                       size: Theme.of(context).textTheme.bodyLarge!.fontSize,
@@ -341,8 +341,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                         : lang(context).opponentTurn,
                     isPositive: combatState.isMyTurn,
                     icon: combatState.isMyTurn
-                        ? Icons.emoji_events
-                        : Icons.hourglass_bottom,
+                        ? FontAwesomeIcons.trophy
+                        : FontAwesomeIcons.hourglass,
                   ),
                 ),
               ],
@@ -399,7 +399,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                         height:
                             (Theme.of(context).textTheme.titleLarge!.fontSize ??
                                 20.0),
-                        child: Icon(
+                        child: FaIcon(
                           FontAwesomeIcons.solidStar,
                           color: Theme.of(context).colorScheme.onPrimary,
                           size: Theme.of(context).textTheme.bodyLarge!.fontSize,
@@ -663,7 +663,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                             AnimatedOpacity(
                               opacity: (hide == 0) ? 1 : 0,
                               duration: const Duration(milliseconds: 200),
-                              child: Icon(
+                              child: FaIcon(
                                 FontAwesomeIcons.minus,
                                 color: Theme.of(context).colorScheme.onPrimary,
                               ),
@@ -721,7 +721,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                           AnimatedOpacity(
                             opacity: (hide == 0) ? 0.6 : 0,
                             duration: const Duration(milliseconds: 200),
-                            child: Icon(
+                            child: FaIcon(
                               FontAwesomeIcons.minus,
                               color: Theme.of(context).colorScheme.onPrimary,
                             ),
@@ -807,8 +807,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   : lang(context).opponentWillTakeFirst,
               isPositive: combatState.willStartFirst!,
               icon: combatState.willStartFirst!
-                  ? Icons.emoji_events
-                  : Icons.hourglass_bottom,
+                  ? FontAwesomeIcons.trophy
+                  : FontAwesomeIcons.hourglass,
             ),
           ],
         ],
@@ -1081,7 +1081,7 @@ class LifeStar extends StatelessWidget {
       width:
           (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0) * value,
       height: (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0),
-      child: Icon(
+      child: FaIcon(
         FontAwesomeIcons.solidStar,
         color: Theme.of(context).colorScheme.onPrimary,
         size: Theme.of(context).textTheme.titleLarge!.fontSize,

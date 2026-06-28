@@ -14,8 +14,6 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.d
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/const.dart';
-import 'package:nucatch/helpers/extension.dart';
-import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/widgets/nucatch_ranking_item.dart';
 
 class TopScoreScreen extends StatefulWidget {

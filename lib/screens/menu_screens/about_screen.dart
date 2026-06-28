@@ -4,8 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
-import 'package:nucatch/helpers/lightning_painter.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 
@@ -142,7 +140,7 @@ class _AboutScreenState extends State<AboutScreen> with AppVersionStateMixin {
                                 ),
                                 child: Row(
                                   children: [
-                                    Icon(
+                                    FaIcon(
                                       _getStatusIcon(state.status),
                                       color: Theme.of(context)
                                           .colorScheme
@@ -311,7 +309,7 @@ class _AboutScreenState extends State<AboutScreen> with AppVersionStateMixin {
     }
   }
 
-  IconData _getStatusIcon(AppVersionStatus status) {
+  FaIconData _getStatusIcon(AppVersionStatus status) {
     switch (status) {
       case AppVersionStatus.checking:
         return FontAwesomeIcons.spinner;
@@ -328,13 +326,13 @@ class _AboutScreenState extends State<AboutScreen> with AppVersionStateMixin {
 
   Widget _buildInfoRow(
     BuildContext context,
-    IconData icon,
+    FaIconData icon,
     String label,
     String value,
   ) {
     return Row(
       children: [
-        Icon(
+        FaIcon(
           icon,
           color: Theme.of(context).colorScheme.onPrimary,
           size: kIconSizeS,
@@ -358,7 +356,7 @@ class _AboutScreenState extends State<AboutScreen> with AppVersionStateMixin {
 
   Widget _buildSocialButton(
     BuildContext context, {
-    required IconData icon,
+    required FaIconData icon,
     required String label,
     required VoidCallback onTap,
   }) {
@@ -376,7 +374,7 @@ class _AboutScreenState extends State<AboutScreen> with AppVersionStateMixin {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  FaIcon(
                     icon,
                     color: Theme.of(context).colorScheme.onPrimary,
                     size: kIconSizeM,

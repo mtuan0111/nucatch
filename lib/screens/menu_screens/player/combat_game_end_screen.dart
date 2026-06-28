@@ -91,7 +91,7 @@ class CombatGameEndScreen extends StatelessWidget {
           RankingSortingWidget(
             position: isWinner ? 1 : 4,
             size: kContainerSizeS,
-            childElement: Icon(
+            childElement: FaIcon(
               isWinner ? FontAwesomeIcons.trophy : FontAwesomeIcons.faceFrown,
               color: Theme.of(context).scaffoldBackgroundColor,
               size: kIconSizeL,
