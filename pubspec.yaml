@@ -56,6 +56,13 @@ dependencies:
   google_generative_ai: ^0.4.7
   flutter_local_notifications: ^21.0.0
   firebase_messaging: ^16.1.2
+  cloud_firestore: ^6.6.0
+  # flutter_bloc: ^9.1.1
+  # font_awesome_flutter: ^11.0.0
+
+# dependency_overrides:
+#   skeleton_core:
+#     path: ../skeleton_core
 
 dev_dependencies:
   flutter_test:

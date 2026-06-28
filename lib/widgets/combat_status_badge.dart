@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 
 /// A reusable badge widget for combat status indicators.
@@ -8,7 +9,7 @@ import 'package:skeleton_core/skeleton_core.dart';
 class CombatStatusBadge extends StatelessWidget {
   final String text;
   final bool isPositive;
-  final IconData? icon;
+  final FaIconData? icon;
   final bool filled;
 
   const CombatStatusBadge({
@@ -42,7 +43,7 @@ class CombatStatusBadge extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
-            Icon(
+            FaIcon(
               icon,
               color: filled ? Colors.white : color,
               size: kFontSizeL,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/helpers/top_score_nav_types.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecorded/turn_recorded_event.dart';
@@ -14,7 +13,6 @@ import 'package:skeleton_core/skeleton_core.dart'
         TopScoreDetailState;
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/extension.dart';
-import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:nucatch/models/turn_record_model.dart';
 import 'package:nucatch/widgets/nucatch_ranking_item.dart';

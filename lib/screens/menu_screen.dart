@@ -109,7 +109,7 @@ class _MenuScreenState extends State<MenuScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
         menuItems: menuArray(context).entries.map((entry) {
           Color backgroundColor = Theme.of(context).primaryColor;
-          IconData iconData = entry.value['icon'] as IconData;
+          FaIconData iconData = entry.value['icon'] as FaIconData;
 
           if (entry.key == MenuOption.instantStart) {
             backgroundColor = Helper.getColorIconFromDifficulty(

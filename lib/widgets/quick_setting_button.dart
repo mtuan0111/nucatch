@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 /// Small semi-transparent toggle button used in quick settings overlays
 /// on game screens (solo and combat play screens).
 class QuickSettingButton extends StatelessWidget {
-  final IconData icon;
+  final dynamic icon;
   final VoidCallback onTap;
   final bool isActive;
 
@@ -34,11 +35,17 @@ class QuickSettingButton extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: Icon(
-            icon,
-            size: 14,
-            color: color.withValues(alpha: isActive ? 1.0 : 0.35),
-          ),
+          child: icon is FaIconData
+              ? FaIcon(
+                  icon as FaIconData,
+                  size: 14,
+                  color: color.withValues(alpha: isActive ? 1.0 : 0.35),
+                )
+              : Icon(
+                  icon as IconData?,
+                  size: 14,
+                  color: color.withValues(alpha: isActive ? 1.0 : 0.35),
+                ),
         ),
       ),
     );

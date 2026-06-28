@@ -196,7 +196,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                           crossAxisAlignment:
                                               WrapCrossAlignment.center,
                                           children: [
-                                            Icon(
+                                            FaIcon(
                                               Helper.getIconFromDifficulty(
                                                   context,
                                                   turnState.difficultyModel
@@ -236,7 +236,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                           crossAxisAlignment:
                                               WrapCrossAlignment.center,
                                           children: [
-                                            Icon(
+                                            FaIcon(
                                               FontAwesomeIcons.chartLine,
                                               color: Theme.of(context)
                                                   .colorScheme
@@ -649,7 +649,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                                 const Duration(
                                                                     milliseconds:
                                                                         200),
-                                                            child: Icon(
+                                                            child: FaIcon(
                                                               FontAwesomeIcons
                                                                   .minus,
                                                               color: Theme.of(
@@ -861,7 +861,7 @@ class LifeStar extends StatelessWidget {
       width:
           (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0) * value,
       height: (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0),
-      child: Icon(
+      child: FaIcon(
         FontAwesomeIcons.solidStar,
         color: Theme.of(context).colorScheme.onPrimary,
         size: Theme.of(context).textTheme.titleLarge!.fontSize,
