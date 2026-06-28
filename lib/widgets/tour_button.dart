@@ -86,7 +86,7 @@ class _TourButtonState extends State<TourButton>
   }
 
   Widget _buildIcon(BuildContext context) {
-    return Icon(
+    return FaIcon(
       FontAwesomeIcons.compass,
       color: Theme.of(context).colorScheme.onPrimary,
       size: 28,

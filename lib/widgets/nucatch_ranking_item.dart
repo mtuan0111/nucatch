@@ -30,11 +30,11 @@ class NucatchRankingItem extends StatelessWidget {
       isCurrentUser: isCurrentUser,
       infoRows: [
         RankingInfoRow(
-          icon: Icons.person,
+          icon: FontAwesomeIcons.solidUser,
           text: turnRecordedModel.playedUsername ?? coreLang(context).anonymous,
         ),
         RankingInfoRow(
-          icon: Icons.calendar_today,
+          icon: FontAwesomeIcons.solidCalendar,
           text: turnRecordedModel.recordedTime
               .formatClient()
               .replaceFirst(' ', '\n'),
@@ -46,7 +46,7 @@ class NucatchRankingItem extends StatelessWidget {
               context, turnRecordedModel.difficulty),
         ),
         RankingInfoRow(
-          icon: Icons.star_rounded,
+          icon: FontAwesomeIcons.solidStar,
           text: turnRecordedModel.point.toString(),
         ),
       ],

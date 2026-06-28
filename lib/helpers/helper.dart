@@ -595,12 +595,12 @@ class Helper {
     return confirmExit;
   }
 
-  static IconData getIconFromDifficulty(
+  static FaIconData getIconFromDifficulty(
       BuildContext context, Difficulty? difficulty) {
-    IconData difficultyIcon = FontAwesomeIcons.flag;
+    FaIconData difficultyIcon = FontAwesomeIcons.flag;
     switch (difficulty) {
       // case Difficulty.easy:
-      //   difficultyIcon = FontAwesomeIcons.faceSmileBeam;
+      //   difficultyIcon = FontAwesomeIcons.faceSmileBeam.data;
       //   break;
       case Difficulty.medium:
         difficultyIcon = FontAwesomeIcons.faceMeh;

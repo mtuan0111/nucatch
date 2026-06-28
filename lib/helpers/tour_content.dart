@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 
 /// Tour step data structure
@@ -7,7 +6,7 @@ class TourStepData {
   final String titleKey;
   final String descriptionKey;
   final MenuOption? targetMenuOption;
-  final IconData? icon;
+  final FaIconData? icon;
 
   const TourStepData({
     required this.step,

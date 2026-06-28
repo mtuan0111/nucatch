@@ -134,7 +134,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                         child: Column(
                           spacing: buttonSpace,
                           children: Difficulty.values.map((difficulty) {
-                            IconData difficultyIcon =
+                            FaIconData difficultyIcon =
                                 Helper.getIconFromDifficulty(
                                     context, difficulty);
 

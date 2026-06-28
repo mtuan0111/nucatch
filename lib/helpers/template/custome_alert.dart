@@ -111,7 +111,7 @@ class MenuAlert extends StatelessWidget {
           // Restart button
           AnimatedButton(
             context,
-            iconData: Icons.refresh,
+            iconData: FontAwesomeIcons.arrowRotateLeft,
             text: coreLang(context).restart,
             backgroundColor: Theme.of(context).colorScheme.tertiary,
             shapeAt: RoundedWithShapeAt.topRight,

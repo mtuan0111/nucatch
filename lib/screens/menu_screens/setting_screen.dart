@@ -58,7 +58,7 @@ class SettingScreen extends StatelessWidget {
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                 ),
-                child: const Icon(
+                child: const FaIcon(
                   FontAwesomeIcons.play,
                   size: kIconSizeS,
                 ),
