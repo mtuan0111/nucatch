@@ -598,6 +598,11 @@ jobs:
 
           echo "✅ Flutter build completed (version will be set in archive step)"
 
+      - name: Disable the Swift Package Manager
+        run: |
+          # Disable the Swift Package Manager by flutter
+          flutter config --no-enable-swift-package-manager
+          
       - name: Create xcarchive and export IPA
         if: steps.check_build.outputs.ACTION == 'BUILD'
         run: |
