@@ -360,7 +360,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_bloc:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_bloc
       sha256: cf51747952201a455a1c840f8171d273be009b932c75093020f9af64f2123e38
@@ -458,10 +458,10 @@ packages:
     dependency: transitive
     description:
       name: font_awesome_flutter
-      sha256: b9011df3a1fa02993630b8fb83526368cf2206a711259830325bab2f1d2a4eb0
+      sha256: "09dcde8ab90ffae1a7d65ff2ef96fc62a17ad9d0ce7c127b317ded676b0d5935"
       url: "https://pub.dev"
     source: hosted
-    version: "10.12.0"
+    version: "11.0.0"
   functional_data:
     dependency: transitive
     description:
@@ -947,7 +947,7 @@ packages:
     description:
       path: "."
       ref: deployment_production
-      resolved-ref: f1e24d9f78127f5de266499085d489d84f826a6f
+      resolved-ref: "617764e0ba0cdd9239a65fea9909955a642a1ecb"
       url: "git@github.com:mtuan0111/skeleton_core.git"
     source: git
     version: "0.1.0"
