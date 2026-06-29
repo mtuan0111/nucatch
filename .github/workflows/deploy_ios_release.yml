@@ -660,11 +660,11 @@ jobs:
           fi
 
           # # Clean build first to ensure version flags are applied
-          # echo "=== Cleaning Xcode build ==="
-          # xcodebuild clean \
-          #   -workspace "$WORKSPACE" \
-          #   -scheme "$SCHEME" \
-          #   -configuration Release
+          echo "=== Cleaning Xcode build ==="
+          xcodebuild clean \
+            -workspace "$WORKSPACE" \
+            -scheme "$SCHEME" \
+            -configuration Release
 
           echo "=== Creating archive with version flags ==="
           xcodebuild archive \
