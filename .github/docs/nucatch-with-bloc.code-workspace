@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../skeleton_core"
+		}
+	],
+	"settings": {
+		"liveServer.settings.port": 5501
+	}
+}
