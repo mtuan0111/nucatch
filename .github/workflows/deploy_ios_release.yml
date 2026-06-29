@@ -645,7 +645,6 @@ jobs:
           # Clean up any previous archives and builds to force rebuild
           rm -rf "$ARCHIVE_PATH"
           rm -rf "ios/build"
-          rm -rf "build/ios"
 
           echo "Setting version: MARKETING_VERSION=${{ steps.version.outputs.VERSION_NAME }}, CURRENT_PROJECT_VERSION=${{ steps.version.outputs.BUILD_NUMBER }}"
 
