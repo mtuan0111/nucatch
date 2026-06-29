@@ -660,12 +660,12 @@ jobs:
             echo "⚠️ WARNING: Info.plist not found at ios/Runner/Info.plist"
           fi
 
-          # Clean build first to ensure version flags are applied
-          echo "=== Cleaning Xcode build ==="
-          xcodebuild clean \
-            -workspace "$WORKSPACE" \
-            -scheme "$SCHEME" \
-            -configuration Release
+          # # Clean build first to ensure version flags are applied
+          # echo "=== Cleaning Xcode build ==="
+          # xcodebuild clean \
+          #   -workspace "$WORKSPACE" \
+          #   -scheme "$SCHEME" \
+          #   -configuration Release
 
           echo "=== Creating archive with version flags ==="
           xcodebuild archive \
