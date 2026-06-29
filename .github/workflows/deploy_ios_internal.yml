@@ -651,6 +651,12 @@ jobs:
             -scheme "$SCHEME" \
             -configuration Release
 
+          # Scope code signing to only the main target using xcconfig
+          echo "CODE_SIGN_STYLE=Manual" >> ios/Flutter/Release.xcconfig
+          echo "CODE_SIGN_IDENTITY=iPhone Distribution" >> ios/Flutter/Release.xcconfig
+          echo "DEVELOPMENT_TEAM=$TEAM_ID" >> ios/Flutter/Release.xcconfig
+          echo "PROVISIONING_PROFILE_SPECIFIER=$PROFILE_NAME" >> ios/Flutter/Release.xcconfig
+
           echo "=== Creating archive with version flags ==="
           xcodebuild archive \
             -workspace "$WORKSPACE" \
@@ -659,10 +665,6 @@ jobs:
             -archivePath "$ARCHIVE_PATH" \
             -destination 'generic/platform=iOS' \
             -allowProvisioningUpdates \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="iPhone Distribution" \
-            DEVELOPMENT_TEAM="$TEAM_ID" \
-            PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
             CURRENT_PROJECT_VERSION="${{ steps.version.outputs.BUILD_NUMBER }}" \
             MARKETING_VERSION="${{ steps.version.outputs.VERSION_NAME }}" \
             PRODUCT_BUNDLE_IDENTIFIER="${{ env.IOS_BUNDLE_IDENTIFIER }}"
