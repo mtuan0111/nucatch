@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "bomnguyen.nucatch"
-    compileSdk flutter.targetSdkVersion
+    compileSdk 36
     ndkVersion flutter.ndkVersion
 
     compileOptions {
