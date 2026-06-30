@@ -4,12 +4,12 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
-  ble_peripheral
   cloud_firestore
   firebase_auth
   firebase_core
   permission_handler_windows
   share_plus
+  universal_ble
   url_launcher_windows
 )
 
