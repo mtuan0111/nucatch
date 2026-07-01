@@ -11,7 +11,7 @@ env:
   KEY_PROPERTIES_BASE64: ${{ secrets.KEY_PROPERTIES_BASE64_PRD }}
   SERVICE_ACCOUNT_JSON_BASE64: ${{ secrets.SERVICE_ACCOUNT_JSON_BASE64_PRD }}
   ANDROID_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME_PRD }}
-  KEYSTORE_FILE_NAME: ${{ vars.KEYSTORE_FILE_NAME_PRD }}.keystore # Nusaresearch
+  KEYSTORE_FILE_NAME: ${{ vars.KEYSTORE_FILE_NAME_PRD }}.jks # Nusaresearch
 
 jobs:
   deploy-production:
