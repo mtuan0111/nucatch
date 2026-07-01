@@ -591,6 +591,15 @@ jobs:
           echo "Target version: ${{ steps.version.outputs.VERSION_NAME }} (${{ steps.version.outputs.BUILD_NUMBER }})"
           echo "Note: Version will be set during xcodebuild archive, not Flutter build"
 
+          # Disable the Swift Package Manager to avoid CocoaPods issues
+          flutter config --no-enable-swift-package-manager
+
+          # Run pod deintegrate
+          cd ios
+          rm -rf Pods Podfile.lock
+          pod deintegrate
+          cd ..
+          
           # Build the iOS app without code signing
           npm run refresh && flutter build ios --release \
             --no-codesign \
