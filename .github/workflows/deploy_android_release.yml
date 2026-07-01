@@ -270,6 +270,12 @@ jobs:
 
           ls -al android
 
+          # validate decode file
+          echo "Validate decode file:"
+          cat android/service_account.json
+          cat android/keystore.properties
+          cat ${{ env.KEYSTORE_FILE_NAME }}
+
         env:
           KEYSTORE_BASE64: ${{ env.KEYSTORE_BASE64 }}
           KEY_PROPERTIES_BASE64: ${{ env.KEY_PROPERTIES_BASE64 }}
