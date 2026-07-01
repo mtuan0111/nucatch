@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - deployment_production
+      - deployment_production_ios
 
 env:
   TESTFLIGHT_MODE: release # Internal testing only - no external beta review required
