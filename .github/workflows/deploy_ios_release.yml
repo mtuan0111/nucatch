@@ -598,6 +598,7 @@ jobs:
           cd ios
           rm -rf Pods Podfile.lock
           pod deintegrate
+          pod install
           cd ..
           
           # Build the iOS app without code signing
