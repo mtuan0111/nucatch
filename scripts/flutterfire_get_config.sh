@@ -51,7 +51,7 @@ elif [ -z "$ANDROID_PACKAGE_NAME" ]; then
   echo "⚠️ WARNING: Missing ANDROID_PACKAGE_NAME in $ENV_FILE, skipping Android"
   PLATFORMS="ios"
 else
-  PLATFORMS="ios,android"
+  PLATFORMS="ios,android,web"
 fi
 
 echo ""

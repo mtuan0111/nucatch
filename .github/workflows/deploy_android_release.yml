@@ -282,6 +282,47 @@ jobs:
           KEY_PROPERTIES_BASE64: ${{ env.KEY_PROPERTIES_BASE64 }}
           SERVICE_ACCOUNT_JSON_BASE64: ${{ env.SERVICE_ACCOUNT_JSON_BASE64 }}
 
+      - name: Verify Keystore Credentials
+        run: |
+          # Replace 'key.jks' with the exact path your decode step uses
+
+          # read the alias, storepass, keypass from keystore.properties
+
+          export KEYSTORE_ALIAS=
+          export KEYSTORE_STOREPASS=
+          export KEYSTORE_KEYPASS=
+
+          while IFS='=' read -r key value; do
+            if [ "$key" = "key.keyAlias" ]; then
+              KEYSTORE_ALIAS="$value"
+              if [ -z "$KEYSTORE_ALIAS" ]; then
+                echo "KEYSTORE_ALIAS not found"
+              fi
+            fi
+            if [ "$key" = "key.storePassword" ]; then
+              KEYSTORE_STOREPASS="$value"
+              if [ -z "$KEYSTORE_STOREPASS" ]; then
+                echo "KEYSTORE_STOREPASS not found"
+              fi
+            fi
+            if [ "$key" = "key.keyPassword" ]; then
+              KEYSTORE_KEYPASS="$value"
+              if [ -z "$KEYSTORE_KEYPASS" ]; then
+                echo "KEYSTORE_KEYPASS not found"
+              fi
+            fi
+          done < key.properties
+
+          echo "KEYSTORE_ALIAS: $KEYSTORE_ALIAS"
+          echo "KEYSTORE_STOREPASS: $KEYSTORE_STOREPASS"
+          echo "KEYSTORE_KEYPASS: $KEYSTORE_KEYPASS"
+
+          keytool -list -v \
+            -keystore key.jks \
+            -alias "$KEYSTORE_ALIAS" \
+            -storepass "$KEYSTORE_STOREPASS" \
+            -keypass "$KEYSTORE_KEYPASS"
+
       - name: Setup SSH for private repos
         if: steps.check_build.outputs.ACTION == 'BUILD'
         uses: webfactory/ssh-agent@v0.10.0
