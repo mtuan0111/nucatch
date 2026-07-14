@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:skeleton_core/skeleton_core.dart';
@@ -21,11 +22,11 @@ class UpdateNoticeDialog extends StatelessWidget {
   }) : super(key: key);
 
   String get _storeUrl {
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       final packageName =
           dotenv.env['ANDROID_PACKAGE_NAME'] ?? 'com.example.nucatch';
       return 'https://play.google.com/store/apps/details?id=$packageName';
-    } else if (Platform.isIOS) {
+    } else if (!kIsWeb && Platform.isIOS) {
       final appId = dotenv.env['IOS_APP_ID'] ?? '1234567890';
       return 'https://apps.apple.com/app/id$appId';
     }

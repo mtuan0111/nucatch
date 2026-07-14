@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -18,6 +19,12 @@ import 'package:nucatch/firebase_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (!kIsWeb) {
+    await MobileAds.instance.initialize();
+  }
+  BaseAdMobConfig.register(AdMobConfig.instance);
+
   final app = SkeletonApp(
     title: 'Nucatch',
 
@@ -51,14 +58,6 @@ Future<void> main() async {
         debugPrint('⚠️ Failed to load .env file: $e');
       }
 
-      // Google Mobile Ads
-      try {
-        await MobileAds.instance.initialize();
-        BaseAdMobConfig.register(AdMobConfig.instance);
-        debugPrint('✅ Google Mobile Ads initialized successfully');
-      } catch (e) {
-        debugPrint('⚠️ Failed to initialize Google Mobile Ads: $e');
-      }
 
       // Firebase Cloud Messaging
       try {

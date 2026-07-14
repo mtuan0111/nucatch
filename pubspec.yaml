@@ -60,9 +60,9 @@ dependencies:
   # flutter_bloc: ^9.1.1
   # font_awesome_flutter: ^11.0.0
 
-# dependency_overrides:
-#   skeleton_core:
-#     path: ../skeleton_core
+dependency_overrides:
+  skeleton_core:
+    path: ../skeleton_core
 
 dev_dependencies:
   flutter_test:

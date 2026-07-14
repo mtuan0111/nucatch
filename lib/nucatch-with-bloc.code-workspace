@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../o_an_quan"
+		}
+	],
+	"settings": {
+		"liveServer.settings.port": 5501
+	}
+}

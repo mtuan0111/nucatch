@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io' show Platform;
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
@@ -169,7 +170,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                       ),
                       // AdMob Banner Ad
                       AdMobBanner(
-                        adUnitId: Platform.isIOS
+                        adUnitId: (!kIsWeb && Platform.isIOS)
                             ? AdMobConfig.instance.iosGameOverBannerId
                             : AdMobConfig.instance.androidGameOverBannerId,
                       ),

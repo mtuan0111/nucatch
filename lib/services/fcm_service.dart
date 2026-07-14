@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -46,7 +47,7 @@ class FcmService {
     await _localNotifications.initialize(settings: initSettings);
 
     // Android notification channel
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       const AndroidNotificationChannel channel = AndroidNotificationChannel(
         'fcm_default_channel',
         'Push Notifications',

@@ -953,11 +953,9 @@ packages:
   skeleton_core:
     dependency: "direct main"
     description:
-      path: "."
-      ref: deployment_production
-      resolved-ref: dcaab5ae862df1b65c101f3b83947c6e65d988d8
-      url: "git@github.com:mtuan0111/skeleton_core.git"
-    source: git
+      path: "../skeleton_core"
+      relative: true
+    source: path
     version: "0.1.0"
   sky_engine:
     dependency: transitive

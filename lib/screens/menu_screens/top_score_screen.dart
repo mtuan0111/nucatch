@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/helpers/admob_config.dart';
@@ -241,7 +243,7 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                           Expanded(
                               child: _buildRankingList(turnRecordedListState)),
                           AdMobBanner(
-                            adUnitId: Platform.isAndroid
+                            adUnitId: (!kIsWeb && Platform.isAndroid)
                                 ? AdMobConfig.instance.androidTopScoreBannerId
                                 : AdMobConfig.instance.iosTopScoreBannerId,
                           )
