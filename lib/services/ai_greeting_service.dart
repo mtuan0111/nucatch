@@ -7,6 +7,17 @@ class AiGreetingService {
   static const String _greetingCacheKey = 'ai_greeting_message';
   static const String _greetingDateKey = 'ai_greeting_date';
 
+  /// Skips the real network call entirely (returning [fallbackText]
+  /// immediately) when set — mirrors `FcmService.
+  /// disablePermissionRequestForTest`. Integration tests set this because
+  /// the dev `.env`'s Gemini key is a rejected placeholder: every call
+  /// fails, but only after a real network round trip that can take many
+  /// seconds to time out, and MenuScreen's `didChangeDependencies()`
+  /// re-fires the fetch on every rebuild while `greetingMessage` stays
+  /// null — on a slow/rate-limited connection that can queue up several
+  /// full-length failed attempts back to back before the menu settles.
+  static bool disableForTest = false;
+
   /// Returns today's date as a string (yyyy-MM-dd)
   static String _todayKey() {
     final now = DateTime.now();
@@ -15,6 +26,7 @@ class AiGreetingService {
 
   static Future<String> getGreeting(
       BuildContext context, String fallbackText) async {
+    if (disableForTest) return fallbackText;
     try {
       // Check cache first
       final prefs = await SharedPreferences.getInstance();

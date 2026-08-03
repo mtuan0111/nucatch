@@ -146,8 +146,18 @@ class CombatBleService {
     }
   }
 
+  /// Skips real BLE calls (permissions, advertising, discovery) entirely
+  /// when set — integration tests run on a single device with no real peer
+  /// to pair with, and requesting real Bluetooth permissions would surface
+  /// an OS dialog that automated taps can't dismiss.
+  static bool disableForTest = false;
+
   /// Request Bluetooth permissions (matching chat_bluetooth pattern)
   Future<bool> requestPermissions() async {
+    if (disableForTest) {
+      debugPrint('✅ [CombatBLE] Permissions granted (mocked for test)');
+      return true;
+    }
     debugPrint('📡 [CombatBLE] Initializing...');
     final granted = await repository.requestPermissions();
     if (granted) {
@@ -160,6 +170,10 @@ class CombatBleService {
 
   /// Start advertising as host (matching CombatNearbyService.startAdvertising)
   Future<void> startAdvertising(String hostName, String hostId) async {
+    if (disableForTest) {
+      debugPrint('✅ [CombatBLE] startAdvertising skipped for test');
+      return;
+    }
     _isHost = true;
     _currentUserName = hostName;
     _isReady = false;
@@ -175,6 +189,10 @@ class CombatBleService {
 
   /// Start discovery as guest (matching CombatNearbyService.startDiscovery)
   Future<void> startDiscovery(String guestName, String guestId) async {
+    if (disableForTest) {
+      debugPrint('✅ [CombatBLE] startDiscovery skipped for test');
+      return;
+    }
     _isHost = false;
     _currentUserName = guestName;
     _isReady = false;
@@ -280,12 +298,14 @@ class CombatBleService {
 
   /// Stop advertising
   Future<void> stopAdvertising() async {
+    if (disableForTest) return;
     await repository.stopAdvertising();
     debugPrint('🛑 [CombatBLE] Advertising stopped');
   }
 
   /// Stop discovery
   Future<void> stopDiscovery() async {
+    if (disableForTest) return;
     await repository.stopDiscovery();
     debugPrint('🛑 [CombatBLE] Discovery stopped');
   }

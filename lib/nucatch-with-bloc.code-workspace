@@ -4,6 +4,9 @@
 			"path": ".."
 		},
 		{
+			"path": "../../skeleton_core"
+		},
+		{
 			"path": "../../o_an_quan"
 		}
 	],

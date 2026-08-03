@@ -15,6 +15,8 @@ class FcmService {
   factory FcmService() => _instance;
   FcmService._internal();
 
+  static bool disablePermissionRequestForTest = false;
+
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
@@ -24,13 +26,15 @@ class FcmService {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     // Request permissions
-    final settings = await _messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-      provisional: false,
-    );
-    debugPrint('🔔 FCM permission: ${settings.authorizationStatus}');
+    if (!disablePermissionRequestForTest) {
+      final settings = await _messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+        provisional: false,
+      );
+      debugPrint('🔔 FCM permission: ${settings.authorizationStatus}');
+    }
 
     // Initialize local notifications for foreground display
     const AndroidInitializationSettings androidInit =
