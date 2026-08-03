@@ -55,6 +55,7 @@ class _TourButtonState extends State<TourButton>
           child: Container(
             width: 56,
             height: 56,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(

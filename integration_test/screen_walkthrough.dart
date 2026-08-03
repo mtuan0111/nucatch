@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeleton_core/skeleton_core.dart'
-    show MenuOption, CustomSliverAppBar, OptionCard, PreferencesKey;
+    show MenuOption, CustomSliverAppBar, AnimatedButton, PreferencesKey;
 
 import 'package:nucatch/main.dart' as app;
 import 'package:nucatch/services/ai_greeting_service.dart';
@@ -114,7 +114,28 @@ Future<void> runScreenWalkthrough(
       // auto-start decision is async and can land a tour overlay in
       // between retries, silently swallowing the tap underneath it.
       await dismissStrayTourOverlay();
-      if (await waitFor(finder)) {
+      bool found = await waitFor(finder);
+      if (!found) {
+        // In landscape the much shorter viewport means later menu items
+        // (e.g. "ABOUT") sit inside a lazily-built SliverList below the
+        // fold — they don't exist in the tree at all until scrolled into
+        // range, so plain waitFor() never finds them. scrollUntilVisible
+        // builds as it scrolls, which a bare find can't. Screens without a
+        // Scrollable ancestor (none of our targets need this) just fail
+        // this attempt and fall through to the retry loop.
+        try {
+          await tester.scrollUntilVisible(
+            finder,
+            200,
+            scrollable: find.byType(Scrollable).first,
+          );
+          found = finder.evaluate().isNotEmpty;
+        } catch (e) {
+          debugPrint('TEST_DEBUG scrollUntilVisible("$debugLabel") '
+              'attempt $attempt failed: $e');
+        }
+      }
+      if (found) {
         try {
           await tester.ensureVisible(finder.first);
           await tester.pump(const Duration(milliseconds: 300));
@@ -139,17 +160,21 @@ Future<void> runScreenWalkthrough(
     await tapText(upperCaseLabel);
   }
 
-  /// Taps an [OptionCard] by its title (Solo Mode, Combat Mode, Create Room,
-  /// a difficulty name, ...). Targets the card itself rather than
-  /// `find.text(title)` — `OptionCard` renders its title as a badge
-  /// `Positioned(top: -45, ...)` with `clipBehavior: Clip.none`, overflowing
-  /// its own layout box, and tapping that overflowing text reliably missed
-  /// the card's actual `GestureDetector` on-device (no thrown error, no
-  /// warning — the tap just landed somewhere that wasn't wired to `onTap`).
-  /// `widgetWithText` resolves to the `OptionCard` ancestor instead, so the
-  /// tap lands at its real, non-overflowing bounding box.
-  Future<void> tapOptionCard(String title) =>
-      tapFinder(find.widgetWithText(OptionCard, title), 'OptionCard:$title');
+  /// Taps an `OptionCard` by its trailing icon button rather than its title
+  /// text or the card as a whole — both of those reliably failed to
+  /// register a tap on-device (no thrown error, no warning; the tap just
+  /// landed somewhere not wired to `onTap`), most likely because
+  /// `OptionCard`'s title/description render as disabled `CustomElevatedButton`
+  /// badges (no `onPressed`) that sit in front of the card's own
+  /// `GestureDetector` and absorb the tap instead of passing it through.
+  /// The icon is rendered by a real `AnimatedButton` with `onPressed: onTap`
+  /// wired directly — the same kind of control the in-game menu/back button
+  /// taps elsewhere in this walkthrough already tap reliably.
+  Future<void> tapOptionCard(FaIconData iconData, String debugLabel) =>
+      tapFinder(
+        find.byWidgetPredicate((w) => w is FaIcon && w.icon == iconData.data),
+        debugLabel,
+      );
 
   /// Taps the app's real back button. Every screen here uses
   /// `CustomSliverAppBar(onBackPressed: ...)`, which renders as a
@@ -181,18 +206,29 @@ Future<void> runScreenWalkthrough(
     tester.view.resetDevicePixelRatio();
   });
 
+  // 1080x2400 physical pixels at a 2.625 device pixel ratio is a real,
+  // common phone profile (the same physical resolution class as the test
+  // device) — logical size works out to ~411x914, matching what the app's
+  // layout code actually assumes. A devicePixelRatio of 1.0 with these
+  // physical dimensions (an earlier version of this test used that) makes
+  // Flutter treat 1080x2400 as *logical* pixels — over 2.5x wider/taller
+  // than the app is designed for, so every fixed-size button/icon renders
+  // far smaller relative to the screen than it does on a real device, to
+  // the point that unrelated overlays (the quick-settings volume/vibration
+  // buttons) visually and functionally overlapped the in-game menu button
+  // and silently absorbed taps meant for it.
+  const devicePixelRatio = 2.625;
   if (landscape) {
-    // A real, common landscape phone size — swapped width/height of a
-    // typical portrait device rather than a synthetic square, so layout
-    // code that branches on aspect ratio behaves the same way it would on
-    // an actual rotated device.
+    // Swapped width/height of the portrait profile rather than a synthetic
+    // square, so layout code that branches on aspect ratio behaves the same
+    // way it would on an actual rotated device.
     step('forcing landscape physical size');
     tester.view.physicalSize = const Size(2400, 1080);
-    tester.view.devicePixelRatio = 1.0;
+    tester.view.devicePixelRatio = devicePixelRatio;
   } else {
     step('forcing portrait physical size');
     tester.view.physicalSize = const Size(1080, 2400);
-    tester.view.devicePixelRatio = 1.0;
+    tester.view.devicePixelRatio = devicePixelRatio;
   }
 
   // Prefs must be written BEFORE app.main() — skeleton_core's TourBloc
@@ -284,7 +320,7 @@ Future<void> runScreenWalkthrough(
 
   // ── Solo: difficulty picker ───────────────────────────────
   step('tapping Solo Mode');
-  await tapOptionCard('Solo Mode');
+  await tapOptionCard(FontAwesomeIcons.user, 'Solo Mode');
   await doWait(2);
   step('asserting SetDifficultScreen');
   expect(find.byType(SetDifficultScreen), findsOneWidget,
@@ -295,15 +331,20 @@ Future<void> runScreenWalkthrough(
   // Tapping a difficulty card both sets the difficulty AND starts the game
   // in one action — there's no separate "start" button in this flow.
   step('tapping Easy Mode');
-  await tapOptionCard('Easy Mode');
+  await tapOptionCard(FontAwesomeIcons.faceSmileBeam, 'Easy Mode');
 
+  step('waiting for PlayScreen to mount');
+  // The page transition into PlayScreen (SoloNav pushing it after
+  // TurnBloc's SetDifficulty -> Start chain resolves) hasn't necessarily
+  // happened yet the instant the tap above returns — wait for the screen
+  // itself before touching anything that only exists inside it.
+  await waitFor(find.byType(PlayScreen), maxSeconds: 10);
   step('waiting for intro countdown to clear');
   final countdownOverlay = find.byType(CountdownOverlay);
   for (int i = 0; i < 20; i++) {
     if (countdownOverlay.evaluate().isEmpty) break;
     await tester.pump(const Duration(milliseconds: 500));
   }
-  await doWait(1);
   step('asserting PlayScreen');
   expect(find.byType(PlayScreen), findsOneWidget,
       reason: 'Starting a game should reach the play screen');
@@ -313,6 +354,14 @@ Future<void> runScreenWalkthrough(
   // the same path a player actually uses. Scoped to PlayScreen's own
   // subtree since the menu button here is a FontAwesomeIcons.bars icon
   // inside the on-screen keyboard, not a chevron/back button.
+  //
+  // Tapped as soon as the countdown clears, with no extra idle wait
+  // beforehand: this is a live, timed game — sitting idle for several more
+  // seconds here risked the per-turn timer running out and losing enough
+  // lives to trigger a real game over, which swaps GameOverScreen in as
+  // the active page and leaves PlayScreen (and this exact tap) absorbed
+  // behind it, matching exactly the "tap lands, nothing happens, no error"
+  // symptom this step used to hit.
   step('tapping the in-game menu button');
   final playScreenMenuIcon = find.descendant(
     of: find.byType(PlayScreen),
@@ -322,10 +371,22 @@ Future<void> runScreenWalkthrough(
   );
   expect(playScreenMenuIcon, findsWidgets,
       reason: 'expected PlayScreen\'s own menu button to be visible');
-  await tester.tap(playScreenMenuIcon.first, warnIfMissed: false);
-  await doWait(1);
+  // Tap the enclosing AnimatedButton rather than the small FaIcon glyph
+  // itself, for a larger and definitely-interactive hit target.
+  final playScreenMenuButton = find.ancestor(
+    of: playScreenMenuIcon.first,
+    matching: find.byType(AnimatedButton),
+  );
+  expect(playScreenMenuButton, findsWidgets,
+      reason: 'expected the menu FaIcon to be inside an AnimatedButton');
+  await tester.tap(playScreenMenuButton.first, warnIfMissed: false);
+  await doWait(2);
   step('waiting for exit-confirmation dialog');
-  await waitFor(find.text('Yes'));
+  // The dialog may briefly show a LoadingWidget spinner instead of the
+  // Yes/No buttons while TurnRecordedListBloc's score-ranking lookup
+  // resolves (a real Firestore round trip in this environment) — give it
+  // more room than the default budget before concluding it's stuck.
+  await waitFor(find.text('Yes'), maxSeconds: 20);
   expect(find.text('Yes'), findsWidgets,
       reason: 'the exit-confirmation dialog should be showing');
   step('tapping Yes to confirm exit');
@@ -341,7 +402,7 @@ Future<void> runScreenWalkthrough(
   await doWait(2);
   expect(find.byType(SelectPlayModeScreen), findsOneWidget);
   step('tapping Combat Mode');
-  await tapOptionCard('Combat Mode');
+  await tapOptionCard(FontAwesomeIcons.userGroup, 'Combat Mode');
   await doWait(2);
   step('asserting CombatModeSetupScreen');
   expect(find.byType(CombatModeSetupScreen), findsOneWidget,
@@ -350,7 +411,7 @@ Future<void> runScreenWalkthrough(
 
   // ── Combat: host room (no peer — just confirms it renders) ─
   step('tapping Create Room');
-  await tapOptionCard('Create Room');
+  await tapOptionCard(FontAwesomeIcons.userPlus, 'Create Room');
   await doWait(3);
   step('asserting HostRoomScreen');
   expect(find.byType(HostRoomScreen), findsOneWidget,
@@ -363,7 +424,7 @@ Future<void> runScreenWalkthrough(
 
   // ── Combat: join room (no peer — just confirms it renders) ─
   step('tapping Join Room');
-  await tapOptionCard('Join Room');
+  await tapOptionCard(FontAwesomeIcons.rightToBracket, 'Join Room');
   await doWait(3);
   step('asserting JoinRoomScreen');
   expect(find.byType(JoinRoomScreen), findsOneWidget,
