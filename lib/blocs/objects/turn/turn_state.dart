@@ -48,6 +48,22 @@ class TurnState {
   final bool pickRightJustCorrect; // Animation flag: scale+fade-out on correct
   final bool pickRightShowCorrect; // Flag: show correct answer after wrong pick
 
+  /// True while a scripted lesson from the in-game rule tutorial is
+  /// playing. Suppresses the real Firestore leaderboard write in
+  /// `TurnBloc._onSaveRecorded` — the engine itself is never forked (a
+  /// tutorial lesson's timer/tap/reset/game-over consequences are all real),
+  /// only the persistence side effect is skipped.
+  final bool isTutorial;
+
+  /// Bumped every `SeedTutorialTurn`. Lets a real event's own delayed
+  /// continuation (e.g. `_onResetNewNumber`'s post-reset `SetLevel` call)
+  /// detect that a *later* tutorial lesson has already reseeded the state
+  /// out from under it, and bail instead of clobbering that reseed —
+  /// otherwise a lesson whose real consequence lands fast enough to
+  /// auto-advance the tutorial (no result beat to wait for) can race a
+  /// slower-maturing side effect from the tap that triggered it.
+  final int tutorialGeneration;
+
   const TurnState({
     this.level = 0,
     this.timesCorrect = 0,
@@ -74,6 +90,8 @@ class TurnState {
     this.questionExpression,
     this.pickRightJustCorrect = false,
     this.pickRightShowCorrect = false,
+    this.isTutorial = false,
+    this.tutorialGeneration = 0,
   });
 
   TurnState copyWith({
@@ -102,6 +120,8 @@ class TurnState {
     String? questionExpression,
     bool? pickRightJustCorrect,
     bool? pickRightShowCorrect,
+    bool? isTutorial,
+    int? tutorialGeneration,
   }) {
     return TurnState(
       level: level ?? this.level,
@@ -131,6 +151,8 @@ class TurnState {
       questionExpression: questionExpression ?? this.questionExpression,
       pickRightJustCorrect: pickRightJustCorrect ?? this.pickRightJustCorrect,
       pickRightShowCorrect: pickRightShowCorrect ?? this.pickRightShowCorrect,
+      isTutorial: isTutorial ?? this.isTutorial,
+      tutorialGeneration: tutorialGeneration ?? this.tutorialGeneration,
     );
   }
 

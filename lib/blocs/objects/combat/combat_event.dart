@@ -206,6 +206,36 @@ class CombatBlocReset extends CombatEvent {}
 
 class CombatChangeDifficultyReceived extends CombatEvent {}
 
+/// Seeds a deterministic, `isTutorial:true` combat match — always as host,
+/// always already "paired" with a scripted opponent (see
+/// `CombatTutorialDriver`) — without ever calling
+/// `CombatBleService.startAdvertising`/`requestPermissions`. The in-game
+/// tutorial's combat arc never visits `HostRoomScreen`/`JoinRoomScreen`, so
+/// those real BLE calls are simply never invoked.
+class SeedTutorialCombat extends CombatEvent {
+  final Difficulty difficulty;
+  final String requirementString;
+  final String expect;
+  final int level;
+  final int lifeRemaining;
+  final int opponentLives;
+  final int opponentScore;
+  final double? tapTimerSeconds;
+  final bool startTimer;
+
+  SeedTutorialCombat({
+    this.difficulty = Difficulty.easy,
+    required this.requirementString,
+    required this.expect,
+    this.level = 1,
+    this.lifeRemaining = kCombatInitialLives,
+    this.opponentLives = kCombatInitialLives,
+    this.opponentScore = 0,
+    this.tapTimerSeconds,
+    this.startTimer = false,
+  });
+}
+
 // ===== Legacy aliases for backward compatibility =====
 typedef TurnStarted = CombatTurnStarted;
 typedef TurnReceived = CombatTurnReceived;

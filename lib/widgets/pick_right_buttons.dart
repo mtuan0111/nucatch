@@ -19,6 +19,12 @@ class PickRightButtons extends StatefulWidget {
   final bool showCorrectAnswer; // Show correct answer after wrong pick
   final int? correctIndex; // Index of the correct button (0, 1, or 2)
 
+  /// Optional externally-owned keys (always length 3) for each button —
+  /// used by the in-game rule tutorial (`TourKeys.pickRightButtonKeys`) to
+  /// spotlight a specific option. Falls back to internally-created keys
+  /// when not supplied.
+  final List<GlobalKey>? buttonKeys;
+
   const PickRightButtons({
     super.key,
     required this.equations,
@@ -28,6 +34,7 @@ class PickRightButtons extends StatefulWidget {
     this.isCorrectAnimating = false,
     this.showCorrectAnswer = false,
     this.correctIndex,
+    this.buttonKeys,
   });
 
   @override
@@ -36,7 +43,9 @@ class PickRightButtons extends StatefulWidget {
 
 class _PickRightButtonsState extends State<PickRightButtons>
     with SingleTickerProviderStateMixin {
-  final List<GlobalKey> _buttonKeys = [GlobalKey(), GlobalKey(), GlobalKey()];
+  List<GlobalKey> get _buttonKeys =>
+      widget.buttonKeys ?? _ownButtonKeys;
+  final List<GlobalKey> _ownButtonKeys = [GlobalKey(), GlobalKey(), GlobalKey()];
   late AnimationController _entranceController;
   late Animation<double> _entranceOpacity;
   late Animation<double> _entranceScale;

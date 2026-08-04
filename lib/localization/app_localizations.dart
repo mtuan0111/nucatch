@@ -956,6 +956,354 @@ abstract class AppLocalizations {
   /// **'Tour has been reset. Return to the main menu to start.'**
   String get tourResetMessage;
 
+  /// In-game tutorial: regular mode welcome title
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s Play!'**
+  String get tourRuleRegularWelcomeTitle;
+
+  /// In-game tutorial: regular mode welcome description
+  ///
+  /// In en, this message translates to:
+  /// **'Memorize the number, then type it back before time runs out. Ready to give it a try?'**
+  String get tourRuleRegularWelcomeDesc;
+
+  /// In-game tutorial: lives title
+  ///
+  /// In en, this message translates to:
+  /// **'Your Lives'**
+  String get tourRuleRegularLivesTitle;
+
+  /// In-game tutorial: lives description
+  ///
+  /// In en, this message translates to:
+  /// **'You start with **3 lives**. Losing all of them ends the game — so play carefully!'**
+  String get tourRuleRegularLivesDesc;
+
+  /// In-game tutorial: memorize step title
+  ///
+  /// In en, this message translates to:
+  /// **'Memorize It'**
+  String get tourRuleRegularMemorizeTitle;
+
+  /// In-game tutorial: memorize step description
+  ///
+  /// In en, this message translates to:
+  /// **'Watch closely — the number flashes on screen for just a moment before it hides.'**
+  String get tourRuleRegularMemorizeDesc;
+
+  /// In-game tutorial: type back step title
+  ///
+  /// In en, this message translates to:
+  /// **'Type It Back'**
+  String get tourRuleRegularTypeBackTitle;
+
+  /// In-game tutorial: type back step description
+  ///
+  /// In en, this message translates to:
+  /// **'Now tap the digit you just saw on the keypad.'**
+  String get tourRuleRegularTypeBackDesc;
+
+  /// In-game tutorial: scoring step title
+  ///
+  /// In en, this message translates to:
+  /// **'Nice!'**
+  String get tourRuleRegularScoringTitle;
+
+  /// In-game tutorial: scoring step description
+  ///
+  /// In en, this message translates to:
+  /// **'Keep answering correctly to earn points.'**
+  String get tourRuleRegularScoringDesc;
+
+  /// In-game tutorial: scoring result beat
+  ///
+  /// In en, this message translates to:
+  /// **'You just earned a point! Every correct answer adds to your score.'**
+  String get tourRuleRegularScoringResult;
+
+  /// In-game tutorial: timer step title
+  ///
+  /// In en, this message translates to:
+  /// **'Beat the Clock'**
+  String get tourRuleRegularTimerTitle;
+
+  /// In-game tutorial: timer step description
+  ///
+  /// In en, this message translates to:
+  /// **'Watch the timer bar — if it runs out before you finish typing, you\'ll lose a life.'**
+  String get tourRuleRegularTimerDesc;
+
+  /// In-game tutorial: timer result beat
+  ///
+  /// In en, this message translates to:
+  /// **'Time\'s up! Running out of time costs you a life, just like a wrong tap.'**
+  String get tourRuleRegularTimerResult;
+
+  /// In-game tutorial: reset step title
+  ///
+  /// In en, this message translates to:
+  /// **'Need a New One?'**
+  String get tourRuleRegularResetTitle;
+
+  /// In-game tutorial: reset step description
+  ///
+  /// In en, this message translates to:
+  /// **'Tap **Reset** to skip a tricky challenge for a fresh one — but it always costs a life.'**
+  String get tourRuleRegularResetDesc;
+
+  /// In-game tutorial: level up step title
+  ///
+  /// In en, this message translates to:
+  /// **'Leveling Up'**
+  String get tourRuleRegularLevelUpTitle;
+
+  /// In-game tutorial: level up step description
+  ///
+  /// In en, this message translates to:
+  /// **'Answer enough turns correctly and you\'ll level up.'**
+  String get tourRuleRegularLevelUpDesc;
+
+  /// In-game tutorial: level up result beat
+  ///
+  /// In en, this message translates to:
+  /// **'Level up! Numbers get a little harder from here — and completing a level without losing a life earns you a bonus life.'**
+  String get tourRuleRegularLevelUpResult;
+
+  /// In-game tutorial: game over step title
+  ///
+  /// In en, this message translates to:
+  /// **'Game Over'**
+  String get tourRuleRegularGameOverTitle;
+
+  /// In-game tutorial: game over step description
+  ///
+  /// In en, this message translates to:
+  /// **'With only 1 life left, one more miss ends the game for real. Watch what happens.'**
+  String get tourRuleRegularGameOverDesc;
+
+  /// In-game tutorial: regular mode wrap-up title
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s Regular Mode!'**
+  String get tourRuleRegularWrapUpTitle;
+
+  /// In-game tutorial: regular mode wrap-up description
+  ///
+  /// In en, this message translates to:
+  /// **'Now let\'s try Pick Right mode — a different way to play.'**
+  String get tourRuleRegularWrapUpDesc;
+
+  /// In-game tutorial: pick right welcome title
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Right Mode'**
+  String get tourRulePickRightWelcomeTitle;
+
+  /// In-game tutorial: pick right welcome description
+  ///
+  /// In en, this message translates to:
+  /// **'Instead of typing, you\'ll pick the correct answer from a few choices.'**
+  String get tourRulePickRightWelcomeDesc;
+
+  /// In-game tutorial: pick right options title
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Wisely'**
+  String get tourRulePickRightOptionsTitle;
+
+  /// In-game tutorial: pick right options description
+  ///
+  /// In en, this message translates to:
+  /// **'One of these is correct — the others are decoys.'**
+  String get tourRulePickRightOptionsDesc;
+
+  /// In-game tutorial: pick right correct step title
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the Right One'**
+  String get tourRulePickRightCorrectTitle;
+
+  /// In-game tutorial: pick right correct step description
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the button you think is correct.'**
+  String get tourRulePickRightCorrectDesc;
+
+  /// In-game tutorial: pick right correct result beat
+  ///
+  /// In en, this message translates to:
+  /// **'Correct! You earned a point.'**
+  String get tourRulePickRightCorrectResult;
+
+  /// In-game tutorial: pick right wrong step title
+  ///
+  /// In en, this message translates to:
+  /// **'Oops!'**
+  String get tourRulePickRightWrongTitle;
+
+  /// In-game tutorial: pick right wrong step description
+  ///
+  /// In en, this message translates to:
+  /// **'This time, try tapping a different button.'**
+  String get tourRulePickRightWrongDesc;
+
+  /// In-game tutorial: pick right wrong result beat
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong pick — the correct answer is highlighted, and you lose a life.'**
+  String get tourRulePickRightWrongResult;
+
+  /// In-game tutorial: pick right timer step title
+  ///
+  /// In en, this message translates to:
+  /// **'This Timer\'s Faster'**
+  String get tourRulePickRightTimerTitle;
+
+  /// In-game tutorial: pick right timer step description
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Right mode\'s timer runs out quickly. Watch what happens if you\'re too slow.'**
+  String get tourRulePickRightTimerDesc;
+
+  /// In-game tutorial: pick right timer result beat
+  ///
+  /// In en, this message translates to:
+  /// **'Time\'s up again — with no lives left, that\'s Game Over.'**
+  String get tourRulePickRightTimerResult;
+
+  /// In-game tutorial: pick right wrap-up title
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s Pick Right!'**
+  String get tourRulePickRightWrapUpTitle;
+
+  /// In-game tutorial: pick right wrap-up description
+  ///
+  /// In en, this message translates to:
+  /// **'Now let\'s try Combat Mode — where you play against a real opponent.'**
+  String get tourRulePickRightWrapUpDesc;
+
+  /// In-game tutorial: combat welcome title
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Combat'**
+  String get tourRuleCombatWelcomeTitle;
+
+  /// In-game tutorial: combat welcome description
+  ///
+  /// In en, this message translates to:
+  /// **'In Combat Mode, you and an opponent take turns racing to answer first.'**
+  String get tourRuleCombatWelcomeDesc;
+
+  /// In-game tutorial: combat turn order title
+  ///
+  /// In en, this message translates to:
+  /// **'Whose Turn Is It?'**
+  String get tourRuleCombatTurnOrderTitle;
+
+  /// In-game tutorial: combat turn order description
+  ///
+  /// In en, this message translates to:
+  /// **'This badge shows whose turn it is. As host, you go first.'**
+  String get tourRuleCombatTurnOrderDesc;
+
+  /// In-game tutorial: combat your turn title
+  ///
+  /// In en, this message translates to:
+  /// **'Your Turn'**
+  String get tourRuleCombatYourTurnTitle;
+
+  /// In-game tutorial: combat your turn description
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the digit shown to complete your turn.'**
+  String get tourRuleCombatYourTurnDesc;
+
+  /// In-game tutorial: combat opponent turn title
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent\'s Turn'**
+  String get tourRuleCombatOpponentTurnTitle;
+
+  /// In-game tutorial: combat opponent turn description
+  ///
+  /// In en, this message translates to:
+  /// **'Now watch — your opponent takes their turn.'**
+  String get tourRuleCombatOpponentTurnDesc;
+
+  /// In-game tutorial: combat opponent turn result beat
+  ///
+  /// In en, this message translates to:
+  /// **'Your opponent answered correctly! The turn comes right back to you.'**
+  String get tourRuleCombatOpponentTurnResult;
+
+  /// In-game tutorial: combat opponent life lost title
+  ///
+  /// In en, this message translates to:
+  /// **'A Life Lost'**
+  String get tourRuleCombatOpponentLifeLostTitle;
+
+  /// In-game tutorial: combat opponent life lost description
+  ///
+  /// In en, this message translates to:
+  /// **'Watch what happens when your opponent misses a tap.'**
+  String get tourRuleCombatOpponentLifeLostDesc;
+
+  /// In-game tutorial: combat opponent life lost result beat
+  ///
+  /// In en, this message translates to:
+  /// **'Your opponent lost a life — you\'ll see their life count drop, just like yours would.'**
+  String get tourRuleCombatOpponentLifeLostResult;
+
+  /// In-game tutorial: combat timer title
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone Has a Timer'**
+  String get tourRuleCombatTimerTitle;
+
+  /// In-game tutorial: combat timer description
+  ///
+  /// In en, this message translates to:
+  /// **'Your timer works the same way here — miss it and you lose a life too.'**
+  String get tourRuleCombatTimerDesc;
+
+  /// In-game tutorial: combat timer result beat
+  ///
+  /// In en, this message translates to:
+  /// **'Time\'s up! Losing a life in Combat works just like Solo mode.'**
+  String get tourRuleCombatTimerResult;
+
+  /// In-game tutorial: combat win title
+  ///
+  /// In en, this message translates to:
+  /// **'Victory!'**
+  String get tourRuleCombatWinTitle;
+
+  /// In-game tutorial: combat win description
+  ///
+  /// In en, this message translates to:
+  /// **'Watch what happens when your opponent runs out of lives.'**
+  String get tourRuleCombatWinDesc;
+
+  /// In-game tutorial: combat win result beat
+  ///
+  /// In en, this message translates to:
+  /// **'You win! Running your opponent out of lives ends the match in your favor.'**
+  String get tourRuleCombatWinResult;
+
+  /// In-game tutorial: combat wrap-up title
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial Complete!'**
+  String get tourRuleCombatWrapUpTitle;
+
+  /// In-game tutorial: combat wrap-up description
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s everything — Solo, Pick Right, and Combat. Good luck out there!'**
+  String get tourRuleCombatWrapUpDesc;
+
   /// Greeting message on the main menu
   ///
   /// In en, this message translates to:

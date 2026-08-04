@@ -50,6 +50,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     on<TapTimerReset>(_onTapTimerReset);
     on<Renew>(_onRenew);
     on<PickRightButtonTap>(_onPickRightButtonTap);
+    on<SeedTutorialTurn>(_onSeedTutorialTurn);
   }
 
   @override
@@ -58,12 +59,16 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     return super.close();
   }
 
-  void _startTapTimer() {
+  void _startTapTimer([double? startingSeconds]) {
     _tapTimer?.cancel();
     const tickDuration = Duration(milliseconds: kAnimationDurationFast);
-    // Use difficulty model's timeLimitPerTurn for all modes
-    double remainingTime =
-        state.difficultyModel?.timeLimitPerTurn.toDouble() ?? tapTimerDuration;
+    // Use difficulty model's timeLimitPerTurn for all modes, unless the
+    // in-game tutorial seeded a specific (much shorter) starting value so a
+    // "the timer costs you a life" lesson's real timeout fires in ~1-2s
+    // instead of the full real duration.
+    double remainingTime = startingSeconds ??
+        state.difficultyModel?.timeLimitPerTurn.toDouble() ??
+        tapTimerDuration;
 
     _tapTimer = Timer.periodic(tickDuration, (timer) {
       if (isClosed) {
@@ -210,6 +215,24 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     }
 
     if (state.isLoading) {
+      return;
+    }
+
+    // A tutorial lesson's real correct-tap can reach here (e.g. the
+    // "level up" lesson) — bumping the level is all it needs; clearing
+    // `expect` and regenerating a new real challenge/timer below would (a)
+    // leave `expect` stuck empty since nothing here would ever refill it
+    // again, and (b) race the tutorial's own reseed for whichever lesson
+    // comes next (same hazard as `_onResetNewNumber`'s, and for the same
+    // reason: the tutorial always supersedes this moments later, so
+    // there's nothing for this step to usefully do here).
+    if (state.isTutorial) {
+      emitter(
+        state.copyWith(
+          level: event.level,
+          timesCorrect: state.level != event.level ? 0 : null,
+        ),
+      );
       return;
     }
 
@@ -679,12 +702,26 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    final wasTutorial = state.isTutorial;
+
     _stopTapTimer();
     add(LifeLost());
     _vibrationBloc.add(VibrateMultiple());
 
+    // A tutorial lesson whose Reset costs a real life auto-advances the
+    // tutorial (reseeding this bloc with a brand new deterministic state)
+    // the instant that life loss lands — regenerating a new real challenge
+    // below would either race that reseed or silently clobber it depending
+    // on device timing. Nothing needs it: the tutorial's own reseed always
+    // supersedes it moments later, so just skip this step entirely rather
+    // than trying to win a timing race against it.
+    if (wasTutorial) return;
+
     await Future.delayed(
         Duration(milliseconds: event.duration.inMilliseconds + 500));
+
+    if (isClosed) return;
+
     await _onSetLevel(
       SetLevel(
         level: state.level,
@@ -701,6 +738,12 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
 
     if (isClosed) {
       debugPrint('⚠️ Save skipped: BLoC is closed');
+      event.callback?.call();
+      return;
+    }
+
+    if (state.isTutorial) {
+      debugPrint('⚠️ Save skipped: tutorial game');
       event.callback?.call();
       return;
     }
@@ -988,5 +1031,52 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     emitter(
       const TurnState(),
     );
+  }
+
+  Future<void> _onSeedTutorialTurn(
+    SeedTutorialTurn event,
+    Emitter<TurnState> emitter,
+  ) async {
+    if (isClosed) return;
+
+    _stopTapTimer();
+
+    emitter(
+      TurnState(
+        difficultyModel: DifficultyModel.getModel(event.difficulty),
+        requirementString: event.requirementString,
+        expect: event.expect,
+        level: event.level,
+        timesCorrect: event.timesCorrect,
+        lifeRemaining: event.lifeRemaining,
+        status: event.showBeforePlaying
+            ? TurnStatus.initial
+            : TurnStatus.playing,
+        typing: "",
+        tapTimerRemaining:
+            event.tapTimerSeconds ?? state.effectiveTimerDuration,
+        equations: event.equations,
+        correctIndex: event.correctIndex,
+        questionExpression: event.questionExpression,
+        isTutorial: true,
+        tutorialGeneration: state.tutorialGeneration + 1,
+      ),
+    );
+
+    if (event.showBeforePlaying) {
+      final myGeneration = state.tutorialGeneration;
+      // Mirrors _onShowExpect's real memorize-phase timing exactly.
+      await Future.delayed(Duration(milliseconds: state.getTimeShowTarget));
+      if (isClosed ||
+          !state.isTutorial ||
+          state.tutorialGeneration != myGeneration) {
+        return;
+      }
+      emitter(state.copyWith(status: TurnStatus.playing));
+    }
+
+    if (event.startTimer) {
+      _startTapTimer(event.tapTimerSeconds);
+    }
   }
 }

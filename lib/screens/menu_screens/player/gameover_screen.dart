@@ -23,6 +23,7 @@ import 'package:nucatch/helpers/template/custome_alert.dart';
 
 import 'package:nucatch/widgets/game_over_regular.dart';
 import 'package:nucatch/widgets/game_over_pick_right.dart';
+import 'package:nucatch/widgets/tutorial_overlay.dart';
 
 class GameOverScreen extends StatefulWidget {
   const GameOverScreen({super.key});
@@ -61,7 +62,9 @@ class _GameOverScreenState extends State<GameOverScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: Stack(
+        children: [
+          Container(
         decoration: LayoutConfig(context).gradientDecoration,
         child: SafeArea(
           child: CustomScrollView(
@@ -181,6 +184,9 @@ class _GameOverScreenState extends State<GameOverScreen> {
             ],
           ),
         ),
+      ),
+          const TutorialOverlay(),
+        ],
       ),
     );
   }

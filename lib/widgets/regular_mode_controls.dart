@@ -10,6 +10,7 @@ import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
+import 'package:nucatch/helpers/tour_keys.dart';
 
 /// Playing controls widget for Regular (normal) difficulty modes
 /// Displays 3x4 numeric keypad with numbers 0-9, Reset, and Main Menu buttons
@@ -51,6 +52,7 @@ class RegularModeControls extends StatelessWidget {
               if (e.key == KeyboardOption.reset) {
                 button = AnimatedButton(
                   context,
+                  key: TourKeys.keypadKeys[e.key],
                   iconData: FontAwesomeIcons.arrowsRotate,
                   isEnable: turnState.isAbleToReset && turnState.isAbleToTap,
                   onPressed: () {
@@ -68,6 +70,7 @@ class RegularModeControls extends StatelessWidget {
               } else if (e.key == KeyboardOption.mainMenu) {
                 button = AnimatedButton(
                   context,
+                  key: TourKeys.keypadKeys[e.key],
                   iconData: FontAwesomeIcons.bars,
                   onPressed: onMenuPressed,
                   backgroundBuilder: (context, borderRadius) {
@@ -80,6 +83,7 @@ class RegularModeControls extends StatelessWidget {
               } else {
                 button = AnimatedButton(
                   context,
+                  key: TourKeys.keypadKeys[e.key],
                   text: e.value.toString(),
                   style: AppTextStyles.displaySmallBold(context),
                   isEnable: turnState.isAbleToTap,

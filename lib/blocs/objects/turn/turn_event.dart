@@ -132,3 +132,46 @@ class PickRightButtonTap extends TurnEvent {
 
   PickRightButtonTap({required this.buttonIndex});
 }
+
+/// Seeds a deterministic, `isTutorial:true` state for the in-game rule
+/// tutorial. Bypasses `GeneratedRequiredString`'s `Random()`-based generation
+/// entirely — a lesson only needs a *known* `expect` string to point at the
+/// correct key, not a scripted outcome (every wrong tap already produces the
+/// same well-defined "life lost" consequence regardless of which wrong key
+/// was pressed).
+class SeedTutorialTurn extends TurnEvent {
+  final Difficulty difficulty;
+  final String requirementString;
+  final String expect;
+  final int level;
+  final int timesCorrect;
+  final int lifeRemaining;
+  final double? tapTimerSeconds;
+  final bool startTimer;
+  final List<String>? equations;
+  final int? correctIndex;
+  final String? questionExpression;
+
+  /// When true, seeds into the real "memorize" phase (`TurnStatus.initial`,
+  /// mirroring `TurnBloc._onShowExpect`) instead of straight into
+  /// `TurnStatus.playing` — the number/expression is shown for real, then
+  /// the bloc itself flips to `playing` after the same
+  /// `getTimeShowTarget`-based delay a normal turn uses. Used by the
+  /// "watch the number get memorized" lesson.
+  final bool showBeforePlaying;
+
+  SeedTutorialTurn({
+    required this.difficulty,
+    required this.requirementString,
+    required this.expect,
+    this.level = 1,
+    this.timesCorrect = 0,
+    this.lifeRemaining = kSoloInitialLives,
+    this.tapTimerSeconds,
+    this.startTimer = false,
+    this.equations,
+    this.correctIndex,
+    this.questionExpression,
+    this.showBeforePlaying = false,
+  });
+}

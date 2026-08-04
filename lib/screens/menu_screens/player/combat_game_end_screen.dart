@@ -8,6 +8,7 @@ import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
+import 'package:nucatch/widgets/tutorial_overlay.dart';
 
 class CombatGameEndScreen extends StatelessWidget {
   const CombatGameEndScreen({super.key});
@@ -15,7 +16,9 @@ class CombatGameEndScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: Stack(
+        children: [
+          Container(
         decoration: LayoutConfig(context).gradientDecoration,
         child: SafeArea(
           child: BlocListener<CombatBloc, CombatState>(
@@ -75,6 +78,9 @@ class CombatGameEndScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+          const TutorialOverlay(),
+        ],
       ),
     );
   }

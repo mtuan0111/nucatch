@@ -4,7 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
+import 'package:nucatch/helpers/const.dart' show KeyboardOption;
 import 'package:nucatch/helpers/template.dart';
+import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/widgets/pick_right_buttons.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
 
@@ -39,6 +41,7 @@ class PickRightModeControls extends StatelessWidget {
               height: buttonHeight * 2 - buttonSpacing,
               child: PickRightButtons(
                 key: ValueKey(turnState.equations?.join(',')),
+                buttonKeys: TourKeys.pickRightButtonKeys,
                 equations: turnState.equations ?? [],
                 selectedOption: turnState.selectedOption,
                 isEnabled: turnState.isAbleToTap,
@@ -78,6 +81,7 @@ class PickRightModeControls extends StatelessWidget {
                   // Reset button
                   AnimatedButton(
                     context,
+                    key: TourKeys.keypadKeys[KeyboardOption.reset],
                     iconData: FontAwesomeIcons.arrowsRotate,
                     isEnable: turnState.isAbleToReset && turnState.isAbleToTap,
                     onPressed: () {
@@ -93,6 +97,7 @@ class PickRightModeControls extends StatelessWidget {
                   // Main Menu button
                   AnimatedButton(
                     context,
+                    key: TourKeys.keypadKeys[KeyboardOption.mainMenu],
                     iconData: FontAwesomeIcons.bars,
                     onPressed: onMenuPressed,
                     backgroundBuilder: (context, borderRadius) {

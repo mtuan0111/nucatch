@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeleton_core/skeleton_core.dart';
+import 'package:nucatch/blocs/objects/tutorial/tutorial_cubit.dart';
 import 'package:nucatch/helpers/const.dart';
 
 /// Global tour wrapper that manages all tour dialogs from the root level
@@ -49,6 +50,14 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
     // Handle navigation if needed
     _handleTourNavigation(tourState.currentTourStep);
 
+    // The in-game rule tutorial (TutorialOverlay, mounted inside PlayScreen /
+    // GameOverScreen / CombatPlayScreen / CombatGameEndScreen) owns every
+    // gameTutorial* step's UI — this dialog-based wrapper renders nothing for
+    // them so the two overlays never compete for the same taps.
+    if (tourState.currentTourStep.name.startsWith('gameTutorial')) {
+      return;
+    }
+
     // Create and insert new overlay after navigation
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && tourState.isTourActive) {
@@ -82,16 +91,31 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
         _navigateToSelectPlayMode();
         break;
       case TourStep.gameTutorialStep1:
+        // The single slot the entire in-game rule tutorial occupies (see the
+        // tour guide plan's architecture decision 1: TutorialCubit's lesson
+        // pointer isn't persisted across relaunches, so parking all coarse
+        // tour progress on one slot keeps a mid-tutorial relaunch
+        // unambiguous). Force the menu into the Play branch so PlayerNav
+        // mounts, then start the fine-grained tutorial.
+        try {
+          context
+              .read<MenuBloc>()
+              .add(SelectOption(option: MenuOption.start));
+          context.read<TutorialCubit>().start();
+        } catch (e) {
+          // Blocs might not be available in all contexts
+        }
+        break;
       case TourStep.gameTutorialStep2:
       case TourStep.gameTutorialStep3:
       case TourStep.gameTutorialStep4:
       case TourStep.gameTutorialStep5:
-        // These steps are on menu screen - navigate to menu if not there
-        _navigateToMenu();
-        break;
       case TourStep.gameTutorialWaiting:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        // Unreachable in practice: the whole in-game tutorial lives on
+        // gameTutorialStep1 and TourCompleted() fires (from inside the
+        // tutorial's own UI) before TourBloc would ever advance past it.
+        // No-op rather than throw, in case it's ever reached anyway.
+        break;
     }
   }
 
@@ -174,12 +198,25 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
                       _removeTourOverlay();
                       context.read<TourBloc>().add(TourStepBack());
                     },
-              possitiveButtonLabel: tourState.isLastStep
-                  ? lang(context).tourFinish
-                  : lang(context).tourNext,
+              // Always "Next", never "Finish" — this dialog never actually
+              // ends the tour anymore. `about` (the last dialog step) always
+              // advances into the in-game rule tutorial next; the tour only
+              // truly finishes from that tutorial's own Finish button.
+              possitiveButtonLabel: lang(context).tourNext,
               onPossitiveButtonPressed: () {
                 _removeTourOverlay();
-                context.read<TourBloc>().add(TourStepCompleted());
+                // TourJumpToStep instead of TourStepCompleted(): skeleton_core's
+                // TourState.isLastStep special-cases iOS to stop at `settings`
+                // (skipping `about` and the whole game-tutorial tail) and, on
+                // other platforms, only stops at the enum's actual last value
+                // (gameTutorialStep5) — meaning TourStepCompleted() would
+                // either end the tour too early (iOS) or walk into the
+                // unhandled gameTutorialStep2-5 dead steps (elsewhere).
+                // Jumping to an explicit index sidesteps both bugs without
+                // touching the shared skeleton_core package.
+                context
+                    .read<TourBloc>()
+                    .add(TourJumpToStep(tourState.currentStep + 1));
               },
             ),
           ),
@@ -211,23 +248,14 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
       case TourStep.about:
         return lang(context).tourAboutTitle;
       case TourStep.gameTutorialStep1:
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case TourStep.gameTutorialStep2:
-        // TODO: Handle this case.
-        throw UnimplementedError();
-      case TourStep.gameTutorialWaiting:
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case TourStep.gameTutorialStep3:
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case TourStep.gameTutorialStep4:
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case TourStep.gameTutorialStep5:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+      case TourStep.gameTutorialWaiting:
+        // Never actually rendered — _showTourDialog returns before building
+        // this dialog for any gameTutorial* step (see its doc comment).
+        return '';
     }
   }
 
@@ -254,23 +282,13 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
       case TourStep.about:
         return lang(context).tourAboutDesc;
       case TourStep.gameTutorialStep1:
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case TourStep.gameTutorialStep2:
-        // TODO: Handle this case.
-        throw UnimplementedError();
-      case TourStep.gameTutorialWaiting:
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case TourStep.gameTutorialStep3:
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case TourStep.gameTutorialStep4:
-        // TODO: Handle this case.
-        throw UnimplementedError();
       case TourStep.gameTutorialStep5:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+      case TourStep.gameTutorialWaiting:
+        // Never actually rendered — see _getTitleForStep.
+        return '';
     }
   }
 

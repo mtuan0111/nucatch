@@ -14,13 +14,18 @@ import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
+import 'package:nucatch/blocs/objects/tutorial/tutorial_cubit.dart';
+import 'package:nucatch/blocs/objects/tutorial/tutorial_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/helpers/tour_keys.dart';
+import 'package:nucatch/helpers/tutorial_script.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';
 import 'package:nucatch/widgets/countdown_bar.dart';
 import 'package:nucatch/widgets/pick_right_mode_controls.dart';
 import 'package:nucatch/widgets/regular_mode_controls.dart';
 import 'package:nucatch/widgets/quick_setting_button.dart';
+import 'package:nucatch/widgets/tutorial_overlay.dart';
 
 class PlayScreen extends StatefulWidget {
   const PlayScreen({
@@ -48,8 +53,11 @@ class _PlayScreenState extends State<PlayScreen> {
 
   // Animation system
   final GlobalKey<AnimatedGameWrapperState> _animationKey = GlobalKey();
-  final GlobalKey _scoreKey = GlobalKey();
-  final GlobalKey _heartKey = GlobalKey();
+  // Score/life keys are shared statics (TourKeys) rather than private
+  // fields — the in-game rule tutorial spotlights the exact same widgets
+  // via the exact same keys, and a GlobalKey can only back one mounted
+  // widget at a time anyway. PlayScreen and CombatPlayScreen are never
+  // mounted simultaneously, so reuse is safe.
 
   // Track which character indices have triggered fireworks
   final Set<int> _triggeredFireworkIndices = {};
@@ -83,7 +91,32 @@ class _PlayScreenState extends State<PlayScreen> {
     wasLifeDecreased = false;
     wasLifeIncreased = false;
 
-    if (turnState.difficultyModel == null) {
+    // BlocListener only reacts to emissions AFTER it subscribes — if the
+    // tutorial already activated (or already landed on a playScreen lesson)
+    // before this screen was even mounted (e.g. `TutorialCubit.start()` is
+    // called by GlobalTourWrapper one navigation hop before PlayScreen
+    // exists), the seed listener below would never fire for that first
+    // lesson. Seed synchronously here to cover that case.
+    final tutorial = context.read<TutorialCubit>().state;
+    if (tutorial.isActive &&
+        tutorial.lesson.hostScreen == TutorialHostScreen.playScreen &&
+        tutorial.lesson.turnSeed != null) {
+      final seed = tutorial.lesson.turnSeed!;
+      turnBloc.add(SeedTutorialTurn(
+        difficulty: seed.difficulty,
+        requirementString: seed.requirementString,
+        expect: seed.expect,
+        level: seed.level,
+        timesCorrect: seed.timesCorrect,
+        lifeRemaining: seed.lifeRemaining,
+        tapTimerSeconds: seed.tapTimerSeconds,
+        startTimer: seed.startTimer,
+        equations: seed.equations,
+        correctIndex: seed.correctIndex,
+        questionExpression: seed.questionExpression,
+        showBeforePlaying: seed.showBeforePlaying,
+      ));
+    } else if (turnState.difficultyModel == null && !tutorial.isActive) {
       playerNavCubit.showSetDifficulty();
     }
 
@@ -140,10 +173,51 @@ class _PlayScreenState extends State<PlayScreen> {
     // //     ? (screenWidth / 5) - buttonSpace * 2
     // //     : (screenWidth / 3) - buttonSpace * 2;
 
-    return AnimatedGameWrapper(
+    return MultiBlocListener(
+      listeners: [
+        // Seed TurnBloc when the tutorial (re-)enters a lesson hosted here.
+        BlocListener<TutorialCubit, TutorialState>(
+          listenWhen: (previous, current) =>
+              current.isActive &&
+              current.lesson.hostScreen == TutorialHostScreen.playScreen &&
+              current.lesson.turnSeed != null &&
+              (previous.seedToken != current.seedToken || !previous.isActive),
+          listener: (context, state) {
+            final seed = state.lesson.turnSeed!;
+            turnBloc.add(SeedTutorialTurn(
+              difficulty: seed.difficulty,
+              requirementString: seed.requirementString,
+              expect: seed.expect,
+              level: seed.level,
+              timesCorrect: seed.timesCorrect,
+              lifeRemaining: seed.lifeRemaining,
+              tapTimerSeconds: seed.tapTimerSeconds,
+              startTimer: seed.startTimer,
+              equations: seed.equations,
+              correctIndex: seed.correctIndex,
+              questionExpression: seed.questionExpression,
+        showBeforePlaying: seed.showBeforePlaying,
+            ));
+          },
+        ),
+        // Tear the tutorial down once it ends while hosted anywhere in the
+        // Play branch — reset the real game state and hand off to TourBloc.
+        BlocListener<TutorialCubit, TutorialState>(
+          listenWhen: (previous, current) => previous.isActive && !current.isActive,
+          listener: (context, state) {
+            turnBloc.add(Renew());
+            menuBloc.add(ShowMenu());
+            context.read<TourBloc>().add(TourCompleted());
+          },
+        ),
+      ],
+      child: AnimatedGameWrapper(
       key: _animationKey,
       child: BlocListener<TurnBloc, TurnState>(
-        listener: _handleAnimationEvents,
+        listener: (context, state) {
+          _handleAnimationEvents(context, state);
+          _handleTutorialProgress(context, state);
+        },
         child: PopScope(
           canPop: false,
           onPopInvokedWithResult: (didPop, result) {
@@ -232,7 +306,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                           ],
                                         ),
                                         Wrap(
-                                          key: _scoreKey,
+                                          key: TourKeys.scoreKey,
                                           crossAxisAlignment:
                                               WrapCrossAlignment.center,
                                           children: [
@@ -338,7 +412,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                           Expanded(
                                             child: Center(
                                               child: Wrap(
-                                                key: _heartKey,
+                                                key: TourKeys.heartKey,
                                                 spacing: kLifeStarSpacing,
                                                 children: List.generate(
                                                   _currentLifeRemaining,
@@ -446,6 +520,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                 ?.isPickRightMode !=
                                             true)
                                       Expanded(
+                                        key: TourKeys.challengeAreaKey,
                                         child: Center(
                                           child: Wrap(
                                             children: List.generate(
@@ -501,6 +576,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                                 ?.isPickRightMode !=
                                             true)
                                       Expanded(
+                                        key: TourKeys.challengeAreaKey,
                                         child: Center(
                                           child: Wrap(
                                             children: List.generate(
@@ -673,6 +749,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                             .difficultyModel?.isPickRightMode ==
                                         true) ...[
                                       Expanded(
+                                        key: TourKeys.challengeAreaKey,
                                         child: Center(
                                           child: Text(
                                             turnState.questionExpression ??
@@ -765,6 +842,7 @@ class _PlayScreenState extends State<PlayScreen> {
                         ),
                       ),
                     ),
+                    const TutorialOverlay(),
                   ],
                 );
               },
@@ -772,11 +850,63 @@ class _PlayScreenState extends State<PlayScreen> {
           ),
         ),
       ),
+      ),
     );
   }
 
   Future<void> pressReset() async {
     return;
+  }
+
+  // Tutorial progress tracking — mirrors the _prev*ForAnimation pattern
+  // above; TurnBloc's own BlocListener only exposes the current state, so
+  // the previous value is kept on the widget instead.
+  TurnState? _prevTurnStateForTutorial;
+
+  void _handleTutorialProgress(BuildContext context, TurnState state) {
+    final previous = _prevTurnStateForTutorial;
+    _prevTurnStateForTutorial = state;
+    if (previous == null) return;
+
+    final tutorialCubit = context.read<TutorialCubit>();
+    final tutorial = tutorialCubit.state;
+    if (!tutorial.isActive ||
+        tutorial.lesson.hostScreen != TutorialHostScreen.playScreen) {
+      return;
+    }
+
+    switch (tutorial.lesson.key) {
+      case 'RegularMemorize':
+        if (previous.isShowExpect && !state.isShowExpect) {
+          tutorialCubit.onActionResolved();
+        }
+        break;
+      case 'RegularTypeBack':
+      case 'PickRightCorrect':
+        if (state.point > previous.point) {
+          tutorialCubit.onActionResolved();
+        }
+        break;
+      case 'RegularTimer':
+      case 'RegularReset':
+      case 'PickRightWrong':
+      case 'PickRightTimer':
+        if (state.lifeRemaining < previous.lifeRemaining) {
+          tutorialCubit.onActionResolved();
+        }
+        break;
+      case 'RegularLevelUp':
+        if (state.level > previous.level) {
+          tutorialCubit.onActionResolved();
+        }
+        break;
+      case 'RegularGameOver':
+        if (state.status == TurnStatus.gameOver &&
+            previous.status != TurnStatus.gameOver) {
+          tutorialCubit.onActionResolved();
+        }
+        break;
+    }
   }
 
   // Animation event handler
@@ -797,14 +927,14 @@ class _PlayScreenState extends State<PlayScreen> {
 
     // Trigger animation based on what happened:
     if (wasPointIncreased) {
-      final scorePosition = _getWidgetPosition(_scoreKey);
+      final scorePosition = _getWidgetPosition(TourKeys.scoreKey);
       // Correct answer only: lightning glow without explosion
       _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
     }
 
     // Trigger life gain animation
     if (wasLifeIncreasedForAnimation) {
-      final heartPosition = _getWidgetPosition(_heartKey);
+      final heartPosition = _getWidgetPosition(TourKeys.heartKey);
       _animationKey.currentState?.triggers.onGainLife(heartPosition);
     }
 

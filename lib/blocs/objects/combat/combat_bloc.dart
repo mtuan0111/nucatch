@@ -58,11 +58,14 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatNumberReset>(_onCombatResetNewNumber);
     on<CombatTapTimerTick>(_onCombatTapTimerTick);
     on<CombatTapTimerTimeout>(_onCombatTapTimerTimeout);
+    on<CombatTapTimerPause>(_onCombatTapTimerPause);
+    on<CombatTapTimerResume>(_onCombatTapTimerResume);
     on<CombatOpponentSuccessReceived>(_onCombatOpponentSuccessReceived);
     on<CombatOpponentLifeUpdate>(_onCombatOpponentLifeUpdate);
     on<CombatBlocReset>(_onCombatBlocReset);
     on<CombatPickRightButtonTap>(_onCombatPickRightButtonTap);
     on<CombatChangeDifficultyReceived>(_onCombatChangeDifficultyReceived);
+    on<SeedTutorialCombat>(_onSeedTutorialCombat);
 
     // Listen to BLE messages
     _messageSubscription = _roomService.incomingDataStream.listen((data) {
@@ -1248,19 +1251,27 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
   // ===== Tap Timer Methods =====
 
-  void _startTapTimer() {
+  void _startTapTimer([double? startingSeconds]) {
     _tapTimer?.cancel();
     const tickDuration = Duration(milliseconds: kAnimationDurationFast);
     final isPickRight =
         state.difficultyModel?.difficulty == Difficulty.pickRight;
-    double remainingTime = isPickRight
-        ? kCombatPickRightTimerPerTurn.toDouble()
-        : tapTimerDuration;
+    double remainingTime = startingSeconds ??
+        (isPickRight
+            ? kCombatPickRightTimerPerTurn.toDouble()
+            : tapTimerDuration);
 
     _tapTimer = Timer.periodic(tickDuration, (timer) {
       if (isClosed) {
         timer.cancel();
         return;
+      }
+
+      if (state.isTimerPaused) {
+        return; // Don't tick when paused — e.g. while a tutorial "explain"
+        // beat is showing (see CombatTapTimerPause/Resume below, which
+        // TurnBloc's real countdown already supported but this bloc's
+        // didn't until the in-game tutorial's combat arc needed it).
       }
 
       remainingTime -= tickDuration.inMilliseconds / 1000.0;
@@ -1510,6 +1521,54 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   // Helper function to convert string to CombatMessageType enum
   CombatMessageType? _stringToMessageType(String type) {
     return _stringToMessageTypeMap[type];
+  }
+
+  void _onCombatTapTimerPause(
+    CombatTapTimerPause event,
+    Emitter<CombatState> emit,
+  ) {
+    if (isClosed) return;
+    emit(state.copyWith(isTimerPaused: true));
+  }
+
+  void _onCombatTapTimerResume(
+    CombatTapTimerResume event,
+    Emitter<CombatState> emit,
+  ) {
+    if (isClosed) return;
+    emit(state.copyWith(isTimerPaused: false));
+  }
+
+  void _onSeedTutorialCombat(
+    SeedTutorialCombat event,
+    Emitter<CombatState> emit,
+  ) {
+    if (isClosed) return;
+
+    _stopTapTimer();
+
+    emit(CombatState(
+      isHost: true,
+      isMyTurn: true,
+      isGameActive: true,
+      combatStatus: CombatStatus.playing,
+      difficultyModel: DifficultyModel.getModel(event.difficulty),
+      level: event.level,
+      lifeRemaining: event.lifeRemaining,
+      opponentLives: event.opponentLives,
+      opponentScore: event.opponentScore,
+      point: 0,
+      requirementString: event.requirementString,
+      expect: event.expect,
+      status: TurnStatus.playing,
+      typing: '',
+      tapTimerRemaining: event.tapTimerSeconds ?? tapTimerDuration,
+      isTutorial: true,
+    ));
+
+    if (event.startTimer) {
+      _startTapTimer(event.tapTimerSeconds);
+    }
   }
 
   // Helper function to convert string to GameEndReason enum

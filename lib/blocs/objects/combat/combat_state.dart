@@ -88,6 +88,8 @@ class CombatState extends TurnState {
     super.equations,
     super.questionExpression,
     super.pickRightShowCorrect,
+    super.isTutorial,
+    super.tutorialGeneration,
   });
 
   @override
@@ -139,6 +141,8 @@ class CombatState extends TurnState {
     List<String>? equations,
     String? questionExpression,
     bool? pickRightShowCorrect,
+    bool? isTutorial,
+    int? tutorialGeneration,
   }) {
     return CombatState(
       // Combat-specific
@@ -191,6 +195,8 @@ class CombatState extends TurnState {
       equations: equations ?? this.equations,
       questionExpression: questionExpression ?? this.questionExpression,
       pickRightShowCorrect: pickRightShowCorrect ?? this.pickRightShowCorrect,
+      isTutorial: isTutorial ?? this.isTutorial,
+      tutorialGeneration: tutorialGeneration ?? this.tutorialGeneration,
     );
   }
 

@@ -495,5 +495,212 @@ class AppLocalizationsId extends AppLocalizations {
       'Tur diatur ulang. Kembali ke menu utama untuk mulai.';
 
   @override
+  String get tourRuleRegularWelcomeTitle => 'Let\'s Play!';
+
+  @override
+  String get tourRuleRegularWelcomeDesc =>
+      'Memorize the number, then type it back before time runs out. Ready to give it a try?';
+
+  @override
+  String get tourRuleRegularLivesTitle => 'Your Lives';
+
+  @override
+  String get tourRuleRegularLivesDesc =>
+      'You start with **3 lives**. Losing all of them ends the game — so play carefully!';
+
+  @override
+  String get tourRuleRegularMemorizeTitle => 'Memorize It';
+
+  @override
+  String get tourRuleRegularMemorizeDesc =>
+      'Watch closely — the number flashes on screen for just a moment before it hides.';
+
+  @override
+  String get tourRuleRegularTypeBackTitle => 'Type It Back';
+
+  @override
+  String get tourRuleRegularTypeBackDesc =>
+      'Now tap the digit you just saw on the keypad.';
+
+  @override
+  String get tourRuleRegularScoringTitle => 'Nice!';
+
+  @override
+  String get tourRuleRegularScoringDesc =>
+      'Keep answering correctly to earn points.';
+
+  @override
+  String get tourRuleRegularScoringResult =>
+      'You just earned a point! Every correct answer adds to your score.';
+
+  @override
+  String get tourRuleRegularTimerTitle => 'Beat the Clock';
+
+  @override
+  String get tourRuleRegularTimerDesc =>
+      'Watch the timer bar — if it runs out before you finish typing, you\'ll lose a life.';
+
+  @override
+  String get tourRuleRegularTimerResult =>
+      'Time\'s up! Running out of time costs you a life, just like a wrong tap.';
+
+  @override
+  String get tourRuleRegularResetTitle => 'Need a New One?';
+
+  @override
+  String get tourRuleRegularResetDesc =>
+      'Tap **Reset** to skip a tricky challenge for a fresh one — but it always costs a life.';
+
+  @override
+  String get tourRuleRegularLevelUpTitle => 'Leveling Up';
+
+  @override
+  String get tourRuleRegularLevelUpDesc =>
+      'Answer enough turns correctly and you\'ll level up.';
+
+  @override
+  String get tourRuleRegularLevelUpResult =>
+      'Level up! Numbers get a little harder from here — and completing a level without losing a life earns you a bonus life.';
+
+  @override
+  String get tourRuleRegularGameOverTitle => 'Game Over';
+
+  @override
+  String get tourRuleRegularGameOverDesc =>
+      'With only 1 life left, one more miss ends the game for real. Watch what happens.';
+
+  @override
+  String get tourRuleRegularWrapUpTitle => 'That\'s Regular Mode!';
+
+  @override
+  String get tourRuleRegularWrapUpDesc =>
+      'Now let\'s try Pick Right mode — a different way to play.';
+
+  @override
+  String get tourRulePickRightWelcomeTitle => 'Pick Right Mode';
+
+  @override
+  String get tourRulePickRightWelcomeDesc =>
+      'Instead of typing, you\'ll pick the correct answer from a few choices.';
+
+  @override
+  String get tourRulePickRightOptionsTitle => 'Choose Wisely';
+
+  @override
+  String get tourRulePickRightOptionsDesc =>
+      'One of these is correct — the others are decoys.';
+
+  @override
+  String get tourRulePickRightCorrectTitle => 'Tap the Right One';
+
+  @override
+  String get tourRulePickRightCorrectDesc =>
+      'Tap the button you think is correct.';
+
+  @override
+  String get tourRulePickRightCorrectResult => 'Correct! You earned a point.';
+
+  @override
+  String get tourRulePickRightWrongTitle => 'Oops!';
+
+  @override
+  String get tourRulePickRightWrongDesc =>
+      'This time, try tapping a different button.';
+
+  @override
+  String get tourRulePickRightWrongResult =>
+      'Wrong pick — the correct answer is highlighted, and you lose a life.';
+
+  @override
+  String get tourRulePickRightTimerTitle => 'This Timer\'s Faster';
+
+  @override
+  String get tourRulePickRightTimerDesc =>
+      'Pick Right mode\'s timer runs out quickly. Watch what happens if you\'re too slow.';
+
+  @override
+  String get tourRulePickRightTimerResult =>
+      'Time\'s up again — with no lives left, that\'s Game Over.';
+
+  @override
+  String get tourRulePickRightWrapUpTitle => 'That\'s Pick Right!';
+
+  @override
+  String get tourRulePickRightWrapUpDesc =>
+      'Now let\'s try Combat Mode — where you play against a real opponent.';
+
+  @override
+  String get tourRuleCombatWelcomeTitle => 'Welcome to Combat';
+
+  @override
+  String get tourRuleCombatWelcomeDesc =>
+      'In Combat Mode, you and an opponent take turns racing to answer first.';
+
+  @override
+  String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';
+
+  @override
+  String get tourRuleCombatTurnOrderDesc =>
+      'This badge shows whose turn it is. As host, you go first.';
+
+  @override
+  String get tourRuleCombatYourTurnTitle => 'Your Turn';
+
+  @override
+  String get tourRuleCombatYourTurnDesc =>
+      'Tap the digit shown to complete your turn.';
+
+  @override
+  String get tourRuleCombatOpponentTurnTitle => 'Opponent\'s Turn';
+
+  @override
+  String get tourRuleCombatOpponentTurnDesc =>
+      'Now watch — your opponent takes their turn.';
+
+  @override
+  String get tourRuleCombatOpponentTurnResult =>
+      'Your opponent answered correctly! The turn comes right back to you.';
+
+  @override
+  String get tourRuleCombatOpponentLifeLostTitle => 'A Life Lost';
+
+  @override
+  String get tourRuleCombatOpponentLifeLostDesc =>
+      'Watch what happens when your opponent misses a tap.';
+
+  @override
+  String get tourRuleCombatOpponentLifeLostResult =>
+      'Your opponent lost a life — you\'ll see their life count drop, just like yours would.';
+
+  @override
+  String get tourRuleCombatTimerTitle => 'Everyone Has a Timer';
+
+  @override
+  String get tourRuleCombatTimerDesc =>
+      'Your timer works the same way here — miss it and you lose a life too.';
+
+  @override
+  String get tourRuleCombatTimerResult =>
+      'Time\'s up! Losing a life in Combat works just like Solo mode.';
+
+  @override
+  String get tourRuleCombatWinTitle => 'Victory!';
+
+  @override
+  String get tourRuleCombatWinDesc =>
+      'Watch what happens when your opponent runs out of lives.';
+
+  @override
+  String get tourRuleCombatWinResult =>
+      'You win! Running your opponent out of lives ends the match in your favor.';
+
+  @override
+  String get tourRuleCombatWrapUpTitle => 'Tutorial Complete!';
+
+  @override
+  String get tourRuleCombatWrapUpDesc =>
+      'That\'s everything — Solo, Pick Right, and Combat. Good luck out there!';
+
+  @override
   String get menuGreeting => 'Test your memory and math skills today!';
 }

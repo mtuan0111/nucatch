@@ -10,14 +10,20 @@ import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
+import 'package:nucatch/blocs/objects/combat/combat_tutorial_driver.dart';
+import 'package:nucatch/blocs/objects/tutorial/tutorial_cubit.dart';
+import 'package:nucatch/blocs/objects/tutorial/tutorial_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/helpers/tour_keys.dart';
+import 'package:nucatch/helpers/tutorial_script.dart';
 import 'package:nucatch/widgets/pick_right_buttons.dart';
 import 'package:nucatch/widgets/combat_status_badge.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';
 import 'package:nucatch/widgets/countdown_bar.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:nucatch/widgets/quick_setting_button.dart';
+import 'package:nucatch/widgets/tutorial_overlay.dart';
 
 class CombatPlayScreen extends StatefulWidget {
   const CombatPlayScreen({super.key});
@@ -37,11 +43,12 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
   // Animation system
   final GlobalKey<AnimatedGameWrapperState> _animationKey = GlobalKey();
-  final GlobalKey _scoreKey = GlobalKey();
-  final GlobalKey _heartKey = GlobalKey();
-  final GlobalKey _opponentScoreKey = GlobalKey();
-  final GlobalKey _opponentHeartKey =
-      GlobalKey(); // For opponent life blink animation
+  // Score/life/opponent keys are shared statics (TourKeys) — see
+  // play_screen.dart's identical note; PlayScreen and CombatPlayScreen are
+  // never mounted simultaneously.
+
+  CombatTutorialDriver? _tutorialDriver;
+  String? _lastPlayedOpponentScriptToken;
 
   // Track which character indices have triggered fireworks
   final Set<int> _triggeredFireworkIndices = {};
@@ -58,6 +65,74 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     _currentLifeRemaining = combatBloc.state.lifeRemaining;
     wasLifeDecreased = false;
     wasLifeIncreased = false;
+
+    _tutorialDriver = CombatTutorialDriver(combatBloc: combatBloc);
+
+    // See PlayScreen.initState's identical note — the seed BlocListener
+    // only reacts to emissions after it subscribes, which can miss the
+    // combat arc's very first lesson.
+    final tutorial = context.read<TutorialCubit>().state;
+    if (tutorial.isActive &&
+        tutorial.lesson.hostScreen == TutorialHostScreen.combatPlayScreen &&
+        tutorial.lesson.combatSeed != null) {
+      final seed = tutorial.lesson.combatSeed!;
+      combatBloc.add(SeedTutorialCombat(
+        difficulty: seed.difficulty,
+        requirementString: seed.requirementString,
+        expect: seed.expect,
+        level: seed.level,
+        lifeRemaining: seed.lifeRemaining,
+        opponentLives: seed.opponentLives,
+        opponentScore: seed.opponentScore,
+        tapTimerSeconds: seed.tapTimerSeconds,
+        startTimer: seed.startTimer,
+      ));
+    }
+  }
+
+  CombatState? _prevCombatStateForTutorial;
+
+  void _handleTutorialProgress(BuildContext context, CombatState state) {
+    final previous = _prevCombatStateForTutorial;
+    _prevCombatStateForTutorial = state;
+
+    final tutorialCubit = context.read<TutorialCubit>();
+    final tutorial = tutorialCubit.state;
+    if (!tutorial.isActive ||
+        tutorial.lesson.hostScreen != TutorialHostScreen.combatPlayScreen) {
+      return;
+    }
+
+    final lesson = tutorial.lesson;
+    final token = '${tutorial.lessonIndex}-${tutorial.seedToken}';
+    if (lesson.opponentScript != null &&
+        _lastPlayedOpponentScriptToken != token) {
+      _lastPlayedOpponentScriptToken = token;
+      // No `mounted` guard: a script that ends in a real win (e.g. C7)
+      // causes CombatPlayScreen itself to unmount — navigated away to
+      // CombatGameEndScreen — before this completes. TutorialCubit is a
+      // long-lived, screen-independent provider; it doesn't need this
+      // widget to still be mounted to be told the lesson resolved.
+      _tutorialDriver?.play(lesson.opponentScript!).then((_) {
+        tutorialCubit.onActionResolved();
+      });
+      return;
+    }
+
+    if (previous == null) return;
+
+    switch (lesson.key) {
+      case 'CombatYourTurn':
+        if (state.point > previous.point) {
+          tutorialCubit.onActionResolved();
+        }
+        break;
+      case 'CombatTimer':
+        if (state.lifeRemaining < previous.lifeRemaining) {
+          tutorialCubit.onActionResolved();
+        }
+        break;
+    }
   }
 
   bool _isMenuShowing = false;
@@ -65,6 +140,13 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   void _handleMenuButton(BuildContext context) {
     // If menu is already showing, do nothing
     if (_isMenuShowing) return;
+
+    // Mid-tutorial, the menu button just ends the tutorial — there's no
+    // real match to confirm giving up on.
+    if (context.read<CombatBloc>().state.isTutorial) {
+      context.read<TutorialCubit>().finish();
+      return;
+    }
 
     // Mark menu as showing
     _isMenuShowing = true;
@@ -101,10 +183,44 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedGameWrapper(
+    final combatBloc = context.read<CombatBloc>();
+    return MultiBlocListener(
+      listeners: [
+        // Seed CombatBloc when the tutorial (re-)enters a lesson hosted here.
+        BlocListener<TutorialCubit, TutorialState>(
+          listenWhen: (previous, current) =>
+              current.isActive &&
+              current.lesson.hostScreen ==
+                  TutorialHostScreen.combatPlayScreen &&
+              current.lesson.combatSeed != null &&
+              (previous.seedToken != current.seedToken || !previous.isActive),
+          listener: (context, state) {
+            final seed = state.lesson.combatSeed!;
+            combatBloc.add(SeedTutorialCombat(
+              difficulty: seed.difficulty,
+              requirementString: seed.requirementString,
+              expect: seed.expect,
+              level: seed.level,
+              lifeRemaining: seed.lifeRemaining,
+              opponentLives: seed.opponentLives,
+              opponentScore: seed.opponentScore,
+              tapTimerSeconds: seed.tapTimerSeconds,
+              startTimer: seed.startTimer,
+            ));
+          },
+        ),
+        // Teardown (once the tutorial ends) is handled by CombatNav instead
+        // of here — CombatWrapUp is hosted on CombatGameEndScreen, a
+        // sibling screen this widget won't be mounted alongside, so a
+        // listener scoped to this screen alone would miss it.
+      ],
+      child: AnimatedGameWrapper(
       key: _animationKey,
       child: BlocListener<CombatBloc, CombatState>(
-        listener: _handleAnimationEvents,
+        listener: (context, state) {
+          _handleAnimationEvents(context, state);
+          _handleTutorialProgress(context, state);
+        },
         child: PopScope(
           canPop: false,
           onPopInvokedWithResult: (didPop, result) {
@@ -246,6 +362,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                           ),
                         ),
                       ),
+                      const TutorialOverlay(),
                     ],
                   );
                 },
@@ -253,6 +370,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             ),
           ),
         ),
+      ),
       ),
     );
   }
@@ -266,6 +384,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
         : tapTimerDuration;
 
     return CountDownBar(
+      key: TourKeys.countdownBarKey,
       timerDuration: effectiveDuration,
       tapTimerRemaining: combatState.tapTimerRemaining.toInt(),
       isPlaying: combatState.combatStatus == CombatStatus.playing,
@@ -274,6 +393,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
   Widget _buildCombatHeader(CombatState combatState) {
     return Padding(
+      key: TourKeys.combatHeaderKey,
       padding: const EdgeInsets.symmetric(
           horizontal: kPaddingL, vertical: kPaddingSM),
       child: Row(
@@ -312,7 +432,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   ],
                 ),
                 Wrap(
-                  key: _scoreKey,
+                  key: TourKeys.scoreKey,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     FaIcon(
@@ -336,6 +456,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   opacity:
                       combatState.combatStatus != CombatStatus.intro ? 1 : 0,
                   child: CombatStatusBadge(
+                    key: TourKeys.combatStatusBadgeKey,
                     text: combatState.isMyTurn
                         ? lang(context).yourTurn
                         : lang(context).opponentTurn,
@@ -360,7 +481,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                 ),
                 const SizedBox(height: kSpaceS),
                 Wrap(
-                  key: _opponentScoreKey,
+                  key: TourKeys.opponentScoreKey,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
@@ -388,7 +509,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     vertical: combatState.opponentJustLostLife ? kPaddingSM : 0,
                   ),
                   child: Wrap(
-                    key: _opponentHeartKey, // Add key for animation
+                    key: TourKeys.opponentHeartKey, // Add key for animation
                     spacing: kLifeStarSpacing,
                     children: List.generate(
                       combatState.opponentLives,
@@ -455,7 +576,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           Expanded(
             child: Center(
               child: Wrap(
-                key: _heartKey,
+                key: TourKeys.heartKey,
                 spacing: kLifeStarSpacing,
                 children: List.generate(
                   _currentLifeRemaining,
@@ -537,33 +658,31 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
     if (!isPickRightMode) {
       if (combatState.isShowExpect) {
-        return Expanded(
-          child: Center(
-            child: Wrap(
-              children: List.generate(
-                combatState.requirementString!.length,
-                (index) {
-                  String char = combatState.requirementString![index];
-                  return SizedBox(
-                    width: (AppTextStyles.forChallenge(
-                                combatState.requirementString!.length, context)
-                            .fontSize! *
-                        0.65),
-                    child: Column(
-                      children: [
-                        Text(
-                          char,
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.forChallenge(
-                            combatState.requirementString!.length,
-                            context,
-                          ),
+        return Center(
+          child: Wrap(
+            children: List.generate(
+              combatState.requirementString!.length,
+              (index) {
+                String char = combatState.requirementString![index];
+                return SizedBox(
+                  width: (AppTextStyles.forChallenge(
+                              combatState.requirementString!.length, context)
+                          .fontSize! *
+                      0.65),
+                  child: Column(
+                    children: [
+                      Text(
+                        char,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.forChallenge(
+                          combatState.requirementString!.length,
+                          context,
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         );
@@ -572,12 +691,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       // Show typing area with animations (user input) - ONLY when it's my turn
       // Skip for Pick Right mode - it uses button taps instead of typing
       if (combatState.isMyTurn && combatState.isTimeForTyping) {
-        return Expanded(
-          child: Center(
-            child: Wrap(
-              children: List.generate(
-                combatState.expect!.length,
-                (index) {
+        return Center(
+          child: Wrap(
+            children: List.generate(
+              combatState.expect!.length,
+              (index) {
                   double hide = combatState.isTypingNotEmpty &&
                           index < combatState.typing.length
                       ? 1
@@ -676,7 +794,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                 },
               ),
             ),
-          ),
         );
       }
 
@@ -685,12 +802,11 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
         // Show the opponent's challenge and progress as a mirror
         if (combatState.requirementString != null &&
             combatState.expect != null) {
-          return Expanded(
-            child: Center(
-              child: Wrap(
-                children: List.generate(
-                  combatState.expect!.length,
-                  (index) {
+          return Center(
+            child: Wrap(
+              children: List.generate(
+                combatState.expect!.length,
+                (index) {
                     double hide = combatState.opponentInput != null &&
                             index < combatState.opponentInput!.length
                         ? 1
@@ -732,7 +848,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   },
                 ),
               ),
-            ),
           );
         }
 
@@ -779,12 +894,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       //   );
       // }
     } else {
-      return Expanded(
-        child: Center(
-          child: Text(
-            combatState.questionExpression ?? lang(context).whichOneIsCorrect,
-            style: AppTextStyles.titleLarge(context),
-          ),
+      return Center(
+        child: Text(
+          combatState.questionExpression ?? lang(context).whichOneIsCorrect,
+          style: AppTextStyles.titleLarge(context),
         ),
       );
     }
@@ -841,6 +954,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               if (e.key == KeyboardOption.reset) {
                 button = AnimatedButton(
                   context,
+                  key: TourKeys.keypadKeys[e.key],
                   iconData: FontAwesomeIcons.arrowsRotate,
                   isEnable:
                       combatState.isAbleToReset && combatState.isAbleToTap,
@@ -859,6 +973,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               } else if (e.key == KeyboardOption.mainMenu) {
                 button = AnimatedButton(
                   context,
+                  key: TourKeys.keypadKeys[e.key],
                   iconData: FontAwesomeIcons.bars,
                   onPressed: () => _handleMenuButton(context),
                   backgroundBuilder: (context, borderRadius) {
@@ -871,6 +986,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               } else {
                 button = AnimatedButton(
                   context,
+                  key: TourKeys.keypadKeys[e.key],
                   text: e.value.toString(),
                   style: AppTextStyles.displaySmallBold(context),
                   isEnable: combatState.isAbleToTap,
@@ -929,6 +1045,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           Expanded(
             child: PickRightButtons(
               key: ValueKey(combatState.equations?.join(',')),
+              buttonKeys: TourKeys.pickRightButtonKeys,
               equations: combatState.equations ?? [],
               selectedOption: combatState.selectedOption,
               isEnabled: combatState.isAbleToTap &&
@@ -950,7 +1067,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                   _animationKey.currentState?.triggers
                       .onLightningOnly(position);
                   // Life gain animation
-                  final heartPosition = _getWidgetPosition(_heartKey);
+                  final heartPosition = _getWidgetPosition(TourKeys.heartKey);
                   _animationKey.currentState?.triggers
                       .onGainLife(heartPosition);
                 }
@@ -1003,14 +1120,14 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
     // Trigger my score animation based on whether it's a level-up or just a correct answer
     if (wasPointIncreased) {
-      final scorePosition = _getWidgetPosition(_scoreKey);
+      final scorePosition = _getWidgetPosition(TourKeys.scoreKey);
       // Correct answer only: lightning glow without explosion
       _animationKey.currentState?.triggers.onLightningOnly(scorePosition);
     }
 
     // Trigger opponent score animation (lightning only; opponent does not trigger level-up locally)
     if (state.opponentJustSucceeded) {
-      final opponentScorePosition = _getWidgetPosition(_opponentScoreKey);
+      final opponentScorePosition = _getWidgetPosition(TourKeys.opponentScoreKey);
       _animationKey.currentState?.triggers
           .onLightningOnly(opponentScorePosition);
     }
@@ -1020,7 +1137,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     final isPickRight =
         state.difficultyModel?.difficulty == Difficulty.pickRight;
     if (wasLifeIncreasedForAnimation && !isPickRight) {
-      final heartPosition = _getWidgetPosition(_heartKey);
+      final heartPosition = _getWidgetPosition(TourKeys.heartKey);
       _animationKey.currentState?.triggers.onGainLife(heartPosition);
     }
 
