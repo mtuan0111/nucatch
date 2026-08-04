@@ -1557,7 +1557,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       lifeRemaining: event.lifeRemaining,
       opponentLives: event.opponentLives,
       opponentScore: event.opponentScore,
-      point: 0,
+      point: event.point,
       requirementString: event.requirementString,
       expect: event.expect,
       status: TurnStatus.playing,

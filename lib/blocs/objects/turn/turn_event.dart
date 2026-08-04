@@ -144,6 +144,7 @@ class SeedTutorialTurn extends TurnEvent {
   final String requirementString;
   final String expect;
   final int level;
+  final int point;
   final int timesCorrect;
   final int lifeRemaining;
   final double? tapTimerSeconds;
@@ -165,6 +166,7 @@ class SeedTutorialTurn extends TurnEvent {
     required this.requirementString,
     required this.expect,
     this.level = 1,
+    this.point = 0,
     this.timesCorrect = 0,
     this.lifeRemaining = kSoloInitialLives,
     this.tapTimerSeconds,

@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tee /tmp/screenshot_test_run1.log)",
+      "Bash(grep -v \".dart$\")",
+      "Bash(flutter drive *)",
+      "Bash(tee /tmp/flutter_drive_portrait.log)",
+      "Bash(tee /tmp/flutter_drive_portrait2.log)",
+      "Bash(tee /tmp/flutter_drive_portrait3.log)",
+      "Bash(tee /tmp/flutter_drive_portrait4.log)",
+      "Bash(SCREENSHOT_DIR=landscape flutter drive --driver=test_driver/integration_test.dart --target=integration_test/screenshot_test_landscape.dart -d R7AX30C20KP)",
+      "Bash(tee /tmp/flutter_drive_landscape1.log)",
+      "Bash(tee /tmp/flutter_drive_ios_portrait1.log)",
+      "Bash(tee /tmp/flutter_drive_ios_portrait2.log)",
+      "Bash(tee /tmp/flutter_drive_ios_portrait3.log)",
+      "Bash(tee /tmp/flutter_drive_ios_portrait4.log)",
+      "Bash(tee /tmp/flutter_drive_ios_portrait5.log)",
+      "Bash(flutter build *)",
+      "Bash(tee /tmp/ios_build_debug.log)",
+      "Bash(tee /tmp/flutter_drive_ios_portrait6.log)",
+      "Bash(awk 'NR==565,NR==900' /Volumes/DATA/BOM_DATA/flutter_projects/skeleton_core/lib/src/widgets/template_widgets.dart)",
+      "Bash(tee /tmp/flutter_drive_ios_portrait7.log)"
+    ]
+  }
+}

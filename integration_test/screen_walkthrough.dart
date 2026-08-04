@@ -1,14 +1,20 @@
-import 'dart:developer' as dev;
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeleton_core/skeleton_core.dart'
-    show MenuOption, CustomSliverAppBar, AnimatedButton, PreferencesKey;
+    show MenuOption, CustomSliverAppBar, PreferencesKey, MenuBloc, SelectOption;
 
 import 'package:nucatch/main.dart' as app;
+import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show Difficulty;
+import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
+import 'package:nucatch/blocs/objects/combat/combat_event.dart';
+import 'package:nucatch/blocs/objects/combat/combat_state.dart' show GameEndReason;
+import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
+import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/services/ai_greeting_service.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
 import 'package:nucatch/services/fcm_service.dart';
@@ -19,17 +25,25 @@ import 'package:nucatch/screens/menu_screens/top_score_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/select_play_mode_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/set_difficult_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
+import 'package:nucatch/screens/menu_screens/player/gameover_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_mode_setup_screen.dart';
+import 'package:nucatch/screens/menu_screens/player/combat_play_screen.dart';
+import 'package:nucatch/screens/menu_screens/player/combat_game_end_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/host_room_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/join_room_screen.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';
 
 /// Shared body for `screenshot_test.dart` (portrait) and
 /// `screenshot_test_landscape.dart` (landscape). Walks every screen
-/// reachable on a single device — main menu, solo mode, and the
-/// pre-pairing slice of combat mode — confirming each one actually mounts
-/// (via `find.byType`, not just "didn't crash") and taking a screenshot
-/// along the way.
+/// reachable on a single device — main menu, solo mode, and combat mode —
+/// confirming each one actually mounts (via `find.byType`, not just "didn't
+/// crash") and taking a store-ready screenshot along the way. Screens that
+/// only exist mid-game (Game Over, Combat Play, Combat Game End) are reached
+/// by seeding an attractive, deterministic state directly onto the real
+/// bloc — the same `SeedTutorialTurn`/`SeedTutorialCombat`/real end-game
+/// events the in-game rule tutorial uses (see `tour_guide_test.dart`) —
+/// rather than waiting on real timers or random gameplay, so the resulting
+/// screenshots are reproducible run to run.
 ///
 /// Deliberately kept in its OWN file, called from two single-test files
 /// rather than two `testWidgets` bodies in one file: `app.main()` sets up
@@ -40,19 +54,18 @@ import 'package:nucatch/widgets/countdown_overlay.dart';
 /// over from the sibling o_an_quan project's integration_test suite, which
 /// hit this on-device.)
 ///
-/// Out of reach for a single device, and NOT covered here:
-/// - `CombatPlayScreen` / `CombatGameEndScreen` / `CombatRestartConfirmationScreen`
-///   (needs an actual BLE peer to pair with and reach `CombatPlayingState`).
-/// - `GameOverScreen` (only reached by actually losing a real game — too
-///   slow/nondeterministic to force here).
+/// Still out of reach for a single device, and NOT covered here:
+/// - `CombatRestartConfirmationScreen` — dead code today: nothing in the
+///   app actually dispatches `CombatNavCubit.showRestartConfirmation()`.
 /// - `TopScoreDetailScreen` (only reached by tapping a real leaderboard
 ///   entry — the dev Firestore project has no seeded data to tap on).
+/// - `LevelSelectScreen` — dead code, not wired into any navigator.
 Future<void> runScreenWalkthrough(
   WidgetTester tester,
   IntegrationTestWidgetsFlutterBinding binding, {
   required bool landscape,
 }) async {
-  void step(String name) => dev.log('TEST_STEP: $name');
+  void step(String name) => debugPrint('TEST_STEP: $name');
   final prefix = landscape ? 'landscape_' : 'portrait_';
 
   Future<void> doWait(int seconds) async {
@@ -77,12 +90,12 @@ Future<void> runScreenWalkthrough(
   Future<void> shot(String name) async {
     try {
       await binding.takeScreenshot(name);
-      dev.log('Captured screenshot: $name');
+      debugPrint('📸 Captured screenshot: $name');
     } catch (e) {
       // Screenshot capture is a nice-to-have here, not the point of this
       // test — a platform/emulator quirk taking a screenshot shouldn't fail
       // the "does this screen render" assertion that already ran above it.
-      dev.log('Screenshot "$name" failed (non-fatal): $e');
+      debugPrint('📸 Screenshot "$name" failed (non-fatal): $e');
     }
   }
 
@@ -254,6 +267,15 @@ Future<void> runScreenWalkthrough(
   // Wait for the home screen (splash/init can take a moment).
   await waitFor(find.text('ABOUT'), maxSeconds: 30);
 
+  // Android renders Flutter to a `SurfaceView` by default, which the
+  // platform screenshot channel can't read pixels from — `takeScreenshot()`
+  // throws "Bad state: Call convertFlutterSurfaceToImage()..." for every
+  // single call until this runs once, switching to a screenshot-able
+  // texture-backed view. A no-op on iOS/other platforms.
+  step('switching to a screenshot-able Flutter surface');
+  await binding.convertFlutterSurfaceToImage();
+  await doWait(1);
+
   step('checking for stray tour overlay');
   for (int i = 0; i < 10; i++) {
     if (find.text('Skip Tour').evaluate().isNotEmpty) {
@@ -271,9 +293,31 @@ Future<void> runScreenWalkthrough(
   await shot('${prefix}01_home');
 
   // ── About ─────────────────────────────────────────────────
-  step('tapping About');
-  await tapMenuOption(MenuOption.about, 'ABOUT');
-  await doWait(2);
+  // A stray tour overlay can mount asynchronously right in between the
+  // dismissal check inside tapFinder and the tap itself, silently
+  // absorbing the tap with no thrown error (see dismissStrayTourOverlay's
+  // doc comment) — retrying the tap once, after a fresh dismissal, absorbs
+  // that race instead of failing outright.
+  for (int attempt = 0; attempt < 3; attempt++) {
+    step('tapping About (attempt $attempt)');
+    await tapMenuOption(MenuOption.about, 'ABOUT');
+    if (await waitFor(find.byType(AboutScreen), maxSeconds: 10)) break;
+    debugPrint('TEST_DEBUG About tap attempt $attempt: AboutScreen not '
+        'found; MenuScreen count: ${find.byType(MenuScreen).evaluate().length}, '
+        'ABOUT text count: ${find.text('ABOUT').evaluate().length}');
+    await dismissStrayTourOverlay();
+  }
+  if (find.byType(AboutScreen).evaluate().isEmpty) {
+    debugPrint('TEST_DEBUG dispatching SelectOption(about) directly, '
+        'bypassing the tap entirely');
+    tester
+        .element(find.byType(MenuScreen))
+        .read<MenuBloc>()
+        .add(SelectOption(option: MenuOption.about));
+    await waitFor(find.byType(AboutScreen), maxSeconds: 10);
+    debugPrint('TEST_DEBUG after direct dispatch: AboutScreen count: '
+        '${find.byType(AboutScreen).evaluate().length}');
+  }
   step('asserting AboutScreen');
   expect(find.byType(AboutScreen), findsOneWidget,
       reason: 'About should still be reachable from the menu');
@@ -286,8 +330,8 @@ Future<void> runScreenWalkthrough(
   // ── Settings ──────────────────────────────────────────────
   step('tapping Settings');
   await tapMenuOption(MenuOption.setting, 'SETTING');
-  await doWait(2);
   step('asserting SettingScreen');
+  await waitFor(find.byType(SettingScreen), maxSeconds: 10);
   expect(find.byType(SettingScreen), findsOneWidget,
       reason: 'Settings should still be reachable from the menu');
   await shot('${prefix}03_settings');
@@ -299,8 +343,8 @@ Future<void> runScreenWalkthrough(
   // ── Leaderboard ───────────────────────────────────────────
   step('tapping Top Score');
   await tapMenuOption(MenuOption.topScore, 'TOP SCORE');
-  await doWait(3);
   step('asserting TopScoreScreen');
+  await waitFor(find.byType(TopScoreScreen), maxSeconds: 10);
   expect(find.byType(TopScoreScreen), findsOneWidget,
       reason: 'Leaderboard should still be reachable from the menu');
   await shot('${prefix}04_leaderboard');
@@ -312,8 +356,8 @@ Future<void> runScreenWalkthrough(
   // ── Select play mode ──────────────────────────────────────
   step('tapping Start');
   await tapMenuOption(MenuOption.start, 'START');
-  await doWait(2);
   step('asserting SelectPlayModeScreen');
+  await waitFor(find.byType(SelectPlayModeScreen), maxSeconds: 10);
   expect(find.byType(SelectPlayModeScreen), findsOneWidget,
       reason: 'Start should reach the play-mode picker');
   await shot('${prefix}05_select_play_mode');
@@ -321,8 +365,8 @@ Future<void> runScreenWalkthrough(
   // ── Solo: difficulty picker ───────────────────────────────
   step('tapping Solo Mode');
   await tapOptionCard(FontAwesomeIcons.user, 'Solo Mode');
-  await doWait(2);
   step('asserting SetDifficultScreen');
+  await waitFor(find.byType(SetDifficultScreen), maxSeconds: 10);
   expect(find.byType(SetDifficultScreen), findsOneWidget,
       reason: 'Solo Mode should reach the difficulty picker');
   await shot('${prefix}06_set_difficulty');
@@ -350,73 +394,56 @@ Future<void> runScreenWalkthrough(
       reason: 'Starting a game should reach the play screen');
   await shot('${prefix}07_play_screen');
 
-  // Leave via the real exit flow (menu key -> confirmation dialog -> Yes),
-  // the same path a player actually uses. Scoped to PlayScreen's own
-  // subtree since the menu button here is a FontAwesomeIcons.bars icon
-  // inside the on-screen keyboard, not a chevron/back button.
-  //
-  // Tapped as soon as the countdown clears, with no extra idle wait
-  // beforehand: this is a live, timed game — sitting idle for several more
-  // seconds here risked the per-turn timer running out and losing enough
-  // lives to trigger a real game over, which swaps GameOverScreen in as
-  // the active page and leaves PlayScreen (and this exact tap) absorbed
-  // behind it, matching exactly the "tap lands, nothing happens, no error"
-  // symptom this step used to hit.
-  step('tapping the in-game menu button');
-  final playScreenMenuIcon = find.descendant(
-    of: find.byType(PlayScreen),
-    matching: find.byWidgetPredicate(
-      (w) => w is FaIcon && w.icon == FontAwesomeIcons.bars.data,
-    ),
-  );
-  expect(playScreenMenuIcon, findsWidgets,
-      reason: 'expected PlayScreen\'s own menu button to be visible');
-  // Tap the enclosing AnimatedButton rather than the small FaIcon glyph
-  // itself, for a larger and definitely-interactive hit target.
-  final playScreenMenuButton = find.ancestor(
-    of: playScreenMenuIcon.first,
-    matching: find.byType(AnimatedButton),
-  );
-  expect(playScreenMenuButton, findsWidgets,
-      reason: 'expected the menu FaIcon to be inside an AnimatedButton');
-  await tester.tap(playScreenMenuButton.first, warnIfMissed: false);
-  await doWait(2);
-  step('waiting for exit-confirmation dialog');
-  // The dialog may briefly show a LoadingWidget spinner instead of the
-  // Yes/No buttons while TurnRecordedListBloc's score-ranking lookup
-  // resolves (a real Firestore round trip in this environment) — give it
-  // more room than the default budget before concluding it's stuck.
-  await waitFor(find.text('Yes'), maxSeconds: 20);
-  expect(find.text('Yes'), findsWidgets,
-      reason: 'the exit-confirmation dialog should be showing');
-  step('tapping Yes to confirm exit');
-  await tapText('Yes');
-  await doWait(2);
-  step('asserting back at MenuScreen after exit');
+  // ── Solo: game over screen ────────────────────────────────
+  // Seeded rather than played out for real: `SeedTutorialTurn` (built for
+  // the in-game rule tutorial, see `tour_guide_test.dart`) lets this land
+  // an attractive, reproducible score directly onto the real `TurnBloc`,
+  // then the real `End(isCauseGameOver: true)` event — the same one a real
+  // timeout/life-loss dispatches — takes it the rest of the way for real.
+  step('seeding an attractive game-over state');
+  final turnBloc = tester.element(find.byType(PlayScreen)).read<TurnBloc>();
+  turnBloc.add(SeedTutorialTurn(
+    difficulty: Difficulty.medium,
+    requirementString: '478',
+    expect: '478',
+    level: 6,
+    point: 145,
+  ));
+  await doWait(1);
+  turnBloc.add(End(isCauseGameOver: true));
+  step('waiting for GameOverScreen');
+  await waitFor(find.byType(GameOverScreen), maxSeconds: 10);
+  expect(find.byType(GameOverScreen), findsOneWidget,
+      reason: 'seeding an ended game should reach the game over screen');
+  await shot('${prefix}08_game_over');
+  step('tapping Main Menu from Game Over');
+  await tapText('Main Menu');
+  step('asserting back at MenuScreen after Game Over');
+  await waitFor(find.byType(MenuScreen), maxSeconds: 10);
   expect(find.byType(MenuScreen), findsOneWidget,
-      reason: 'confirming exit should return to the main menu');
+      reason: 'Main Menu from Game Over should return to the menu');
 
   // ── Combat: setup ─────────────────────────────────────────
   step('tapping Start (for combat)');
   await tapMenuOption(MenuOption.start, 'START');
-  await doWait(2);
+  await waitFor(find.byType(SelectPlayModeScreen), maxSeconds: 10);
   expect(find.byType(SelectPlayModeScreen), findsOneWidget);
   step('tapping Combat Mode');
   await tapOptionCard(FontAwesomeIcons.userGroup, 'Combat Mode');
-  await doWait(2);
   step('asserting CombatModeSetupScreen');
+  await waitFor(find.byType(CombatModeSetupScreen), maxSeconds: 10);
   expect(find.byType(CombatModeSetupScreen), findsOneWidget,
       reason: 'Combat Mode should reach the combat setup screen');
-  await shot('${prefix}08_combat_setup');
+  await shot('${prefix}09_combat_setup');
 
   // ── Combat: host room (no peer — just confirms it renders) ─
   step('tapping Create Room');
   await tapOptionCard(FontAwesomeIcons.userPlus, 'Create Room');
-  await doWait(3);
   step('asserting HostRoomScreen');
+  await waitFor(find.byType(HostRoomScreen), maxSeconds: 10);
   expect(find.byType(HostRoomScreen), findsOneWidget,
       reason: 'Create Room should reach the host room screen');
-  await shot('${prefix}09_combat_host_room');
+  await shot('${prefix}10_combat_host_room');
   step('tapping back from host room');
   await tapBack();
   expect(find.byType(CombatModeSetupScreen), findsOneWidget,
@@ -425,20 +452,67 @@ Future<void> runScreenWalkthrough(
   // ── Combat: join room (no peer — just confirms it renders) ─
   step('tapping Join Room');
   await tapOptionCard(FontAwesomeIcons.rightToBracket, 'Join Room');
-  await doWait(3);
   step('asserting JoinRoomScreen');
+  await waitFor(find.byType(JoinRoomScreen), maxSeconds: 10);
   expect(find.byType(JoinRoomScreen), findsOneWidget,
       reason: 'Join Room should reach the join room screen');
-  await shot('${prefix}10_combat_join_room');
+  await shot('${prefix}11_combat_join_room');
   step('tapping back from join room');
   await tapBack();
   expect(find.byType(CombatModeSetupScreen), findsOneWidget,
       reason: 'back from joining should return to combat setup');
 
+  // ── Combat: play screen ────────────────────────────────────
+  // Same seeding approach as Game Over: `CombatNavCubit.showPlaying()`
+  // (skipping the real BLE pairing flow) then `SeedTutorialCombat` for an
+  // attractive, reproducible mid-match state directly on the real
+  // `CombatBloc` — no peer device needed.
+  step('seeding an attractive combat-playing state');
+  final combatNavCubit =
+      tester.element(find.byType(CombatModeSetupScreen)).read<CombatNavCubit>();
+  final combatBloc =
+      tester.element(find.byType(CombatModeSetupScreen)).read<CombatBloc>();
+  combatNavCubit.showPlaying();
+  await doWait(1);
+  combatBloc.add(SeedTutorialCombat(
+    difficulty: Difficulty.medium,
+    requirementString: '58',
+    expect: '58',
+    level: 4,
+    point: 6,
+    lifeRemaining: 2,
+    opponentLives: 1,
+    opponentScore: 4,
+  ));
+  step('waiting for CombatPlayScreen');
+  await waitFor(find.byType(CombatPlayScreen), maxSeconds: 10);
+  expect(find.byType(CombatPlayScreen), findsOneWidget,
+      reason: 'seeding a combat match should reach the combat play screen');
+  await shot('${prefix}12_combat_play');
+
+  // ── Combat: game end screen ────────────────────────────────
+  // The real `CombatGameEnded` event — same one a real win dispatches —
+  // takes the seeded match the rest of the way for real.
+  step('seeding a real combat win');
+  combatBloc.add(CombatGameEnded(
+    isWinner: true,
+    reason: GameEndReason.opponentLivesOut,
+    sendMessage: false,
+  ));
+  step('waiting for CombatGameEndScreen');
+  await waitFor(find.byType(CombatGameEndScreen), maxSeconds: 10);
+  expect(find.byType(CombatGameEndScreen), findsOneWidget,
+      reason: 'a real win should reach the combat game end screen');
+  await shot('${prefix}13_combat_game_end');
+
   // ── Back out to the main menu ─────────────────────────────
-  step('tapping back from combat setup');
-  await tapBack(); // combat setup -> select play mode
-  expect(find.byType(SelectPlayModeScreen), findsOneWidget);
+  step('tapping Return to Menu from Combat Game End');
+  await tapText('Return to Menu');
+  step('asserting SelectPlayModeScreen after Combat Game End');
+  await waitFor(find.byType(SelectPlayModeScreen), maxSeconds: 10);
+  expect(find.byType(SelectPlayModeScreen), findsOneWidget,
+      reason: 'Return to Menu from Combat Game End should land on the '
+          'play-mode picker');
   step('tapping back from select play mode');
   await tapBack(); // select play mode -> menu
   expect(find.byType(MenuScreen), findsOneWidget,

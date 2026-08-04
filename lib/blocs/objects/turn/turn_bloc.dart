@@ -1047,6 +1047,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
         requirementString: event.requirementString,
         expect: event.expect,
         level: event.level,
+        point: event.point,
         timesCorrect: event.timesCorrect,
         lifeRemaining: event.lifeRemaining,
         status: event.showBeforePlaying

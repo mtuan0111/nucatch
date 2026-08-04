@@ -217,6 +217,7 @@ class SeedTutorialCombat extends CombatEvent {
   final String requirementString;
   final String expect;
   final int level;
+  final int point;
   final int lifeRemaining;
   final int opponentLives;
   final int opponentScore;
@@ -228,6 +229,7 @@ class SeedTutorialCombat extends CombatEvent {
     required this.requirementString,
     required this.expect,
     this.level = 1,
+    this.point = 0,
     this.lifeRemaining = kCombatInitialLives,
     this.opponentLives = kCombatInitialLives,
     this.opponentScore = 0,
