@@ -1,42 +1,42 @@
 {
     "android": {
         "dev": {
-            "versionName": "2.8.6.0",
-            "versionCode": 88,
+            "versionName": "2.8.7.0",
+            "versionCode": 90,
             "releaseNotes": {
-                "en-US": "Added automated deployment testing to streamline release workflows.",
-                "vi-VN": "Thử nghiệm triển khai tự động để tối ưu hóa quy trình phát hành."
+                "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
+                "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
             }
         },
         "prod": {
-            "versionName": "2.8.6",
-            "versionCode": 88,
+            "versionName": "2.8.7",
+            "versionCode": 90,
             "releaseNotes": {
-                "en-US": "Added automated deployment testing to streamline release workflows.",
-                "vi-VN": "Thử nghiệm triển khai tự động để tối ưu hóa quy trình phát hành."
+                "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
+                "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
             }
         }
     },
     "ios": {
         "dev": {
-            "versionName": "2.8.6",
-            "buildNumber": "87.0",
+            "versionName": "2.8.7",
+            "buildNumber": "89.0",
             "releaseNotes": {
-                "en-US": "Added automated deployment testing to streamline release workflows.",
-                "vi-VN": "Thử nghiệm triển khai tự động để tối ưu hóa quy trình phát hành."
+                "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
+                "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
             }
         },
         "prod": {
-            "versionName": "2.8.6",
-            "buildNumber": "87",
+            "versionName": "2.8.7",
+            "buildNumber": "89",
             "releaseNotes": {
-                "en-US": "Added automated deployment testing to streamline release workflows.",
-                "vi-VN": "Thử nghiệm triển khai tự động để tối ưu hóa quy trình phát hành."
+                "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
+                "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
             }
         }
     },
     "metadata": {
-        "lastUpdated": "2026-05-10T21:58:56+07:00",
+        "lastUpdated": "2026-08-04T00:00:00+07:00",
         "updatedBy": "CI/CD Pipeline"
     }
 }
