@@ -1,16 +1,16 @@
 {
     "android": {
         "dev": {
-            "versionName": "2.8.7.0",
-            "versionCode": 90,
+            "versionName": "2.8.8.0",
+            "versionCode": 91,
             "releaseNotes": {
                 "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
                 "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
             }
         },
         "prod": {
-            "versionName": "2.8.7",
-            "versionCode": 90,
+            "versionName": "2.8.8",
+            "versionCode": 91,
             "releaseNotes": {
                 "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
                 "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
@@ -19,16 +19,16 @@
     },
     "ios": {
         "dev": {
-            "versionName": "2.8.7",
-            "buildNumber": "89.0",
+            "versionName": "2.8.8",
+            "buildNumber": "90.0",
             "releaseNotes": {
                 "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
                 "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
             }
         },
         "prod": {
-            "versionName": "2.8.7",
-            "buildNumber": "89",
+            "versionName": "2.8.8",
+            "buildNumber": "90",
             "releaseNotes": {
                 "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
                 "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
@@ -36,7 +36,7 @@
         }
     },
     "metadata": {
-        "lastUpdated": "2026-08-04T00:00:00+07:00",
+        "lastUpdated": "2026-08-23T00:00:00+07:00",
         "updatedBy": "CI/CD Pipeline"
     }
 }

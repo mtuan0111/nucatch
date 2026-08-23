@@ -183,24 +183,18 @@ class _PickRightButtonsState extends State<PickRightButtons>
         backgroundColor: backgroundColor,
         shapeAt: RoundedWithShapeAt.all,
         buttonRadius: kBorderRadiusL,
-        child: Container(
-          // padding: const EdgeInsets.symmetric(
-          //   vertical: kSpaceL,
-          //   horizontal: kSpaceM,
-          // ),
-          child: Center(
-            // Font size stays fixed at the theme's titleLarge — never
-            // scaled down (that made text unreadably tiny in the narrow
-            // gamepad-split edge clusters). If an equation doesn't fit on
-            // one line at that size, it wraps to a second line instead.
-            child: Text(
-              equation,
-              style: AppTextStyles.titleLarge(context).copyWith(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).scaffoldBackgroundColor,
-              ),
-              textAlign: TextAlign.center,
+        child: Center(
+          // Font size stays fixed at the theme's titleLarge — never scaled
+          // down (that made text unreadably tiny in the narrow
+          // gamepad-split edge clusters). If an equation doesn't fit on one
+          // line at that size, it wraps to a second line instead.
+          child: Text(
+            equation,
+            style: AppTextStyles.titleLarge(context).copyWith(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).scaffoldBackgroundColor,
             ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),

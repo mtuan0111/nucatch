@@ -1946,3 +1946,41 @@ _ Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt
 #### Flutter build for iOS
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.7 --build-number=89 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+---
+## Released on: 23/08/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 91           | 2.8.8   |
+| iOS      | 90           | 2.8.8   |
+
+### Release note:
+- Improve screen walkthrough.
+
+### Git note release:
+
+#### Command for copilot
+
+`[Builded] Version 2.8.8 - 91 / 2.8.8 - 90 _ Improve screen walkthrough.`
+
+#### Brief for Store's new update:
+
+_ Improved screen walkthroughs for a better onboarding and tutorial experience.
+_ Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn.
+
+#### Flutter build for Android for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build appbundle --build-name=2.8.8.0 --build-number=91 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for iOS for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build ios --build-name=2.8.8 --build-number=90.0 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for Android
+
+`npm run flutterfire_setup && flutter build appbundle --build-name=2.8.8 --build-number=91 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Flutter build for iOS
+
+`npm run flutterfire_setup && flutter build ios --build-name=2.8.8 --build-number=90 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
