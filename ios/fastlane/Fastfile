@@ -1,0 +1,20 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Deploy a new build to Firebase App Distribution"
+  lane :distribute do
+    ipa_path = "../build/ios/ipa/nucatch.ipa"
+    
+    if File.exist?(ipa_path)
+      firebase_app_distribution(
+        app: "1:749675143292:ios:32a273d67af1d1f8e5e9f9",
+        groups: "testers",
+        release_notes: "New build from Fastlane",
+        firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+        ipa_path: ipa_path
+      )
+    else
+      UI.error("IPA file not found at #{ipa_path}. Please run `flutter build ipa --export-method ad-hoc --release` from the project root first.")
+    end
+  end
+end

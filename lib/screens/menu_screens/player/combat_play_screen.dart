@@ -215,162 +215,211 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
         // listener scoped to this screen alone would miss it.
       ],
       child: AnimatedGameWrapper(
-      key: _animationKey,
-      child: BlocListener<CombatBloc, CombatState>(
-        listener: (context, state) {
-          _handleAnimationEvents(context, state);
-          _handleTutorialProgress(context, state);
-        },
-        child: PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (didPop, result) {
-            // Since canPop is false, didPop will always be false
-            // Always trigger menu button when back is pressed
-            // _handleMenuButton(context);
+        key: _animationKey,
+        child: BlocListener<CombatBloc, CombatState>(
+          listener: (context, state) {
+            _handleAnimationEvents(context, state);
+            _handleTutorialProgress(context, state);
           },
-          child: BlocListener<CombatBloc, CombatState>(
-            listenWhen: (previous, current) {
-              // Navigate to end game screen when game ends
-              // Check both hasGameEnded transition and combatStatus to handle restarts
-              final gameJustEnded =
-                  !previous.hasGameEnded && current.hasGameEnded;
-              final statusChangedToEnded =
-                  previous.combatStatus != CombatStatus.ended &&
-                      current.combatStatus == CombatStatus.ended;
-              return gameJustEnded || statusChangedToEnded;
+          child: PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) {
+              // Since canPop is false, didPop will always be false
+              // Always trigger menu button when back is pressed
+              // _handleMenuButton(context);
             },
-            listener: (context, state) {
-              if (state.hasGameEnded) {
-                context.read<CombatNavCubit>().showEndGame();
-              }
-            },
-            child: Scaffold(
-              body: BlocBuilder<CombatBloc, CombatState>(
-                buildWhen: (previous, current) {
-                  // Always rebuild to ensure UI updates
-                  return true;
-                },
-                builder: (context, combatState) {
-                  return Stack(
-                    children: [
-                      Container(
-                        decoration: LayoutConfig(context).gradientDecoration,
-                        child: SafeArea(
-                          child: DeviceWrapper(
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    children: [
-                                      // Tap timer countdown bar
-                                      _buildCountDownBar(combatState),
+            child: BlocListener<CombatBloc, CombatState>(
+              listenWhen: (previous, current) {
+                // Navigate to end game screen when game ends
+                // Check both hasGameEnded transition and combatStatus to handle restarts
+                final gameJustEnded =
+                    !previous.hasGameEnded && current.hasGameEnded;
+                final statusChangedToEnded =
+                    previous.combatStatus != CombatStatus.ended &&
+                        current.combatStatus == CombatStatus.ended;
+                return gameJustEnded || statusChangedToEnded;
+              },
+              listener: (context, state) {
+                if (state.hasGameEnded) {
+                  context.read<CombatNavCubit>().showEndGame();
+                }
+              },
+              child: Scaffold(
+                body: BlocBuilder<CombatBloc, CombatState>(
+                  buildWhen: (previous, current) {
+                    // Always rebuild to ensure UI updates
+                    return true;
+                  },
+                  builder: (context, combatState) {
+                    return Stack(
+                      children: [
+                        Container(
+                          decoration: LayoutConfig(context).gradientDecoration,
+                          child: SafeArea(
+                            child: DeviceWrapper(
+                              // In landscape (any device, not just tablet) the
+                              // gamepad/two-pane layout below needs the full
+                              // screen width — no cap.
+                              maxWidth: context.isLandscapeOrientation
+                                  ? double.infinity
+                                  : null,
+                              child: Builder(builder: (context) {
+                                // Check if Pick Right mode
+                                final isPickRightMode =
+                                    combatState.difficultyModel?.difficulty ==
+                                        Difficulty.pickRight;
+                                final isLandscape =
+                                    context.isLandscapeOrientation;
 
-                                      // Combat header with scores and turn indicator
-                                      _buildCombatHeader(combatState),
-
-                                      // Life display with animation
-                                      _buildLifeDisplay(combatState),
-
-                                      // Game area - shows challenge or typing
-                                      Expanded(
-                                        child: _buildGameArea(combatState),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                // Keyboard
-                                Builder(builder: (context) {
-                                  // Check if Pick Right mode
-                                  final isPickRightMode =
-                                      combatState.difficultyModel?.difficulty ==
-                                          Difficulty.pickRight;
-
-                                  if (isPickRightMode
-                                      //  &&
-                                      //     !combatState.opponentJustSucceeded
-                                      ) {
-                                    return Expanded(
-                                        flex: 3,
-                                        child: _buildPickRightControls(
-                                            combatState));
-                                  }
-                                  return Expanded(
-                                      flex: 2,
-                                      child: _buildKeyboard(combatState));
-                                }),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Full-screen countdown overlay (blur + centered)
-                      _buildCountDown(combatState),
-                      // Quick settings overlay — always accessible
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: SafeArea(
-                          child: Padding(
-                            padding: const EdgeInsets.all(kSpaceS),
-                            child: BlocBuilder<SettingBloc, SettingState>(
-                              builder: (context, settingState) {
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
+                                final headerColumn = Column(
                                   children: [
-                                    // Volume toggle
-                                    QuickSettingButton(
-                                      icon: settingState.isMuted
-                                          ? FontAwesomeIcons.volumeXmark
-                                          : settingState.vol > 7
-                                              ? FontAwesomeIcons.volumeHigh
-                                              : settingState.vol > 4
-                                                  ? FontAwesomeIcons.volumeLow
-                                                  : settingState.vol > 0
-                                                      ? FontAwesomeIcons
-                                                          .volumeOff
-                                                      : FontAwesomeIcons
-                                                          .volumeXmark,
-                                      onTap: () {
-                                        context.read<SettingBloc>().add(
-                                              ToggleMute(),
-                                            );
-                                      },
-                                      isActive: !settingState.isMuted,
-                                    ),
-                                    const SizedBox(height: kSpaceXS),
-                                    // Vibration toggle
-                                    QuickSettingButton(
-                                      icon: settingState.isVibrate
-                                          ? Icons.vibration_rounded
-                                          : FontAwesomeIcons.mobile,
-                                      onTap: () {
-                                        context.read<SettingBloc>().add(
-                                              ChangedIsVibrate(
-                                                isVibrate:
-                                                    !settingState.isVibrate,
-                                              ),
-                                            );
-                                      },
-                                      isActive: settingState.isVibrate,
+                                    // Tap timer countdown bar
+                                    _buildCountDownBar(combatState),
+
+                                    // Combat header with scores and turn indicator
+                                    _buildCombatHeader(combatState),
+
+                                    // Life display with animation
+                                    _buildLifeDisplay(combatState),
+
+                                    // Game area - shows challenge or typing
+                                    Expanded(
+                                      child: _buildGameArea(combatState),
                                     ),
                                   ],
                                 );
-                              },
+
+                                if (isLandscape) {
+                                  // Gamepad-style split: two control clusters
+                                  // pinned to the screen's outer edges, with
+                                  // the combat header/life/game content
+                                  // centered between them — either thumb
+                                  // reaches every control without stretching
+                                  // to the middle. Regular mode splits the
+                                  // numeric keypad (_buildKeyboard's `side`);
+                                  // Pick Right mode instead duplicates the
+                                  // *entire* set of answer buttons on both
+                                  // edges (_buildPickRightGamepadCluster) —
+                                  // there's no natural left/right split of 3
+                                  // equations the way there is for a 0-9
+                                  // keypad.
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: isPickRightMode
+                                            ? _buildPickRightGamepadCluster(
+                                                combatState,
+                                                GamepadKeypadSide.left)
+                                            : _buildKeyboard(combatState,
+                                                side: GamepadKeypadSide.left),
+                                      ),
+                                      Expanded(flex: 5, child: headerColumn),
+                                      Expanded(
+                                        flex: 2,
+                                        child: isPickRightMode
+                                            ? _buildPickRightGamepadCluster(
+                                                combatState,
+                                                GamepadKeypadSide.right)
+                                            : _buildKeyboard(combatState,
+                                                side: GamepadKeypadSide.right),
+                                      ),
+                                    ],
+                                  );
+                                }
+
+                                final headerChild = Expanded(
+                                  flex: isLandscape ? 4 : 2,
+                                  child: headerColumn,
+                                );
+
+                                // Keyboard
+                                final controlsChild = Expanded(
+                                  flex: isLandscape
+                                      ? 5
+                                      : (isPickRightMode ? 3 : 2),
+                                  child: isPickRightMode
+                                      ? _buildPickRightControls(combatState)
+                                      : _buildKeyboard(combatState),
+                                );
+
+                                final layoutChildren = [
+                                  headerChild,
+                                  controlsChild,
+                                ];
+                                return isLandscape
+                                    ? Row(children: layoutChildren)
+                                    : Column(children: layoutChildren);
+                              }),
                             ),
                           ),
                         ),
-                      ),
-                      const TutorialOverlay(),
-                    ],
-                  );
-                },
+                        // Full-screen countdown overlay (blur + centered)
+                        _buildCountDown(combatState),
+                        // Quick settings overlay — always accessible
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: SafeArea(
+                            child: Padding(
+                              padding: const EdgeInsets.all(kSpaceS),
+                              child: BlocBuilder<SettingBloc, SettingState>(
+                                builder: (context, settingState) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // Volume toggle
+                                      QuickSettingButton(
+                                        icon: settingState.isMuted
+                                            ? FontAwesomeIcons.volumeXmark
+                                            : settingState.vol > 7
+                                                ? FontAwesomeIcons.volumeHigh
+                                                : settingState.vol > 4
+                                                    ? FontAwesomeIcons.volumeLow
+                                                    : settingState.vol > 0
+                                                        ? FontAwesomeIcons
+                                                            .volumeOff
+                                                        : FontAwesomeIcons
+                                                            .volumeXmark,
+                                        onTap: () {
+                                          context.read<SettingBloc>().add(
+                                                ToggleMute(),
+                                              );
+                                        },
+                                        isActive: !settingState.isMuted,
+                                      ),
+                                      const SizedBox(height: kSpaceXS),
+                                      // Vibration toggle
+                                      QuickSettingButton(
+                                        icon: settingState.isVibrate
+                                            ? Icons.vibration_rounded
+                                            : FontAwesomeIcons.mobile,
+                                        onTap: () {
+                                          context.read<SettingBloc>().add(
+                                                ChangedIsVibrate(
+                                                  isVibrate:
+                                                      !settingState.isVibrate,
+                                                ),
+                                              );
+                                        },
+                                        isActive: settingState.isVibrate,
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        const TutorialOverlay(),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),
         ),
-      ),
       ),
     );
   }
@@ -696,104 +745,104 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             children: List.generate(
               combatState.expect!.length,
               (index) {
-                  double hide = combatState.isTypingNotEmpty &&
-                          index < combatState.typing.length
-                      ? 1
-                      : 0;
+                double hide = combatState.isTypingNotEmpty &&
+                        index < combatState.typing.length
+                    ? 1
+                    : 0;
 
-                  String inputted = combatState.expect![index];
+                String inputted = combatState.expect![index];
 
-                  dev.log("inputted: $inputted");
-                  dev.log("hide: $hide");
-                  dev.log("index: $index");
-                  dev.log(
-                      "combatState.expect!.length: ${combatState.expect!.length}");
-                  dev.log("combatState.typing: ${combatState.typing}");
+                dev.log("inputted: $inputted");
+                dev.log("hide: $hide");
+                dev.log("index: $index");
+                dev.log(
+                    "combatState.expect!.length: ${combatState.expect!.length}");
+                dev.log("combatState.typing: ${combatState.typing}");
 
-                  return SizedBox(
-                    width: (AppTextStyles.forChallenge(
-                                combatState.requirementString!.length, context)
-                            .fontSize! *
-                        0.65),
-                    child: Builder(
-                      builder: (context) {
-                        // Trigger firework animation at character position when finished
-                        // Only trigger once per character index
-                        if (combatState.isFinishTarget &&
-                            hide == 1 &&
-                            !_triggeredFireworkIndices.contains(index)) {
-                          _triggeredFireworkIndices.add(index);
-                          dev.log(
-                              "Trigger firework animation at character position when finished - index: $index");
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            final RenderBox? renderBox =
-                                context.findRenderObject() as RenderBox?;
-                            if (renderBox != null) {
-                              final position =
-                                  renderBox.localToGlobal(Offset.zero);
-                              final size = renderBox.size;
-                              final center = position +
-                                  Offset(size.width / 2, size.height / 2);
+                return SizedBox(
+                  width: (AppTextStyles.forChallenge(
+                              combatState.requirementString!.length, context)
+                          .fontSize! *
+                      0.65),
+                  child: Builder(
+                    builder: (context) {
+                      // Trigger firework animation at character position when finished
+                      // Only trigger once per character index
+                      if (combatState.isFinishTarget &&
+                          hide == 1 &&
+                          !_triggeredFireworkIndices.contains(index)) {
+                        _triggeredFireworkIndices.add(index);
+                        dev.log(
+                            "Trigger firework animation at character position when finished - index: $index");
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          final RenderBox? renderBox =
+                              context.findRenderObject() as RenderBox?;
+                          if (renderBox != null) {
+                            final position =
+                                renderBox.localToGlobal(Offset.zero);
+                            final size = renderBox.size;
+                            final center = position +
+                                Offset(size.width / 2, size.height / 2);
 
-                              // Trigger firework with cascading delay
-                              Future.delayed(Duration(milliseconds: index * 50),
-                                  () {
-                                if (mounted &&
-                                    _animationKey.currentState != null) {
-                                  dev.log("firework at index $index");
-                                  // Per-character cascade: lightning only
-                                  // Full firework fires via _handleAnimationEvents on level-up
-                                  _animationKey.currentState!.triggers
-                                      .onLightningOnly(center);
-                                }
-                              });
-                            }
-                          });
-                        } else if (!combatState.isFinishTarget) {
-                          // Reset set when starting a new turn
-                          _triggeredFireworkIndices.clear();
-                        }
+                            // Trigger firework with cascading delay
+                            Future.delayed(Duration(milliseconds: index * 50),
+                                () {
+                              if (mounted &&
+                                  _animationKey.currentState != null) {
+                                dev.log("firework at index $index");
+                                // Per-character cascade: lightning only
+                                // Full firework fires via _handleAnimationEvents on level-up
+                                _animationKey.currentState!.triggers
+                                    .onLightningOnly(center);
+                              }
+                            });
+                          }
+                        });
+                      } else if (!combatState.isFinishTarget) {
+                        // Reset set when starting a new turn
+                        _triggeredFireworkIndices.clear();
+                      }
 
-                        return Column(
-                          children: [
-                            AnimatedOpacity(
-                              duration: const Duration(milliseconds: 200),
-                              opacity: hide,
-                              child: AnimatedOpacity(
+                      return Column(
+                        children: [
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 200),
+                            opacity: hide,
+                            child: AnimatedOpacity(
+                              curve: Curves.easeOutQuart,
+                              opacity: combatState.isFinishTarget ? 0 : 1,
+                              duration: const Duration(milliseconds: 400),
+                              child: AnimatedScale(
                                 curve: Curves.easeOutQuart,
-                                opacity: combatState.isFinishTarget ? 0 : 1,
+                                scale: combatState.isFinishTarget ? 2 : 1,
                                 duration: const Duration(milliseconds: 400),
-                                child: AnimatedScale(
-                                  curve: Curves.easeOutQuart,
-                                  scale: combatState.isFinishTarget ? 2 : 1,
-                                  duration: const Duration(milliseconds: 400),
-                                  child: Text(
-                                    inputted,
-                                    textAlign: TextAlign.center,
-                                    style: AppTextStyles.forChallenge(
-                                      combatState.requirementString!.length,
-                                      context,
-                                    ),
+                                child: Text(
+                                  inputted,
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.forChallenge(
+                                    combatState.requirementString!.length,
+                                    context,
                                   ),
                                 ),
                               ),
                             ),
-                            AnimatedOpacity(
-                              opacity: (hide == 0) ? 1 : 0,
-                              duration: const Duration(milliseconds: 200),
-                              child: FaIcon(
-                                FontAwesomeIcons.minus,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
+                          ),
+                          AnimatedOpacity(
+                            opacity: (hide == 0) ? 1 : 0,
+                            duration: const Duration(milliseconds: 200),
+                            child: FaIcon(
+                              FontAwesomeIcons.minus,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
-                          ],
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                );
+              },
             ),
+          ),
         );
       }
 
@@ -807,47 +856,46 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               children: List.generate(
                 combatState.expect!.length,
                 (index) {
-                    double hide = combatState.opponentInput != null &&
-                            index < combatState.opponentInput!.length
-                        ? 1
-                        : 0;
+                  double hide = combatState.opponentInput != null &&
+                          index < combatState.opponentInput!.length
+                      ? 1
+                      : 0;
 
-                    String inputted = combatState.expect![index];
+                  String inputted = combatState.expect![index];
 
-                    return SizedBox(
-                      width: (AppTextStyles.forChallenge(
-                                  combatState.requirementString!.length,
-                                  context)
-                              .fontSize! *
-                          0.65),
-                      child: Column(
-                        children: [
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 200),
-                            opacity: hide * 0.6, // Dimmed
-                            child: Text(
-                              inputted,
-                              textAlign: TextAlign.center,
-                              style: AppTextStyles.forChallenge(
-                                combatState.requirementString!.length,
-                                context,
-                              ),
+                  return SizedBox(
+                    width: (AppTextStyles.forChallenge(
+                                combatState.requirementString!.length, context)
+                            .fontSize! *
+                        0.65),
+                    child: Column(
+                      children: [
+                        AnimatedOpacity(
+                          duration: const Duration(milliseconds: 200),
+                          opacity: hide * 0.6, // Dimmed
+                          child: Text(
+                            inputted,
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.forChallenge(
+                              combatState.requirementString!.length,
+                              context,
                             ),
                           ),
-                          AnimatedOpacity(
-                            opacity: (hide == 0) ? 0.6 : 0,
-                            duration: const Duration(milliseconds: 200),
-                            child: FaIcon(
-                              FontAwesomeIcons.minus,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
+                        ),
+                        AnimatedOpacity(
+                          opacity: (hide == 0) ? 0.6 : 0,
+                          duration: const Duration(milliseconds: 200),
+                          child: FaIcon(
+                            FontAwesomeIcons.minus,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
+            ),
           );
         }
 
@@ -931,87 +979,162 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
     }
   }
 
-  Widget _buildKeyboard(CombatState combatState) {
+  static const int _keypadColumns = 3;
+  static const int _keypadRows = 4;
+  static const double _keypadButtonSpacing = 20.0;
+
+  /// Builds the button for one keypad entry. [applyTourKey] is false for a
+  /// gamepad-cluster's duplicate copy of a middle-column button — a
+  /// `GlobalKey` (`TourKeys.keypadKeys[...]`) can only back one mounted
+  /// widget at a time, so only one on-screen copy of each button may carry
+  /// it.
+  Widget _buildKeypadButton(
+    BuildContext context,
+    CombatState combatState,
+    MapEntry<KeyboardOption, int> e, {
+    required bool applyTourKey,
+  }) {
+    final key = applyTourKey ? TourKeys.keypadKeys[e.key] : null;
+    const duration = Duration(milliseconds: 200);
+
+    if (e.key == KeyboardOption.reset) {
+      return AnimatedButton(
+        context,
+        key: key,
+        iconData: FontAwesomeIcons.arrowsRotate,
+        isEnable: combatState.isAbleToReset && combatState.isAbleToTap,
+        onPressed: () {
+          context.read<CombatBloc>().add(
+                CombatNumberReset(duration: duration),
+              );
+        },
+        backgroundBuilder: (context, borderRadius) {
+          return LightningWidget(
+              baseColor: Theme.of(context).primaryColor,
+              seed: 'Reset'.hashCode,
+              borderRadius: borderRadius);
+        },
+      );
+    }
+    if (e.key == KeyboardOption.mainMenu) {
+      return AnimatedButton(
+        context,
+        key: key,
+        iconData: FontAwesomeIcons.bars,
+        onPressed: () => _handleMenuButton(context),
+        backgroundBuilder: (context, borderRadius) {
+          return LightningWidget(
+              baseColor: Theme.of(context).primaryColor,
+              seed: 'Menu'.hashCode,
+              borderRadius: borderRadius);
+        },
+      );
+    }
+    return AnimatedButton(
+      context,
+      key: key,
+      text: e.value.toString(),
+      style: AppTextStyles.displaySmallBold(context),
+      isEnable: combatState.isAbleToTap,
+      onPressed: () {
+        context.read<CombatBloc>().add(
+              CombatTap(keyValue: e.key),
+            );
+      },
+      backgroundBuilder: (context, borderRadius) {
+        return LightningWidget(
+            baseColor: Theme.of(context).primaryColor,
+            seed: e.value.toString().hashCode,
+            borderRadius: borderRadius);
+      },
+    );
+  }
+
+  /// Full 3x4 keypad grid (default), or — when [side] is given — just that
+  /// half of a gamepad-style split layout used on tablet landscape (see
+  /// `_buildCombatBody`'s `isTabletLandscape` branch), where two clusters
+  /// sit at the screen's outer edges with the game area centered between
+  /// them. The middle logical column (digits 2/5/8/0) is duplicated across
+  /// both halves so either thumb can reach any digit.
+  Widget _buildKeyboard(CombatState combatState, {GamepadKeypadSide? side}) {
+    final keys = keyboardArray.entries.toList();
+
+    if (side != null) {
+      final columns = side == GamepadKeypadSide.left ? [0, 1] : [1, 2];
+      final ownsMiddleColumnKey = side == GamepadKeypadSide.right;
+      return LayoutBuilder(builder: (context, constraints) {
+        final rawWidth = constraints.maxWidth / columns.length;
+        final rawHeight = constraints.maxHeight / _keypadRows;
+        final cellSize = min(rawWidth, rawHeight)
+            .clamp(0.0, kMaxKeypadButtonSize + _keypadButtonSpacing);
+        return Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              for (int r = 0; r < _keypadRows; r++)
+                Row(
+                  // Row fills the cluster's full given width (default
+                  // MainAxisSize.max) so spaceEvenly has room to
+                  // distribute gaps — mirrors the full-grid path below.
+                  // Cell size is cellSize *minus* spacing (not padding
+                  // added on top of it), same as the full grid: adding
+                  // padding around an already-clamped cell would push the
+                  // row's natural width past what the cluster's tight
+                  // parent width allows.
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    for (final c in columns)
+                      if (r * _keypadColumns + c < keys.length)
+                        SizedBox(
+                          width: cellSize - _keypadButtonSpacing,
+                          height: cellSize - _keypadButtonSpacing,
+                          child: _buildKeypadButton(
+                            context,
+                            combatState,
+                            keys[r * _keypadColumns + c],
+                            applyTourKey: c != 1 || ownsMiddleColumnKey,
+                          ),
+                        ),
+                  ],
+                ),
+            ],
+          ),
+        );
+      });
+    }
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        final keys = keyboardArray.entries.toList();
-        const columns = 3;
-        const rows = 4;
-        final buttonWidth = constraints.maxWidth / columns;
-        final buttonHeight = constraints.maxHeight / rows;
-        const buttonSpacing = 20.0;
+        final rawWidth = constraints.maxWidth / _keypadColumns;
+        final rawHeight = constraints.maxHeight / _keypadRows;
+        // On tablet, clamp so keypad cells stay roughly square instead of
+        // stretching into elongated rectangles — height (an uncapped
+        // device-height fraction) can far exceed width (capped by
+        // DeviceWrapper) there. Phone sizing is left untouched.
+        final bool clampCells = context.isTablet;
+        final double cellSize = min(rawWidth, rawHeight)
+            .clamp(0.0, kMaxKeypadButtonSize + _keypadButtonSpacing);
+        final buttonWidth = clampCells ? cellSize : rawWidth;
+        final buttonHeight = clampCells ? cellSize : rawHeight;
 
         List<Widget> columnChildren = [];
-        for (int r = 0; r < rows; r++) {
+        for (int r = 0; r < _keypadRows; r++) {
           List<Widget> rowChildren = [];
-          for (int c = 0; c < columns; c++) {
-            int idx = r * columns + c;
+          for (int c = 0; c < _keypadColumns; c++) {
+            int idx = r * _keypadColumns + c;
             Widget cell;
             if (idx < keys.length) {
-              final e = keys[idx];
-              Duration duration = const Duration(milliseconds: 200);
-              Widget button;
-              if (e.key == KeyboardOption.reset) {
-                button = AnimatedButton(
-                  context,
-                  key: TourKeys.keypadKeys[e.key],
-                  iconData: FontAwesomeIcons.arrowsRotate,
-                  isEnable:
-                      combatState.isAbleToReset && combatState.isAbleToTap,
-                  onPressed: () {
-                    context.read<CombatBloc>().add(
-                          CombatNumberReset(duration: duration),
-                        );
-                  },
-                  backgroundBuilder: (context, borderRadius) {
-                    return LightningWidget(
-                        baseColor: Theme.of(context).primaryColor,
-                        seed: 'Reset'.hashCode,
-                        borderRadius: borderRadius);
-                  },
-                );
-              } else if (e.key == KeyboardOption.mainMenu) {
-                button = AnimatedButton(
-                  context,
-                  key: TourKeys.keypadKeys[e.key],
-                  iconData: FontAwesomeIcons.bars,
-                  onPressed: () => _handleMenuButton(context),
-                  backgroundBuilder: (context, borderRadius) {
-                    return LightningWidget(
-                        baseColor: Theme.of(context).primaryColor,
-                        seed: 'Menu'.hashCode,
-                        borderRadius: borderRadius);
-                  },
-                );
-              } else {
-                button = AnimatedButton(
-                  context,
-                  key: TourKeys.keypadKeys[e.key],
-                  text: e.value.toString(),
-                  style: AppTextStyles.displaySmallBold(context),
-                  isEnable: combatState.isAbleToTap,
-                  onPressed: () {
-                    context.read<CombatBloc>().add(
-                          CombatTap(keyValue: e.key),
-                        );
-                  },
-                  backgroundBuilder: (context, borderRadius) {
-                    return LightningWidget(
-                        baseColor: Theme.of(context).primaryColor,
-                        seed: e.value.toString().hashCode,
-                        borderRadius: borderRadius);
-                  },
-                );
-              }
               cell = SizedBox(
-                width: buttonWidth - buttonSpacing,
-                height: buttonHeight - buttonSpacing,
-                child: button,
+                width: buttonWidth - _keypadButtonSpacing,
+                height: buttonHeight - _keypadButtonSpacing,
+                child: _buildKeypadButton(context, combatState, keys[idx],
+                    applyTourKey: true),
               );
             } else {
               cell = SizedBox(
-                width: buttonWidth - buttonSpacing,
-                height: buttonHeight - buttonSpacing,
+                width: buttonWidth - _keypadButtonSpacing,
+                height: buttonHeight - _keypadButtonSpacing,
               );
             }
 
@@ -1026,12 +1149,34 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
           );
         }
 
-        return Column(
+        final grid = Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: clampCells ? MainAxisSize.min : MainAxisSize.max,
           children: columnChildren,
         );
+        // Clamped cells no longer fill the available region — center them.
+        // Unclamped (mobile) stays exactly as before: unwrapped, filling
+        // the full parent via spaceEvenly.
+        return clampCells ? Center(child: grid) : grid;
       },
     );
+  }
+
+  void _onPickRightEquationTap(
+      CombatState combatState, int buttonIndex, Offset? position) {
+    context.read<CombatBloc>().add(
+          CombatPickRightButtonTap(buttonIndex: buttonIndex),
+        );
+
+    // Trigger animations simultaneously if correct
+    if (buttonIndex == combatState.correctIndex && position != null) {
+      // Lightning only at the correct button position
+      // (full firework fires via _handleAnimationEvents on level-up)
+      _animationKey.currentState?.triggers.onLightningOnly(position);
+      // Life gain animation
+      final heartPosition = _getWidgetPosition(TourKeys.heartKey);
+      _animationKey.currentState?.triggers.onGainLife(heartPosition);
+    }
   }
 
   /// Build Pick Right controls for Combat mode
@@ -1054,24 +1199,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               isCorrectAnimating: combatState.pickRightJustCorrect,
               showCorrectAnswer: combatState.pickRightShowCorrect,
               correctIndex: combatState.correctIndex,
-              onButtonTap: (buttonIndex, position) {
-                context.read<CombatBloc>().add(
-                      CombatPickRightButtonTap(buttonIndex: buttonIndex),
-                    );
-
-                // Trigger animations simultaneously if correct
-                if (buttonIndex == combatState.correctIndex &&
-                    position != null) {
-                  // Lightning only at the correct button position
-                  // (full firework fires via _handleAnimationEvents on level-up)
-                  _animationKey.currentState?.triggers
-                      .onLightningOnly(position);
-                  // Life gain animation
-                  final heartPosition = _getWidgetPosition(TourKeys.heartKey);
-                  _animationKey.currentState?.triggers
-                      .onGainLife(heartPosition);
-                }
-              },
+              onButtonTap: (buttonIndex, position) =>
+                  _onPickRightEquationTap(combatState, buttonIndex, position),
             ),
           ),
           // Menu button row
@@ -1094,6 +1223,60 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  /// Gamepad-split counterpart to [_buildPickRightControls] — mirrors
+  /// [_buildKeyboard]'s `side` parameter. Combat's Pick Right mode has no
+  /// Reset concept (only `CombatPickRightButtonTap`), so unlike the numeric
+  /// keypad split there's just one control button, Main Menu, placed on the
+  /// right; the *entire* set of answer buttons is duplicated on both edges
+  /// (there's no natural left/right split of 3 equations the way there is
+  /// for a 0-9 keypad) — only the right copy owns the tutorial-spotlight
+  /// `TourKeys.pickRightButtonKeys` (a `GlobalKey` can only back one
+  /// mounted widget at a time).
+  Widget _buildPickRightGamepadCluster(
+      CombatState combatState, GamepadKeypadSide side) {
+    final isRight = side == GamepadKeypadSide.right;
+
+    final equationButtons = Expanded(
+      child: PickRightButtons(
+        key: ValueKey('${side.name}-${combatState.equations?.join(',')}'),
+        buttonKeys: isRight ? TourKeys.pickRightButtonKeys : null,
+        equations: combatState.equations ?? [],
+        selectedOption: combatState.selectedOption,
+        isEnabled: combatState.isAbleToTap &&
+            combatState.isMyTurn &&
+            combatState.tapTimerRemaining > 0,
+        isCorrectAnimating: combatState.pickRightJustCorrect,
+        showCorrectAnswer: combatState.pickRightShowCorrect,
+        correctIndex: combatState.correctIndex,
+        onButtonTap: (buttonIndex, position) =>
+            _onPickRightEquationTap(combatState, buttonIndex, position),
+      ),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: kSpaceM),
+      child: Column(
+        children: [
+          equationButtons,
+          if (isRight) ...[
+            const SizedBox(height: kSpaceM),
+            AnimatedButton(
+              context,
+              iconData: FontAwesomeIcons.bars,
+              onPressed: () => _handleMenuButton(context),
+              backgroundBuilder: (context, borderRadius) {
+                return LightningWidget(
+                    baseColor: Theme.of(context).primaryColor,
+                    seed: 'Menu'.hashCode,
+                    borderRadius: borderRadius);
+              },
+            ),
+          ],
         ],
       ),
     );
@@ -1127,7 +1310,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
     // Trigger opponent score animation (lightning only; opponent does not trigger level-up locally)
     if (state.opponentJustSucceeded) {
-      final opponentScorePosition = _getWidgetPosition(TourKeys.opponentScoreKey);
+      final opponentScorePosition =
+          _getWidgetPosition(TourKeys.opponentScoreKey);
       _animationKey.currentState?.triggers
           .onLightningOnly(opponentScorePosition);
     }

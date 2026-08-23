@@ -18,6 +18,9 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return core.SettingScreen(
       title: title,
+      // Any landscape (not just tablet) flows setting rows into a
+      // 2-column grid instead of one long vertical list.
+      enableLandscapeSplit: true,
       onNumberOfTopBoardChanged: (numberOfTopBoard) {
         final turnRecordedListBloc = context.read<TurnRecordedListBloc>();
         if (numberOfTopBoard != turnRecordedListBloc.state.numberOfTopBoard) {

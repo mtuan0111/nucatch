@@ -131,8 +131,12 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                   sliver: SliverToBoxAdapter(
                     child: SafeArea(
                       child: DeviceWrapper(
-                        child: Column(
+                        // Any landscape (not just tablet) gives the
+                        // ResponsiveGrid below room for a 2-3 column layout.
+                        maxWidth: context.isLandscapeOrientation ? 1200 : null,
+                        child: ResponsiveGrid(
                           spacing: buttonSpace,
+                          runSpacing: buttonSpace,
                           children: Difficulty.values.map((difficulty) {
                             FaIconData difficultyIcon =
                                 Helper.getIconFromDifficulty(

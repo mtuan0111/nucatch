@@ -43,9 +43,12 @@ class PickRightButtons extends StatefulWidget {
 
 class _PickRightButtonsState extends State<PickRightButtons>
     with SingleTickerProviderStateMixin {
-  List<GlobalKey> get _buttonKeys =>
-      widget.buttonKeys ?? _ownButtonKeys;
-  final List<GlobalKey> _ownButtonKeys = [GlobalKey(), GlobalKey(), GlobalKey()];
+  List<GlobalKey> get _buttonKeys => widget.buttonKeys ?? _ownButtonKeys;
+  final List<GlobalKey> _ownButtonKeys = [
+    GlobalKey(),
+    GlobalKey(),
+    GlobalKey()
+  ];
   late AnimationController _entranceController;
   late Animation<double> _entranceOpacity;
   late Animation<double> _entranceScale;
@@ -181,11 +184,15 @@ class _PickRightButtonsState extends State<PickRightButtons>
         shapeAt: RoundedWithShapeAt.all,
         buttonRadius: kBorderRadiusL,
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: kSpaceL,
-            horizontal: kSpaceM,
-          ),
+          // padding: const EdgeInsets.symmetric(
+          //   vertical: kSpaceL,
+          //   horizontal: kSpaceM,
+          // ),
           child: Center(
+            // Font size stays fixed at the theme's titleLarge — never
+            // scaled down (that made text unreadably tiny in the narrow
+            // gamepad-split edge clusters). If an equation doesn't fit on
+            // one line at that size, it wraps to a second line instead.
             child: Text(
               equation,
               style: AppTextStyles.titleLarge(context).copyWith(

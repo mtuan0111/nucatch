@@ -41,8 +41,12 @@ class _SelectPlayModeScreenState extends State<SelectPlayModeScreen> {
                   sliver: SliverToBoxAdapter(
                     child: SafeArea(
                       child: DeviceWrapper(
-                        child: Column(
+                        // Any landscape (not just tablet) gives the
+                        // ResponsiveGrid below room for a 2-column layout.
+                        maxWidth: context.isLandscapeOrientation ? 1200 : null,
+                        child: ResponsiveGrid(
                           spacing: 20,
+                          runSpacing: 20,
                           children: [
                             // Solo Mode Option
                             OptionCard(

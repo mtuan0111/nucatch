@@ -51,6 +51,10 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                   sliver: SliverToBoxAdapter(
                     child: SafeArea(
                       child: DeviceWrapper(
+                        // Any landscape (not just tablet) gives the inner
+                        // Create/Join ResponsiveGrid room for a 2-column
+                        // layout.
+                        maxWidth: context.isLandscapeOrientation ? 1200 : null,
                         child: Column(
                           spacing: 20,
                           children: [
@@ -159,8 +163,10 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                             // Sub-options for Combat Mode
                             Padding(
                               padding: const EdgeInsets.only(left: kPaddingXL),
-                              child: Column(
+                              child: ResponsiveGrid(
                                 spacing: kSpaceXL,
+                                runSpacing: kSpaceXL,
+                                minItemWidth: 280,
                                 children: [
                                   // Create Room Option
                                   OptionCard(

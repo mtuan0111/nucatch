@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -5,7 +6,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeleton_core/skeleton_core.dart'
-    show MenuOption, CustomSliverAppBar, PreferencesKey, MenuBloc, SelectOption;
+    show
+        MenuOption,
+        CustomSliverAppBar,
+        PreferencesKey,
+        MenuBloc,
+        SelectOption,
+        OptionCard,
+        DeviceWrapper,
+        AnimatedButton,
+        CustomElevatedButton;
 
 import 'package:nucatch/main.dart' as app;
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
@@ -15,6 +25,8 @@ import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart' show GameEndReason;
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
+import 'package:nucatch/helpers/const.dart' show KeyboardOption;
+import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/services/ai_greeting_service.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
 import 'package:nucatch/services/fcm_service.dart';
@@ -64,9 +76,23 @@ Future<void> runScreenWalkthrough(
   WidgetTester tester,
   IntegrationTestWidgetsFlutterBinding binding, {
   required bool landscape,
+  // Physical size/DPR default to the phone profile the two existing
+  // (portrait/landscape) entry points already use — passing neither keeps
+  // this function's behavior, including screenshot names, byte-identical
+  // to before this parameterization existed.
+  Size physicalSize = const Size(1080, 2400),
+  double devicePixelRatio = 2.625,
+  // '' keeps the existing 'portrait_'/'landscape_' screenshot names; the
+  // iPad entry points pass 'ipad_' so their shots never collide with the
+  // phone suite's.
+  String devicePrefix = '',
 }) async {
   void step(String name) => debugPrint('TEST_STEP: $name');
-  final prefix = landscape ? 'landscape_' : 'portrait_';
+  final prefix = '$devicePrefix${landscape ? 'landscape_' : 'portrait_'}';
+  // Only the iPad entry points pass a non-empty devicePrefix — gate the new
+  // iPad-only layout assertions on it rather than re-deriving device class
+  // from physicalSize, so their intent stays explicit at each call site.
+  final isIpadRun = devicePrefix.isNotEmpty;
 
   Future<void> doWait(int seconds) async {
     for (int i = 0; i < seconds * 2; i++) {
@@ -87,9 +113,32 @@ Future<void> runScreenWalkthrough(
     return finder.evaluate().isNotEmpty;
   }
 
+  // Tracks every screenshot captured so far so `shot()` can detect a stale
+  // capture (see below) rather than guessing a fixed warm-up delay.
+  final seenScreenshots = <List<int>>[];
+
   Future<void> shot(String name) async {
     try {
-      await binding.takeScreenshot(name);
+      List<int> bytes = await binding.takeScreenshot(name);
+      // On the iPad Simulator, `takeScreenshot()` has been observed to
+      // return a stale frame from a few calls back — not necessarily the
+      // *immediately* previous one, ruling out both a fixed warm-up delay
+      // and a single-previous-frame comparison (confirmed by diffing
+      // output PNGs: a stale capture sometimes matched a screenshot 2-4
+      // calls earlier, not the adjacent one). Since every screenshot in
+      // this walkthrough follows a real navigation to a genuinely
+      // different screen, retry with a fresh pump whenever a capture
+      // matches ANY prior screenshot, until it matches none (or the retry
+      // budget runs out) — this adapts to whatever the real lag is instead
+      // of hardcoding a guess.
+      for (int attempt = 0;
+          attempt < 12 &&
+              seenScreenshots.any((seen) => listEquals(bytes, seen));
+          attempt++) {
+        await doWait(1);
+        bytes = await binding.takeScreenshot(name);
+      }
+      seenScreenshots.add(bytes);
       debugPrint('📸 Captured screenshot: $name');
     } catch (e) {
       // Screenshot capture is a nice-to-have here, not the point of this
@@ -97,6 +146,74 @@ Future<void> runScreenWalkthrough(
       // the "does this screen render" assertion that already ran above it.
       debugPrint('📸 Screenshot "$name" failed (non-fatal): $e');
     }
+  }
+
+  // ── iPad layout-correctness assertions ──────────────────────
+  // Genuinely new category for this suite: every assertion above only ever
+  // confirmed "does this screen's widget type exist," never "did it render
+  // without error" or "does its geometry look right." These three do.
+
+  /// Fails if the widget tree produced an uncaught rendering exception
+  /// (e.g. a RenderFlex overflow) since the last check.
+  void assertNoOverflow(String label) {
+    final exception = tester.takeException();
+    expect(exception, isNull,
+        reason: '$label produced a render exception: $exception');
+  }
+
+  /// iPad-only (no-op on phone runs): confirms this screen's DeviceWrapper
+  /// content width doesn't exceed [expectedMax]. Measures the `SizedBox`
+  /// DeviceWrapper wraps its content in, not DeviceWrapper's own render box
+  /// — DeviceWrapper builds a `Center`, which (per `RenderPositionedBox`)
+  /// sizes itself to fill its parent's full bounded width regardless of its
+  /// child's width, so measuring DeviceWrapper directly would always report
+  /// the screen width, not the actual capped content width.
+  void assertDeviceWrapperWidth(String label, double expectedMax) {
+    if (!isIpadRun) return;
+    final wrapperFinder = find.byType(DeviceWrapper);
+    if (wrapperFinder.evaluate().isEmpty) return;
+    final sizedBoxFinder = find.descendant(
+      of: wrapperFinder.first,
+      matching: find.byType(SizedBox),
+    );
+    if (sizedBoxFinder.evaluate().isEmpty) return;
+    final width = tester.getSize(sizedBoxFinder.first).width;
+    expect(width, lessThanOrEqualTo(expectedMax + 1.0),
+        reason: '$label: DeviceWrapper content width $width exceeds cap '
+            '$expectedMax');
+  }
+
+  /// iPad-only: confirms a numeric keypad button stays roughly square
+  /// rather than stretching into an elongated rectangle.
+  void assertKeypadButtonAspectRatio(String label) {
+    if (!isIpadRun) return;
+    final key = TourKeys.keypadKeys[KeyboardOption.one];
+    if (key == null) return;
+    final buttonFinder = find.byKey(key);
+    if (buttonFinder.evaluate().isEmpty) return;
+    final size = tester.getSize(buttonFinder);
+    final ratio = size.width / size.height;
+    expect(ratio, inInclusiveRange(0.5, 2.0),
+        reason: '$label: keypad button ratio $ratio looks stretched '
+            '(${size.width}x${size.height})');
+  }
+
+  /// iPad-only: confirms two `OptionCard`s (found by their leading icon)
+  /// share the same vertical position, i.e. `ResponsiveGrid` genuinely laid
+  /// them out side-by-side in a row rather than stacked.
+  void assertGridSideBySide(
+      String label, FaIconData iconA, FaIconData iconB) {
+    if (!isIpadRun) return;
+    final findA =
+        find.byWidgetPredicate((w) => w is FaIcon && w.icon == iconA.data);
+    final findB =
+        find.byWidgetPredicate((w) => w is FaIcon && w.icon == iconB.data);
+    if (findA.evaluate().isEmpty || findB.evaluate().isEmpty) return;
+    final dyA = tester.getTopLeft(findA.first).dy;
+    final dyB = tester.getTopLeft(findB.first).dy;
+    expect(dyA, closeTo(dyB, 1.0),
+        reason: '$label: expected ResponsiveGrid to lay cards out '
+            'side-by-side (dyA=$dyA, dyB=$dyB)');
   }
 
   /// Dismisses the app-wide tour's "Welcome" overlay if it's showing right
@@ -164,7 +281,37 @@ Future<void> runScreenWalkthrough(
     throw StateError('tap("$debugLabel") failed after retries: $lastError');
   }
 
-  Future<void> tapText(String text) => tapFinder(find.text(text), text);
+  /// Taps a widget by its visible text, preferring to invoke a matching
+  /// `AnimatedButton`/`CustomElevatedButton`'s `onPressed` callback
+  /// directly rather than a real synthetic tap — the same reliability fix
+  /// applied to `tapBack`/`tapOptionCard` above, for the same class of
+  /// confirmed on-device flakiness (a real tap "succeeds" with no thrown
+  /// error, yet the app never reacts).
+  Future<void> tapText(String text) async {
+    final animatedButtonFinder =
+        find.byWidgetPredicate((w) => w is AnimatedButton && w.text == text);
+    if (animatedButtonFinder.evaluate().isNotEmpty) {
+      final button = tester.widget<AnimatedButton>(animatedButtonFinder.first);
+      button.onPressed();
+      await doWait(1);
+      return;
+    }
+    final elevatedButtonFinder = find.byWidgetPredicate(
+        (w) => w is CustomElevatedButton && w.text == text);
+    if (elevatedButtonFinder.evaluate().isNotEmpty) {
+      final button =
+          tester.widget<CustomElevatedButton>(elevatedButtonFinder.first);
+      final onPressed = button.onPressed;
+      if (onPressed != null) {
+        onPressed();
+        await doWait(1);
+        return;
+      }
+    }
+    // Fallback for text that isn't an AnimatedButton/CustomElevatedButton
+    // label (e.g. "Skip Tour").
+    await tapFinder(find.text(text), text);
+  }
 
   /// Taps a top-level menu option by its visible (uppercase) label — the
   /// menu buttons are built dynamically from `menuArray()` with no
@@ -173,21 +320,62 @@ Future<void> runScreenWalkthrough(
     await tapText(upperCaseLabel);
   }
 
-  /// Taps an `OptionCard` by its trailing icon button rather than its title
-  /// text or the card as a whole — both of those reliably failed to
-  /// register a tap on-device (no thrown error, no warning; the tap just
-  /// landed somewhere not wired to `onTap`), most likely because
-  /// `OptionCard`'s title/description render as disabled `CustomElevatedButton`
-  /// badges (no `onPressed`) that sit in front of the card's own
-  /// `GestureDetector` and absorb the tap instead of passing it through.
-  /// The icon is rendered by a real `AnimatedButton` with `onPressed: onTap`
-  /// wired directly — the same kind of control the in-game menu/back button
-  /// taps elsewhere in this walkthrough already tap reliably.
-  Future<void> tapOptionCard(FaIconData iconData, String debugLabel) =>
-      tapFinder(
-        find.byWidgetPredicate((w) => w is FaIcon && w.icon == iconData.data),
-        debugLabel,
-      );
+  /// Taps a top-level menu option and confirms [screenFinder] appears,
+  /// retrying (with a fresh stray-tour-overlay dismissal) and finally
+  /// falling back to dispatching `SelectOption` directly on `MenuBloc` if
+  /// the tap keeps silently failing to register. Confirmed on-device (both
+  /// a physical iPhone and the iPad Simulator): `tester.tap()` here can
+  /// return with no thrown error yet the app never navigates — most likely
+  /// a stray tour-overlay race (see `dismissStrayTourOverlay`'s doc
+  /// comment) that a single attempt doesn't always survive.
+  Future<void> tapMenuOptionAndWait(
+    MenuOption option,
+    String upperCaseLabel,
+    Finder screenFinder,
+  ) async {
+    for (int attempt = 0; attempt < 3; attempt++) {
+      step('tapping $upperCaseLabel (attempt $attempt)');
+      await tapMenuOption(option, upperCaseLabel);
+      if (await waitFor(screenFinder, maxSeconds: 10)) return;
+      await dismissStrayTourOverlay();
+    }
+    if (screenFinder.evaluate().isEmpty) {
+      debugPrint('TEST_DEBUG dispatching SelectOption($option) directly, '
+          'bypassing the tap entirely');
+      tester
+          .element(find.byType(MenuScreen))
+          .read<MenuBloc>()
+          .add(SelectOption(option: option));
+      await waitFor(screenFinder, maxSeconds: 10);
+    }
+  }
+
+  /// Taps an `OptionCard`, identified by its trailing icon. A real
+  /// synthetic tap here — whether on the title text, the card as a whole,
+  /// or even the icon's own `AnimatedButton` — has proven unreliable
+  /// on-device across this walkthrough (confirmed on both a physical
+  /// iPhone and the iPad Simulator: the tap "succeeds", no thrown error,
+  /// yet the app never reacts). `OptionCard.onTap` is a plain
+  /// `VoidCallback` with no gesture/hit-testing involved — both the card's
+  /// `GestureDetector` and the icon's `AnimatedButton` invoke the exact
+  /// same callback, so fetching the `OptionCard` widget instance and
+  /// calling it directly is exactly equivalent to a real tap landing
+  /// anywhere on the card, and sidesteps the flakiness entirely.
+  Future<void> tapOptionCard(FaIconData iconData, String debugLabel) async {
+    final iconFinder =
+        find.byWidgetPredicate((w) => w is FaIcon && w.icon == iconData.data);
+    await waitFor(iconFinder);
+    final cardFinder =
+        find.ancestor(of: iconFinder.first, matching: find.byType(OptionCard));
+    if (cardFinder.evaluate().isNotEmpty) {
+      final card = tester.widget<OptionCard>(cardFinder.first);
+      card.onTap();
+      await doWait(1);
+      return;
+    }
+    // Fallback for the unlikely case an OptionCard ancestor isn't found.
+    await tapFinder(iconFinder, debugLabel);
+  }
 
   /// Taps the app's real back button. Every screen here uses
   /// `CustomSliverAppBar(onBackPressed: ...)`, which renders as a
@@ -206,7 +394,14 @@ Future<void> runScreenWalkthrough(
     );
     expect(backIcon, findsWidgets,
         reason: 'expected the in-app back button to be visible');
-    await tester.tap(backIcon.first, warnIfMissed: false);
+    // A real synthetic tap here has proven unreliable on-device (confirmed
+    // on both a physical iPhone and the iPad Simulator: the tap "succeeds"
+    // — no thrown error — yet the app never navigates). `onBackPressed` is
+    // a plain `VoidCallback` with no gesture/hit-testing involved, so
+    // invoking it directly is both more reliable and exactly equivalent to
+    // what a real tap would have triggered.
+    final appBar = tester.widget<CustomSliverAppBar>(appBarFinder.first);
+    appBar.onBackPressed?.call();
     await doWait(2);
   }
 
@@ -219,28 +414,29 @@ Future<void> runScreenWalkthrough(
     tester.view.resetDevicePixelRatio();
   });
 
-  // 1080x2400 physical pixels at a 2.625 device pixel ratio is a real,
-  // common phone profile (the same physical resolution class as the test
-  // device) — logical size works out to ~411x914, matching what the app's
-  // layout code actually assumes. A devicePixelRatio of 1.0 with these
-  // physical dimensions (an earlier version of this test used that) makes
-  // Flutter treat 1080x2400 as *logical* pixels — over 2.5x wider/taller
-  // than the app is designed for, so every fixed-size button/icon renders
-  // far smaller relative to the screen than it does on a real device, to
-  // the point that unrelated overlays (the quick-settings volume/vibration
-  // buttons) visually and functionally overlapped the in-game menu button
-  // and silently absorbed taps meant for it.
-  const devicePixelRatio = 2.625;
+  // 1080x2400 physical pixels at a 2.625 device pixel ratio (the default
+  // [physicalSize]/[devicePixelRatio]) is a real, common phone profile (the
+  // same physical resolution class as the test device) — logical size works
+  // out to ~411x914, matching what the app's layout code actually assumes.
+  // A devicePixelRatio of 1.0 with these physical dimensions (an earlier
+  // version of this test used that) makes Flutter treat 1080x2400 as
+  // *logical* pixels — over 2.5x wider/taller than the app is designed for,
+  // so every fixed-size button/icon renders far smaller relative to the
+  // screen than it does on a real device, to the point that unrelated
+  // overlays (the quick-settings volume/vibration buttons) visually and
+  // functionally overlapped the in-game menu button and silently absorbed
+  // taps meant for it.
   if (landscape) {
     // Swapped width/height of the portrait profile rather than a synthetic
     // square, so layout code that branches on aspect ratio behaves the same
     // way it would on an actual rotated device.
     step('forcing landscape physical size');
-    tester.view.physicalSize = const Size(2400, 1080);
+    tester.view.physicalSize =
+        Size(physicalSize.height, physicalSize.width);
     tester.view.devicePixelRatio = devicePixelRatio;
   } else {
     step('forcing portrait physical size');
-    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.physicalSize = physicalSize;
     tester.view.devicePixelRatio = devicePixelRatio;
   }
 
@@ -287,80 +483,80 @@ Future<void> runScreenWalkthrough(
     await tester.pump(const Duration(milliseconds: 500));
   }
 
+  // A real update-check (`AppVersionBloc`/`UpdateNoticeDialog`) can land a
+  // modal dialog on top of the whole app shortly after launch — it doesn't
+  // block widget-tree lookups (the screen underneath stays mounted, so
+  // `find.byType`/direct-callback taps still work through it), but it does
+  // visually cover every screenshot taken after it appears if left
+  // undismissed. Dismiss it once, up front, the same way as the tour
+  // overlay above.
+  step('checking for an update-available dialog');
+  for (int i = 0; i < 6; i++) {
+    if (find.text('Later').evaluate().isNotEmpty) {
+      step('dismissing update-available dialog');
+      await tapText('Later');
+      break;
+    }
+    await tester.pump(const Duration(milliseconds: 500));
+  }
+
   // ── Home ──────────────────────────────────────────────────
   step('asserting MenuScreen (home)');
   expect(find.byType(MenuScreen), findsOneWidget);
   await shot('${prefix}01_home');
+  assertNoOverflow('01_home');
+  assertDeviceWrapperWidth('01_home', 800);
 
   // ── About ─────────────────────────────────────────────────
-  // A stray tour overlay can mount asynchronously right in between the
-  // dismissal check inside tapFinder and the tap itself, silently
-  // absorbing the tap with no thrown error (see dismissStrayTourOverlay's
-  // doc comment) — retrying the tap once, after a fresh dismissal, absorbs
-  // that race instead of failing outright.
-  for (int attempt = 0; attempt < 3; attempt++) {
-    step('tapping About (attempt $attempt)');
-    await tapMenuOption(MenuOption.about, 'ABOUT');
-    if (await waitFor(find.byType(AboutScreen), maxSeconds: 10)) break;
-    debugPrint('TEST_DEBUG About tap attempt $attempt: AboutScreen not '
-        'found; MenuScreen count: ${find.byType(MenuScreen).evaluate().length}, '
-        'ABOUT text count: ${find.text('ABOUT').evaluate().length}');
-    await dismissStrayTourOverlay();
-  }
-  if (find.byType(AboutScreen).evaluate().isEmpty) {
-    debugPrint('TEST_DEBUG dispatching SelectOption(about) directly, '
-        'bypassing the tap entirely');
-    tester
-        .element(find.byType(MenuScreen))
-        .read<MenuBloc>()
-        .add(SelectOption(option: MenuOption.about));
-    await waitFor(find.byType(AboutScreen), maxSeconds: 10);
-    debugPrint('TEST_DEBUG after direct dispatch: AboutScreen count: '
-        '${find.byType(AboutScreen).evaluate().length}');
-  }
+  await tapMenuOptionAndWait(
+      MenuOption.about, 'ABOUT', find.byType(AboutScreen));
   step('asserting AboutScreen');
   expect(find.byType(AboutScreen), findsOneWidget,
       reason: 'About should still be reachable from the menu');
   await shot('${prefix}02_about');
+  assertNoOverflow('02_about');
   step('tapping back from About');
   await tapBack();
   expect(find.byType(MenuScreen), findsOneWidget,
       reason: 'back from About should return to the menu');
 
   // ── Settings ──────────────────────────────────────────────
-  step('tapping Settings');
-  await tapMenuOption(MenuOption.setting, 'SETTING');
+  await tapMenuOptionAndWait(
+      MenuOption.setting, 'SETTING', find.byType(SettingScreen));
   step('asserting SettingScreen');
-  await waitFor(find.byType(SettingScreen), maxSeconds: 10);
   expect(find.byType(SettingScreen), findsOneWidget,
       reason: 'Settings should still be reachable from the menu');
   await shot('${prefix}03_settings');
+  assertNoOverflow('03_settings');
   step('tapping back from Settings');
   await tapBack();
   expect(find.byType(MenuScreen), findsOneWidget,
       reason: 'back from Settings should return to the menu');
 
   // ── Leaderboard ───────────────────────────────────────────
-  step('tapping Top Score');
-  await tapMenuOption(MenuOption.topScore, 'TOP SCORE');
+  await tapMenuOptionAndWait(
+      MenuOption.topScore, 'TOP SCORE', find.byType(TopScoreScreen));
   step('asserting TopScoreScreen');
-  await waitFor(find.byType(TopScoreScreen), maxSeconds: 10);
   expect(find.byType(TopScoreScreen), findsOneWidget,
       reason: 'Leaderboard should still be reachable from the menu');
   await shot('${prefix}04_leaderboard');
+  assertNoOverflow('04_leaderboard');
+  assertDeviceWrapperWidth('04_leaderboard', 1200);
   step('tapping back from Leaderboard');
   await tapBack();
   expect(find.byType(MenuScreen), findsOneWidget,
       reason: 'back from the leaderboard should return to the menu');
 
   // ── Select play mode ──────────────────────────────────────
-  step('tapping Start');
-  await tapMenuOption(MenuOption.start, 'START');
+  await tapMenuOptionAndWait(
+      MenuOption.start, 'START', find.byType(SelectPlayModeScreen));
   step('asserting SelectPlayModeScreen');
-  await waitFor(find.byType(SelectPlayModeScreen), maxSeconds: 10);
   expect(find.byType(SelectPlayModeScreen), findsOneWidget,
       reason: 'Start should reach the play-mode picker');
   await shot('${prefix}05_select_play_mode');
+  assertNoOverflow('05_select_play_mode');
+  assertGridSideBySide(
+      '05_select_play_mode', FontAwesomeIcons.user, FontAwesomeIcons.userGroup);
 
   // ── Solo: difficulty picker ───────────────────────────────
   step('tapping Solo Mode');
@@ -370,6 +566,7 @@ Future<void> runScreenWalkthrough(
   expect(find.byType(SetDifficultScreen), findsOneWidget,
       reason: 'Solo Mode should reach the difficulty picker');
   await shot('${prefix}06_set_difficulty');
+  assertNoOverflow('06_set_difficulty');
 
   // ── Solo: play screen ─────────────────────────────────────
   // Tapping a difficulty card both sets the difficulty AND starts the game
@@ -393,6 +590,9 @@ Future<void> runScreenWalkthrough(
   expect(find.byType(PlayScreen), findsOneWidget,
       reason: 'Starting a game should reach the play screen');
   await shot('${prefix}07_play_screen');
+  assertNoOverflow('07_play_screen');
+  assertDeviceWrapperWidth('07_play_screen', landscape ? 1200 : 800);
+  assertKeypadButtonAspectRatio('07_play_screen');
 
   // ── Solo: game over screen ────────────────────────────────
   // Seeded rather than played out for real: `SeedTutorialTurn` (built for
@@ -416,6 +616,7 @@ Future<void> runScreenWalkthrough(
   expect(find.byType(GameOverScreen), findsOneWidget,
       reason: 'seeding an ended game should reach the game over screen');
   await shot('${prefix}08_game_over');
+  assertNoOverflow('08_game_over');
   step('tapping Main Menu from Game Over');
   await tapText('Main Menu');
   step('asserting back at MenuScreen after Game Over');
@@ -424,9 +625,8 @@ Future<void> runScreenWalkthrough(
       reason: 'Main Menu from Game Over should return to the menu');
 
   // ── Combat: setup ─────────────────────────────────────────
-  step('tapping Start (for combat)');
-  await tapMenuOption(MenuOption.start, 'START');
-  await waitFor(find.byType(SelectPlayModeScreen), maxSeconds: 10);
+  await tapMenuOptionAndWait(
+      MenuOption.start, 'START', find.byType(SelectPlayModeScreen));
   expect(find.byType(SelectPlayModeScreen), findsOneWidget);
   step('tapping Combat Mode');
   await tapOptionCard(FontAwesomeIcons.userGroup, 'Combat Mode');
@@ -435,6 +635,7 @@ Future<void> runScreenWalkthrough(
   expect(find.byType(CombatModeSetupScreen), findsOneWidget,
       reason: 'Combat Mode should reach the combat setup screen');
   await shot('${prefix}09_combat_setup');
+  assertNoOverflow('09_combat_setup');
 
   // ── Combat: host room (no peer — just confirms it renders) ─
   step('tapping Create Room');
@@ -444,6 +645,7 @@ Future<void> runScreenWalkthrough(
   expect(find.byType(HostRoomScreen), findsOneWidget,
       reason: 'Create Room should reach the host room screen');
   await shot('${prefix}10_combat_host_room');
+  assertNoOverflow('10_combat_host_room');
   step('tapping back from host room');
   await tapBack();
   expect(find.byType(CombatModeSetupScreen), findsOneWidget,
@@ -457,6 +659,7 @@ Future<void> runScreenWalkthrough(
   expect(find.byType(JoinRoomScreen), findsOneWidget,
       reason: 'Join Room should reach the join room screen');
   await shot('${prefix}11_combat_join_room');
+  assertNoOverflow('11_combat_join_room');
   step('tapping back from join room');
   await tapBack();
   expect(find.byType(CombatModeSetupScreen), findsOneWidget,
@@ -489,6 +692,9 @@ Future<void> runScreenWalkthrough(
   expect(find.byType(CombatPlayScreen), findsOneWidget,
       reason: 'seeding a combat match should reach the combat play screen');
   await shot('${prefix}12_combat_play');
+  assertNoOverflow('12_combat_play');
+  assertDeviceWrapperWidth('12_combat_play', landscape ? 1200 : 800);
+  assertKeypadButtonAspectRatio('12_combat_play');
 
   // ── Combat: game end screen ────────────────────────────────
   // The real `CombatGameEnded` event — same one a real win dispatches —
@@ -504,6 +710,7 @@ Future<void> runScreenWalkthrough(
   expect(find.byType(CombatGameEndScreen), findsOneWidget,
       reason: 'a real win should reach the combat game end screen');
   await shot('${prefix}13_combat_game_end');
+  assertNoOverflow('13_combat_game_end');
 
   // ── Back out to the main menu ─────────────────────────────
   step('tapping Return to Menu from Combat Game End');

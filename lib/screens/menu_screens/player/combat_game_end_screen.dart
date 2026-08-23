@@ -69,6 +69,9 @@ class CombatGameEndScreen extends StatelessWidget {
                     ),
                     SliverToBoxAdapter(
                       child: DeviceWrapper(
+                        // Any landscape (not just tablet) switches to the
+                        // 2-pane layout, which needs the full screen width.
+                        maxWidth: context.isLandscapeOrientation ? 1200 : null,
                         child: _buildGameEndScreen(context, combatState),
                       ),
                     ),
@@ -88,159 +91,193 @@ class CombatGameEndScreen extends StatelessWidget {
   Widget _buildGameEndScreen(BuildContext context, CombatState combatState) {
     final isWinner = combatState.isWinner ?? false;
 
+    // Result/ranking display — ranking badge, expected-answer, end reason.
+    final resultDisplay = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Ranking Widget - Winner (position 1) or Loser (position 4)
+        RankingSortingWidget(
+          position: isWinner ? 1 : 4,
+          size: kContainerSizeS,
+          childElement: FaIcon(
+            isWinner ? FontAwesomeIcons.trophy : FontAwesomeIcons.faceFrown,
+            color: Theme.of(context).scaffoldBackgroundColor,
+            size: kIconSizeL,
+          ),
+        ),
+        const SizedBox(height: kSpaceXL),
+
+        // Expected String Display
+        if (combatState.expect != null && combatState.expect!.isNotEmpty) ...[
+          Text(
+            lang(context).theCorrectIs,
+            style: AppTextStyles.bodyMediumBold(context),
+          ),
+          const SizedBox(height: kSpaceS),
+          Builder(builder: (context) {
+            // Use synced correctEquationDisplay for pick-right mode
+            // This value is the same on both user and opponent screens
+            final displayText =
+                combatState.correctEquationDisplay ?? combatState.expect!;
+            return Text(
+              displayText,
+              style: AppTextStyles.forChallenge(
+                displayText.length,
+                context,
+              ),
+              textAlign: TextAlign.center,
+            );
+          }),
+          const SizedBox(height: kSpaceXL),
+        ],
+
+        // Game End Reason
+        Text(
+          _getGameEndReason(context, combatState),
+          style: AppTextStyles.titleMediumBold(context),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+
+    // Ready-indicators / action buttons — Play Again (or ready-to-restart),
+    // then Return to Menu.
+    final readyAndActions = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Ready indicators section - wrapped in styled container
+        if (combatState.isRestartRequested) ...[
+          Container(
+            padding: const EdgeInsets.all(kPaddingL),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
+                topRight: Radius.circular(LayoutConfig.layoutBorderRadius),
+                bottomLeft: Radius.circular(LayoutConfig.layoutBorderRadius),
+                bottomRight: Radius.circular(LayoutConfig.layoutBorderRadius),
+              ),
+              border: Border.all(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onPrimary
+                    .withValues(alpha: 0.2),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildReadyIndicator(
+                      context,
+                      label: lang(context).you,
+                      isReady: combatState.isPlayerReady,
+                    ),
+                    const SizedBox(width: kSpace4XL),
+                    _buildReadyIndicator(
+                      context,
+                      label: lang(context).opponent,
+                      isReady: combatState.isOpponentReady,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: kSpaceXL),
+                if (!combatState.isPlayerReady)
+                  CustomElevatedButton(
+                    text:
+                        '${coreLang(context).ready} - ${coreLang(context).playAgain}',
+                    buttonSize: ButtonSize.small,
+                    shapeAt: RoundedWithShapeAt.topRight,
+                    backgroundColor: Theme.of(context).colorScheme.tertiary,
+                    onPressed: () {
+                      context.read<CombatBloc>().add(
+                            CombatRestartReady(isReady: true),
+                          );
+                    },
+                  ),
+                // Show "Change Difficulty" button for host only
+                if (context.read<CombatBloc>().isHost &&
+                    !combatState.isPlayerReady) ...[
+                  const SizedBox(height: kSpaceM),
+                  CustomElevatedButton(
+                    text:
+                        '${coreLang(context).ready} - ${coreLang(context).difficultySetting}',
+                    buttonSize: ButtonSize.small,
+                    shapeAt: RoundedWithShapeAt.topRight,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    onPressed: () {
+                      context.read<CombatBloc>().add(
+                            CombatRestartReady(
+                              isReady: true,
+                              changeDifficulty: true,
+                            ),
+                          );
+                    },
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ] else ...[
+          CustomElevatedButton(
+            text: coreLang(context).playAgain,
+            buttonSize: ButtonSize.small,
+            shapeAt: RoundedWithShapeAt.topRight,
+            onPressed: () {
+              context.read<CombatBloc>().add(CombatRestartRequested());
+            },
+          ),
+        ],
+        const SizedBox(height: kSpace3XL),
+
+        // Return to menu button at bottom
+        CustomElevatedButton(
+          text: coreLang(context).returnToMenu,
+          buttonSize: ButtonSize.small,
+          shapeAt: RoundedWithShapeAt.bottomLeft,
+          backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
+          onPressed: () {
+            // Reset CombatBloc to fresh initial state
+            context.read<CombatBloc>().add(CombatBlocReset());
+
+            // Reset CombatNavCubit to initial state
+            context.read<CombatNavCubit>().reset();
+
+            // Navigate back to select play mode
+            context.read<PlayerNavCubit>().showSelectPlayMode();
+          },
+        ),
+      ],
+    );
+
+    if (context.isLandscapeOrientation) {
+      // 2-pane split: result/ranking display on the left, ready-indicators
+      // and action buttons on the right.
+      return Container(
+        padding: const EdgeInsets.all(kPaddingXL),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(child: resultDisplay),
+              const SizedBox(width: kSpaceXL),
+              Expanded(child: readyAndActions),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Container(
       padding: const EdgeInsets.all(kPaddingXL),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Ranking Widget - Winner (position 1) or Loser (position 4)
-          RankingSortingWidget(
-            position: isWinner ? 1 : 4,
-            size: kContainerSizeS,
-            childElement: FaIcon(
-              isWinner ? FontAwesomeIcons.trophy : FontAwesomeIcons.faceFrown,
-              color: Theme.of(context).scaffoldBackgroundColor,
-              size: kIconSizeL,
-            ),
-          ),
-          const SizedBox(height: kSpaceXL),
-
-          // Expected String Display
-          if (combatState.expect != null && combatState.expect!.isNotEmpty) ...[
-            Text(
-              lang(context).theCorrectIs,
-              style: AppTextStyles.bodyMediumBold(context),
-            ),
-            const SizedBox(height: kSpaceS),
-            Builder(builder: (context) {
-              // Use synced correctEquationDisplay for pick-right mode
-              // This value is the same on both user and opponent screens
-              final displayText =
-                  combatState.correctEquationDisplay ?? combatState.expect!;
-              return Text(
-                displayText,
-                style: AppTextStyles.forChallenge(
-                  displayText.length,
-                  context,
-                ),
-                textAlign: TextAlign.center,
-              );
-            }),
-            const SizedBox(height: kSpaceXL),
-          ],
-
-          // Game End Reason
-          Text(
-            _getGameEndReason(context, combatState),
-            style: AppTextStyles.titleMediumBold(context),
-            textAlign: TextAlign.center,
-          ),
+          resultDisplay,
           const SizedBox(height: kSpace4XL),
-
-          // Ready indicators section - wrapped in styled container
-          if (combatState.isRestartRequested) ...[
-            Container(
-              padding: const EdgeInsets.all(kPaddingL),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(LayoutConfig.layoutBorderRadius / 5),
-                  topRight: Radius.circular(LayoutConfig.layoutBorderRadius),
-                  bottomLeft: Radius.circular(LayoutConfig.layoutBorderRadius),
-                  bottomRight: Radius.circular(LayoutConfig.layoutBorderRadius),
-                ),
-                border: Border.all(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onPrimary
-                      .withValues(alpha: 0.2),
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildReadyIndicator(
-                        context,
-                        label: lang(context).you,
-                        isReady: combatState.isPlayerReady,
-                      ),
-                      const SizedBox(width: kSpace4XL),
-                      _buildReadyIndicator(
-                        context,
-                        label: lang(context).opponent,
-                        isReady: combatState.isOpponentReady,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: kSpaceXL),
-                  if (!combatState.isPlayerReady)
-                    CustomElevatedButton(
-                      text:
-                          '${coreLang(context).ready} - ${coreLang(context).playAgain}',
-                      buttonSize: ButtonSize.small,
-                      shapeAt: RoundedWithShapeAt.topRight,
-                      backgroundColor: Theme.of(context).colorScheme.tertiary,
-                      onPressed: () {
-                        context.read<CombatBloc>().add(
-                              CombatRestartReady(isReady: true),
-                            );
-                      },
-                    ),
-                  // Show "Change Difficulty" button for host only
-                  if (context.read<CombatBloc>().isHost &&
-                      !combatState.isPlayerReady) ...[
-                    const SizedBox(height: kSpaceM),
-                    CustomElevatedButton(
-                      text:
-                          '${coreLang(context).ready} - ${coreLang(context).difficultySetting}',
-                      buttonSize: ButtonSize.small,
-                      shapeAt: RoundedWithShapeAt.topRight,
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      onPressed: () {
-                        context.read<CombatBloc>().add(
-                              CombatRestartReady(
-                                isReady: true,
-                                changeDifficulty: true,
-                              ),
-                            );
-                      },
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ] else ...[
-            CustomElevatedButton(
-              text: coreLang(context).playAgain,
-              buttonSize: ButtonSize.small,
-              shapeAt: RoundedWithShapeAt.topRight,
-              onPressed: () {
-                context.read<CombatBloc>().add(CombatRestartRequested());
-              },
-            ),
-          ],
-          const SizedBox(height: kSpace3XL),
-
-          // Return to menu button at bottom
-          CustomElevatedButton(
-            text: coreLang(context).returnToMenu,
-            buttonSize: ButtonSize.small,
-            shapeAt: RoundedWithShapeAt.bottomLeft,
-            backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
-            onPressed: () {
-              // Reset CombatBloc to fresh initial state
-              context.read<CombatBloc>().add(CombatBlocReset());
-
-              // Reset CombatNavCubit to initial state
-              context.read<CombatNavCubit>().reset();
-
-              // Navigate back to select play mode
-              context.read<PlayerNavCubit>().showSelectPlayMode();
-            },
-          ),
+          readyAndActions,
         ],
       ),
     );

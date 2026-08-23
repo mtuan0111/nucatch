@@ -72,113 +72,153 @@ class _GameOverScreenState extends State<GameOverScreen> {
               SliverFillRemaining(
                 // fillOverscroll: true,
                 child: DeviceWrapper(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child:
-                            turnState.difficultyModel?.isPickRightMode == true
-                                ? GameOverPickRight(turnState: turnState)
-                                : GameOverRegular(turnState: turnState),
-                      ),
-                      const SizedBox(
-                        height: kSpace4XL,
-                      ),
-                      const SizedBox(
-                        height: kSpaceXS,
-                      ),
-                      BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
-                        builder: (context, state) {
-                          return AnimatedButton(
-                            context,
-                            onPressed: () {
-                              playerNavCubit.showPlay();
+                  // Any landscape (not just tablet) switches to the 2-pane
+                  // layout below, which needs the full screen width.
+                  maxWidth: context.isLandscapeOrientation ? 1200 : null,
+                  child: Builder(builder: (context) {
+                    final resultWidget =
+                        turnState.difficultyModel?.isPickRightMode == true
+                            ? GameOverPickRight(turnState: turnState)
+                            : GameOverRegular(turnState: turnState);
 
-                              turnBloc.add(
-                                Start(),
-                              );
-                            },
-                            iconData: FontAwesomeIcons.arrowRotateLeft,
-                            backgroundBuilder: (context, borderRadius) {
-                              return LightningWidget(
+                    final actionButtons = Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        BlocBuilder<TurnRecordedListBloc,
+                            TurnRecordedListState>(
+                          builder: (context, state) {
+                            return AnimatedButton(
+                              context,
+                              onPressed: () {
+                                playerNavCubit.showPlay();
+
+                                turnBloc.add(
+                                  Start(),
+                                );
+                              },
+                              iconData: FontAwesomeIcons.arrowRotateLeft,
+                              backgroundBuilder: (context, borderRadius) {
+                                return LightningWidget(
+                                    baseColor:
+                                        Theme.of(context).primaryColor,
+                                    seed: 'Restart'.hashCode,
+                                    borderRadius: borderRadius);
+                              },
+                            );
+                          },
+                        ),
+                        const SizedBox(height: kSpaceL),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Change Difficulty button
+                            AnimatedButton(
+                              context,
+                              iconData: Helper.getIconFromDifficulty(
+                                context,
+                                turnState.difficultyModel?.difficulty,
+                              ),
+                              backgroundColor:
+                                  Helper.getColorIconFromDifficulty(
+                                context,
+                                turnState.difficultyModel?.difficulty,
+                              ),
+                              text: coreLang(context).difficultySetting,
+                              shapeAt: RoundedWithShapeAt.topLeft,
+                              buttonSize: ButtonSize.smallest,
+                              onPressed: () {
+                                playerNavCubit.selectPlayMode(
+                                  PlayMode.solo,
+                                );
+                              },
+                              backgroundBuilder: (context, borderRadius) {
+                                return LightningWidget(
+                                  baseColor:
+                                      Helper.getColorIconFromDifficulty(
+                                    context,
+                                    turnState.difficultyModel?.difficulty,
+                                  ),
+                                  seed: coreLang(context)
+                                      .difficultySetting
+                                      .hashCode,
+                                  borderRadius: borderRadius,
+                                );
+                              },
+                            ),
+                            const SizedBox(width: kSpaceM),
+                            // Main Menu button
+                            AnimatedButton(
+                              context,
+                              iconData: FontAwesomeIcons.bars,
+                              text: coreLang(context).mainMenu,
+                              shapeAt: RoundedWithShapeAt.topRight,
+                              buttonSize: ButtonSize.smallest,
+                              onPressed: () {
+                                context.read<MenuBloc>().add(ShowMenu());
+                              },
+                              backgroundBuilder: (context, borderRadius) {
+                                return LightningWidget(
                                   baseColor: Theme.of(context).primaryColor,
-                                  seed: 'Restart'.hashCode,
-                                  borderRadius: borderRadius);
-                            },
-                          );
-                        },
-                      ),
-                      const SizedBox(height: kSpaceL),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                                  seed: 'Menu'.hashCode,
+                                  borderRadius: borderRadius,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+
+                    final adBanner = AdMobBanner(
+                      adUnitId: (!kIsWeb && Platform.isIOS)
+                          ? AdMobConfig.instance.iosGameOverBannerId
+                          : AdMobConfig.instance.androidGameOverBannerId,
+                    );
+
+                    if (context.isLandscapeOrientation) {
+                      // 2-pane split: result/stats on the left, all action
+                      // buttons on the right — the ad banner stays full
+                      // width below both.
+                      return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Change Difficulty button
-                          AnimatedButton(
-                            context,
-                            iconData: Helper.getIconFromDifficulty(
-                              context,
-                              turnState.difficultyModel?.difficulty,
+                          IntrinsicHeight(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(child: resultWidget),
+                                const SizedBox(width: kSpaceXL),
+                                Expanded(child: actionButtons),
+                              ],
                             ),
-                            backgroundColor: Helper.getColorIconFromDifficulty(
-                              context,
-                              turnState.difficultyModel?.difficulty,
-                            ),
-                            text: coreLang(context).difficultySetting,
-                            shapeAt: RoundedWithShapeAt.topLeft,
-                            buttonSize: ButtonSize.smallest,
-                            onPressed: () {
-                              playerNavCubit.selectPlayMode(
-                                PlayMode.solo,
-                              );
-                            },
-                            backgroundBuilder: (context, borderRadius) {
-                              return LightningWidget(
-                                baseColor: Helper.getColorIconFromDifficulty(
-                                  context,
-                                  turnState.difficultyModel?.difficulty,
-                                ),
-                                seed: coreLang(context)
-                                    .difficultySetting
-                                    .hashCode,
-                                borderRadius: borderRadius,
-                              );
-                            },
                           ),
-                          const SizedBox(width: kSpaceM),
-                          // Main Menu button
-                          AnimatedButton(
-                            context,
-                            iconData: FontAwesomeIcons.bars,
-                            text: coreLang(context).mainMenu,
-                            shapeAt: RoundedWithShapeAt.topRight,
-                            buttonSize: ButtonSize.smallest,
-                            onPressed: () {
-                              context.read<MenuBloc>().add(ShowMenu());
-                            },
-                            backgroundBuilder: (context, borderRadius) {
-                              return LightningWidget(
-                                baseColor: Theme.of(context).primaryColor,
-                                seed: 'Menu'.hashCode,
-                                borderRadius: borderRadius,
-                              );
-                            },
-                          ),
+                          const SizedBox(height: kSpace4XL),
+                          adBanner,
                         ],
-                      ),
-                      const SizedBox(
-                        height: kSpace4XL,
-                      ),
-                      // AdMob Banner Ad
-                      AdMobBanner(
-                        adUnitId: (!kIsWeb && Platform.isIOS)
-                            ? AdMobConfig.instance.iosGameOverBannerId
-                            : AdMobConfig.instance.androidGameOverBannerId,
-                      ),
-                    ],
-                  ),
+                      );
+                    }
+
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(child: resultWidget),
+                        const SizedBox(
+                          height: kSpace4XL,
+                        ),
+                        const SizedBox(
+                          height: kSpaceXS,
+                        ),
+                        actionButtons,
+                        const SizedBox(
+                          height: kSpace4XL,
+                        ),
+                        adBanner,
+                      ],
+                    );
+                  }),
                 ),
               ),
             ],

@@ -323,86 +323,100 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                 padding: const EdgeInsets.all(kPaddingXL),
                 sliver: SliverToBoxAdapter(
                   child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
+                    child: DeviceWrapper(
+                      // Any landscape (not just tablet) switches to the
+                      // 2-pane layout below, which needs the full width.
+                      maxWidth: context.isLandscapeOrientation ? 1200 : null,
+                      child: Builder(builder: (context) {
+                        final bluetoothIcon = Icon(
                           Icons.bluetooth,
                           size: 80,
                           color: Theme.of(context).colorScheme.primary,
-                        ),
-                        const SizedBox(height: kSpaceXL),
+                        );
 
-                        // Room Code Display
-                        if (_roomCode != null) ...[
-                          Text(
-                            'Room Code',
-                            style: AppTextStyles.titleLarge(context),
-                          ),
-                          const SizedBox(height: kSpaceM),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding2XL, vertical: kPaddingML),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.1),
-                              borderRadius:
-                                  BorderRadius.circular(kBorderRadiusL),
-                            ),
-                            child: Text(
-                              _roomCode!,
-                              style: AppTextStyles.withFontFamily(
-                                  AppTextStyles.displaySmall(context),
-                                  'monospace'),
-                            ),
-                          ),
-                          const SizedBox(height: kSpace2XL),
-                        ],
+                        final roomCodeSection = _roomCode == null
+                            ? const SizedBox.shrink()
+                            : Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Room Code',
+                                    style: AppTextStyles.titleLarge(context),
+                                  ),
+                                  const SizedBox(height: kSpaceM),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: kPadding2XL,
+                                        vertical: kPaddingML),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Colors.white.withValues(alpha: 0.1),
+                                      borderRadius: BorderRadius.circular(
+                                          kBorderRadiusL),
+                                    ),
+                                    child: Text(
+                                      _roomCode!,
+                                      style: AppTextStyles.withFontFamily(
+                                          AppTextStyles.displaySmall(context),
+                                          'monospace'),
+                                    ),
+                                  ),
+                                ],
+                              );
 
-                        Text(
+                        final statusText = Text(
                           _getRoomStateText(),
                           style: AppTextStyles.bodyLargeMedium(context),
                           textAlign: TextAlign.center,
-                        ),
+                        );
 
-                        if (_roomState == RoomState.guestJoined ||
-                            _roomState == RoomState.bothReady) ...[
-                          const SizedBox(height: kSpace2XL),
-                          // Ready status indicators
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _buildReadyIndicator(
-                                label: lang(context).you,
-                                isReady: _myPlayerReady,
-                              ),
-                              const SizedBox(width: kSpace4XL),
-                              _buildReadyIndicator(
-                                label: lang(context).opponent,
-                                isReady: _guestPlayerReady,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: kSpace2XL),
-                          if (!_myPlayerReady)
-                            CustomElevatedButton(
-                              onPressed: _setReady,
-                              shapeAt: RoundedWithShapeAt.all,
-                              child: Row(
+                        final hasReadySection =
+                            _roomState == RoomState.guestJoined ||
+                                _roomState == RoomState.bothReady;
+                        final readySection = !hasReadySection
+                            ? const SizedBox.shrink()
+                            : Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const FaIcon(FontAwesomeIcons.check),
-                                  const SizedBox(width: kSpaceSM),
-                                  Text(
-                                    coreLang(context).ready,
-                                    style: AppTextStyles.bodyLargeBold(context),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: [
+                                      _buildReadyIndicator(
+                                        label: lang(context).you,
+                                        isReady: _myPlayerReady,
+                                      ),
+                                      const SizedBox(width: kSpace4XL),
+                                      _buildReadyIndicator(
+                                        label: lang(context).opponent,
+                                        isReady: _guestPlayerReady,
+                                      ),
+                                    ],
                                   ),
+                                  if (!_myPlayerReady) ...[
+                                    const SizedBox(height: kSpace2XL),
+                                    CustomElevatedButton(
+                                      onPressed: _setReady,
+                                      shapeAt: RoundedWithShapeAt.all,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const FaIcon(
+                                              FontAwesomeIcons.check),
+                                          const SizedBox(width: kSpaceSM),
+                                          Text(
+                                            coreLang(context).ready,
+                                            style: AppTextStyles
+                                                .bodyLargeBold(context),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ],
-                              ),
-                            ),
-                        ],
-                        const SizedBox(height: kSpace3XL),
-                        // Distance Warning
-                        Container(
+                              );
+
+                        final warningBanner = Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: kPaddingXL, vertical: kPaddingML),
                           decoration: BoxDecoration(
@@ -410,7 +424,8 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                                 .colorScheme
                                 .error
                                 .withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(kBorderRadiusM),
+                            borderRadius:
+                                BorderRadius.circular(kBorderRadiusM),
                             border: Border.all(
                               color: Theme.of(context)
                                   .colorScheme
@@ -438,10 +453,10 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(height: kSpaceXL),
-                        // Connection Status Indicator
-                        Column(
+                        );
+
+                        final connectionStatus = Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             const Divider(),
                             const SizedBox(height: kSpaceM),
@@ -474,8 +489,67 @@ class _HostRoomScreenState extends State<HostRoomScreen> {
                               ],
                             ),
                           ],
-                        ),
-                      ],
+                        );
+
+                        if (context.isLandscapeOrientation) {
+                          // 2-pane split: identity/connection state on the
+                          // left, readiness/warnings on the right.
+                          return IntrinsicHeight(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      bluetoothIcon,
+                                      const SizedBox(height: kSpaceXL),
+                                      roomCodeSection,
+                                      if (_roomCode != null)
+                                        const SizedBox(height: kSpace2XL),
+                                      statusText,
+                                      const SizedBox(height: kSpaceXL),
+                                      connectionStatus,
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: kSpaceXL),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      readySection,
+                                      if (hasReadySection)
+                                        const SizedBox(height: kSpace3XL),
+                                      warningBanner,
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            bluetoothIcon,
+                            const SizedBox(height: kSpaceXL),
+                            roomCodeSection,
+                            if (_roomCode != null)
+                              const SizedBox(height: kSpace2XL),
+                            statusText,
+                            if (hasReadySection) ...[
+                              const SizedBox(height: kSpace2XL),
+                              readySection,
+                            ],
+                            const SizedBox(height: kSpace3XL),
+                            warningBanner,
+                            const SizedBox(height: kSpaceXL),
+                            connectionStatus,
+                          ],
+                        );
+                      }),
                     ),
                   ),
                 ),

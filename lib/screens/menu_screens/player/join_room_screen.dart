@@ -318,11 +318,12 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                   padding: const EdgeInsets.all(kPaddingXL),
                   sliver: SliverToBoxAdapter(
                     child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Icon
-                          Icon(
+                      child: DeviceWrapper(
+                        // Any landscape (not just tablet) switches to the
+                        // 2-pane layout below, which needs the full width.
+                        maxWidth: context.isLandscapeOrientation ? 1200 : null,
+                        child: Builder(builder: (context) {
+                          final statusIcon = Icon(
                             _roomState == RoomState.waiting
                                 ? Icons.bluetooth_searching
                                 : _roomState == RoomState.bothReady
@@ -332,195 +333,208 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                             color: _roomState == RoomState.bothReady
                                 ? Theme.of(context).colorScheme.tertiary
                                 : Theme.of(context).colorScheme.primary,
-                          ),
-                          const SizedBox(height: kSpaceXL),
+                          );
 
-                          // Discovery/Connection Status
-                          if (_isDiscovering && _roomState == RoomState.waiting)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const SizedBox(
-                                  width: kFontSizeXL,
-                                  height: kFontSizeXL,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                ),
-                                const SizedBox(width: kSpaceM),
-                                Text(
-                                  lang(context).searchingForHosts,
-                                  style: AppTextStyles.titleLarge(context),
-                                ),
-                              ],
-                            )
-                          else
-                            Text(
-                              _getRoomStateText(),
-                              style: AppTextStyles.bodyLargeMedium(context),
-                              textAlign: TextAlign.center,
-                            ),
-                          const SizedBox(height: kSpace2XL),
-
-                          // Discovered Hosts List
-                          if (_roomState == RoomState.waiting &&
-                              _discoveredDevices.isNotEmpty)
-                            SizedBox(
-                              height: 400,
-                              child: Card(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: kPaddingM),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          final discoveryStatus = _isDiscovering &&
+                                  _roomState == RoomState.waiting
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(kPaddingL),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.bluetooth_searching,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary),
-                                          const SizedBox(width: kSpaceSM),
-                                          Text(
-                                            'Available Hosts (${_discoveredDevices.length})',
-                                            style:
-                                                AppTextStyles.titleMediumBold(
-                                                    context),
-                                          ),
-                                        ],
+                                    const SizedBox(
+                                      width: kFontSizeXL,
+                                      height: kFontSizeXL,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
                                       ),
                                     ),
-                                    const Divider(height: 1),
-                                    Flexible(
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: _discoveredDevices.length,
-                                        itemBuilder: (context, index) {
-                                          final device =
-                                              _discoveredDevices[index];
-                                          // Extract room code from device name
-                                          final roomCode = device.name
-                                              .replaceFirst(
-                                                  kBleAdvertisingPrefix, '');
-
-                                          return ListTile(
-                                            leading: CircleAvatar(
-                                              backgroundColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              child: Icon(
-                                                Icons.person,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary,
-                                              ),
-                                            ),
-                                            title: Text(
-                                              'Room: $roomCode',
-                                              style:
-                                                  AppTextStyles.bodyLargeBold(
-                                                      context),
-                                            ),
-                                            subtitle: Text(
-                                              lang(context).tapToConnect,
-                                              style:
-                                                  AppTextStyles.bodySmallHint(
-                                                      context),
-                                            ),
-                                            trailing: const Icon(
-                                              Icons.arrow_forward_ios,
-                                              size: kIconSizeS,
-                                            ),
-                                            onTap: () =>
-                                                _connectToDevice(device),
-                                          );
-                                        },
-                                      ),
+                                    const SizedBox(width: kSpaceM),
+                                    Text(
+                                      lang(context).searchingForHosts,
+                                      style:
+                                          AppTextStyles.titleLarge(context),
                                     ),
                                   ],
-                                ),
-                              ),
-                            ),
+                                )
+                              : Text(
+                                  _getRoomStateText(),
+                                  style:
+                                      AppTextStyles.bodyLargeMedium(context),
+                                  textAlign: TextAlign.center,
+                                );
 
-                          // Empty State
-                          if (_roomState == RoomState.waiting &&
-                              _discoveredDevices.isEmpty)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 40),
-                              child: Column(
-                                children: [
-                                  Icon(
-                                    Icons.search_off,
-                                    size: kContainerSizeS,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant
-                                        .withValues(alpha: 0.4),
+                          final hasHostsList = _roomState ==
+                                  RoomState.waiting &&
+                              _discoveredDevices.isNotEmpty;
+                          final hostsListSection = !hasHostsList
+                              ? const SizedBox.shrink()
+                              : SizedBox(
+                                  height: 400,
+                                  child: Card(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: kPaddingM),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(
+                                              kPaddingL),
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.bluetooth_searching,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary),
+                                              const SizedBox(width: kSpaceSM),
+                                              Text(
+                                                'Available Hosts (${_discoveredDevices.length})',
+                                                style: AppTextStyles
+                                                    .titleMediumBold(context),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const Divider(height: 1),
+                                        Flexible(
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                _discoveredDevices.length,
+                                            itemBuilder: (context, index) {
+                                              final device =
+                                                  _discoveredDevices[index];
+                                              // Extract room code from device name
+                                              final roomCode = device.name
+                                                  .replaceFirst(
+                                                      kBleAdvertisingPrefix,
+                                                      '');
+
+                                              return ListTile(
+                                                leading: CircleAvatar(
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                  child: Icon(
+                                                    Icons.person,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onPrimary,
+                                                  ),
+                                                ),
+                                                title: Text(
+                                                  'Room: $roomCode',
+                                                  style: AppTextStyles
+                                                      .bodyLargeBold(context),
+                                                ),
+                                                subtitle: Text(
+                                                  lang(context).tapToConnect,
+                                                  style: AppTextStyles
+                                                      .bodySmallHint(context),
+                                                ),
+                                                trailing: const Icon(
+                                                  Icons.arrow_forward_ios,
+                                                  size: kIconSizeS,
+                                                ),
+                                                onTap: () =>
+                                                    _connectToDevice(device),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  const SizedBox(height: kSpaceXL),
-                                  Text(
-                                    lang(context).noHostsFoundNearby,
-                                    style:
-                                        AppTextStyles.titleMediumBold(context),
-                                  ),
-                                  const SizedBox(height: kSpaceM),
-                                  Text(
-                                    lang(context).makeSureFriendHosting,
-                                    textAlign: TextAlign.center,
-                                    style: AppTextStyles.withColor(
-                                        AppTextStyles.bodyMediumSecondary(
-                                            context),
-                                        Theme.of(context)
+                                );
+
+                          final hasEmptyState = _roomState ==
+                                  RoomState.waiting &&
+                              _discoveredDevices.isEmpty;
+                          final emptyStateSection = !hasEmptyState
+                              ? const SizedBox.shrink()
+                              : Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 40),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.search_off,
+                                        size: kContainerSizeS,
+                                        color: Theme.of(context)
                                             .colorScheme
                                             .onSurfaceVariant
-                                            .withValues(alpha: 0.7)),
+                                            .withValues(alpha: 0.4),
+                                      ),
+                                      const SizedBox(height: kSpaceXL),
+                                      Text(
+                                        lang(context).noHostsFoundNearby,
+                                        style: AppTextStyles.titleMediumBold(
+                                            context),
+                                      ),
+                                      const SizedBox(height: kSpaceM),
+                                      Text(
+                                        lang(context).makeSureFriendHosting,
+                                        textAlign: TextAlign.center,
+                                        style: AppTextStyles.withColor(
+                                            AppTextStyles.bodyMediumSecondary(
+                                                context),
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .onSurfaceVariant
+                                                .withValues(alpha: 0.7)),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
+                                );
 
-                          // Ready Status Indicators (when connected)
-                          if (_roomState == RoomState.guestJoined ||
-                              _roomState == RoomState.bothReady) ...[
-                            const SizedBox(height: kSpace2XL),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                _buildReadyIndicator(
-                                  label: lang(context).you,
-                                  isReady: _myPlayerReady,
-                                ),
-                                const SizedBox(width: kSpace4XL),
-                                _buildReadyIndicator(
-                                  label: lang(context).opponent,
-                                  isReady: _hostPlayerReady,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: kSpace2XL),
-                            if (!_myPlayerReady)
-                              CustomElevatedButton(
-                                onPressed: _setReady,
-                                shapeAt: RoundedWithShapeAt.all,
-                                child: Row(
+                          final hasReadySection =
+                              _roomState == RoomState.guestJoined ||
+                                  _roomState == RoomState.bothReady;
+                          final readySection = !hasReadySection
+                              ? const SizedBox.shrink()
+                              : Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const FaIcon(FontAwesomeIcons.check),
-                                    const SizedBox(width: kSpaceS),
-                                    Text(
-                                      coreLang(context).ready,
-                                      style:
-                                          AppTextStyles.bodyLargeBold(context),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        _buildReadyIndicator(
+                                          label: lang(context).you,
+                                          isReady: _myPlayerReady,
+                                        ),
+                                        const SizedBox(width: kSpace4XL),
+                                        _buildReadyIndicator(
+                                          label: lang(context).opponent,
+                                          isReady: _hostPlayerReady,
+                                        ),
+                                      ],
                                     ),
+                                    if (!_myPlayerReady) ...[
+                                      const SizedBox(height: kSpace2XL),
+                                      CustomElevatedButton(
+                                        onPressed: _setReady,
+                                        shapeAt: RoundedWithShapeAt.all,
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const FaIcon(
+                                                FontAwesomeIcons.check),
+                                            const SizedBox(width: kSpaceS),
+                                            Text(
+                                              coreLang(context).ready,
+                                              style: AppTextStyles
+                                                  .bodyLargeBold(context),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ],
-                                ),
-                              ),
-                          ],
+                                );
 
-                          const SizedBox(height: kSpace3XL),
-                          // Distance Warning
-                          Container(
+                          final warningBanner = Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: kPaddingXL, vertical: kPaddingML),
                             decoration: BoxDecoration(
@@ -557,10 +571,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                 ),
                               ],
                             ),
-                          ),
-                          const SizedBox(height: kSpaceXL),
-                          // Connection Status Indicator
-                          Column(
+                          );
+
+                          final connectionStatus = Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               const Divider(),
                               const SizedBox(height: kSpaceM),
@@ -570,7 +584,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                   Icon(
                                     Icons.bluetooth_connected,
                                     color: (_bleService?.isConnected ?? false)
-                                        ? Theme.of(context).colorScheme.tertiary
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .tertiary
                                         : _isDiscovering
                                             ? Theme.of(context)
                                                 .colorScheme
@@ -599,8 +615,70 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                                 ],
                               ),
                             ],
-                          ),
-                        ],
+                          );
+
+                          if (context.isLandscapeOrientation) {
+                            // 2-pane split: status/readiness/warnings on the
+                            // left, the discovered-hosts list (already a
+                            // self-contained fixed-height scrollable block)
+                            // on the right.
+                            return IntrinsicHeight(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        statusIcon,
+                                        const SizedBox(height: kSpaceXL),
+                                        discoveryStatus,
+                                        if (hasReadySection) ...[
+                                          const SizedBox(height: kSpace2XL),
+                                          readySection,
+                                        ],
+                                        const SizedBox(height: kSpace3XL),
+                                        warningBanner,
+                                        const SizedBox(height: kSpaceXL),
+                                        connectionStatus,
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: kSpaceXL),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        hostsListSection,
+                                        emptyStateSection,
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              statusIcon,
+                              const SizedBox(height: kSpaceXL),
+                              discoveryStatus,
+                              const SizedBox(height: kSpace2XL),
+                              hostsListSection,
+                              emptyStateSection,
+                              if (hasReadySection) ...[
+                                const SizedBox(height: kSpace2XL),
+                                readySection,
+                              ],
+                              const SizedBox(height: kSpace3XL),
+                              warningBanner,
+                              const SizedBox(height: kSpaceXL),
+                              connectionStatus,
+                            ],
+                          );
+                        }),
                       ),
                     ),
                   ),

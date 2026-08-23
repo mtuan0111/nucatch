@@ -143,98 +143,115 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                     }),
                     SliverToBoxAdapter(
                       child: SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: kPaddingXL, vertical: kPaddingXL),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withValues(alpha: 0.3),
-                              borderRadius: BorderRadius.circular(
-                                  LayoutConfig.layoutBorderRadius),
-                            ),
-                            child: TabBar(
-                              controller: _tabController,
-                              indicator: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Theme.of(context).primaryColor,
-                                    Theme.of(context)
-                                        .primaryColor
-                                        .withValues(alpha: 0.8),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
+                        child: DeviceWrapper(
+                          // Match the ranking list's cap below so the tab
+                          // bar/toggle row don't stretch edge-to-edge on
+                          // tablet or landscape while the list is capped.
+                          maxWidth: (context.isTablet ||
+                                  context.isLandscapeOrientation)
+                              ? 1200
+                              : null,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kPaddingXL, vertical: kPaddingXL),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .primaryColor
+                                    .withValues(alpha: 0.3),
                                 borderRadius: BorderRadius.circular(
                                     LayoutConfig.layoutBorderRadius),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Theme.of(context)
-                                        .primaryColor
-                                        .withValues(alpha: 0.4),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 2),
+                              ),
+                              child: TabBar(
+                                controller: _tabController,
+                                indicator: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Theme.of(context).primaryColor,
+                                      Theme.of(context)
+                                          .primaryColor
+                                          .withValues(alpha: 0.8),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                   ),
+                                  borderRadius: BorderRadius.circular(
+                                      LayoutConfig.layoutBorderRadius),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withValues(alpha: 0.4),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                indicatorSize: TabBarIndicatorSize.tab,
+                                dividerColor: Colors.transparent,
+                                labelColor:
+                                    Theme.of(context).colorScheme.onPrimary,
+                                unselectedLabelColor: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimary
+                                    .withValues(alpha: 0.6),
+                                labelStyle:
+                                    AppTextStyles.bodyMediumBold(context),
+                                unselectedLabelStyle:
+                                    AppTextStyles.bodyMedium(context),
+                                tabs: [
+                                  Tab(text: lang(context).daily),
+                                  Tab(text: lang(context).weekly),
+                                  Tab(text: lang(context).allTime),
                                 ],
                               ),
-                              indicatorSize: TabBarIndicatorSize.tab,
-                              dividerColor: Colors.transparent,
-                              labelColor:
-                                  Theme.of(context).colorScheme.onPrimary,
-                              unselectedLabelColor: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimary
-                                  .withValues(alpha: 0.6),
-                              labelStyle: AppTextStyles.bodyMediumBold(context),
-                              unselectedLabelStyle:
-                                  AppTextStyles.bodyMedium(context),
-                              tabs: [
-                                Tab(text: lang(context).daily),
-                                Tab(text: lang(context).weekly),
-                                Tab(text: lang(context).allTime),
-                              ],
                             ),
                           ),
                         ),
                       ),
                     ),
                     SliverToBoxAdapter(
-                      child: BlocBuilder<SettingBloc, SettingState>(
-                        builder: (context, settingState) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Switch(
-                                value: settingState.onlyShowMyRecorded,
-                                activeThumbColor:
-                                    Theme.of(context).primaryColor,
-                                onChanged: (val) {
-                                  context.read<SettingBloc>().add(
-                                        ChangedOnlyShowMyRecorded(
-                                          onlyShowMyRecorded: val,
-                                        ),
-                                      );
+                      child: DeviceWrapper(
+                        // Match the ranking list's cap below.
+                        maxWidth:
+                            (context.isTablet || context.isLandscapeOrientation)
+                                ? 1200
+                                : null,
+                        child: BlocBuilder<SettingBloc, SettingState>(
+                          builder: (context, settingState) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Switch(
+                                  value: settingState.onlyShowMyRecorded,
+                                  activeThumbColor:
+                                      Theme.of(context).primaryColor,
+                                  onChanged: (val) {
+                                    context.read<SettingBloc>().add(
+                                          ChangedOnlyShowMyRecorded(
+                                            onlyShowMyRecorded: val,
+                                          ),
+                                        );
 
-                                  // Reload data with or without userId filter
-                                  final userId = val ? _currentUserId : null;
-                                  turnRecordedListBloc.add(
-                                    LoadDataByPeriod(
-                                      period: _selectedPeriod,
-                                      userId: userId,
-                                    ),
-                                  );
-                                },
-                              ),
-                              const SizedBox(width: kSpaceS),
-                              Text(
-                                lang(context).onlyShowMyRecorded,
-                                style: AppTextStyles.bodyLarge(context),
-                              ),
-                            ],
-                          );
-                        },
+                                    // Reload data with or without userId filter
+                                    final userId = val ? _currentUserId : null;
+                                    turnRecordedListBloc.add(
+                                      LoadDataByPeriod(
+                                        period: _selectedPeriod,
+                                        userId: userId,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(width: kSpaceS),
+                                Text(
+                                  lang(context).onlyShowMyRecorded,
+                                  style: AppTextStyles.bodyLarge(context),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
                     ),
                     SliverFillRemaining(
@@ -275,6 +292,13 @@ class _TopScoreScreenState extends State<TopScoreScreen>
           padding: const EdgeInsets.only(bottom: 30),
           child: SafeArea(
             child: DeviceWrapper(
+              // The ranking list below already flows into multiple columns
+              // via Wrap — widen the cap on tablet, or any landscape
+              // orientation, so 3+ columns can fit instead of being capped
+              // at ~2.
+              maxWidth: (context.isTablet || context.isLandscapeOrientation)
+                  ? 1200
+                  : null,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

@@ -82,6 +82,9 @@ class _MenuScreenState extends State<MenuScreen> {
       child: skeleton.MenuScreen(
         title: '', // Custom logo is provided in headerIcon
         headerIcon: const MainLogo(),
+        // Any landscape (not just tablet) flows menu buttons into a
+        // 2-column grid instead of one long vertical list.
+        enableLandscapeSplit: true,
         greetingMessage: BlocBuilder<skeleton.UserBloc, skeleton.UserState>(
           builder: (context, userState) {
             return Padding(
@@ -134,6 +137,15 @@ class _MenuScreenState extends State<MenuScreen> {
                 SelectOption(option: entry.key),
               ),
               buttonSize: skeleton.ButtonSize.small,
+              // On tablet, or any landscape orientation, stretch buttons to
+              // fill their available width (the full DeviceWrapper content
+              // width normally, or a single ResponsiveGrid column in
+              // landscape) instead of hugging left with a dead gutter.
+              // `double.infinity` here relies on the surrounding bounded
+              // parent (Align inside a tight-width cell) clamping it down
+              // to whatever the real available width is at each call site.
+              minWidth:
+                  (context.isTablet || context.isLandscapeOrientation) ? double.infinity : null,
               backgroundBuilder: (context, borderRadius) {
                 return LightningWidget(
                   baseColor:

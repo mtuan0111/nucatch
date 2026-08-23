@@ -84,6 +84,10 @@ class CountdownOverlay extends StatelessWidget {
                     final secondProgress = time - time.floor();
                     final gradient = _getCountdownGradient(time, seconds);
 
+                    // Scale up on iPad so the circle doesn't look small and
+                    // lost on a much larger blurred canvas.
+                    final circleScale = context.isTablet ? 1.4 : 1.0;
+
                     return AnimatedScale(
                       duration:
                           const Duration(milliseconds: kAnimationDurationSlow),
@@ -95,8 +99,8 @@ class CountdownOverlay extends StatelessWidget {
                         opacity: time > 0.5 ? 1.0 : 0.0,
                         curve: Curves.easeOutQuart,
                         child: Container(
-                          width: kCountdownCircleSize,
-                          height: kCountdownCircleSize,
+                          width: kCountdownCircleSize * circleScale,
+                          height: kCountdownCircleSize * circleScale,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             gradient: gradient,
@@ -115,8 +119,9 @@ class CountdownOverlay extends StatelessWidget {
                               ),
                               // Circular progress indicator
                               SizedBox(
-                                width: kCountdownCircleInnerSize,
-                                height: kCountdownCircleInnerSize,
+                                width: kCountdownCircleInnerSize * circleScale,
+                                height:
+                                    kCountdownCircleInnerSize * circleScale,
                                 child: CircularProgressIndicator(
                                   value: secondProgress,
                                   strokeWidth: kProgressStrokeWidth,
