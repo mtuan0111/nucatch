@@ -111,15 +111,28 @@ void main() {
       tester.view.resetDevicePixelRatio();
     });
 
-    step('forcing portrait physical size');
-    tester.view.physicalSize = const Size(1080, 2400);
-    tester.view.devicePixelRatio = 2.625;
+    // Device / orientation / font-size come in via --dart-define so the whole
+    // matrix (phone|ipad × portrait|landscape × min|max font) runs from this
+    // one file. Defaults reproduce the original phone-portrait, default-font
+    // behaviour exactly.
+    const ipad = bool.fromEnvironment('IPAD', defaultValue: false);
+    const landscape = bool.fromEnvironment('LANDSCAPE', defaultValue: false);
+    const injectedFontSize = int.fromEnvironment('FONT_SIZE', defaultValue: -1);
+
+    final portraitSize = ipad ? const Size(1640, 2360) : const Size(1080, 2400);
+    step('forcing ${ipad ? 'ipad' : 'phone'} '
+        '${landscape ? 'landscape' : 'portrait'} physical size');
+    tester.view.physicalSize = landscape ? portraitSize.flipped : portraitSize;
+    tester.view.devicePixelRatio = ipad ? 2.0 : 2.625;
 
     step('awaiting SharedPreferences.getInstance()');
     final prefs = await SharedPreferences.getInstance();
     step('clearing prefs');
     await prefs.clear();
     await prefs.setBool(PreferencesKey.IS_MUTED, true);
+    if (injectedFontSize >= 0) {
+      await prefs.setInt(PreferencesKey.FONT_SIZE, injectedFontSize);
+    }
     // Deliberately NOT marking has_completed_tour — this test wants the
     // tour to actually auto-start, unlike screen_walkthrough.dart.
 

@@ -35,4 +35,68 @@ platform :android do
       skip_upload_screenshots: false, # the phone + 10" tablet screenshots
     )
   end
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Release deployment: build a signed AAB and upload it to a Google Play track.
+  #
+  # NOTHING sensitive is hard-coded here. Secrets come from the environment
+  # (loaded from .env — see .env.example and docs/DEPLOYMENT.md):
+  #   • SUPPLY_JSON_KEY — path to the Google Play service-account JSON.
+  # Signing is the app's own release config (android/key.properties → key.jks),
+  # so those files must exist locally / be materialised from CI secrets first.
+  # ───────────────────────────────────────────────────────────────────────────
+
+  # Build the release App Bundle. Optional params: build_name:, build_number:,
+  # environment: (dart-define APP_ENVIRONMENT, default PRODUCTION).
+  private_lane :build_release_aab do |options|
+    flutter_args = ["build", "appbundle", "--release"]
+    flutter_args << "--build-name=#{options[:build_name]}" if options[:build_name]
+    flutter_args << "--build-number=#{options[:build_number]}" if options[:build_number]
+    flutter_args << "--dart-define=APP_ENVIRONMENT=#{options[:environment] || 'PRODUCTION'}"
+    # fastlane runs in android/, so the Flutter project root is one level up.
+    Dir.chdir("..") do
+      sh("flutter", "pub", "get")
+      sh("flutter", *flutter_args)
+    end
+  end
+
+  # Upload the freshly built AAB to the given Play track.
+  private_lane :upload_aab_to_play do |options|
+    json_key = ENV["SUPPLY_JSON_KEY"]
+    if json_key.nil? || json_key.empty?
+      UI.user_error!("Set SUPPLY_JSON_KEY to your Google Play service-account JSON path (see docs/DEPLOYMENT.md).")
+    end
+    supply(
+      json_key: json_key,
+      track: options[:track],
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      release_status: options[:release_status] || "completed",
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
+
+  desc "Staging: build a release AAB and upload to the Google Play INTERNAL track"
+  desc "Usage: fastlane android deploy_staging [build_name:1.2.3 build_number:45]"
+  lane :deploy_staging do |options|
+    build_release_aab(options.merge(environment: options[:environment] || "DEVELOPMENT"))
+    upload_aab_to_play(track: "internal")
+    UI.success("✅ Uploaded to Google Play — internal (staging) track.")
+  end
+
+  desc "Production: build a release AAB and upload to the Google Play PRODUCTION track"
+  desc "Usage: fastlane android deploy_production [build_name:1.2.3 build_number:45]"
+  lane :deploy_production do |options|
+    build_release_aab(options.merge(environment: "PRODUCTION"))
+    upload_aab_to_play(track: "production")
+    UI.success("✅ Uploaded to Google Play — production track.")
+  end
+
+  desc "Alias for deploy_production (fastlane android deploy)"
+  lane :deploy do |options|
+    deploy_production(options)
+  end
 end

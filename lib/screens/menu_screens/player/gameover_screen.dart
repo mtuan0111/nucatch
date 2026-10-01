@@ -65,166 +65,171 @@ class _GameOverScreenState extends State<GameOverScreen> {
       body: Stack(
         children: [
           Container(
-        decoration: LayoutConfig(context).gradientDecoration,
-        child: SafeArea(
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverFillRemaining(
-                // fillOverscroll: true,
-                child: DeviceWrapper(
-                  // Any landscape (not just tablet) switches to the 2-pane
-                  // layout below, which needs the full screen width.
-                  maxWidth: context.isLandscapeOrientation ? 1200 : null,
-                  child: Builder(builder: (context) {
-                    final resultWidget =
-                        turnState.difficultyModel?.isPickRightMode == true
-                            ? GameOverPickRight(turnState: turnState)
-                            : GameOverRegular(turnState: turnState);
+            decoration: LayoutConfig(context).gradientDecoration,
+            child: SafeArea(
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverFillRemaining(
+                    // fillOverscroll: true,
+                    child: DeviceWrapper(
+                      // Any landscape (not just tablet) switches to the 2-pane
+                      // layout below, which needs the full screen width.
+                      maxWidth: context.isLandscapeOrientation ? 1200 : null,
+                      child: Builder(builder: (context) {
+                        final resultWidget =
+                            turnState.difficultyModel?.isPickRightMode == true
+                                ? GameOverPickRight(turnState: turnState)
+                                : GameOverRegular(turnState: turnState);
 
-                    final actionButtons = Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        BlocBuilder<TurnRecordedListBloc,
-                            TurnRecordedListState>(
-                          builder: (context, state) {
-                            return AnimatedButton(
-                              context,
-                              onPressed: () {
-                                playerNavCubit.showPlay();
-
-                                turnBloc.add(
-                                  Start(),
-                                );
-                              },
-                              iconData: FontAwesomeIcons.arrowRotateLeft,
-                              backgroundBuilder: (context, borderRadius) {
-                                return LightningWidget(
-                                    baseColor:
-                                        Theme.of(context).primaryColor,
-                                    seed: 'Restart'.hashCode,
-                                    borderRadius: borderRadius);
-                              },
-                            );
-                          },
-                        ),
-                        const SizedBox(height: kSpaceL),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        final actionButtons = Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // Change Difficulty button
-                            AnimatedButton(
-                              context,
-                              iconData: Helper.getIconFromDifficulty(
-                                context,
-                                turnState.difficultyModel?.difficulty,
-                              ),
-                              backgroundColor:
-                                  Helper.getColorIconFromDifficulty(
-                                context,
-                                turnState.difficultyModel?.difficulty,
-                              ),
-                              text: coreLang(context).difficultySetting,
-                              shapeAt: RoundedWithShapeAt.topLeft,
-                              buttonSize: ButtonSize.smallest,
-                              onPressed: () {
-                                playerNavCubit.selectPlayMode(
-                                  PlayMode.solo,
+                            BlocBuilder<TurnRecordedListBloc,
+                                TurnRecordedListState>(
+                              builder: (context, state) {
+                                return AnimatedButton(
+                                  context,
+                                  onPressed: () {
+                                    playerNavCubit.showPlay();
+
+                                    turnBloc.add(
+                                      Start(),
+                                    );
+                                  },
+                                  iconData: FontAwesomeIcons.arrowRotateLeft,
+                                  backgroundBuilder: (context, borderRadius) {
+                                    return LightningWidget(
+                                        baseColor:
+                                            Theme.of(context).primaryColor,
+                                        seed: 'Restart'.hashCode,
+                                        borderRadius: borderRadius);
+                                  },
                                 );
                               },
-                              backgroundBuilder: (context, borderRadius) {
-                                return LightningWidget(
-                                  baseColor:
+                            ),
+                            const SizedBox(height: kSpaceL),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // Change Difficulty button
+                                AnimatedButton(
+                                  context,
+                                  iconData: Helper.getIconFromDifficulty(
+                                    context,
+                                    turnState.difficultyModel?.difficulty,
+                                  ),
+                                  backgroundColor:
                                       Helper.getColorIconFromDifficulty(
                                     context,
                                     turnState.difficultyModel?.difficulty,
                                   ),
-                                  seed: coreLang(context)
-                                      .difficultySetting
-                                      .hashCode,
-                                  borderRadius: borderRadius,
-                                );
-                              },
-                            ),
-                            const SizedBox(width: kSpaceM),
-                            // Main Menu button
-                            AnimatedButton(
-                              context,
-                              iconData: FontAwesomeIcons.bars,
-                              text: coreLang(context).mainMenu,
-                              shapeAt: RoundedWithShapeAt.topRight,
-                              buttonSize: ButtonSize.smallest,
-                              onPressed: () {
-                                context.read<MenuBloc>().add(ShowMenu());
-                              },
-                              backgroundBuilder: (context, borderRadius) {
-                                return LightningWidget(
-                                  baseColor: Theme.of(context).primaryColor,
-                                  seed: 'Menu'.hashCode,
-                                  borderRadius: borderRadius,
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-
-                    final adBanner = AdMobBanner(
-                      adUnitId: (!kIsWeb && Platform.isIOS)
-                          ? AdMobConfig.instance.iosGameOverBannerId
-                          : AdMobConfig.instance.androidGameOverBannerId,
-                    );
-
-                    if (context.isLandscapeOrientation) {
-                      // 2-pane split: result/stats on the left, all action
-                      // buttons on the right — the ad banner stays full
-                      // width below both.
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IntrinsicHeight(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(child: resultWidget),
-                                const SizedBox(width: kSpaceXL),
-                                Expanded(child: actionButtons),
+                                  text: coreLang(context).difficultySetting,
+                                  shapeAt: RoundedWithShapeAt.topLeft,
+                                  buttonSize: ButtonSize.smallest,
+                                  onPressed: () {
+                                    playerNavCubit.selectPlayMode(
+                                      PlayMode.solo,
+                                    );
+                                  },
+                                  backgroundBuilder: (context, borderRadius) {
+                                    return LightningWidget(
+                                      baseColor:
+                                          Helper.getColorIconFromDifficulty(
+                                        context,
+                                        turnState.difficultyModel?.difficulty,
+                                      ),
+                                      seed: coreLang(context)
+                                          .difficultySetting
+                                          .hashCode,
+                                      borderRadius: borderRadius,
+                                    );
+                                  },
+                                ),
+                                const SizedBox(width: kSpaceM),
+                                // Main Menu button
+                                AnimatedButton(
+                                  context,
+                                  iconData: FontAwesomeIcons.bars,
+                                  text: coreLang(context).mainMenu,
+                                  shapeAt: RoundedWithShapeAt.topRight,
+                                  buttonSize: ButtonSize.smallest,
+                                  onPressed: () {
+                                    context.read<MenuBloc>().add(ShowMenu());
+                                  },
+                                  backgroundBuilder: (context, borderRadius) {
+                                    return LightningWidget(
+                                      baseColor: Theme.of(context).primaryColor,
+                                      seed: 'Menu'.hashCode,
+                                      borderRadius: borderRadius,
+                                    );
+                                  },
+                                ),
                               ],
                             ),
-                          ),
-                          const SizedBox(height: kSpace4XL),
-                          adBanner,
-                        ],
-                      );
-                    }
+                          ],
+                        );
 
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(child: resultWidget),
-                        const SizedBox(
-                          height: kSpace4XL,
-                        ),
-                        const SizedBox(
-                          height: kSpaceXS,
-                        ),
-                        actionButtons,
-                        const SizedBox(
-                          height: kSpace4XL,
-                        ),
-                        adBanner,
-                      ],
-                    );
-                  }),
-                ),
+                        final adBanner = AdMobBanner(
+                          adUnitId: (!kIsWeb && Platform.isIOS)
+                              ? AdMobConfig.instance.iosGameOverBannerId
+                              : AdMobConfig.instance.androidGameOverBannerId,
+                        );
+
+                        if (context.isLandscapeOrientation) {
+                          // 2-pane split: result/stats on the left, all action
+                          // buttons on the right — the ad banner stays full
+                          // width below both. Scrollable so the largest font sizes
+                          // (which push this taller than the short landscape
+                          // viewport) scroll instead of overflowing the bottom.
+                          return SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IntrinsicHeight(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(child: resultWidget),
+                                      const SizedBox(width: kSpaceXL),
+                                      Expanded(child: actionButtons),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: kSpace4XL),
+                                adBanner,
+                              ],
+                            ),
+                          );
+                        }
+
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(child: resultWidget),
+                            const SizedBox(
+                              height: kSpace4XL,
+                            ),
+                            const SizedBox(
+                              height: kSpaceXS,
+                            ),
+                            actionButtons,
+                            const SizedBox(
+                              height: kSpace4XL,
+                            ),
+                            adBanner,
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
           const TutorialOverlay(),
         ],
       ),

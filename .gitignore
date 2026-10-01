@@ -55,3 +55,28 @@ lib/firebase_options.dart
 firebase.json
 
 android/play-store-service-account.json
+
+# ─── Deployment secrets — NEVER commit real values ──────────────────────────
+# Any local env variants (the committed template .env.example is kept).
+.env.*
+!.env.example
+.env_release
+
+# Android app signing (keystore + its passwords)
+**/key.properties
+**/*.jks
+**/*.keystore
+
+# iOS / App Store Connect signing + API keys
+**/*.p8
+**/*.p12
+**/*.cer
+**/*.mobileprovision
+ios/private_keys/
+AuthKey_*.p8
+
+# Fastlane run artifacts
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/test_output/
+**/fastlane/README.md.bak

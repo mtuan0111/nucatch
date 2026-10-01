@@ -16,8 +16,10 @@ import 'package:skeleton_core/skeleton_core.dart'
         DeviceWrapper,
         AnimatedButton,
         AdMobBanner,
+        CoreLocalizations,
         CustomElevatedButton;
 
+import 'package:nucatch/localization/app_localizations.dart';
 import 'package:nucatch/main.dart' as app;
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show Difficulty;
@@ -30,6 +32,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.d
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart'
     show SeedDemoLeaderboard;
 import 'package:nucatch/helpers/const.dart' show KeyboardOption;
+import 'package:nucatch/helpers/preferences_key.dart' show NucatchPreferencesKey;
 import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/services/ai_greeting_service.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
@@ -107,11 +110,43 @@ Future<void> runScreenWalkthrough(
   bool seedDemoData = false,
 }) async {
   void step(String name) => debugPrint('TEST_STEP: $name');
+  // Layout-only matrix runs pass --dart-define=SKIP_SHOTS=true: the pure
+  // overflow/geometry assertions are the whole point there, and the screenshot
+  // machinery (convertFlutterSurfaceToImage + the per-shot settle loops) is
+  // both the slow part and, on the iOS simulator, an intermittent hang.
+  // Skipping it keeps every assertNoOverflow / assertDeviceWrapperWidth check
+  // but drops the image capture. Defaults false, so the store/CI entry points
+  // that don't pass it behave exactly as before.
+  const skipShots = bool.fromEnvironment('SKIP_SHOTS', defaultValue: false);
   final prefix = '$devicePrefix${landscape ? 'landscape_' : 'portrait_'}';
   // Only the iPad entry points pass a non-empty devicePrefix — gate the new
   // iPad-only layout assertions on it rather than re-deriving device class
   // from physicalSize, so their intent stays explicit at each call site.
   final isIpadRun = devicePrefix.isNotEmpty;
+
+  // Which localization to render/capture, set per run by
+  // tool/screenshots/capture.sh via `--dart-define=NUCATCH_LOCALE=<code>`
+  // (defaults to English). It is pinned onto the app below by writing
+  // `PreferencesKey.LOCALE` before `app.main()` — skeleton_core's SettingBloc
+  // reads it at construction (the same pre-main() seeding the FONT_SIZE stress
+  // relies on) and SkeletonApp sets `MaterialApp.locale` from it. The labels
+  // the navigation taps by are then loaded from that *same* locale, so an
+  // English pass and a Vietnamese pass drive the identical flow without any
+  // English string leaking into a non-English frame.
+  const localeCode = String.fromEnvironment('NUCATCH_LOCALE', defaultValue: 'en');
+  final locale = Locale(localeCode);
+  final coreL10n = await CoreLocalizations.delegate.load(locale);
+  final appL10n = await AppLocalizations.delegate.load(locale);
+  // Menu buttons render their label uppercased (menu_screen.dart) and `tapText`
+  // matches `AnimatedButton.text` exactly, so uppercase these to match.
+  final menuStartLabel = coreL10n.start.toUpperCase();
+  final menuTopScoreLabel = coreL10n.topScore.toUpperCase();
+  final menuSettingLabel = coreL10n.setting.toUpperCase();
+  final menuAboutLabel = coreL10n.about.toUpperCase();
+  final skipTourLabel = appL10n.tourSkip;
+  final updateLaterLabel = coreL10n.later;
+  final mainMenuLabel = coreL10n.mainMenu;
+  final returnToMenuLabel = coreL10n.returnToMenu;
 
   Future<void> doWait(int seconds) async {
     for (int i = 0; i < seconds * 2; i++) {
@@ -137,6 +172,8 @@ Future<void> runScreenWalkthrough(
   final seenScreenshots = <List<int>>[];
 
   Future<void> shot(String name) async {
+    // Layout-only run: no images at all, just the assertions around each shot.
+    if (skipShots) return;
     // Store runs limit output to a curated subset — skip the capture (but not
     // the navigation/assertions that precede it) for anything not in the set.
     if (captureOnly != null) {
@@ -194,8 +231,22 @@ Future<void> runScreenWalkthrough(
 
   /// Fails if the widget tree produced an uncaught rendering exception
   /// (e.g. a RenderFlex overflow) since the last check.
+  ///
+  /// COLLECT_OVERFLOWS=true flips this from fail-fast to gather-all: it records
+  /// every overflow (with its screen label) and keeps going, so a single run
+  /// enumerates every offending screen instead of stopping at the first. The
+  /// end-of-run summary (OVERFLOW_SUMMARY) prints the full list.
+  const collectOverflows =
+      bool.fromEnvironment('COLLECT_OVERFLOWS', defaultValue: false);
+  final overflowReports = <String>[];
   void assertNoOverflow(String label) {
     final exception = tester.takeException();
+    if (exception == null) return;
+    if (collectOverflows) {
+      overflowReports.add('$label: $exception');
+      debugPrint('OVERFLOW_FOUND >> $label: $exception');
+      return;
+    }
     expect(exception, isNull,
         reason: '$label produced a render exception: $exception');
   }
@@ -263,8 +314,8 @@ Future<void> runScreenWalkthrough(
   /// immediately beforehand rather than trusting a single check made
   /// minutes of test-time earlier.
   Future<void> dismissStrayTourOverlay() async {
-    if (find.text('Skip Tour').evaluate().isNotEmpty) {
-      await tester.tap(find.text('Skip Tour').first);
+    if (find.text(skipTourLabel).evaluate().isNotEmpty) {
+      await tester.tap(find.text(skipTourLabel).first);
       await doWait(2);
     }
   }
@@ -507,28 +558,51 @@ Future<void> runScreenWalkthrough(
   // it complete up front means the tour never auto-starts and steals the
   // first tap.
   await prefs.setBool('has_completed_tour', true);
+  // Pin the UI language for this run (default 'en'). Must be set before
+  // app.main(): SettingBloc reads PreferencesKey.LOCALE at construction and
+  // SkeletonApp drives MaterialApp.locale from it.
+  await prefs.setString(PreferencesKey.LOCALE, localeCode);
+
+  // Font-size stress dimension: min (0) / max (10) come in via
+  // `--dart-define=FONT_SIZE=N`, written here (before app.main()) so
+  // skeleton_core's SettingBloc reads it at construction. Absent (-1) keeps
+  // the app's default (8) — and this suite's prior behaviour — unchanged.
+  const injectedFontSize = int.fromEnvironment('FONT_SIZE', defaultValue: -1);
+  if (injectedFontSize >= 0) {
+    await prefs.setInt(PreferencesKey.FONT_SIZE, injectedFontSize);
+    // Seed a last-used difficulty so the difficulty screen actually renders its
+    // "Last played" Smart Default badge under this font-stress run — otherwise
+    // prefs.clear() above hides it and the matrix never exercises it. Gated on
+    // the same font injection so default/store runs stay byte-identical.
+    await prefs.setString(
+        NucatchPreferencesKey.LAST_USED_DIFFICULTY, Difficulty.medium.name);
+  }
 
   step('calling app.main()');
   app.main();
 
   step('waiting for home screen');
-  // Wait for the home screen (splash/init can take a moment).
-  await waitFor(find.text('ABOUT'), maxSeconds: 30);
+  // Wait for the home screen (splash/init can take a moment). Gated on the
+  // MenuScreen widget type rather than a menu label so it stays correct in
+  // every locale.
+  await waitFor(find.byType(MenuScreen), maxSeconds: 30);
 
   // Android renders Flutter to a `SurfaceView` by default, which the
   // platform screenshot channel can't read pixels from — `takeScreenshot()`
   // throws "Bad state: Call convertFlutterSurfaceToImage()..." for every
   // single call until this runs once, switching to a screenshot-able
   // texture-backed view. A no-op on iOS/other platforms.
-  step('switching to a screenshot-able Flutter surface');
-  await binding.convertFlutterSurfaceToImage();
-  await doWait(1);
+  if (!skipShots) {
+    step('switching to a screenshot-able Flutter surface');
+    await binding.convertFlutterSurfaceToImage();
+    await doWait(1);
+  }
 
   step('checking for stray tour overlay');
   for (int i = 0; i < 10; i++) {
-    if (find.text('Skip Tour').evaluate().isNotEmpty) {
+    if (find.text(skipTourLabel).evaluate().isNotEmpty) {
       step('dismissing stray tour overlay');
-      await tester.tap(find.text('Skip Tour').first);
+      await tester.tap(find.text(skipTourLabel).first);
       await doWait(2);
       break;
     }
@@ -544,9 +618,9 @@ Future<void> runScreenWalkthrough(
   // overlay above.
   step('checking for an update-available dialog');
   for (int i = 0; i < 6; i++) {
-    if (find.text('Later').evaluate().isNotEmpty) {
+    if (find.text(updateLaterLabel).evaluate().isNotEmpty) {
       step('dismissing update-available dialog');
-      await tapText('Later');
+      await tapText(updateLaterLabel);
       break;
     }
     await tester.pump(const Duration(milliseconds: 500));
@@ -561,7 +635,7 @@ Future<void> runScreenWalkthrough(
 
   // ── About ─────────────────────────────────────────────────
   await tapMenuOptionAndWait(
-      MenuOption.about, 'ABOUT', find.byType(AboutScreen));
+      MenuOption.about, menuAboutLabel, find.byType(AboutScreen));
   step('asserting AboutScreen');
   expect(find.byType(AboutScreen), findsOneWidget,
       reason: 'About should still be reachable from the menu');
@@ -574,7 +648,7 @@ Future<void> runScreenWalkthrough(
 
   // ── Settings ──────────────────────────────────────────────
   await tapMenuOptionAndWait(
-      MenuOption.setting, 'SETTING', find.byType(SettingScreen));
+      MenuOption.setting, menuSettingLabel, find.byType(SettingScreen));
   step('asserting SettingScreen');
   expect(find.byType(SettingScreen), findsOneWidget,
       reason: 'Settings should still be reachable from the menu');
@@ -587,7 +661,7 @@ Future<void> runScreenWalkthrough(
 
   // ── Leaderboard ───────────────────────────────────────────
   await tapMenuOptionAndWait(
-      MenuOption.topScore, 'TOP SCORE', find.byType(TopScoreScreen));
+      MenuOption.topScore, menuTopScoreLabel, find.byType(TopScoreScreen));
   step('asserting TopScoreScreen');
   expect(find.byType(TopScoreScreen), findsOneWidget,
       reason: 'Leaderboard should still be reachable from the menu');
@@ -613,7 +687,7 @@ Future<void> runScreenWalkthrough(
 
   // ── Select play mode ──────────────────────────────────────
   await tapMenuOptionAndWait(
-      MenuOption.start, 'START', find.byType(SelectPlayModeScreen));
+      MenuOption.start, menuStartLabel, find.byType(SelectPlayModeScreen));
   step('asserting SelectPlayModeScreen');
   expect(find.byType(SelectPlayModeScreen), findsOneWidget,
       reason: 'Start should reach the play-mode picker');
@@ -703,7 +777,7 @@ Future<void> runScreenWalkthrough(
   await shot('${prefix}08_game_over');
   assertNoOverflow('08_game_over');
   step('tapping Main Menu from Game Over');
-  await tapText('Main Menu');
+  await tapText(mainMenuLabel);
   step('asserting back at MenuScreen after Game Over');
   await waitFor(find.byType(MenuScreen), maxSeconds: 10);
   expect(find.byType(MenuScreen), findsOneWidget,
@@ -711,7 +785,7 @@ Future<void> runScreenWalkthrough(
 
   // ── Combat: setup ─────────────────────────────────────────
   await tapMenuOptionAndWait(
-      MenuOption.start, 'START', find.byType(SelectPlayModeScreen));
+      MenuOption.start, menuStartLabel, find.byType(SelectPlayModeScreen));
   expect(find.byType(SelectPlayModeScreen), findsOneWidget);
   step('tapping Combat Mode');
   await tapOptionCard(FontAwesomeIcons.userGroup, 'Combat Mode');
@@ -799,7 +873,7 @@ Future<void> runScreenWalkthrough(
 
   // ── Back out to the main menu ─────────────────────────────
   step('tapping Return to Menu from Combat Game End');
-  await tapText('Return to Menu');
+  await tapText(returnToMenuLabel);
   step('asserting SelectPlayModeScreen after Combat Game End');
   await waitFor(find.byType(SelectPlayModeScreen), maxSeconds: 10);
   expect(find.byType(SelectPlayModeScreen), findsOneWidget,
@@ -810,4 +884,15 @@ Future<void> runScreenWalkthrough(
   expect(find.byType(MenuScreen), findsOneWidget,
       reason: 'should be able to navigate all the way back to the menu');
   step('done');
+  if (collectOverflows) {
+    debugPrint('OVERFLOW_SUMMARY count=${overflowReports.length}');
+    for (final r in overflowReports) {
+      debugPrint('OVERFLOW_SUMMARY_ITEM >> $r');
+    }
+    // Still fail at the end so the exit code reflects "layout not clean", but
+    // only after every screen has been visited and logged.
+    expect(overflowReports, isEmpty,
+        reason: 'overflows on: '
+            '${overflowReports.map((r) => r.split(':').first).join(', ')}');
+  }
 }

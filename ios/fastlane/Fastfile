@@ -48,4 +48,79 @@ platform :ios do
 
     deliver(options)
   end
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Release deployment: build a signed IPA and upload it to TestFlight (staging)
+  # or the App Store (production).
+  #
+  # NOTHING sensitive is hard-coded. The App Store Connect API key comes from the
+  # environment (loaded from .env — see .env.example and docs/DEPLOYMENT.md):
+  #   • ASC_KEY_ID / ASC_ISSUER_ID / ASC_KEY_FILEPATH (path to the .p8).
+  # `flutter build ipa` uses the machine's / CI's code-signing (certificate +
+  # provisioning profile) — see docs/DEPLOYMENT.md for how to provide those.
+  # ───────────────────────────────────────────────────────────────────────────
+
+  IPA_PATH = "../build/ios/ipa/nucatch.ipa".freeze
+
+  # Resolve the App Store Connect API key from env, or fail with guidance.
+  private_lane :asc_api_key do
+    unless ENV["ASC_KEY_ID"] && ENV["ASC_ISSUER_ID"] && ENV["ASC_KEY_FILEPATH"]
+      UI.user_error!("Set ASC_KEY_ID / ASC_ISSUER_ID / ASC_KEY_FILEPATH (see docs/DEPLOYMENT.md).")
+    end
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: ENV["ASC_KEY_FILEPATH"],
+      in_house: false,
+    )
+  end
+
+  # Build the release IPA. Optional params: build_name:, build_number:,
+  # environment: (dart-define APP_ENVIRONMENT, default PRODUCTION).
+  private_lane :build_release_ipa do |options|
+    flutter_args = ["build", "ipa", "--release", "--export-method", "app-store"]
+    flutter_args << "--build-name=#{options[:build_name]}" if options[:build_name]
+    flutter_args << "--build-number=#{options[:build_number]}" if options[:build_number]
+    flutter_args << "--dart-define=APP_ENVIRONMENT=#{options[:environment] || 'PRODUCTION'}"
+    # fastlane runs in ios/, so the Flutter project root is one level up.
+    Dir.chdir("..") do
+      sh("flutter", "pub", "get")
+      sh("flutter", *flutter_args)
+    end
+    UI.user_error!("Expected IPA not found at #{IPA_PATH}") unless File.exist?(IPA_PATH)
+  end
+
+  desc "Staging: build a release IPA and upload to TestFlight (internal testers)"
+  desc "Usage: fastlane ios deploy_staging [build_name:1.2.3 build_number:45]"
+  lane :deploy_staging do |options|
+    build_release_ipa(options.merge(environment: options[:environment] || "DEVELOPMENT"))
+    upload_to_testflight(
+      api_key: asc_api_key,
+      ipa: IPA_PATH,
+      skip_waiting_for_build_processing: true,
+      distribute_external: false,
+    )
+    UI.success("✅ Uploaded to TestFlight (staging).")
+  end
+
+  desc "Production: build a release IPA and upload to App Store Connect (no auto-submit)"
+  desc "Usage: fastlane ios deploy_production [build_name:1.2.3 build_number:45]"
+  lane :deploy_production do |options|
+    build_release_ipa(options.merge(environment: "PRODUCTION"))
+    deliver(
+      api_key: asc_api_key,
+      ipa: IPA_PATH,
+      skip_screenshots: true,
+      skip_metadata: true,
+      submit_for_review: false, # promote to review manually, or wire a flag
+      run_precheck_before_submit: false,
+      force: true,
+    )
+    UI.success("✅ Uploaded to App Store Connect (production). Submit for review when ready.")
+  end
+
+  desc "Alias for deploy_production (fastlane ios deploy)"
+  lane :deploy do |options|
+    deploy_production(options)
+  end
 end

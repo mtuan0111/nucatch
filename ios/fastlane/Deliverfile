@@ -17,5 +17,7 @@
 
 app_identifier "bomnguyen.game.nucatch"
 
-# Default locale for the screenshot-only uploads.
-languages ["en-US"]
+# Localizations uploaded — one screenshot folder each under
+# ios/fastlane/screenshots/<locale>/. Must match the LOCALES matrix in
+# tool/screenshots/capture.sh (App Store Connect locale codes).
+languages ["en-US", "vi"]

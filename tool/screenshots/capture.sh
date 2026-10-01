@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 #
-# Capture nucatch store screenshots for every store-required device size, then
-# sort them into the folder layouts Fastlane's `deliver` (iOS) and `supply`
-# (Android) upload from.
+# Capture nucatch store screenshots for every store-required device size, in
+# every marketing localization (English + Vietnamese), then sort them into the
+# folder layouts Fastlane's `deliver` (iOS) and `supply` (Android) upload from —
+# one localized set per language.
 #
 # The frames come from integration_test/store_screenshots_test.dart, driven by
 # test_driver/screenshot_driver.dart. That run boots the real app but (a) runs
 # signed-out and (b) swaps the leaderboard for a curated demo one, so no real
 # user data / username / email ever appears — every value on screen is curated
-# demo content. See tool/screenshots/README.md.
+# demo content. The UI language is pinned per run via
+# `--dart-define=NUCATCH_LOCALE=<code>` (the walkthrough seeds it onto
+# PreferencesKey.LOCALE before app.main() and taps widgets by their translated
+# labels), so an English pass and a Vietnamese pass render the same flow in each
+# language. See tool/screenshots/README.md.
 #
 # Usage:
 #   tool/screenshots/capture.sh all        # iOS + Android (default)
@@ -23,14 +28,25 @@ set -euo pipefail
 # --------------------------------------------------------------------------
 # Config
 # --------------------------------------------------------------------------
-LOCALE="en-US"                         # English only (per plan)
+# Localizations to capture. Format: "fastlane_dir|dart_locale".
+#   fastlane_dir — the folder deliver (iOS) / supply (Android) upload from.
+#                  App Store Connect and Play both key US English as "en-US"
+#                  and Vietnamese as "vi".
+#   dart_locale  — the code handed to the app via --dart-define=NUCATCH_LOCALE,
+#                  which pins both the UI locale and the widget-finder language
+#                  in the walkthrough. To add a language, add a row (the
+#                  fastlane_dir must be the store's locale code, e.g. "ja").
+LOCALES=(
+  "en-US|en"
+  "vi|vi"
+)
 DRIVER="test_driver/screenshot_driver.dart"
 TARGET="integration_test/store_screenshots_test.dart"
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-RAW_DIR="$REPO_ROOT/build/screenshots"        # per-device raw PNGs land here
-IOS_OUT="$REPO_ROOT/ios/fastlane/screenshots/$LOCALE"
-AND_META="$REPO_ROOT/android/fastlane/metadata/android/$LOCALE/images"
+RAW_DIR="$REPO_ROOT/build/screenshots"        # per-device/-locale raw PNGs land here
+IOS_SHOTS="$REPO_ROOT/ios/fastlane/screenshots"             # <locale>/ appended per run
+AND_META_ROOT="$REPO_ROOT/android/fastlane/metadata/android" # <locale>/images/... appended
 
 # iOS device matrix. `deliver` maps each PNG to a display type by its
 # resolution, so filenames only need to be unique; we tag them by device on copy.
@@ -43,8 +59,18 @@ IOS_DEVICES=(
 
 # Android device matrix — one phone (phoneScreenshots) + one 10" tablet
 # (tenInchScreenshots). Format: "bucket|avd_name".
+#
+# IMPORTANT — Google Play rejects any screenshot whose long side is more than
+# TWICE its short side (max 2:1 aspect ratio). Most modern phones are 19.5:9 or
+# 20:9 (~2.17:1), so a full-resolution portrait grab from e.g. a Pixel 7 Pro
+# (1440x3120) is REJECTED. The phone AVD MUST be <= 2:1. `flutter_emulator`
+# (device "pixel", 1080x1920 = 1.78:1) is the default — it's the AVD
+# `flutter emulators --create` makes, and it matches Play's recommended
+# 1080x1920 phone shape. A `Pixel_2` or a custom 1080x2160 (2.0:1) AVD also
+# work. The 10" `Pixel_Tablet` (2560x1600 = 1.6:1) is already compliant.
+# report_dimensions() flags any frame that slips over 2:1.
 ANDROID_DEVICES=(
-  "phone|Pixel_7_Pro"
+  "phone|flutter_emulator"
   "tenInch|Pixel_Tablet"
 )
 
@@ -75,7 +101,6 @@ ios_udid_for() {
 
 capture_ios() {
   command -v xcrun >/dev/null || die "xcrun not found — Xcode required for iOS."
-  mkdir -p "$IOS_OUT"
 
   # Force the iOS app to rebuild from THIS target. `flutter drive` on iOS
   # reuses an existing build/ios/.../Runner.app when it thinks nothing changed
@@ -109,16 +134,25 @@ capture_ios() {
       --cellularMode active --cellularBars 4 \
       --dataNetwork wifi --wifiMode active --wifiBars 3 2>/dev/null || true
 
-    local out="$RAW_DIR/$tag"
-    rm -rf "$out"; mkdir -p "$out"
-    log "iOS: driving screenshots on '$name'"
-    NUCATCH_SHOT_DIR="$out" flutter drive \
-      --driver="$DRIVER" --target="$TARGET" -d "$udid"
+    # Boot the sim once, then drive it once per locale — booting is the slow
+    # part, so it's reused across every language.
+    for loc in "${LOCALES[@]}"; do
+      local fdir="${loc%%|*}"; local dloc="${loc#*|}"
+      local ios_out="$IOS_SHOTS/$fdir"
+      mkdir -p "$ios_out"
 
-    log "iOS: copying '$tag' frames into $IOS_OUT (device-tagged for uniqueness)"
-    for png in "$out"/*.png; do
-      [[ -e "$png" ]] || { warn "no PNGs produced for '$name'"; break; }
-      cp "$png" "$IOS_OUT/${tag}_$(strip_prefix "$png")"
+      local out="$RAW_DIR/${tag}_${dloc}"
+      rm -rf "$out"; mkdir -p "$out"
+      log "iOS: driving '$name' screenshots for '$fdir' (NUCATCH_LOCALE=$dloc)"
+      NUCATCH_SHOT_DIR="$out" flutter drive \
+        --driver="$DRIVER" --target="$TARGET" -d "$udid" \
+        --dart-define=NUCATCH_LOCALE="$dloc"
+
+      log "iOS: copying '$tag'/'$fdir' frames into $ios_out (device-tagged for uniqueness)"
+      for png in "$out"/*.png; do
+        [[ -e "$png" ]] || { warn "no PNGs produced for '$name' ($fdir)"; break; }
+        cp "$png" "$ios_out/${tag}_$(strip_prefix "$png")"
+      done
     done
 
     xcrun simctl status_bar "$udid" clear 2>/dev/null || true
@@ -166,7 +200,6 @@ capture_android() {
 
   for entry in "${ANDROID_DEVICES[@]}"; do
     local bucket="${entry%%|*}"; local avd="${entry#*|}"
-    local dest="$AND_META/${bucket}Screenshots"
 
     # Reuse the AVD if it's already running; otherwise boot it ourselves.
     local serial started_here=0
@@ -199,17 +232,25 @@ capture_android() {
     done
     android_demo_statusbar "$serial"
 
-    local out="$RAW_DIR/android_$bucket"
-    rm -rf "$out"; mkdir -p "$out"
-    log "Android: driving screenshots on '$avd' ($serial)"
-    NUCATCH_SHOT_DIR="$out" flutter drive \
-      --driver="$DRIVER" --target="$TARGET" -d "$serial"
+    # Boot the emulator once, then drive it once per locale — booting is the
+    # slow part, so it's reused across every language.
+    for loc in "${LOCALES[@]}"; do
+      local fdir="${loc%%|*}"; local dloc="${loc#*|}"
+      local dest="$AND_META_ROOT/$fdir/images/${bucket}Screenshots"
 
-    log "Android: copying '$bucket' frames into $dest"
-    rm -rf "$dest"; mkdir -p "$dest"
-    for png in "$out"/*.png; do
-      [[ -e "$png" ]] || { warn "no PNGs produced for '$avd'"; break; }
-      cp "$png" "$dest/$(strip_prefix "$png")"
+      local out="$RAW_DIR/android_${bucket}_${dloc}"
+      rm -rf "$out"; mkdir -p "$out"
+      log "Android: driving '$avd' ($serial) screenshots for '$fdir' (NUCATCH_LOCALE=$dloc)"
+      NUCATCH_SHOT_DIR="$out" flutter drive \
+        --driver="$DRIVER" --target="$TARGET" -d "$serial" \
+        --dart-define=NUCATCH_LOCALE="$dloc"
+
+      log "Android: copying '$bucket'/'$fdir' frames into $dest"
+      rm -rf "$dest"; mkdir -p "$dest"
+      for png in "$out"/*.png; do
+        [[ -e "$png" ]] || { warn "no PNGs produced for '$avd' ($fdir)"; break; }
+        cp "$png" "$dest/$(strip_prefix "$png")"
+      done
     done
 
     adb -s "$serial" shell am broadcast -a com.android.systemui.demo -e command exit >/dev/null || true
@@ -223,14 +264,33 @@ capture_android() {
 # --------------------------------------------------------------------------
 # Report + run
 # --------------------------------------------------------------------------
+# Prints each captured frame's dimensions, and loudly flags any Android frame
+# whose long side exceeds 2x its short side — Google Play rejects those (see the
+# ANDROID_DEVICES note). iOS has no such rule, so its frames are only reported.
 report_dimensions() {
   command -v sips >/dev/null || return 0
   log "Captured frame dimensions:"
-  find "$IOS_OUT" "$AND_META" -name '*.png' 2>/dev/null | sort | while read -r f; do
-    local dims; dims="$(sips -g pixelWidth -g pixelHeight "$f" 2>/dev/null \
-      | awk '/pixelWidth/{w=$2} /pixelHeight/{h=$2} END{print w"x"h}')"
-    printf '   %-9s  %s\n' "$dims" "${f#$REPO_ROOT/}"
-  done
+  local violations=0
+  while read -r f; do
+    [[ -n "$f" ]] || continue
+    local w h dims ratio flag
+    w="$(sips -g pixelWidth  "$f" 2>/dev/null | awk '/pixelWidth/{print $2}')"
+    h="$(sips -g pixelHeight "$f" 2>/dev/null | awk '/pixelHeight/{print $2}')"
+    dims="${w}x${h}"
+    flag=""
+    if [[ "$f" == "$AND_META_ROOT/"* && -n "$w" && -n "$h" ]]; then
+      # long/short > 2.0 ? (awk handles the float compare)
+      if awk -v a="$w" -v b="$h" 'BEGIN{lo=(a<b?a:b); hi=(a>b?a:b); exit !(hi>2*lo)}'; then
+        flag="  ✖ PLAY-REJECT: aspect > 2:1"
+        violations=$((violations + 1))
+      fi
+    fi
+    printf '   %-10s  %s%s\n' "$dims" "${f#$REPO_ROOT/}" "$flag"
+  done < <(find "$IOS_SHOTS" "$AND_META_ROOT" -name '*.png' 2>/dev/null | sort)
+
+  if (( violations > 0 )); then
+    warn "$violations Android frame(s) exceed Play's 2:1 aspect limit and will be REJECTED — use a <= 2:1 phone AVD (see ANDROID_DEVICES) and re-run."
+  fi
 }
 
 case "$MODE" in
@@ -242,13 +302,17 @@ esac
 
 report_dimensions
 
+# Human-readable list of the locales just captured (fastlane dir names).
+LOCALE_DIRS=("${LOCALES[@]%%|*}")
+locale_csv="$(IFS=,; printf '%s' "${LOCALE_DIRS[*]}")"
+
 cat <<EOF
 
-$(printf '\033[1;32m✓ Screenshots captured.\033[0m')
+$(printf '\033[1;32m✓ Screenshots captured for: %s\033[0m' "${LOCALE_DIRS[*]}")
 
-Review the PNGs before uploading:
-  iOS:     ios/fastlane/screenshots/$LOCALE/
-  Android: android/fastlane/metadata/android/$LOCALE/images/{phone,tenInch}Screenshots/
+Review the PNGs before uploading (one folder per language):
+  iOS:     ios/fastlane/screenshots/{$locale_csv}/
+  Android: android/fastlane/metadata/android/{$locale_csv}/images/{phone,tenInch}Screenshots/
 
 Then upload (needs store credentials — see tool/screenshots/README.md):
   iOS:     (cd ios     && bundle exec fastlane ios     upload_screenshots)
