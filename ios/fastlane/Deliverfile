@@ -1,0 +1,21 @@
+# Deliverfile — configuration for `fastlane deliver`, used by the
+# `upload_screenshots` lane in Fastfile.
+#
+# Screenshots live in ios/fastlane/screenshots/<locale>/ and are produced by
+# tool/screenshots/capture.sh. `deliver` maps each PNG to an App Store display
+# type by its pixel dimensions, so the App Store store-minimum set is:
+#
+#   6.7" iPhone : 1284 x 2778   (iPhone 13 Pro Max)
+#   13"  iPad   : 2064 x 2752   (iPad Pro 13-inch, M4)
+#
+# Authentication (App Store Connect API key) is supplied at runtime via env
+# vars inside the lane — ASC_KEY_ID / ASC_ISSUER_ID / ASC_KEY_FILEPATH — not
+# hard-coded here. See tool/screenshots/README.md.
+#
+# The operational flags (skip_binary_upload, submit_for_review: false, etc.)
+# are set in the lane so this file stays a thin, documented default.
+
+app_identifier "bomnguyen.game.nucatch"
+
+# Default locale for the screenshot-only uploads.
+languages ["en-US"]

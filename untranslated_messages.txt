@@ -1,25 +1,30 @@
 {
   "de": [
+    "lastPlayedLabel",
     "tourAboutTitle",
     "tourAboutDesc"
   ],
 
   "es": [
+    "lastPlayedLabel",
     "tourAboutTitle",
     "tourAboutDesc"
   ],
 
   "fr": [
+    "lastPlayedLabel",
     "tourAboutTitle",
     "tourAboutDesc"
   ],
 
   "hi": [
+    "lastPlayedLabel",
     "tourAboutTitle",
     "tourAboutDesc"
   ],
 
   "id": [
+    "lastPlayedLabel",
     "tourAboutTitle",
     "tourAboutDesc"
   ],
@@ -30,6 +35,7 @@
   ],
 
   "th": [
+    "lastPlayedLabel",
     "tourAboutTitle",
     "tourAboutDesc"
   ],
@@ -40,6 +46,7 @@
   ],
 
   "zh": [
+    "lastPlayedLabel",
     "tourAboutTitle",
     "tourAboutDesc"
   ]

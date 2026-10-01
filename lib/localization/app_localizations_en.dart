@@ -15,6 +15,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instantStart => 'Instant Start';
 
   @override
+  String get lastPlayedLabel => 'Last played';
+
+  @override
   String get selectLevel => 'Select level';
 
   @override
@@ -457,21 +460,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tourLeaderboardDesc =>
-      'Track your progress here! View **global rankings**, your **personal records**, and **statistics** including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Finally, let\'s visit Settings.';
+      'Track your progress here! View **global rankings**, your **personal records**, and **statistics** including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Next, let\'s visit Settings.';
 
   @override
   String get tourSettingsTitle => 'Settings - Customize';
 
   @override
   String get tourSettingsDesc =>
-      'Customize everything here! Change your **username**, select a **theme**, adjust **sound/music**, choose your **language**, and manage **privacy settings**. You can restart this tour anytime from here. That\'s it - you\'re ready to play!';
+      'Customize everything here! Change your **username**, select a **theme**, adjust **sound/music**, choose your **language**, and manage **privacy settings**. You can restart this tour anytime from here. One last menu stop: **History & Rules**.';
 
   @override
   String get tourAboutTitle => 'History & Rules';
 
   @override
   String get tourAboutDesc =>
-      'Discover the ancient legend behind the tower and learn the rules of the game.';
+      'Read the legend behind the tower and the full rules of the game any time from here. That covers the menu! Tap **Next** to start a short **hands-on practice** — you\'ll try **Regular**, **Pick Right** and **Combat** modes with a guide on screen.';
 
   @override
   String get tourNext => 'Next';
@@ -701,4 +704,88 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get menuGreeting => 'Test your memory and math skills today!';
+
+  @override
+  String get accountSectionTitle => 'Account';
+
+  @override
+  String get signInTitle => 'Sign in';
+
+  @override
+  String get signInSubtitle =>
+      'Keep your scores and rank safe — sign in to carry them to a new device.';
+
+  @override
+  String get signInWithGoogle => 'Continue with Google';
+
+  @override
+  String get signInWithApple => 'Continue with Apple';
+
+  @override
+  String get signOut => 'Sign out';
+
+  @override
+  String signedInAs(String account) {
+    return 'Signed in as $account';
+  }
+
+  @override
+  String get playingAsGuest => 'Playing as guest';
+
+  @override
+  String get signInAction => 'Sign in';
+
+  @override
+  String get linkSuccessMessage =>
+      'Signed in. Your scores are now saved to your account.';
+
+  @override
+  String get linkConflictTitle => 'Account already in use';
+
+  @override
+  String get linkConflictMessage =>
+      'This account already exists. Switching to it will leave your current guest scores behind.';
+
+  @override
+  String get linkConflictSwitch => 'Switch account';
+
+  @override
+  String get authError => 'Sign-in failed. Please try again.';
+
+  @override
+  String get authErrorCancelled => 'Sign-in cancelled.';
+
+  @override
+  String get authErrorNetwork =>
+      'No connection. Check your network and try again.';
+
+  @override
+  String get authErrorCredentialRejected =>
+      'Sign-in was rejected. Please try again.';
+
+  @override
+  String get authErrorProviderDisabled =>
+      'This sign-in method is not available right now.';
+
+  @override
+  String get authErrorAppleUnavailable =>
+      'Sign in with Apple is not available on this device.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Too many attempts. Please wait a moment and try again.';
+
+  @override
+  String get authErrorAlreadyLinked => 'This account is already linked.';
+
+  @override
+  String get authErrorAccountDisabled => 'This account has been disabled.';
+
+  @override
+  String get authErrorAccountExistsDifferentCredential =>
+      'That email is already used by another sign-in method.';
+
+  @override
+  String get authErrorLinkConflict =>
+      'This account already belongs to someone else.';
 }

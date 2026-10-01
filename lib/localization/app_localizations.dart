@@ -126,6 +126,12 @@ abstract class AppLocalizations {
   /// **'Instant Start'**
   String get instantStart;
 
+  /// Badge shown on the difficulty the player used most recently (smart default)
+  ///
+  /// In en, this message translates to:
+  /// **'Last played'**
+  String get lastPlayedLabel;
+
   /// Prompt for user to select the game level
   ///
   /// In en, this message translates to:
@@ -893,7 +899,7 @@ abstract class AppLocalizations {
   /// Description for leaderboard tour step
   ///
   /// In en, this message translates to:
-  /// **'Track your progress here! View **global rankings**, your **personal records**, and **statistics** including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Finally, let\'s visit Settings.'**
+  /// **'Track your progress here! View **global rankings**, your **personal records**, and **statistics** including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Next, let\'s visit Settings.'**
   String get tourLeaderboardDesc;
 
   /// Title for settings step
@@ -905,7 +911,7 @@ abstract class AppLocalizations {
   /// Description for settings tour step
   ///
   /// In en, this message translates to:
-  /// **'Customize everything here! Change your **username**, select a **theme**, adjust **sound/music**, choose your **language**, and manage **privacy settings**. You can restart this tour anytime from here. That\'s it - you\'re ready to play!'**
+  /// **'Customize everything here! Change your **username**, select a **theme**, adjust **sound/music**, choose your **language**, and manage **privacy settings**. You can restart this tour anytime from here. One last menu stop: **History & Rules**.'**
   String get tourSettingsDesc;
 
   /// Title for about tour step
@@ -917,7 +923,7 @@ abstract class AppLocalizations {
   /// Description for about tour step
   ///
   /// In en, this message translates to:
-  /// **'Discover the ancient legend behind the tower and learn the rules of the game.'**
+  /// **'Read the legend behind the tower and the full rules of the game any time from here. That covers the menu! Tap **Next** to start a short **hands-on practice** — you\'ll try **Regular**, **Pick Right** and **Combat** modes with a guide on screen.'**
   String get tourAboutDesc;
 
   /// Next button in tour
@@ -1309,6 +1315,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Test your memory and math skills today!'**
   String get menuGreeting;
+
+  /// Settings section header for the signed-in account
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountSectionTitle;
+
+  /// Title of the sign-in sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signInTitle;
+
+  /// Explains why signing in is worth it
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your scores and rank safe — sign in to carry them to a new device.'**
+  String get signInSubtitle;
+
+  /// Google sign-in button label
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get signInWithGoogle;
+
+  /// Apple sign-in button label
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get signInWithApple;
+
+  /// Sign out button label
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// Shows which account is signed in
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as {account}'**
+  String signedInAs(String account);
+
+  /// Shown when the session is still anonymous
+  ///
+  /// In en, this message translates to:
+  /// **'Playing as guest'**
+  String get playingAsGuest;
+
+  /// Button that opens the sign-in sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signInAction;
+
+  /// Toast after a guest session is upgraded in place
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in. Your scores are now saved to your account.'**
+  String get linkSuccessMessage;
+
+  /// Title of the account-conflict dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Account already in use'**
+  String get linkConflictTitle;
+
+  /// Explains that switching abandons guest progress
+  ///
+  /// In en, this message translates to:
+  /// **'This account already exists. Switching to it will leave your current guest scores behind.'**
+  String get linkConflictMessage;
+
+  /// Confirm switching to the existing account
+  ///
+  /// In en, this message translates to:
+  /// **'Switch account'**
+  String get linkConflictSwitch;
+
+  /// Generic auth failure
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in failed. Please try again.'**
+  String get authError;
+
+  /// User dismissed the provider sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in cancelled.'**
+  String get authErrorCancelled;
+
+  /// No usable network connection
+  ///
+  /// In en, this message translates to:
+  /// **'No connection. Check your network and try again.'**
+  String get authErrorNetwork;
+
+  /// Firebase rejected the provider token
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in was rejected. Please try again.'**
+  String get authErrorCredentialRejected;
+
+  /// Provider not configured/enabled
+  ///
+  /// In en, this message translates to:
+  /// **'This sign-in method is not available right now.'**
+  String get authErrorProviderDisabled;
+
+  /// Apple sign-in unavailable on this device
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Apple is not available on this device.'**
+  String get authErrorAppleUnavailable;
+
+  /// Rate limited
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please wait a moment and try again.'**
+  String get authErrorTooManyRequests;
+
+  /// Provider already linked to this account
+  ///
+  /// In en, this message translates to:
+  /// **'This account is already linked.'**
+  String get authErrorAlreadyLinked;
+
+  /// Account disabled by an administrator
+  ///
+  /// In en, this message translates to:
+  /// **'This account has been disabled.'**
+  String get authErrorAccountDisabled;
+
+  /// Identity belongs to an account with another provider
+  ///
+  /// In en, this message translates to:
+  /// **'That email is already used by another sign-in method.'**
+  String get authErrorAccountExistsDifferentCredential;
+
+  /// Identity already belongs to another account
+  ///
+  /// In en, this message translates to:
+  /// **'This account already belongs to someone else.'**
+  String get authErrorLinkConflict;
 }
 
 class _AppLocalizationsDelegate

@@ -6,6 +6,7 @@ import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.d
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart'
     as tlre;
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/widgets/account_setting_row.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({
@@ -32,6 +33,19 @@ class SettingScreen extends StatelessWidget {
         }
       },
       additionalSettingsBuilder: (context, settingState, buildField) => [
+        // Account — sign in with Google/Apple, or show who is signed in.
+        // Placed here rather than on its own screen because this is where a
+        // player already comes to set their leaderboard name, and the two
+        // decisions ("who am I" / "keep it across devices") belong together.
+        buildField(
+          context,
+          iconData: FontAwesomeIcons.userShield,
+          title: lang(context).accountSectionTitle,
+          child: BlocBuilder<UserBloc, UserState>(
+            builder: (context, userState) =>
+                AccountSettingRow(userState: userState),
+          ),
+        ),
         // Restart Tour Button
         buildField(
           context,

@@ -551,9 +551,9 @@
   "tourJoinRoomTitle": "Modo Combate → Unirse a Sala",
   "tourJoinRoomDesc": "Segunda opción: **Unirse a Sala** te hace el **invitado**. Después de otorgar permisos, **escanearás** salas cercanas, seleccionarás una y tocarás **listo**. El anfitrión elige la dificultad, y **jugarás segundo** inicialmente. Ahora revisemos las otras características del menú.",
   "tourLeaderboardTitle": "Mejor Puntuación - Clasificaciones",
-  "tourLeaderboardDesc": "¡Rastrea tu progreso aquí! Ve **clasificaciones globales**, tus **récords personales** y **estadísticas** incluyendo juegos jugados, tasa de victorias y precisión. Compara con amigos y observa cómo mejoras con el tiempo. Finalmente, visitemos Configuración.",
+  "tourLeaderboardDesc": "¡Rastrea tu progreso aquí! Ve **clasificaciones globales**, tus **récords personales** y **estadísticas** incluyendo juegos jugados, tasa de victorias y precisión. Compara con amigos y observa cómo mejoras con el tiempo. A continuación, visitemos Configuración.",
   "tourSettingsTitle": "Configuración - Personalizar",
-  "tourSettingsDesc": "¡Personaliza todo aquí! Cambia tu **nombre de usuario**, selecciona un **tema**, ajusta **sonido/música**, elige tu **idioma** y administra la privacidad. Puedes reiniciar este tour en cualquier momento desde aquí. ¡Estás listo para jugar!",
+  "tourSettingsDesc": "¡Personaliza todo aquí! Cambia tu **nombre de usuario**, selecciona un **tema**, ajusta **sonido/música**, elige tu **idioma** y administra la privacidad. Puedes reiniciar este tour en cualquier momento desde aquí.",
   "tourNext": "Siguiente",
   "tourPrevious": "Anterior",
   "tourSkip": "Saltar Tour",
@@ -625,5 +625,106 @@
   "menuGreeting": "Test your memory and math skills today!",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
+  },
+  "accountSectionTitle": "Cuenta",
+  "@accountSectionTitle": {
+    "description": "Settings section header for the signed-in account"
+  },
+  "signInTitle": "Iniciar sesión",
+  "@signInTitle": {
+    "description": "Title of the sign-in sheet"
+  },
+  "signInSubtitle": "Guarda tus puntuaciones y tu rango: inicia sesión para llevarlos a otro dispositivo.",
+  "@signInSubtitle": {
+    "description": "Explains why signing in is worth it"
+  },
+  "signInWithGoogle": "Continuar con Google",
+  "@signInWithGoogle": {
+    "description": "Google sign-in button label"
+  },
+  "signInWithApple": "Continuar con Apple",
+  "@signInWithApple": {
+    "description": "Apple sign-in button label"
+  },
+  "signOut": "Cerrar sesión",
+  "@signOut": {
+    "description": "Sign out button label"
+  },
+  "signedInAs": "Sesión iniciada como {account}",
+  "@signedInAs": {
+    "description": "Shows which account is signed in",
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "playingAsGuest": "Jugando como invitado",
+  "@playingAsGuest": {
+    "description": "Shown when the session is still anonymous"
+  },
+  "signInAction": "Iniciar sesión",
+  "@signInAction": {
+    "description": "Button that opens the sign-in sheet"
+  },
+  "linkSuccessMessage": "Sesión iniciada. Tus puntuaciones ya se guardan en tu cuenta.",
+  "@linkSuccessMessage": {
+    "description": "Toast after a guest session is upgraded in place"
+  },
+  "linkConflictTitle": "La cuenta ya está en uso",
+  "@linkConflictTitle": {
+    "description": "Title of the account-conflict dialog"
+  },
+  "linkConflictMessage": "Esta cuenta ya existe. Cambiar a ella dejará atrás tus puntuaciones de invitado.",
+  "@linkConflictMessage": {
+    "description": "Explains that switching abandons guest progress"
+  },
+  "linkConflictSwitch": "Cambiar de cuenta",
+  "@linkConflictSwitch": {
+    "description": "Confirm switching to the existing account"
+  },
+  "authError": "No se pudo iniciar sesión. Inténtalo de nuevo.",
+  "@authError": {
+    "description": "Generic auth failure"
+  },
+  "authErrorCancelled": "Inicio de sesión cancelado.",
+  "@authErrorCancelled": {
+    "description": "User dismissed the provider sheet"
+  },
+  "authErrorNetwork": "Sin conexión. Comprueba tu red e inténtalo de nuevo.",
+  "@authErrorNetwork": {
+    "description": "No usable network connection"
+  },
+  "authErrorCredentialRejected": "Se rechazó el inicio de sesión. Inténtalo de nuevo.",
+  "@authErrorCredentialRejected": {
+    "description": "Firebase rejected the provider token"
+  },
+  "authErrorProviderDisabled": "Este método de inicio de sesión no está disponible ahora.",
+  "@authErrorProviderDisabled": {
+    "description": "Provider not configured/enabled"
+  },
+  "authErrorAppleUnavailable": "Iniciar sesión con Apple no está disponible en este dispositivo.",
+  "@authErrorAppleUnavailable": {
+    "description": "Apple sign-in unavailable on this device"
+  },
+  "authErrorTooManyRequests": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
+  "@authErrorTooManyRequests": {
+    "description": "Rate limited"
+  },
+  "authErrorAlreadyLinked": "Esta cuenta ya está vinculada.",
+  "@authErrorAlreadyLinked": {
+    "description": "Provider already linked to this account"
+  },
+  "authErrorAccountDisabled": "Esta cuenta ha sido deshabilitada.",
+  "@authErrorAccountDisabled": {
+    "description": "Account disabled by an administrator"
+  },
+  "authErrorAccountExistsDifferentCredential": "Ese correo ya se usa con otro método de inicio de sesión.",
+  "@authErrorAccountExistsDifferentCredential": {
+    "description": "Identity belongs to an account with another provider"
+  },
+  "authErrorLinkConflict": "Esta cuenta ya pertenece a otra persona.",
+  "@authErrorLinkConflict": {
+    "description": "Identity already belongs to another account"
   }
 }

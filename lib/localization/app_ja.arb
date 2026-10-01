@@ -8,6 +8,10 @@
   "@instantStart": {
     "description": "クイックゲーム開始のためのインスタントスタートボタン"
   },
+  "lastPlayedLabel": "前回プレイ",
+  "@lastPlayedLabel": {
+    "description": "Badge shown on the difficulty the player used most recently (smart default)"
+  },
   "selectLevel": "レベルを選択",
   "@selectLevel": {
     "description": "Prompt for user to select the game level"
@@ -625,5 +629,106 @@
   "menuGreeting": "Test your memory and math skills today!",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
+  },
+  "accountSectionTitle": "アカウント",
+  "@accountSectionTitle": {
+    "description": "Settings section header for the signed-in account"
+  },
+  "signInTitle": "サインイン",
+  "@signInTitle": {
+    "description": "Title of the sign-in sheet"
+  },
+  "signInSubtitle": "スコアとランクを安全に保存 — サインインすると新しい端末でも引き継げます。",
+  "@signInSubtitle": {
+    "description": "Explains why signing in is worth it"
+  },
+  "signInWithGoogle": "Google で続行",
+  "@signInWithGoogle": {
+    "description": "Google sign-in button label"
+  },
+  "signInWithApple": "Apple で続行",
+  "@signInWithApple": {
+    "description": "Apple sign-in button label"
+  },
+  "signOut": "サインアウト",
+  "@signOut": {
+    "description": "Sign out button label"
+  },
+  "signedInAs": "{account} でサインイン中",
+  "@signedInAs": {
+    "description": "Shows which account is signed in",
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "playingAsGuest": "ゲストとしてプレイ中",
+  "@playingAsGuest": {
+    "description": "Shown when the session is still anonymous"
+  },
+  "signInAction": "サインイン",
+  "@signInAction": {
+    "description": "Button that opens the sign-in sheet"
+  },
+  "linkSuccessMessage": "サインインしました。スコアはアカウントに保存されます。",
+  "@linkSuccessMessage": {
+    "description": "Toast after a guest session is upgraded in place"
+  },
+  "linkConflictTitle": "このアカウントは使用中です",
+  "@linkConflictTitle": {
+    "description": "Title of the account-conflict dialog"
+  },
+  "linkConflictMessage": "このアカウントは既に存在します。切り替えると現在のゲストスコアは引き継がれません。",
+  "@linkConflictMessage": {
+    "description": "Explains that switching abandons guest progress"
+  },
+  "linkConflictSwitch": "アカウントを切り替える",
+  "@linkConflictSwitch": {
+    "description": "Confirm switching to the existing account"
+  },
+  "authError": "サインインに失敗しました。もう一度お試しください。",
+  "@authError": {
+    "description": "Generic auth failure"
+  },
+  "authErrorCancelled": "サインインをキャンセルしました。",
+  "@authErrorCancelled": {
+    "description": "User dismissed the provider sheet"
+  },
+  "authErrorNetwork": "接続がありません。ネットワークを確認してください。",
+  "@authErrorNetwork": {
+    "description": "No usable network connection"
+  },
+  "authErrorCredentialRejected": "サインインが拒否されました。もう一度お試しください。",
+  "@authErrorCredentialRejected": {
+    "description": "Firebase rejected the provider token"
+  },
+  "authErrorProviderDisabled": "このサインイン方法は現在利用できません。",
+  "@authErrorProviderDisabled": {
+    "description": "Provider not configured/enabled"
+  },
+  "authErrorAppleUnavailable": "この端末では Apple でサインインできません。",
+  "@authErrorAppleUnavailable": {
+    "description": "Apple sign-in unavailable on this device"
+  },
+  "authErrorTooManyRequests": "試行回数が多すぎます。しばらくしてからお試しください。",
+  "@authErrorTooManyRequests": {
+    "description": "Rate limited"
+  },
+  "authErrorAlreadyLinked": "このアカウントは既にリンクされています。",
+  "@authErrorAlreadyLinked": {
+    "description": "Provider already linked to this account"
+  },
+  "authErrorAccountDisabled": "このアカウントは無効になっています。",
+  "@authErrorAccountDisabled": {
+    "description": "Account disabled by an administrator"
+  },
+  "authErrorAccountExistsDifferentCredential": "そのメールアドレスは別のサインイン方法で使用されています。",
+  "@authErrorAccountExistsDifferentCredential": {
+    "description": "Identity belongs to an account with another provider"
+  },
+  "authErrorLinkConflict": "このアカウントは既に他のユーザーのものです。",
+  "@authErrorLinkConflict": {
+    "description": "Identity already belongs to another account"
   }
 }

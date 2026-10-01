@@ -15,6 +15,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get instantStart => 'Bắt đầu nhanh';
 
   @override
+  String get lastPlayedLabel => 'Chơi gần nhất';
+
+  @override
   String get selectLevel => 'Chọn cấp độ';
 
   @override
@@ -472,7 +475,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get tourAboutDesc =>
-      'Discover the ancient legend behind the tower and learn the rules of the game.';
+      'Read the legend behind the tower and the full rules of the game any time from here. That covers the menu! Tap **Next** to start a short **hands-on practice** — you\'ll try **Regular**, **Pick Right** and **Combat** modes with a guide on screen.';
 
   @override
   String get tourNext => 'Tiếp theo';
@@ -703,4 +706,87 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get menuGreeting =>
       'Thử thách trí nhớ và kỹ năng tính toán của bạn ngay lúc này!';
+
+  @override
+  String get accountSectionTitle => 'Tài khoản';
+
+  @override
+  String get signInTitle => 'Đăng nhập';
+
+  @override
+  String get signInSubtitle =>
+      'Giữ an toàn điểm số và thứ hạng — đăng nhập để mang chúng sang thiết bị mới.';
+
+  @override
+  String get signInWithGoogle => 'Tiếp tục với Google';
+
+  @override
+  String get signInWithApple => 'Tiếp tục với Apple';
+
+  @override
+  String get signOut => 'Đăng xuất';
+
+  @override
+  String signedInAs(String account) {
+    return 'Đã đăng nhập bằng $account';
+  }
+
+  @override
+  String get playingAsGuest => 'Đang chơi với tư cách khách';
+
+  @override
+  String get signInAction => 'Đăng nhập';
+
+  @override
+  String get linkSuccessMessage =>
+      'Đã đăng nhập. Điểm số của bạn giờ được lưu vào tài khoản.';
+
+  @override
+  String get linkConflictTitle => 'Tài khoản đã được sử dụng';
+
+  @override
+  String get linkConflictMessage =>
+      'Tài khoản này đã tồn tại. Chuyển sang tài khoản đó sẽ bỏ lại điểm số khách hiện tại.';
+
+  @override
+  String get linkConflictSwitch => 'Chuyển tài khoản';
+
+  @override
+  String get authError => 'Đăng nhập thất bại. Vui lòng thử lại.';
+
+  @override
+  String get authErrorCancelled => 'Đã hủy đăng nhập.';
+
+  @override
+  String get authErrorNetwork =>
+      'Không có kết nối. Hãy kiểm tra mạng và thử lại.';
+
+  @override
+  String get authErrorCredentialRejected =>
+      'Đăng nhập bị từ chối. Vui lòng thử lại.';
+
+  @override
+  String get authErrorProviderDisabled =>
+      'Phương thức đăng nhập này hiện không khả dụng.';
+
+  @override
+  String get authErrorAppleUnavailable =>
+      'Đăng nhập bằng Apple không khả dụng trên thiết bị này.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Quá nhiều lần thử. Vui lòng đợi một lát rồi thử lại.';
+
+  @override
+  String get authErrorAlreadyLinked => 'Tài khoản này đã được liên kết.';
+
+  @override
+  String get authErrorAccountDisabled => 'Tài khoản này đã bị vô hiệu hóa.';
+
+  @override
+  String get authErrorAccountExistsDifferentCredential =>
+      'Email đó đã được dùng với phương thức đăng nhập khác.';
+
+  @override
+  String get authErrorLinkConflict => 'Tài khoản này đã thuộc về người khác.';
 }

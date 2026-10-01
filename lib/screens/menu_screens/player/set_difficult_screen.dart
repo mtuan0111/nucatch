@@ -15,6 +15,7 @@ import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
+import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,6 +42,13 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
   double get screenWidth => MediaQuery.of(context).size.width;
   double get buttonSpace => 20;
 
+  /// The difficulty the player used most recently. Surfaced as a Smart Default
+  /// (UX psychology §4): the option most likely wanted is flagged with a
+  /// "Last played" badge so choosing becomes recognising, not deciding. Read
+  /// from the same persisted key the menu's Instant Start uses, so the two
+  /// entry points always agree.
+  Difficulty? _savedDifficulty;
+
   @override
   void initState() {
     // await _onSaveRecorded(SaveRecorded(savingRecord: itemModel), emitter);
@@ -49,6 +57,8 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
     turnRecordedListBloc.add(
       LoadData(),
     );
+
+    _loadSavedDifficulty();
 
     // Auto-start if this is instant start (instant start feature)
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -96,6 +106,20 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
     });
 
     super.initState();
+  }
+
+  Future<void> _loadSavedDifficulty() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedName =
+        prefs.getString(NucatchPreferencesKey.LAST_USED_DIFFICULTY);
+    if (savedName == null) return;
+    try {
+      final difficulty =
+          Difficulty.values.firstWhere((d) => d.name == savedName);
+      if (mounted) setState(() => _savedDifficulty = difficulty);
+    } catch (_) {
+      // Unknown/legacy value — leave the badge off rather than guess.
+    }
   }
 
   @override
@@ -182,7 +206,7 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                               }
                             }
 
-                            return OptionCard(
+                            final card = OptionCard(
                               context: context,
                               title: Helper.getTitleFromDifficulty(
                                   context, difficulty),
@@ -199,6 +223,25 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                                 );
                               },
                             );
+
+                            // Smart Default (§4): only the most-recently-played
+                            // difficulty gets the "Last played" badge, so the
+                            // likely choice is recognised at a glance. The badge
+                            // floats over the card's empty top-left, mirroring
+                            // OptionCard's own pills, and rides its own filled
+                            // container for legibility over any card colour.
+                            if (_savedDifficulty != difficulty) return card;
+                            return Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                card,
+                                const Positioned(
+                                  top: -10,
+                                  left: 4,
+                                  child: _LastPlayedBadge(),
+                                ),
+                              ],
+                            );
                           }).toList(),
                         ),
                       ),
@@ -209,6 +252,53 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Small "Last played" pill marking the Smart Default difficulty (§4).
+///
+/// Rides its own filled, primary-coloured container with an icon — never a
+/// bare label over the card art — so it stays legible on top of any card
+/// colour (UI design system: controls over changing content sit on a
+/// container, not as bare marks).
+class _LastPlayedBadge extends StatelessWidget {
+  const _LastPlayedBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    final color = Theme.of(context).primaryColor;
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: kPaddingM,
+        vertical: kPaddingXS + 2,
+      ),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(kBorderRadiusXL),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FaIcon(
+            FontAwesomeIcons.clockRotateLeft,
+            size: kIconSizeS,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+          const SizedBox(width: kSpaceSM),
+          Text(
+            lang(context).lastPlayedLabel,
+            style: AppTextStyles.labelMedium(context, color),
+          ),
+        ],
       ),
     );
   }

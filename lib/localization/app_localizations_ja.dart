@@ -15,6 +15,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get instantStart => 'インスタントスタート';
 
   @override
+  String get lastPlayedLabel => '前回プレイ';
+
+  @override
   String get selectLevel => 'レベルを選択';
 
   @override
@@ -452,7 +455,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get tourAboutDesc =>
-      'Discover the ancient legend behind the tower and learn the rules of the game.';
+      'Read the legend behind the tower and the full rules of the game any time from here. That covers the menu! Tap **Next** to start a short **hands-on practice** — you\'ll try **Regular**, **Pick Right** and **Combat** modes with a guide on screen.';
 
   @override
   String get tourNext => '次へ';
@@ -681,4 +684,79 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get menuGreeting => 'Test your memory and math skills today!';
+
+  @override
+  String get accountSectionTitle => 'アカウント';
+
+  @override
+  String get signInTitle => 'サインイン';
+
+  @override
+  String get signInSubtitle => 'スコアとランクを安全に保存 — サインインすると新しい端末でも引き継げます。';
+
+  @override
+  String get signInWithGoogle => 'Google で続行';
+
+  @override
+  String get signInWithApple => 'Apple で続行';
+
+  @override
+  String get signOut => 'サインアウト';
+
+  @override
+  String signedInAs(String account) {
+    return '$account でサインイン中';
+  }
+
+  @override
+  String get playingAsGuest => 'ゲストとしてプレイ中';
+
+  @override
+  String get signInAction => 'サインイン';
+
+  @override
+  String get linkSuccessMessage => 'サインインしました。スコアはアカウントに保存されます。';
+
+  @override
+  String get linkConflictTitle => 'このアカウントは使用中です';
+
+  @override
+  String get linkConflictMessage => 'このアカウントは既に存在します。切り替えると現在のゲストスコアは引き継がれません。';
+
+  @override
+  String get linkConflictSwitch => 'アカウントを切り替える';
+
+  @override
+  String get authError => 'サインインに失敗しました。もう一度お試しください。';
+
+  @override
+  String get authErrorCancelled => 'サインインをキャンセルしました。';
+
+  @override
+  String get authErrorNetwork => '接続がありません。ネットワークを確認してください。';
+
+  @override
+  String get authErrorCredentialRejected => 'サインインが拒否されました。もう一度お試しください。';
+
+  @override
+  String get authErrorProviderDisabled => 'このサインイン方法は現在利用できません。';
+
+  @override
+  String get authErrorAppleUnavailable => 'この端末では Apple でサインインできません。';
+
+  @override
+  String get authErrorTooManyRequests => '試行回数が多すぎます。しばらくしてからお試しください。';
+
+  @override
+  String get authErrorAlreadyLinked => 'このアカウントは既にリンクされています。';
+
+  @override
+  String get authErrorAccountDisabled => 'このアカウントは無効になっています。';
+
+  @override
+  String get authErrorAccountExistsDifferentCredential =>
+      'そのメールアドレスは別のサインイン方法で使用されています。';
+
+  @override
+  String get authErrorLinkConflict => 'このアカウントは既に他のユーザーのものです。';
 }

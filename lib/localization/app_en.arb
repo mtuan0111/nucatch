@@ -8,6 +8,10 @@
   "@instantStart": {
     "description": "Instant start button label for quick game start"
   },
+  "lastPlayedLabel": "Last played",
+  "@lastPlayedLabel": {
+    "description": "Badge shown on the difficulty the player used most recently (smart default)"
+  },
   "selectLevel": "Select level",
   "@selectLevel": {
     "description": "Prompt for user to select the game level"
@@ -620,7 +624,7 @@
   "@tourLeaderboardTitle": {
     "description": "Title for leaderboard tour step"
   },
-  "tourLeaderboardDesc": "Track your progress here! View **global rankings**, your **personal records**, and **statistics** including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Finally, let's visit Settings.",
+  "tourLeaderboardDesc": "Track your progress here! View **global rankings**, your **personal records**, and **statistics** including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Next, let's visit Settings.",
   "@tourLeaderboardDesc": {
     "description": "Description for leaderboard tour step"
   },
@@ -628,7 +632,7 @@
   "@tourSettingsTitle": {
     "description": "Title for settings step"
   },
-  "tourSettingsDesc": "Customize everything here! Change your **username**, select a **theme**, adjust **sound/music**, choose your **language**, and manage **privacy settings**. You can restart this tour anytime from here. That's it - you're ready to play!",
+  "tourSettingsDesc": "Customize everything here! Change your **username**, select a **theme**, adjust **sound/music**, choose your **language**, and manage **privacy settings**. You can restart this tour anytime from here. One last menu stop: **History & Rules**.",
   "@tourSettingsDesc": {
     "description": "Description for settings tour step"
   },
@@ -636,7 +640,7 @@
   "@tourAboutTitle": {
     "description": "Title for about tour step"
   },
-  "tourAboutDesc": "Discover the ancient legend behind the tower and learn the rules of the game.",
+  "tourAboutDesc": "Read the legend behind the tower and the full rules of the game any time from here. That covers the menu! Tap **Next** to start a short **hands-on practice** — you'll try **Regular**, **Pick Right** and **Combat** modes with a guide on screen.",
   "@tourAboutDesc": {
     "description": "Description for about tour step"
   },
@@ -665,123 +669,340 @@
     "description": "Message shown when tour is reset"
   },
   "tourRuleRegularWelcomeTitle": "Let's Play!",
-  "@tourRuleRegularWelcomeTitle": {"description": "In-game tutorial: regular mode welcome title"},
+  "@tourRuleRegularWelcomeTitle": {
+    "description": "In-game tutorial: regular mode welcome title"
+  },
   "tourRuleRegularWelcomeDesc": "Memorize the number, then type it back before time runs out. Ready to give it a try?",
-  "@tourRuleRegularWelcomeDesc": {"description": "In-game tutorial: regular mode welcome description"},
+  "@tourRuleRegularWelcomeDesc": {
+    "description": "In-game tutorial: regular mode welcome description"
+  },
   "tourRuleRegularLivesTitle": "Your Lives",
-  "@tourRuleRegularLivesTitle": {"description": "In-game tutorial: lives title"},
+  "@tourRuleRegularLivesTitle": {
+    "description": "In-game tutorial: lives title"
+  },
   "tourRuleRegularLivesDesc": "You start with **3 lives**. Losing all of them ends the game — so play carefully!",
-  "@tourRuleRegularLivesDesc": {"description": "In-game tutorial: lives description"},
+  "@tourRuleRegularLivesDesc": {
+    "description": "In-game tutorial: lives description"
+  },
   "tourRuleRegularMemorizeTitle": "Memorize It",
-  "@tourRuleRegularMemorizeTitle": {"description": "In-game tutorial: memorize step title"},
+  "@tourRuleRegularMemorizeTitle": {
+    "description": "In-game tutorial: memorize step title"
+  },
   "tourRuleRegularMemorizeDesc": "Watch closely — the number flashes on screen for just a moment before it hides.",
-  "@tourRuleRegularMemorizeDesc": {"description": "In-game tutorial: memorize step description"},
+  "@tourRuleRegularMemorizeDesc": {
+    "description": "In-game tutorial: memorize step description"
+  },
   "tourRuleRegularTypeBackTitle": "Type It Back",
-  "@tourRuleRegularTypeBackTitle": {"description": "In-game tutorial: type back step title"},
+  "@tourRuleRegularTypeBackTitle": {
+    "description": "In-game tutorial: type back step title"
+  },
   "tourRuleRegularTypeBackDesc": "Now tap the digit you just saw on the keypad.",
-  "@tourRuleRegularTypeBackDesc": {"description": "In-game tutorial: type back step description"},
+  "@tourRuleRegularTypeBackDesc": {
+    "description": "In-game tutorial: type back step description"
+  },
   "tourRuleRegularScoringTitle": "Nice!",
-  "@tourRuleRegularScoringTitle": {"description": "In-game tutorial: scoring step title"},
+  "@tourRuleRegularScoringTitle": {
+    "description": "In-game tutorial: scoring step title"
+  },
   "tourRuleRegularScoringDesc": "Keep answering correctly to earn points.",
-  "@tourRuleRegularScoringDesc": {"description": "In-game tutorial: scoring step description"},
+  "@tourRuleRegularScoringDesc": {
+    "description": "In-game tutorial: scoring step description"
+  },
   "tourRuleRegularScoringResult": "You just earned a point! Every correct answer adds to your score.",
-  "@tourRuleRegularScoringResult": {"description": "In-game tutorial: scoring result beat"},
+  "@tourRuleRegularScoringResult": {
+    "description": "In-game tutorial: scoring result beat"
+  },
   "tourRuleRegularTimerTitle": "Beat the Clock",
-  "@tourRuleRegularTimerTitle": {"description": "In-game tutorial: timer step title"},
+  "@tourRuleRegularTimerTitle": {
+    "description": "In-game tutorial: timer step title"
+  },
   "tourRuleRegularTimerDesc": "Watch the timer bar — if it runs out before you finish typing, you'll lose a life.",
-  "@tourRuleRegularTimerDesc": {"description": "In-game tutorial: timer step description"},
+  "@tourRuleRegularTimerDesc": {
+    "description": "In-game tutorial: timer step description"
+  },
   "tourRuleRegularTimerResult": "Time's up! Running out of time costs you a life, just like a wrong tap.",
-  "@tourRuleRegularTimerResult": {"description": "In-game tutorial: timer result beat"},
+  "@tourRuleRegularTimerResult": {
+    "description": "In-game tutorial: timer result beat"
+  },
   "tourRuleRegularResetTitle": "Need a New One?",
-  "@tourRuleRegularResetTitle": {"description": "In-game tutorial: reset step title"},
+  "@tourRuleRegularResetTitle": {
+    "description": "In-game tutorial: reset step title"
+  },
   "tourRuleRegularResetDesc": "Tap **Reset** to skip a tricky challenge for a fresh one — but it always costs a life.",
-  "@tourRuleRegularResetDesc": {"description": "In-game tutorial: reset step description"},
+  "@tourRuleRegularResetDesc": {
+    "description": "In-game tutorial: reset step description"
+  },
   "tourRuleRegularLevelUpTitle": "Leveling Up",
-  "@tourRuleRegularLevelUpTitle": {"description": "In-game tutorial: level up step title"},
+  "@tourRuleRegularLevelUpTitle": {
+    "description": "In-game tutorial: level up step title"
+  },
   "tourRuleRegularLevelUpDesc": "Answer enough turns correctly and you'll level up.",
-  "@tourRuleRegularLevelUpDesc": {"description": "In-game tutorial: level up step description"},
+  "@tourRuleRegularLevelUpDesc": {
+    "description": "In-game tutorial: level up step description"
+  },
   "tourRuleRegularLevelUpResult": "Level up! Numbers get a little harder from here — and completing a level without losing a life earns you a bonus life.",
-  "@tourRuleRegularLevelUpResult": {"description": "In-game tutorial: level up result beat"},
+  "@tourRuleRegularLevelUpResult": {
+    "description": "In-game tutorial: level up result beat"
+  },
   "tourRuleRegularGameOverTitle": "Game Over",
-  "@tourRuleRegularGameOverTitle": {"description": "In-game tutorial: game over step title"},
+  "@tourRuleRegularGameOverTitle": {
+    "description": "In-game tutorial: game over step title"
+  },
   "tourRuleRegularGameOverDesc": "With only 1 life left, one more miss ends the game for real. Watch what happens.",
-  "@tourRuleRegularGameOverDesc": {"description": "In-game tutorial: game over step description"},
+  "@tourRuleRegularGameOverDesc": {
+    "description": "In-game tutorial: game over step description"
+  },
   "tourRuleRegularWrapUpTitle": "That's Regular Mode!",
-  "@tourRuleRegularWrapUpTitle": {"description": "In-game tutorial: regular mode wrap-up title"},
+  "@tourRuleRegularWrapUpTitle": {
+    "description": "In-game tutorial: regular mode wrap-up title"
+  },
   "tourRuleRegularWrapUpDesc": "Now let's try Pick Right mode — a different way to play.",
-  "@tourRuleRegularWrapUpDesc": {"description": "In-game tutorial: regular mode wrap-up description"},
+  "@tourRuleRegularWrapUpDesc": {
+    "description": "In-game tutorial: regular mode wrap-up description"
+  },
   "tourRulePickRightWelcomeTitle": "Pick Right Mode",
-  "@tourRulePickRightWelcomeTitle": {"description": "In-game tutorial: pick right welcome title"},
+  "@tourRulePickRightWelcomeTitle": {
+    "description": "In-game tutorial: pick right welcome title"
+  },
   "tourRulePickRightWelcomeDesc": "Instead of typing, you'll pick the correct answer from a few choices.",
-  "@tourRulePickRightWelcomeDesc": {"description": "In-game tutorial: pick right welcome description"},
+  "@tourRulePickRightWelcomeDesc": {
+    "description": "In-game tutorial: pick right welcome description"
+  },
   "tourRulePickRightOptionsTitle": "Choose Wisely",
-  "@tourRulePickRightOptionsTitle": {"description": "In-game tutorial: pick right options title"},
+  "@tourRulePickRightOptionsTitle": {
+    "description": "In-game tutorial: pick right options title"
+  },
   "tourRulePickRightOptionsDesc": "One of these is correct — the others are decoys.",
-  "@tourRulePickRightOptionsDesc": {"description": "In-game tutorial: pick right options description"},
+  "@tourRulePickRightOptionsDesc": {
+    "description": "In-game tutorial: pick right options description"
+  },
   "tourRulePickRightCorrectTitle": "Tap the Right One",
-  "@tourRulePickRightCorrectTitle": {"description": "In-game tutorial: pick right correct step title"},
+  "@tourRulePickRightCorrectTitle": {
+    "description": "In-game tutorial: pick right correct step title"
+  },
   "tourRulePickRightCorrectDesc": "Tap the button you think is correct.",
-  "@tourRulePickRightCorrectDesc": {"description": "In-game tutorial: pick right correct step description"},
+  "@tourRulePickRightCorrectDesc": {
+    "description": "In-game tutorial: pick right correct step description"
+  },
   "tourRulePickRightCorrectResult": "Correct! You earned a point.",
-  "@tourRulePickRightCorrectResult": {"description": "In-game tutorial: pick right correct result beat"},
+  "@tourRulePickRightCorrectResult": {
+    "description": "In-game tutorial: pick right correct result beat"
+  },
   "tourRulePickRightWrongTitle": "Oops!",
-  "@tourRulePickRightWrongTitle": {"description": "In-game tutorial: pick right wrong step title"},
+  "@tourRulePickRightWrongTitle": {
+    "description": "In-game tutorial: pick right wrong step title"
+  },
   "tourRulePickRightWrongDesc": "This time, try tapping a different button.",
-  "@tourRulePickRightWrongDesc": {"description": "In-game tutorial: pick right wrong step description"},
+  "@tourRulePickRightWrongDesc": {
+    "description": "In-game tutorial: pick right wrong step description"
+  },
   "tourRulePickRightWrongResult": "Wrong pick — the correct answer is highlighted, and you lose a life.",
-  "@tourRulePickRightWrongResult": {"description": "In-game tutorial: pick right wrong result beat"},
+  "@tourRulePickRightWrongResult": {
+    "description": "In-game tutorial: pick right wrong result beat"
+  },
   "tourRulePickRightTimerTitle": "This Timer's Faster",
-  "@tourRulePickRightTimerTitle": {"description": "In-game tutorial: pick right timer step title"},
+  "@tourRulePickRightTimerTitle": {
+    "description": "In-game tutorial: pick right timer step title"
+  },
   "tourRulePickRightTimerDesc": "Pick Right mode's timer runs out quickly. Watch what happens if you're too slow.",
-  "@tourRulePickRightTimerDesc": {"description": "In-game tutorial: pick right timer step description"},
+  "@tourRulePickRightTimerDesc": {
+    "description": "In-game tutorial: pick right timer step description"
+  },
   "tourRulePickRightTimerResult": "Time's up again — with no lives left, that's Game Over.",
-  "@tourRulePickRightTimerResult": {"description": "In-game tutorial: pick right timer result beat"},
+  "@tourRulePickRightTimerResult": {
+    "description": "In-game tutorial: pick right timer result beat"
+  },
   "tourRulePickRightWrapUpTitle": "That's Pick Right!",
-  "@tourRulePickRightWrapUpTitle": {"description": "In-game tutorial: pick right wrap-up title"},
+  "@tourRulePickRightWrapUpTitle": {
+    "description": "In-game tutorial: pick right wrap-up title"
+  },
   "tourRulePickRightWrapUpDesc": "Now let's try Combat Mode — where you play against a real opponent.",
-  "@tourRulePickRightWrapUpDesc": {"description": "In-game tutorial: pick right wrap-up description"},
+  "@tourRulePickRightWrapUpDesc": {
+    "description": "In-game tutorial: pick right wrap-up description"
+  },
   "tourRuleCombatWelcomeTitle": "Welcome to Combat",
-  "@tourRuleCombatWelcomeTitle": {"description": "In-game tutorial: combat welcome title"},
+  "@tourRuleCombatWelcomeTitle": {
+    "description": "In-game tutorial: combat welcome title"
+  },
   "tourRuleCombatWelcomeDesc": "In Combat Mode, you and an opponent take turns racing to answer first.",
-  "@tourRuleCombatWelcomeDesc": {"description": "In-game tutorial: combat welcome description"},
+  "@tourRuleCombatWelcomeDesc": {
+    "description": "In-game tutorial: combat welcome description"
+  },
   "tourRuleCombatTurnOrderTitle": "Whose Turn Is It?",
-  "@tourRuleCombatTurnOrderTitle": {"description": "In-game tutorial: combat turn order title"},
+  "@tourRuleCombatTurnOrderTitle": {
+    "description": "In-game tutorial: combat turn order title"
+  },
   "tourRuleCombatTurnOrderDesc": "This badge shows whose turn it is. As host, you go first.",
-  "@tourRuleCombatTurnOrderDesc": {"description": "In-game tutorial: combat turn order description"},
+  "@tourRuleCombatTurnOrderDesc": {
+    "description": "In-game tutorial: combat turn order description"
+  },
   "tourRuleCombatYourTurnTitle": "Your Turn",
-  "@tourRuleCombatYourTurnTitle": {"description": "In-game tutorial: combat your turn title"},
+  "@tourRuleCombatYourTurnTitle": {
+    "description": "In-game tutorial: combat your turn title"
+  },
   "tourRuleCombatYourTurnDesc": "Tap the digit shown to complete your turn.",
-  "@tourRuleCombatYourTurnDesc": {"description": "In-game tutorial: combat your turn description"},
+  "@tourRuleCombatYourTurnDesc": {
+    "description": "In-game tutorial: combat your turn description"
+  },
   "tourRuleCombatOpponentTurnTitle": "Opponent's Turn",
-  "@tourRuleCombatOpponentTurnTitle": {"description": "In-game tutorial: combat opponent turn title"},
+  "@tourRuleCombatOpponentTurnTitle": {
+    "description": "In-game tutorial: combat opponent turn title"
+  },
   "tourRuleCombatOpponentTurnDesc": "Now watch — your opponent takes their turn.",
-  "@tourRuleCombatOpponentTurnDesc": {"description": "In-game tutorial: combat opponent turn description"},
+  "@tourRuleCombatOpponentTurnDesc": {
+    "description": "In-game tutorial: combat opponent turn description"
+  },
   "tourRuleCombatOpponentTurnResult": "Your opponent answered correctly! The turn comes right back to you.",
-  "@tourRuleCombatOpponentTurnResult": {"description": "In-game tutorial: combat opponent turn result beat"},
+  "@tourRuleCombatOpponentTurnResult": {
+    "description": "In-game tutorial: combat opponent turn result beat"
+  },
   "tourRuleCombatOpponentLifeLostTitle": "A Life Lost",
-  "@tourRuleCombatOpponentLifeLostTitle": {"description": "In-game tutorial: combat opponent life lost title"},
+  "@tourRuleCombatOpponentLifeLostTitle": {
+    "description": "In-game tutorial: combat opponent life lost title"
+  },
   "tourRuleCombatOpponentLifeLostDesc": "Watch what happens when your opponent misses a tap.",
-  "@tourRuleCombatOpponentLifeLostDesc": {"description": "In-game tutorial: combat opponent life lost description"},
+  "@tourRuleCombatOpponentLifeLostDesc": {
+    "description": "In-game tutorial: combat opponent life lost description"
+  },
   "tourRuleCombatOpponentLifeLostResult": "Your opponent lost a life — you'll see their life count drop, just like yours would.",
-  "@tourRuleCombatOpponentLifeLostResult": {"description": "In-game tutorial: combat opponent life lost result beat"},
+  "@tourRuleCombatOpponentLifeLostResult": {
+    "description": "In-game tutorial: combat opponent life lost result beat"
+  },
   "tourRuleCombatTimerTitle": "Everyone Has a Timer",
-  "@tourRuleCombatTimerTitle": {"description": "In-game tutorial: combat timer title"},
+  "@tourRuleCombatTimerTitle": {
+    "description": "In-game tutorial: combat timer title"
+  },
   "tourRuleCombatTimerDesc": "Your timer works the same way here — miss it and you lose a life too.",
-  "@tourRuleCombatTimerDesc": {"description": "In-game tutorial: combat timer description"},
+  "@tourRuleCombatTimerDesc": {
+    "description": "In-game tutorial: combat timer description"
+  },
   "tourRuleCombatTimerResult": "Time's up! Losing a life in Combat works just like Solo mode.",
-  "@tourRuleCombatTimerResult": {"description": "In-game tutorial: combat timer result beat"},
+  "@tourRuleCombatTimerResult": {
+    "description": "In-game tutorial: combat timer result beat"
+  },
   "tourRuleCombatWinTitle": "Victory!",
-  "@tourRuleCombatWinTitle": {"description": "In-game tutorial: combat win title"},
+  "@tourRuleCombatWinTitle": {
+    "description": "In-game tutorial: combat win title"
+  },
   "tourRuleCombatWinDesc": "Watch what happens when your opponent runs out of lives.",
-  "@tourRuleCombatWinDesc": {"description": "In-game tutorial: combat win description"},
+  "@tourRuleCombatWinDesc": {
+    "description": "In-game tutorial: combat win description"
+  },
   "tourRuleCombatWinResult": "You win! Running your opponent out of lives ends the match in your favor.",
-  "@tourRuleCombatWinResult": {"description": "In-game tutorial: combat win result beat"},
+  "@tourRuleCombatWinResult": {
+    "description": "In-game tutorial: combat win result beat"
+  },
   "tourRuleCombatWrapUpTitle": "Tutorial Complete!",
-  "@tourRuleCombatWrapUpTitle": {"description": "In-game tutorial: combat wrap-up title"},
+  "@tourRuleCombatWrapUpTitle": {
+    "description": "In-game tutorial: combat wrap-up title"
+  },
   "tourRuleCombatWrapUpDesc": "That's everything — Solo, Pick Right, and Combat. Good luck out there!",
-  "@tourRuleCombatWrapUpDesc": {"description": "In-game tutorial: combat wrap-up description"},
+  "@tourRuleCombatWrapUpDesc": {
+    "description": "In-game tutorial: combat wrap-up description"
+  },
   "menuGreeting": "Test your memory and math skills today!",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
+  },
+  "accountSectionTitle": "Account",
+  "@accountSectionTitle": {
+    "description": "Settings section header for the signed-in account"
+  },
+  "signInTitle": "Sign in",
+  "@signInTitle": {
+    "description": "Title of the sign-in sheet"
+  },
+  "signInSubtitle": "Keep your scores and rank safe — sign in to carry them to a new device.",
+  "@signInSubtitle": {
+    "description": "Explains why signing in is worth it"
+  },
+  "signInWithGoogle": "Continue with Google",
+  "@signInWithGoogle": {
+    "description": "Google sign-in button label"
+  },
+  "signInWithApple": "Continue with Apple",
+  "@signInWithApple": {
+    "description": "Apple sign-in button label"
+  },
+  "signOut": "Sign out",
+  "@signOut": {
+    "description": "Sign out button label"
+  },
+  "signedInAs": "Signed in as {account}",
+  "@signedInAs": {
+    "description": "Shows which account is signed in",
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "playingAsGuest": "Playing as guest",
+  "@playingAsGuest": {
+    "description": "Shown when the session is still anonymous"
+  },
+  "signInAction": "Sign in",
+  "@signInAction": {
+    "description": "Button that opens the sign-in sheet"
+  },
+  "linkSuccessMessage": "Signed in. Your scores are now saved to your account.",
+  "@linkSuccessMessage": {
+    "description": "Toast after a guest session is upgraded in place"
+  },
+  "linkConflictTitle": "Account already in use",
+  "@linkConflictTitle": {
+    "description": "Title of the account-conflict dialog"
+  },
+  "linkConflictMessage": "This account already exists. Switching to it will leave your current guest scores behind.",
+  "@linkConflictMessage": {
+    "description": "Explains that switching abandons guest progress"
+  },
+  "linkConflictSwitch": "Switch account",
+  "@linkConflictSwitch": {
+    "description": "Confirm switching to the existing account"
+  },
+  "authError": "Sign-in failed. Please try again.",
+  "@authError": {
+    "description": "Generic auth failure"
+  },
+  "authErrorCancelled": "Sign-in cancelled.",
+  "@authErrorCancelled": {
+    "description": "User dismissed the provider sheet"
+  },
+  "authErrorNetwork": "No connection. Check your network and try again.",
+  "@authErrorNetwork": {
+    "description": "No usable network connection"
+  },
+  "authErrorCredentialRejected": "Sign-in was rejected. Please try again.",
+  "@authErrorCredentialRejected": {
+    "description": "Firebase rejected the provider token"
+  },
+  "authErrorProviderDisabled": "This sign-in method is not available right now.",
+  "@authErrorProviderDisabled": {
+    "description": "Provider not configured/enabled"
+  },
+  "authErrorAppleUnavailable": "Sign in with Apple is not available on this device.",
+  "@authErrorAppleUnavailable": {
+    "description": "Apple sign-in unavailable on this device"
+  },
+  "authErrorTooManyRequests": "Too many attempts. Please wait a moment and try again.",
+  "@authErrorTooManyRequests": {
+    "description": "Rate limited"
+  },
+  "authErrorAlreadyLinked": "This account is already linked.",
+  "@authErrorAlreadyLinked": {
+    "description": "Provider already linked to this account"
+  },
+  "authErrorAccountDisabled": "This account has been disabled.",
+  "@authErrorAccountDisabled": {
+    "description": "Account disabled by an administrator"
+  },
+  "authErrorAccountExistsDifferentCredential": "That email is already used by another sign-in method.",
+  "@authErrorAccountExistsDifferentCredential": {
+    "description": "Identity belongs to an account with another provider"
+  },
+  "authErrorLinkConflict": "This account already belongs to someone else.",
+  "@authErrorLinkConflict": {
+    "description": "Identity already belongs to another account"
   }
 }

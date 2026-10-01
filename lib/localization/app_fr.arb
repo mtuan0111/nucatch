@@ -625,5 +625,106 @@
   "menuGreeting": "Test your memory and math skills today!",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
+  },
+  "accountSectionTitle": "Compte",
+  "@accountSectionTitle": {
+    "description": "Settings section header for the signed-in account"
+  },
+  "signInTitle": "Se connecter",
+  "@signInTitle": {
+    "description": "Title of the sign-in sheet"
+  },
+  "signInSubtitle": "Protégez vos scores et votre classement : connectez-vous pour les retrouver sur un autre appareil.",
+  "@signInSubtitle": {
+    "description": "Explains why signing in is worth it"
+  },
+  "signInWithGoogle": "Continuer avec Google",
+  "@signInWithGoogle": {
+    "description": "Google sign-in button label"
+  },
+  "signInWithApple": "Continuer avec Apple",
+  "@signInWithApple": {
+    "description": "Apple sign-in button label"
+  },
+  "signOut": "Se déconnecter",
+  "@signOut": {
+    "description": "Sign out button label"
+  },
+  "signedInAs": "Connecté en tant que {account}",
+  "@signedInAs": {
+    "description": "Shows which account is signed in",
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "playingAsGuest": "Vous jouez en invité",
+  "@playingAsGuest": {
+    "description": "Shown when the session is still anonymous"
+  },
+  "signInAction": "Se connecter",
+  "@signInAction": {
+    "description": "Button that opens the sign-in sheet"
+  },
+  "linkSuccessMessage": "Connecté. Vos scores sont désormais enregistrés sur votre compte.",
+  "@linkSuccessMessage": {
+    "description": "Toast after a guest session is upgraded in place"
+  },
+  "linkConflictTitle": "Compte déjà utilisé",
+  "@linkConflictTitle": {
+    "description": "Title of the account-conflict dialog"
+  },
+  "linkConflictMessage": "Ce compte existe déjà. Y basculer abandonnera vos scores d’invité actuels.",
+  "@linkConflictMessage": {
+    "description": "Explains that switching abandons guest progress"
+  },
+  "linkConflictSwitch": "Changer de compte",
+  "@linkConflictSwitch": {
+    "description": "Confirm switching to the existing account"
+  },
+  "authError": "Échec de la connexion. Veuillez réessayer.",
+  "@authError": {
+    "description": "Generic auth failure"
+  },
+  "authErrorCancelled": "Connexion annulée.",
+  "@authErrorCancelled": {
+    "description": "User dismissed the provider sheet"
+  },
+  "authErrorNetwork": "Aucune connexion. Vérifiez votre réseau et réessayez.",
+  "@authErrorNetwork": {
+    "description": "No usable network connection"
+  },
+  "authErrorCredentialRejected": "Connexion refusée. Veuillez réessayer.",
+  "@authErrorCredentialRejected": {
+    "description": "Firebase rejected the provider token"
+  },
+  "authErrorProviderDisabled": "Cette méthode de connexion n’est pas disponible pour le moment.",
+  "@authErrorProviderDisabled": {
+    "description": "Provider not configured/enabled"
+  },
+  "authErrorAppleUnavailable": "Se connecter avec Apple n’est pas disponible sur cet appareil.",
+  "@authErrorAppleUnavailable": {
+    "description": "Apple sign-in unavailable on this device"
+  },
+  "authErrorTooManyRequests": "Trop de tentatives. Patientez un instant et réessayez.",
+  "@authErrorTooManyRequests": {
+    "description": "Rate limited"
+  },
+  "authErrorAlreadyLinked": "Ce compte est déjà lié.",
+  "@authErrorAlreadyLinked": {
+    "description": "Provider already linked to this account"
+  },
+  "authErrorAccountDisabled": "Ce compte a été désactivé.",
+  "@authErrorAccountDisabled": {
+    "description": "Account disabled by an administrator"
+  },
+  "authErrorAccountExistsDifferentCredential": "Cet e-mail est déjà utilisé avec une autre méthode de connexion.",
+  "@authErrorAccountExistsDifferentCredential": {
+    "description": "Identity belongs to an account with another provider"
+  },
+  "authErrorLinkConflict": "Ce compte appartient déjà à quelqu’un d’autre.",
+  "@authErrorLinkConflict": {
+    "description": "Identity already belongs to another account"
   }
 }

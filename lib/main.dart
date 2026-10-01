@@ -26,6 +26,15 @@ Future<void> main() async {
   }
   BaseAdMobConfig.register(AdMobConfig.instance);
 
+  // Typography: one cohesive family across the whole app. Hierarchy comes from
+  // size / weight / line-height, not from swapping font families. Baloo Bhai 2
+  // ships Regular→ExtraBold weights, so every AppTextStyles role stays in-family
+  // (primary + secondary + handwriting all resolve to it — no Dancing Script /
+  // mono mixing).
+  SkeletonConfig.primaryFontFamily = 'Baloo Bhai';
+  SkeletonConfig.secondaryFontFamily = 'Baloo Bhai';
+  SkeletonConfig.handwritingFontFamily = 'Baloo Bhai';
+
   final app = SkeletonApp(
     title: 'Nucatch',
 
@@ -77,14 +86,12 @@ Future<void> main() async {
 
     // ----- Theme -----
     themeBuilder: (context, state) => ThemeData(
-      fontFamily: 'Inter',
+      // One cohesive family (see SkeletonConfig above). Fallback is limited to
+      // Roboto Mono for the few numeric/monospace readouts; the old six-font
+      // fallback chain was the "excessive font variation" we're removing.
+      fontFamily: 'Baloo Bhai',
       fontFamilyFallback: const [
-        "Baloo Bhai",
         "Roboto Mono",
-        "Charmonman",
-        "Dancing Script",
-        "Xanh Mono",
-        "JetBrains Mono",
       ],
       textTheme: Theme.of(context).textTheme.apply(
             fontSizeFactor: 0.5 + (state.fontSize / 20),
@@ -98,7 +105,9 @@ Future<void> main() async {
       secondaryHeaderColor: SeasonalTheme.config.secondaryColor,
       cardColor:
           SeasonalTheme.config.cardColor ?? SeasonalTheme.config.tertiaryColor,
-      dividerColor: const Color(0xFFFFD700),
+      // Subtle separator instead of the old harsh pure-gold rule (#FFD700):
+      // dividers should whisper structure, not slice the layout into blocks.
+      dividerColor: Colors.white.withValues(alpha: 0.16),
       scaffoldBackgroundColor: Colors.white,
     ),
 

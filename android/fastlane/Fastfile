@@ -11,4 +11,28 @@ platform :android do
       apk_path: "../build/app/outputs/flutter-apk/app-release.apk"
     )
   end
+
+  desc "Upload store screenshots ONLY to Google Play."
+  desc "Media only — no APK/AAB, no metadata, no changelogs. Frames come from"
+  desc "android/fastlane/metadata/android/<locale>/images/{phone,tenInch}Screenshots/"
+  desc "(run tool/screenshots/capture.sh first). Auth via a Play service-account"
+  desc "JSON in env: SUPPLY_JSON_KEY (path to the .json). The app must already"
+  desc "exist on Play with an initial release. See tool/screenshots/README.md."
+  lane :upload_screenshots do
+    json_key = ENV["SUPPLY_JSON_KEY"]
+    if json_key.nil? || json_key.empty?
+      UI.user_error!("Set SUPPLY_JSON_KEY to your Google Play service-account JSON path. See tool/screenshots/README.md.")
+    end
+
+    supply(
+      json_key: json_key,
+      track: "production",
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,       # leave feature graphic / icon untouched
+      skip_upload_screenshots: false, # the phone + 10" tablet screenshots
+    )
+  end
 end

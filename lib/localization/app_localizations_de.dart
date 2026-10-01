@@ -15,6 +15,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get instantStart => 'Sofortstart';
 
   @override
+  String get lastPlayedLabel => 'Last played';
+
+  @override
   String get selectLevel => 'Level wählen';
 
   @override
@@ -476,7 +479,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get tourAboutDesc =>
-      'Discover the ancient legend behind the tower and learn the rules of the game.';
+      'Read the legend behind the tower and the full rules of the game any time from here. That covers the menu! Tap **Next** to start a short **hands-on practice** — you\'ll try **Regular**, **Pick Right** and **Combat** modes with a guide on screen.';
 
   @override
   String get tourNext => 'Weiter';
@@ -706,4 +709,88 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get menuGreeting => 'Test your memory and math skills today!';
+
+  @override
+  String get accountSectionTitle => 'Konto';
+
+  @override
+  String get signInTitle => 'Anmelden';
+
+  @override
+  String get signInSubtitle =>
+      'Sichere deine Punkte und deinen Rang – melde dich an, um sie auf ein neues Gerät mitzunehmen.';
+
+  @override
+  String get signInWithGoogle => 'Mit Google fortfahren';
+
+  @override
+  String get signInWithApple => 'Mit Apple fortfahren';
+
+  @override
+  String get signOut => 'Abmelden';
+
+  @override
+  String signedInAs(String account) {
+    return 'Angemeldet als $account';
+  }
+
+  @override
+  String get playingAsGuest => 'Als Gast spielen';
+
+  @override
+  String get signInAction => 'Anmelden';
+
+  @override
+  String get linkSuccessMessage =>
+      'Angemeldet. Deine Punkte werden jetzt in deinem Konto gespeichert.';
+
+  @override
+  String get linkConflictTitle => 'Konto wird bereits verwendet';
+
+  @override
+  String get linkConflictMessage =>
+      'Dieses Konto existiert bereits. Beim Wechsel gehen deine aktuellen Gast-Punkte verloren.';
+
+  @override
+  String get linkConflictSwitch => 'Konto wechseln';
+
+  @override
+  String get authError => 'Anmeldung fehlgeschlagen. Bitte versuche es erneut.';
+
+  @override
+  String get authErrorCancelled => 'Anmeldung abgebrochen.';
+
+  @override
+  String get authErrorNetwork =>
+      'Keine Verbindung. Prüfe dein Netzwerk und versuche es erneut.';
+
+  @override
+  String get authErrorCredentialRejected =>
+      'Die Anmeldung wurde abgelehnt. Bitte versuche es erneut.';
+
+  @override
+  String get authErrorProviderDisabled =>
+      'Diese Anmeldemethode ist derzeit nicht verfügbar.';
+
+  @override
+  String get authErrorAppleUnavailable =>
+      'Mit Apple anmelden ist auf diesem Gerät nicht verfügbar.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Zu viele Versuche. Bitte warte kurz und versuche es erneut.';
+
+  @override
+  String get authErrorAlreadyLinked => 'Dieses Konto ist bereits verknüpft.';
+
+  @override
+  String get authErrorAccountDisabled => 'Dieses Konto wurde deaktiviert.';
+
+  @override
+  String get authErrorAccountExistsDifferentCredential =>
+      'Diese E-Mail wird bereits mit einer anderen Anmeldemethode verwendet.';
+
+  @override
+  String get authErrorLinkConflict =>
+      'Dieses Konto gehört bereits jemand anderem.';
 }

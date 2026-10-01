@@ -15,6 +15,7 @@ import 'package:skeleton_core/skeleton_core.dart'
         OptionCard,
         DeviceWrapper,
         AnimatedButton,
+        AdMobBanner,
         CustomElevatedButton;
 
 import 'package:nucatch/main.dart' as app;
@@ -25,6 +26,9 @@ import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart' show GameEndReason;
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
+import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart'
+    show SeedDemoLeaderboard;
 import 'package:nucatch/helpers/const.dart' show KeyboardOption;
 import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/services/ai_greeting_service.dart';
@@ -86,6 +90,21 @@ Future<void> runScreenWalkthrough(
   // iPad entry points pass 'ipad_' so their shots never collide with the
   // phone suite's.
   String devicePrefix = '',
+  // Store-screenshot capture (`store_screenshots_test.dart`) passes true so the
+  // app renders at the real simulator/emulator's native resolution — App Store
+  // Connect requires exact per-device pixel dimensions, and `deliver` maps each
+  // PNG to a display type by its resolution. The internal smoke-test callers
+  // leave this false and keep forcing a fixed viewport as before.
+  bool nativeViewport = false,
+  // When non-null, only screenshots whose base name (the part after [prefix])
+  // is in this set are actually written; every screen is still navigated to and
+  // asserted. Store runs pass the curated ≤8 marketing subset (stores cap the
+  // count); smoke-test callers leave it null and capture everything.
+  Set<String>? captureOnly,
+  // When true, swap the real leaderboard for a curated demo one before its shot
+  // so no real player's username reaches a public store frame. Only the store
+  // run sets this; smoke-test output stays byte-identical.
+  bool seedDemoData = false,
 }) async {
   void step(String name) => debugPrint('TEST_STEP: $name');
   final prefix = '$devicePrefix${landscape ? 'landscape_' : 'portrait_'}';
@@ -118,25 +137,45 @@ Future<void> runScreenWalkthrough(
   final seenScreenshots = <List<int>>[];
 
   Future<void> shot(String name) async {
+    // Store runs limit output to a curated subset — skip the capture (but not
+    // the navigation/assertions that precede it) for anything not in the set.
+    if (captureOnly != null) {
+      final base = name.startsWith(prefix) ? name.substring(prefix.length) : name;
+      if (!captureOnly.contains(base)) return;
+    }
     try {
       List<int> bytes = await binding.takeScreenshot(name);
-      // On the iPad Simulator, `takeScreenshot()` has been observed to
-      // return a stale frame from a few calls back — not necessarily the
-      // *immediately* previous one, ruling out both a fixed warm-up delay
-      // and a single-previous-frame comparison (confirmed by diffing
-      // output PNGs: a stale capture sometimes matched a screenshot 2-4
-      // calls earlier, not the adjacent one). Since every screenshot in
-      // this walkthrough follows a real navigation to a genuinely
-      // different screen, retry with a fresh pump whenever a capture
-      // matches ANY prior screenshot, until it matches none (or the retry
-      // budget runs out) — this adapts to whatever the real lag is instead
-      // of hardcoding a guess.
-      for (int attempt = 0;
-          attempt < 12 &&
-              seenScreenshots.any((seen) => listEquals(bytes, seen));
-          attempt++) {
+      // Re-grab until the frame is BOTH settled and distinct, or the budget
+      // runs out:
+      //
+      //  • settled — two consecutive grabs are byte-identical, so the screen
+      //    has stopped changing. This is what defeats the *mid-animation*
+      //    captures a single grab returns on this simulator: the intro "Go"
+      //    countdown overlay on the play screen, a spinner, or a frame taken
+      //    while a navigation/seed is still painting (which is how the combat
+      //    play/end shots previously came out as the setup screen or a
+      //    half-seeded "…/ null" state).
+      //
+      //  • distinct — the frame doesn't byte-match a screenshot already taken
+      //    of a *different* screen. `takeScreenshot()` here has been observed
+      //    to return a stale frame from 2–4 calls back (confirmed by diffing
+      //    output PNGs), and every shot in this walkthrough follows a real
+      //    navigation to a genuinely different screen, so a match means the
+      //    grab is stale.
+      //
+      // Falls through after the budget so a screen that genuinely never
+      // settles (a persistent looping animation) still yields a frame rather
+      // than looping forever.
+      for (int attempt = 0; attempt < 15; attempt++) {
+        if (seenScreenshots.any((seen) => listEquals(bytes, seen))) {
+          await doWait(1);
+          bytes = await binding.takeScreenshot(name);
+          continue;
+        }
         await doWait(1);
-        bytes = await binding.takeScreenshot(name);
+        final again = await binding.takeScreenshot(name);
+        if (listEquals(again, bytes)) break; // settled AND distinct
+        bytes = again; // still painting — keep waiting
       }
       seenScreenshots.add(bytes);
       debugPrint('📸 Captured screenshot: $name');
@@ -408,10 +447,19 @@ Future<void> runScreenWalkthrough(
   FcmService.disablePermissionRequestForTest = true;
   AiGreetingService.disableForTest = true;
   CombatBleService.disableForTest = true;
+  // Store runs suppress the AdMob banners on the leaderboard and game-over
+  // screens — a live (or "Test mode") ad has no place in a marketing frame,
+  // and its async network load is exactly the kind of non-determinism this
+  // walkthrough otherwise fights. Gated on [seedDemoData] so the smoke suites'
+  // captured output stays byte-identical.
+  if (seedDemoData) AdMobBanner.disableForTest = true;
 
   addTearDown(() {
     tester.view.resetPhysicalSize();
     tester.view.resetDevicePixelRatio();
+    // Static flag on a shared widget — reset so it can't leak into another
+    // suite that reuses the same process.
+    AdMobBanner.disableForTest = false;
   });
 
   // 1080x2400 physical pixels at a 2.625 device pixel ratio (the default
@@ -426,7 +474,11 @@ Future<void> runScreenWalkthrough(
   // overlays (the quick-settings volume/vibration buttons) visually and
   // functionally overlapped the in-game menu button and silently absorbed
   // taps meant for it.
-  if (landscape) {
+  if (nativeViewport) {
+    // Store capture: leave the viewport alone so the frame comes out at the
+    // real device's native pixel dimensions (required for store upload).
+    step('using native device viewport (no override)');
+  } else if (landscape) {
     // Swapped width/height of the portrait profile rather than a synthetic
     // square, so layout code that branches on aspect ratio behaves the same
     // way it would on an actual rotated device.
@@ -539,6 +591,18 @@ Future<void> runScreenWalkthrough(
   step('asserting TopScoreScreen');
   expect(find.byType(TopScoreScreen), findsOneWidget,
       reason: 'Leaderboard should still be reachable from the menu');
+  // Redact real players' usernames from the public store frame by swapping in a
+  // curated demo leaderboard. Dispatched AFTER the screen has mounted (it kicks
+  // off its own real load on init) so the demo rows are what actually render.
+  // Gated on [seedDemoData] so the internal smoke passes stay byte-identical.
+  if (seedDemoData) {
+    step('seeding demo leaderboard');
+    tester
+        .element(find.byType(TopScoreScreen))
+        .read<TurnRecordedListBloc>()
+        .add(SeedDemoLeaderboard());
+    await doWait(2);
+  }
   await shot('${prefix}04_leaderboard');
   assertNoOverflow('04_leaderboard');
   assertDeviceWrapperWidth('04_leaderboard', 1200);
@@ -589,6 +653,27 @@ Future<void> runScreenWalkthrough(
   step('asserting PlayScreen');
   expect(find.byType(PlayScreen), findsOneWidget,
       reason: 'Starting a game should reach the play screen');
+  // Store runs freeze an attractive, deterministic gameplay state before the
+  // shot. A real game leaves a running countdown timer — the frame never
+  // settles, so the settle guard in `shot()` can't lock on and it captures
+  // whatever transient (often the intro "Go" overlay) is on screen. The same
+  // `SeedTutorialTurn` the game-over shot uses, with `startTimer: false`,
+  // renders the real keypad at a memorable level/score and holds it still.
+  // Gated on [seedDemoData] so the smoke suites keep exercising real gameplay.
+  if (seedDemoData) {
+    step('seeding a frozen play state for the store shot');
+    tester.element(find.byType(PlayScreen)).read<TurnBloc>().add(
+          SeedTutorialTurn(
+            difficulty: Difficulty.medium,
+            requirementString: '347',
+            expect: '347',
+            level: 3,
+            point: 60,
+            startTimer: false,
+          ),
+        );
+    await doWait(1);
+  }
   await shot('${prefix}07_play_screen');
   assertNoOverflow('07_play_screen');
   assertDeviceWrapperWidth('07_play_screen', landscape ? 1200 : 800);

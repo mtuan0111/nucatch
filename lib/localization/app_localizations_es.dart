@@ -15,6 +15,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get instantStart => 'Inicio instantáneo';
 
   @override
+  String get lastPlayedLabel => 'Last played';
+
+  @override
   String get selectLevel => 'Seleccionar nivel';
 
   @override
@@ -461,21 +464,21 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tourLeaderboardDesc =>
-      '¡Rastrea tu progreso aquí! Ve **clasificaciones globales**, tus **récords personales** y **estadísticas** incluyendo juegos jugados, tasa de victorias y precisión. Compara con amigos y observa cómo mejoras con el tiempo. Finalmente, visitemos Configuración.';
+      '¡Rastrea tu progreso aquí! Ve **clasificaciones globales**, tus **récords personales** y **estadísticas** incluyendo juegos jugados, tasa de victorias y precisión. Compara con amigos y observa cómo mejoras con el tiempo. A continuación, visitemos Configuración.';
 
   @override
   String get tourSettingsTitle => 'Configuración - Personalizar';
 
   @override
   String get tourSettingsDesc =>
-      '¡Personaliza todo aquí! Cambia tu **nombre de usuario**, selecciona un **tema**, ajusta **sonido/música**, elige tu **idioma** y administra la privacidad. Puedes reiniciar este tour en cualquier momento desde aquí. ¡Estás listo para jugar!';
+      '¡Personaliza todo aquí! Cambia tu **nombre de usuario**, selecciona un **tema**, ajusta **sonido/música**, elige tu **idioma** y administra la privacidad. Puedes reiniciar este tour en cualquier momento desde aquí.';
 
   @override
   String get tourAboutTitle => 'History & Rules';
 
   @override
   String get tourAboutDesc =>
-      'Discover the ancient legend behind the tower and learn the rules of the game.';
+      'Read the legend behind the tower and the full rules of the game any time from here. That covers the menu! Tap **Next** to start a short **hands-on practice** — you\'ll try **Regular**, **Pick Right** and **Combat** modes with a guide on screen.';
 
   @override
   String get tourNext => 'Siguiente';
@@ -705,4 +708,88 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get menuGreeting => 'Test your memory and math skills today!';
+
+  @override
+  String get accountSectionTitle => 'Cuenta';
+
+  @override
+  String get signInTitle => 'Iniciar sesión';
+
+  @override
+  String get signInSubtitle =>
+      'Guarda tus puntuaciones y tu rango: inicia sesión para llevarlos a otro dispositivo.';
+
+  @override
+  String get signInWithGoogle => 'Continuar con Google';
+
+  @override
+  String get signInWithApple => 'Continuar con Apple';
+
+  @override
+  String get signOut => 'Cerrar sesión';
+
+  @override
+  String signedInAs(String account) {
+    return 'Sesión iniciada como $account';
+  }
+
+  @override
+  String get playingAsGuest => 'Jugando como invitado';
+
+  @override
+  String get signInAction => 'Iniciar sesión';
+
+  @override
+  String get linkSuccessMessage =>
+      'Sesión iniciada. Tus puntuaciones ya se guardan en tu cuenta.';
+
+  @override
+  String get linkConflictTitle => 'La cuenta ya está en uso';
+
+  @override
+  String get linkConflictMessage =>
+      'Esta cuenta ya existe. Cambiar a ella dejará atrás tus puntuaciones de invitado.';
+
+  @override
+  String get linkConflictSwitch => 'Cambiar de cuenta';
+
+  @override
+  String get authError => 'No se pudo iniciar sesión. Inténtalo de nuevo.';
+
+  @override
+  String get authErrorCancelled => 'Inicio de sesión cancelado.';
+
+  @override
+  String get authErrorNetwork =>
+      'Sin conexión. Comprueba tu red e inténtalo de nuevo.';
+
+  @override
+  String get authErrorCredentialRejected =>
+      'Se rechazó el inicio de sesión. Inténtalo de nuevo.';
+
+  @override
+  String get authErrorProviderDisabled =>
+      'Este método de inicio de sesión no está disponible ahora.';
+
+  @override
+  String get authErrorAppleUnavailable =>
+      'Iniciar sesión con Apple no está disponible en este dispositivo.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Demasiados intentos. Espera un momento e inténtalo de nuevo.';
+
+  @override
+  String get authErrorAlreadyLinked => 'Esta cuenta ya está vinculada.';
+
+  @override
+  String get authErrorAccountDisabled => 'Esta cuenta ha sido deshabilitada.';
+
+  @override
+  String get authErrorAccountExistsDifferentCredential =>
+      'Ese correo ya se usa con otro método de inicio de sesión.';
+
+  @override
+  String get authErrorLinkConflict =>
+      'Esta cuenta ya pertenece a otra persona.';
 }

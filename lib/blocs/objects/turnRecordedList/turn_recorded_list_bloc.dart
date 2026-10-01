@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show Difficulty;
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/models/turn_record_model.dart';
@@ -15,6 +16,41 @@ class TurnRecordedListBloc
     on<LoadDataByPeriod>(_onLoadDataByPeriod);
     on<ChangeNumberOfTopBoard>(_onChangeNumberOfTopBoard);
     on<DebugDatabaseContent>(_onDebugDatabaseContent);
+    on<SeedDemoLeaderboard>(_onSeedDemoLeaderboard);
+  }
+
+  /// Screenshot/demo-only: swap in a curated, deterministic leaderboard so the
+  /// store-screenshot run never captures real players' usernames. See the
+  /// [SeedDemoLeaderboard] doc comment and `tool/screenshots/README.md`.
+  Future<void> _onSeedDemoLeaderboard(
+    SeedDemoLeaderboard event,
+    Emitter<TurnRecordedListState> emitter,
+  ) async {
+    // Invented names + descending points; the state getter re-sorts by point,
+    // so order here is only for readability.
+    const demoRows = <(String, int, Difficulty)>[
+      ('NumNinja', 980, Difficulty.extreme),
+      ('QuickAdd', 915, Difficulty.hard),
+      ('MathMaven', 870, Difficulty.hard),
+      ('SumSprinter', 806, Difficulty.medium),
+      ('DigitDynamo', 742, Difficulty.medium),
+      ('CarryOne', 689, Difficulty.medium),
+      ('TenFrame', 604, Difficulty.easy),
+      ('CountOn', 551, Difficulty.easy),
+    ];
+    final now = DateTime.now();
+    final demoList = <TurnRecordedModel>[
+      for (var i = 0; i < demoRows.length; i++)
+        TurnRecordedModel(
+          turnId: 'demo-$i',
+          playedUsername: demoRows[i].$1,
+          point: demoRows[i].$2,
+          recordedTime: now.subtract(Duration(hours: i)),
+          difficulty: demoRows[i].$3,
+          firebaseUserId: 'demo-$i',
+        ),
+    ];
+    emitter(state.copyWith(listModel: demoList, isLoading: false));
   }
 
   Future<void> _onLoadData(

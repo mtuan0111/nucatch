@@ -17,4 +17,35 @@ platform :ios do
       UI.error("IPA file not found at #{ipa_path}. Please run `flutter build ipa --export-method ad-hoc --release` from the project root first.")
     end
   end
+
+  desc "Upload store screenshots ONLY to App Store Connect."
+  desc "Media only — no binary, no metadata, no submit for review. Frames come"
+  desc "from ios/fastlane/screenshots/<locale>/ (run tool/screenshots/capture.sh"
+  desc "first). Auth via an App Store Connect API key in env: ASC_KEY_ID,"
+  desc "ASC_ISSUER_ID, ASC_KEY_FILEPATH (path to the .p8). See"
+  desc "tool/screenshots/README.md."
+  lane :upload_screenshots do
+    options = {
+      skip_binary_upload: true,
+      skip_metadata: true,
+      skip_app_version_update: true,
+      overwrite_screenshots: true,
+      submit_for_review: false,
+      run_precheck_before_submit: false,
+      force: true, # skip the interactive HTML preview / confirmation prompt
+    }
+
+    if ENV["ASC_KEY_ID"] && ENV["ASC_ISSUER_ID"] && ENV["ASC_KEY_FILEPATH"]
+      options[:api_key] = app_store_connect_api_key(
+        key_id: ENV["ASC_KEY_ID"],
+        issuer_id: ENV["ASC_ISSUER_ID"],
+        key_filepath: ENV["ASC_KEY_FILEPATH"],
+        in_house: false,
+      )
+    else
+      UI.important("No ASC_* API key env vars set — deliver will fall back to interactive Apple ID login (Appfile). See tool/screenshots/README.md.")
+    end
+
+    deliver(options)
+  end
 end

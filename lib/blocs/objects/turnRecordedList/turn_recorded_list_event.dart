@@ -64,3 +64,10 @@ class ChangeNumberOfTopBoard extends TurnRecordedListEvent {
 
 // Debug event to help troubleshoot date filtering
 class DebugDatabaseContent extends TurnRecordedListEvent {}
+
+/// Screenshot/demo-only event: replaces the leaderboard's contents with a
+/// curated, deterministic set of rows so the store-screenshot capture
+/// (`integration_test/store_screenshots_test.dart`) never puts real players'
+/// usernames on a marketing frame. Not dispatched anywhere in the shipping app
+/// — only from the screenshot walkthrough. See `tool/screenshots/README.md`.
+class SeedDemoLeaderboard extends TurnRecordedListEvent {}

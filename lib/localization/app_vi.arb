@@ -8,6 +8,10 @@
   "@instantStart": {
     "description": "Nút bắt đầu nhanh để khởi động trò chơi ngay lập tức"
   },
+  "lastPlayedLabel": "Chơi gần nhất",
+  "@lastPlayedLabel": {
+    "description": "Badge shown on the difficulty the player used most recently (smart default)"
+  },
   "selectLevel": "Chọn cấp độ",
   "@selectLevel": {
     "description": "Hướng dẫn người dùng chọn cấp độ của trò chơi"
@@ -639,5 +643,106 @@
   "menuGreeting": "Thử thách trí nhớ và kỹ năng tính toán của bạn ngay lúc này!",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
+  },
+  "accountSectionTitle": "Tài khoản",
+  "@accountSectionTitle": {
+    "description": "Settings section header for the signed-in account"
+  },
+  "signInTitle": "Đăng nhập",
+  "@signInTitle": {
+    "description": "Title of the sign-in sheet"
+  },
+  "signInSubtitle": "Giữ an toàn điểm số và thứ hạng — đăng nhập để mang chúng sang thiết bị mới.",
+  "@signInSubtitle": {
+    "description": "Explains why signing in is worth it"
+  },
+  "signInWithGoogle": "Tiếp tục với Google",
+  "@signInWithGoogle": {
+    "description": "Google sign-in button label"
+  },
+  "signInWithApple": "Tiếp tục với Apple",
+  "@signInWithApple": {
+    "description": "Apple sign-in button label"
+  },
+  "signOut": "Đăng xuất",
+  "@signOut": {
+    "description": "Sign out button label"
+  },
+  "signedInAs": "Đã đăng nhập bằng {account}",
+  "@signedInAs": {
+    "description": "Shows which account is signed in",
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "playingAsGuest": "Đang chơi với tư cách khách",
+  "@playingAsGuest": {
+    "description": "Shown when the session is still anonymous"
+  },
+  "signInAction": "Đăng nhập",
+  "@signInAction": {
+    "description": "Button that opens the sign-in sheet"
+  },
+  "linkSuccessMessage": "Đã đăng nhập. Điểm số của bạn giờ được lưu vào tài khoản.",
+  "@linkSuccessMessage": {
+    "description": "Toast after a guest session is upgraded in place"
+  },
+  "linkConflictTitle": "Tài khoản đã được sử dụng",
+  "@linkConflictTitle": {
+    "description": "Title of the account-conflict dialog"
+  },
+  "linkConflictMessage": "Tài khoản này đã tồn tại. Chuyển sang tài khoản đó sẽ bỏ lại điểm số khách hiện tại.",
+  "@linkConflictMessage": {
+    "description": "Explains that switching abandons guest progress"
+  },
+  "linkConflictSwitch": "Chuyển tài khoản",
+  "@linkConflictSwitch": {
+    "description": "Confirm switching to the existing account"
+  },
+  "authError": "Đăng nhập thất bại. Vui lòng thử lại.",
+  "@authError": {
+    "description": "Generic auth failure"
+  },
+  "authErrorCancelled": "Đã hủy đăng nhập.",
+  "@authErrorCancelled": {
+    "description": "User dismissed the provider sheet"
+  },
+  "authErrorNetwork": "Không có kết nối. Hãy kiểm tra mạng và thử lại.",
+  "@authErrorNetwork": {
+    "description": "No usable network connection"
+  },
+  "authErrorCredentialRejected": "Đăng nhập bị từ chối. Vui lòng thử lại.",
+  "@authErrorCredentialRejected": {
+    "description": "Firebase rejected the provider token"
+  },
+  "authErrorProviderDisabled": "Phương thức đăng nhập này hiện không khả dụng.",
+  "@authErrorProviderDisabled": {
+    "description": "Provider not configured/enabled"
+  },
+  "authErrorAppleUnavailable": "Đăng nhập bằng Apple không khả dụng trên thiết bị này.",
+  "@authErrorAppleUnavailable": {
+    "description": "Apple sign-in unavailable on this device"
+  },
+  "authErrorTooManyRequests": "Quá nhiều lần thử. Vui lòng đợi một lát rồi thử lại.",
+  "@authErrorTooManyRequests": {
+    "description": "Rate limited"
+  },
+  "authErrorAlreadyLinked": "Tài khoản này đã được liên kết.",
+  "@authErrorAlreadyLinked": {
+    "description": "Provider already linked to this account"
+  },
+  "authErrorAccountDisabled": "Tài khoản này đã bị vô hiệu hóa.",
+  "@authErrorAccountDisabled": {
+    "description": "Account disabled by an administrator"
+  },
+  "authErrorAccountExistsDifferentCredential": "Email đó đã được dùng với phương thức đăng nhập khác.",
+  "@authErrorAccountExistsDifferentCredential": {
+    "description": "Identity belongs to an account with another provider"
+  },
+  "authErrorLinkConflict": "Tài khoản này đã thuộc về người khác.",
+  "@authErrorLinkConflict": {
+    "description": "Identity already belongs to another account"
   }
 }

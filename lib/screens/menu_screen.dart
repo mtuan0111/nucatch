@@ -88,8 +88,11 @@ class _MenuScreenState extends State<MenuScreen> {
         greetingMessage: BlocBuilder<skeleton.UserBloc, skeleton.UserState>(
           builder: (context, userState) {
             return Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+              // Grid alignment (§2): use the 24-pt spacing token, not a stray
+              // literal, so the greeting sits on the same rhythm as everything
+              // else on the page.
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kSpace2XL, vertical: kSpaceSM),
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 500),
                 child: Text(

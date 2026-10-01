@@ -15,6 +15,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get instantStart => 'เริ่มทันที';
 
   @override
+  String get lastPlayedLabel => 'Last played';
+
+  @override
   String get selectLevel => 'เลือกระดับ';
 
   @override
@@ -466,7 +469,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get tourAboutDesc =>
-      'Discover the ancient legend behind the tower and learn the rules of the game.';
+      'Read the legend behind the tower and the full rules of the game any time from here. That covers the menu! Tap **Next** to start a short **hands-on practice** — you\'ll try **Regular**, **Pick Right** and **Combat** modes with a guide on screen.';
 
   @override
   String get tourNext => 'ถัดไป';
@@ -695,4 +698,86 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get menuGreeting => 'Test your memory and math skills today!';
+
+  @override
+  String get accountSectionTitle => 'บัญชี';
+
+  @override
+  String get signInTitle => 'เข้าสู่ระบบ';
+
+  @override
+  String get signInSubtitle =>
+      'เก็บคะแนนและอันดับของคุณไว้ — เข้าสู่ระบบเพื่อใช้ต่อบนเครื่องใหม่';
+
+  @override
+  String get signInWithGoogle => 'ดำเนินการต่อด้วย Google';
+
+  @override
+  String get signInWithApple => 'ดำเนินการต่อด้วย Apple';
+
+  @override
+  String get signOut => 'ออกจากระบบ';
+
+  @override
+  String signedInAs(String account) {
+    return 'เข้าสู่ระบบเป็น $account';
+  }
+
+  @override
+  String get playingAsGuest => 'กำลังเล่นแบบผู้เยี่ยมชม';
+
+  @override
+  String get signInAction => 'เข้าสู่ระบบ';
+
+  @override
+  String get linkSuccessMessage =>
+      'เข้าสู่ระบบแล้ว คะแนนของคุณถูกบันทึกในบัญชีแล้ว';
+
+  @override
+  String get linkConflictTitle => 'บัญชีนี้ถูกใช้งานแล้ว';
+
+  @override
+  String get linkConflictMessage =>
+      'บัญชีนี้มีอยู่แล้ว การสลับไปใช้จะทิ้งคะแนนผู้เยี่ยมชมปัจจุบันไว้';
+
+  @override
+  String get linkConflictSwitch => 'สลับบัญชี';
+
+  @override
+  String get authError => 'เข้าสู่ระบบไม่สำเร็จ โปรดลองอีกครั้ง';
+
+  @override
+  String get authErrorCancelled => 'ยกเลิกการเข้าสู่ระบบแล้ว';
+
+  @override
+  String get authErrorNetwork =>
+      'ไม่มีการเชื่อมต่อ โปรดตรวจสอบเครือข่ายแล้วลองใหม่';
+
+  @override
+  String get authErrorCredentialRejected =>
+      'การเข้าสู่ระบบถูกปฏิเสธ โปรดลองอีกครั้ง';
+
+  @override
+  String get authErrorProviderDisabled => 'วิธีเข้าสู่ระบบนี้ยังไม่พร้อมใช้งาน';
+
+  @override
+  String get authErrorAppleUnavailable =>
+      'ไม่รองรับการเข้าสู่ระบบด้วย Apple บนอุปกรณ์นี้';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'พยายามหลายครั้งเกินไป โปรดรอสักครู่แล้วลองใหม่';
+
+  @override
+  String get authErrorAlreadyLinked => 'บัญชีนี้เชื่อมโยงไว้แล้ว';
+
+  @override
+  String get authErrorAccountDisabled => 'บัญชีนี้ถูกปิดใช้งาน';
+
+  @override
+  String get authErrorAccountExistsDifferentCredential =>
+      'อีเมลนี้ถูกใช้กับวิธีเข้าสู่ระบบอื่นแล้ว';
+
+  @override
+  String get authErrorLinkConflict => 'บัญชีนี้เป็นของผู้ใช้รายอื่นแล้ว';
 }

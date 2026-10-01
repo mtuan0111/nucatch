@@ -15,6 +15,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get instantStart => 'Mulai Instan';
 
   @override
+  String get lastPlayedLabel => 'Last played';
+
+  @override
   String get selectLevel => 'Pilih Level';
 
   @override
@@ -473,7 +476,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tourAboutDesc =>
-      'Discover the ancient legend behind the tower and learn the rules of the game.';
+      'Read the legend behind the tower and the full rules of the game any time from here. That covers the menu! Tap **Next** to start a short **hands-on practice** — you\'ll try **Regular**, **Pick Right** and **Combat** modes with a guide on screen.';
 
   @override
   String get tourNext => 'Lanjut';
@@ -703,4 +706,87 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get menuGreeting => 'Test your memory and math skills today!';
+
+  @override
+  String get accountSectionTitle => 'Akun';
+
+  @override
+  String get signInTitle => 'Masuk';
+
+  @override
+  String get signInSubtitle =>
+      'Amankan skor dan peringkatmu — masuk untuk membawanya ke perangkat baru.';
+
+  @override
+  String get signInWithGoogle => 'Lanjutkan dengan Google';
+
+  @override
+  String get signInWithApple => 'Lanjutkan dengan Apple';
+
+  @override
+  String get signOut => 'Keluar';
+
+  @override
+  String signedInAs(String account) {
+    return 'Masuk sebagai $account';
+  }
+
+  @override
+  String get playingAsGuest => 'Bermain sebagai tamu';
+
+  @override
+  String get signInAction => 'Masuk';
+
+  @override
+  String get linkSuccessMessage =>
+      'Berhasil masuk. Skormu kini tersimpan di akunmu.';
+
+  @override
+  String get linkConflictTitle => 'Akun sudah digunakan';
+
+  @override
+  String get linkConflictMessage =>
+      'Akun ini sudah ada. Beralih ke akun tersebut akan meninggalkan skor tamu saat ini.';
+
+  @override
+  String get linkConflictSwitch => 'Ganti akun';
+
+  @override
+  String get authError => 'Gagal masuk. Silakan coba lagi.';
+
+  @override
+  String get authErrorCancelled => 'Proses masuk dibatalkan.';
+
+  @override
+  String get authErrorNetwork =>
+      'Tidak ada koneksi. Periksa jaringanmu lalu coba lagi.';
+
+  @override
+  String get authErrorCredentialRejected =>
+      'Proses masuk ditolak. Silakan coba lagi.';
+
+  @override
+  String get authErrorProviderDisabled =>
+      'Metode masuk ini belum tersedia saat ini.';
+
+  @override
+  String get authErrorAppleUnavailable =>
+      'Masuk dengan Apple tidak tersedia di perangkat ini.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Terlalu banyak percobaan. Tunggu sebentar lalu coba lagi.';
+
+  @override
+  String get authErrorAlreadyLinked => 'Akun ini sudah tertaut.';
+
+  @override
+  String get authErrorAccountDisabled => 'Akun ini telah dinonaktifkan.';
+
+  @override
+  String get authErrorAccountExistsDifferentCredential =>
+      'Email itu sudah dipakai dengan metode masuk lain.';
+
+  @override
+  String get authErrorLinkConflict => 'Akun ini sudah milik orang lain.';
 }

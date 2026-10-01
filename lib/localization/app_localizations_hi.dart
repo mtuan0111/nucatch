@@ -15,6 +15,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get instantStart => 'तत्काल शुरुआत';
 
   @override
+  String get lastPlayedLabel => 'Last played';
+
+  @override
   String get selectLevel => 'स्तर चुनें';
 
   @override
@@ -473,7 +476,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get tourAboutDesc =>
-      'Discover the ancient legend behind the tower and learn the rules of the game.';
+      'Read the legend behind the tower and the full rules of the game any time from here. That covers the menu! Tap **Next** to start a short **hands-on practice** — you\'ll try **Regular**, **Pick Right** and **Combat** modes with a guide on screen.';
 
   @override
   String get tourNext => 'अगला';
@@ -703,4 +706,86 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get menuGreeting => 'Test your memory and math skills today!';
+
+  @override
+  String get accountSectionTitle => 'खाता';
+
+  @override
+  String get signInTitle => 'साइन इन करें';
+
+  @override
+  String get signInSubtitle =>
+      'अपने स्कोर और रैंक सुरक्षित रखें — साइन इन करके उन्हें नए डिवाइस पर ले जाएँ।';
+
+  @override
+  String get signInWithGoogle => 'Google के साथ जारी रखें';
+
+  @override
+  String get signInWithApple => 'Apple के साथ जारी रखें';
+
+  @override
+  String get signOut => 'साइन आउट';
+
+  @override
+  String signedInAs(String account) {
+    return '$account के रूप में साइन इन';
+  }
+
+  @override
+  String get playingAsGuest => 'अतिथि के रूप में खेल रहे हैं';
+
+  @override
+  String get signInAction => 'साइन इन करें';
+
+  @override
+  String get linkSuccessMessage =>
+      'साइन इन हो गया। आपके स्कोर अब आपके खाते में सहेजे जाते हैं।';
+
+  @override
+  String get linkConflictTitle => 'खाता पहले से उपयोग में है';
+
+  @override
+  String get linkConflictMessage =>
+      'यह खाता पहले से मौजूद है। इस पर स्विच करने से आपके मौजूदा अतिथि स्कोर छूट जाएँगे।';
+
+  @override
+  String get linkConflictSwitch => 'खाता बदलें';
+
+  @override
+  String get authError => 'साइन इन विफल रहा। कृपया पुनः प्रयास करें।';
+
+  @override
+  String get authErrorCancelled => 'साइन इन रद्द किया गया।';
+
+  @override
+  String get authErrorNetwork =>
+      'कोई कनेक्शन नहीं। अपना नेटवर्क जाँचें और पुनः प्रयास करें।';
+
+  @override
+  String get authErrorCredentialRejected =>
+      'साइन इन अस्वीकृत हुआ। कृपया पुनः प्रयास करें।';
+
+  @override
+  String get authErrorProviderDisabled => 'यह साइन-इन विधि अभी उपलब्ध नहीं है।';
+
+  @override
+  String get authErrorAppleUnavailable =>
+      'इस डिवाइस पर Apple से साइन इन उपलब्ध नहीं है।';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'बहुत अधिक प्रयास। कृपया थोड़ी देर बाद पुनः प्रयास करें।';
+
+  @override
+  String get authErrorAlreadyLinked => 'यह खाता पहले से लिंक है।';
+
+  @override
+  String get authErrorAccountDisabled => 'यह खाता अक्षम कर दिया गया है।';
+
+  @override
+  String get authErrorAccountExistsDifferentCredential =>
+      'वह ईमेल पहले से किसी अन्य साइन-इन विधि में उपयोग हो रहा है।';
+
+  @override
+  String get authErrorLinkConflict => 'यह खाता पहले से किसी और का है।';
 }

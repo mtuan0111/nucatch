@@ -15,6 +15,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get instantStart => '即时开始';
 
   @override
+  String get lastPlayedLabel => 'Last played';
+
+  @override
   String get selectLevel => '选择等级';
 
   @override
@@ -448,7 +451,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tourAboutDesc =>
-      'Discover the ancient legend behind the tower and learn the rules of the game.';
+      'Read the legend behind the tower and the full rules of the game any time from here. That covers the menu! Tap **Next** to start a short **hands-on practice** — you\'ll try **Regular**, **Pick Right** and **Combat** modes with a guide on screen.';
 
   @override
   String get tourNext => '下一步';
@@ -677,4 +680,78 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get menuGreeting => 'Test your memory and math skills today!';
+
+  @override
+  String get accountSectionTitle => '账户';
+
+  @override
+  String get signInTitle => '登录';
+
+  @override
+  String get signInSubtitle => '保护你的分数和排名——登录后可在新设备上继续。';
+
+  @override
+  String get signInWithGoogle => '使用 Google 继续';
+
+  @override
+  String get signInWithApple => '使用 Apple 继续';
+
+  @override
+  String get signOut => '退出登录';
+
+  @override
+  String signedInAs(String account) {
+    return '已登录：$account';
+  }
+
+  @override
+  String get playingAsGuest => '以访客身份游玩';
+
+  @override
+  String get signInAction => '登录';
+
+  @override
+  String get linkSuccessMessage => '已登录。你的分数现在保存在账户中。';
+
+  @override
+  String get linkConflictTitle => '该账户已被使用';
+
+  @override
+  String get linkConflictMessage => '该账户已存在。切换过去会放弃当前访客的分数。';
+
+  @override
+  String get linkConflictSwitch => '切换账户';
+
+  @override
+  String get authError => '登录失败，请重试。';
+
+  @override
+  String get authErrorCancelled => '已取消登录。';
+
+  @override
+  String get authErrorNetwork => '没有网络连接，请检查后重试。';
+
+  @override
+  String get authErrorCredentialRejected => '登录被拒绝，请重试。';
+
+  @override
+  String get authErrorProviderDisabled => '此登录方式当前不可用。';
+
+  @override
+  String get authErrorAppleUnavailable => '此设备不支持使用 Apple 登录。';
+
+  @override
+  String get authErrorTooManyRequests => '尝试次数过多，请稍后再试。';
+
+  @override
+  String get authErrorAlreadyLinked => '该账户已关联。';
+
+  @override
+  String get authErrorAccountDisabled => '该账户已被停用。';
+
+  @override
+  String get authErrorAccountExistsDifferentCredential => '该邮箱已用于其他登录方式。';
+
+  @override
+  String get authErrorLinkConflict => '该账户已属于其他用户。';
 }
