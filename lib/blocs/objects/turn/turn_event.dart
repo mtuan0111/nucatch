@@ -1,5 +1,6 @@
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/blocs/objects/timer_pause.dart';
 
 abstract class TurnEvent {}
 
@@ -118,9 +119,19 @@ class TapTimerTick extends TurnEvent {
 
 class TapTimerTimeout extends TurnEvent {}
 
-class TapTimerPause extends TurnEvent {}
+class TapTimerPause extends TurnEvent {
+  final TimerPauseReason reason;
 
-class TapTimerResume extends TurnEvent {}
+  TapTimerPause([this.reason = TimerPauseReason.menu]);
+}
+
+/// Releases [reason]'s hold; the timer runs again only once no other
+/// [TimerPauseReason] still holds it.
+class TapTimerResume extends TurnEvent {
+  final TimerPauseReason reason;
+
+  TapTimerResume([this.reason = TimerPauseReason.menu]);
+}
 
 class TapTimerReset extends TurnEvent {}
 

@@ -744,5 +744,29 @@
   "authErrorLinkConflict": "Tài khoản này đã thuộc về người khác.",
   "@authErrorLinkConflict": {
     "description": "Identity already belongs to another account"
+  },
+  "opponentPausedTitle": "Đối thủ tạm dừng",
+  "@opponentPausedTitle": {
+    "description": "Overlay title in combat when the opponent paused mid-round"
+  },
+  "opponentPausedBody": "Đối thủ đã gập hoặc đóng điện thoại. Ván đấu tiếp tục khi họ quay lại.",
+  "@opponentPausedBody": {
+    "description": "Overlay body in combat while the opponent is away"
+  },
+  "opponentAwayTooLongBody": "Đối thủ đã rời đi hơn một phút. Nhận chiến thắng hoặc tiếp tục chờ.",
+  "@opponentAwayTooLongBody": {
+    "description": "Overlay body once the opponent has been away over a minute"
+  },
+  "claimWin": "Nhận chiến thắng",
+  "@claimWin": {
+    "description": "Button to claim the combat win after the opponent stayed away too long"
+  },
+  "opponentWasAway": "Đối thủ rời đi quá lâu",
+  "@opponentWasAway": {
+    "description": "Combat end reason: opponent stayed paused too long"
+  },
+  "youWereAway": "Bạn đã rời đi quá lâu",
+  "@youWereAway": {
+    "description": "Combat end reason: this player stayed paused too long"
   }
 }

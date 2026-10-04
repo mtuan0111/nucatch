@@ -1,7 +1,6 @@
 // ignore: unused_import
 import 'dart:developer';
 import 'dart:developer' as dev;
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch/blocs/objects/timer_pause.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
@@ -21,6 +21,8 @@ import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/helpers/tutorial_script.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';
+import 'package:nucatch/widgets/game_layout_body.dart';
+import 'package:nucatch/widgets/game_pause_guard.dart';
 import 'package:nucatch/widgets/countdown_bar.dart';
 import 'package:nucatch/widgets/pick_right_mode_controls.dart';
 import 'package:nucatch/widgets/regular_mode_controls.dart';
@@ -38,10 +40,8 @@ class PlayScreen extends StatefulWidget {
   State<PlayScreen> createState() => _PlayScreenState();
 }
 
-class _PlayScreenState extends State<PlayScreen> {
+class _PlayScreenState extends State<PlayScreen> with GamePauseGuard {
   String get screenTitle => widget.title;
-  double get screenWidth =>
-      max(MediaQuery.of(context).size.width, kMinScreenWidth);
 
   double get buttonSpace => kSpaceXL;
   String inputtedValue = "";
@@ -80,8 +80,23 @@ class _PlayScreenState extends State<PlayScreen> {
 
   // Removed: boldedStyleFont - now using AppTextStyles.forChallenge()
 
+  /// Cached for [GamePauseGuard], which releases its holds from [dispose].
+  late final TurnBloc _guardedTurnBloc = context.read<TurnBloc>();
+
+  @override
+  bool get isRoundLive => turnState.status == TurnStatus.playing;
+
+  @override
+  void onTimerHold(TimerPauseReason reason) =>
+      _guardedTurnBloc.add(TapTimerPause(reason));
+
+  @override
+  void onTimerRelease(TimerPauseReason reason) =>
+      _guardedTurnBloc.add(TapTimerResume(reason));
+
   @override
   void initState() {
+    _guardedTurnBloc; // resolve while the element is active
     // turnRecordedListBloc.add(LoadData());
 
     // Store previous lifeRemaining for animation logic
@@ -124,11 +139,6 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   void didUpdateWidget(covariant PlayScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     // No-op, but required for stateful logic
@@ -166,13 +176,6 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final isTablet = screenWidth > 600; // Adjust layout for tablets
-    // // final padding = isTablet ? 40.0 : 20.0;
-    // final buttonSize = 50.0; // Fixed button size for simplicity
-    // // final buttonSize = isTablet
-    // //     ? (screenWidth / 5) - buttonSpace * 2
-    // //     : (screenWidth / 3) - buttonSpace * 2;
-
     return MultiBlocListener(
       listeners: [
         // Seed TurnBloc when the tutorial (re-)enters a lesson hosted here.
@@ -246,604 +249,502 @@ class _PlayScreenState extends State<PlayScreen> {
                     children: [
                       Container(
                         decoration: LayoutConfig(context).gradientDecoration,
-                        child: SafeArea(
-                          child: DeviceWrapper(
-                            // In landscape (any device, not just tablet) the
-                            // gamepad/two-pane layout below needs the full
-                            // screen width — no cap.
-                            maxWidth: context.isLandscapeOrientation
-                                ? double.infinity
-                                : null,
-                            child: Builder(builder: (context) {
-                              final isPickRightMode =
-                                  turnState.difficultyModel?.isPickRightMode ==
-                                      true;
-                              final isLandscape =
-                                  context.isLandscapeOrientation;
-                              final headerColumn = Column(
-                                children: [
-                                  CountDownBar(
-                                    timerDuration:
-                                        turnState.effectiveTimerDuration,
-                                    tapTimerRemaining:
-                                        turnState.tapTimerRemaining.toInt(),
-                                    isPlaying:
-                                        turnState.status == TurnStatus.playing,
-                                  ),
+                        child: Builder(builder: (context) {
+                          final isPickRightMode =
+                              turnState.difficultyModel?.isPickRightMode ==
+                                  true;
+                          final headerColumn = Column(
+                            children: [
+                              CountDownBar(
+                                timerDuration: turnState.effectiveTimerDuration,
+                                tapTimerRemaining:
+                                    turnState.tapTimerRemaining.toInt(),
+                                isPlaying:
+                                    turnState.status == TurnStatus.playing,
+                              ),
 
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Wrap(
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
                                     children: [
-                                      Wrap(
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.center,
-                                        children: [
-                                          FaIcon(
-                                            Helper.getIconFromDifficulty(
-                                                context,
-                                                turnState.difficultyModel
-                                                    ?.difficulty),
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary,
-                                            size: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .fontSize,
-                                          ),
-                                          const SizedBox(width: kSpaceS),
-                                          Text.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text:
-                                                      "${coreLang(context).level}: ",
-                                                  style: AppTextStyles
-                                                      .bodyLargeBold(context),
-                                                ),
-                                                TextSpan(
-                                                  text: turnState
-                                                      .levelAndTimeCorrect,
-                                                  style:
-                                                      AppTextStyles.bodyLarge(
-                                                          context),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                      FaIcon(
+                                        Helper.getIconFromDifficulty(
+                                            context,
+                                            turnState
+                                                .difficultyModel?.difficulty),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        size: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .fontSize,
                                       ),
-                                      Wrap(
-                                        key: TourKeys.scoreKey,
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.center,
-                                        children: [
-                                          FaIcon(
-                                            FontAwesomeIcons.chartLine,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary,
-                                            size: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .fontSize,
-                                          ),
-                                          const SizedBox(width: kSpaceS),
-                                          Text(
-                                            "${coreLang(context).score}: ",
-                                            style: AppTextStyles.bodyLargeBold(
-                                                context),
-                                          ),
-                                          Text(
-                                            "${turnState.point}",
-                                            style: AppTextStyles.bodyLarge(
-                                                context),
-                                          ),
-                                        ],
+                                      const SizedBox(width: kSpaceS),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  "${coreLang(context).level}: ",
+                                              style:
+                                                  AppTextStyles.bodyLargeBold(
+                                                      context),
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  turnState.levelAndTimeCorrect,
+                                              style: AppTextStyles.bodyLarge(
+                                                  context),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  // Row(
-                                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  //   children: [
-                                  //     Expanded(
-                                  //       child: Stack(
-                                  //         alignment: Alignment.center,
-                                  //         children: [
-                                  //           Positioned(
-                                  //             child: Wrap(
-                                  //               spacing: 5,
-                                  //               runSpacing: 5,
-                                  //               children: List.generate(
-                                  //                 turnState.lifeRemaining,
-                                  //                 (index) => Icon(
-                                  //                   FontAwesomeIcons.solidStar,
-                                  //                   color: Theme.of(context)
-                                  //                       .scaffoldBackgroundColor,
-                                  //                   size: Theme.of(context)
-                                  //                       .textTheme
-                                  //                       .bodyLarge!
-                                  //                       .fontSize,
-                                  //                 ),
-                                  //               ),
-                                  //             ),
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  BlocListener<TurnBloc, TurnState>(
-                                    listener: (context, state) {
-                                      if (_prevLifeRemaining == null) {
-                                        // First time: just sync both values
-                                        setState(() {
-                                          _prevLifeRemaining =
-                                              state.lifeRemaining;
-                                          _currentLifeRemaining =
-                                              state.lifeRemaining;
-                                        });
-                                        return;
-                                      }
-
-                                      if (state.lifeRemaining ==
-                                          _prevLifeRemaining) {
-                                        return; // No change
-                                      }
-
-                                      final increased = state.lifeRemaining >
-                                          _prevLifeRemaining!;
-                                      final decreased = state.lifeRemaining <
-                                          _prevLifeRemaining!;
-
-                                      setState(() {
-                                        wasLifeIncreased = increased;
-                                        wasLifeDecreased = decreased;
-                                        // Store the NEW target value
-                                        _prevLifeRemaining =
-                                            state.lifeRemaining;
-
-                                        if (increased) {
-                                          // For increase: show new count immediately so new star appears & scales in
-                                          _currentLifeRemaining =
-                                              state.lifeRemaining;
-                                        }
-                                        // For decrease: keep _currentLifeRemaining at OLD value
-                                        // so the last star can animate its shrink, then onEnd will update it.
-                                      });
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Center(
-                                            child: Wrap(
-                                              key: TourKeys.heartKey,
-                                              spacing: kLifeStarSpacing,
-                                              children: List.generate(
-                                                _currentLifeRemaining,
-                                                (index) {
-                                                  final isLast = index ==
-                                                      _currentLifeRemaining - 1;
-
-                                                  // Life gained: animate the newly added last star scaling in
-                                                  if (wasLifeIncreased &&
-                                                      isLast) {
-                                                    return TweenAnimationBuilder<
-                                                        double>(
-                                                      tween: Tween<double>(
-                                                          begin: 0.0, end: 1.0),
-                                                      duration: const Duration(
-                                                          milliseconds: 400),
-                                                      curve: Curves.elasticOut,
-                                                      onEnd: () {
-                                                        if (mounted) {
-                                                          setState(() {
-                                                            wasLifeIncreased =
-                                                                false;
-                                                          });
-                                                        }
-                                                      },
-                                                      builder: (context, value,
-                                                          child) {
-                                                        return Opacity(
-                                                          opacity: value.clamp(
-                                                              0.0, 1.0),
-                                                          child:
-                                                              Transform.scale(
-                                                            scale: value,
-                                                            child: LifeStar(
-                                                              value: value,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-                                                  }
-
-                                                  // Life lost: animate the last star shrinking out
-                                                  if (wasLifeDecreased &&
-                                                      isLast) {
-                                                    return TweenAnimationBuilder<
-                                                        double>(
-                                                      tween: Tween<double>(
-                                                          begin: 1.0, end: 0.0),
-                                                      duration: const Duration(
-                                                          milliseconds: 400),
-                                                      curve: Curves.easeInBack,
-                                                      onEnd: () {
-                                                        if (mounted) {
-                                                          setState(() {
-                                                            wasLifeDecreased =
-                                                                false;
-                                                            // NOW remove the star from the list
-                                                            _currentLifeRemaining =
-                                                                _prevLifeRemaining ??
-                                                                    _currentLifeRemaining;
-                                                          });
-                                                        }
-                                                      },
-                                                      builder: (context, value,
-                                                          child) {
-                                                        return Opacity(
-                                                          opacity: value.clamp(
-                                                              0.0, 1.0),
-                                                          child:
-                                                              Transform.scale(
-                                                            scale: value,
-                                                            child: LifeStar(
-                                                              value: value,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-                                                  }
-
-                                                  return const LifeStar();
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                  Wrap(
+                                    key: TourKeys.scoreKey,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.chartLine,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        size: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .fontSize,
+                                      ),
+                                      const SizedBox(width: kSpaceS),
+                                      Text(
+                                        "${coreLang(context).score}: ",
+                                        style: AppTextStyles.bodyLargeBold(
+                                            context),
+                                      ),
+                                      Text(
+                                        "${turnState.point}",
+                                        style: AppTextStyles.bodyLarge(context),
+                                      ),
+                                    ],
                                   ),
+                                ],
+                              ),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     Expanded(
+                              //       child: Stack(
+                              //         alignment: Alignment.center,
+                              //         children: [
+                              //           Positioned(
+                              //             child: Wrap(
+                              //               spacing: 5,
+                              //               runSpacing: 5,
+                              //               children: List.generate(
+                              //                 turnState.lifeRemaining,
+                              //                 (index) => Icon(
+                              //                   FontAwesomeIcons.solidStar,
+                              //                   color: Theme.of(context)
+                              //                       .scaffoldBackgroundColor,
+                              //                   size: Theme.of(context)
+                              //                       .textTheme
+                              //                       .bodyLarge!
+                              //                       .fontSize,
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+                              BlocListener<TurnBloc, TurnState>(
+                                listener: (context, state) {
+                                  if (_prevLifeRemaining == null) {
+                                    // First time: just sync both values
+                                    setState(() {
+                                      _prevLifeRemaining = state.lifeRemaining;
+                                      _currentLifeRemaining =
+                                          state.lifeRemaining;
+                                    });
+                                    return;
+                                  }
 
-                                  if (turnState.isShowExpect &&
-                                      turnState.difficultyModel
-                                              ?.isPickRightMode !=
-                                          true)
+                                  if (state.lifeRemaining ==
+                                      _prevLifeRemaining) {
+                                    return; // No change
+                                  }
+
+                                  final increased =
+                                      state.lifeRemaining > _prevLifeRemaining!;
+                                  final decreased =
+                                      state.lifeRemaining < _prevLifeRemaining!;
+
+                                  setState(() {
+                                    wasLifeIncreased = increased;
+                                    wasLifeDecreased = decreased;
+                                    // Store the NEW target value
+                                    _prevLifeRemaining = state.lifeRemaining;
+
+                                    if (increased) {
+                                      // For increase: show new count immediately so new star appears & scales in
+                                      _currentLifeRemaining =
+                                          state.lifeRemaining;
+                                    }
+                                    // For decrease: keep _currentLifeRemaining at OLD value
+                                    // so the last star can animate its shrink, then onEnd will update it.
+                                  });
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
                                     Expanded(
-                                      key: TourKeys.challengeAreaKey,
                                       child: Center(
                                         child: Wrap(
+                                          key: TourKeys.heartKey,
+                                          spacing: kLifeStarSpacing,
                                           children: List.generate(
-                                            turnState.requirementString!.length,
+                                            _currentLifeRemaining,
                                             (index) {
-                                              String inputted = turnState
-                                                  .requirementString![index];
-                                              return SizedBox(
-                                                width: (AppTextStyles.forChallenge(
-                                                            turnState
-                                                                .requirementString!
-                                                                .length,
-                                                            context)
-                                                        .fontSize! *
-                                                    0.65),
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      inputted,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: AppTextStyles
-                                                          .forChallenge(
+                                              final isLast = index ==
+                                                  _currentLifeRemaining - 1;
+
+                                              // Life gained: animate the newly added last star scaling in
+                                              if (wasLifeIncreased && isLast) {
+                                                return TweenAnimationBuilder<
+                                                    double>(
+                                                  tween: Tween<double>(
+                                                      begin: 0.0, end: 1.0),
+                                                  duration: const Duration(
+                                                      milliseconds: 400),
+                                                  curve: Curves.elasticOut,
+                                                  onEnd: () {
+                                                    if (mounted) {
+                                                      setState(() {
+                                                        wasLifeIncreased =
+                                                            false;
+                                                      });
+                                                    }
+                                                  },
+                                                  builder:
+                                                      (context, value, child) {
+                                                    return Opacity(
+                                                      opacity:
+                                                          value.clamp(0.0, 1.0),
+                                                      child: Transform.scale(
+                                                        scale: value,
+                                                        child: LifeStar(
+                                                          value: value,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              }
+
+                                              // Life lost: animate the last star shrinking out
+                                              if (wasLifeDecreased && isLast) {
+                                                return TweenAnimationBuilder<
+                                                    double>(
+                                                  tween: Tween<double>(
+                                                      begin: 1.0, end: 0.0),
+                                                  duration: const Duration(
+                                                      milliseconds: 400),
+                                                  curve: Curves.easeInBack,
+                                                  onEnd: () {
+                                                    if (mounted) {
+                                                      setState(() {
+                                                        wasLifeDecreased =
+                                                            false;
+                                                        // NOW remove the star from the list
+                                                        _currentLifeRemaining =
+                                                            _prevLifeRemaining ??
+                                                                _currentLifeRemaining;
+                                                      });
+                                                    }
+                                                  },
+                                                  builder:
+                                                      (context, value, child) {
+                                                    return Opacity(
+                                                      opacity:
+                                                          value.clamp(0.0, 1.0),
+                                                      child: Transform.scale(
+                                                        scale: value,
+                                                        child: LifeStar(
+                                                          value: value,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              }
+
+                                              return const LifeStar();
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              if (turnState.isShowExpect &&
+                                  turnState.difficultyModel?.isPickRightMode !=
+                                      true)
+                                Expanded(
+                                  key: TourKeys.challengeAreaKey,
+                                  child: Center(
+                                    child: Wrap(
+                                      children: List.generate(
+                                        turnState.requirementString!.length,
+                                        (index) {
+                                          String inputted = turnState
+                                              .requirementString![index];
+                                          return SizedBox(
+                                            width: (AppTextStyles.forChallenge(
                                                         turnState
                                                             .requirementString!
                                                             .length,
-                                                        context,
-                                                      ).copyWith(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .onPrimary),
-                                                    ),
-                                                    // if (turnState.expect ==
-                                                    //     turnState.requirementString)
-                                                    //   Icon(
-                                                    //     FontAwesomeIcons.minus,
-                                                    //     color: Theme.of(context)
-                                                    //         .scaffoldBackgroundColor,
-                                                    //   ),
-                                                  ],
+                                                        context)
+                                                    .fontSize! *
+                                                0.65),
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  inputted,
+                                                  textAlign: TextAlign.center,
+                                                  style: AppTextStyles
+                                                      .forChallenge(
+                                                    turnState.requirementString!
+                                                        .length,
+                                                    context,
+                                                  ).copyWith(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onPrimary),
                                                 ),
-                                              );
-                                            },
-                                          ),
-                                        ),
+                                                // if (turnState.expect ==
+                                                //     turnState.requirementString)
+                                                //   Icon(
+                                                //     FontAwesomeIcons.minus,
+                                                //     color: Theme.of(context)
+                                                //         .scaffoldBackgroundColor,
+                                                //   ),
+                                              ],
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
-                                  if (turnState.isTimeForTyping &&
-                                      turnState.difficultyModel
-                                              ?.isPickRightMode !=
-                                          true)
-                                    Expanded(
-                                      key: TourKeys.challengeAreaKey,
-                                      child: Center(
-                                        child: Wrap(
-                                          children: List.generate(
-                                            turnState.expect!.length,
-                                            (index) {
-                                              double hide =
-                                                  turnState.isTypingNotEmpty &&
-                                                          index <
-                                                              turnState
-                                                                  .typing.length
-                                                      ? 1
-                                                      : 0;
+                                  ),
+                                ),
+                              if (turnState.isTimeForTyping &&
+                                  turnState.difficultyModel?.isPickRightMode !=
+                                      true)
+                                Expanded(
+                                  key: TourKeys.challengeAreaKey,
+                                  child: Center(
+                                    child: Wrap(
+                                      children: List.generate(
+                                        turnState.expect!.length,
+                                        (index) {
+                                          double hide = turnState
+                                                      .isTypingNotEmpty &&
+                                                  index <
+                                                      turnState.typing.length
+                                              ? 1
+                                              : 0;
 
-                                              String inputted =
-                                                  turnState.expect![index];
+                                          String inputted =
+                                              turnState.expect![index];
 
-                                              return SizedBox(
-                                                width: (AppTextStyles.forChallenge(
-                                                            turnState
-                                                                .requirementString!
-                                                                .length,
-                                                            context)
-                                                        .fontSize! *
-                                                    0.65),
-                                                child: Builder(
-                                                  builder: (context) {
-                                                    // Trigger firework when finished
-                                                    // Only trigger once per character index
-                                                    if (turnState
-                                                            .isFinishTarget &&
-                                                        hide == 1 &&
-                                                        !_triggeredFireworkIndices
-                                                            .contains(index)) {
-                                                      _triggeredFireworkIndices
-                                                          .add(index);
-                                                      WidgetsBinding.instance
-                                                          .addPostFrameCallback(
-                                                              (_) {
-                                                        final RenderBox?
-                                                            renderBox =
-                                                            context.findRenderObject()
-                                                                as RenderBox?;
-                                                        if (renderBox != null) {
-                                                          final position =
-                                                              renderBox
-                                                                  .localToGlobal(
-                                                                      Offset
-                                                                          .zero);
-                                                          final size =
-                                                              renderBox.size;
-                                                          final center = position +
-                                                              Offset(
-                                                                  size.width /
-                                                                      2,
-                                                                  size.height /
-                                                                      2);
+                                          return SizedBox(
+                                            width: (AppTextStyles.forChallenge(
+                                                        turnState
+                                                            .requirementString!
+                                                            .length,
+                                                        context)
+                                                    .fontSize! *
+                                                0.65),
+                                            child: Builder(
+                                              builder: (context) {
+                                                // Trigger firework when finished
+                                                // Only trigger once per character index
+                                                if (turnState.isFinishTarget &&
+                                                    hide == 1 &&
+                                                    !_triggeredFireworkIndices
+                                                        .contains(index)) {
+                                                  _triggeredFireworkIndices
+                                                      .add(index);
+                                                  WidgetsBinding.instance
+                                                      .addPostFrameCallback(
+                                                          (_) {
+                                                    final RenderBox? renderBox =
+                                                        context.findRenderObject()
+                                                            as RenderBox?;
+                                                    if (renderBox != null) {
+                                                      final position = renderBox
+                                                          .localToGlobal(
+                                                              Offset.zero);
+                                                      final size =
+                                                          renderBox.size;
+                                                      final center = position +
+                                                          Offset(size.width / 2,
+                                                              size.height / 2);
 
-                                                          // Delay each firework slightly for cascading effect
-                                                          Future.delayed(
-                                                              Duration(
-                                                                  milliseconds:
-                                                                      index *
-                                                                          50),
-                                                              () {
-                                                            if (mounted &&
-                                                                _animationKey
-                                                                        .currentState !=
-                                                                    null) {
-                                                              // Per-character cascade: lightning only
-                                                              // Full firework fires via _handleAnimationEvents on level-up
-                                                              _animationKey
-                                                                  .currentState!
-                                                                  .triggers
-                                                                  .onLightningOnly(
-                                                                      center);
-                                                            }
-                                                          });
+                                                      // Delay each firework slightly for cascading effect
+                                                      Future.delayed(
+                                                          Duration(
+                                                              milliseconds:
+                                                                  index * 50),
+                                                          () {
+                                                        if (mounted &&
+                                                            _animationKey
+                                                                    .currentState !=
+                                                                null) {
+                                                          // Per-character cascade: lightning only
+                                                          // Full firework fires via _handleAnimationEvents on level-up
+                                                          _animationKey
+                                                              .currentState!
+                                                              .triggers
+                                                              .onLightningOnly(
+                                                                  center);
                                                         }
                                                       });
-                                                    } else if (!turnState
-                                                        .isFinishTarget) {
-                                                      // Reset set when starting a new turn
-                                                      _triggeredFireworkIndices
-                                                          .clear();
                                                     }
+                                                  });
+                                                } else if (!turnState
+                                                    .isFinishTarget) {
+                                                  // Reset set when starting a new turn
+                                                  _triggeredFireworkIndices
+                                                      .clear();
+                                                }
 
-                                                    return Column(
-                                                      children: [
-                                                        AnimatedOpacity(
+                                                return Column(
+                                                  children: [
+                                                    AnimatedOpacity(
+                                                      duration: const Duration(
+                                                          milliseconds: 200),
+                                                      opacity: hide,
+                                                      child: AnimatedOpacity(
+                                                        curve:
+                                                            Curves.easeOutQuart,
+                                                        opacity: turnState
+                                                                .isFinishTarget
+                                                            ? 0
+                                                            : 1,
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    400),
+                                                        child: AnimatedScale(
+                                                          curve: Curves
+                                                              .easeOutQuart,
+                                                          scale: turnState
+                                                                  .isFinishTarget
+                                                              ? 2
+                                                              : 1,
                                                           duration:
                                                               const Duration(
                                                                   milliseconds:
-                                                                      200),
-                                                          opacity: hide,
-                                                          child:
-                                                              AnimatedOpacity(
-                                                            curve: Curves
-                                                                .easeOutQuart,
-                                                            opacity: turnState
-                                                                    .isFinishTarget
-                                                                ? 0
-                                                                : 1,
-                                                            duration:
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        400),
-                                                            child:
-                                                                AnimatedScale(
-                                                              curve: Curves
-                                                                  .easeOutQuart,
-                                                              scale: turnState
-                                                                      .isFinishTarget
-                                                                  ? 2
-                                                                  : 1,
-                                                              duration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          400),
-                                                              child: Text(
-                                                                inputted,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: AppTextStyles
-                                                                    .forChallenge(
-                                                                  turnState
-                                                                      .requirementString!
-                                                                      .length,
-                                                                  context,
-                                                                ).copyWith(
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .colorScheme
-                                                                        .onPrimary),
-                                                              ),
-                                                            ),
+                                                                      400),
+                                                          child: Text(
+                                                            inputted,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: AppTextStyles
+                                                                .forChallenge(
+                                                              turnState
+                                                                  .requirementString!
+                                                                  .length,
+                                                              context,
+                                                            ).copyWith(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .onPrimary),
                                                           ),
                                                         ),
-                                                        AnimatedOpacity(
-                                                          opacity: (hide == 0)
-                                                              ? 1
-                                                              : 0,
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      200),
-                                                          child: FaIcon(
-                                                            FontAwesomeIcons
-                                                                .minus,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .colorScheme
-                                                                .onPrimary,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
+                                                      ),
+                                                    ),
+                                                    AnimatedOpacity(
+                                                      opacity:
+                                                          (hide == 0) ? 1 : 0,
+                                                      duration: const Duration(
+                                                          milliseconds: 200),
+                                                      child: FaIcon(
+                                                        FontAwesomeIcons.minus,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onPrimary,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
-
-                                  if (turnState
-                                          .difficultyModel?.isPickRightMode ==
-                                      true) ...[
-                                    Expanded(
-                                      key: TourKeys.challengeAreaKey,
-                                      child: Center(
-                                        child: Text(
-                                          turnState.questionExpression ??
-                                              lang(context).whichOneIsCorrect,
-                                          style:
-                                              AppTextStyles.titleLarge(context),
-                                        ),
-                                      ),
-                                    )
-                                  ]
-                                ],
-                              );
-                              // Tap Timer Progress Bar
-
-                              final controlsWidget = isPickRightMode
-                                  ? PickRightModeControls(
-                                      turnState: turnState,
-                                      animationKey: _animationKey,
-                                      onMenuPressed: _handleMenuButton,
-                                    )
-                                  : RegularModeControls(
-                                      turnState: turnState,
-                                      keyboardArray: keyboardArray,
-                                      onMenuPressed: _handleMenuButton,
-                                    );
-
-                              if (isLandscape) {
-                                // Gamepad-style split: two control clusters
-                                // pinned to the screen's outer edges, with the
-                                // score/life/challenge content centered
-                                // between them — either thumb reaches every
-                                // control without stretching to the middle.
-                                // Regular mode splits the numeric keypad
-                                // (RegularModeControls.gamepadSide); Pick
-                                // Right mode instead duplicates the *entire*
-                                // set of answer buttons on both edges
-                                // (PickRightModeControls.gamepadSide) — there's
-                                // no natural left/right split of 3 equations
-                                // the way there is for a 0-9 keypad.
-                                return Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: isPickRightMode
-                                          ? PickRightModeControls(
-                                              turnState: turnState,
-                                              animationKey: _animationKey,
-                                              onMenuPressed: _handleMenuButton,
-                                              gamepadSide:
-                                                  GamepadKeypadSide.left,
-                                            )
-                                          : RegularModeControls(
-                                              turnState: turnState,
-                                              keyboardArray: keyboardArray,
-                                              onMenuPressed: _handleMenuButton,
-                                              gamepadSide:
-                                                  GamepadKeypadSide.left,
-                                            ),
-                                    ),
-                                    Expanded(flex: 5, child: headerColumn),
-                                    Expanded(
-                                      flex: 2,
-                                      child: isPickRightMode
-                                          ? PickRightModeControls(
-                                              turnState: turnState,
-                                              animationKey: _animationKey,
-                                              onMenuPressed: _handleMenuButton,
-                                              gamepadSide:
-                                                  GamepadKeypadSide.right,
-                                            )
-                                          : RegularModeControls(
-                                              turnState: turnState,
-                                              keyboardArray: keyboardArray,
-                                              onMenuPressed: _handleMenuButton,
-                                              gamepadSide:
-                                                  GamepadKeypadSide.right,
-                                            ),
-                                    ),
-                                  ],
-                                );
-                              }
-
-                              final layoutChildren = <Widget>[
-                                Expanded(
-                                  flex: isLandscape ? 4 : 1,
-                                  child: headerColumn,
+                                  ),
                                 ),
+
+                              if (turnState.difficultyModel?.isPickRightMode ==
+                                  true) ...[
                                 Expanded(
-                                  flex: isLandscape ? 5 : 2,
-                                  child: controlsWidget,
-                                ),
-                              ];
-                              return isLandscape
-                                  ? Row(children: layoutChildren)
-                                  : Column(children: layoutChildren);
-                            }),
-                          ),
-                        ),
+                                  key: TourKeys.challengeAreaKey,
+                                  child: Center(
+                                    child: Text(
+                                      turnState.questionExpression ??
+                                          lang(context).whichOneIsCorrect,
+                                      style: AppTextStyles.titleLarge(context),
+                                    ),
+                                  ),
+                                )
+                              ]
+                            ],
+                          );
+                          // Regular mode splits the numeric keypad across
+                          // the gamepad clusters
+                          // (RegularModeControls.gamepadSide); Pick Right
+                          // instead duplicates the *entire* set of answer
+                          // buttons on both edges
+                          // (PickRightModeControls.gamepadSide) — there's
+                          // no natural left/right split of 3 equations the
+                          // way there is for a 0-9 keypad.
+                          return GameLayoutBody(
+                            header: headerColumn,
+                            controlsBuilder: (side) => isPickRightMode
+                                ? PickRightModeControls(
+                                    turnState: turnState,
+                                    animationKey: _animationKey,
+                                    onMenuPressed: _handleMenuButton,
+                                    gamepadSide: side,
+                                  )
+                                : RegularModeControls(
+                                    turnState: turnState,
+                                    keyboardArray: keyboardArray,
+                                    onMenuPressed: _handleMenuButton,
+                                    gamepadSide: side,
+                                  ),
+                          );
+                        }),
                       ),
                       if (turnState.status == TurnStatus.intro)
                         CountdownOverlay(seconds: turnState.countDown),
+                      // Fold/unfold, rotation or leaving the app mid-round.
+                      if (resumeCountdownOverlay() case final overlay?)
+                        overlay,
                       // Quick settings overlay — always accessible, not affected by layout
                       Positioned(
                         right: 0,

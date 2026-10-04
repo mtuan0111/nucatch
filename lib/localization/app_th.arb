@@ -726,5 +726,29 @@
   "authErrorLinkConflict": "บัญชีนี้เป็นของผู้ใช้รายอื่นแล้ว",
   "@authErrorLinkConflict": {
     "description": "Identity already belongs to another account"
+  },
+  "opponentPausedTitle": "คู่แข่งหยุดชั่วคราว",
+  "@opponentPausedTitle": {
+    "description": "Overlay title in combat when the opponent paused mid-round"
+  },
+  "opponentPausedBody": "คู่แข่งพับหรือปิดโทรศัพท์ รอบจะเล่นต่อเมื่อกลับมา",
+  "@opponentPausedBody": {
+    "description": "Overlay body in combat while the opponent is away"
+  },
+  "opponentAwayTooLongBody": "คู่แข่งไม่อยู่นานกว่าหนึ่งนาทีแล้ว รับชัยชนะ หรือรอต่อ",
+  "@opponentAwayTooLongBody": {
+    "description": "Overlay body once the opponent has been away over a minute"
+  },
+  "claimWin": "รับชัยชนะ",
+  "@claimWin": {
+    "description": "Button to claim the combat win after the opponent stayed away too long"
+  },
+  "opponentWasAway": "คู่แข่งไม่อยู่นานเกินไป",
+  "@opponentWasAway": {
+    "description": "Combat end reason: opponent stayed paused too long"
+  },
+  "youWereAway": "คุณไม่อยู่นานเกินไป",
+  "@youWereAway": {
+    "description": "Combat end reason: this player stayed paused too long"
   }
 }

@@ -346,6 +346,10 @@ class CombatGameEndScreen extends StatelessWidget {
         return lang(context).opponentDisconnected;
       case GameEndReason.timeout:
         return lang(context).youRanOutOfLives; // Timeout is treated as losing
+      case GameEndReason.opponentAway:
+        return lang(context).opponentWasAway;
+      case GameEndReason.myAway:
+        return lang(context).youWereAway;
       case null:
         return '';
     }

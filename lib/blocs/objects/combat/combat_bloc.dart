@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeleton_core/skeleton_core.dart';
+import 'package:nucatch/blocs/objects/timer_pause.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
@@ -18,6 +19,23 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   final VibrationBloc _vibrationBloc;
   StreamSubscription? _messageSubscription;
   Timer? _tapTimer;
+
+  /// Reasons currently holding the tap timer; `state.isTimerPaused` mirrors
+  /// [TimerPauseHolds.isPaused]. Cleared whenever a brand-new combat state
+  /// is emitted.
+  final TimerPauseHolds _pauseHolds = TimerPauseHolds();
+
+  /// How long the opponent may stay paused before this player can claim
+  /// the win (plan §4.3).
+  static const Duration opponentAwayLimit = Duration(seconds: 60);
+
+  /// `pause_update` sequence: [_pauseSeq] numbers this device's updates
+  /// (never reset, so it only grows); [_lastPeerPauseSeq] is the newest one
+  /// seen from the opponent. [_lastSentPaused] drops repeats.
+  int _pauseSeq = 0;
+  int _lastPeerPauseSeq = 0;
+  bool? _lastSentPaused;
+  Timer? _opponentAwayTimer;
 
   // Debounce timer for typing_update messages to prevent BLE flooding
   Timer? _typingUpdateDebounceTimer;
@@ -60,6 +78,11 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<CombatTapTimerTimeout>(_onCombatTapTimerTimeout);
     on<CombatTapTimerPause>(_onCombatTapTimerPause);
     on<CombatTapTimerResume>(_onCombatTapTimerResume);
+    on<CombatLocalPauseChanged>(_onCombatLocalPauseChanged);
+    on<CombatOpponentPauseReceived>(_onCombatOpponentPauseReceived);
+    on<CombatOpponentAwayTooLong>(_onCombatOpponentAwayTooLong);
+    on<CombatOpponentResumeFinished>(_onCombatOpponentResumeFinished);
+    on<CombatClaimWinAfterAway>(_onCombatClaimWinAfterAway);
     on<CombatOpponentSuccessReceived>(_onCombatOpponentSuccessReceived);
     on<CombatOpponentLifeUpdate>(_onCombatOpponentLifeUpdate);
     on<CombatBlocReset>(_onCombatBlocReset);
@@ -77,6 +100,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
   Future<void> close() async {
     _messageSubscription?.cancel();
     _tapTimer?.cancel();
+    _opponentAwayTimer?.cancel();
     _typingUpdateDebounceTimer?.cancel();
     // Clean up BLE connections and stream subscriptions
     await _roomService.reset();
@@ -240,6 +264,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           case CombatMessageType.opponentDisconnected:
             add(CombatOpponentDisconnected());
             break;
+          case CombatMessageType.pauseUpdate:
+            add(CombatOpponentPauseReceived(
+              paused: data['paused'] as bool? ?? false,
+              seq: (data['seq'] as num?)?.toInt() ?? 0,
+            ));
+            break;
         }
       }
     } catch (e) {
@@ -268,6 +298,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     final combatStatus = event.combatStatus ??
         (event.isHost ? CombatStatus.hostSelecting : CombatStatus.waiting);
 
+    _pauseHolds.clear();
+    _resetPauseSync();
     emit(CombatState(
       isHost: event.isHost,
       difficultyModel: DifficultyModel.models[event.difficulty],
@@ -532,11 +564,13 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     debugPrint(
         '🏁 [Combat] Game ended - isWinner: ${event.isWinner}, reason: ${event.reason}, sendMessage: ${event.sendMessage}, correctEquation: $finalCorrectEquation, existing: ${state.correctEquationDisplay}');
 
+    _opponentAwayTimer?.cancel();
     emit(state.copyWith(
       combatStatus: CombatStatus.ended,
       isWinner: event.isWinner,
       gameEndReason: event.reason,
       isGameActive: false,
+      opponentPause: OpponentPause.none,
       // BLE-provided value always overrides; otherwise keep existing or use new
       correctEquationDisplay: event.correctEquation ??
           (state.correctEquationDisplay ?? finalCorrectEquation),
@@ -561,11 +595,13 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatOpponentDisconnected event,
     Emitter<CombatState> emit,
   ) async {
+    _opponentAwayTimer?.cancel();
     emit(state.copyWith(
       combatStatus: CombatStatus.ended,
       isWinner: true,
       gameEndReason: GameEndReason.opponentDisconnected,
       isGameActive: false,
+      opponentPause: OpponentPause.none,
     ));
   }
 
@@ -1463,6 +1499,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     _tapTimer = null;
 
     // Reset to fresh initial state
+    _pauseHolds.clear();
+    _resetPauseSync();
     emit(const CombatState());
 
     debugPrint('✅ [Combat] CombatBloc reset complete');
@@ -1474,6 +1512,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     GameEndReason.myLivesOut: 'my_lives_out',
     GameEndReason.opponentDisconnected: 'opponent_disconnected',
     GameEndReason.timeout: 'timeout',
+    GameEndReason.opponentAway: 'opponent_away',
+    GameEndReason.myAway: 'my_away',
   };
 
   static const Map<String, GameEndReason> _stringToGameEndReasonMap = {
@@ -1481,6 +1521,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     'my_lives_out': GameEndReason.myLivesOut,
     'opponent_disconnected': GameEndReason.opponentDisconnected,
     'timeout': GameEndReason.timeout,
+    'opponent_away': GameEndReason.opponentAway,
+    'my_away': GameEndReason.myAway,
   };
 
   static const Map<CombatMessageType, String> _messageTypeToStringMap = {
@@ -1493,6 +1535,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     CombatMessageType.restartReady: 'restart_ready',
     CombatMessageType.changeDifficulty: 'change_difficulty',
     CombatMessageType.opponentDisconnected: 'opponent_disconnected',
+    CombatMessageType.pauseUpdate: 'pause_update',
   };
 
   static const Map<String, CombatMessageType> _stringToMessageTypeMap = {
@@ -1505,6 +1548,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     'restart_ready': CombatMessageType.restartReady,
     'change_difficulty': CombatMessageType.changeDifficulty,
     'opponent_disconnected': CombatMessageType.opponentDisconnected,
+    'pause_update': CombatMessageType.pauseUpdate,
   };
 
   // Helper function to convert GameEndReason enum to string for message transmission
@@ -1528,7 +1572,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     Emitter<CombatState> emit,
   ) {
     if (isClosed) return;
-    emit(state.copyWith(isTimerPaused: true));
+    _pauseHolds.hold(event.reason);
+    emit(state.copyWith(isTimerPaused: _pauseHolds.isPaused));
   }
 
   void _onCombatTapTimerResume(
@@ -1536,7 +1581,94 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     Emitter<CombatState> emit,
   ) {
     if (isClosed) return;
-    emit(state.copyWith(isTimerPaused: false));
+    _pauseHolds.release(event.reason);
+    emit(state.copyWith(isTimerPaused: _pauseHolds.isPaused));
+  }
+
+  /// Forgets any in-flight pause sync — for a brand-new combat state.
+  void _resetPauseSync() {
+    _opponentAwayTimer?.cancel();
+    _opponentAwayTimer = null;
+    _lastSentPaused = null;
+    _lastPeerPauseSeq = 0;
+  }
+
+  Future<void> _onCombatLocalPauseChanged(
+    CombatLocalPauseChanged event,
+    Emitter<CombatState> emit,
+  ) async {
+    if (isClosed || _lastSentPaused == event.paused) return;
+    // A pause only matters mid-round; a resume always goes out so the
+    // opponent never stays held by a pause they already saw.
+    if (event.paused && state.combatStatus != CombatStatus.playing) return;
+    if (!event.paused && _lastSentPaused == null) return;
+    _lastSentPaused = event.paused;
+    await _sendMessage({
+      'type': _messageTypeToString(CombatMessageType.pauseUpdate),
+      'paused': event.paused,
+      'seq': ++_pauseSeq,
+    });
+  }
+
+  void _onCombatOpponentPauseReceived(
+    CombatOpponentPauseReceived event,
+    Emitter<CombatState> emit,
+  ) {
+    if (isClosed || event.seq <= _lastPeerPauseSeq) return;
+    _lastPeerPauseSeq = event.seq;
+
+    if (event.paused) {
+      if (state.combatStatus != CombatStatus.playing) return;
+      _pauseHolds.hold(TimerPauseReason.opponent);
+      _opponentAwayTimer?.cancel();
+      _opponentAwayTimer = Timer(opponentAwayLimit, () {
+        if (!isClosed) add(CombatOpponentAwayTooLong());
+      });
+      emit(state.copyWith(
+        opponentPause: OpponentPause.away,
+        isTimerPaused: _pauseHolds.isPaused,
+      ));
+      return;
+    }
+
+    _opponentAwayTimer?.cancel();
+    if (state.opponentPause == OpponentPause.none) return;
+    // Still held: the opponent hold is released when this device's copy of
+    // the 3-2-1 finishes (CombatOpponentResumeFinished), in step with theirs.
+    emit(state.copyWith(opponentPause: OpponentPause.resuming));
+  }
+
+  void _onCombatOpponentAwayTooLong(
+    CombatOpponentAwayTooLong event,
+    Emitter<CombatState> emit,
+  ) {
+    if (isClosed || state.opponentPause != OpponentPause.away) return;
+    emit(state.copyWith(opponentPause: OpponentPause.awayTooLong));
+  }
+
+  void _onCombatOpponentResumeFinished(
+    CombatOpponentResumeFinished event,
+    Emitter<CombatState> emit,
+  ) {
+    if (isClosed || state.opponentPause != OpponentPause.resuming) return;
+    _pauseHolds.release(TimerPauseReason.opponent);
+    emit(state.copyWith(
+      opponentPause: OpponentPause.none,
+      isTimerPaused: _pauseHolds.isPaused,
+    ));
+  }
+
+  void _onCombatClaimWinAfterAway(
+    CombatClaimWinAfterAway event,
+    Emitter<CombatState> emit,
+  ) {
+    if (isClosed || state.opponentPause != OpponentPause.awayTooLong) return;
+    _pauseHolds.release(TimerPauseReason.opponent);
+    add(CombatGameEnded(
+      isWinner: true,
+      reason: GameEndReason.opponentAway,
+      sendMessage: true,
+    ));
   }
 
   void _onSeedTutorialCombat(
@@ -1546,6 +1678,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     if (isClosed) return;
 
     _stopTapTimer();
+    _pauseHolds.clear();
+    _resetPauseSync();
 
     emit(CombatState(
       isHost: true,
@@ -1587,6 +1721,10 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           return GameEndReason.opponentLivesOut;
         case GameEndReason.opponentLivesOut:
           return GameEndReason.myLivesOut;
+        case GameEndReason.opponentAway:
+          return GameEndReason.myAway;
+        case GameEndReason.myAway:
+          return GameEndReason.opponentAway;
         default:
           return reason;
       }

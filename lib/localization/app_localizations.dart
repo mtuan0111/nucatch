@@ -1459,6 +1459,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This account already belongs to someone else.'**
   String get authErrorLinkConflict;
+
+  /// Overlay title in combat when the opponent paused mid-round
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent paused'**
+  String get opponentPausedTitle;
+
+  /// Overlay body in combat while the opponent is away
+  ///
+  /// In en, this message translates to:
+  /// **'They folded or closed their phone. The round resumes when they\'re back.'**
+  String get opponentPausedBody;
+
+  /// Overlay body once the opponent has been away over a minute
+  ///
+  /// In en, this message translates to:
+  /// **'They\'ve been away for over a minute. Claim the win, or keep waiting.'**
+  String get opponentAwayTooLongBody;
+
+  /// Button to claim the combat win after the opponent stayed away too long
+  ///
+  /// In en, this message translates to:
+  /// **'Claim win'**
+  String get claimWin;
+
+  /// Combat end reason: opponent stayed paused too long
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent was away too long'**
+  String get opponentWasAway;
+
+  /// Combat end reason: this player stayed paused too long
+  ///
+  /// In en, this message translates to:
+  /// **'You were away too long'**
+  String get youWereAway;
 }
 
 class _AppLocalizationsDelegate

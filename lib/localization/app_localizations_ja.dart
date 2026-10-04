@@ -759,4 +759,22 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get authErrorLinkConflict => 'このアカウントは既に他のユーザーのものです。';
+
+  @override
+  String get opponentPausedTitle => '相手が一時停止中';
+
+  @override
+  String get opponentPausedBody => '相手がスマホを折りたたむか閉じました。戻るとラウンドが再開します。';
+
+  @override
+  String get opponentAwayTooLongBody => '相手が1分以上離れています。勝利を申請するか、待ち続けてください。';
+
+  @override
+  String get claimWin => '勝利を申請';
+
+  @override
+  String get opponentWasAway => '相手の離席が長すぎました';
+
+  @override
+  String get youWereAway => '離席が長すぎました';
 }

@@ -726,5 +726,29 @@
   "authErrorLinkConflict": "该账户已属于其他用户。",
   "@authErrorLinkConflict": {
     "description": "Identity already belongs to another account"
+  },
+  "opponentPausedTitle": "对手已暂停",
+  "@opponentPausedTitle": {
+    "description": "Overlay title in combat when the opponent paused mid-round"
+  },
+  "opponentPausedBody": "对手折叠或合上了手机。对手回来后本局继续。",
+  "@opponentPausedBody": {
+    "description": "Overlay body in combat while the opponent is away"
+  },
+  "opponentAwayTooLongBody": "对手已离开超过一分钟。可以宣告胜利，或继续等待。",
+  "@opponentAwayTooLongBody": {
+    "description": "Overlay body once the opponent has been away over a minute"
+  },
+  "claimWin": "宣告胜利",
+  "@claimWin": {
+    "description": "Button to claim the combat win after the opponent stayed away too long"
+  },
+  "opponentWasAway": "对手离开太久",
+  "@opponentWasAway": {
+    "description": "Combat end reason: opponent stayed paused too long"
+  },
+  "youWereAway": "你离开太久",
+  "@youWereAway": {
+    "description": "Combat end reason: this player stayed paused too long"
   }
 }

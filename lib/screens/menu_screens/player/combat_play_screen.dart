@@ -15,11 +15,16 @@ import 'package:nucatch/blocs/objects/tutorial/tutorial_cubit.dart';
 import 'package:nucatch/blocs/objects/tutorial/tutorial_state.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
+import 'package:nucatch/blocs/objects/timer_pause.dart';
+import 'package:nucatch/helpers/game_layout.dart';
 import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/helpers/tutorial_script.dart';
 import 'package:nucatch/widgets/pick_right_buttons.dart';
 import 'package:nucatch/widgets/combat_status_badge.dart';
 import 'package:nucatch/widgets/countdown_overlay.dart';
+import 'package:nucatch/widgets/game_layout_body.dart';
+import 'package:nucatch/widgets/game_pause_guard.dart';
+import 'package:nucatch/widgets/opponent_paused_overlay.dart';
 import 'package:nucatch/widgets/countdown_bar.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:nucatch/widgets/quick_setting_button.dart';
@@ -32,9 +37,32 @@ class CombatPlayScreen extends StatefulWidget {
   State<CombatPlayScreen> createState() => _CombatPlayScreenState();
 }
 
-class _CombatPlayScreenState extends State<CombatPlayScreen> {
-  double get screenWidth =>
-      max(MediaQuery.of(context).size.width, kMinScreenWidth);
+class _CombatPlayScreenState extends State<CombatPlayScreen>
+    with GamePauseGuard {
+  /// Cached for [GamePauseGuard], which releases its holds from [dispose].
+  late final CombatBloc _guardedCombatBloc = context.read<CombatBloc>();
+
+  @override
+  bool get isRoundLive =>
+      _guardedCombatBloc.state.combatStatus == CombatStatus.playing;
+
+  @override
+  void onTimerHold(TimerPauseReason reason) =>
+      _guardedCombatBloc.add(CombatTapTimerPause(reason));
+
+  @override
+  void onTimerRelease(TimerPauseReason reason) =>
+      _guardedCombatBloc.add(CombatTapTimerResume(reason));
+
+  // Both players pause together (plan §4.3): tell the opponent when this
+  // device loses the board, and when its 3-2-1 starts so theirs runs too.
+  @override
+  void onGuardAway() =>
+      _guardedCombatBloc.add(CombatLocalPauseChanged(paused: true));
+
+  @override
+  void onGuardResuming() =>
+      _guardedCombatBloc.add(CombatLocalPauseChanged(paused: false));
 
   late bool wasLifeIncreased;
   late bool wasLifeDecreased;
@@ -58,6 +86,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
   @override
   void initState() {
     super.initState();
+    _guardedCombatBloc; // resolve while the element is active
 
     // Initialize life animation tracking
     final combatBloc = context.read<CombatBloc>();
@@ -255,107 +284,79 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                       children: [
                         Container(
                           decoration: LayoutConfig(context).gradientDecoration,
-                          child: SafeArea(
-                            child: DeviceWrapper(
-                              // In landscape (any device, not just tablet) the
-                              // gamepad/two-pane layout below needs the full
-                              // screen width — no cap.
-                              maxWidth: context.isLandscapeOrientation
-                                  ? double.infinity
-                                  : null,
-                              child: Builder(builder: (context) {
-                                // Check if Pick Right mode
-                                final isPickRightMode =
-                                    combatState.difficultyModel?.difficulty ==
-                                        Difficulty.pickRight;
-                                final isLandscape =
-                                    context.isLandscapeOrientation;
+                          child: Builder(builder: (context) {
+                            // Check if Pick Right mode
+                            final isPickRightMode =
+                                combatState.difficultyModel?.difficulty ==
+                                    Difficulty.pickRight;
 
-                                final headerColumn = Column(
-                                  children: [
-                                    // Tap timer countdown bar
-                                    _buildCountDownBar(combatState),
+                            final headerColumn = Column(
+                              children: [
+                                // Tap timer countdown bar
+                                _buildCountDownBar(combatState),
 
-                                    // Combat header with scores and turn indicator
-                                    _buildCombatHeader(combatState),
+                                // Combat header with scores and turn indicator
+                                _buildCombatHeader(combatState),
 
-                                    // Life display with animation
-                                    _buildLifeDisplay(combatState),
+                                // Life display with animation
+                                _buildLifeDisplay(combatState),
 
-                                    // Game area - shows challenge or typing
-                                    Expanded(
-                                      child: _buildGameArea(combatState),
-                                    ),
-                                  ],
-                                );
+                                // Game area - shows challenge or typing
+                                Expanded(
+                                  child: _buildGameArea(combatState),
+                                ),
+                              ],
+                            );
 
-                                if (isLandscape) {
-                                  // Gamepad-style split: two control clusters
-                                  // pinned to the screen's outer edges, with
-                                  // the combat header/life/game content
-                                  // centered between them — either thumb
-                                  // reaches every control without stretching
-                                  // to the middle. Regular mode splits the
-                                  // numeric keypad (_buildKeyboard's `side`);
-                                  // Pick Right mode instead duplicates the
-                                  // *entire* set of answer buttons on both
-                                  // edges (_buildPickRightGamepadCluster) —
-                                  // there's no natural left/right split of 3
-                                  // equations the way there is for a 0-9
-                                  // keypad.
-                                  return Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: isPickRightMode
-                                            ? _buildPickRightGamepadCluster(
-                                                combatState,
-                                                GamepadKeypadSide.left)
-                                            : _buildKeyboard(combatState,
-                                                side: GamepadKeypadSide.left),
-                                      ),
-                                      Expanded(flex: 5, child: headerColumn),
-                                      Expanded(
-                                        flex: 2,
-                                        child: isPickRightMode
-                                            ? _buildPickRightGamepadCluster(
-                                                combatState,
-                                                GamepadKeypadSide.right)
-                                            : _buildKeyboard(combatState,
-                                                side: GamepadKeypadSide.right),
-                                      ),
-                                    ],
-                                  );
-                                }
-
-                                final headerChild = Expanded(
-                                  flex: isLandscape ? 4 : 2,
-                                  child: headerColumn,
-                                );
-
-                                // Keyboard
-                                final controlsChild = Expanded(
-                                  flex: isLandscape
-                                      ? 5
-                                      : (isPickRightMode ? 3 : 2),
-                                  child: isPickRightMode
-                                      ? _buildPickRightControls(combatState)
-                                      : _buildKeyboard(combatState),
-                                );
-
-                                final layoutChildren = [
-                                  headerChild,
-                                  controlsChild,
-                                ];
-                                return isLandscape
-                                    ? Row(children: layoutChildren)
-                                    : Column(children: layoutChildren);
-                              }),
-                            ),
-                          ),
+                            // Regular mode splits the numeric keypad
+                            // across the gamepad clusters
+                            // (_buildKeyboard's `side`); Pick Right
+                            // instead duplicates the *entire* set of
+                            // answer buttons on both edges
+                            // (_buildPickRightGamepadCluster) — there's
+                            // no natural left/right split of 3 equations
+                            // the way there is for a 0-9 keypad.
+                            return GameLayoutBody(
+                              header: headerColumn,
+                              headerFlex: 2,
+                              controlsFlex: isPickRightMode ? 3 : 2,
+                              controlsBuilder: (side) => switch (side) {
+                                null => isPickRightMode
+                                    ? _buildPickRightControls(combatState)
+                                    : _buildKeyboard(combatState),
+                                final side => isPickRightMode
+                                    ? _buildPickRightGamepadCluster(
+                                        combatState, side)
+                                    : _buildKeyboard(combatState, side: side),
+                              },
+                            );
+                          }),
                         ),
                         // Full-screen countdown overlay (blur + centered)
                         _buildCountDown(combatState),
+                        // Opponent folded/closed their phone mid-round.
+                        if (combatState.opponentPause == OpponentPause.away ||
+                            combatState.opponentPause ==
+                                OpponentPause.awayTooLong)
+                          OpponentPausedOverlay(
+                            canClaimWin: combatState.opponentPause ==
+                                OpponentPause.awayTooLong,
+                            onClaimWin: () => context
+                                .read<CombatBloc>()
+                                .add(CombatClaimWinAfterAway()),
+                          ),
+                        // ...and is back: the same 3-2-1 they're seeing.
+                        if (combatState.opponentPause == OpponentPause.resuming)
+                          CountdownOverlay(
+                            key: const ValueKey('opponent-resume'),
+                            seconds: GamePauseGuard.resumeCountdownSeconds,
+                            onFinished: () => context
+                                .read<CombatBloc>()
+                                .add(CombatOpponentResumeFinished()),
+                          ),
+                        // This player folded/left mid-round.
+                        if (resumeCountdownOverlay() case final overlay?)
+                          overlay,
                         // Quick settings overlay — always accessible
                         Positioned(
                           right: 0,
@@ -981,7 +982,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
 
   static const int _keypadColumns = 3;
   static const int _keypadRows = 4;
-  static const double _keypadButtonSpacing = 20.0;
 
   /// Builds the button for one keypad entry. [applyTourKey] is false for a
   /// gamepad-cluster's duplicate copy of a middle-column button — a
@@ -1065,8 +1065,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       return LayoutBuilder(builder: (context, constraints) {
         final rawWidth = constraints.maxWidth / columns.length;
         final rawHeight = constraints.maxHeight / _keypadRows;
-        final cellSize = min(rawWidth, rawHeight)
-            .clamp(0.0, kMaxKeypadButtonSize + _keypadButtonSpacing);
+        final spacing = keypadSpacing(min(rawWidth, rawHeight));
+        final cellSize =
+            min(rawWidth, rawHeight).clamp(0.0, kMaxKeypadButtonSize + spacing);
         return Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -1087,8 +1088,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
                     for (final c in columns)
                       if (r * _keypadColumns + c < keys.length)
                         SizedBox(
-                          width: cellSize - _keypadButtonSpacing,
-                          height: cellSize - _keypadButtonSpacing,
+                          width: cellSize - spacing,
+                          height: cellSize - spacing,
                           child: _buildKeypadButton(
                             context,
                             combatState,
@@ -1108,13 +1109,16 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
       builder: (context, constraints) {
         final rawWidth = constraints.maxWidth / _keypadColumns;
         final rawHeight = constraints.maxHeight / _keypadRows;
-        // On tablet, clamp so keypad cells stay roughly square instead of
-        // stretching into elongated rectangles — height (an uncapped
-        // device-height fraction) can far exceed width (capped by
-        // DeviceWrapper) there. Phone sizing is left untouched.
-        final bool clampCells = context.isTablet;
-        final double cellSize = min(rawWidth, rawHeight)
-            .clamp(0.0, kMaxKeypadButtonSize + _keypadButtonSpacing);
+        final spacing = keypadSpacing(min(rawWidth, rawHeight));
+        // Clamp so keypad cells stay roughly square instead of stretching
+        // into elongated rectangles — on tablets, where height (an uncapped
+        // window-height fraction) can far exceed width (capped by
+        // DeviceWrapper), and on any window whose cells would be badly
+        // out of proportion (a wide, short tabletop pane). Phones are
+        // left untouched — see keypadClampsCells.
+        final bool clampCells = keypadClampsCells(context, rawWidth, rawHeight);
+        final double cellSize =
+            min(rawWidth, rawHeight).clamp(0.0, kMaxKeypadButtonSize + spacing);
         final buttonWidth = clampCells ? cellSize : rawWidth;
         final buttonHeight = clampCells ? cellSize : rawHeight;
 
@@ -1126,15 +1130,15 @@ class _CombatPlayScreenState extends State<CombatPlayScreen> {
             Widget cell;
             if (idx < keys.length) {
               cell = SizedBox(
-                width: buttonWidth - _keypadButtonSpacing,
-                height: buttonHeight - _keypadButtonSpacing,
+                width: buttonWidth - spacing,
+                height: buttonHeight - spacing,
                 child: _buildKeypadButton(context, combatState, keys[idx],
                     applyTourKey: true),
               );
             } else {
               cell = SizedBox(
-                width: buttonWidth - _keypadButtonSpacing,
-                height: buttonHeight - _keypadButtonSpacing,
+                width: buttonWidth - spacing,
+                height: buttonHeight - spacing,
               );
             }
 

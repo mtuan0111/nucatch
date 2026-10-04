@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
+import 'package:nucatch/blocs/objects/timer_pause.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/helpers/const.dart';
@@ -21,6 +22,11 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   final AudioBloc _audioBloc;
   final VibrationBloc _vibrationBloc;
   Timer? _tapTimer;
+
+  /// Reasons currently holding the tap timer; `state.isTimerPaused` mirrors
+  /// [TimerPauseHolds.isPaused]. Cleared whenever a brand-new game or turn
+  /// state is emitted.
+  final TimerPauseHolds _pauseHolds = TimerPauseHolds();
 
   TurnBloc(
     TurnState initialState, {
@@ -812,6 +818,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
       return;
     }
 
+    _pauseHolds.clear();
     emitter(
       const TurnState().copyWith(
         countDown: event.seconds,
@@ -987,9 +994,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   ) {
     if (isClosed) return;
 
+    _pauseHolds.hold(event.reason);
     emitter(
       state.copyWith(
-        isTimerPaused: true,
+        isTimerPaused: _pauseHolds.isPaused,
       ),
     );
   }
@@ -1000,9 +1008,10 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   ) {
     if (isClosed) return;
 
+    _pauseHolds.release(event.reason);
     emitter(
       state.copyWith(
-        isTimerPaused: false,
+        isTimerPaused: _pauseHolds.isPaused,
       ),
     );
   }
@@ -1017,7 +1026,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     emitter(
       state.copyWith(
         tapTimerRemaining: state.effectiveTimerDuration,
-        isTimerPaused: false,
+        isTimerPaused: _pauseHolds.isPaused,
       ),
     );
   }
@@ -1028,6 +1037,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
   ) {
     if (isClosed) return;
 
+    _pauseHolds.clear();
     emitter(
       const TurnState(),
     );
@@ -1040,6 +1050,7 @@ class TurnBloc extends Bloc<TurnEvent, TurnState> {
     if (isClosed) return;
 
     _stopTapTimer();
+    _pauseHolds.clear();
 
     emitter(
       TurnState(

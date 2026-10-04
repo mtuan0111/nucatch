@@ -726,5 +726,29 @@
   "authErrorLinkConflict": "Akun ini sudah milik orang lain.",
   "@authErrorLinkConflict": {
     "description": "Identity already belongs to another account"
+  },
+  "opponentPausedTitle": "Lawan dijeda",
+  "@opponentPausedTitle": {
+    "description": "Overlay title in combat when the opponent paused mid-round"
+  },
+  "opponentPausedBody": "Lawan melipat atau menutup ponselnya. Ronde berlanjut saat mereka kembali.",
+  "@opponentPausedBody": {
+    "description": "Overlay body in combat while the opponent is away"
+  },
+  "opponentAwayTooLongBody": "Lawan sudah pergi lebih dari satu menit. Klaim kemenangan, atau terus menunggu.",
+  "@opponentAwayTooLongBody": {
+    "description": "Overlay body once the opponent has been away over a minute"
+  },
+  "claimWin": "Klaim kemenangan",
+  "@claimWin": {
+    "description": "Button to claim the combat win after the opponent stayed away too long"
+  },
+  "opponentWasAway": "Lawan pergi terlalu lama",
+  "@opponentWasAway": {
+    "description": "Combat end reason: opponent stayed paused too long"
+  },
+  "youWereAway": "Kamu pergi terlalu lama",
+  "@youWereAway": {
+    "description": "Combat end reason: this player stayed paused too long"
   }
 }

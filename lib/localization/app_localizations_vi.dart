@@ -789,4 +789,24 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get authErrorLinkConflict => 'Tài khoản này đã thuộc về người khác.';
+
+  @override
+  String get opponentPausedTitle => 'Đối thủ tạm dừng';
+
+  @override
+  String get opponentPausedBody =>
+      'Đối thủ đã gập hoặc đóng điện thoại. Ván đấu tiếp tục khi họ quay lại.';
+
+  @override
+  String get opponentAwayTooLongBody =>
+      'Đối thủ đã rời đi hơn một phút. Nhận chiến thắng hoặc tiếp tục chờ.';
+
+  @override
+  String get claimWin => 'Nhận chiến thắng';
+
+  @override
+  String get opponentWasAway => 'Đối thủ rời đi quá lâu';
+
+  @override
+  String get youWereAway => 'Bạn đã rời đi quá lâu';
 }

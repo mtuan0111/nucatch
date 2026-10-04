@@ -726,5 +726,29 @@
   "authErrorLinkConflict": "Dieses Konto gehört bereits jemand anderem.",
   "@authErrorLinkConflict": {
     "description": "Identity already belongs to another account"
+  },
+  "opponentPausedTitle": "Gegner pausiert",
+  "@opponentPausedTitle": {
+    "description": "Overlay title in combat when the opponent paused mid-round"
+  },
+  "opponentPausedBody": "Das Handy des Gegners wurde zugeklappt oder geschlossen. Die Runde geht weiter, sobald er zurück ist.",
+  "@opponentPausedBody": {
+    "description": "Overlay body in combat while the opponent is away"
+  },
+  "opponentAwayTooLongBody": "Der Gegner ist seit über einer Minute weg. Sieg beanspruchen oder weiter warten.",
+  "@opponentAwayTooLongBody": {
+    "description": "Overlay body once the opponent has been away over a minute"
+  },
+  "claimWin": "Sieg beanspruchen",
+  "@claimWin": {
+    "description": "Button to claim the combat win after the opponent stayed away too long"
+  },
+  "opponentWasAway": "Gegner war zu lange weg",
+  "@opponentWasAway": {
+    "description": "Combat end reason: opponent stayed paused too long"
+  },
+  "youWereAway": "Du warst zu lange weg",
+  "@youWereAway": {
+    "description": "Combat end reason: this player stayed paused too long"
   }
 }

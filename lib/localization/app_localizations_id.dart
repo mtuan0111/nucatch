@@ -789,4 +789,24 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get authErrorLinkConflict => 'Akun ini sudah milik orang lain.';
+
+  @override
+  String get opponentPausedTitle => 'Lawan dijeda';
+
+  @override
+  String get opponentPausedBody =>
+      'Lawan melipat atau menutup ponselnya. Ronde berlanjut saat mereka kembali.';
+
+  @override
+  String get opponentAwayTooLongBody =>
+      'Lawan sudah pergi lebih dari satu menit. Klaim kemenangan, atau terus menunggu.';
+
+  @override
+  String get claimWin => 'Klaim kemenangan';
+
+  @override
+  String get opponentWasAway => 'Lawan pergi terlalu lama';
+
+  @override
+  String get youWereAway => 'Kamu pergi terlalu lama';
 }

@@ -1004,5 +1004,29 @@
   "authErrorLinkConflict": "This account already belongs to someone else.",
   "@authErrorLinkConflict": {
     "description": "Identity already belongs to another account"
+  },
+  "opponentPausedTitle": "Opponent paused",
+  "@opponentPausedTitle": {
+    "description": "Overlay title in combat when the opponent paused mid-round"
+  },
+  "opponentPausedBody": "They folded or closed their phone. The round resumes when they're back.",
+  "@opponentPausedBody": {
+    "description": "Overlay body in combat while the opponent is away"
+  },
+  "opponentAwayTooLongBody": "They've been away for over a minute. Claim the win, or keep waiting.",
+  "@opponentAwayTooLongBody": {
+    "description": "Overlay body once the opponent has been away over a minute"
+  },
+  "claimWin": "Claim win",
+  "@claimWin": {
+    "description": "Button to claim the combat win after the opponent stayed away too long"
+  },
+  "opponentWasAway": "Opponent was away too long",
+  "@opponentWasAway": {
+    "description": "Combat end reason: opponent stayed paused too long"
+  },
+  "youWereAway": "You were away too long",
+  "@youWereAway": {
+    "description": "Combat end reason: this player stayed paused too long"
   }
 }

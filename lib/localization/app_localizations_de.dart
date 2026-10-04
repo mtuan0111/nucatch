@@ -793,4 +793,24 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get authErrorLinkConflict =>
       'Dieses Konto gehört bereits jemand anderem.';
+
+  @override
+  String get opponentPausedTitle => 'Gegner pausiert';
+
+  @override
+  String get opponentPausedBody =>
+      'Das Handy des Gegners wurde zugeklappt oder geschlossen. Die Runde geht weiter, sobald er zurück ist.';
+
+  @override
+  String get opponentAwayTooLongBody =>
+      'Der Gegner ist seit über einer Minute weg. Sieg beanspruchen oder weiter warten.';
+
+  @override
+  String get claimWin => 'Sieg beanspruchen';
+
+  @override
+  String get opponentWasAway => 'Gegner war zu lange weg';
+
+  @override
+  String get youWereAway => 'Du warst zu lange weg';
 }

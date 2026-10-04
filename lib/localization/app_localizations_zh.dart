@@ -754,4 +754,22 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get authErrorLinkConflict => '该账户已属于其他用户。';
+
+  @override
+  String get opponentPausedTitle => '对手已暂停';
+
+  @override
+  String get opponentPausedBody => '对手折叠或合上了手机。对手回来后本局继续。';
+
+  @override
+  String get opponentAwayTooLongBody => '对手已离开超过一分钟。可以宣告胜利，或继续等待。';
+
+  @override
+  String get claimWin => '宣告胜利';
+
+  @override
+  String get opponentWasAway => '对手离开太久';
+
+  @override
+  String get youWereAway => '你离开太久';
 }

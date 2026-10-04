@@ -730,5 +730,29 @@
   "authErrorLinkConflict": "このアカウントは既に他のユーザーのものです。",
   "@authErrorLinkConflict": {
     "description": "Identity already belongs to another account"
+  },
+  "opponentPausedTitle": "相手が一時停止中",
+  "@opponentPausedTitle": {
+    "description": "Overlay title in combat when the opponent paused mid-round"
+  },
+  "opponentPausedBody": "相手がスマホを折りたたむか閉じました。戻るとラウンドが再開します。",
+  "@opponentPausedBody": {
+    "description": "Overlay body in combat while the opponent is away"
+  },
+  "opponentAwayTooLongBody": "相手が1分以上離れています。勝利を申請するか、待ち続けてください。",
+  "@opponentAwayTooLongBody": {
+    "description": "Overlay body once the opponent has been away over a minute"
+  },
+  "claimWin": "勝利を申請",
+  "@claimWin": {
+    "description": "Button to claim the combat win after the opponent stayed away too long"
+  },
+  "opponentWasAway": "相手の離席が長すぎました",
+  "@opponentWasAway": {
+    "description": "Combat end reason: opponent stayed paused too long"
+  },
+  "youWereAway": "離席が長すぎました",
+  "@youWereAway": {
+    "description": "Combat end reason: this player stayed paused too long"
   }
 }

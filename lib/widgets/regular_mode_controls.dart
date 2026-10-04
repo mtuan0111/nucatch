@@ -12,6 +12,7 @@ import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
+import 'package:nucatch/helpers/game_layout.dart';
 import 'package:nucatch/helpers/tour_keys.dart';
 
 /// Playing controls widget for Regular (normal) difficulty modes.
@@ -40,7 +41,6 @@ class RegularModeControls extends StatelessWidget {
 
   static const int _totalColumns = 3;
   static const int _rows = 4;
-  static const double _buttonSpacing = 20.0;
 
   /// Builds the button for one keypad entry. [applyTourKey] is false for a
   /// gamepad-cluster's duplicate copy of a middle-column button — a
@@ -116,14 +116,17 @@ class RegularModeControls extends StatelessWidget {
       builder: (context, constraints) {
         final rawWidth = constraints.maxWidth / _totalColumns;
         final rawHeight = constraints.maxHeight / _rows;
-        // On tablet, clamp so keypad cells stay roughly square instead of
-        // stretching into elongated rectangles — height (an uncapped
-        // device-height fraction) can far exceed width (capped by
-        // DeviceWrapper) there. Phone sizing is left untouched.
-        final bool clampCells = context.isTablet;
+        final spacing = keypadSpacing(math.min(rawWidth, rawHeight));
+        // Clamp so keypad cells stay roughly square instead of stretching
+        // into elongated rectangles — on tablets, where height (an uncapped
+        // window-height fraction) can far exceed width (capped by
+        // DeviceWrapper), and on any window whose cells would be badly
+        // out of proportion (a wide, short tabletop pane). Phones are
+        // left untouched — see keypadClampsCells.
+        final bool clampCells = keypadClampsCells(context, rawWidth, rawHeight);
         final double cellSize = math
             .min(rawWidth, rawHeight)
-            .clamp(0.0, kMaxKeypadButtonSize + _buttonSpacing);
+            .clamp(0.0, kMaxKeypadButtonSize + spacing);
         final buttonWidth = clampCells ? cellSize : rawWidth;
         final buttonHeight = clampCells ? cellSize : rawHeight;
 
@@ -135,14 +138,14 @@ class RegularModeControls extends StatelessWidget {
             Widget cell;
             if (idx < keys.length) {
               cell = SizedBox(
-                width: buttonWidth - _buttonSpacing,
-                height: buttonHeight - _buttonSpacing,
+                width: buttonWidth - spacing,
+                height: buttonHeight - spacing,
                 child: _buildButton(context, keys[idx], applyTourKey: true),
               );
             } else {
               cell = SizedBox(
-                width: buttonWidth - _buttonSpacing,
-                height: buttonHeight - _buttonSpacing,
+                width: buttonWidth - spacing,
+                height: buttonHeight - spacing,
               );
             }
 
@@ -184,9 +187,10 @@ class RegularModeControls extends StatelessWidget {
     return LayoutBuilder(builder: (context, constraints) {
       final rawWidth = constraints.maxWidth / columns.length;
       final rawHeight = constraints.maxHeight / _rows;
+      final spacing = keypadSpacing(math.min(rawWidth, rawHeight));
       final cellSize = math
           .min(rawWidth, rawHeight)
-          .clamp(0.0, kMaxKeypadButtonSize + _buttonSpacing);
+          .clamp(0.0, kMaxKeypadButtonSize + spacing);
 
       return Center(
         child: Column(
@@ -207,8 +211,8 @@ class RegularModeControls extends StatelessWidget {
                   for (final c in columns)
                     if (r * _totalColumns + c < keys.length)
                       SizedBox(
-                        width: cellSize - _buttonSpacing,
-                        height: cellSize - _buttonSpacing,
+                        width: cellSize - spacing,
+                        height: cellSize - spacing,
                         child: _buildButton(
                           context,
                           keys[r * _totalColumns + c],

@@ -788,4 +788,24 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get authErrorLinkConflict => 'यह खाता पहले से किसी और का है।';
+
+  @override
+  String get opponentPausedTitle => 'प्रतिद्वंद्वी ने रोका';
+
+  @override
+  String get opponentPausedBody =>
+      'प्रतिद्वंद्वी ने अपना फ़ोन मोड़ा या बंद किया। उनके लौटने पर राउंड फिर शुरू होगा।';
+
+  @override
+  String get opponentAwayTooLongBody =>
+      'प्रतिद्वंद्वी एक मिनट से ज़्यादा समय से दूर हैं। जीत का दावा करें या इंतज़ार करें।';
+
+  @override
+  String get claimWin => 'जीत का दावा करें';
+
+  @override
+  String get opponentWasAway => 'प्रतिद्वंद्वी बहुत देर तक दूर रहे';
+
+  @override
+  String get youWereAway => 'आप बहुत देर तक दूर रहे';
 }

@@ -4,6 +4,7 @@ import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/blocs/objects/combat/combat_state.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/blocs/objects/timer_pause.dart';
 
 abstract class CombatEvent {}
 
@@ -113,11 +114,50 @@ class CombatTapTimerTick extends CombatEvent {
 
 class CombatTapTimerTimeout extends CombatEvent {}
 
-class CombatTapTimerPause extends CombatEvent {}
+class CombatTapTimerPause extends CombatEvent {
+  final TimerPauseReason reason;
 
-class CombatTapTimerResume extends CombatEvent {}
+  CombatTapTimerPause([this.reason = TimerPauseReason.menu]);
+}
+
+/// Releases [reason]'s hold; the timer runs again only once no other
+/// [TimerPauseReason] still holds it.
+class CombatTapTimerResume extends CombatEvent {
+  final TimerPauseReason reason;
+
+  CombatTapTimerResume([this.reason = TimerPauseReason.menu]);
+}
 
 class CombatTapTimerReset extends CombatEvent {}
+
+// ===== Mid-round pause sync (both players pause together) =====
+
+/// This device's guarded pause began (`paused: true` — the player folded,
+/// closed or left the app, or the window changed shape) or its resume
+/// countdown started (`false`). Sent to the opponent as `pause_update`.
+class CombatLocalPauseChanged extends CombatEvent {
+  final bool paused;
+
+  CombatLocalPauseChanged({required this.paused});
+}
+
+/// A `pause_update` from the opponent. [seq] increases with every update
+/// they send, so duplicated or out-of-order packets are ignored.
+class CombatOpponentPauseReceived extends CombatEvent {
+  final bool paused;
+  final int seq;
+
+  CombatOpponentPauseReceived({required this.paused, required this.seq});
+}
+
+/// The opponent has been away longer than `CombatBloc.opponentAwayLimit`.
+class CombatOpponentAwayTooLong extends CombatEvent {}
+
+/// The shared 3-2-1 after the opponent came back has finished here.
+class CombatOpponentResumeFinished extends CombatEvent {}
+
+/// This player claims the win after the opponent stayed away too long.
+class CombatClaimWinAfterAway extends CombatEvent {}
 
 // ===== Combat-Specific Network Events =====
 

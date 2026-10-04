@@ -780,4 +780,24 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get authErrorLinkConflict => 'บัญชีนี้เป็นของผู้ใช้รายอื่นแล้ว';
+
+  @override
+  String get opponentPausedTitle => 'คู่แข่งหยุดชั่วคราว';
+
+  @override
+  String get opponentPausedBody =>
+      'คู่แข่งพับหรือปิดโทรศัพท์ รอบจะเล่นต่อเมื่อกลับมา';
+
+  @override
+  String get opponentAwayTooLongBody =>
+      'คู่แข่งไม่อยู่นานกว่าหนึ่งนาทีแล้ว รับชัยชนะ หรือรอต่อ';
+
+  @override
+  String get claimWin => 'รับชัยชนะ';
+
+  @override
+  String get opponentWasAway => 'คู่แข่งไม่อยู่นานเกินไป';
+
+  @override
+  String get youWereAway => 'คุณไม่อยู่นานเกินไป';
 }

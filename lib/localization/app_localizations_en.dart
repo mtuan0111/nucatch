@@ -788,4 +788,24 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get authErrorLinkConflict =>
       'This account already belongs to someone else.';
+
+  @override
+  String get opponentPausedTitle => 'Opponent paused';
+
+  @override
+  String get opponentPausedBody =>
+      'They folded or closed their phone. The round resumes when they\'re back.';
+
+  @override
+  String get opponentAwayTooLongBody =>
+      'They\'ve been away for over a minute. Claim the win, or keep waiting.';
+
+  @override
+  String get claimWin => 'Claim win';
+
+  @override
+  String get opponentWasAway => 'Opponent was away too long';
+
+  @override
+  String get youWereAway => 'You were away too long';
 }

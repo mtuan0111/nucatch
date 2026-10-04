@@ -791,4 +791,24 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get authErrorLinkConflict =>
       'Ce compte appartient déjà à quelqu’un d’autre.';
+
+  @override
+  String get opponentPausedTitle => 'Adversaire en pause';
+
+  @override
+  String get opponentPausedBody =>
+      'Votre adversaire a plié ou fermé son téléphone. La manche reprend à son retour.';
+
+  @override
+  String get opponentAwayTooLongBody =>
+      'Votre adversaire est absent depuis plus d\'une minute. Réclamez la victoire ou continuez d\'attendre.';
+
+  @override
+  String get claimWin => 'Réclamer la victoire';
+
+  @override
+  String get opponentWasAway => 'L\'adversaire s\'est absenté trop longtemps';
+
+  @override
+  String get youWereAway => 'Vous vous êtes absenté trop longtemps';
 }

@@ -319,8 +319,10 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
       ));
     }
 
-    return RichText(
-      text: TextSpan(
+    // Text.rich (not RichText) so the description follows the device's
+    // text-size setting like the rest of the dialog; RichText ignores it.
+    return Text.rich(
+      TextSpan(
         style: AppTextStyles.withColor(AppTextStyles.bodyLargeBold(context),
             Theme.of(context).colorScheme.primary.getDarker()),
         children: parts,

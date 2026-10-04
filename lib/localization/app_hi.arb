@@ -726,5 +726,29 @@
   "authErrorLinkConflict": "यह खाता पहले से किसी और का है।",
   "@authErrorLinkConflict": {
     "description": "Identity already belongs to another account"
+  },
+  "opponentPausedTitle": "प्रतिद्वंद्वी ने रोका",
+  "@opponentPausedTitle": {
+    "description": "Overlay title in combat when the opponent paused mid-round"
+  },
+  "opponentPausedBody": "प्रतिद्वंद्वी ने अपना फ़ोन मोड़ा या बंद किया। उनके लौटने पर राउंड फिर शुरू होगा।",
+  "@opponentPausedBody": {
+    "description": "Overlay body in combat while the opponent is away"
+  },
+  "opponentAwayTooLongBody": "प्रतिद्वंद्वी एक मिनट से ज़्यादा समय से दूर हैं। जीत का दावा करें या इंतज़ार करें।",
+  "@opponentAwayTooLongBody": {
+    "description": "Overlay body once the opponent has been away over a minute"
+  },
+  "claimWin": "जीत का दावा करें",
+  "@claimWin": {
+    "description": "Button to claim the combat win after the opponent stayed away too long"
+  },
+  "opponentWasAway": "प्रतिद्वंद्वी बहुत देर तक दूर रहे",
+  "@opponentWasAway": {
+    "description": "Combat end reason: opponent stayed paused too long"
+  },
+  "youWereAway": "आप बहुत देर तक दूर रहे",
+  "@youWereAway": {
+    "description": "Combat end reason: this player stayed paused too long"
   }
 }

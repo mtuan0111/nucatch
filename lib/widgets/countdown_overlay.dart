@@ -71,122 +71,131 @@ class CountdownOverlay extends StatelessWidget {
       child: ClipRect(
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-          child: Container(
+          // The dimmed backdrop covers (and blocks taps on) the whole window;
+          // DisplayFeatureSubScreen keeps the circle itself in one pane, off
+          // a Surface Duo hinge or a half-opened fold.
+          child: ColoredBox(
             color: Colors.black.withValues(alpha: 0.3),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Countdown(
-                  seconds: seconds,
-                  interval: const Duration(milliseconds: 10),
-                  build: (BuildContext context, double time) {
-                    final secondProgress = time - time.floor();
-                    final gradient = _getCountdownGradient(time, seconds);
+            child: DisplayFeatureSubScreen(
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Countdown(
+                      seconds: seconds,
+                      interval: const Duration(milliseconds: 10),
+                      build: (BuildContext context, double time) {
+                        final secondProgress = time - time.floor();
+                        final gradient = _getCountdownGradient(time, seconds);
 
-                    // Scale up on iPad so the circle doesn't look small and
-                    // lost on a much larger blurred canvas.
-                    final circleScale = context.isTablet ? 1.4 : 1.0;
+                        // Scale up on iPad so the circle doesn't look small and
+                        // lost on a much larger blurred canvas.
+                        final circleScale = context.isTablet ? 1.4 : 1.0;
 
-                    return AnimatedScale(
-                      duration:
-                          const Duration(milliseconds: kAnimationDurationSlow),
-                      scale: time > 0.5 ? 1.0 : 5,
-                      curve: Curves.easeOutQuart,
-                      child: AnimatedOpacity(
-                        duration: const Duration(
-                            milliseconds: kAnimationDurationSlow),
-                        opacity: time > 0.5 ? 1.0 : 0.0,
-                        curve: Curves.easeOutQuart,
-                        child: Container(
-                          width: kCountdownCircleSize * circleScale,
-                          height: kCountdownCircleSize * circleScale,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: gradient,
-                          ),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              // Background button shape
-                              Positioned.fill(
-                                child: CustomElevatedButton(
-                                  buttonRadius: kBorderRadiusCircular,
-                                  shapeAt: RoundedWithShapeAt.all,
-                                  gradient:
-                                      LinearGradient(colors: gradient.colors),
-                                ),
+                        return AnimatedScale(
+                          duration: const Duration(
+                              milliseconds: kAnimationDurationSlow),
+                          scale: time > 0.5 ? 1.0 : 5,
+                          curve: Curves.easeOutQuart,
+                          child: AnimatedOpacity(
+                            duration: const Duration(
+                                milliseconds: kAnimationDurationSlow),
+                            opacity: time > 0.5 ? 1.0 : 0.0,
+                            curve: Curves.easeOutQuart,
+                            child: Container(
+                              width: kCountdownCircleSize * circleScale,
+                              height: kCountdownCircleSize * circleScale,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: gradient,
                               ),
-                              // Circular progress indicator
-                              SizedBox(
-                                width: kCountdownCircleInnerSize * circleScale,
-                                height:
-                                    kCountdownCircleInnerSize * circleScale,
-                                child: CircularProgressIndicator(
-                                  value: secondProgress,
-                                  strokeWidth: kProgressStrokeWidth,
-                                  backgroundColor: Theme.of(context)
-                                      .colorScheme
-                                      .onSurface
-                                      .withValues(alpha: 0.3),
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Theme.of(context).colorScheme.onSurface,
-                                  ),
-                                ),
-                              ),
-                              // Text content
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
+                              child: Stack(
+                                alignment: Alignment.center,
                                 children: [
-                                  if (time >= 1)
-                                    AnimatedDefaultTextStyle(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      style:
-                                          AppTextStyles.forCountdown(context),
-                                      child: Text(
-                                        time.truncate().toString(),
-                                        style:
-                                            AppTextStyles.forCountdown(context),
+                                  // Background button shape
+                                  Positioned.fill(
+                                    child: CustomElevatedButton(
+                                      buttonRadius: kBorderRadiusCircular,
+                                      shapeAt: RoundedWithShapeAt.all,
+                                      gradient: LinearGradient(
+                                          colors: gradient.colors),
+                                    ),
+                                  ),
+                                  // Circular progress indicator
+                                  SizedBox(
+                                    width:
+                                        kCountdownCircleInnerSize * circleScale,
+                                    height:
+                                        kCountdownCircleInnerSize * circleScale,
+                                    child: CircularProgressIndicator(
+                                      value: secondProgress,
+                                      strokeWidth: kProgressStrokeWidth,
+                                      backgroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.3),
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Theme.of(context).colorScheme.onSurface,
                                       ),
                                     ),
-                                  if (time >= 1)
-                                    AnimatedDefaultTextStyle(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      style: AppTextStyles.forCountdownReady(
-                                          context),
-                                      child: Text(
-                                        readyText,
-                                        style: AppTextStyles.forCountdownReady(
-                                            context),
-                                      ),
-                                    )
-                                  else
-                                    AnimatedDefaultTextStyle(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      style:
-                                          AppTextStyles.forCountdownGo(context),
-                                      child: Text(
-                                        goText,
-                                        style: AppTextStyles.forCountdownGo(
-                                            context),
-                                      ),
-                                    ),
+                                  ),
+                                  // Text content
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      if (time >= 1)
+                                        AnimatedDefaultTextStyle(
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          style: AppTextStyles.forCountdown(
+                                              context),
+                                          child: Text(
+                                            time.truncate().toString(),
+                                            style: AppTextStyles.forCountdown(
+                                                context),
+                                          ),
+                                        ),
+                                      if (time >= 1)
+                                        AnimatedDefaultTextStyle(
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          style:
+                                              AppTextStyles.forCountdownReady(
+                                                  context),
+                                          child: Text(
+                                            readyText,
+                                            style:
+                                                AppTextStyles.forCountdownReady(
+                                                    context),
+                                          ),
+                                        )
+                                      else
+                                        AnimatedDefaultTextStyle(
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          style: AppTextStyles.forCountdownGo(
+                                              context),
+                                          child: Text(
+                                            goText,
+                                            style: AppTextStyles.forCountdownGo(
+                                                context),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                  onFinished: onFinished ?? () {},
+                        );
+                      },
+                      onFinished: onFinished ?? () {},
+                    ),
+                    // Optional bottom children (e.g. combat status badges)
+                    if (bottomChildren != null) ...bottomChildren!,
+                  ],
                 ),
-                // Optional bottom children (e.g. combat status badges)
-                if (bottomChildren != null) ...bottomChildren!,
-              ],
+              ),
             ),
           ),
         ),

@@ -41,6 +41,10 @@ class CombatState extends TurnState {
   final bool
       wantsChangeDifficulty; // Host wants to change difficulty when both ready
 
+  /// The opponent's side of a mid-round pause (they folded or closed their
+  /// phone, or left the app). See [OpponentPause].
+  final OpponentPause opponentPause;
+
   const CombatState({
     // Combat-specific parameters
     this.isHost = false,
@@ -63,6 +67,7 @@ class CombatState extends TurnState {
     this.pickRightJustCorrect = false,
     this.correctEquationDisplay,
     this.wantsChangeDifficulty = false,
+    this.opponentPause = OpponentPause.none,
     // TurnState parameters
     super.level = 0,
     super.timesCorrect = 0,
@@ -116,6 +121,7 @@ class CombatState extends TurnState {
     String? correctEquationDisplay,
     bool clearCorrectEquationDisplay = false,
     bool? wantsChangeDifficulty,
+    OpponentPause? opponentPause,
     // TurnState parameters
     int? level,
     int? timesCorrect,
@@ -170,6 +176,7 @@ class CombatState extends TurnState {
           : (correctEquationDisplay ?? this.correctEquationDisplay),
       wantsChangeDifficulty:
           wantsChangeDifficulty ?? this.wantsChangeDifficulty,
+      opponentPause: opponentPause ?? this.opponentPause,
       // TurnState
       level: level ?? this.level,
       timesCorrect: timesCorrect ?? this.timesCorrect,
@@ -236,6 +243,8 @@ enum GameEndReason {
   myLivesOut, // I ran out of lives
   opponentDisconnected, // Opponent disconnected
   timeout, // Timeout
+  opponentAway, // Opponent paused mid-round too long; I claimed the win
+  myAway, // I paused mid-round too long; opponent claimed the win
 }
 
 enum CombatMessageType {
@@ -248,4 +257,22 @@ enum CombatMessageType {
   restartReady, // Player ready for restart
   changeDifficulty, // Host wants to change difficulty after game over
   opponentDisconnected, // Opponent disconnected
+  pauseUpdate, // My mid-round pause started/ended (folded, closed, left app)
+}
+
+/// Where the opponent's mid-round pause is, from this device's view. Both
+/// timers are held by [TimerPauseReason.opponent] from [away] until the
+/// [resuming] countdown finishes.
+enum OpponentPause {
+  none,
+
+  /// Opponent folded/closed their phone or left the app.
+  away,
+
+  /// [away] for longer than `CombatBloc.opponentAwayLimit`: this player may
+  /// claim the win.
+  awayTooLong,
+
+  /// Opponent is back; both devices are running the same 3-2-1.
+  resuming,
 }
