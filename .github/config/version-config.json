@@ -1,42 +1,42 @@
 {
     "android": {
         "dev": {
-            "versionName": "2.8.8.0",
-            "versionCode": 91,
+            "versionName": "2.8.9.0",
+            "versionCode": 92,
             "releaseNotes": {
-                "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
-                "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
+                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, and every step now highlights exactly what it explains. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
+                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng và mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
             }
         },
         "prod": {
-            "versionName": "2.8.8",
-            "versionCode": 91,
+            "versionName": "2.8.9",
+            "versionCode": 92,
             "releaseNotes": {
-                "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
-                "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
+                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, and every step now highlights exactly what it explains. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
+                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng và mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
             }
         }
     },
     "ios": {
         "dev": {
-            "versionName": "2.8.8",
-            "buildNumber": "90.0",
+            "versionName": "2.8.9",
+            "buildNumber": "91.0",
             "releaseNotes": {
-                "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
-                "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
+                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, and every step now highlights exactly what it explains. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
+                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng và mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
             }
         },
         "prod": {
-            "versionName": "2.8.8",
-            "buildNumber": "90",
+            "versionName": "2.8.9",
+            "buildNumber": "91",
             "releaseNotes": {
-                "en-US": "Improved screen walkthroughs for a better onboarding and tutorial experience.",
-                "vi-VN": "Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt đầu và làm quen tốt hơn."
+                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, and every step now highlights exactly what it explains. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
+                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng và mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
             }
         }
     },
     "metadata": {
-        "lastUpdated": "2026-08-23T00:00:00+07:00",
+        "lastUpdated": "2026-10-05T00:00:00+07:00",
         "updatedBy": "CI/CD Pipeline"
     }
 }

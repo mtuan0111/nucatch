@@ -1995,3 +1995,34 @@ _ Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt
 
 ### Release note:
 - Update tour process.
+
+### Git note release:
+
+#### Command for copilot
+
+`[Builded] Version 2.8.9 - 92 / 2.8.9 - 91 _ Update tour process.`
+
+#### Brief for Store's new update:
+
+_ Redesigned the welcome tour: shorter, split into clear parts, and every step now highlights exactly what it explains.
+_ Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.
+_ Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng và mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu.
+_ Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn.
+
+#### Flutter build for Android for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build appbundle --build-name=2.8.9.0 --build-number=92 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for iOS for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build ios --build-name=2.8.9 --build-number=91.0 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for Android
+
+`npm run flutterfire_setup && flutter build appbundle --build-name=2.8.9 --build-number=92 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Flutter build for iOS
+
+`npm run flutterfire_setup && flutter build ios --build-name=2.8.9 --build-number=91 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+---
