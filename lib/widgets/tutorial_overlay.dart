@@ -68,6 +68,10 @@ class _TutorialOverlayState extends State<TutorialOverlay> {
             [TourKeys.opponentScoreKey, TourKeys.opponentHeartKey]);
       case TutorialSpotlight.opponentLifePanel:
         return getRectForKeys([TourKeys.opponentHeartKey]);
+      case TutorialSpotlight.gameOverSummary:
+        return getRectForKeys([TourKeys.gameOverSummaryKey]);
+      case TutorialSpotlight.combatResult:
+        return getRectForKeys([TourKeys.combatResultKey]);
       case TutorialSpotlight.wholeScreen:
         return Rect.zero;
     }
@@ -112,7 +116,9 @@ class _TutorialOverlayState extends State<TutorialOverlay> {
               if (tutorial.isFirstLesson) {
                 // Back out of the in-game tutorial entirely, into the last
                 // main-menu tour step — mirrors how the menu tour's own
-                // Previous button behaves.
+                // Previous button behaves. The practice itself stops too, so
+                // its card doesn't stay on screen under the menu tour's.
+                context.read<TutorialCubit>().backToMenuTour();
                 context
                     .read<TourBloc>()
                     .add(TourJumpToStep(TourProgress.menuSteps.last.index));

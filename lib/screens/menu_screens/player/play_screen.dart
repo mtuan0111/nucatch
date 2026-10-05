@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 // ignore: unused_import
 import 'dart:developer';
 import 'dart:developer' as dev;
@@ -210,6 +211,8 @@ class _PlayScreenState extends State<PlayScreen> with GamePauseGuard {
               previous.isActive && !current.isActive,
           listener: (context, state) {
             turnBloc.add(Renew());
+            // Backing out into the menu tour: it navigates to its own step.
+            if (state.backedOutToMenuTour) return;
             menuBloc.add(ShowMenu());
             context.read<TourBloc>().add(TourCompleted());
           },
@@ -256,6 +259,8 @@ class _PlayScreenState extends State<PlayScreen> with GamePauseGuard {
                           final headerColumn = Column(
                             children: [
                               CountDownBar(
+                                // Spotlighted by the tutorial's timer lessons.
+                                key: TourKeys.countdownBarKey,
                                 timerDuration: turnState.effectiveTimerDuration,
                                 tapTimerRemaining:
                                     turnState.tapTimerRemaining.toInt(),
@@ -743,8 +748,7 @@ class _PlayScreenState extends State<PlayScreen> with GamePauseGuard {
                       if (turnState.status == TurnStatus.intro)
                         CountdownOverlay(seconds: turnState.countDown),
                       // Fold/unfold, rotation or leaving the app mid-round.
-                      if (resumeCountdownOverlay() case final overlay?)
-                        overlay,
+                      if (resumeCountdownOverlay() case final overlay?) overlay,
                       // Quick settings overlay — always accessible, not affected by layout
                       Positioned(
                         right: 0,
@@ -946,8 +950,11 @@ class LifeStar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width:
-          (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0) * value,
+      // Clamped: the gain/loss animations overshoot, and a star whose
+      // animation is cut short by another (lives reset mid-animation) can
+      // momentarily get a value below 0 — never a negative width.
+      width: (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0) *
+          math.max(0.0, value),
       height: (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0),
       child: FaIcon(
         FontAwesomeIcons.solidStar,

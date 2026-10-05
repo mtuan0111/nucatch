@@ -84,6 +84,26 @@ class _CombatNavState extends State<CombatNav> {
               context.read<CombatNavCubit>().showPlaying();
             },
           ),
+          // Previous back into a lesson played on the live match screen
+          // while the results screen is showing — from the last lesson (on
+          // CombatGameEndScreen), or from Victory's result card, which also
+          // sits there since the scripted win ended the match: return to
+          // the match, where that lesson re-seeds it and replays its script.
+          BlocListener<TutorialCubit, TutorialState>(
+            listenWhen: (previous, current) =>
+                previous.isActive &&
+                current.isActive &&
+                current.lesson.hostScreen ==
+                    TutorialHostScreen.combatPlayScreen &&
+                (previous.lesson.hostScreen ==
+                        TutorialHostScreen.combatGameEndScreen ||
+                    (previous.seedToken != current.seedToken &&
+                        context.read<CombatNavCubit>().state
+                            is CombatEndGameState)),
+            listener: (context, state) {
+              context.read<CombatNavCubit>().showPlaying();
+            },
+          ),
           // Teardown once the tutorial ends. Lives here (on CombatNav, not
           // CombatPlayScreen) because the combat arc's last lesson
           // (CombatWrapUp) is hosted on the sibling CombatGameEndScreen —
@@ -95,63 +115,65 @@ class _CombatNavState extends State<CombatNav> {
               context.read<CombatBloc>().add(CombatBlocReset());
               context.read<CombatNavCubit>().reset();
               context.read<PlayerNavCubit>().showSelectPlayMode();
-              context.read<TourBloc>().add(TourCompleted());
+              if (!state.backedOutToMenuTour) {
+                context.read<TourBloc>().add(TourCompleted());
+              }
             },
           ),
         ],
         child: BlocBuilder<CombatNavCubit, CombatNavState>(
-        builder: (context, state) {
-          return Navigator(
-            pages: [
-              // Setup screen is always the base
-              const MaterialPage(child: CombatModeSetupScreen()),
+          builder: (context, state) {
+            return Navigator(
+              pages: [
+                // Setup screen is always the base
+                const MaterialPage(child: CombatModeSetupScreen()),
 
-              // Host room screen
-              if (state is HostRoomState)
-                const MaterialPage(child: HostRoomScreen()),
+                // Host room screen
+                if (state is HostRoomState)
+                  const MaterialPage(child: HostRoomScreen()),
 
-              // Join room screen
-              if (state is JoinRoomState)
-                const MaterialPage(child: JoinRoomScreen()),
+                // Join room screen
+                if (state is JoinRoomState)
+                  const MaterialPage(child: JoinRoomScreen()),
 
-              // Set difficulty screen (host only)
-              if (state is CombatSetDifficultyState)
-                const MaterialPage(child: SetDifficultScreen()),
+                // Set difficulty screen (host only)
+                if (state is CombatSetDifficultyState)
+                  const MaterialPage(child: SetDifficultScreen()),
 
-              // Playing screen
-              if (state is CombatPlayingState)
-                const MaterialPage(child: CombatPlayScreen()),
+                // Playing screen
+                if (state is CombatPlayingState)
+                  const MaterialPage(child: CombatPlayScreen()),
 
-              // End game screen
-              if (state is CombatEndGameState)
-                const MaterialPage(child: CombatGameEndScreen()),
+                // End game screen
+                if (state is CombatEndGameState)
+                  const MaterialPage(child: CombatGameEndScreen()),
 
-              // Restart confirmation screen
-              if (state is CombatRestartConfirmationState)
-                const MaterialPage(child: CombatRestartConfirmationScreen()),
-            ],
-            onPopPage: (route, result) {
-              if (!route.didPop(result)) {
-                return false;
-              }
+                // Restart confirmation screen
+                if (state is CombatRestartConfirmationState)
+                  const MaterialPage(child: CombatRestartConfirmationScreen()),
+              ],
+              onPopPage: (route, result) {
+                if (!route.didPop(result)) {
+                  return false;
+                }
 
-              // Handle back navigation
-              final currentState = context.read<CombatNavCubit>().state;
-              if (currentState is HostRoomState ||
-                  currentState is JoinRoomState) {
-                context.read<CombatNavCubit>().showSetup();
-              } else if (currentState is CombatSetDifficultyState) {
-                context.read<CombatNavCubit>().showHostRoom();
-              } else if (currentState is CombatPlayingState ||
-                  currentState is CombatEndGameState ||
-                  currentState is CombatRestartConfirmationState) {
-                context.read<CombatNavCubit>().showSetup();
-              }
+                // Handle back navigation
+                final currentState = context.read<CombatNavCubit>().state;
+                if (currentState is HostRoomState ||
+                    currentState is JoinRoomState) {
+                  context.read<CombatNavCubit>().showSetup();
+                } else if (currentState is CombatSetDifficultyState) {
+                  context.read<CombatNavCubit>().showHostRoom();
+                } else if (currentState is CombatPlayingState ||
+                    currentState is CombatEndGameState ||
+                    currentState is CombatRestartConfirmationState) {
+                  context.read<CombatNavCubit>().showSetup();
+                }
 
-              return true;
-            },
-          );
-        },
+                return true;
+              },
+            );
+          },
         ),
       ),
     );

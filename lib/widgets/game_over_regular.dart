@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
+import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/extension.dart';
@@ -23,46 +24,53 @@ class GameOverRegular extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Game Over title
-        Text(
-          coreLang(context).gameOver,
-          style: AppTextStyles.displaySmallBold(context).copyWith(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: kSpace3XL),
-
-        // Show requirement string if different from expected
-        if (turnState.expect != turnState.requirementString)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kSpace2XL),
-            child: Text(
-              turnState.requirementString ?? '',
-              style: AppTextStyles.displaySmall(context).copyWith(
+        // Spotlighted by the tutorial's game-over result beat.
+        Column(
+          key: TourKeys.gameOverSummaryKey,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Game Over title
+            Text(
+              coreLang(context).gameOver,
+              style: AppTextStyles.displaySmallBold(context).copyWith(
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
               textAlign: TextAlign.center,
             ),
-          ),
-        const SizedBox(height: kSpaceL),
+            const SizedBox(height: kSpace3XL),
 
-        // "The correct is" label
-        Text(
-          lang(context).theCorrectIs,
-          style: AppTextStyles.withColor(
-            AppTextStyles.bodyLargeMedium(context),
-            Theme.of(context).colorScheme.onPrimary,
-          ),
-        ),
-        const SizedBox(width: kSpaceS),
+            // Show requirement string if different from expected
+            if (turnState.expect != turnState.requirementString)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kSpace2XL),
+                child: Text(
+                  turnState.requirementString ?? '',
+                  style: AppTextStyles.displaySmall(context).copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            const SizedBox(height: kSpaceL),
 
-        // Expected answer
-        Text(
-          turnState.expect ?? '',
-          style: AppTextStyles.displaySmallBold(context).copyWith(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
+            // "The correct is" label
+            Text(
+              lang(context).theCorrectIs,
+              style: AppTextStyles.withColor(
+                AppTextStyles.bodyLargeMedium(context),
+                Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+            const SizedBox(width: kSpaceS),
+
+            // Expected answer
+            Text(
+              turnState.expect ?? '',
+              style: AppTextStyles.displaySmallBold(context).copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: kSpaceXL),
 

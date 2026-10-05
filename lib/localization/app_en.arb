@@ -568,7 +568,7 @@
   "@tourWelcomeTitle": {
     "description": "Title for the welcome tour step"
   },
-  "tourWelcomeDesc": "A quick tour: first the **menu**, then a short **practice game**. You can skip it anytime.",
+  "tourWelcomeDesc": "A quick tour: first the **menu**, then a short **practice game**.\nYou can skip it anytime.",
   "@tourWelcomeDesc": {
     "description": "Description for the welcome tour step"
   },
@@ -592,7 +592,7 @@
   "@tourSoloTitle": {
     "description": "Title for solo mode tour step"
   },
-  "tourSoloDesc": "**Solo Mode**: play alone and beat your best score. **Combat Mode**: challenge a friend nearby over **Bluetooth** — one creates a room, the other joins.",
+  "tourSoloDesc": "**Solo Mode**: play alone and beat your best score.\n**Combat Mode**: challenge a friend nearby over **Bluetooth** — one creates a room, the other joins.",
   "@tourSoloDesc": {
     "description": "Description for solo mode tour step"
   },
@@ -624,7 +624,7 @@
   "@tourLeaderboardTitle": {
     "description": "Title for leaderboard tour step"
   },
-  "tourLeaderboardDesc": "**Top score** shows the rankings, **Setting** changes your name, theme, sound and language, and **About** explains the rules. Next up: a short **practice game**!",
+  "tourLeaderboardDesc": "**Top score** shows the rankings.\n**Setting** changes your name, theme, sound and language.\n**About** explains the rules.\nNext up: a short **practice game**!",
   "@tourLeaderboardDesc": {
     "description": "Description for leaderboard tour step"
   },
@@ -672,7 +672,7 @@
   "@tourRuleRegularWelcomeTitle": {
     "description": "In-game tutorial: regular mode welcome title"
   },
-  "tourRuleRegularWelcomeDesc": "Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.",
+  "tourRuleRegularWelcomeDesc": "Memorize the number, then type it back before time runs out.\nYou have **3 lives** — lose them all and the game ends.",
   "@tourRuleRegularWelcomeDesc": {
     "description": "In-game tutorial: regular mode welcome description"
   },
@@ -740,7 +740,7 @@
   "@tourRuleRegularLevelUpDesc": {
     "description": "In-game tutorial: level up step description"
   },
-  "tourRuleRegularLevelUpResult": "Level up! Numbers get a little harder from here — and completing a level without losing a life earns you a bonus life.",
+  "tourRuleRegularLevelUpResult": "Level up! Numbers get a little harder from here.\nFinish a level without losing a life to earn a **bonus life**.",
   "@tourRuleRegularLevelUpResult": {
     "description": "In-game tutorial: level up result beat"
   },
@@ -764,7 +764,7 @@
   "@tourRulePickRightWelcomeTitle": {
     "description": "In-game tutorial: pick right welcome title"
   },
-  "tourRulePickRightWelcomeDesc": "Here you don't type — tap the **right answer**. The other choices are decoys.",
+  "tourRulePickRightWelcomeDesc": "Here you don't type — tap the **right answer**.\nThe other choices are decoys.",
   "@tourRulePickRightWelcomeDesc": {
     "description": "In-game tutorial: pick right welcome description"
   },
@@ -824,7 +824,7 @@
   "@tourRuleCombatWelcomeTitle": {
     "description": "In-game tutorial: combat welcome title"
   },
-  "tourRuleCombatWelcomeDesc": "You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.",
+  "tourRuleCombatWelcomeDesc": "You and an opponent take turns.\nThis badge shows **whose turn** it is — as host, you go first.",
   "@tourRuleCombatWelcomeDesc": {
     "description": "In-game tutorial: combat welcome description"
   },

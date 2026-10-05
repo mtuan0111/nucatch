@@ -4,16 +4,16 @@
             "versionName": "2.8.9.0",
             "versionCode": 92,
             "releaseNotes": {
-                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, and every step now highlights exactly what it explains. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
-                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng và mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
+                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, every step highlights exactly what it explains, and going back or forward always keeps the practice game set up correctly. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
+                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng, mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu, và khi quay lại hay đi tiếp, ván chơi thử luôn được thiết lập chính xác. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
             }
         },
         "prod": {
             "versionName": "2.8.9",
             "versionCode": 92,
             "releaseNotes": {
-                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, and every step now highlights exactly what it explains. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
-                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng và mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
+                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, every step highlights exactly what it explains, and going back or forward always keeps the practice game set up correctly. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
+                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng, mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu, và khi quay lại hay đi tiếp, ván chơi thử luôn được thiết lập chính xác. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
             }
         }
     },
@@ -22,16 +22,16 @@
             "versionName": "2.8.9",
             "buildNumber": "91.0",
             "releaseNotes": {
-                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, and every step now highlights exactly what it explains. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
-                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng và mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
+                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, every step highlights exactly what it explains, and going back or forward always keeps the practice game set up correctly. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
+                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng, mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu, và khi quay lại hay đi tiếp, ván chơi thử luôn được thiết lập chính xác. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
             }
         },
         "prod": {
             "versionName": "2.8.9",
             "buildNumber": "91",
             "releaseNotes": {
-                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, and every step now highlights exactly what it explains. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
-                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng và mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
+                "en-US": "Redesigned the welcome tour: shorter, split into clear parts, every step highlights exactly what it explains, and going back or forward always keeps the practice game set up correctly. Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.",
+                "vi-VN": "Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng, mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu, và khi quay lại hay đi tiếp, ván chơi thử luôn được thiết lập chính xác. Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn."
             }
         }
     },

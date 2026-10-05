@@ -17,7 +17,17 @@ class TutorialCubit extends Cubit<TutorialState> {
       lessonIndex: 0,
       phase: TutorialPhase.explain,
       seedToken: state.seedToken + 1,
+      backedOutToMenuTour: false,
     ));
+  }
+
+  /// Leaves the practice from its first lesson with Previous, back into the
+  /// main-menu tour (which the caller points at its last step). Like
+  /// [finish] it ends the practice, but flagged so teardown listeners reset
+  /// the game without completing the tour; the menu tour's Next calls
+  /// [start] again.
+  void backToMenuTour() {
+    emit(const TutorialState(backedOutToMenuTour: true));
   }
 
   /// Ends the tutorial. Does not touch any bloc or navigate anywhere —
@@ -47,17 +57,36 @@ class TutorialCubit extends Cubit<TutorialState> {
   }
 
   /// No-op on the first lesson — the widget hosting lesson 1's Previous
-  /// button routes to `TourBloc.add(TourStepBack())` instead (back to the
-  /// main-menu walkthrough), matching how the main-menu dialog tour's own
-  /// Previous button behaves.
+  /// button routes back to the main-menu walkthrough instead, matching how
+  /// the main-menu tour's own Previous button behaves.
+  ///
+  /// Lands on the nearest earlier lesson that sets the game up itself (has
+  /// a `turnSeed`/`combatSeed`). A lesson without one continues from the
+  /// state the lesson before it left behind — Type It Back needs the number
+  /// Memorize It just flashed, Opponent's Turn needs your turn to have just
+  /// passed, a wrap-up needs the game that just ended — so stepping back
+  /// into it directly would leave the game showing the data of the lesson
+  /// the player came from (a different number, a different question).
   void previous() {
     if (!state.isActive || state.isFirstLesson) return;
     emit(state.copyWith(
-      lessonIndex: state.lessonIndex - 1,
+      lessonIndex: previousSeededIndex(state.lessonIndex),
       phase: TutorialPhase.explain,
       seedToken: state.seedToken + 1,
     ));
   }
+
+  /// The lesson [previous] goes back to from [lessonIndex]; see there.
+  static int previousSeededIndex(int lessonIndex) {
+    var target = lessonIndex - 1;
+    while (target > 0 && !_setsUpGame(TutorialScript.lessons[target])) {
+      target--;
+    }
+    return target;
+  }
+
+  static bool _setsUpGame(TutorialLessonData lesson) =>
+      lesson.turnSeed != null || lesson.combatSeed != null;
 
   /// Called by a screen listener the instant it observes the real bloc
   /// leave its "waiting for input" state (e.g. the player just tapped the

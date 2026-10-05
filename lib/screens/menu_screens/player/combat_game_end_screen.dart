@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
@@ -92,7 +93,9 @@ class CombatGameEndScreen extends StatelessWidget {
     final isWinner = combatState.isWinner ?? false;
 
     // Result/ranking display — ranking badge, expected-answer, end reason.
+    // Spotlighted by the tutorial's Victory result beat.
     final resultDisplay = Column(
+      key: TourKeys.combatResultKey,
       mainAxisSize: MainAxisSize.min,
       children: [
         // Ranking Widget - Winner (position 1) or Loser (position 4)

@@ -2004,9 +2004,9 @@ _ Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt
 
 #### Brief for Store's new update:
 
-_ Redesigned the welcome tour: shorter, split into clear parts, and every step now highlights exactly what it explains.
+_ Redesigned the welcome tour: shorter, split into clear parts, every step highlights exactly what it explains, and going back or forward always keeps the practice game set up correctly.
 _ Improved layouts for foldable phones and tablets, with a bigger, easier-to-read keypad.
-_ Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng và mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu.
+_ Thiết kế lại phần hướng dẫn chào mừng: ngắn gọn hơn, chia thành các phần rõ ràng, mỗi bước đều làm nổi bật đúng nội dung đang giới thiệu, và khi quay lại hay đi tiếp, ván chơi thử luôn được thiết lập chính xác.
 _ Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùng bàn phím số lớn hơn, dễ đọc hơn.
 
 #### Flutter build for Android for Testing (Development)

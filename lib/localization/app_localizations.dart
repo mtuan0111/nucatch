@@ -815,7 +815,7 @@ abstract class AppLocalizations {
   /// Description for the welcome tour step
   ///
   /// In en, this message translates to:
-  /// **'A quick tour: first the **menu**, then a short **practice game**. You can skip it anytime.'**
+  /// **'A quick tour: first the **menu**, then a short **practice game**.\nYou can skip it anytime.'**
   String get tourWelcomeDesc;
 
   /// Title for the start button tour step
@@ -851,7 +851,7 @@ abstract class AppLocalizations {
   /// Description for solo mode tour step
   ///
   /// In en, this message translates to:
-  /// **'**Solo Mode**: play alone and beat your best score. **Combat Mode**: challenge a friend nearby over **Bluetooth** — one creates a room, the other joins.'**
+  /// **'**Solo Mode**: play alone and beat your best score.\n**Combat Mode**: challenge a friend nearby over **Bluetooth** — one creates a room, the other joins.'**
   String get tourSoloDesc;
 
   /// Title for combat mode tour step
@@ -899,7 +899,7 @@ abstract class AppLocalizations {
   /// Description for leaderboard tour step
   ///
   /// In en, this message translates to:
-  /// **'**Top score** shows the rankings, **Setting** changes your name, theme, sound and language, and **About** explains the rules. Next up: a short **practice game**!'**
+  /// **'**Top score** shows the rankings.\n**Setting** changes your name, theme, sound and language.\n**About** explains the rules.\nNext up: a short **practice game**!'**
   String get tourLeaderboardDesc;
 
   /// Title for settings step
@@ -971,7 +971,7 @@ abstract class AppLocalizations {
   /// In-game tutorial: regular mode welcome description
   ///
   /// In en, this message translates to:
-  /// **'Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.'**
+  /// **'Memorize the number, then type it back before time runs out.\nYou have **3 lives** — lose them all and the game ends.'**
   String get tourRuleRegularWelcomeDesc;
 
   /// In-game tutorial: lives title
@@ -1073,7 +1073,7 @@ abstract class AppLocalizations {
   /// In-game tutorial: level up result beat
   ///
   /// In en, this message translates to:
-  /// **'Level up! Numbers get a little harder from here — and completing a level without losing a life earns you a bonus life.'**
+  /// **'Level up! Numbers get a little harder from here.\nFinish a level without losing a life to earn a **bonus life**.'**
   String get tourRuleRegularLevelUpResult;
 
   /// In-game tutorial: game over step title
@@ -1109,7 +1109,7 @@ abstract class AppLocalizations {
   /// In-game tutorial: pick right welcome description
   ///
   /// In en, this message translates to:
-  /// **'Here you don\'t type — tap the **right answer**. The other choices are decoys.'**
+  /// **'Here you don\'t type — tap the **right answer**.\nThe other choices are decoys.'**
   String get tourRulePickRightWelcomeDesc;
 
   /// In-game tutorial: pick right options title
@@ -1199,7 +1199,7 @@ abstract class AppLocalizations {
   /// In-game tutorial: combat welcome description
   ///
   /// In en, this message translates to:
-  /// **'You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.'**
+  /// **'You and an opponent take turns.\nThis badge shows **whose turn** it is — as host, you go first.'**
   String get tourRuleCombatWelcomeDesc;
 
   /// In-game tutorial: combat turn order title

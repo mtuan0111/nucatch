@@ -31,6 +31,8 @@ enum TutorialSpotlight {
   statusBadge,
   opponentPanel,
   opponentLifePanel,
+  gameOverSummary,
+  combatResult,
   wholeScreen,
 }
 
@@ -230,6 +232,20 @@ class TutorialScript {
       interaction: TutorialInteraction.tapButton,
       requiredButtonIndex: 1,
       hasResultBeat: true,
+      // "Correct! You earned a point." — point at the point just earned.
+      resultSpotlight: TutorialSpotlight.scorePanel,
+      // Same question as PickRightWelcome, set up again so arriving here
+      // with Previous (from PickRightWrong's "3 + 4" question) still asks
+      // "5 + 3" with 8 as the right answer.
+      turnSeed: TutorialTurnSeed(
+        difficulty: Difficulty.pickRight,
+        requirementString: '5 | 8 | 6',
+        expect: '1',
+        level: 1,
+        questionExpression: '5 + 3 = ?',
+        equations: ['5', '8', '6'],
+        correctIndex: 1,
+      ),
     ),
     TutorialLessonData(
       key: 'PickRightWrong',
@@ -259,7 +275,10 @@ class TutorialScript {
       spotlight: TutorialSpotlight.timerBar,
       interaction: TutorialInteraction.watch,
       hasResultBeat: true,
-      resultSpotlight: TutorialSpotlight.lifePanel,
+      // The timeout ends the game, so the result beat is shown on
+      // GameOverScreen — point at its "Game Over" summary, not the (now
+      // hidden) play screen's life panel.
+      resultSpotlight: TutorialSpotlight.gameOverSummary,
       emphasise: true,
       turnSeed: TutorialTurnSeed(
         difficulty: Difficulty.pickRight,
@@ -304,6 +323,14 @@ class TutorialScript {
       spotlightKey: KeyboardOption.four,
       interaction: TutorialInteraction.tapKey,
       requiredKey: KeyboardOption.four,
+      // Same turn as CombatWelcome, set up again so arriving here with
+      // Previous (after the opponent already played, or the match ended)
+      // is still your turn with a "4" to tap.
+      combatSeed: TutorialCombatSeed(
+        requirementString: '4',
+        expect: '4',
+        level: 1,
+      ),
     ),
     TutorialLessonData(
       key: 'CombatOpponentTurn',
@@ -321,6 +348,10 @@ class TutorialScript {
       spotlight: TutorialSpotlight.opponentLifePanel,
       interaction: TutorialInteraction.watch,
       hasResultBeat: true,
+      // The win ends the match, so the result beat is shown on
+      // CombatGameEndScreen — point at its "You Win!" result, not the (now
+      // hidden) match screen's opponent lives.
+      resultSpotlight: TutorialSpotlight.combatResult,
       opponentScript: CombatTutorialScript.opponentLosesTheMatch,
       // Re-pins state (and, critically, stops any timer still running from
       // CombatOpponentTurn's real "opponent succeeded, hand turn back to

@@ -24,11 +24,18 @@ class TutorialState {
   /// unrelated rebuild happened".
   final int seedToken;
 
+  /// True when the practice was left with Previous on its first lesson —
+  /// back into the main-menu tour, which is still running — rather than
+  /// finished or skipped. Teardown listeners use it to reset the game
+  /// without marking the whole tour as completed.
+  final bool backedOutToMenuTour;
+
   const TutorialState({
     this.isActive = false,
     this.lessonIndex = 0,
     this.phase = TutorialPhase.explain,
     this.seedToken = 0,
+    this.backedOutToMenuTour = false,
   });
 
   TutorialLessonData get lesson => TutorialScript.at(lessonIndex);
@@ -42,12 +49,14 @@ class TutorialState {
     int? lessonIndex,
     TutorialPhase? phase,
     int? seedToken,
+    bool? backedOutToMenuTour,
   }) {
     return TutorialState(
       isActive: isActive ?? this.isActive,
       lessonIndex: lessonIndex ?? this.lessonIndex,
       phase: phase ?? this.phase,
       seedToken: seedToken ?? this.seedToken,
+      backedOutToMenuTour: backedOutToMenuTour ?? this.backedOutToMenuTour,
     );
   }
 }

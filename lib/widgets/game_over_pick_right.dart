@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
+import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/extension.dart';
@@ -23,30 +24,37 @@ class GameOverPickRight extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Game Over title
-        Text(
-          coreLang(context).gameOver,
-          style: AppTextStyles.displaySmallBold(context).copyWith(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: kSpace3XL),
+        // Spotlighted by the tutorial's game-over result beat.
+        Column(
+          key: TourKeys.gameOverSummaryKey,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Game Over title
+            Text(
+              coreLang(context).gameOver,
+              style: AppTextStyles.displaySmallBold(context).copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: kSpace3XL),
 
-        // "The correct is" label
-        Text(
-          lang(context).theCorrectIs,
-          style: AppTextStyles.withColor(
-            AppTextStyles.bodyLargeMedium(context),
-            Theme.of(context).colorScheme.onPrimary,
-          ),
-        ),
-        const SizedBox(width: kSpaceS),
+            // "The correct is" label
+            Text(
+              lang(context).theCorrectIs,
+              style: AppTextStyles.withColor(
+                AppTextStyles.bodyLargeMedium(context),
+                Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+            const SizedBox(width: kSpaceS),
 
-        // Show the actual correct equation (not the button index)
-        Text(
-          turnState.trueEquation ?? turnState.expect ?? '',
-          style: AppTextStyles.displaySmall(context),
+            // Show the actual correct equation (not the button index)
+            Text(
+              turnState.trueEquation ?? turnState.expect ?? '',
+              style: AppTextStyles.displaySmall(context),
+            ),
+          ],
         ),
         const SizedBox(height: kSpaceXL),
 

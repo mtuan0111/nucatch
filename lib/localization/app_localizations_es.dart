@@ -415,7 +415,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'Un recorrido rápido: primero el **menú** y luego una breve **partida de práctica**. Puedes saltarlo cuando quieras.';
+      'Un recorrido rápido: primero el **menú** y luego una breve **partida de práctica**.\nPuedes saltarlo cuando quieras.';
 
   @override
   String get tourStartTitle => 'Comenzar';
@@ -436,7 +436,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tourSoloDesc =>
-      '**Modo Solo**: juega solo y supera tu mejor puntuación. **Modo Combate**: reta a un amigo cercano por **Bluetooth** — uno crea una sala y el otro se une.';
+      '**Modo Solo**: juega solo y supera tu mejor puntuación.\n**Modo Combate**: reta a un amigo cercano por **Bluetooth** — uno crea una sala y el otro se une.';
 
   @override
   String get tourCombatTitle => 'Modo Combate - Multijugador Bluetooth';
@@ -464,7 +464,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tourLeaderboardDesc =>
-      '**Mejor puntuación** muestra las clasificaciones, en **Configuración** cambias tu nombre, tema, sonido e idioma, y **Acerca de** explica las reglas. A continuación: ¡una breve **partida de práctica**!';
+      '**Mejor puntuación** muestra las clasificaciones.\nEn **Configuración** cambias tu nombre, tema, sonido e idioma.\n**Acerca de** explica las reglas.\nA continuación: ¡una breve **partida de práctica**!';
 
   @override
   String get tourSettingsTitle => 'Configuración - Personalizar';
@@ -504,7 +504,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.';
+      'Memorize the number, then type it back before time runs out.\nYou have **3 lives** — lose them all and the game ends.';
 
   @override
   String get tourRuleRegularLivesTitle => 'Your Lives';
@@ -565,7 +565,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tourRuleRegularLevelUpResult =>
-      'Level up! Numbers get a little harder from here — and completing a level without losing a life earns you a bonus life.';
+      'Level up! Numbers get a little harder from here.\nFinish a level without losing a life to earn a **bonus life**.';
 
   @override
   String get tourRuleRegularGameOverTitle => 'Game Over';
@@ -586,7 +586,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Here you don\'t type — tap the **right answer**. The other choices are decoys.';
+      'Here you don\'t type — tap the **right answer**.\nThe other choices are decoys.';
 
   @override
   String get tourRulePickRightOptionsTitle => 'Choose Wisely';
@@ -639,7 +639,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.';
+      'You and an opponent take turns.\nThis badge shows **whose turn** it is — as host, you go first.';
 
   @override
   String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';

@@ -53,10 +53,18 @@ class _PlayerNavState extends State<PlayerNav> {
         // the pickRight arc's wrap-up-into-next-lesson hand-off (from
         // gameOverScreen back to playScreen) both need PlayerNavState to be
         // (re-)pointed at solo PlayingState.
-        final enteringPlayScreen =
-            current.lesson.hostScreen == TutorialHostScreen.playScreen &&
-                (!previous.isActive ||
-                    previous.lesson.hostScreen != TutorialHostScreen.playScreen);
+        //
+        // Also when a play-screen lesson is set up again while GameOverScreen
+        // is showing: Previous from a lesson whose real timeout just ended
+        // the game (its result card sits on GameOverScreen) back to the one
+        // before it — both are "play screen" lessons, but the game has to
+        // come back on screen for the player to play it.
+        final enteringPlayScreen = current.lesson.hostScreen ==
+                TutorialHostScreen.playScreen &&
+            (!previous.isActive ||
+                previous.lesson.hostScreen != TutorialHostScreen.playScreen ||
+                (previous.seedToken != current.seedToken &&
+                    context.read<PlayerNavCubit>().state is GameOverState));
         // Cross-arc hand-off into Combat, skipping Setup/Host/SetDifficulty.
         final enteringCombat = current.lesson.arc == TutorialArc.combat &&
             (!previous.isActive || previous.lesson.arc != TutorialArc.combat);
@@ -70,38 +78,40 @@ class _PlayerNavState extends State<PlayerNav> {
         }
       },
       child: BlocBuilder<PlayerNavCubit, PlayerNavState>(
-      builder: (context, state) {
-        return PopScope(
-          canPop: false,
-          child: Navigator(
-            // ignore: deprecated_member_use
-            onPopPage: (route, result) {
-              return false;
-            },
-            pages: [
-              // Select play mode is always the base
-              const MaterialPage(
-                child: SelectPlayModeScreen(),
-              ),
-
-              // Combat mode navigation
-              if (state is CombatModeSetupState ||
-                  (state is PlayingState && state.playMode == PlayMode.combat))
+        builder: (context, state) {
+          return PopScope(
+            canPop: false,
+            child: Navigator(
+              // ignore: deprecated_member_use
+              onPopPage: (route, result) {
+                return false;
+              },
+              pages: [
+                // Select play mode is always the base
                 const MaterialPage(
-                  child: CombatNav(),
+                  child: SelectPlayModeScreen(),
                 ),
 
-              // Solo mode navigation
-              if (state is SetDifficultyState ||
-                  (state is PlayingState && state.playMode == PlayMode.solo) ||
-                  state is GameOverState)
-                const MaterialPage(
-                  child: SoloNav(),
-                ),
-            ],
-          ),
-        );
-      },
+                // Combat mode navigation
+                if (state is CombatModeSetupState ||
+                    (state is PlayingState &&
+                        state.playMode == PlayMode.combat))
+                  const MaterialPage(
+                    child: CombatNav(),
+                  ),
+
+                // Solo mode navigation
+                if (state is SetDifficultyState ||
+                    (state is PlayingState &&
+                        state.playMode == PlayMode.solo) ||
+                    state is GameOverState)
+                  const MaterialPage(
+                    child: SoloNav(),
+                  ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

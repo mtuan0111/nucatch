@@ -1392,8 +1392,11 @@ class LifeStar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width:
-          (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0) * value,
+      // Clamped: the gain/loss animations overshoot, and a star whose
+      // animation is cut short by another (lives reset mid-animation) can
+      // momentarily get a value below 0 — never a negative width.
+      width: (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0) *
+          max(0.0, value),
       height: (Theme.of(context).textTheme.displaySmall!.fontSize ?? 60.0),
       child: FaIcon(
         FontAwesomeIcons.solidStar,

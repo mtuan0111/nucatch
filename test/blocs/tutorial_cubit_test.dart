@@ -99,6 +99,53 @@ void main() {
       cubit.close();
     });
 
+    test('previous() always lands on a lesson that sets the game up itself',
+        () {
+      // Otherwise the game would keep showing the data of the lesson the
+      // player stepped back from.
+      for (var from = 1; from < TutorialScript.length; from++) {
+        final to = TutorialCubit.previousSeededIndex(from);
+        final lesson = TutorialScript.lessons[to];
+        expect(to, lessThan(from));
+        expect(lesson.turnSeed != null || lesson.combatSeed != null, isTrue,
+            reason: '${TutorialScript.lessons[from].key} -> ${lesson.key}');
+      }
+    });
+
+    test('previous() skips back over a lesson that continues the one before',
+        () {
+      int indexOf(String key) =>
+          TutorialScript.lessons.indexWhere((l) => l.key == key);
+      // Type It Back needs Memorize It's flash; Opponent's Turn needs your
+      // turn to have just passed; a wrap-up needs the game that just ended.
+      expect(TutorialCubit.previousSeededIndex(indexOf('RegularTimer')),
+          indexOf('RegularMemorize'));
+      expect(TutorialCubit.previousSeededIndex(indexOf('CombatWin')),
+          indexOf('CombatYourTurn'));
+      expect(TutorialCubit.previousSeededIndex(indexOf('PickRightWelcome')),
+          indexOf('RegularGameOver'));
+      // ...but not over one that sets itself up.
+      expect(TutorialCubit.previousSeededIndex(indexOf('PickRightWrong')),
+          indexOf('PickRightCorrect'));
+    });
+
+    test('backToMenuTour() ends the practice without completing the tour',
+        () {
+      final cubit = TutorialCubit();
+      cubit.start();
+      cubit.backToMenuTour();
+      expect(cubit.state.isActive, isFalse);
+      expect(cubit.state.backedOutToMenuTour, isTrue);
+      // Coming back in from the menu tour starts over, unflagged.
+      cubit.start();
+      expect(cubit.state.isActive, isTrue);
+      expect(cubit.state.lessonIndex, 0);
+      expect(cubit.state.backedOutToMenuTour, isFalse);
+      cubit.finish();
+      expect(cubit.state.backedOutToMenuTour, isFalse);
+      cubit.close();
+    });
+
     test('finish() resets to a fresh inactive state', () {
       final cubit = TutorialCubit();
       cubit.start();

@@ -387,7 +387,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tourWelcomeTitle => '欢迎来到 NuCatch！';
 
   @override
-  String get tourWelcomeDesc => '快速导览：先看**菜单**，再来一局简短的**练习游戏**。你可以随时跳过。';
+  String get tourWelcomeDesc => '快速导览：先看**菜单**，再来一局简短的**练习游戏**。\n你可以随时跳过。';
 
   @override
   String get tourStartTitle => '开始';
@@ -406,7 +406,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tourSoloDesc =>
-      '**单人模式**：独自挑战，刷新你的最高分。**对战模式**：通过**蓝牙**挑战身边的朋友——一人创建房间，另一人加入。';
+      '**单人模式**：独自挑战，刷新你的最高分。\n**对战模式**：通过**蓝牙**挑战身边的朋友——一人创建房间，另一人加入。';
 
   @override
   String get tourCombatTitle => '战斗模式 - 蓝牙对战';
@@ -434,7 +434,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tourLeaderboardDesc =>
-      '**最高分**查看排行榜，**设置**可更改名字、主题、声音和语言，**关于**介绍游戏规则。接下来：一局简短的**练习游戏**！';
+      '**最高分**查看排行榜。\n**设置**可更改名字、主题、声音和语言。\n**关于**介绍游戏规则。\n接下来：一局简短的**练习游戏**！';
 
   @override
   String get tourSettingsTitle => '设置';
@@ -473,7 +473,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.';
+      'Memorize the number, then type it back before time runs out.\nYou have **3 lives** — lose them all and the game ends.';
 
   @override
   String get tourRuleRegularLivesTitle => 'Your Lives';
@@ -534,7 +534,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tourRuleRegularLevelUpResult =>
-      'Level up! Numbers get a little harder from here — and completing a level without losing a life earns you a bonus life.';
+      'Level up! Numbers get a little harder from here.\nFinish a level without losing a life to earn a **bonus life**.';
 
   @override
   String get tourRuleRegularGameOverTitle => 'Game Over';
@@ -555,7 +555,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Here you don\'t type — tap the **right answer**. The other choices are decoys.';
+      'Here you don\'t type — tap the **right answer**.\nThe other choices are decoys.';
 
   @override
   String get tourRulePickRightOptionsTitle => 'Choose Wisely';
@@ -608,7 +608,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.';
+      'You and an opponent take turns.\nThis badge shows **whose turn** it is — as host, you go first.';
 
   @override
   String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';

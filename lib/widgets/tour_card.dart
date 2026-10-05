@@ -283,7 +283,8 @@ class TourCard extends StatelessWidget {
 
   final String title;
 
-  /// May contain `**bold**` markers.
+  /// May contain `**bold**` markers; each line (`\n`) is its own
+  /// paragraph.
   final String description;
 
   /// e.g. "3 / 34" — see `TourProgress`.
@@ -341,14 +342,20 @@ class TourCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text.rich(
-                      TextSpan(
-                        style: AppTextStyles.withColor(
-                            AppTextStyles.bodyLargeBold(context),
-                            theme.colorScheme.primary.getDarker()),
-                        children: tourBoldSpans(description),
+                    // One paragraph per line of [description], spaced
+                    // apart so separate points read as separate points.
+                    for (final (i, paragraph)
+                        in description.split('\n').indexed) ...[
+                      if (i > 0) const SizedBox(height: kSpaceS),
+                      Text.rich(
+                        TextSpan(
+                          style: AppTextStyles.withColor(
+                              AppTextStyles.bodyLargeBold(context),
+                              theme.colorScheme.primary.getDarker()),
+                          children: tourBoldSpans(paragraph.trim()),
+                        ),
                       ),
-                    ),
+                    ],
                     const SizedBox(height: kSpaceS),
                     Row(
                       children: [

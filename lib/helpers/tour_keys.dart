@@ -53,6 +53,13 @@ class TourKeys {
   static GlobalKey soloModeCardKey = GlobalKey();
   static GlobalKey combatModeCardKey = GlobalKey();
 
+  /// "Game Over / The correct is N" on `GameOverScreen` (Regular and Pick
+  /// Right lay it out separately, but only one is ever mounted).
+  static GlobalKey gameOverSummaryKey = GlobalKey();
+
+  /// The trophy / answer / reason block on `CombatGameEndScreen`.
+  static GlobalKey combatResultKey = GlobalKey();
+
   /// Regenerates every key. Integration tests that call `app.main()` more
   /// than once within a single test binary reuse stale `GlobalKey`s across
   /// fresh widget trees, which Flutter can silently fail to reattach — call
@@ -75,6 +82,8 @@ class TourKeys {
     };
     soloModeCardKey = GlobalKey();
     combatModeCardKey = GlobalKey();
+    gameOverSummaryKey = GlobalKey();
+    combatResultKey = GlobalKey();
   }
 }
 
@@ -101,8 +110,14 @@ Rect getRectForKeys(List<GlobalKey> keys) {
       // out; an ancestor (a page-transition's RenderTransform) can still
       // be mid-layout for this frame, and `localToGlobal` throws walking
       // up through it.
-      final RenderBox? box =
-          key.currentContext?.findRenderObject() as RenderBox?;
+      final context = key.currentContext;
+      // Skip an element whose screen is covered by another (e.g. the play
+      // screen under GameOverScreen): it's still mounted and laid out, but
+      // highlighting it would frame whatever is drawn on top instead.
+      if (context == null || ModalRoute.of(context)?.isCurrent == false) {
+        continue;
+      }
+      final RenderBox? box = context.findRenderObject() as RenderBox?;
       if (box == null || !box.hasSize) continue;
       final position = box.localToGlobal(Offset.zero);
       minX = minX < position.dx ? minX : position.dx;

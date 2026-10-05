@@ -4,115 +4,388 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:skeleton_core/skeleton_core.dart' show PreferencesKey;
+import 'package:skeleton_core/skeleton_core.dart'
+    show BlocProvider, PreferencesKey, TourBloc, TourState, TourStep;
 
 import 'package:nucatch/main.dart' as app;
-import 'package:nucatch/helpers/const.dart' show KeyboardOption;
+import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
+import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
+import 'package:nucatch/blocs/objects/tutorial/tutorial_cubit.dart';
+import 'package:nucatch/blocs/objects/tutorial/tutorial_state.dart';
 import 'package:nucatch/helpers/tour_keys.dart';
+import 'package:nucatch/helpers/tour_progress.dart';
+import 'package:nucatch/helpers/tutorial_localization.dart';
+import 'package:nucatch/helpers/tutorial_script.dart';
 import 'package:nucatch/services/ai_greeting_service.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
 import 'package:nucatch/services/fcm_service.dart';
 import 'package:nucatch/screens/menu_screens/player/select_play_mode_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/play_screen.dart';
-import 'package:nucatch/screens/menu_screens/player/gameover_screen.dart';
 import 'package:nucatch/screens/menu_screens/player/combat_play_screen.dart';
+import 'package:nucatch/widgets/global_tour_wrapper.dart';
+import 'package:nucatch/widgets/tour_card.dart';
 
-/// Full walkthrough of the two-layer onboarding tour: the coarse, dialog-based
-/// main-menu tour (`skeleton_core`'s `TourBloc`/`GlobalTourWrapper`) followed
-/// by the fine-grained in-game rule tutorial (`TutorialCubit` +
-/// `TutorialOverlay`), which drives three real game modes — Regular,
-/// Pick Right, and Combat — across four real screens.
+/// Walks the whole onboarding tour — the main-menu part
+/// (`GlobalTourWrapper`) and the hands-on Regular / Pick Right / Combat
+/// practice (`TutorialCubit` + `TutorialOverlay`) — forwards AND backwards,
+/// checking layout and behaviour at every step:
+///
+/// - **Every step**: the card shows the right title and "Part · n / N"
+///   label, sits fully on screen with its buttons tappable, and (where the
+///   step points at something) the spotlight target is on screen and not
+///   covered by the card. Any RenderFlex overflow fails the test outright.
+/// - **Every step after the first**: Previous lands where it should
+///   (`TourProgress.previousBefore` / `TutorialCubit.previousSeededIndex`),
+///   that step is checked the same way, then the test plays forward again.
+/// - **Every lesson that sets the game up**: the real `TurnBloc` /
+///   `CombatBloc` holds that lesson's seeded number/question, whether it
+///   was reached with Next or Previous.
+///
+/// Lessons are completed the way a player would, driven by
+/// `TutorialScript` itself (tap Next, tap the required key or answer, or
+/// wait for a real timer/scripted opponent), so adding or reordering
+/// lessons needs no change here.
 ///
 /// Deliberately in its own single-test file, same reasoning as
 /// `screen_walkthrough.dart`: `app.main()` sets up process-wide singletons
-/// that don't fully tear down between calls within one test binary.
-///
-/// Unlike `screen_walkthrough.dart` (which marks `has_completed_tour` true
-/// up front so the tour never steals a tap), this test deliberately leaves
-/// it unset so the tour auto-starts, and drives every step of it for real —
-/// including letting real timers expire, real lives get lost, and a real
-/// combat match play out to a real win, exactly as a first-time player would
-/// experience it.
+/// that don't fully tear down between calls within one test binary. Unlike
+/// that test, `has_completed_tour` is left unset so the tour auto-starts.
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('full tour: menu walkthrough + in-game rule tutorial',
+  testWidgets('full tour: every step forwards and back, layout + behaviour',
       (tester) async {
     void step(String name) => dev.log('TEST_STEP: $name');
 
     Future<void> doWait(double seconds) async {
-      final ticks = (seconds * 2).ceil();
+      final ticks = (seconds * 10).ceil();
       for (int i = 0; i < ticks; i++) {
-        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pump(const Duration(milliseconds: 100));
       }
     }
 
-    Future<bool> waitFor(Finder finder, {int maxSeconds = 20}) async {
-      for (int i = 0; i < maxSeconds * 2; i++) {
-        if (finder.evaluate().isNotEmpty) return true;
-        await tester.pump(const Duration(milliseconds: 500));
+    Future<bool> waitUntil(bool Function() condition,
+        {double maxSeconds = 20}) async {
+      for (int i = 0; i < maxSeconds * 10; i++) {
+        if (condition()) return true;
+        await tester.pump(const Duration(milliseconds: 100));
       }
-      return finder.evaluate().isNotEmpty;
+      return condition();
     }
 
-    /// Taps [finder], tolerating on-device flakiness — a present-and-visible
-    /// match has intermittently failed to register a tap on this exact
-    /// device/environment before (see `screen_walkthrough.dart`'s identical
-    /// helper), so this retries a few times rather than trusting one tap.
-    Future<void> tapFinder(Finder finder, String debugLabel,
-        {int maxSeconds = 20}) async {
-      Object? lastError;
-      for (int attempt = 0; attempt < 4; attempt++) {
-        // A real update-check (`AppVersionBloc`/`UpdateNoticeDialog`) can land
-        // a modal dialog on top of the whole app at any point mid-tour, which
-        // swallows every tap meant for the tour/tutorial underneath — dismiss
-        // it whenever it shows up, same as `screen_walkthrough.dart` does.
-        // Only once it's actually on top: while the menu tour's overlay
-        // covers it, a tap at "Later" lands on the tour's "Previous" instead.
-        final updateLater = find.text('Later').hitTestable();
-        if (updateLater.evaluate().isNotEmpty) {
-          step('dismissing update-available dialog');
-          await tester.tap(updateLater.first, warnIfMissed: false);
-          await doWait(1);
+    Future<bool> waitFor(Finder finder, {double maxSeconds = 20}) =>
+        waitUntil(() => finder.evaluate().isNotEmpty, maxSeconds: maxSeconds);
+
+    // ── App state ───────────────────────────────────────────
+    /// Null until the app has mounted.
+    BuildContext? rootContext() {
+      final wrapper = find.byType(GlobalTourWrapper);
+      return wrapper.evaluate().isEmpty ? null : tester.element(wrapper);
+    }
+
+    TourState tour() {
+      final context = rootContext();
+      return context == null
+          ? const TourState()
+          : BlocProvider.of<TourBloc>(context).state;
+    }
+
+    TutorialState tutorial() {
+      final context = rootContext();
+      return context == null
+          ? const TutorialState()
+          : BlocProvider.of<TutorialCubit>(context).state;
+    }
+
+    /// A real update-check (`AppVersionBloc`/`UpdateNoticeDialog`) can land
+    /// a modal dialog on top of the app; dismiss it whenever it's actually
+    /// on top.
+    Future<void> dismissUpdateDialog() async {
+      final later = find.text('Later').hitTestable();
+      if (later.evaluate().isNotEmpty) {
+        step('dismissing update-available dialog');
+        await tester.tap(later.first, warnIfMissed: false);
+        await doWait(1);
+      }
+    }
+
+    // ── The card on screen ─────────────────────────────────
+    /// The tour card on the screen that's actually showing — a lesson
+    /// hosted on GameOverScreen also builds a card on the PlayScreen
+    /// beneath it, which the player can't see.
+    Finder currentCard() => find.byElementPredicate(
+        (e) => e.widget is TourCard && (ModalRoute.of(e)?.isCurrent ?? true));
+
+    Finder inCard(String text) => find
+        .descendant(of: currentCard(), matching: find.text(text))
+        .hitTestable();
+
+    Rect screen() {
+      final view = tester.view;
+      return Offset.zero & (view.physicalSize / view.devicePixelRatio);
+    }
+
+    /// Waits until the card has stopped moving — its screen may still be
+    /// sliding in, or the card fading/settling into place.
+    Future<void> settleCard() async {
+      Rect? last;
+      var still = 0;
+      for (int i = 0; i < 50 && still < 3; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+        if (currentCard().evaluate().isEmpty) return;
+        final rect = tester.getRect(currentCard());
+        still = rect == last ? still + 1 : 0;
+        last = rect;
+      }
+    }
+
+    Rect currentTarget() {
+      if (currentCard().evaluate().isEmpty) return Rect.zero;
+      final layer = find.ancestor(
+          of: currentCard(), matching: find.byType(TourSpotlightLayer));
+      if (layer.evaluate().isEmpty) return Rect.zero;
+      return tester.widget<TourSpotlightLayer>(layer.first).measureTarget();
+    }
+
+    /// Waits for the step's highlighted element to be on screen — a result
+    /// card can appear a moment before the screen it points at (e.g.
+    /// GameOverScreen taking over from the game) has settled.
+    Future<void> settleTarget() async {
+      await waitUntil(() => currentTarget() != Rect.zero, maxSeconds: 5);
+      await settleCard();
+    }
+
+    /// Layout of the card now showing: fully on screen, its buttons
+    /// tappable, and — when [expectTarget] — the spotlight target on
+    /// screen and not hidden behind the card.
+    void checkLayout(String label, {required bool expectTarget}) {
+      expect(currentCard(), findsOneWidget,
+          reason: '$label: exactly one visible card');
+      final card = tester.getRect(currentCard());
+      expect(screen().inflate(1).contains(card.topLeft), isTrue,
+          reason: '$label: card $card starts off screen ${screen()}');
+      expect(screen().inflate(1).contains(card.bottomRight), isTrue,
+          reason: '$label: card $card ends off screen ${screen()}');
+
+      final cardWidget = tester.widget<TourCard>(currentCard());
+      if (cardWidget.onPrevious != null) {
+        expect(inCard('Previous'), findsOneWidget,
+            reason: '$label: Previous button not tappable');
+      }
+      if (cardWidget.onNext != null) {
+        expect(inCard(cardWidget.nextLabel ?? 'Next'), findsOneWidget,
+            reason: '$label: Next button not tappable');
+      }
+
+      if (!expectTarget) return;
+      final target = currentTarget();
+      expect(target, isNot(Rect.zero),
+          reason: '$label: nothing is highlighted');
+      expect(screen().overlaps(target), isTrue,
+          reason: '$label: highlighted element $target is off screen');
+      final overlap = card.intersect(target);
+      final covered = overlap.width <= 0 || overlap.height <= 0
+          ? 0.0
+          : overlap.width * overlap.height / (target.width * target.height);
+      expect(covered, lessThan(0.5),
+          reason: '$label: card $card covers ${(covered * 100).round()}% '
+              'of the highlighted element $target');
+    }
+
+    Future<void> tapInCard(String text, String label) async {
+      await dismissUpdateDialog();
+      expect(await waitFor(inCard(text), maxSeconds: 10), isTrue,
+          reason: '$label: "$text" not tappable');
+      await tester.tap(inCard(text).first);
+      await tester.pump(const Duration(milliseconds: 300));
+    }
+
+    // ── Menu part ──────────────────────────────────────────
+    Future<void> checkMenuStep(TourStep expected) async {
+      final label = 'menu ${expected.name}';
+      expect(
+          await waitUntil(() =>
+              tour().isTourActive &&
+              tour().currentTourStep == expected &&
+              currentCard().evaluate().isNotEmpty),
+          isTrue,
+          reason: '$label: expected this menu card, '
+              'tour is at ${tour().currentTourStep}');
+      // Let navigation (e.g. into Select Play Mode) and the card settle.
+      await settleCard();
+      final card = tester.widget<TourCard>(currentCard());
+      expect(card.progress,
+          TourProgress.menuLabel(tester.element(currentCard()), expected),
+          reason: '$label: progress label');
+      expect(card.title, isNotEmpty, reason: '$label: title');
+      if (expected != TourStep.welcome) await settleTarget();
+      checkLayout(label, expectTarget: expected != TourStep.welcome);
+      step('checked $label');
+    }
+
+    // ── Practice part ──────────────────────────────────────
+    String lessonKey(int i) => TutorialScript.lessons[i].key;
+
+    bool atLesson(int index, TutorialPhase phase) {
+      final t = tutorial();
+      return t.isActive && t.lessonIndex == index && t.phase == phase;
+    }
+
+    /// At lesson [index] in [phase] or a later phase of it, or past it.
+    bool reached(int index, TutorialPhase phase) {
+      final t = tutorial();
+      if (!t.isActive) return false;
+      return t.lessonIndex > index ||
+          (t.lessonIndex == index && t.phase.index >= phase.index);
+    }
+
+    /// The seeded data a lesson's real game must hold right after it's set
+    /// up — checked whether it was reached with Next or Previous.
+    Future<void> checkSeed(int index) async {
+      final lesson = TutorialScript.lessons[index];
+      final label = 'lesson ${lesson.key}';
+      if (lesson.turnSeed case final seed?) {
+        final ok = await waitUntil(() {
+          final screen = find.byType(PlayScreen);
+          if (screen.evaluate().isEmpty) return false;
+          final s =
+              BlocProvider.of<TurnBloc>(tester.element(screen.first)).state;
+          return s.isTutorial &&
+              s.requirementString == seed.requirementString &&
+              s.expect == seed.expect &&
+              s.questionExpression == seed.questionExpression;
+        }, maxSeconds: 10);
+        expect(ok, isTrue,
+            reason: '$label: game not set up with "${seed.requirementString}"');
+      }
+      if (lesson.combatSeed case final seed?) {
+        final ok = await waitUntil(() {
+          final screen = find.byType(CombatPlayScreen);
+          if (screen.evaluate().isEmpty) return false;
+          final s =
+              BlocProvider.of<CombatBloc>(tester.element(screen.first)).state;
+          return s.isTutorial &&
+              s.requirementString == seed.requirementString &&
+              s.expect == seed.expect &&
+              s.opponentLives == seed.opponentLives;
+        }, maxSeconds: 10);
+        expect(ok, isTrue,
+            reason:
+                '$label: match not set up with "${seed.requirementString}"');
+      }
+    }
+
+    /// Checks the card of lesson [index] in [phase] — skipped (and logged)
+    /// if the lesson already moved on by itself, which one that only watches
+    /// a short real timer can do before there's a stable card to check.
+    Future<void> checkLesson(int index, TutorialPhase phase) async {
+      final lesson = TutorialScript.lessons[index];
+      final label = 'lesson ${lesson.key} (${phase.name})';
+      final arrived = await waitUntil(
+          () => atLesson(index, phase) && currentCard().evaluate().isNotEmpty);
+      if (!arrived) {
+        final t = tutorial();
+        expect(reached(index, phase) || !t.isActive, isTrue,
+            reason: '$label: expected this card, tutorial is at '
+                '${lessonKey(t.lessonIndex)} (${t.phase.name})');
+        step('skipped $label — it already moved on by itself');
+        return;
+      }
+      await settleCard();
+      if (!atLesson(index, phase) || currentCard().evaluate().isEmpty) {
+        step('skipped $label — it moved on while settling');
+        return;
+      }
+      final context = tester.element(currentCard());
+      final card = tester.widget<TourCard>(currentCard());
+      expect(card.title, tutorialLessonTitle(context, lesson),
+          reason: '$label: title');
+      expect(card.progress, TourProgress.lessonLabel(context, index),
+          reason: '$label: progress label');
+      final spotlight = phase == TutorialPhase.result
+          ? lesson.resultSpotlight ?? lesson.spotlight
+          : lesson.spotlight;
+      final expectTarget = spotlight != TutorialSpotlight.wholeScreen;
+      if (expectTarget) await settleTarget();
+      if (!atLesson(index, phase)) {
+        step('skipped $label — it moved on while settling');
+        return;
+      }
+      checkLayout(label, expectTarget: expectTarget);
+      step('checked $label');
+    }
+
+    /// Does what the current lesson card asks — tap Next/Finish, tap the
+    /// required key or answer, or wait for a real timer / scripted
+    /// opponent — and waits for the tutorial to move on.
+    Future<void> playOneStep() async {
+      final before = tutorial();
+      final lesson = before.lesson;
+      final label = '${lesson.key} (${before.phase.name})';
+      step('playing $label');
+      if (before.phase == TutorialPhase.result ||
+          (before.phase == TutorialPhase.explain &&
+              lesson.interaction == TutorialInteraction.next)) {
+        await tapInCard(before.isLastLesson ? 'Finish' : 'Next', label);
+      } else if (before.phase == TutorialPhase.explain &&
+          lesson.interaction == TutorialInteraction.tapKey) {
+        final key =
+            find.byKey(TourKeys.keypadKeys[lesson.requiredKey]!).hitTestable();
+        expect(await waitFor(key, maxSeconds: 10), isTrue,
+            reason: '$label: highlighted key not tappable');
+        await tester.tap(key.first);
+      } else if (before.phase == TutorialPhase.explain &&
+          lesson.interaction == TutorialInteraction.tapButton) {
+        final button = find
+            .byKey(TourKeys.pickRightButtonKeys[lesson.requiredButtonIndex!])
+            .hitTestable();
+        expect(await waitFor(button, maxSeconds: 10), isTrue,
+            reason: '$label: highlighted answer not tappable');
+        await tester.tap(button.first);
+      }
+      // `watch` lessons / `acting`: the real game moves the tutorial on.
+      final moved = await waitUntil(() {
+        final t = tutorial();
+        return !t.isActive ||
+            t.lessonIndex != before.lessonIndex ||
+            t.phase != before.phase ||
+            t.seedToken != before.seedToken;
+      }, maxSeconds: 25);
+      expect(moved, isTrue, reason: '$label: tutorial never moved on');
+    }
+
+    /// Plays forward until lesson [index] is in [phase] — or in a later
+    /// phase of it: a lesson that only watches a short real timer can be
+    /// past its explain card before there's a chance to see it.
+    Future<void> playTo(int index, TutorialPhase phase) async {
+      for (int guard = 0; guard < 40; guard++) {
+        final t = tutorial();
+        if (t.isActive &&
+            t.lessonIndex == index &&
+            t.phase.index >= phase.index) {
+          return;
         }
-        final found = await waitFor(finder, maxSeconds: maxSeconds);
-        if (found) {
-          try {
-            await tester.ensureVisible(finder.first);
-            await tester.pump(const Duration(milliseconds: 300));
-            await tester.tap(finder.first, warnIfMissed: false);
-            await doWait(1);
-            return;
-          } catch (e) {
-            lastError = e;
-          }
-        } else {
-          lastError = StateError('not found');
-        }
-        await tester.pump(const Duration(milliseconds: 500));
+        expect(t.isActive, isTrue,
+            reason: 'practice ended before reaching ${lessonKey(index)}');
+        expect(t.lessonIndex <= index, isTrue,
+            reason: 'went past ${lessonKey(index)} (${phase.name}) to '
+                '${lessonKey(t.lessonIndex)}');
+        await playOneStep();
       }
-      throw StateError('tap("$debugLabel") failed after retries: $lastError');
+      fail('never reached ${lessonKey(index)} (${phase.name})');
     }
 
-    Future<void> tapText(String text, {int maxSeconds = 20}) =>
-        tapFinder(find.text(text), text, maxSeconds: maxSeconds);
+    /// The card a lesson rests on long enough to press Previous on: its
+    /// explain card, unless it only watches a real timer/opponent (that
+    /// card moves on by itself) — then its result card, if it has one.
+    TutorialPhase? restingPhase(TutorialLessonData lesson) {
+      if (lesson.interaction != TutorialInteraction.watch) {
+        return TutorialPhase.explain;
+      }
+      return lesson.hasResultBeat ? TutorialPhase.result : null;
+    }
 
-    /// Taps the tutorial card's "Next" button.
-    Future<void> tapTutorialNext() => tapText('Next');
-
-    /// Taps a specific key on whichever keypad (Regular's or Combat's) is
-    /// currently on screen, via the shared `TourKeys.keypadKeys` — text
-    /// alone is ambiguous since digits repeat across score/level displays.
-    Future<void> tapKeypadKey(KeyboardOption option, String debugLabel) =>
-        tapFinder(find.byKey(TourKeys.keypadKeys[option]!), debugLabel);
-
-    Future<void> tapResetKey() =>
-        tapFinder(find.byKey(TourKeys.resetKey), 'reset key');
-
-    Future<void> tapPickRightButton(int index) => tapFinder(
-        find.byKey(TourKeys.pickRightButtonKeys[index]),
-        'pick-right button $index');
-
+    // ── Setup ──────────────────────────────────────────────
     FcmService.disablePermissionRequestForTest = true;
     AiGreetingService.disableForTest = true;
     CombatBleService.disableForTest = true;
@@ -125,9 +398,8 @@ void main() {
     });
 
     // Device / orientation / font-size come in via --dart-define so the whole
-    // matrix (phone|ipad|fold cover × portrait|landscape × min|max font) runs from this
-    // one file. Defaults reproduce the original phone-portrait, default-font
-    // behaviour exactly.
+    // matrix (phone|ipad|fold cover × portrait|landscape × min|max font) runs
+    // from this one file. Defaults are a phone in portrait, default font.
     const ipad = bool.fromEnvironment('IPAD', defaultValue: false);
     const landscape = bool.fromEnvironment('LANDSCAPE', defaultValue: false);
     const injectedFontSize = int.fromEnvironment('FONT_SIZE', defaultValue: -1);
@@ -155,136 +427,95 @@ void main() {
     // apply — and would otherwise split this window into panes.
     tester.view.displayFeatures = const [];
 
-    step('awaiting SharedPreferences.getInstance()');
     final prefs = await SharedPreferences.getInstance();
-    step('clearing prefs');
     await prefs.clear();
     await prefs.setBool(PreferencesKey.IS_MUTED, true);
     if (injectedFontSize >= 0) {
       await prefs.setInt(PreferencesKey.FONT_SIZE, injectedFontSize);
     }
-    // Deliberately NOT marking has_completed_tour — this test wants the
-    // tour to actually auto-start, unlike screen_walkthrough.dart.
+    // Deliberately NOT marking has_completed_tour — the tour must auto-start.
 
     step('calling app.main()');
     app.main();
 
-    // ── Part 1: menu (5 steps: welcome, start, play modes, instant start,
-    // more — see TourProgress.menuSteps) ─────
-    step('waiting for the tour to auto-start (Welcome dialog)');
-    expect(await waitFor(find.text('Next'), maxSeconds: 20), isTrue,
-        reason: 'the menu tour should auto-start for a first-time user');
-
-    step('walking welcome -> more (4 taps of Next)');
-    for (int i = 0; i < 4; i++) {
-      await tapTutorialNext();
+    // ── Part 1: main menu, forwards and back ───────────────
+    const menuSteps = TourProgress.menuSteps;
+    for (int k = 0; k < menuSteps.length; k++) {
+      await checkMenuStep(menuSteps[k]);
+      if (k > 0) {
+        step('menu ${menuSteps[k].name}: Previous');
+        await tapInCard('Previous', menuSteps[k].name);
+        await checkMenuStep(TourProgress.previousBefore(menuSteps[k])!);
+        await tapInCard('Next', menuSteps[k - 1].name);
+        await checkMenuStep(menuSteps[k]);
+      }
+      step('menu ${menuSteps[k].name}: Next');
+      await tapInCard('Next', menuSteps[k].name);
     }
 
-    step('tapping Next on "more" to enter the in-game practice');
-    await tapTutorialNext();
-
-    // ── Part 2: Regular (8 lessons) ──────────────────────────
-    step('waiting for PlayScreen (Regular arc)');
+    // ── Parts 2-4: practice, every lesson forwards and back ─
     expect(await waitFor(find.byType(PlayScreen), maxSeconds: 20), isTrue,
-        reason: 'entering the tutorial should land on PlayScreen');
+        reason: 'entering the practice should land on PlayScreen');
 
-    step('R1 RegularWelcome (+ lives): Next');
-    await tapTutorialNext();
-    step('R2 RegularMemorize: waiting for the real memorize phase to end');
-    await doWait(4);
-    step('R3 RegularTypeBack: tapping the "8" key');
-    await tapKeypadKey(KeyboardOption.eight, '8');
-    step('R3 result beat (point scored): Next');
-    await tapTutorialNext();
-    step('R4 RegularTimer: waiting for the real ~1.5s timeout');
-    await doWait(4);
-    step('R4 result beat: Next');
-    await tapTutorialNext();
-    step('R5 RegularReset: tapping reset (always costs a life for real)');
-    await tapResetKey();
-    step('R6 RegularLevelUp: tapping the "2" key (real level-up)');
-    await tapKeypadKey(KeyboardOption.two, '2');
-    step('R6 result beat: Next');
-    await tapTutorialNext();
-    step('R7 RegularGameOver: waiting for the real ~1.5s timeout -> Game Over');
-    await doWait(4);
-    step('waiting for GameOverScreen');
-    expect(await waitFor(find.byType(GameOverScreen), maxSeconds: 15), isTrue,
-        reason: 'R7\'s seeded timeout should cause a real game over');
-    step('R8 RegularWrapUp: Next (hands off into the Pick Right part)');
-    await tapTutorialNext();
+    for (int i = 0; i < TutorialScript.length; i++) {
+      final lesson = TutorialScript.lessons[i];
+      await playTo(i, TutorialPhase.explain);
+      await checkSeed(i);
+      await checkLesson(i, TutorialPhase.explain);
 
-    // ── Part 3: Pick Right (5 lessons) ───────────────────────
-    step('waiting for PlayScreen (Pick Right arc)');
-    expect(await waitFor(find.byType(PlayScreen), maxSeconds: 20), isTrue,
-        reason: 'RegularWrapUp should hand off back to PlayScreen');
+      final resting = restingPhase(lesson);
+      if (resting == TutorialPhase.result) {
+        await playTo(i, TutorialPhase.result);
+        await checkLesson(i, TutorialPhase.result);
+      }
 
-    step('P1 PickRightWelcome (+ choices): Next');
-    await tapTutorialNext();
-    step('P2 PickRightCorrect: tapping the correct option');
-    await tapPickRightButton(1);
-    step('P2 result beat: Next');
-    await tapTutorialNext();
-    step('P3 PickRightWrong: tapping a decoy option (real life lost)');
-    await tapPickRightButton(0);
-    step('P3 result beat: Next');
-    await tapTutorialNext();
-    step('P4 PickRightTimer: waiting for the real ~1.2s timeout -> Game Over');
-    await doWait(4);
-    step('waiting for GameOverScreen');
-    expect(await waitFor(find.byType(GameOverScreen), maxSeconds: 15), isTrue,
-        reason: 'P4\'s seeded timeout should cause a real game over');
-    step('P4 result beat: Next');
-    await tapTutorialNext();
-    step('P5 PickRightWrapUp: Next (hands off into the Combat part)');
-    await tapTutorialNext();
+      if (resting != null) {
+        step('lesson ${lesson.key}: Previous');
+        await tapInCard('Previous', lesson.key);
+        if (i == 0) {
+          // Back out of the practice into the last menu step, then in again.
+          await checkMenuStep(TourProgress.menuSteps.last);
+          await tapInCard('Next', 'menu ${TourProgress.menuSteps.last.name}');
+        } else {
+          final back = TutorialCubit.previousSeededIndex(i);
+          // Lands on [back] — a short timer lesson may already be past its
+          // explain card, but never past where Previous was pressed.
+          expect(
+              await waitUntil(() =>
+                  reached(back, TutorialPhase.explain) &&
+                  tutorial().lessonIndex <= back),
+              isTrue,
+              reason: 'Previous from ${lesson.key} should land on '
+                  '${lessonKey(back)}, is at '
+                  '${lessonKey(tutorial().lessonIndex)}');
+          await checkSeed(back);
+          await checkLesson(back, TutorialPhase.explain);
+        }
+        // Play forward again to where Previous was pressed.
+        await playTo(i, resting);
+        await checkLesson(i, resting);
+      }
 
-    // ── Part 4: Combat (5 lessons) ───────────────────────────
-    // CombatModeSetupScreen is structurally always the base page of
-    // CombatNav's Navigator, so it can flash for a frame before the
-    // combat-arc entry gate promotes to CombatPlayingState — what matters
-    // is that the player never has to interact with it or SetDifficultScreen,
-    // which the wait below (landing directly on CombatPlayScreen with no
-    // taps in between) already confirms.
-    step('waiting for CombatPlayScreen');
-    expect(await waitFor(find.byType(CombatPlayScreen), maxSeconds: 20), isTrue,
-        reason: 'the combat arc should land directly on CombatPlayScreen');
-
-    step('C1 CombatWelcome (+ turn badge): Next');
-    await tapTutorialNext();
-    step('C2 CombatYourTurn: tapping the "4" key');
-    await tapKeypadKey(KeyboardOption.four, '4');
-    step('C3 CombatOpponentTurn: waiting for the scripted opponent turn');
-    await doWait(4);
-    step('C3 result beat: Next');
-    await tapTutorialNext();
-    step('C4 CombatWin: waiting for the scripted opponent to lose the match');
-    await doWait(4);
-
-    step('waiting for the real win to land');
-    expect(
-        find.text('Next').evaluate().isNotEmpty ||
-            find.text('Finish').evaluate().isNotEmpty,
-        isTrue,
-        reason: 'the scripted match should end and hand back to the tutorial');
-    step('C4 result beat: Next');
-    if (find.text('Next').evaluate().isNotEmpty) {
-      await tapTutorialNext();
+      // Finish this lesson the normal way.
+      if (i == TutorialScript.length - 1) {
+        await playTo(i, TutorialPhase.explain);
+        await tapInCard('Finish', lesson.key);
+      } else {
+        await playTo(i + 1, TutorialPhase.explain);
+      }
     }
 
-    step('C5 CombatWrapUp: Finish');
-    await tapText('Finish');
-
-    // ── Teardown ──────────────────────────────────────────────
+    // ── Teardown ───────────────────────────────────────────
     step('asserting a clean return to SelectPlayModeScreen');
+    expect(await waitUntil(() => !tutorial().isActive), isTrue,
+        reason: 'Finish should end the practice');
     expect(await waitFor(find.byType(SelectPlayModeScreen), maxSeconds: 15),
         isTrue,
-        reason: 'Finish should tear the tutorial down and return to the '
-            'play-mode picker, matching TourCompleted()\'s usual landing spot');
-
-    step('asserting no tutorial overlay is left behind');
-    expect(find.text('Skip Tour'), findsNothing);
-
+        reason: 'Finish should return to the play-mode picker');
+    expect(await waitUntil(() => !tour().isTourActive), isTrue,
+        reason: 'Finish should complete the tour');
+    expect(find.text('Skip Tour'), findsNothing,
+        reason: 'no tour card should be left behind');
     step('done');
   });
 }
