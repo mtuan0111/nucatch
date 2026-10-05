@@ -37,15 +37,16 @@ class SettingScreen extends StatelessWidget {
         // Placed here rather than on its own screen because this is where a
         // player already comes to set their leaderboard name, and the two
         // decisions ("who am I" / "keep it across devices") belong together.
-        buildField(
-          context,
-          iconData: FontAwesomeIcons.userShield,
-          title: lang(context).accountSectionTitle,
-          child: BlocBuilder<UserBloc, UserState>(
-            builder: (context, userState) =>
-                AccountSettingRow(userState: userState),
+        if (kEnableAccountSignIn)
+          buildField(
+            context,
+            iconData: FontAwesomeIcons.userShield,
+            title: lang(context).accountSectionTitle,
+            child: BlocBuilder<UserBloc, UserState>(
+              builder: (context, userState) =>
+                  AccountSettingRow(userState: userState),
+            ),
           ),
-        ),
         // Restart Tour Button
         buildField(
           context,

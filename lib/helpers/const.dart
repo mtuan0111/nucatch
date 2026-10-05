@@ -17,6 +17,13 @@ export 'package:skeleton_core/skeleton_core.dart'
 const diffShowLevelMilisecond = 250;
 const double tapTimerDuration = 60.0; // Seconds for each tap countdown
 
+// Feature flags
+// Account sign-in (Google/Apple) in Settings — off until the flow is
+// implemented. Override at build time with
+// --dart-define=ENABLE_ACCOUNT_SIGN_IN=true
+const bool kEnableAccountSignIn =
+    bool.fromEnvironment('ENABLE_ACCOUNT_SIGN_IN', defaultValue: false);
+
 // BLE Combat Mode constants
 const String kBleAppPrefix = 'nucatch';
 const String kBlePlayerNamePrefix = 'Nuca';
