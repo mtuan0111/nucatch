@@ -5,6 +5,7 @@ import 'package:nucatch/blocs/navs/player/player_nav_state.dart'
 import 'package:nucatch/helpers/const.dart';
 import 'package:nucatch/helpers/helper.dart';
 import 'package:nucatch/helpers/lightning_painter.dart';
+import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/widgets/tour_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:nucatch/helpers/preferences_key.dart';
@@ -132,6 +133,7 @@ class _MenuScreenState extends State<MenuScreen> {
             alignment: Alignment.centerLeft,
             child: AnimatedButton(
               context,
+              key: TourKeys.menuOptionKeys[entry.key],
               text: (entry.value['text'] as String).toUpperCase(),
               style: AppTextStyles.titleSmallBold(context),
               iconData: iconData,

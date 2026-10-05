@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeleton_core/skeleton_core.dart';
+import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
 import 'package:nucatch/helpers/const.dart';
@@ -50,6 +51,7 @@ class _SelectPlayModeScreenState extends State<SelectPlayModeScreen> {
                           children: [
                             // Solo Mode Option
                             OptionCard(
+                              key: TourKeys.soloModeCardKey,
                               context: context,
                               title: lang(context).soloMode,
                               description: lang(context).soloModeDescription,
@@ -71,6 +73,7 @@ class _SelectPlayModeScreenState extends State<SelectPlayModeScreen> {
                             ),
                             // Combat Mode Option
                             OptionCard(
+                              key: TourKeys.combatModeCardKey,
                               context: context,
                               title: lang(context).combatMode,
                               description: lang(context).combatModeDescription,

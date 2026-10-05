@@ -1,8 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:skeleton_core/skeleton_core.dart' show MenuOption;
 
-/// Static [GlobalKey]s used to spotlight real UI elements during the in-game
-/// rule tutorial (see `tutorial_overlay.dart`).
+/// Static [GlobalKey]s used to spotlight real UI elements during the menu
+/// tour (`global_tour_wrapper.dart`) and the in-game rule tutorial
+/// (`tutorial_overlay.dart`).
 ///
 /// [PlayScreen] and [CombatPlayScreen] are never mounted simultaneously, so a
 /// single shared key per concept (score/life panel) is safe to reuse across
@@ -42,6 +44,15 @@ class TourKeys {
   static GlobalKey combatStatusBadgeKey = GlobalKey();
   static GlobalKey countdownBarKey = GlobalKey();
 
+  /// One key per main-menu button (Start, Instant Start, Top Score, ...).
+  static Map<MenuOption, GlobalKey> menuOptionKeys = {
+    for (final option in MenuOption.values) option: GlobalKey(),
+  };
+
+  /// The Solo / Combat cards on `SelectPlayModeScreen`.
+  static GlobalKey soloModeCardKey = GlobalKey();
+  static GlobalKey combatModeCardKey = GlobalKey();
+
   /// Regenerates every key. Integration tests that call `app.main()` more
   /// than once within a single test binary reuse stale `GlobalKey`s across
   /// fresh widget trees, which Flutter can silently fail to reattach — call
@@ -59,6 +70,11 @@ class TourKeys {
     pickRightButtonKeys = List.generate(3, (_) => GlobalKey());
     combatStatusBadgeKey = GlobalKey();
     countdownBarKey = GlobalKey();
+    menuOptionKeys = {
+      for (final option in MenuOption.values) option: GlobalKey(),
+    };
+    soloModeCardKey = GlobalKey();
+    combatModeCardKey = GlobalKey();
   }
 }
 

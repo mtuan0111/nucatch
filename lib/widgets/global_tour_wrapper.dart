@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/objects/tutorial/tutorial_cubit.dart';
 import 'package:nucatch/helpers/const.dart';
+import 'package:nucatch/helpers/tour_keys.dart';
+import 'package:nucatch/helpers/tour_progress.dart';
+import 'package:nucatch/widgets/tour_card.dart';
 
 /// Global tour wrapper that manages all tour dialogs from the root level
 /// This eliminates dialog stacking issues and centralizes tour logic
@@ -66,6 +69,7 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
               _buildTourDialog(overlayContext, tourState),
         );
         Overlay.of(context).insert(_currentTourOverlay!);
+        _revealTarget(tourState.currentTourStep);
       }
     });
   }
@@ -135,104 +139,109 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
   }
 
   Widget _buildTourDialog(BuildContext overlayContext, TourState tourState) {
+    final step = tourState.currentTourStep;
+    // Same spotlight + card as the in-game lessons that follow: the element
+    // each step describes is highlighted, the rest of the screen dimmed and
+    // blocked, and the card sits beside it.
     return Material(
-      color: Colors.black54,
-      child: Stack(
-        children: [
-          // Barrier to prevent interaction
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: () {}, // Prevent dismissal
-              child: Container(color: Colors.transparent),
-            ),
-          ),
-          // Tour content using AlertTemplate — capped so lines stay a
-          // readable length in landscape and on tablets, where the dialog
-          // would otherwise stretch across the whole screen. Kept to one
-          // pane of a half-opened foldable, like showDialog does, so it
-          // never straddles the hinge.
-          DisplayFeatureSubScreen(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 560),
-                child: AlertTemplate(
-                  title: _getTitleForStep(tourState.currentTourStep),
-                  headerContent: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: kSpaceM),
-                      _buildDescriptionText(
-                        _getDescriptionForStep(tourState.currentTourStep),
-                        context,
-                      ),
-                      // Skip button at top left
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: TextButton(
-                          onPressed: () {
-                            _removeTourOverlay();
-                            context.read<TourBloc>().add(TourSkipped());
-                          },
-                          child: Text(
-                            lang(context).tourSkip,
-                            style: AppTextStyles.withColor(
-                                AppTextStyles.bodyMediumBold(context),
-                                Theme.of(context).colorScheme.secondary),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: kSpaceXL),
-                      // Progress indicator
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          '${tourState.displayStepNumber} / ${tourState.totalSteps}',
-                          style: AppTextStyles.withColor(
-                              AppTextStyles.bodySmall(context),
-                              Theme.of(context)
-                                  .colorScheme
-                                  .secondary
-                                  .getDarker()),
-                        ),
-                      ),
-                    ],
-                  ),
-                  negativeButtonLabel:
-                      tourState.isFirstStep ? null : lang(context).tourPrevious,
-                  onNegativeButtonPressed: tourState.isFirstStep
-                      ? null
-                      : () {
-                          _removeTourOverlay();
-                          context.read<TourBloc>().add(TourStepBack());
-                        },
-                  // Always "Next", never "Finish" — this dialog never actually
-                  // ends the tour anymore. `about` (the last dialog step) always
-                  // advances into the in-game rule tutorial next; the tour only
-                  // truly finishes from that tutorial's own Finish button.
-                  possitiveButtonLabel: lang(context).tourNext,
-                  onPossitiveButtonPressed: () {
-                    _removeTourOverlay();
-                    // TourJumpToStep instead of TourStepCompleted(): skeleton_core's
-                    // TourState.isLastStep special-cases iOS to stop at `settings`
-                    // (skipping `about` and the whole game-tutorial tail) and, on
-                    // other platforms, only stops at the enum's actual last value
-                    // (gameTutorialStep5) — meaning TourStepCompleted() would
-                    // either end the tour too early (iOS) or walk into the
-                    // unhandled gameTutorialStep2-5 dead steps (elsewhere).
-                    // Jumping to an explicit index sidesteps both bugs without
-                    // touching the shared skeleton_core package.
-                    context
-                        .read<TourBloc>()
-                        .add(TourJumpToStep(tourState.currentStep + 1));
-                  },
-                ),
-              ),
-            ),
-          ),
-        ],
+      type: MaterialType.transparency,
+      child: TourSpotlightLayer(
+        measureTarget: () => _targetRectForStep(step),
+        cardToken: step,
+        card: TourCard(
+          title: _getTitleForStep(step),
+          description: _getDescriptionForStep(step),
+          progress: TourProgress.menuLabel(tourState.currentStep),
+          onSkip: () {
+            _removeTourOverlay();
+            context.read<TourBloc>().add(TourSkipped());
+          },
+          onPrevious: tourState.isFirstStep
+              ? null
+              : () {
+                  _removeTourOverlay();
+                  context.read<TourBloc>().add(TourStepBack());
+                },
+          // Always "Next", never "Finish" — this dialog never actually
+          // ends the tour anymore. `about` (the last dialog step) always
+          // advances into the in-game rule tutorial next; the tour only
+          // truly finishes from that tutorial's own Finish button.
+          onNext: () {
+            _removeTourOverlay();
+            // TourJumpToStep instead of TourStepCompleted(): skeleton_core's
+            // TourState.isLastStep special-cases iOS to stop at `settings`
+            // (skipping `about` and the whole game-tutorial tail) and, on
+            // other platforms, only stops at the enum's actual last value
+            // (gameTutorialStep5) — meaning TourStepCompleted() would
+            // either end the tour too early (iOS) or walk into the
+            // unhandled gameTutorialStep2-5 dead steps (elsewhere).
+            // Jumping to an explicit index sidesteps both bugs without
+            // touching the shared skeleton_core package.
+            context
+                .read<TourBloc>()
+                .add(TourJumpToStep(tourState.currentStep + 1));
+          },
+        ),
       ),
     );
+  }
+
+  /// The key of the on-screen element [step] describes, or null for the
+  /// welcome step (nothing to point at yet — the card is centered).
+  GlobalKey? _targetKeyForStep(TourStep step) {
+    switch (step) {
+      case TourStep.welcome:
+        return null;
+      case TourStep.startButton:
+        return TourKeys.menuOptionKeys[MenuOption.start];
+      case TourStep.instantStart:
+        return TourKeys.menuOptionKeys[MenuOption.instantStart];
+      case TourStep.soloMode:
+        return TourKeys.soloModeCardKey;
+      case TourStep.combatMode:
+      // Create Room / Join Room both live behind the Combat card — the
+      // steps explain them while still on the play-mode picker.
+      case TourStep.createRoom:
+      case TourStep.joinRoom:
+        return TourKeys.combatModeCardKey;
+      case TourStep.leaderboard:
+        return TourKeys.menuOptionKeys[MenuOption.topScore];
+      case TourStep.settings:
+        return TourKeys.menuOptionKeys[MenuOption.setting];
+      case TourStep.about:
+        return TourKeys.menuOptionKeys[MenuOption.about];
+      case TourStep.gameTutorialStep1:
+      case TourStep.gameTutorialStep2:
+      case TourStep.gameTutorialStep3:
+      case TourStep.gameTutorialStep4:
+      case TourStep.gameTutorialStep5:
+      case TourStep.gameTutorialWaiting:
+        // Never rendered here — see _showTourDialog.
+        return null;
+    }
+  }
+
+  Rect _targetRectForStep(TourStep step) {
+    final key = _targetKeyForStep(step);
+    return key == null ? Rect.zero : getRectForKeys([key]);
+  }
+
+  /// Scrolls [step]'s element into view (the menu list scrolls in
+  /// landscape and at large font sizes) so the spotlight never points
+  /// off-screen.
+  void _revealTarget(TourStep step) {
+    final targetContext = _targetKeyForStep(step)?.currentContext;
+    if (targetContext == null) return;
+    Scrollable.ensureVisible(
+      targetContext,
+      alignment: 0.5,
+      duration: const Duration(milliseconds: 300),
+      alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+    ).then((_) {
+      // Scrolling moves the target without rebuilding the overlay (it lives
+      // in a different subtree), so re-measure the spotlight once it lands.
+      _currentTourOverlay?.markNeedsBuild();
+    });
   }
 
   String _getTitleForStep(TourStep step) {
@@ -300,44 +309,6 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
         // Never actually rendered — see _getTitleForStep.
         return '';
     }
-  }
-
-  Widget _buildDescriptionText(String text, BuildContext context) {
-    final parts = <TextSpan>[];
-    final regex = RegExp(r'\*\*(.*?)\*\*');
-    int lastIndex = 0;
-
-    for (final match in regex.allMatches(text)) {
-      // Add normal text before the bold part
-      if (match.start > lastIndex) {
-        parts.add(TextSpan(
-          text: text.substring(lastIndex, match.start),
-        ));
-      }
-      // Add bold text
-      parts.add(TextSpan(
-        text: match.group(1),
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ));
-      lastIndex = match.end;
-    }
-
-    // Add remaining text
-    if (lastIndex < text.length) {
-      parts.add(TextSpan(
-        text: text.substring(lastIndex),
-      ));
-    }
-
-    // Text.rich (not RichText) so the description follows the device's
-    // text-size setting like the rest of the dialog; RichText ignores it.
-    return Text.rich(
-      TextSpan(
-        style: AppTextStyles.withColor(AppTextStyles.bodyLargeBold(context),
-            Theme.of(context).colorScheme.primary.getDarker()),
-        children: parts,
-      ),
-    );
   }
 
   @override

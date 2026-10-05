@@ -20,6 +20,23 @@ class UpdateCheckerWrapper extends StatelessWidget {
       return;
     }
 
+    // An optional update waits for the onboarding tour (running, or about
+    // to auto-start on a first launch) to finish or be skipped: the tour's
+    // spotlight would otherwise show the prompt through its highlight,
+    // sitting right over the element being explained. A forced update
+    // can't wait — the tour is moot until the app is updated anyway.
+    final tourBloc = context.read<TourBloc>();
+    bool tourBusy(TourState tour) => tour.isTourActive || tour.shouldShowTour;
+    if (!state.isForceUpdate && tourBusy(tourBloc.state)) {
+      tourBloc.stream.firstWhere((tour) => !tourBusy(tour)).then((_) {
+        if (context.mounted) _presentUpdateDialog(context, state);
+      });
+      return;
+    }
+    _presentUpdateDialog(context, state);
+  }
+
+  void _presentUpdateDialog(BuildContext context, AppVersionState state) {
     showDialog(
       context: context,
       barrierDismissible: !state.isForceUpdate,
