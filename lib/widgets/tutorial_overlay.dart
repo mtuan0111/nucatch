@@ -1,6 +1,7 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:skeleton_core/skeleton_core.dart';
-import 'package:super_tooltip/super_tooltip.dart';
 import 'package:nucatch/blocs/objects/tutorial/tutorial_cubit.dart';
 import 'package:nucatch/blocs/objects/tutorial/tutorial_state.dart';
 import 'package:nucatch/helpers/const.dart';
@@ -28,9 +29,6 @@ class TutorialOverlay extends StatefulWidget {
 }
 
 class _TutorialOverlayState extends State<TutorialOverlay> {
-  final SuperTooltipController _controller = SuperTooltipController();
-  String? _shownToken;
-
   Rect _targetRect(TutorialLessonData lesson, TutorialPhase phase) {
     final useResult =
         phase == TutorialPhase.result && lesson.resultSpotlight != null;
@@ -76,8 +74,29 @@ class _TutorialOverlayState extends State<TutorialOverlay> {
     }
   }
 
+  /// Rebuilds once more if the spotlight target ended up somewhere other
+  /// than where [build] measured it. [build] reads the target's position
+  /// from the previous frame's layout, so when the board itself moves —
+  /// fold/unfold, a posture change, rotation — the hole (the only place
+  /// taps get through) would otherwise stay over where the key used to be,
+  /// and a tap-the-key lesson could never be completed.
+  void _settleTargetRect(
+    TutorialLessonData lesson,
+    TutorialPhase phase,
+    Rect measured,
+  ) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (_targetRect(lesson, phase) != measured) setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Re-measure whenever the window or its hinge changes; see
+    // [_settleTargetRect].
+    MediaQuery.sizeOf(context);
+    MediaQuery.displayFeaturesOf(context);
     return BlocBuilder<TutorialCubit, TutorialState>(
       builder: (context, tutorial) {
         if (!tutorial.isActive) {
@@ -85,32 +104,14 @@ class _TutorialOverlayState extends State<TutorialOverlay> {
         }
 
         final lesson = tutorial.lesson;
-        // Hide the tooltip while a real animation/consequence is mid-flight
+        // Hide the card while a real animation/consequence is mid-flight
         // (phase == acting) — nothing to read yet, and the spotlight hole
         // would otherwise sit still while the actual UI is changing under it.
         final hideForAnimation = tutorial.phase == TutorialPhase.acting;
         final targetRect = _targetRect(lesson, tutorial.phase);
+        _settleTargetRect(lesson, tutorial.phase, targetRect);
         final token =
             '${tutorial.lessonIndex}-${tutorial.phase}-${tutorial.seedToken}';
-
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          if (hideForAnimation) {
-            if (_shownToken != null) {
-              _shownToken = null;
-              _controller.hideTooltip();
-            }
-          } else if (_shownToken != token) {
-            _shownToken = token;
-            _controller.showTooltip();
-          }
-        });
-
-        final screenSize = MediaQuery.of(context).size;
-        final tooltipAnchor = targetRect == Rect.zero
-            ? Rect.fromCenter(
-                center: screenSize.center(Offset.zero), width: 10, height: 10)
-            : targetRect;
 
         return Stack(
           children: [
@@ -124,30 +125,12 @@ class _TutorialOverlayState extends State<TutorialOverlay> {
               ),
             ),
             if (!hideForAnimation)
-              Positioned.fromRect(
-                rect: tooltipAnchor,
-                child: SuperTooltip(
+              Positioned.fill(
+                child: _CardPlacement(
+                  // Rebuilt per lesson/phase so each card fades in fresh.
                   key: ValueKey(token),
-                  controller: _controller,
-                  interactionConfig: const InteractionConfiguration(
-                    showOnTap: false,
-                    hideOnTap: false,
-                    hideOnBarrierTap: false,
-                  ),
-                  barrierConfig: const BarrierConfiguration(show: false),
-                  positionConfig: const PositionConfiguration(
-                    preferredDirection: TooltipDirection.down,
-                    snapsFarAwayVertically: true,
-                  ),
-                  arrowConfig: const ArrowConfiguration(length: 0, baseWidth: 0),
-                  closeButtonConfig: const CloseButtonConfiguration(show: false),
-                  style: TooltipStyle(
-                    borderWidth: 0,
-                    borderRadius: 16,
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
-                  content: _TutorialCard(tutorial: tutorial, lesson: lesson),
-                  child: const SizedBox.shrink(),
+                  targetRect: targetRect,
+                  child: _TutorialCard(tutorial: tutorial, lesson: lesson),
                 ),
               ),
           ],
@@ -157,6 +140,152 @@ class _TutorialOverlayState extends State<TutorialOverlay> {
   }
 }
 
+/// Lays the tutorial card out next to the spotlight — below it when there's
+/// more room there, above it otherwise, centered on screen for
+/// [TutorialSpotlight.wholeScreen] (a [Rect.zero] target).
+///
+/// Positioned from [targetRect] directly (the same global rect the
+/// spotlight hole is painted from) rather than through an overlay-entry
+/// tooltip: those snapshot the anchor's position once, when the entry is
+/// created, so a card built while its host screen was still settling into
+/// place stayed stuck off-screen for the whole lesson.
+class _CardPlacement extends StatelessWidget {
+  final Rect targetRect;
+  final Widget child;
+
+  const _CardPlacement({
+    super.key,
+    required this.targetRect,
+    required this.child,
+  });
+
+  static const double _maxCardWidth = 380;
+  static const double _minCardWidth = 260;
+  static const double _gap = kSpaceM;
+
+  /// Below this much height above/below the spotlight (a tall keypad
+  /// highlight) a portrait card goes beside the spotlight instead.
+  static const double _minVerticalSpace = 200;
+
+  /// The pane (sub-screen between hinges) the card goes in: the whole
+  /// window when there's no hinge, else the pane overlapping [targetRect]
+  /// least, the larger one on a tie.
+  Rect _pickPane(List<Rect> panes) {
+    double overlap(Rect pane) {
+      if (targetRect == Rect.zero || !pane.overlaps(targetRect)) return 0;
+      final r = pane.intersect(targetRect);
+      return r.width * r.height;
+    }
+
+    double area(Rect r) => r.width * r.height;
+    return panes.reduce((a, b) {
+      final oa = overlap(a), ob = overlap(b);
+      if (oa != ob) return oa < ob ? a : b;
+      return area(a) >= area(b) ? a : b;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final padding = mediaQuery.padding;
+    return LayoutBuilder(builder: (context, constraints) {
+      final size = constraints.biggest;
+      // On a half-opened foldable (or a dual-screen device) keep the card
+      // inside one pane — the one overlapping the spotlight least — so it
+      // never straddles the hinge.
+      final pane = _pickPane(
+        DisplayFeatureSubScreen.subScreensInBounds(
+          Offset.zero & size,
+          DisplayFeatureSubScreen.avoidBounds(mediaQuery),
+        ).toList(),
+      );
+      final safe = Rect.fromLTRB(
+        math.max(pane.left, padding.left) + kPaddingL,
+        math.max(pane.top, padding.top) + kSpaceM,
+        math.min(pane.right, size.width - padding.right) - kPaddingL,
+        math.min(pane.bottom, size.height - padding.bottom) - kSpaceM,
+      );
+      final fullWidth = safe.width.clamp(0.0, _maxCardWidth);
+
+      final card = TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0, end: 1),
+        duration: const Duration(milliseconds: 200),
+        builder: (context, opacity, child) =>
+            Opacity(opacity: opacity, child: child),
+        child: child,
+      );
+
+      Widget place(Rect area, {required Alignment alignment}) {
+        final width = area.width.clamp(0.0, fullWidth);
+        return Stack(children: [
+          Positioned.fromRect(
+            rect: area,
+            child: Align(
+              alignment: alignment,
+              child: SizedBox(
+                width: width,
+                // Caps the card at the free space; _TutorialCard then
+                // scrolls its body text, never its title or buttons.
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: area.height),
+                  child: card,
+                ),
+              ),
+            ),
+          ),
+        ]);
+      }
+
+      if (targetRect == Rect.zero) {
+        return place(safe, alignment: Alignment.center);
+      }
+      if (!targetRect.overlaps(safe)) {
+        // The spotlight is in the other pane: sit level with it.
+        final y = ((targetRect.center.dy - safe.top) / safe.height * 2 - 1)
+            .clamp(-1.0, 1.0);
+        return place(safe, alignment: Alignment(0, y));
+      }
+
+      final below = Rect.fromLTRB(
+          safe.left, targetRect.bottom + _gap, safe.right, safe.bottom);
+      final above =
+          Rect.fromLTRB(safe.left, safe.top, safe.right, targetRect.top - _gap);
+      final vertical = below.height >= above.height ? below : above;
+      final verticalAlign = identical(vertical, below)
+          ? Alignment.topCenter
+          : Alignment.bottomCenter;
+
+      final right = Rect.fromLTRB(
+          targetRect.right + _gap, safe.top, safe.right, safe.bottom);
+      final left = Rect.fromLTRB(
+          safe.left, safe.top, targetRect.left - _gap, safe.bottom);
+      final side = right.width >= left.width ? right : left;
+      final sideFits = side.width >= _minCardWidth;
+      final verticalFits = vertical.height >= _minVerticalSpace;
+
+      // Landscape has width to spare and little height, so beside the
+      // spotlight is tried first; portrait is the other way round.
+      final landscape = safe.width > safe.height;
+      if (landscape ? sideFits : !verticalFits && sideFits) {
+        return place(side, alignment: Alignment.center);
+      }
+      if (verticalFits || sideFits) {
+        return place(vertical, alignment: verticalAlign);
+      }
+      // Nowhere beside the spotlight has room for the title and buttons
+      // (e.g. a spotlight filling most of a landscape phone): overlapping
+      // it beats squeezing the card until it overflows.
+      return place(safe, alignment: Alignment.center);
+    });
+  }
+}
+
+/// The tutorial card, built from the same pieces as the app's dialogs
+/// (`AlertTemplate`, and so the menu tour in `GlobalTourWrapper`): a
+/// gradient title bar, a body panel, and the red-Previous / green-Next
+/// [CustomElevatedButton] pair — so the in-game lessons read as the
+/// continuation of that tour rather than a different UI.
 class _TutorialCard extends StatelessWidget {
   final TutorialState tutorial;
   final TutorialLessonData lesson;
@@ -165,6 +294,9 @@ class _TutorialCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final buttonTheme = CustomButtonTheme.of(context);
+
     // A "Next" button only appears when the player isn't expected to
     // interact with the spotlighted UI directly (`interaction == next`) or
     // once a result beat has finished explaining what just happened —
@@ -174,89 +306,152 @@ class _TutorialCard extends StatelessWidget {
         (tutorial.phase == TutorialPhase.explain &&
             lesson.interaction == TutorialInteraction.next);
 
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 280),
-      child: Padding(
-        padding: const EdgeInsets.all(kPaddingL),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              tutorialLessonTitle(context, lesson),
-              style: AppTextStyles.titleMediumBold(context)
-                  .copyWith(color: Colors.white),
-            ),
-            const SizedBox(height: kSpaceS),
-            Text(
-              tutorialLessonDescription(context, lesson, tutorial.phase),
-              style:
-                  AppTextStyles.bodyMedium(context).copyWith(color: Colors.white),
-            ),
-            const SizedBox(height: kSpaceM),
-            Text(
-              '${tutorial.displayNumber} / ${tutorial.totalLessons}',
-              style: AppTextStyles.bodySmall(context)
-                  .copyWith(color: Colors.white70),
-            ),
-            const SizedBox(height: kSpaceM),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: kSpaceXS),
-                    ),
-                    onPressed: () {
-                      if (tutorial.isFirstLesson) {
-                        // Back out of the in-game tutorial entirely, into
-                        // the last main-menu tour step — mirrors how the
-                        // menu tour's own Previous button behaves.
-                        context.read<TourBloc>().add(TourStepBack());
-                      } else {
-                        context.read<TutorialCubit>().previous();
-                      }
-                    },
-                    child: Text(
-                      lang(context).tourPrevious,
-                      style: const TextStyle(color: Colors.white70),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: kSpaceXS),
-                    ),
-                    onPressed: () => context.read<TutorialCubit>().finish(),
-                    child: Text(
-                      lang(context).tourSkip,
-                      style: const TextStyle(color: Colors.white70),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                if (showNextButton)
-                  Flexible(
-                    child: ElevatedButton(
-                      onPressed: () => context.read<TutorialCubit>().next(),
-                      child: Text(
-                        tutorial.isLastLesson
-                            ? lang(context).tourFinish
-                            : lang(context).tourNext,
-                        overflow: TextOverflow.ellipsis,
+    // Same resolution as AlertTemplate's title and body.
+    final titleBackgroundColor = buttonTheme?.dialogTitleBackgroundColor;
+    final bodyBackgroundColor =
+        buttonTheme?.dialogBackgroundColor ?? theme.scaffoldBackgroundColor;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        CustomElevatedButton(
+          text: tutorialLessonTitle(context, lesson),
+          buttonSize: ButtonSize.small,
+          shapeAt:
+              buttonTheme?.dialogTitleShapeAt ?? RoundedWithShapeAt.topLeft,
+          color: titleBackgroundColor?.getSmartColor(context) ??
+              theme.colorScheme.onPrimary,
+          backgroundColor: titleBackgroundColor,
+          gradient: titleBackgroundColor == null
+              ? LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [theme.primaryColor, theme.secondaryHeaderColor],
+                )
+              : null,
+        ),
+        Flexible(
+          // At the largest font sizes, or in the little height phone
+          // landscape leaves, only the description scrolls — the title and
+          // the Previous/Next buttons always stay on screen.
+          child: SingleChildScrollView(
+            child: CustomElevatedButton(
+              backgroundColor: bodyBackgroundColor,
+              color: bodyBackgroundColor.getSmartColor(context),
+              shapeAt: RoundedWithShapeAt.topRight,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                    kPaddingL, kSpaceM, kPaddingL, kSpaceXS),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Same treatment as the menu tour's description.
+                    Text.rich(
+                      TextSpan(
+                        style: AppTextStyles.withColor(
+                            AppTextStyles.bodyLargeBold(context),
+                            theme.colorScheme.primary.getDarker()),
+                        children: _boldSpans(tutorialLessonDescription(
+                            context, lesson, tutorial.phase)),
                       ),
                     ),
-                  ),
-              ],
+                    const SizedBox(height: kSpaceS),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '${tutorial.displayNumber} / ${tutorial.totalLessons}',
+                            style: AppTextStyles.withColor(
+                                AppTextStyles.bodySmall(context),
+                                theme.colorScheme.secondary.getDarker()),
+                          ),
+                        ),
+                        Flexible(
+                          child: TextButton(
+                            onPressed: () =>
+                                context.read<TutorialCubit>().finish(),
+                            child: Text(
+                              lang(context).tourSkip,
+                              textAlign: TextAlign.end,
+                              style: AppTextStyles.withColor(
+                                  AppTextStyles.bodyMediumBold(context),
+                                  theme.colorScheme.secondary),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ],
+          ),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomElevatedButton(
+                  text: lang(context).tourPrevious,
+                  onPressed: () {
+                    if (tutorial.isFirstLesson) {
+                      // Back out of the in-game tutorial entirely, into
+                      // the last main-menu tour step — mirrors how the
+                      // menu tour's own Previous button behaves.
+                      context.read<TourBloc>().add(TourStepBack());
+                    } else {
+                      context.read<TutorialCubit>().previous();
+                    }
+                  },
+                  color: theme.colorScheme.onError,
+                  backgroundColor: theme.colorScheme.error,
+                  buttonSize: ButtonSize.small,
+                  shapeAt: RoundedWithShapeAt.topRight,
+                ),
+              ),
+              if (showNextButton) ...[
+                const SizedBox(width: kSpaceM),
+                Expanded(
+                  child: CustomElevatedButton(
+                    text: tutorial.isLastLesson
+                        ? lang(context).tourFinish
+                        : lang(context).tourNext,
+                    onPressed: () => context.read<TutorialCubit>().next(),
+                    color: theme.colorScheme.onPrimary,
+                    backgroundColor: theme.primaryColor,
+                    buttonSize: ButtonSize.small,
+                    shapeAt: RoundedWithShapeAt.topLeft,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ],
     );
   }
+}
+
+/// Splits [text] on `**bold**` markers (used throughout the lesson strings)
+/// into plain and bold spans, so the markers never render literally.
+List<TextSpan> _boldSpans(String text) {
+  final spans = <TextSpan>[];
+  var lastIndex = 0;
+  for (final match in RegExp(r'\*\*(.*?)\*\*').allMatches(text)) {
+    if (match.start > lastIndex) {
+      spans.add(TextSpan(text: text.substring(lastIndex, match.start)));
+    }
+    spans.add(TextSpan(
+      text: match.group(1),
+      style: const TextStyle(fontWeight: FontWeight.bold),
+    ));
+    lastIndex = match.end;
+  }
+  if (lastIndex < text.length) {
+    spans.add(TextSpan(text: text.substring(lastIndex)));
+  }
+  return spans;
 }

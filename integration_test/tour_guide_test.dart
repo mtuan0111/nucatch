@@ -63,6 +63,18 @@ void main() {
         {int maxSeconds = 20}) async {
       Object? lastError;
       for (int attempt = 0; attempt < 4; attempt++) {
+        // A real update-check (`AppVersionBloc`/`UpdateNoticeDialog`) can land
+        // a modal dialog on top of the whole app at any point mid-tour, which
+        // swallows every tap meant for the tour/tutorial underneath — dismiss
+        // it whenever it shows up, same as `screen_walkthrough.dart` does.
+        // Only once it's actually on top: while the menu tour's overlay
+        // covers it, a tap at "Later" lands on the tour's "Previous" instead.
+        final updateLater = find.text('Later').hitTestable();
+        if (updateLater.evaluate().isNotEmpty) {
+          step('dismissing update-available dialog');
+          await tester.tap(updateLater.first, warnIfMissed: false);
+          await doWait(1);
+        }
         final found = await waitFor(finder, maxSeconds: maxSeconds);
         if (found) {
           try {
@@ -109,21 +121,39 @@ void main() {
     addTearDown(() {
       tester.view.resetPhysicalSize();
       tester.view.resetDevicePixelRatio();
+      tester.view.resetDisplayFeatures();
     });
 
     // Device / orientation / font-size come in via --dart-define so the whole
-    // matrix (phone|ipad × portrait|landscape × min|max font) runs from this
+    // matrix (phone|ipad|fold cover × portrait|landscape × min|max font) runs from this
     // one file. Defaults reproduce the original phone-portrait, default-font
     // behaviour exactly.
     const ipad = bool.fromEnvironment('IPAD', defaultValue: false);
     const landscape = bool.fromEnvironment('LANDSCAPE', defaultValue: false);
     const injectedFontSize = int.fromEnvironment('FONT_SIZE', defaultValue: -1);
 
-    final portraitSize = ipad ? const Size(1640, 2360) : const Size(1080, 2400);
-    step('forcing ${ipad ? 'ipad' : 'phone'} '
+    // FOLD_COVER: a Galaxy Z Fold7 closed, on its 1080x2520 cover screen —
+    // the one foldable posture the Android emulator can't show natively (its
+    // "closed" posture keeps reporting the inner display to the app).
+    const foldCover = bool.fromEnvironment('FOLD_COVER', defaultValue: false);
+
+    final portraitSize = ipad
+        ? const Size(1640, 2360)
+        : foldCover
+            ? const Size(1080, 2520)
+            : const Size(1080, 2400);
+    step('forcing ${ipad ? 'ipad' : foldCover ? 'fold cover' : 'phone'} '
         '${landscape ? 'landscape' : 'portrait'} physical size');
     tester.view.physicalSize = landscape ? portraitSize.flipped : portraitSize;
-    tester.view.devicePixelRatio = ipad ? 2.0 : 2.625;
+    tester.view.devicePixelRatio = ipad
+        ? 2.0
+        : foldCover
+            ? 2.8125
+            : 2.625;
+    // The forced size is a different screen from the device's own, so its
+    // real hinge (e.g. a foldable emulator's inner-screen fold) doesn't
+    // apply — and would otherwise split this window into panes.
+    tester.view.displayFeatures = const [];
 
     step('awaiting SharedPreferences.getInstance()');
     final prefs = await SharedPreferences.getInstance();

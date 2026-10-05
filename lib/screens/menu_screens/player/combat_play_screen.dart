@@ -993,14 +993,17 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
     CombatState combatState,
     MapEntry<KeyboardOption, int> e, {
     required bool applyTourKey,
+    required double keyExtent,
   }) {
     final key = applyTourKey ? TourKeys.keypadKeys[e.key] : null;
+    final padding = keypadKeyPadding(keyExtent);
     const duration = Duration(milliseconds: 200);
 
     if (e.key == KeyboardOption.reset) {
       return AnimatedButton(
         context,
         key: key,
+        padding: padding,
         iconData: FontAwesomeIcons.arrowsRotate,
         isEnable: combatState.isAbleToReset && combatState.isAbleToTap,
         onPressed: () {
@@ -1020,6 +1023,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
       return AnimatedButton(
         context,
         key: key,
+        padding: padding,
         iconData: FontAwesomeIcons.bars,
         onPressed: () => _handleMenuButton(context),
         backgroundBuilder: (context, borderRadius) {
@@ -1033,6 +1037,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
     return AnimatedButton(
       context,
       key: key,
+      padding: padding,
       text: e.value.toString(),
       style: AppTextStyles.displaySmallBold(context),
       isEnable: combatState.isAbleToTap,
@@ -1095,6 +1100,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
                             combatState,
                             keys[r * _keypadColumns + c],
                             applyTourKey: c != 1 || ownsMiddleColumnKey,
+                            keyExtent: cellSize - spacing,
                           ),
                         ),
                   ],
@@ -1109,7 +1115,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
       builder: (context, constraints) {
         final rawWidth = constraints.maxWidth / _keypadColumns;
         final rawHeight = constraints.maxHeight / _keypadRows;
-        final spacing = keypadSpacing(min(rawWidth, rawHeight));
         // Clamp so keypad cells stay roughly square instead of stretching
         // into elongated rectangles — on tablets, where height (an uncapped
         // window-height fraction) can far exceed width (capped by
@@ -1117,10 +1122,19 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
         // out of proportion (a wide, short tabletop pane). Phones are
         // left untouched — see keypadClampsCells.
         final bool clampCells = keypadClampsCells(context, rawWidth, rawHeight);
+        final rawExtent = min(rawWidth, rawHeight);
+        final spacing = clampCells
+            ? clampedKeypadSpacing(rawExtent)
+            : keypadSpacing(rawExtent);
         final double cellSize =
             min(rawWidth, rawHeight).clamp(0.0, kMaxKeypadButtonSize + spacing);
-        final buttonWidth = clampCells ? cellSize : rawWidth;
+        // Clamped cells may still widen up to kKeypadMaxCellAspect — see
+        // RegularModeControls.
+        final buttonWidth = clampCells
+            ? min(rawWidth, cellSize * kKeypadMaxCellAspect)
+            : rawWidth;
         final buttonHeight = clampCells ? cellSize : rawHeight;
+        final keyExtent = min(buttonWidth, buttonHeight) - spacing;
 
         List<Widget> columnChildren = [];
         for (int r = 0; r < _keypadRows; r++) {
@@ -1133,7 +1147,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
                 width: buttonWidth - spacing,
                 height: buttonHeight - spacing,
                 child: _buildKeypadButton(context, combatState, keys[idx],
-                    applyTourKey: true),
+                    applyTourKey: true, keyExtent: keyExtent),
               );
             } else {
               cell = SizedBox(

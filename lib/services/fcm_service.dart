@@ -38,7 +38,7 @@ class FcmService {
 
     // Initialize local notifications for foreground display
     const AndroidInitializationSettings androidInit =
-        AndroidInitializationSettings('ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const DarwinInitializationSettings iosInit = DarwinInitializationSettings(
       requestAlertPermission: false, // Already requested via FCM
       requestBadgePermission: false,

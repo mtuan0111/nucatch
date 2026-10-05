@@ -98,9 +98,7 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
         // unambiguous). Force the menu into the Play branch so PlayerNav
         // mounts, then start the fine-grained tutorial.
         try {
-          context
-              .read<MenuBloc>()
-              .add(SelectOption(option: MenuOption.start));
+          context.read<MenuBloc>().add(SelectOption(option: MenuOption.start));
           context.read<TutorialCubit>().start();
         } catch (e) {
           // Blocs might not be available in all contexts
@@ -148,76 +146,88 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
               child: Container(color: Colors.transparent),
             ),
           ),
-          // Tour content using AlertTemplate
-          Center(
-            child: AlertTemplate(
-              title: _getTitleForStep(tourState.currentTourStep),
-              headerContent: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: kSpaceM),
-                  _buildDescriptionText(
-                    _getDescriptionForStep(tourState.currentTourStep),
-                    context,
-                  ),
-                  // Skip button at top left
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: TextButton(
-                      onPressed: () {
-                        _removeTourOverlay();
-                        context.read<TourBloc>().add(TourSkipped());
-                      },
-                      child: Text(
-                        lang(context).tourSkip,
-                        style: AppTextStyles.withColor(
-                            AppTextStyles.bodyMediumBold(context),
-                            Theme.of(context).colorScheme.secondary),
+          // Tour content using AlertTemplate — capped so lines stay a
+          // readable length in landscape and on tablets, where the dialog
+          // would otherwise stretch across the whole screen. Kept to one
+          // pane of a half-opened foldable, like showDialog does, so it
+          // never straddles the hinge.
+          DisplayFeatureSubScreen(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 560),
+                child: AlertTemplate(
+                  title: _getTitleForStep(tourState.currentTourStep),
+                  headerContent: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: kSpaceM),
+                      _buildDescriptionText(
+                        _getDescriptionForStep(tourState.currentTourStep),
+                        context,
                       ),
-                    ),
+                      // Skip button at top left
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: TextButton(
+                          onPressed: () {
+                            _removeTourOverlay();
+                            context.read<TourBloc>().add(TourSkipped());
+                          },
+                          child: Text(
+                            lang(context).tourSkip,
+                            style: AppTextStyles.withColor(
+                                AppTextStyles.bodyMediumBold(context),
+                                Theme.of(context).colorScheme.secondary),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: kSpaceXL),
+                      // Progress indicator
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${tourState.displayStepNumber} / ${tourState.totalSteps}',
+                          style: AppTextStyles.withColor(
+                              AppTextStyles.bodySmall(context),
+                              Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .getDarker()),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: kSpaceXL),
-                  // Progress indicator
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      '${tourState.displayStepNumber} / ${tourState.totalSteps}',
-                      style: AppTextStyles.withColor(
-                          AppTextStyles.bodySmall(context),
-                          Theme.of(context).colorScheme.secondary.getDarker()),
-                    ),
-                  ),
-                ],
+                  negativeButtonLabel:
+                      tourState.isFirstStep ? null : lang(context).tourPrevious,
+                  onNegativeButtonPressed: tourState.isFirstStep
+                      ? null
+                      : () {
+                          _removeTourOverlay();
+                          context.read<TourBloc>().add(TourStepBack());
+                        },
+                  // Always "Next", never "Finish" — this dialog never actually
+                  // ends the tour anymore. `about` (the last dialog step) always
+                  // advances into the in-game rule tutorial next; the tour only
+                  // truly finishes from that tutorial's own Finish button.
+                  possitiveButtonLabel: lang(context).tourNext,
+                  onPossitiveButtonPressed: () {
+                    _removeTourOverlay();
+                    // TourJumpToStep instead of TourStepCompleted(): skeleton_core's
+                    // TourState.isLastStep special-cases iOS to stop at `settings`
+                    // (skipping `about` and the whole game-tutorial tail) and, on
+                    // other platforms, only stops at the enum's actual last value
+                    // (gameTutorialStep5) — meaning TourStepCompleted() would
+                    // either end the tour too early (iOS) or walk into the
+                    // unhandled gameTutorialStep2-5 dead steps (elsewhere).
+                    // Jumping to an explicit index sidesteps both bugs without
+                    // touching the shared skeleton_core package.
+                    context
+                        .read<TourBloc>()
+                        .add(TourJumpToStep(tourState.currentStep + 1));
+                  },
+                ),
               ),
-              negativeButtonLabel:
-                  tourState.isFirstStep ? null : lang(context).tourPrevious,
-              onNegativeButtonPressed: tourState.isFirstStep
-                  ? null
-                  : () {
-                      _removeTourOverlay();
-                      context.read<TourBloc>().add(TourStepBack());
-                    },
-              // Always "Next", never "Finish" — this dialog never actually
-              // ends the tour anymore. `about` (the last dialog step) always
-              // advances into the in-game rule tutorial next; the tour only
-              // truly finishes from that tutorial's own Finish button.
-              possitiveButtonLabel: lang(context).tourNext,
-              onPossitiveButtonPressed: () {
-                _removeTourOverlay();
-                // TourJumpToStep instead of TourStepCompleted(): skeleton_core's
-                // TourState.isLastStep special-cases iOS to stop at `settings`
-                // (skipping `about` and the whole game-tutorial tail) and, on
-                // other platforms, only stops at the enum's actual last value
-                // (gameTutorialStep5) — meaning TourStepCompleted() would
-                // either end the tour too early (iOS) or walk into the
-                // unhandled gameTutorialStep2-5 dead steps (elsewhere).
-                // Jumping to an explicit index sidesteps both bugs without
-                // touching the shared skeleton_core package.
-                context
-                    .read<TourBloc>()
-                    .add(TourJumpToStep(tourState.currentStep + 1));
-              },
             ),
           ),
         ],

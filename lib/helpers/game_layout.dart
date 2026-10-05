@@ -96,6 +96,24 @@ const double kKeypadButtonSpacing = 20.0;
 double keypadSpacing(double rawCellExtent) =>
     math.min(kKeypadButtonSpacing, rawCellExtent * 0.25);
 
+/// Keypad gap for clamped cells (see [keypadClampsCells]): tighter than
+/// [keypadSpacing] on short cells — in a Fold's tabletop pane a 20-ish gap
+/// would take a quarter of each row away from the keys — and the same
+/// [kKeypadButtonSpacing] once cells are tablet-sized.
+double clampedKeypadSpacing(double rawCellExtent) =>
+    math.min(kKeypadButtonSpacing, rawCellExtent * 0.12);
+
+/// How much wider than tall a clamped keypad cell may grow — enough to use
+/// a wide, short region's spare width without turning keys into bars.
+const double kKeypadMaxCellAspect = 1.5;
+
+/// Inner padding for a keypad key whose shorter side is [keyExtent]. The
+/// label is scaled down to fit inside it, so a fixed padding (the button's
+/// default 20 on every side) would shrink the digit on small keys to a few
+/// pixels; scaling it keeps the digit large on every window.
+double keypadKeyPadding(double keyExtent) =>
+    (keyExtent * 0.12).clamp(4.0, 20.0);
+
 /// Whether keypad cells should be clamped square rather than stretched to
 /// fill their region: always on tablet-class windows, and on any window
 /// whose cells would otherwise be more than 1.5× as long one way as the

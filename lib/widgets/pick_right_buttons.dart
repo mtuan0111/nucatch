@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skeleton_core/skeleton_core.dart';
+import 'package:nucatch/helpers/game_layout.dart';
 
 /// Three-button vertical layout for Pick Right difficulty mode
 /// Displays three equations for the player to choose from
@@ -172,29 +173,35 @@ class _PickRightButtonsState extends State<PickRightButtons>
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
       opacity: buttonOpacity,
-      child: CustomElevatedButton(
-        key: buttonKey,
-        onPressed: canTap
-            ? () {
-                final position = _getButtonCenter(buttonKey);
-                widget.onButtonTap(buttonIndex, position);
-              }
-            : null,
-        backgroundColor: backgroundColor,
-        shapeAt: RoundedWithShapeAt.all,
-        buttonRadius: kBorderRadiusL,
-        child: Center(
-          // Font size stays fixed at the theme's titleLarge — never scaled
-          // down (that made text unreadably tiny in the narrow
-          // gamepad-split edge clusters). If an equation doesn't fit on one
-          // line at that size, it wraps to a second line instead.
-          child: Text(
-            equation,
-            style: AppTextStyles.titleLarge(context).copyWith(
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).scaffoldBackgroundColor,
+      // Padding scales with the button: short pills (a Fold's bottom pane
+      // in tabletop posture) would otherwise lose the equation to the
+      // button's default 20-on-every-side padding.
+      child: LayoutBuilder(
+        builder: (context, constraints) => CustomElevatedButton(
+          key: buttonKey,
+          padding: keypadKeyPadding(constraints.maxHeight),
+          onPressed: canTap
+              ? () {
+                  final position = _getButtonCenter(buttonKey);
+                  widget.onButtonTap(buttonIndex, position);
+                }
+              : null,
+          backgroundColor: backgroundColor,
+          shapeAt: RoundedWithShapeAt.all,
+          buttonRadius: kBorderRadiusL,
+          child: Center(
+            // Font size stays fixed at the theme's titleLarge — never scaled
+            // down (that made text unreadably tiny in the narrow
+            // gamepad-split edge clusters). If an equation doesn't fit on one
+            // line at that size, it wraps to a second line instead.
+            child: Text(
+              equation,
+              style: AppTextStyles.titleLarge(context).copyWith(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).scaffoldBackgroundColor,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
         ),
       ),

@@ -51,14 +51,17 @@ class RegularModeControls extends StatelessWidget {
     BuildContext context,
     MapEntry<KeyboardOption, int> e, {
     required bool applyTourKey,
+    required double keyExtent,
   }) {
     final key = applyTourKey ? TourKeys.keypadKeys[e.key] : null;
+    final padding = keypadKeyPadding(keyExtent);
     const duration = Duration(milliseconds: 200);
 
     if (e.key == KeyboardOption.reset) {
       return AnimatedButton(
         context,
         key: key,
+        padding: padding,
         iconData: FontAwesomeIcons.arrowsRotate,
         isEnable: turnState.isAbleToReset && turnState.isAbleToTap,
         onPressed: () {
@@ -76,6 +79,7 @@ class RegularModeControls extends StatelessWidget {
       return AnimatedButton(
         context,
         key: key,
+        padding: padding,
         iconData: FontAwesomeIcons.bars,
         onPressed: onMenuPressed,
         backgroundBuilder: (context, borderRadius) {
@@ -89,6 +93,7 @@ class RegularModeControls extends StatelessWidget {
     return AnimatedButton(
       context,
       key: key,
+      padding: padding,
       text: e.value.toString(),
       style: AppTextStyles.displaySmallBold(context),
       isEnable: turnState.isAbleToTap,
@@ -116,7 +121,6 @@ class RegularModeControls extends StatelessWidget {
       builder: (context, constraints) {
         final rawWidth = constraints.maxWidth / _totalColumns;
         final rawHeight = constraints.maxHeight / _rows;
-        final spacing = keypadSpacing(math.min(rawWidth, rawHeight));
         // Clamp so keypad cells stay roughly square instead of stretching
         // into elongated rectangles — on tablets, where height (an uncapped
         // window-height fraction) can far exceed width (capped by
@@ -124,11 +128,21 @@ class RegularModeControls extends StatelessWidget {
         // out of proportion (a wide, short tabletop pane). Phones are
         // left untouched — see keypadClampsCells.
         final bool clampCells = keypadClampsCells(context, rawWidth, rawHeight);
+        final rawExtent = math.min(rawWidth, rawHeight);
+        final spacing = clampCells
+            ? clampedKeypadSpacing(rawExtent)
+            : keypadSpacing(rawExtent);
         final double cellSize = math
             .min(rawWidth, rawHeight)
             .clamp(0.0, kMaxKeypadButtonSize + spacing);
-        final buttonWidth = clampCells ? cellSize : rawWidth;
+        // Clamped cells may still widen up to kKeypadMaxCellAspect — a wide,
+        // short region (a Fold's bottom pane in tabletop posture) would
+        // otherwise leave small square keys floating in empty width.
+        final buttonWidth = clampCells
+            ? math.min(rawWidth, cellSize * kKeypadMaxCellAspect)
+            : rawWidth;
         final buttonHeight = clampCells ? cellSize : rawHeight;
+        final keyExtent = math.min(buttonWidth, buttonHeight) - spacing;
 
         List<Widget> columnChildren = [];
         for (int r = 0; r < _rows; r++) {
@@ -140,7 +154,8 @@ class RegularModeControls extends StatelessWidget {
               cell = SizedBox(
                 width: buttonWidth - spacing,
                 height: buttonHeight - spacing,
-                child: _buildButton(context, keys[idx], applyTourKey: true),
+                child: _buildButton(context, keys[idx],
+                    applyTourKey: true, keyExtent: keyExtent),
               );
             } else {
               cell = SizedBox(
@@ -217,6 +232,7 @@ class RegularModeControls extends StatelessWidget {
                           context,
                           keys[r * _totalColumns + c],
                           applyTourKey: c != 1 || ownsMiddleColumnKey,
+                          keyExtent: cellSize - spacing,
                         ),
                       ),
                 ],

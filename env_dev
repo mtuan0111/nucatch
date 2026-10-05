@@ -13,3 +13,5 @@ EMAIL_CONTACT=mtuan.0111@gmail.com
 ANDROID_PACKAGE_NAME=bomnguyen.nucatch
 IOS_BUNDLE_ID=bomnguyen.game.nucatch
 IOS_APP_ID=1615973572
+GEMINI_API_KEY=AIzaSyA8oNDbS1pS3rD7iJ_PvBnRtvibF9bb0cU
+GEMINI_MODEL=gemini-flash-latest
