@@ -1,0 +1,47 @@
+---
+description: Testing — unit/widget tests, the full-tour and foldable integration tests, the device matrix, emulator postures and capturing screenshots in integration tests
+globs: test/**, integration_test/**, test_driver/**
+alwaysApply: false
+---
+
+# Testing
+
+Details: `docs/onboarding-tour/TESTING.md`.
+
+## Unit / widget (`flutter test`)
+- `test/blocs/` — `TutorialCubit` (incl. Previous landing rules), timer pause
+  holds, combat pause sync.
+- `test/helpers/` — `TourProgress`, combat tutorial scripts,
+  `foldable_devices.dart` (13 window profiles with hinges/folds).
+- `test/layout/` — `GameLayout.resolve` matrix, `GameLayoutBody` on every
+  profile, `GamePauseGuard`, keypad gaps (`keypad_spacing_test.dart`).
+- Prefer tests that derive expectations from data (`TutorialScript`,
+  `TourProgress.menuSteps`) over hard-coded indices.
+
+## Integration (`flutter test integration_test/<file> -d <device>`)
+- One `testWidgets` per file (`app.main()` singletons don't tear down).
+- `tour_guide_test.dart` — the whole tour, every step forwards **and back**:
+  title, "Part · n / N" label, card on screen, buttons tappable, highlight on
+  screen and < 50 % covered, seeded `TurnBloc`/`CombatBloc` data. Lessons are
+  completed from `TutorialScript` (tap Next / key / answer, or wait), so it
+  needs no edits when lessons change. Screen via dart-defines: `IPAD`,
+  `LANDSCAPE`, `FOLD_COVER`, `FONT_SIZE` (forced sizes also clear the
+  device's own hinge).
+- `foldable_walkthrough_test.dart` — every screen at a foldable's native
+  window (`SKIP_SHOTS`, `COLLECT_OVERFLOWS`).
+- `screen_walkthrough.dart` / `*screenshot*_test.dart` — store screenshots via
+  `flutter drive` + `test_driver/screenshot_driver.dart`.
+- Any `RenderFlex overflowed` fails an integration test — fix the layout,
+  don't silence it.
+
+## Gotchas
+- Wait for state, not time: poll blocs (`waitUntil`) and let cards settle
+  (pages slide in) before measuring layout.
+- Tap with `.hitTestable()` finders; a covered widget (e.g. "Later" under the
+  tour) otherwise receives the tap meant for what's on top.
+- Simulator screenshots via `simctl` are blank during integration tests —
+  capture `renderView.debugLayer` to a PNG inside the test.
+- `Foldable_7_6`: `adb emu posture 1|2|3`; closed still reports the inner
+  display, so use `--dart-define=FOLD_COVER=true` for the cover screen.
+- Clear `.dart_tool/flutter_build`, `build/` and Xcode DerivedData when a
+  build fails with "No space left on device".

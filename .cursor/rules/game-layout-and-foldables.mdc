@@ -1,0 +1,47 @@
+---
+description: Game screen layout on phones, tablets and foldables — GameLayoutMode, GameLayoutBody, HingeSplit, GamePauseGuard, keypad sizing, gaps and readable keys
+globs: lib/helpers/game_layout.dart, lib/widgets/game_layout_body.dart, lib/widgets/game_pause_guard.dart, lib/widgets/regular_mode_controls.dart, lib/widgets/pick_right_*.dart, lib/widgets/countdown_*.dart, lib/screens/menu_screens/player/play_screen.dart, lib/screens/menu_screens/player/combat_play_screen.dart, test/layout/**, test/helpers/foldable_devices.dart
+alwaysApply: false
+---
+
+# Game layout & foldables
+
+Plan and shipped status: `docs/FOLDABLE_SUPPORT_PLAN.md`.
+
+## Layout modes
+- `GameLayout.resolve(size, displayFeatures)` → `stacked` (phones, Fold
+  inner screen), `compactSquare` (small near-square, e.g. Flip cover),
+  `gamepad` (width/height ≥ 1.3: keypad split to both edges), `tabletop`
+  (horizontal fold half-open), `twoPane` (vertical hinge / book).
+  Read it in `build` via `GameLayout.of(context)`.
+- Both game screens use `GameLayoutBody` (header + `controlsBuilder(side)`);
+  it splits across the fold with skeleton_core's `HingeSplit`. Don't add
+  `isLandscape ? Row : Column` branches to the screens.
+- `GamePauseGuard` pauses on app-background and layout-mode changes and
+  resumes through a 3-2-1; put `resumeCountdownOverlay()` last in the
+  screen's `Stack` (before `TutorialOverlay`).
+
+## Keypad (both `RegularModeControls` and `CombatPlayScreen._buildKeyboard`)
+- Phones stretch cells to fill (`keypadSpacing`); tablets, Fold panes and
+  badly proportioned regions clamp them (`keypadClampsCells`): short side
+  ≤ `kMaxKeypadButtonSize`, width up to `kKeypadMaxCellAspect` × height,
+  tighter `clampedKeypadSpacing`.
+- **Every row is wrapped in `Padding(vertical: spacing / 2)`** — a grid that
+  shrinks to fit has no leftover height for `spaceEvenly`, and rows would
+  touch. Guarded by `test/layout/keypad_spacing_test.dart`.
+- Key inner padding is `keypadKeyPadding(keyExtent)` (12 % of the key,
+  4–20 dp), passed through `AnimatedButton(padding:)`; a fixed 20 dp shrinks
+  the digit to a few pixels on small keys. Pick Right answers do the same
+  from their height.
+- The two keypad implementations are duplicates — change both.
+
+## Rules
+- Size from the space given (`LayoutBuilder` / `MediaQuery.sizeOf`), not
+  `isTablet` alone; a Fold's inner screen is near-square and large.
+- Never place content across a hinge: use `HingeSplit` or
+  `DisplayFeatureSubScreen` (as the tour dialog/card do).
+- Clamp animation-driven sizes to ≥ 0 (see `LifeStar`): interrupted
+  overshooting curves can go negative and crash layout.
+- Verify with `test/layout/*` (13 window profiles in
+  `test/helpers/foldable_devices.dart`) and on the `Foldable_7_6` emulator
+  (`adb emu posture 1|2|3`).

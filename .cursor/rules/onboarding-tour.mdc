@@ -1,0 +1,63 @@
+---
+description: Onboarding tour — the 5-step menu tour and the Regular / Pick Right / Combat practice, their shared spotlight card, lesson seeds, highlight targets and Previous/Next rules
+globs: lib/widgets/global_tour_wrapper.dart, lib/widgets/tutorial_overlay.dart, lib/widgets/tour_card.dart, lib/widgets/tour_spotlight.dart, lib/helpers/tour_*.dart, lib/helpers/tutorial_*.dart, lib/helpers/combat_tutorial_script.dart, lib/blocs/objects/tutorial/**, lib/navs/player_nav.dart, lib/navs/combat_nav.dart, lib/screens/wrappers/update_checker_wrapper.dart, integration_test/tour_guide_test.dart, test/blocs/tutorial_cubit_test.dart, test/helpers/tour_progress_test.dart
+alwaysApply: false
+---
+
+# Onboarding tour
+
+Full write-up: `docs/onboarding-tour/README.md`.
+
+## Shape (23 steps in four parts)
+- **Main Menu (5)** — `TourProgress.menuSteps`: welcome, startButton,
+  soloMode ("Two Ways to Play": Solo + Combat cards), instantStart,
+  leaderboard ("More to Explore": Top Score + Settings + About). Driven by
+  skeleton_core's `TourBloc`, rendered by `GlobalTourWrapper`.
+- **Regular (8) / Pick Right (5) / Combat (5)** — `TutorialScript.lessons`,
+  driven by `TutorialCubit`, rendered by `TutorialOverlay` (mounted last in
+  the `Stack` of PlayScreen, GameOverScreen, CombatPlayScreen,
+  CombatGameEndScreen). The whole practice is the single tour slot
+  `TourStep.gameTutorialStep1`.
+- Progress labels come only from `TourProgress.menuLabel` / `lessonLabel`
+  ("Main Menu · 2 / 5", "Regular · 3 / 8"). Never use skeleton_core's
+  `totalSteps` / `displayStepNumber` (they count unused enum values).
+
+## Rules
+- **Menu navigation**: Next / Previous use `TourJumpToStep` with
+  `TourProgress.nextAfter` / `previousBefore` (list order, not enum order).
+  Never `TourStepCompleted()` / `TourStepBack()`.
+- **One look**: both parts render `TourSpotlightLayer` + `TourCard`
+  (`widgets/tour_card.dart`) — same AlertTemplate-style card, same dimmed
+  spotlight. Don't build a separate dialog/tooltip.
+- **Highlight targets** are `GlobalKey`s in `TourKeys`, measured with
+  `getRectForKeys` (which skips elements on a covered route). A new target
+  needs: a key in `TourKeys` (+ `reset()`), the key on the widget, a
+  `TutorialSpotlight` value and a case in `TutorialOverlay._targetRect`
+  (or `GlobalTourWrapper._targetKeysForStep` for menu steps).
+- **Result cards shown on another screen** (a timeout/win that ends the
+  game) must point at that screen: `gameOverSummary`
+  (GameOverScreen), `combatResult` (CombatGameEndScreen) — not at the hidden
+  game screen's panels.
+- **Seeds**: a lesson with `turnSeed` / `combatSeed` sets the real game up
+  when `seedToken` changes. A lesson without one continues the previous
+  lesson's real state — only valid when reached with Next.
+  `TutorialCubit.previous()` lands on the nearest seeded lesson
+  (`previousSeededIndex`), so Previous never shows another lesson's data.
+  Previous on the first lesson calls `backToMenuTour()` (ends the practice,
+  `backedOutToMenuTour: true`, does NOT complete the tour).
+- **Host screens**: `PlayerNav` / `CombatNav` move between PlayScreen ⇄
+  GameOverScreen and CombatPlayScreen ⇄ CombatGameEndScreen when the lesson's
+  `hostScreen` changes, including on a re-seed while the end screen shows.
+- **Card placement** (`TourCardPlacement`) keeps the card inside one pane on
+  a hinged device, beside the target (landscape) or above/below (portrait),
+  scrolling only the description so title and buttons stay visible. The
+  spotlight re-measures for 800 ms after every change (page slides, scrolls,
+  fold/unfold) in its own coordinates.
+- **Text**: titles/descriptions via `AppLocalizations`; `**bold**` and `\n`
+  (one paragraph per point) are supported. Menu strings are translated;
+  `tourRule*` lesson strings are English in every locale.
+- The optional app-update prompt waits for the tour to finish
+  (`UpdateCheckerWrapper`); a forced update shows immediately.
+- After any tour change run `integration_test/tour_guide_test.dart` — it
+  walks every step forwards and back and checks title, label, layout,
+  highlight and seeded data, driven by `TutorialScript` itself.

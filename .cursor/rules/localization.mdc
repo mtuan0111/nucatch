@@ -1,0 +1,30 @@
+---
+description: Localization — ARB files in lib/localization, regenerating, which tour strings are translated, bold and paragraph markers in tour text
+globs: lib/localization/**, l10n.yaml, lib/helpers/tutorial_localization.dart
+alwaysApply: false
+---
+
+# Localization
+
+- `l10n.yaml`: `arb-dir: lib/localization` (not `lib/l10n`), template
+  `app_en.arb`, plus `de, es, fr, hi, id, ja, th, vi, zh`. Shared shell
+  strings (`coreLang(context)`: start, setting, about, mainMenu, …) live in
+  `../skeleton_core/lib/src/localization/core_*.arb`.
+- Add every new key to **all 10** `app_*.arb` files, then run
+  `flutter gen-l10n` (also runs on build because `generate: true`). Give new
+  keys an `@key` description in `app_en.arb`.
+- Never hardcode user-facing strings; use `lang(context)` /
+  `coreLang(context)`.
+- **Tour text**:
+  - Menu-tour strings (`tourWelcome*`, `tourStart*`, `tourSolo*`,
+    `tourInstantStart*`, `tourLeaderboard*`, `tourSkip`/`Next`/`Previous`)
+    are translated — use each locale's real button names (e.g. `start`,
+    `topScore`, `setting`, `about` from core ARBs, `soloMode`, `combatMode`).
+  - In-game lesson strings (`tourRule*`) are **English in every locale**;
+    keep that parity unless translating all of them.
+  - `**bold**` is parsed by `tourBoldSpans`; `\n` starts a new paragraph on
+    the card — put separate points (Solo vs Combat, one line per menu
+    button) on separate lines.
+  - The lesson ↔ string mapping is an explicit switch in
+    `lib/helpers/tutorial_localization.dart`; a new lesson needs cases there.
+- Edit ARBs as JSON (escape `\n` as `\\n` in the file) and keep them valid.

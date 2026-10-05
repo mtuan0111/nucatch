@@ -1,0 +1,38 @@
+---
+description: Where NuCatch's architecture rules, specs and workflows live, and the shared skeleton_core package
+alwaysApply: true
+---
+
+# NuCatch — sources of truth
+
+- `CLAUDE.md` — commands, architecture, conventions and gotchas. The other
+  `.cursor/rules/*.mdc` files split it by area.
+- `../skeleton_core` — the shared game shell (`SkeletonApp`, `TourBloc`,
+  `MenuBloc`, `SettingBloc`, theming, `AlertTemplate` / `CustomElevatedButton`
+  / `AnimatedButton`, `FoldLayout`, `HingeSplit`). `pubspec.yaml`'s
+  `dependency_overrides` points at this local checkout; **release builds use
+  the git ref `deployment_production`**, so skeleton_core changes must be
+  pushed there before a release.
+- `.cursor/rules/working-with-bloc.mdc` — BLoC conventions (pure BLoCs,
+  events between BLoCs, immutable state).
+- `.cursor/rules/onboarding-tour.mdc` — the menu tour + in-game practice:
+  step order, lessons, seeds, spotlight targets, Previous/Next rules.
+- `.cursor/rules/game-layout-and-foldables.mdc` — `GameLayoutMode`,
+  `GameLayoutBody`, `GamePauseGuard`, keypad sizing and gaps.
+- `.cursor/rules/localization.mdc` — ARB files, which tour strings are
+  translated, `**bold**` / `\n` in tour text.
+- `.cursor/rules/testing.mdc` — unit/widget tests, the full-tour integration
+  test, the device matrix and emulator notes.
+- `.agents/rules/version-release-workflow.mdc` — how a release is cut from the
+  latest `CHANGELOG.md` block (git note, `.github/config/version-config.json`,
+  commit). `CHANGELOG.md` + build flags are the source of truth for version
+  numbers, not `pubspec.yaml`.
+- `docs/onboarding-tour/README.md` / `TESTING.md` — the tour in depth and how
+  to test it.
+- `docs/FOLDABLE_SUPPORT_PLAN.md` — foldable / dual-screen plan; §5a/§5b say
+  what shipped. `docs/DEPLOYMENT.md` — Fastlane, signing, `.env_release`.
+  `docs/SNS_LOGIN_SETUP.md` — Google/Apple sign-in.
+- `copilot-instructions.md` is **partially stale** (pre-skeleton_core
+  dependency facts); its BLoC rules and difficulty math still hold.
+- Root-level `*.md` design notes and `*_log.txt` / `logs_*.log` dumps are
+  historical, not current specs.

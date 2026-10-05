@@ -1,0 +1,31 @@
+---
+description: BLoC conventions — pure BLoCs, events between BLoCs, immutable state, nav cubits, the tutorial cubit holding no bloc references
+globs: lib/blocs/**, lib/navs/**, lib/screens/**, lib/services/**
+alwaysApply: false
+---
+
+# Working with BLoC
+
+- **No UI concerns in BLoCs** — no `BuildContext`, toasts, dialogs or
+  navigation inside a BLoC/Cubit. Emit pure immutable state; the UI reacts
+  with `BlocListener` / `BlocBuilder`.
+- **BLoCs talk through events**, not direct service/method calls
+  (`audioBloc.add(PlayTapAudio())`, not `audioService.playTap()`). The one
+  documented exception: `SettingBloc.audioBloc` is set so `ToggleMute` can
+  reach the active `AudioBloc` (`lib/navs/menu_nav.dart`).
+- **State is immutable** — change it only through `copyWith` + `emit`. Add a
+  `copyWith` parameter for every new field (see `TutorialState`).
+- **Navigation is cubit-driven**: `PlayerNavCubit` / `CombatNavCubit` states
+  decide the `pages:` of the nested `Navigator`s in `lib/navs/`. Navigate by
+  calling the cubit (`showPlay()`, `showPlaying()`), never `Navigator.push`.
+- **`TutorialCubit` holds no bloc references** (`TurnBloc`/`CombatBloc` only
+  exist inside the Play branch and `CombatBloc` is recreated per match). Host
+  screens observe it and seed / navigate themselves; see
+  `onboarding-tour.mdc`.
+- **Timer pausing uses holds**: add / release a `TimerPauseReason`
+  (`TapTimerPause` / `TapTimerResume`) instead of toggling a bool, so the
+  in-game menu, the app lifecycle, layout changes and the combat opponent
+  can't unpause each other (`lib/blocs/objects/timer_pause.dart`).
+- Infrastructure blocs (`TourBloc`, `MenuBloc`, `SettingBloc`, `AudioBloc`,
+  `VibrationBloc`) come from `skeleton_core`; `lib/blocs/objects/tour/` only
+  re-exports `TourBloc`/`TourState`.

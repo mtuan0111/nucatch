@@ -423,8 +423,42 @@ Not yet done:
   available for testing.
 - **Two-device BLE test:** the pause sync is unit-tested only. No real
   two-device run yet.
-- Tour/tutorial re-measure (4.5), window-too-small (4.4), Phase 3 screens,
-  Phase 5–8.
+- Window-too-small (4.4), Phase 3 screens, Phase 5–8. (Tour/tutorial
+  re-measure, 4.5, shipped — see §5b.)
+
+## 5b. Progress (2026-10-05)
+
+- **Phase 4.5 — tour on foldables (done):**
+  - The menu tour and the in-game practice share `TourSpotlightLayer` +
+    `TourCard` (`lib/widgets/tour_card.dart`). The spotlight measures its
+    target in its own coordinates and re-measures for 800 ms after every
+    change, so the hole follows fold/unfold, rotation, scrolls and page
+    slides. A lesson's "tap this key" hole always sits on the moved key.
+  - `TourCardPlacement` keeps the card in one pane (`DisplayFeatureSubScreen`
+    sub-screens) — the pane away from the target — and the menu card uses
+    `DisplayFeatureSubScreen`, so nothing straddles the hinge.
+  - Verified on `Foldable_7_6` while cycling `adb emu posture 2/1/3` every
+    12 s mid-game: 7 layout switches, tour passes, no overflow.
+- **Keypad (both game screens):**
+  - Clamped cells (tablets, Fold panes) may be up to `kKeypadMaxCellAspect`
+    (1.5×) wider than tall and use the tighter `clampedKeypadSpacing`; on a
+    Fold tabletop pane keys went from 57×57 to 105×67 dp.
+  - Key inner padding scales with the key (`keypadKeyPadding`, via
+    `AnimatedButton(padding:)` — a new skeleton_core parameter), so digits
+    stay large; Pick Right answers do the same.
+  - Every keypad row gets `spacing / 2` vertical padding: a grid that shrinks
+    to fit had no leftover height and its rows touched.
+    `test/layout/keypad_spacing_test.dart` checks real keypads on phone,
+    tablet, Fold tabletop pane and Flip cover.
+- **Cover screen:** the emulator's "closed" posture keeps reporting the inner
+  display, so the Fold7 cover screen is tested with
+  `integration_test/tour_guide_test.dart --dart-define=FOLD_COVER=true`
+  (1080×2520 @ 2.8125; forced sizes clear the device's own hinge).
+- **Full-tour matrix passing:** iPhone portrait/landscape, iPad
+  portrait/landscape, Fold7 cover (see `docs/onboarding-tour/TESTING.md`).
+- **skeleton_core:** the `padding` parameter and the `CustomElevatedButton`
+  fix (no `FittedBox` around a caller's `child`) are local only — push them to
+  `deployment_production` before a release build.
 
 ## 6. Decisions (resolved 2026-10-02)
 1. **Combat pause semantics:** when either player's device pauses (folded,
