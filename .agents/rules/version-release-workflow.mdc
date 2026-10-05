@@ -1,0 +1,74 @@
+---
+description: Version release workflow for generating git release messages for CHANGELOG.md and updating version-config.json
+alwaysApply: true
+---
+
+# Version Release Workflow
+
+When asked to create a new release item, read the **latest** `## Released on:` block in `CHANGELOG.md` and use its **Custom version** table and **Release note** as the source of truth.
+
+## Input: Custom version table
+
+| Platform | Build Number | Test Build Number | Version |
+| -------- | ------------ | ----------------- | ------- |
+| Android  | {A_BN}       | {T}               | {A_VER} |
+| iOS      | {I_BN}       | {T}               | {I_VER} |
+
+## Step 1 — Generate the Git note release block
+
+Append under the latest release's `### Release note:` section:
+
+### Git note release:
+
+#### Command for copilot
+
+`[Builded] Version {A_VER} - {A_BN} / {I_VER} - {I_BN} _ {release_note} `
+
+#### Brief for Store's new update:
+
+_ {EN line 1 — expand the release note into a user-facing sentence}
+_ {EN line 2 — optional second point}
+_ {VI line 1 — Vietnamese translation of EN line 1}
+_ {VI line 2 — Vietnamese translation of EN line 2}
+
+#### Flutter build for Android for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build appbundle --build-name={A_VER}.{T} --build-number={A_BN} --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for iOS for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build ios --build-name={I_VER} --build-number={I_BN}.{T} --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for Android
+
+`npm run flutterfire_setup && flutter build appbundle --build-name={A_VER} --build-number={A_BN} --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Flutter build for iOS
+
+`npm run flutterfire_setup && flutter build ios --build-name={I_VER} --build-number={I_BN} --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+## Step 2 — Update `.github/config/version-config.json`
+
+Overwrite the file with values derived from the same table. `releaseNotes` must match the Brief above.
+
+```json
+{
+"android": {
+  "dev":  { "versionName": "{A_VER}.{T}", "versionCode": {A_BN}, "releaseNotes": { "en-US": "...", "vi-VN": "..." } },
+  "prod": { "versionName": "{A_VER}",     "versionCode": {A_BN}, "releaseNotes": { "en-US": "...", "vi-VN": "..." } }
+},
+"ios": {
+  "dev":  { "versionName": "{I_VER}", "buildNumber": "{I_BN}.{T}", "releaseNotes": { "en-US": "...", "vi-VN": "..." } },
+  "prod": { "versionName": "{I_VER}", "buildNumber": "{I_BN}",     "releaseNotes": { "en-US": "...", "vi-VN": "..." } }
+},
+"metadata": { "lastUpdated": "{Released on date as ISO 8601}", "updatedBy": "CI/CD Pipeline" }
+}
+```
+
+## Step 3 — Git add and commit
+
+Stage all changed files and commit using the Command for copilot message:
+
+```bash
+git add -A && git commit -m "[Builded] Version {A_VER} - {A_BN} / {I_VER} - {I_BN} _ {release_note}"
+```

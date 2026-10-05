@@ -815,43 +815,43 @@ abstract class AppLocalizations {
   /// Description for the welcome tour step
   ///
   /// In en, this message translates to:
-  /// **'Welcome! This quick tour will help you get started smoothly with **NuCatch**. We\'ll show you all the **main features** so you can dive right in and start playing. Let\'s begin!'**
+  /// **'A quick tour: first the **menu**, then a short **practice game**. You can skip it anytime.'**
   String get tourWelcomeDesc;
 
   /// Title for the start button tour step
   ///
   /// In en, this message translates to:
-  /// **'Start - Begin Your Game'**
+  /// **'Start'**
   String get tourStartTitle;
 
   /// Description for the start button tour step
   ///
   /// In en, this message translates to:
-  /// **'Tap the **Start button** to begin. You\'ll then choose between **Solo Mode** for single-player mathematical challenges, or **Combat Mode** for real-time **Bluetooth** multiplayer battles. Let\'s explore both options!'**
+  /// **'Tap **Start** to choose how you want to play.'**
   String get tourStartDesc;
 
   /// Title for the instant start button tour step
   ///
   /// In en, this message translates to:
-  /// **'Instant Start - Quick Play'**
+  /// **'Instant Start'**
   String get tourInstantStartTitle;
 
   /// Description for the instant start button tour step
   ///
   /// In en, this message translates to:
-  /// **'Want to jump right in? Tap the **Instant Start button** to begin a solo game immediately with the same difficulty level you played last time. It\'s the fastest way to continue your progress!'**
+  /// **'Jump straight into a **Solo** game at the difficulty you played last.'**
   String get tourInstantStartDesc;
 
   /// Title for solo mode tour step
   ///
   /// In en, this message translates to:
-  /// **'Solo Mode - Play Alone'**
+  /// **'Two Ways to Play'**
   String get tourSoloTitle;
 
   /// Description for solo mode tour step
   ///
   /// In en, this message translates to:
-  /// **'In **Solo Mode**, challenge yourself with mathematical equations! Choose from **4 difficulty levels** (Easy to Extremely Hard). You start with **3 lives** - each wrong answer or timeout costs 1 life. **Higher difficulty** means more points! Now let\'s look at the multiplayer option.'**
+  /// **'**Solo Mode**: play alone and beat your best score. **Combat Mode**: challenge a friend nearby over **Bluetooth** — one creates a room, the other joins.'**
   String get tourSoloDesc;
 
   /// Title for combat mode tour step
@@ -893,13 +893,13 @@ abstract class AppLocalizations {
   /// Title for leaderboard tour step
   ///
   /// In en, this message translates to:
-  /// **'Top Score - Leaderboards'**
+  /// **'More to Explore'**
   String get tourLeaderboardTitle;
 
   /// Description for leaderboard tour step
   ///
   /// In en, this message translates to:
-  /// **'Track your progress here! View **global rankings**, your **personal records**, and **statistics** including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Next, let\'s visit Settings.'**
+  /// **'**Top score** shows the rankings, **Setting** changes your name, theme, sound and language, and **About** explains the rules. Next up: a short **practice game**!'**
   String get tourLeaderboardDesc;
 
   /// Title for settings step
@@ -965,13 +965,13 @@ abstract class AppLocalizations {
   /// In-game tutorial: regular mode welcome title
   ///
   /// In en, this message translates to:
-  /// **'Let\'s Play!'**
+  /// **'Regular Mode'**
   String get tourRuleRegularWelcomeTitle;
 
   /// In-game tutorial: regular mode welcome description
   ///
   /// In en, this message translates to:
-  /// **'Memorize the number, then type it back before time runs out. Ready to give it a try?'**
+  /// **'Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.'**
   String get tourRuleRegularWelcomeDesc;
 
   /// In-game tutorial: lives title
@@ -1109,7 +1109,7 @@ abstract class AppLocalizations {
   /// In-game tutorial: pick right welcome description
   ///
   /// In en, this message translates to:
-  /// **'Instead of typing, you\'ll pick the correct answer from a few choices.'**
+  /// **'Here you don\'t type — tap the **right answer**. The other choices are decoys.'**
   String get tourRulePickRightWelcomeDesc;
 
   /// In-game tutorial: pick right options title
@@ -1199,7 +1199,7 @@ abstract class AppLocalizations {
   /// In-game tutorial: combat welcome description
   ///
   /// In en, this message translates to:
-  /// **'In Combat Mode, you and an opponent take turns racing to answer first.'**
+  /// **'You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.'**
   String get tourRuleCombatWelcomeDesc;
 
   /// In-game tutorial: combat turn order title
@@ -1495,6 +1495,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You were away too long'**
   String get youWereAway;
+
+  /// Tour progress label for the Regular-mode practice part
+  ///
+  /// In en, this message translates to:
+  /// **'Regular'**
+  String get tourChapterRegular;
+
+  /// Result beat after the player taps the digit correctly
+  ///
+  /// In en, this message translates to:
+  /// **'Correct — that\'s a **point**!'**
+  String get tourRuleRegularTypeBackResult;
 }
 
 class _AppLocalizationsDelegate

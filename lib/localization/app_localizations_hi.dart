@@ -413,28 +413,28 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'स्वागत है! यह संक्षिप्त टूर आपको **NuCatch** के साथ सहज शुरुआत करने में मदद करेगा। हम आपको सभी **मुख्य विशेषताएं** दिखाएंगे ताकि आप सीधे खेलना शुरू कर सकें।';
+      'एक छोटा टूर: पहले **मेन्यू**, फिर एक छोटा **अभ्यास गेम**। आप इसे कभी भी छोड़ सकते हैं।';
 
   @override
-  String get tourStartTitle => 'प्रारंभ - अपना खेल शुरू करें';
+  String get tourStartTitle => 'शुरू करें';
 
   @override
   String get tourStartDesc =>
-      'शुरू करने के लिए **स्टार्ट बटन** पर टैप करें। फिर आप व्यक्तिगत गणितीय चुनौतियों के लिए **सोलो मोड**, या **ब्लूटूथ** के माध्यम से रियल-टाइम मल्टीप्लेयर लड़ाइयों के लिए **कॉम्बैट मोड** के बीच चयन करेंगे।';
+      'खेलने का तरीका चुनने के लिए **शुरू करें** पर टैप करें।';
 
   @override
-  String get tourInstantStartTitle => 'इंस्टेंट स्टार्ट - त्वरित खेल';
+  String get tourInstantStartTitle => 'तत्काल शुरुआत';
 
   @override
   String get tourInstantStartDesc =>
-      'क्या आप तुरंत शुरुआत करना चाहते हैं? जिस कठिनाई स्तर पर आपने पिछली बार खेला था, उसी स्तर पर तुरंत एकल गेम शुरू करने के लिए **इंस्टेंट स्टार्ट** बटन पर टैप करें!';
+      'पिछली बार वाली कठिनाई पर सीधे एक **सोलो** गेम शुरू करें।';
 
   @override
-  String get tourSoloTitle => 'सोलो मोड - अकेले खेलें';
+  String get tourSoloTitle => 'खेलने के दो तरीके';
 
   @override
   String get tourSoloDesc =>
-      '**सोलो मोड** में, खुद को चुनौती दें। **4 कठिनाई स्तरों** में से चुनें। आप **3 जीवन** से शुरू करते हैं - प्रत्येक गलत उत्तर या समय समाप्त होने पर 1 जीवन कम हो जाता है। **अधिक कठिनाई** का अर्थ है अधिक अंक!';
+      '**सोलो मोड**: अकेले खेलें और अपना सर्वश्रेष्ठ स्कोर तोड़ें। **कॉम्बैट मोड**: पास के दोस्त को **Bluetooth** से चुनौती दें — एक रूम बनाता है, दूसरा जुड़ता है।';
 
   @override
   String get tourCombatTitle => 'कॉम्बैट मोड - ब्लूटूथ मल्टीप्लेयर';
@@ -458,11 +458,11 @@ class AppLocalizationsHi extends AppLocalizations {
       '**रूम से जुड़ें** आपको **अतिथि** बनाता है। आप आस-पास के कमरों को स्कैन करेंगे, एक का चयन करेंगे और **तैयार** पर टैप करेंगे। मेजबान कठिनाई चुनता है, और आप शुरू में दूसरे खेलते हैं।';
 
   @override
-  String get tourLeaderboardTitle => 'लीडरबोर्ड - रैंकिंग';
+  String get tourLeaderboardTitle => 'और भी बहुत कुछ';
 
   @override
   String get tourLeaderboardDesc =>
-      'यहां अपनी प्रगति को ट्रैक करें! **वैश्विक रैंकिंग**, अपने **व्यक्तिगत रिकॉर्ड** और **आंकड़े** देखें। दोस्तों के साथ तुलना करें और देखें कि आप समय के साथ कैसे सुधार कर रहे हैं।';
+      '**शीर्ष स्कोर** में रैंकिंग देखें, **सेटिंग्स** में नाम, थीम, आवाज़ और भाषा बदलें, और **के बारे में** में नियम पढ़ें। आगे: एक छोटा **अभ्यास गेम**!';
 
   @override
   String get tourSettingsTitle => 'सेटिंग्स - वैयक्तिकृत करें';
@@ -498,11 +498,11 @@ class AppLocalizationsHi extends AppLocalizations {
       'टूर को रीसेट कर दिया गया है। शुरू करने के लिए मुख्य मेनू पर लौटें।';
 
   @override
-  String get tourRuleRegularWelcomeTitle => 'Let\'s Play!';
+  String get tourRuleRegularWelcomeTitle => 'Regular Mode';
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out. Ready to give it a try?';
+      'Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.';
 
   @override
   String get tourRuleRegularLivesTitle => 'Your Lives';
@@ -584,7 +584,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Instead of typing, you\'ll pick the correct answer from a few choices.';
+      'Here you don\'t type — tap the **right answer**. The other choices are decoys.';
 
   @override
   String get tourRulePickRightOptionsTitle => 'Choose Wisely';
@@ -637,7 +637,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'In Combat Mode, you and an opponent take turns racing to answer first.';
+      'You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.';
 
   @override
   String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';
@@ -808,4 +808,10 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get youWereAway => 'आप बहुत देर तक दूर रहे';
+
+  @override
+  String get tourChapterRegular => 'क्लासिक';
+
+  @override
+  String get tourRuleRegularTypeBackResult => 'Correct — that\'s a **point**!';
 }

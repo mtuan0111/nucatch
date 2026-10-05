@@ -568,31 +568,31 @@
   "@tourWelcomeTitle": {
     "description": "Title for the welcome tour step"
   },
-  "tourWelcomeDesc": "Welcome! This quick tour will help you get started smoothly with **NuCatch**. We'll show you all the **main features** so you can dive right in and start playing. Let's begin!",
+  "tourWelcomeDesc": "A quick tour: first the **menu**, then a short **practice game**. You can skip it anytime.",
   "@tourWelcomeDesc": {
     "description": "Description for the welcome tour step"
   },
-  "tourStartTitle": "Start - Begin Your Game",
+  "tourStartTitle": "Start",
   "@tourStartTitle": {
     "description": "Title for the start button tour step"
   },
-  "tourStartDesc": "Tap the **Start button** to begin. You'll then choose between **Solo Mode** for single-player mathematical challenges, or **Combat Mode** for real-time **Bluetooth** multiplayer battles. Let's explore both options!",
+  "tourStartDesc": "Tap **Start** to choose how you want to play.",
   "@tourStartDesc": {
     "description": "Description for the start button tour step"
   },
-  "tourInstantStartTitle": "Instant Start - Quick Play",
+  "tourInstantStartTitle": "Instant Start",
   "@tourInstantStartTitle": {
     "description": "Title for the instant start button tour step"
   },
-  "tourInstantStartDesc": "Want to jump right in? Tap the **Instant Start button** to begin a solo game immediately with the same difficulty level you played last time. It's the fastest way to continue your progress!",
+  "tourInstantStartDesc": "Jump straight into a **Solo** game at the difficulty you played last.",
   "@tourInstantStartDesc": {
     "description": "Description for the instant start button tour step"
   },
-  "tourSoloTitle": "Solo Mode - Play Alone",
+  "tourSoloTitle": "Two Ways to Play",
   "@tourSoloTitle": {
     "description": "Title for solo mode tour step"
   },
-  "tourSoloDesc": "In **Solo Mode**, challenge yourself with mathematical equations! Choose from **4 difficulty levels** (Easy to Extremely Hard). You start with **3 lives** - each wrong answer or timeout costs 1 life. **Higher difficulty** means more points! Now let's look at the multiplayer option.",
+  "tourSoloDesc": "**Solo Mode**: play alone and beat your best score. **Combat Mode**: challenge a friend nearby over **Bluetooth** — one creates a room, the other joins.",
   "@tourSoloDesc": {
     "description": "Description for solo mode tour step"
   },
@@ -620,11 +620,11 @@
   "@tourJoinRoomDesc": {
     "description": "Description for join room tour step"
   },
-  "tourLeaderboardTitle": "Top Score - Leaderboards",
+  "tourLeaderboardTitle": "More to Explore",
   "@tourLeaderboardTitle": {
     "description": "Title for leaderboard tour step"
   },
-  "tourLeaderboardDesc": "Track your progress here! View **global rankings**, your **personal records**, and **statistics** including games played, win rate, accuracy, and scores by difficulty level. Compare with friends and see how you improve over time. Next, let's visit Settings.",
+  "tourLeaderboardDesc": "**Top score** shows the rankings, **Setting** changes your name, theme, sound and language, and **About** explains the rules. Next up: a short **practice game**!",
   "@tourLeaderboardDesc": {
     "description": "Description for leaderboard tour step"
   },
@@ -668,11 +668,11 @@
   "@tourResetMessage": {
     "description": "Message shown when tour is reset"
   },
-  "tourRuleRegularWelcomeTitle": "Let's Play!",
+  "tourRuleRegularWelcomeTitle": "Regular Mode",
   "@tourRuleRegularWelcomeTitle": {
     "description": "In-game tutorial: regular mode welcome title"
   },
-  "tourRuleRegularWelcomeDesc": "Memorize the number, then type it back before time runs out. Ready to give it a try?",
+  "tourRuleRegularWelcomeDesc": "Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.",
   "@tourRuleRegularWelcomeDesc": {
     "description": "In-game tutorial: regular mode welcome description"
   },
@@ -764,7 +764,7 @@
   "@tourRulePickRightWelcomeTitle": {
     "description": "In-game tutorial: pick right welcome title"
   },
-  "tourRulePickRightWelcomeDesc": "Instead of typing, you'll pick the correct answer from a few choices.",
+  "tourRulePickRightWelcomeDesc": "Here you don't type — tap the **right answer**. The other choices are decoys.",
   "@tourRulePickRightWelcomeDesc": {
     "description": "In-game tutorial: pick right welcome description"
   },
@@ -824,7 +824,7 @@
   "@tourRuleCombatWelcomeTitle": {
     "description": "In-game tutorial: combat welcome title"
   },
-  "tourRuleCombatWelcomeDesc": "In Combat Mode, you and an opponent take turns racing to answer first.",
+  "tourRuleCombatWelcomeDesc": "You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.",
   "@tourRuleCombatWelcomeDesc": {
     "description": "In-game tutorial: combat welcome description"
   },
@@ -1028,5 +1028,13 @@
   "youWereAway": "You were away too long",
   "@youWereAway": {
     "description": "Combat end reason: this player stayed paused too long"
+  },
+  "tourChapterRegular": "Regular",
+  "@tourChapterRegular": {
+    "description": "Tour progress label for the Regular-mode practice part"
+  },
+  "tourRuleRegularTypeBackResult": "Correct — that's a **point**!",
+  "@tourRuleRegularTypeBackResult": {
+    "description": "Result beat after the player taps the digit correctly"
   }
 }

@@ -106,14 +106,16 @@ class _TutorialOverlayState extends State<TutorialOverlay> {
             title: tutorialLessonTitle(context, lesson),
             description:
                 tutorialLessonDescription(context, lesson, tutorial.phase),
-            progress: TourProgress.lessonLabel(tutorial.lessonIndex),
+            progress: TourProgress.lessonLabel(context, tutorial.lessonIndex),
             onSkip: () => context.read<TutorialCubit>().finish(),
             onPrevious: () {
               if (tutorial.isFirstLesson) {
                 // Back out of the in-game tutorial entirely, into the last
                 // main-menu tour step — mirrors how the menu tour's own
                 // Previous button behaves.
-                context.read<TourBloc>().add(TourStepBack());
+                context
+                    .read<TourBloc>()
+                    .add(TourJumpToStep(TourProgress.menuSteps.last.index));
               } else {
                 context.read<TutorialCubit>().previous();
               }

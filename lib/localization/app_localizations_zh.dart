@@ -387,29 +387,26 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tourWelcomeTitle => '欢迎来到 NuCatch！';
 
   @override
-  String get tourWelcomeDesc =>
-      '欢迎！这个简短的导览将帮助您顺利上手 **NuCatch**。我们将向您展示所有**主要功能**，让您可以立即投入游戏。';
+  String get tourWelcomeDesc => '快速导览：先看**菜单**，再来一局简短的**练习游戏**。你可以随时跳过。';
 
   @override
-  String get tourStartTitle => '开始 - 启动游戏';
+  String get tourStartTitle => '开始';
 
   @override
-  String get tourStartDesc =>
-      '点击**开始按钮**启动应用。然后选择**单人模式**进行单独算术挑战，或者选择**战斗模式**通过**蓝牙**进行实时对战。';
+  String get tourStartDesc => '点击**开始**，选择你想要的玩法。';
 
   @override
-  String get tourInstantStartTitle => '快速开始';
+  String get tourInstantStartTitle => '即时开始';
 
   @override
-  String get tourInstantStartDesc =>
-      '点击**即时开始**按钮，即可立即以与上次游玩相同的难度开始单人游戏。这是您继续游戏进程的最快方式！';
+  String get tourInstantStartDesc => '以上次的难度直接开始一局**单人**游戏。';
 
   @override
-  String get tourSoloTitle => '单人模式';
+  String get tourSoloTitle => '两种玩法';
 
   @override
   String get tourSoloDesc =>
-      '在**单人模式**中挑战自己。在 **4个体能等级** 中选择。您拥有**3条生命**-每次答错或超时扣1生命。**难度越高**积分越多！';
+      '**单人模式**：独自挑战，刷新你的最高分。**对战模式**：通过**蓝牙**挑战身边的朋友——一人创建房间，另一人加入。';
 
   @override
   String get tourCombatTitle => '战斗模式 - 蓝牙对战';
@@ -433,11 +430,11 @@ class AppLocalizationsZh extends AppLocalizations {
       '**加入房间**让您成为**客人**。您将扫描附近房间，选择一个并点击**准备**。主机选择难度，您后手游戏。';
 
   @override
-  String get tourLeaderboardTitle => '排行榜';
+  String get tourLeaderboardTitle => '更多精彩';
 
   @override
   String get tourLeaderboardDesc =>
-      '在这里追踪您的进度！查看**全球排行榜**，您的**个人记录**和**统计数据**。与朋友比较分数！';
+      '**最高分**查看排行榜，**设置**可更改名字、主题、声音和语言，**关于**介绍游戏规则。接下来：一局简短的**练习游戏**！';
 
   @override
   String get tourSettingsTitle => '设置';
@@ -472,11 +469,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tourResetMessage => '导览已重置。返回主菜单查看。';
 
   @override
-  String get tourRuleRegularWelcomeTitle => 'Let\'s Play!';
+  String get tourRuleRegularWelcomeTitle => 'Regular Mode';
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out. Ready to give it a try?';
+      'Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.';
 
   @override
   String get tourRuleRegularLivesTitle => 'Your Lives';
@@ -558,7 +555,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Instead of typing, you\'ll pick the correct answer from a few choices.';
+      'Here you don\'t type — tap the **right answer**. The other choices are decoys.';
 
   @override
   String get tourRulePickRightOptionsTitle => 'Choose Wisely';
@@ -611,7 +608,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'In Combat Mode, you and an opponent take turns racing to answer first.';
+      'You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.';
 
   @override
   String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';
@@ -772,4 +769,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get youWereAway => '你离开太久';
+
+  @override
+  String get tourChapterRegular => '经典';
+
+  @override
+  String get tourRuleRegularTypeBackResult => 'Correct — that\'s a **point**!';
 }

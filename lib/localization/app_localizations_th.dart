@@ -406,28 +406,27 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'ยินดีต้อนรับ! ทัวร์สั้นๆ นี้จะช่วยให้คุณใช้งาน **NuCatch** ได้อย่างราบรื่น เราจะแสดงให้คุณเห็นถึง **คุณสมบัติหลัก** ดังนั้นคุณจะพร้อมดำดิ่งสู่เกมทันที';
+      'ทัวร์สั้นๆ: เริ่มจาก**เมนู** แล้วตามด้วย**เกมฝึกเล่น**สั้นๆ ข้ามได้ทุกเมื่อ';
 
   @override
-  String get tourStartTitle => 'เริ่มต้น - เข้าสู่เกมของคุณ';
+  String get tourStartTitle => 'เริ่ม';
 
   @override
-  String get tourStartDesc =>
-      'แตะ **ปุ่มเริ่ม** เพื่อเปิด หลังจากนั้นเลือก **โหมดเล่นคนเดียว** หรือ **โหมดแบทเทิล** ผ่าน **บลูทูธ**';
+  String get tourStartDesc => 'แตะ **เริ่ม** เพื่อเลือกวิธีเล่น';
 
   @override
-  String get tourInstantStartTitle => 'เริ่มต้นเกมแบบรวดเร็ว';
+  String get tourInstantStartTitle => 'เริ่มทันที';
 
   @override
   String get tourInstantStartDesc =>
-      'แตะปุ่ม **เริ่มต้นทันที** เพื่อเล่นเกมเดี่ยวในระดับความยากล่าสุดที่คุณเล่น มันคือทางลัดที่เร็วที่สุดในการสะสมคะแนนต่อ!';
+      'เข้าเกม**เล่นคนเดียว**ทันทีด้วยระดับความยากที่คุณเล่นครั้งล่าสุด';
 
   @override
-  String get tourSoloTitle => 'โหมดเล่นคนเดียว';
+  String get tourSoloTitle => 'เล่นได้สองแบบ';
 
   @override
   String get tourSoloDesc =>
-      'ใน **โหมดเล่นคนเดียว**, ท้าทายตัวคุณเอง เลือกระหว่าง **4 ระดับความยาก** จะเริ่มด้วย **3 ชีวิต** การตอบผิดจะเสีย 1 ชีวิต **ยากขึ้น** จะยิ่งได้คะแนนเยอะขึ้น!';
+      '**โหมดเล่นคนเดียว**: เล่นคนเดียวและทำลายสถิติของคุณ **โหมดต่อสู้**: ท้าเพื่อนที่อยู่ใกล้ผ่าน **Bluetooth** — คนหนึ่งสร้างห้อง อีกคนเข้าร่วม';
 
   @override
   String get tourCombatTitle => 'โหมดแบทเทิล - มัลติเพลเยอร์ผ่านบลูทูธ';
@@ -451,11 +450,11 @@ class AppLocalizationsTh extends AppLocalizations {
       '**เข้าร่วมห้อง** ทำให้คุณเป็น **ผู้มาเยือน**. กดสแกนห้องรอบๆและกดเข้าร่วม, แตะ **พร้อมเล่น** แล้วโฮสต์จะเลือกระดับ และคุณได้เล่นเป็นคนถัดไป';
 
   @override
-  String get tourLeaderboardTitle => 'ตารางคะแนน';
+  String get tourLeaderboardTitle => 'ยังมีอีกมาก';
 
   @override
   String get tourLeaderboardDesc =>
-      'ดูคะแนนและอันดับของคุณ! รวมถึง **สถิติ** เปรียบเทียบกับเพื่อนของคุณ';
+      '**คะแนนสูงสุด** แสดงอันดับ **การตั้งค่า** ใช้เปลี่ยนชื่อ ธีม เสียง และภาษา และ **เกี่ยวกับ** อธิบายกติกา ต่อไป: **เกมฝึกเล่น**สั้นๆ!';
 
   @override
   String get tourSettingsTitle => 'ตั้งค่า';
@@ -490,11 +489,11 @@ class AppLocalizationsTh extends AppLocalizations {
   String get tourResetMessage => 'รีเซ็ตทัวร์แล้ว กลับไปที่เมนูหลัก.';
 
   @override
-  String get tourRuleRegularWelcomeTitle => 'Let\'s Play!';
+  String get tourRuleRegularWelcomeTitle => 'Regular Mode';
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out. Ready to give it a try?';
+      'Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.';
 
   @override
   String get tourRuleRegularLivesTitle => 'Your Lives';
@@ -576,7 +575,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Instead of typing, you\'ll pick the correct answer from a few choices.';
+      'Here you don\'t type — tap the **right answer**. The other choices are decoys.';
 
   @override
   String get tourRulePickRightOptionsTitle => 'Choose Wisely';
@@ -629,7 +628,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'In Combat Mode, you and an opponent take turns racing to answer first.';
+      'You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.';
 
   @override
   String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';
@@ -800,4 +799,10 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get youWereAway => 'คุณไม่อยู่นานเกินไป';
+
+  @override
+  String get tourChapterRegular => 'แบบคลาสสิก';
+
+  @override
+  String get tourRuleRegularTypeBackResult => 'Correct — that\'s a **point**!';
 }

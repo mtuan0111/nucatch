@@ -47,6 +47,17 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
     // Remove previous overlay
     _removeTourOverlay();
 
+    // A menu step that's no longer part of the tour (e.g. saved mid-tour by
+    // an older version) moves on to the next one that is.
+    final step = tourState.currentTourStep;
+    if (!step.name.startsWith('gameTutorial') &&
+        !TourProgress.menuSteps.contains(step)) {
+      context
+          .read<TourBloc>()
+          .add(TourJumpToStep(TourProgress.nextAfter(step).index));
+      return;
+    }
+
     // Update last shown step
     _lastShownStep = tourState.currentTourStep;
 
@@ -151,19 +162,20 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
         card: TourCard(
           title: _getTitleForStep(step),
           description: _getDescriptionForStep(step),
-          progress: TourProgress.menuLabel(tourState.currentStep),
+          progress: TourProgress.menuLabel(context, step),
           onSkip: () {
             _removeTourOverlay();
             context.read<TourBloc>().add(TourSkipped());
           },
-          onPrevious: tourState.isFirstStep
+          onPrevious: TourProgress.previousBefore(step) == null
               ? null
               : () {
                   _removeTourOverlay();
-                  context.read<TourBloc>().add(TourStepBack());
+                  context.read<TourBloc>().add(
+                      TourJumpToStep(TourProgress.previousBefore(step)!.index));
                 },
           // Always "Next", never "Finish" — this dialog never actually
-          // ends the tour anymore. `about` (the last dialog step) always
+          // ends the tour anymore. The last menu step always
           // advances into the in-game rule tutorial next; the tour only
           // truly finishes from that tutorial's own Finish button.
           onNext: () {
@@ -176,61 +188,54 @@ class _GlobalTourWrapperState extends State<GlobalTourWrapper> {
             // either end the tour too early (iOS) or walk into the
             // unhandled gameTutorialStep2-5 dead steps (elsewhere).
             // Jumping to an explicit index sidesteps both bugs without
-            // touching the shared skeleton_core package.
+            // touching the shared skeleton_core package — and lets the tour
+            // use only the steps in TourProgress.menuSteps.
             context
                 .read<TourBloc>()
-                .add(TourJumpToStep(tourState.currentStep + 1));
+                .add(TourJumpToStep(TourProgress.nextAfter(step).index));
           },
         ),
       ),
     );
   }
 
-  /// The key of the on-screen element [step] describes, or null for the
+  /// The keys of the on-screen elements [step] describes — empty for the
   /// welcome step (nothing to point at yet — the card is centered).
-  GlobalKey? _targetKeyForStep(TourStep step) {
+  List<GlobalKey> _targetKeysForStep(TourStep step) {
     switch (step) {
-      case TourStep.welcome:
-        return null;
       case TourStep.startButton:
-        return TourKeys.menuOptionKeys[MenuOption.start];
+        return [TourKeys.menuOptionKeys[MenuOption.start]!];
       case TourStep.instantStart:
-        return TourKeys.menuOptionKeys[MenuOption.instantStart];
+        return [TourKeys.menuOptionKeys[MenuOption.instantStart]!];
       case TourStep.soloMode:
-        return TourKeys.soloModeCardKey;
-      case TourStep.combatMode:
-      // Create Room / Join Room both live behind the Combat card — the
-      // steps explain them while still on the play-mode picker.
-      case TourStep.createRoom:
-      case TourStep.joinRoom:
-        return TourKeys.combatModeCardKey;
+        // "Two ways to play": both play-mode cards.
+        return [TourKeys.soloModeCardKey, TourKeys.combatModeCardKey];
       case TourStep.leaderboard:
-        return TourKeys.menuOptionKeys[MenuOption.topScore];
-      case TourStep.settings:
-        return TourKeys.menuOptionKeys[MenuOption.setting];
-      case TourStep.about:
-        return TourKeys.menuOptionKeys[MenuOption.about];
-      case TourStep.gameTutorialStep1:
-      case TourStep.gameTutorialStep2:
-      case TourStep.gameTutorialStep3:
-      case TourStep.gameTutorialStep4:
-      case TourStep.gameTutorialStep5:
-      case TourStep.gameTutorialWaiting:
-        // Never rendered here — see _showTourDialog.
-        return null;
+        // "More to explore": Top Score, Settings and About together.
+        return [
+          TourKeys.menuOptionKeys[MenuOption.topScore]!,
+          TourKeys.menuOptionKeys[MenuOption.setting]!,
+          TourKeys.menuOptionKeys[MenuOption.about]!,
+        ];
+      default:
+        // welcome, the menu steps folded into the two above (see
+        // TourProgress.menuSteps), and the in-game steps — never rendered
+        // here, see _showTourDialog.
+        return const [];
     }
   }
 
   Rect _targetRectForStep(TourStep step) {
-    final key = _targetKeyForStep(step);
-    return key == null ? Rect.zero : getRectForKeys([key]);
+    final keys = _targetKeysForStep(step);
+    return keys.isEmpty ? Rect.zero : getRectForKeys(keys);
   }
 
   /// Scrolls [step]'s element into view (the menu list scrolls in
   /// landscape and at large font sizes) so the spotlight never points
   /// off-screen.
   void _revealTarget(TourStep step) {
-    final targetContext = _targetKeyForStep(step)?.currentContext;
+    final keys = _targetKeysForStep(step);
+    final targetContext = keys.isEmpty ? null : keys.first.currentContext;
     if (targetContext == null) return;
     Scrollable.ensureVisible(
       targetContext,

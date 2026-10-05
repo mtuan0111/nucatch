@@ -413,28 +413,27 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'Selamat datang! Tur singkat ini akan membantu Anda memulai **NuCatch** dengan lancar. Kami akan menunjukkan semua **fitur utama** agar Anda bisa langsung bermain.';
+      'Tur singkat: pertama **menu**, lalu **permainan latihan** singkat. Kamu bisa melewatinya kapan saja.';
 
   @override
-  String get tourStartTitle => 'Mulai - Mulai Permainan';
+  String get tourStartTitle => 'Mulai';
 
   @override
-  String get tourStartDesc =>
-      'Ketuk **tombol Mulai**. Anda akan memilih antara **Mode Solo** untuk tantangan matematika individu, atau **Mode Tempur** untuk pertarungan multipemain via **Bluetooth**.';
+  String get tourStartDesc => 'Ketuk **Mulai** untuk memilih cara bermain.';
 
   @override
   String get tourInstantStartTitle => 'Mulai Instan';
 
   @override
   String get tourInstantStartDesc =>
-      'Ketuk tombol **Mulai Instan** untuk memulai game solo langsung menggunakan tingkat kesulitan yang sama dengan saat terakhir bermain. Cara tercepat melanjutkan progres permainan Anda!';
+      'Langsung main **Solo** dengan tingkat kesulitan terakhir yang kamu mainkan.';
 
   @override
-  String get tourSoloTitle => 'Mode Solo';
+  String get tourSoloTitle => 'Dua Cara Bermain';
 
   @override
   String get tourSoloDesc =>
-      'Tantang diri Anda di **Mode Solo**. Pilih dari **4 tingkat kesulitan**. Anda mulai dengan **3 nyawa** - setiap salah jawab/habis waktu mengurangi 1 nyawa. **Kesulitan tinggi** = poin lebih besar!';
+      '**Mode Solo**: bermain sendiri dan kalahkan skor terbaikmu. **Mode Pertarungan**: tantang teman di dekatmu lewat **Bluetooth** — satu membuat ruangan, yang lain bergabung.';
 
   @override
   String get tourCombatTitle => 'Mode Tempur - Multiplayer Bluetooth';
@@ -458,11 +457,11 @@ class AppLocalizationsId extends AppLocalizations {
       '**Gabung Ruang** menjadikan Anda **Tamu**. Pindai ruang sekitar, pilih lalu ketuk **Siap**. Anda main kedua.';
 
   @override
-  String get tourLeaderboardTitle => 'Papan Peringkat';
+  String get tourLeaderboardTitle => 'Jelajahi Lebih Banyak';
 
   @override
   String get tourLeaderboardDesc =>
-      'Lacak kemajuan Anda! Lihat **peringkat global**, **rekor pribadi**, dan **statistik**. Bandingkan dengan teman.';
+      '**Skor Tertinggi** menampilkan peringkat, **Pengaturan** untuk mengubah nama, tema, suara, dan bahasa, dan **Tentang** menjelaskan aturannya. Berikutnya: **permainan latihan** singkat!';
 
   @override
   String get tourSettingsTitle => 'Pengaturan';
@@ -498,11 +497,11 @@ class AppLocalizationsId extends AppLocalizations {
       'Tur diatur ulang. Kembali ke menu utama untuk mulai.';
 
   @override
-  String get tourRuleRegularWelcomeTitle => 'Let\'s Play!';
+  String get tourRuleRegularWelcomeTitle => 'Regular Mode';
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out. Ready to give it a try?';
+      'Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.';
 
   @override
   String get tourRuleRegularLivesTitle => 'Your Lives';
@@ -584,7 +583,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Instead of typing, you\'ll pick the correct answer from a few choices.';
+      'Here you don\'t type — tap the **right answer**. The other choices are decoys.';
 
   @override
   String get tourRulePickRightOptionsTitle => 'Choose Wisely';
@@ -637,7 +636,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'In Combat Mode, you and an opponent take turns racing to answer first.';
+      'You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.';
 
   @override
   String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';
@@ -809,4 +808,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get youWereAway => 'Kamu pergi terlalu lama';
+
+  @override
+  String get tourChapterRegular => 'Klasik';
+
+  @override
+  String get tourRuleRegularTypeBackResult => 'Correct — that\'s a **point**!';
 }

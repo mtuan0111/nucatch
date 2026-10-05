@@ -37,24 +37,34 @@ void main() {
       final cubit = TutorialCubit();
       cubit.start();
       final tokenAfterStart = cubit.state.seedToken;
-      // Lesson 1 -> 2 (RegularLives -> RegularMemorize) reseeds since
+      // Lesson 0 -> 1 (RegularWelcome -> RegularMemorize) reseeds since
       // RegularMemorize carries its own turnSeed.
       cubit.next();
-      cubit.next();
-      expect(TutorialScript.lessons[2].turnSeed, isNotNull);
+      expect(TutorialScript.lessons[1].turnSeed, isNotNull);
       expect(cubit.state.seedToken, greaterThan(tokenAfterStart));
       cubit.close();
     });
 
     test('next() does not bump seedToken for a lesson with no seed and same arc', () {
+      // The first lesson that has no seed of its own and stays in the same
+      // arc as the one before it (e.g. RegularMemorize -> RegularTypeBack).
+      final lessons = TutorialScript.lessons;
+      final target = [
+        for (var i = 1; i < lessons.length; i++)
+          if (lessons[i].turnSeed == null &&
+              lessons[i].combatSeed == null &&
+              lessons[i].arc == lessons[i - 1].arc)
+            i,
+      ].first;
       final cubit = TutorialCubit();
       cubit.start();
-      final tokenAfterStart = cubit.state.seedToken;
-      // Lesson 0 -> 1 (RegularWelcome -> RegularLives): same arc, no seed.
-      expect(TutorialScript.lessons[1].turnSeed, isNull);
-      expect(TutorialScript.lessons[1].arc, TutorialScript.lessons[0].arc);
+      for (var i = 0; i < target - 1; i++) {
+        cubit.next();
+      }
+      final tokenBefore = cubit.state.seedToken;
       cubit.next();
-      expect(cubit.state.seedToken, tokenAfterStart);
+      expect(cubit.state.lessonIndex, target);
+      expect(cubit.state.seedToken, tokenBefore);
       cubit.close();
     });
 

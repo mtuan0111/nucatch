@@ -41,25 +41,61 @@ class TourSpotlightLayer extends StatefulWidget {
 }
 
 class _TourSpotlightLayerState extends State<TourSpotlightLayer> {
-  /// Rebuilds once more if the target ended up somewhere other than where
-  /// [build] measured it. [build] reads positions from the previous frame's
-  /// layout, so whenever the target moves — the page it's on sliding in,
-  /// fold/unfold, a posture change, rotation — the hole (the only place
-  /// taps get through) would otherwise stay where the element used to be.
-  void _settle(Rect measured) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      if (widget.measureTarget() != measured) setState(() {});
-    });
+  Rect _measured = Rect.zero;
+  DateTime _watchUntil = DateTime.now();
+  bool _watching = false;
+
+  /// [TourSpotlightLayer.measureTarget] (global coordinates) in this
+  /// layer's own coordinates — the hole and card are laid out in those, and
+  /// the two differ whenever the layer itself is offset, e.g. while the
+  /// in-game screen hosting it is still sliding in.
+  Rect _measureLocal() {
+    final target = widget.measureTarget();
+    if (target == Rect.zero) return target;
+    final box = context.findRenderObject() as RenderBox?;
+    if (box == null || !box.attached || !box.hasSize) return target;
+    return target.shift(-box.localToGlobal(Offset.zero));
+  }
+
+  /// Keeps re-measuring for a short while after every build and rebuilds
+  /// whenever the target has moved. [build] reads positions from the
+  /// previous frame's layout, and the target keeps moving after it — the
+  /// page it's on sliding in, a list scrolling it into view, fold/unfold,
+  /// rotation — so without this the hole (the only place taps get through)
+  /// would stay where the element used to be.
+  void _watch() {
+    _watchUntil = DateTime.now().add(const Duration(milliseconds: 800));
+    if (_watching) return;
+    _watching = true;
+    WidgetsBinding.instance.addPostFrameCallback(_check);
+  }
+
+  void _check(Duration _) {
+    if (!mounted) {
+      _watching = false;
+      return;
+    }
+    if (_measureLocal() != _measured) {
+      _watching = false;
+      setState(() {}); // build re-measures and calls _watch again
+      return;
+    }
+    if (DateTime.now().isBefore(_watchUntil)) {
+      WidgetsBinding.instance
+        ..addPostFrameCallback(_check)
+        ..scheduleFrame();
+    } else {
+      _watching = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Re-measure whenever the window or its hinge changes; see [_settle].
+    // Re-measure whenever the window or its hinge changes; see [_watch].
     MediaQuery.sizeOf(context);
     MediaQuery.displayFeaturesOf(context);
-    final targetRect = widget.measureTarget();
-    _settle(targetRect);
+    final targetRect = _measured = _measureLocal();
+    _watch();
 
     return Stack(
       children: [

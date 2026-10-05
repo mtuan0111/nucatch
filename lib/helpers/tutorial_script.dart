@@ -1,4 +1,5 @@
-import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show Difficulty;
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart'
+    show Difficulty;
 import 'package:nucatch/helpers/combat_tutorial_script.dart';
 import 'package:nucatch/helpers/const.dart' show KeyboardOption;
 import 'package:nucatch/helpers/tutorial_seeds.dart';
@@ -89,19 +90,14 @@ class TutorialScript {
       key: 'RegularWelcome',
       arc: TutorialArc.regular,
       hostScreen: TutorialHostScreen.playScreen,
-      spotlight: TutorialSpotlight.wholeScreen,
+      // Also introduces the 3 lives (formerly a separate RegularLives card).
+      spotlight: TutorialSpotlight.lifePanel,
       turnSeed: TutorialTurnSeed(
         difficulty: Difficulty.easy,
         requirementString: '6',
         expect: '6',
         level: 1,
       ),
-    ),
-    TutorialLessonData(
-      key: 'RegularLives',
-      arc: TutorialArc.regular,
-      hostScreen: TutorialHostScreen.playScreen,
-      spotlight: TutorialSpotlight.lifePanel,
     ),
     TutorialLessonData(
       key: 'RegularMemorize',
@@ -125,14 +121,10 @@ class TutorialScript {
       spotlightKey: KeyboardOption.eight,
       interaction: TutorialInteraction.tapKey,
       requiredKey: KeyboardOption.eight,
-    ),
-    TutorialLessonData(
-      key: 'RegularScoring',
-      arc: TutorialArc.regular,
-      hostScreen: TutorialHostScreen.playScreen,
-      spotlight: TutorialSpotlight.scorePanel,
-      // Purely informational, narrating the point R4's tap already earned
-      // via the real bloc — not a separate action/result cycle of its own.
+      // "Correct — that's a point!" on the score panel (formerly a separate
+      // RegularScoring card).
+      hasResultBeat: true,
+      resultSpotlight: TutorialSpotlight.scorePanel,
     ),
     TutorialLessonData(
       key: 'RegularTimer',
@@ -216,7 +208,9 @@ class TutorialScript {
       key: 'PickRightWelcome',
       arc: TutorialArc.pickRight,
       hostScreen: TutorialHostScreen.playScreen,
-      spotlight: TutorialSpotlight.requirementArea,
+      // Also points out the answer choices (formerly a separate
+      // PickRightOptions card).
+      spotlight: TutorialSpotlight.pickRightOptions,
       turnSeed: TutorialTurnSeed(
         difficulty: Difficulty.pickRight,
         requirementString: '5 | 8 | 6',
@@ -226,12 +220,6 @@ class TutorialScript {
         equations: ['5', '8', '6'],
         correctIndex: 1,
       ),
-    ),
-    TutorialLessonData(
-      key: 'PickRightOptions',
-      arc: TutorialArc.pickRight,
-      hostScreen: TutorialHostScreen.playScreen,
-      spotlight: TutorialSpotlight.pickRightOptions,
     ),
     TutorialLessonData(
       key: 'PickRightCorrect',
@@ -299,18 +287,14 @@ class TutorialScript {
       key: 'CombatWelcome',
       arc: TutorialArc.combat,
       hostScreen: TutorialHostScreen.combatPlayScreen,
-      spotlight: TutorialSpotlight.combatHeader,
+      // Also explains the turn badge (formerly a separate CombatTurnOrder
+      // card).
+      spotlight: TutorialSpotlight.statusBadge,
       combatSeed: TutorialCombatSeed(
         requirementString: '4',
         expect: '4',
         level: 1,
       ),
-    ),
-    TutorialLessonData(
-      key: 'CombatTurnOrder',
-      arc: TutorialArc.combat,
-      hostScreen: TutorialHostScreen.combatPlayScreen,
-      spotlight: TutorialSpotlight.statusBadge,
     ),
     TutorialLessonData(
       key: 'CombatYourTurn',
@@ -331,42 +315,6 @@ class TutorialScript {
       opponentScript: CombatTutorialScript.opponentTypesAndSucceeds,
     ),
     TutorialLessonData(
-      key: 'CombatOpponentLifeLost',
-      arc: TutorialArc.combat,
-      hostScreen: TutorialHostScreen.combatPlayScreen,
-      spotlight: TutorialSpotlight.opponentLifePanel,
-      interaction: TutorialInteraction.watch,
-      hasResultBeat: true,
-      opponentScript: CombatTutorialScript.opponentMissesOnce,
-      // Re-pins state (and, critically, stops any timer still running from
-      // C4's real "opponent succeeded, hand turn back to host" consequence)
-      // before this lesson's script plays — otherwise that real turn keeps
-      // generating fresh real challenges/timeouts that race the script.
-      combatSeed: TutorialCombatSeed(
-        requirementString: '9',
-        expect: '9',
-        level: 1,
-        opponentLives: 3,
-      ),
-    ),
-    TutorialLessonData(
-      key: 'CombatTimer',
-      arc: TutorialArc.combat,
-      hostScreen: TutorialHostScreen.combatPlayScreen,
-      spotlight: TutorialSpotlight.timerBar,
-      interaction: TutorialInteraction.watch,
-      hasResultBeat: true,
-      resultSpotlight: TutorialSpotlight.lifePanel,
-      emphasise: true,
-      combatSeed: TutorialCombatSeed(
-        requirementString: '3',
-        expect: '3',
-        level: 1,
-        tapTimerSeconds: 1.5,
-        startTimer: true,
-      ),
-    ),
-    TutorialLessonData(
       key: 'CombatWin',
       arc: TutorialArc.combat,
       hostScreen: TutorialHostScreen.combatPlayScreen,
@@ -374,9 +322,11 @@ class TutorialScript {
       interaction: TutorialInteraction.watch,
       hasResultBeat: true,
       opponentScript: CombatTutorialScript.opponentLosesTheMatch,
-      // Same reasoning as CombatOpponentLifeLost's combatSeed — re-pins
-      // state and stops any timer left running from C6's real timeout
-      // consequence before this lesson's (final) script plays.
+      // Re-pins state (and, critically, stops any timer still running from
+      // CombatOpponentTurn's real "opponent succeeded, hand turn back to
+      // host" consequence) before this lesson's (final) script plays —
+      // otherwise that real turn keeps generating fresh real
+      // challenges/timeouts that race the script.
       combatSeed: TutorialCombatSeed(
         requirementString: '4',
         expect: '4',

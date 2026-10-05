@@ -169,80 +169,77 @@ void main() {
     step('calling app.main()');
     app.main();
 
-    // ── Menu tour (dialog-based, 10 steps: welcome..about) ─────
+    // ── Part 1: menu (5 steps: welcome, start, play modes, instant start,
+    // more — see TourProgress.menuSteps) ─────
     step('waiting for the tour to auto-start (Welcome dialog)');
     expect(await waitFor(find.text('Next'), maxSeconds: 20), isTrue,
         reason: 'the menu tour should auto-start for a first-time user');
 
-    step('walking welcome -> about (9 taps of Next)');
-    for (int i = 0; i < 9; i++) {
+    step('walking welcome -> more (4 taps of Next)');
+    for (int i = 0; i < 4; i++) {
       await tapTutorialNext();
     }
 
-    step('tapping Next on "about" to enter the in-game tutorial');
+    step('tapping Next on "more" to enter the in-game practice');
     await tapTutorialNext();
 
-    // ── Regular arc ──────────────────────────────────────────
+    // ── Part 2: Regular (8 lessons) ──────────────────────────
     step('waiting for PlayScreen (Regular arc)');
     expect(await waitFor(find.byType(PlayScreen), maxSeconds: 20), isTrue,
         reason: 'entering the tutorial should land on PlayScreen');
 
-    step('R1 RegularWelcome: Next');
+    step('R1 RegularWelcome (+ lives): Next');
     await tapTutorialNext();
-    step('R2 RegularLives: Next');
-    await tapTutorialNext();
-    step('R3 RegularMemorize: waiting for the real memorize phase to end');
+    step('R2 RegularMemorize: waiting for the real memorize phase to end');
     await doWait(4);
-    step('R4 RegularTypeBack: tapping the "8" key');
+    step('R3 RegularTypeBack: tapping the "8" key');
     await tapKeypadKey(KeyboardOption.eight, '8');
-    step('R5 RegularScoring: Next');
+    step('R3 result beat (point scored): Next');
     await tapTutorialNext();
-    step('R6 RegularTimer: waiting for the real ~1.5s timeout');
+    step('R4 RegularTimer: waiting for the real ~1.5s timeout');
     await doWait(4);
+    step('R4 result beat: Next');
+    await tapTutorialNext();
+    step('R5 RegularReset: tapping reset (always costs a life for real)');
+    await tapResetKey();
+    step('R6 RegularLevelUp: tapping the "2" key (real level-up)');
+    await tapKeypadKey(KeyboardOption.two, '2');
     step('R6 result beat: Next');
     await tapTutorialNext();
-    step('R7 RegularReset: tapping reset (always costs a life for real)');
-    await tapResetKey();
-    step('R8 RegularLevelUp: tapping the "2" key (real level-up)');
-    await tapKeypadKey(KeyboardOption.two, '2');
-    step('R8 result beat: Next');
-    await tapTutorialNext();
-    step('R9 RegularGameOver: waiting for the real ~1.5s timeout -> Game Over');
+    step('R7 RegularGameOver: waiting for the real ~1.5s timeout -> Game Over');
     await doWait(4);
     step('waiting for GameOverScreen');
     expect(await waitFor(find.byType(GameOverScreen), maxSeconds: 15), isTrue,
-        reason: 'R9\'s seeded timeout should cause a real game over');
-    step('R10 RegularWrapUp: Next (hands off into the Pick Right arc)');
+        reason: 'R7\'s seeded timeout should cause a real game over');
+    step('R8 RegularWrapUp: Next (hands off into the Pick Right part)');
     await tapTutorialNext();
 
-    // ── Pick Right arc ───────────────────────────────────────
+    // ── Part 3: Pick Right (5 lessons) ───────────────────────
     step('waiting for PlayScreen (Pick Right arc)');
     expect(await waitFor(find.byType(PlayScreen), maxSeconds: 20), isTrue,
         reason: 'RegularWrapUp should hand off back to PlayScreen');
 
-    step('P1 PickRightWelcome: Next');
+    step('P1 PickRightWelcome (+ choices): Next');
     await tapTutorialNext();
-    step('P2 PickRightOptions: Next');
-    await tapTutorialNext();
-    step('P3 PickRightCorrect: tapping the correct option');
+    step('P2 PickRightCorrect: tapping the correct option');
     await tapPickRightButton(1);
+    step('P2 result beat: Next');
+    await tapTutorialNext();
+    step('P3 PickRightWrong: tapping a decoy option (real life lost)');
+    await tapPickRightButton(0);
     step('P3 result beat: Next');
     await tapTutorialNext();
-    step('P4 PickRightWrong: tapping a decoy option (real life lost)');
-    await tapPickRightButton(0);
-    step('P4 result beat: Next');
-    await tapTutorialNext();
-    step('P5 PickRightTimer: waiting for the real ~1.2s timeout -> Game Over');
+    step('P4 PickRightTimer: waiting for the real ~1.2s timeout -> Game Over');
     await doWait(4);
     step('waiting for GameOverScreen');
     expect(await waitFor(find.byType(GameOverScreen), maxSeconds: 15), isTrue,
-        reason: 'P5\'s seeded timeout should cause a real game over');
-    step('P5 result beat: Next');
+        reason: 'P4\'s seeded timeout should cause a real game over');
+    step('P4 result beat: Next');
     await tapTutorialNext();
-    step('P6 PickRightWrapUp: Next (hands off into the Combat arc)');
+    step('P5 PickRightWrapUp: Next (hands off into the Combat part)');
     await tapTutorialNext();
 
-    // ── Combat arc ────────────────────────────────────────────
+    // ── Part 4: Combat (5 lessons) ───────────────────────────
     // CombatModeSetupScreen is structurally always the base page of
     // CombatNav's Navigator, so it can flash for a frame before the
     // combat-arc entry gate promotes to CombatPlayingState — what matters
@@ -253,25 +250,15 @@ void main() {
     expect(await waitFor(find.byType(CombatPlayScreen), maxSeconds: 20), isTrue,
         reason: 'the combat arc should land directly on CombatPlayScreen');
 
-    step('C1 CombatWelcome: Next');
+    step('C1 CombatWelcome (+ turn badge): Next');
     await tapTutorialNext();
-    step('C2 CombatTurnOrder: Next');
-    await tapTutorialNext();
-    step('C3 CombatYourTurn: tapping the "4" key');
+    step('C2 CombatYourTurn: tapping the "4" key');
     await tapKeypadKey(KeyboardOption.four, '4');
-    step('C4 CombatOpponentTurn: waiting for the scripted opponent turn');
+    step('C3 CombatOpponentTurn: waiting for the scripted opponent turn');
     await doWait(4);
-    step('C4 result beat: Next');
+    step('C3 result beat: Next');
     await tapTutorialNext();
-    step('C5 CombatOpponentLifeLost: waiting for the scripted opponent miss');
-    await doWait(4);
-    step('C5 result beat: Next');
-    await tapTutorialNext();
-    step('C6 CombatTimer: waiting for the real ~1.5s timeout');
-    await doWait(4);
-    step('C6 result beat: Next');
-    await tapTutorialNext();
-    step('C7 CombatWin: waiting for the scripted opponent to lose the match');
+    step('C4 CombatWin: waiting for the scripted opponent to lose the match');
     await doWait(4);
 
     step('waiting for the real win to land');
@@ -280,12 +267,12 @@ void main() {
             find.text('Finish').evaluate().isNotEmpty,
         isTrue,
         reason: 'the scripted match should end and hand back to the tutorial');
-    step('C7 result beat: Next');
+    step('C4 result beat: Next');
     if (find.text('Next').evaluate().isNotEmpty) {
       await tapTutorialNext();
     }
 
-    step('C8 CombatWrapUp: Finish');
+    step('C5 CombatWrapUp: Finish');
     await tapText('Finish');
 
     // ── Teardown ──────────────────────────────────────────────

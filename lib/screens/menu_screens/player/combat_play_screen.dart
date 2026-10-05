@@ -156,11 +156,6 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
           tutorialCubit.onActionResolved();
         }
         break;
-      case 'CombatTimer':
-        if (state.lifeRemaining < previous.lifeRemaining) {
-          tutorialCubit.onActionResolved();
-        }
-        break;
     }
   }
 

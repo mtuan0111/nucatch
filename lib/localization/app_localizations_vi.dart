@@ -412,28 +412,27 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'Chào bạn! Đây là hướng dẫn ngắn để bạn bắt đầu chơi **NuCatch**. Chúng tôi sẽ chỉ cho bạn tất cả các **tính năng chính** để bạn có thể sẵn sàng ngay lập tức.';
+      'Một chuyến tham quan nhanh: trước hết là **menu**, sau đó là một **ván chơi thử** ngắn. Bạn có thể bỏ qua bất cứ lúc nào.';
 
   @override
-  String get tourStartTitle => 'Bắt đầu - Vào Game';
+  String get tourStartTitle => 'Bắt đầu';
 
   @override
-  String get tourStartDesc =>
-      'Nhấn **Nút Bắt Đầu** để chơi. Bạn có thể chọn giữa **Chế độ Solo** để chơi một mình, hoặc **Chế độ Đối Kháng** cho Bluetooth nhiều người chơi.';
+  String get tourStartDesc => 'Nhấn **Bắt đầu** để chọn cách chơi.';
 
   @override
-  String get tourInstantStartTitle => 'Bắt Đầu Nhanh';
+  String get tourInstantStartTitle => 'Bắt đầu nhanh';
 
   @override
   String get tourInstantStartDesc =>
-      'Nhấn nút **Bắt Đầu Nhanh** để vào ngay trò chơi solo với cùng mức độ khó như lần trước. Đây là cách nhanh nhất để tiếp tục!';
+      'Vào ngay một ván **Chơi đơn** với độ khó bạn chơi lần trước.';
 
   @override
-  String get tourSoloTitle => 'Chế độ Solo';
+  String get tourSoloTitle => 'Hai cách chơi';
 
   @override
   String get tourSoloDesc =>
-      'Ở **Chế độ Solo**, hãy thử thách chính mình. Chọn giữa **4 mức độ khó**. Trò chơi cung cấp **3 mạng** - mỗi câu hỏi sai bạn sẽ mất 1 mạng. **Khó hơn** tức là sẽ nhiều điểm hơn!';
+      '**Chơi đơn**: chơi một mình và phá kỷ lục của bạn. **Chế độ đối kháng**: thách đấu bạn bè ở gần qua **Bluetooth** — một người tạo phòng, người kia tham gia.';
 
   @override
   String get tourCombatTitle => 'Chế độ Đối Kháng - Qua Bluetooth';
@@ -457,11 +456,11 @@ class AppLocalizationsVi extends AppLocalizations {
       '**Vào Phòng** khiến bạn là **Khách**. Hãy quét xung quanh phòng hiển thị, chọn và ấn **Sẵn Sàng**. Bạn chơi sau người tạo phòng.';
 
   @override
-  String get tourLeaderboardTitle => 'Bảng Xếp Hạng';
+  String get tourLeaderboardTitle => 'Còn nhiều điều để khám phá';
 
   @override
   String get tourLeaderboardDesc =>
-      'Theo dõi kỷ lục của bạn trong trang này! Cả điểm số **toàn cầu** cũng như **kỷ lục cá nhân** của bạn, và **thống kê**. Hãy khoe bạn bè !';
+      '**Điểm cao nhất** hiển thị bảng xếp hạng, **Cài đặt** để đổi tên, giao diện, âm thanh và ngôn ngữ, còn **Giới thiệu** giải thích luật chơi. Tiếp theo: một **ván chơi thử** ngắn!';
 
   @override
   String get tourSettingsTitle => 'Cài Đặt';
@@ -497,11 +496,11 @@ class AppLocalizationsVi extends AppLocalizations {
       'Đã tạo lại hướng dẫn. Xin quay về Màn hình Chính để xem.';
 
   @override
-  String get tourRuleRegularWelcomeTitle => 'Let\'s Play!';
+  String get tourRuleRegularWelcomeTitle => 'Regular Mode';
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out. Ready to give it a try?';
+      'Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.';
 
   @override
   String get tourRuleRegularLivesTitle => 'Your Lives';
@@ -583,7 +582,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Instead of typing, you\'ll pick the correct answer from a few choices.';
+      'Here you don\'t type — tap the **right answer**. The other choices are decoys.';
 
   @override
   String get tourRulePickRightOptionsTitle => 'Choose Wisely';
@@ -636,7 +635,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'In Combat Mode, you and an opponent take turns racing to answer first.';
+      'You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.';
 
   @override
   String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';
@@ -809,4 +808,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get youWereAway => 'Bạn đã rời đi quá lâu';
+
+  @override
+  String get tourChapterRegular => 'Cổ điển';
+
+  @override
+  String get tourRuleRegularTypeBackResult => 'Correct — that\'s a **point**!';
 }

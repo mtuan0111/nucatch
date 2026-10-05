@@ -414,28 +414,28 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      'Bienvenue ! Cette courte visite vous aidera à bien démarrer avec **NuCatch**. Nous allons vous montrer toutes les **fonctionnalités principales** pour que vous puissiez plonger et commencer à jouer  immédiatement.';
+      'Une visite rapide : d\'abord le **menu**, puis une courte **partie d\'entraînement**. Vous pouvez la passer à tout moment.';
 
   @override
-  String get tourStartTitle => 'Démarrer - Lancez votre Partie';
+  String get tourStartTitle => 'Commencer';
 
   @override
   String get tourStartDesc =>
-      'Appuyez sur le **bouton Démarrer** pour lancer. Vous choisirez ensuite entre le **Mode Solo** pour des défis mathématiques individuels, ou le **Mode Combat** pour des batailles multijoueurs via **Bluetooth**.';
+      'Appuyez sur **Commencer** pour choisir comment jouer.';
 
   @override
-  String get tourInstantStartTitle => 'Démarrage Rapide';
+  String get tourInstantStartTitle => 'Démarrage instantané';
 
   @override
   String get tourInstantStartDesc =>
-      'Appuyez sur le bouton **Démarrage Rapide** pour lancer immédiatement une partie en solo avec le même niveau de difficulté que vous avez joué la dernière fois. C\'est le moyen le plus rapide de continuer votre progression !';
+      'Lancez directement une partie **Solo** avec la difficulté jouée la dernière fois.';
 
   @override
-  String get tourSoloTitle => 'Mode Solo - Jouez Seul';
+  String get tourSoloTitle => 'Deux façons de jouer';
 
   @override
   String get tourSoloDesc =>
-      'En **Mode Solo**, mettez-vous au défi. Choisissez parmi **4 niveaux de difficulté**. Vous commencez avec **3 vies** - chaque mauvaise réponse ou dépassement de temps coûte 1 vie. Une **difficulté plus élevée** signifie plus de points !';
+      '**Mode Solo** : jouez seul et battez votre meilleur score. **Mode Combat** : défiez un ami à proximité via **Bluetooth** — l\'un crée une salle, l\'autre la rejoint.';
 
   @override
   String get tourCombatTitle => 'Mode Combat - Multijoueur Bluetooth';
@@ -459,11 +459,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Deuxième option : **Rejoindre un Salon** fait de vous l\'**invité**. Vous **scannerez** les salons à proximité, en sélectionnerez un et appuierez sur **prêt**. L\'hôte choisit la difficulté, et vous **jouerez en second**.';
 
   @override
-  String get tourLeaderboardTitle => 'Meilleurs Scores';
+  String get tourLeaderboardTitle => 'Encore plus à découvrir';
 
   @override
   String get tourLeaderboardDesc =>
-      'Suivez vos progrès ici ! Voir les **classements mondiaux**, vos **records personnels** et les **statistiques**. Comparez avec vos amis et voyez comment vous vous améliorez au fil du temps.';
+      '**Meilleur Score** affiche les classements, **Paramètres** permet de changer votre nom, thème, son et langue, et **À propos** explique les règles. Ensuite : une courte **partie d\'entraînement** !';
 
   @override
   String get tourSettingsTitle => 'Paramètres - Personnaliser';
@@ -499,11 +499,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'La visite a été réinitialisée. Retournez au menu principal pour commencer.';
 
   @override
-  String get tourRuleRegularWelcomeTitle => 'Let\'s Play!';
+  String get tourRuleRegularWelcomeTitle => 'Regular Mode';
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out. Ready to give it a try?';
+      'Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.';
 
   @override
   String get tourRuleRegularLivesTitle => 'Your Lives';
@@ -585,7 +585,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Instead of typing, you\'ll pick the correct answer from a few choices.';
+      'Here you don\'t type — tap the **right answer**. The other choices are decoys.';
 
   @override
   String get tourRulePickRightOptionsTitle => 'Choose Wisely';
@@ -638,7 +638,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'In Combat Mode, you and an opponent take turns racing to answer first.';
+      'You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.';
 
   @override
   String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';
@@ -811,4 +811,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get youWereAway => 'Vous vous êtes absenté trop longtemps';
+
+  @override
+  String get tourChapterRegular => 'Classique';
+
+  @override
+  String get tourRuleRegularTypeBackResult => 'Correct — that\'s a **point**!';
 }

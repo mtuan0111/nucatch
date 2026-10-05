@@ -12,14 +12,10 @@ String tutorialLessonTitle(BuildContext context, TutorialLessonData lesson) {
   switch (lesson.key) {
     case 'RegularWelcome':
       return lang(context).tourRuleRegularWelcomeTitle;
-    case 'RegularLives':
-      return lang(context).tourRuleRegularLivesTitle;
     case 'RegularMemorize':
       return lang(context).tourRuleRegularMemorizeTitle;
     case 'RegularTypeBack':
       return lang(context).tourRuleRegularTypeBackTitle;
-    case 'RegularScoring':
-      return lang(context).tourRuleRegularScoringTitle;
     case 'RegularTimer':
       return lang(context).tourRuleRegularTimerTitle;
     case 'RegularReset':
@@ -32,8 +28,6 @@ String tutorialLessonTitle(BuildContext context, TutorialLessonData lesson) {
       return lang(context).tourRuleRegularWrapUpTitle;
     case 'PickRightWelcome':
       return lang(context).tourRulePickRightWelcomeTitle;
-    case 'PickRightOptions':
-      return lang(context).tourRulePickRightOptionsTitle;
     case 'PickRightCorrect':
       return lang(context).tourRulePickRightCorrectTitle;
     case 'PickRightWrong':
@@ -44,16 +38,10 @@ String tutorialLessonTitle(BuildContext context, TutorialLessonData lesson) {
       return lang(context).tourRulePickRightWrapUpTitle;
     case 'CombatWelcome':
       return lang(context).tourRuleCombatWelcomeTitle;
-    case 'CombatTurnOrder':
-      return lang(context).tourRuleCombatTurnOrderTitle;
     case 'CombatYourTurn':
       return lang(context).tourRuleCombatYourTurnTitle;
     case 'CombatOpponentTurn':
       return lang(context).tourRuleCombatOpponentTurnTitle;
-    case 'CombatOpponentLifeLost':
-      return lang(context).tourRuleCombatOpponentLifeLostTitle;
-    case 'CombatTimer':
-      return lang(context).tourRuleCombatTimerTitle;
     case 'CombatWin':
       return lang(context).tourRuleCombatWinTitle;
     case 'CombatWrapUp':
@@ -75,16 +63,12 @@ String tutorialLessonDescription(
   switch (lesson.key) {
     case 'RegularWelcome':
       return lang(context).tourRuleRegularWelcomeDesc;
-    case 'RegularLives':
-      return lang(context).tourRuleRegularLivesDesc;
     case 'RegularMemorize':
       return lang(context).tourRuleRegularMemorizeDesc;
     case 'RegularTypeBack':
-      return lang(context).tourRuleRegularTypeBackDesc;
-    case 'RegularScoring':
       return useResult
-          ? lang(context).tourRuleRegularScoringResult
-          : lang(context).tourRuleRegularScoringDesc;
+          ? lang(context).tourRuleRegularTypeBackResult
+          : lang(context).tourRuleRegularTypeBackDesc;
     case 'RegularTimer':
       return useResult
           ? lang(context).tourRuleRegularTimerResult
@@ -101,8 +85,6 @@ String tutorialLessonDescription(
       return lang(context).tourRuleRegularWrapUpDesc;
     case 'PickRightWelcome':
       return lang(context).tourRulePickRightWelcomeDesc;
-    case 'PickRightOptions':
-      return lang(context).tourRulePickRightOptionsDesc;
     case 'PickRightCorrect':
       return useResult
           ? lang(context).tourRulePickRightCorrectResult
@@ -119,22 +101,12 @@ String tutorialLessonDescription(
       return lang(context).tourRulePickRightWrapUpDesc;
     case 'CombatWelcome':
       return lang(context).tourRuleCombatWelcomeDesc;
-    case 'CombatTurnOrder':
-      return lang(context).tourRuleCombatTurnOrderDesc;
     case 'CombatYourTurn':
       return lang(context).tourRuleCombatYourTurnDesc;
     case 'CombatOpponentTurn':
       return useResult
           ? lang(context).tourRuleCombatOpponentTurnResult
           : lang(context).tourRuleCombatOpponentTurnDesc;
-    case 'CombatOpponentLifeLost':
-      return useResult
-          ? lang(context).tourRuleCombatOpponentLifeLostResult
-          : lang(context).tourRuleCombatOpponentLifeLostDesc;
-    case 'CombatTimer':
-      return useResult
-          ? lang(context).tourRuleCombatTimerResult
-          : lang(context).tourRuleCombatTimerDesc;
     case 'CombatWin':
       return useResult
           ? lang(context).tourRuleCombatWinResult

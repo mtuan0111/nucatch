@@ -392,28 +392,26 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get tourWelcomeDesc =>
-      '歓迎します！この短いツアーで **NuCatch** の基本を学びましょう。 今すぐプレイを始められるよう、**主な機能**をすべてご案内します。';
+      'かんたんなツアーです。まず**メニュー**、次に短い**練習ゲーム**。いつでもスキップできます。';
 
   @override
-  String get tourStartTitle => 'スタート - ゲームを開始';
+  String get tourStartTitle => 'スタート';
 
   @override
-  String get tourStartDesc =>
-      '**スタートボタン**をタップしてください。その後、**ソロモード**か、**Bluetooth**を使った**対戦モード**を選択します。';
+  String get tourStartDesc => '**スタート**をタップして、遊び方を選びましょう。';
 
   @override
   String get tourInstantStartTitle => 'インスタントスタート';
 
   @override
-  String get tourInstantStartDesc =>
-      '**インスタントスタート**ボタンをタップすると、前回と同じ難易度ですぐにソロゲームを開始できます。 スコアを伸ばす最速の手段です！';
+  String get tourInstantStartDesc => '前回と同じ難易度で、すぐに**ソロ**ゲームを始めます。';
 
   @override
-  String get tourSoloTitle => 'ソロモード';
+  String get tourSoloTitle => '2つの遊び方';
 
   @override
   String get tourSoloDesc =>
-      '**ソロモード**で自分自身に挑戦！ **4つの難易度**から選べます。**ライフは3つ** - 不正解や時間切れで1つ減ります。**難易度が高い**ほど高得点！';
+      '**ソロモード**：ひとりで遊んで自己ベストを更新。**対戦モード**：近くの友だちと**Bluetooth**で対戦 — ひとりがルームを作り、もうひとりが参加します。';
 
   @override
   String get tourCombatTitle => '対戦モード - Bluetooth通信';
@@ -437,11 +435,11 @@ class AppLocalizationsJa extends AppLocalizations {
       '**ルーム参加**で**ゲスト**になります。近くのルームから選び、**準備完了**をタップ。あなたは後攻です。';
 
   @override
-  String get tourLeaderboardTitle => 'リーダーボード';
+  String get tourLeaderboardTitle => 'ほかにもいろいろ';
 
   @override
   String get tourLeaderboardDesc =>
-      '進捗を確認！**グローバルランキング**や**自己ベスト**、**統計**を見られます。友達と競い合いましょう。';
+      '**最高スコア**でランキングを確認、**設定**で名前・テーマ・サウンド・言語を変更、**アプリについて**でルールを確認できます。次は短い**練習ゲーム**です！';
 
   @override
   String get tourSettingsTitle => '設定 - カスタマイズ';
@@ -476,11 +474,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get tourResetMessage => 'ツアーがリセットされました。メインメニューから始めましょう。';
 
   @override
-  String get tourRuleRegularWelcomeTitle => 'Let\'s Play!';
+  String get tourRuleRegularWelcomeTitle => 'Regular Mode';
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out. Ready to give it a try?';
+      'Memorize the number, then type it back before time runs out. You have **3 lives** — lose them all and the game ends.';
 
   @override
   String get tourRuleRegularLivesTitle => 'Your Lives';
@@ -562,7 +560,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Instead of typing, you\'ll pick the correct answer from a few choices.';
+      'Here you don\'t type — tap the **right answer**. The other choices are decoys.';
 
   @override
   String get tourRulePickRightOptionsTitle => 'Choose Wisely';
@@ -615,7 +613,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'In Combat Mode, you and an opponent take turns racing to answer first.';
+      'You and an opponent take turns. This badge shows **whose turn** it is — as host, you go first.';
 
   @override
   String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';
@@ -777,4 +775,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get youWereAway => '離席が長すぎました';
+
+  @override
+  String get tourChapterRegular => 'クラシック';
+
+  @override
+  String get tourRuleRegularTypeBackResult => 'Correct — that\'s a **point**!';
 }

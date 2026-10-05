@@ -1984,3 +1984,14 @@ _ Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt
 #### Flutter build for iOS
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.8 --build-number=90 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+---
+## Released on: 05/10/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 92           | 2.8.9   |
+| iOS      | 91           | 2.8.9   |
+
+### Release note:
+- Update tour process.
