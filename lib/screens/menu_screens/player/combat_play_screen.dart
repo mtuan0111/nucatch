@@ -1074,31 +1074,37 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               for (int r = 0; r < _keypadRows; r++)
-                Row(
-                  // Row fills the cluster's full given width (default
-                  // MainAxisSize.max) so spaceEvenly has room to
-                  // distribute gaps — mirrors the full-grid path below.
-                  // Cell size is cellSize *minus* spacing (not padding
-                  // added on top of it), same as the full grid: adding
-                  // padding around an already-clamped cell would push the
-                  // row's natural width past what the cluster's tight
-                  // parent width allows.
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    for (final c in columns)
-                      if (r * _keypadColumns + c < keys.length)
-                        SizedBox(
-                          width: cellSize - spacing,
-                          height: cellSize - spacing,
-                          child: _buildKeypadButton(
-                            context,
-                            combatState,
-                            keys[r * _keypadColumns + c],
-                            applyTourKey: c != 1 || ownsMiddleColumnKey,
-                            keyExtent: cellSize - spacing,
+                Padding(
+                  // Explicit vertical gap: when the grid shrinks to fit its
+                  // rows (tablets, a Fold pane, gamepad clusters) there is no
+                  // leftover height for spaceEvenly to spread between them.
+                  padding: EdgeInsets.symmetric(vertical: spacing / 2),
+                  child: Row(
+                    // Row fills the cluster's full given width (default
+                    // MainAxisSize.max) so spaceEvenly has room to
+                    // distribute gaps — mirrors the full-grid path below.
+                    // Cell size is cellSize *minus* spacing (not padding
+                    // added on top of it), same as the full grid: adding
+                    // padding around an already-clamped cell would push the
+                    // row's natural width past what the cluster's tight
+                    // parent width allows.
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      for (final c in columns)
+                        if (r * _keypadColumns + c < keys.length)
+                          SizedBox(
+                            width: cellSize - spacing,
+                            height: cellSize - spacing,
+                            child: _buildKeypadButton(
+                              context,
+                              combatState,
+                              keys[r * _keypadColumns + c],
+                              applyTourKey: c != 1 || ownsMiddleColumnKey,
+                              keyExtent: cellSize - spacing,
+                            ),
                           ),
-                        ),
-                  ],
+                    ],
+                  ),
                 ),
             ],
           ),
@@ -1155,9 +1161,15 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
           }
 
           columnChildren.add(
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: rowChildren,
+            Padding(
+              // Explicit vertical gap: when the grid shrinks to fit its
+              // rows (tablets, a Fold pane, gamepad clusters) there is no
+              // leftover height for spaceEvenly to spread between them.
+              padding: EdgeInsets.symmetric(vertical: spacing / 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: rowChildren,
+              ),
             ),
           );
         }
