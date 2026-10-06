@@ -469,211 +469,184 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tourResetMessage => '导览已重置。返回主菜单查看。';
 
   @override
-  String get tourRuleRegularWelcomeTitle => 'Regular Mode';
+  String get tourRuleRegularWelcomeTitle => '经典模式';
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out.\nYou have **3 lives** — lose them all and the game ends.';
+      '记住数字，然后在时间耗尽前将其输入。\n你有 **3 条命** — 全部失去则游戏结束。';
 
   @override
-  String get tourRuleRegularLivesTitle => 'Your Lives';
+  String get tourRuleRegularLivesTitle => '你的命';
 
   @override
-  String get tourRuleRegularLivesDesc =>
-      'You start with **3 lives**. Losing all of them ends the game — so play carefully!';
+  String get tourRuleRegularLivesDesc => '你从 **3 条命** 开始。失去所有命则游戏结束 — 小心游玩！';
 
   @override
-  String get tourRuleRegularMemorizeTitle => 'Memorize It';
+  String get tourRuleRegularMemorizeTitle => '记住它';
 
   @override
-  String get tourRuleRegularMemorizeDesc =>
-      'Watch closely — the number flashes on screen for just a moment before it hides.';
+  String get tourRuleRegularMemorizeDesc => '仔细看 — 数字会在屏幕上闪烁片刻然后隐藏。';
 
   @override
-  String get tourRuleRegularTypeBackTitle => 'Type It Back';
+  String get tourRuleRegularTypeBackTitle => '把它输回去';
 
   @override
-  String get tourRuleRegularTypeBackDesc =>
-      'Now tap the digit you just saw on the keypad.';
+  String get tourRuleRegularTypeBackDesc => '现在在键盘上点击你刚刚看到的数字。';
 
   @override
-  String get tourRuleRegularScoringTitle => 'Nice!';
+  String get tourRuleRegularScoringTitle => '很好！';
 
   @override
-  String get tourRuleRegularScoringDesc =>
-      'Keep answering correctly to earn points.';
+  String get tourRuleRegularScoringDesc => '继续正确回答来赚取分数。';
 
   @override
-  String get tourRuleRegularScoringResult =>
-      'You just earned a point! Every correct answer adds to your score.';
+  String get tourRuleRegularScoringResult => '你刚刚得了一分！每个正确答案都会增加你的分数。';
 
   @override
-  String get tourRuleRegularTimerTitle => 'Beat the Clock';
+  String get tourRuleRegularTimerTitle => '与时间赛跑';
 
   @override
-  String get tourRuleRegularTimerDesc =>
-      'Watch the timer bar — if it runs out before you finish typing, you\'ll lose a life.';
+  String get tourRuleRegularTimerDesc => '注意时间条 — 如果在你完成输入前耗尽，你将失去一条命。';
 
   @override
-  String get tourRuleRegularTimerResult =>
-      'Time\'s up! Running out of time costs you a life, just like a wrong tap.';
+  String get tourRuleRegularTimerResult => '时间到！时间耗尽会让你失去一条命，就像点错一样。';
 
   @override
-  String get tourRuleRegularResetTitle => 'Need a New One?';
+  String get tourRuleRegularResetTitle => '需要换一个？';
 
   @override
   String get tourRuleRegularResetDesc =>
-      'Tap **Reset** to skip a tricky challenge for a fresh one — but it always costs a life.';
+      '点击**重置**可以跳过棘手的挑战换一个新的 — 但这总是需要消耗一条命。';
 
   @override
-  String get tourRuleRegularLevelUpTitle => 'Leveling Up';
+  String get tourRuleRegularLevelUpTitle => '正在升级';
 
   @override
-  String get tourRuleRegularLevelUpDesc =>
-      'Answer enough turns correctly and you\'ll level up.';
+  String get tourRuleRegularLevelUpDesc => '正确回答足够多的回合，你就会升级。';
 
   @override
   String get tourRuleRegularLevelUpResult =>
-      'Level up! Numbers get a little harder from here.\nFinish a level without losing a life to earn a **bonus life**.';
+      '升级！从这里开始数字会变得有点难。\n在不失命的情况下完成一个等级，可以获得一条**奖励命**。';
 
   @override
-  String get tourRuleRegularGameOverTitle => 'Game Over';
+  String get tourRuleRegularGameOverTitle => '游戏结束';
 
   @override
-  String get tourRuleRegularGameOverDesc =>
-      'With only 1 life left, one more miss ends the game for real. Watch what happens.';
+  String get tourRuleRegularGameOverDesc => '当只剩 1 条命时，再失误一次游戏就真的结束了。看看会发生什么。';
 
   @override
-  String get tourRuleRegularWrapUpTitle => 'That\'s Regular Mode!';
+  String get tourRuleRegularWrapUpTitle => '这就是经典模式！';
 
   @override
-  String get tourRuleRegularWrapUpDesc =>
-      'Now let\'s try Pick Right mode — a different way to play.';
+  String get tourRuleRegularWrapUpDesc => '现在让我们尝试选出正确答案模式 — 一种不同的玩法。';
 
   @override
-  String get tourRulePickRightWelcomeTitle => 'Pick Right Mode';
+  String get tourRulePickRightWelcomeTitle => '选出正确答案';
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Here you don\'t type — tap the **right answer**.\nThe other choices are decoys.';
+      '这里不需要你输入 — 点击**正确答案**。\n其他选项都是干扰项。';
 
   @override
-  String get tourRulePickRightOptionsTitle => 'Choose Wisely';
+  String get tourRulePickRightOptionsTitle => '谨慎选择';
 
   @override
-  String get tourRulePickRightOptionsDesc =>
-      'One of these is correct — the others are decoys.';
+  String get tourRulePickRightOptionsDesc => '其中一个是正确的 — 其他都是干扰项。';
 
   @override
-  String get tourRulePickRightCorrectTitle => 'Tap the Right One';
+  String get tourRulePickRightCorrectTitle => '点击正确的那个';
 
   @override
-  String get tourRulePickRightCorrectDesc =>
-      'Tap the button you think is correct.';
+  String get tourRulePickRightCorrectDesc => '点击你认为正确的按钮。';
 
   @override
-  String get tourRulePickRightCorrectResult => 'Correct! You earned a point.';
+  String get tourRulePickRightCorrectResult => '正确！你获得了一分。';
 
   @override
-  String get tourRulePickRightWrongTitle => 'Oops!';
+  String get tourRulePickRightWrongTitle => '哎呀！';
 
   @override
-  String get tourRulePickRightWrongDesc =>
-      'This time, try tapping a different button.';
+  String get tourRulePickRightWrongDesc => '这一次，试着点击一个不同的按钮。';
 
   @override
-  String get tourRulePickRightWrongResult =>
-      'Wrong pick — the correct answer is highlighted, and you lose a life.';
+  String get tourRulePickRightWrongResult => '选错了 — 正确答案会高亮显示，你失去一条命。';
 
   @override
-  String get tourRulePickRightTimerTitle => 'This Timer\'s Faster';
+  String get tourRulePickRightTimerTitle => '倒计时更快';
 
   @override
-  String get tourRulePickRightTimerDesc =>
-      'Pick Right mode\'s timer runs out quickly. Watch what happens if you\'re too slow.';
+  String get tourRulePickRightTimerDesc => '选出正确答案模式的倒计时很快。看看如果你太慢会发生什么。';
 
   @override
-  String get tourRulePickRightTimerResult =>
-      'Time\'s up again — with no lives left, that\'s Game Over.';
+  String get tourRulePickRightTimerResult => '时间又到了 — 没有命了，游戏结束。';
 
   @override
-  String get tourRulePickRightWrapUpTitle => 'That\'s Pick Right!';
+  String get tourRulePickRightWrapUpTitle => '这就是选出正确答案！';
 
   @override
-  String get tourRulePickRightWrapUpDesc =>
-      'Now let\'s try Combat Mode — where you play against a real opponent.';
+  String get tourRulePickRightWrapUpDesc => '现在让我们尝试对战模式 — 在这里你要与真实的对手较量。';
 
   @override
-  String get tourRuleCombatWelcomeTitle => 'Welcome to Combat';
+  String get tourRuleCombatWelcomeTitle => '欢迎来到对战';
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'You and an opponent take turns.\nThis badge shows **whose turn** it is — as host, you go first.';
+      '你和对手轮流进行。\n这个徽章显示了**轮到谁** — 作为房主，你先开始。';
 
   @override
-  String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';
+  String get tourRuleCombatTurnOrderTitle => '轮到谁了？';
 
   @override
-  String get tourRuleCombatTurnOrderDesc =>
-      'This badge shows whose turn it is. As host, you go first.';
+  String get tourRuleCombatTurnOrderDesc => '这个徽章显示轮到谁了。作为房主，你先开始。';
 
   @override
-  String get tourRuleCombatYourTurnTitle => 'Your Turn';
+  String get tourRuleCombatYourTurnTitle => '你的回合';
 
   @override
-  String get tourRuleCombatYourTurnDesc =>
-      'Tap the digit shown to complete your turn.';
+  String get tourRuleCombatYourTurnDesc => '点击显示的数字来完成你的回合。';
 
   @override
-  String get tourRuleCombatOpponentTurnTitle => 'Opponent\'s Turn';
+  String get tourRuleCombatOpponentTurnTitle => '对手的回合';
 
   @override
-  String get tourRuleCombatOpponentTurnDesc =>
-      'Now watch — your opponent takes their turn.';
+  String get tourRuleCombatOpponentTurnDesc => '现在看好 — 轮到你的对手行动了。';
 
   @override
-  String get tourRuleCombatOpponentTurnResult =>
-      'Your opponent answered correctly! The turn comes right back to you.';
+  String get tourRuleCombatOpponentTurnResult => '你的对手回答正确！回合立刻回到了你这里。';
 
   @override
-  String get tourRuleCombatOpponentLifeLostTitle => 'A Life Lost';
+  String get tourRuleCombatOpponentLifeLostTitle => '失去一条命';
 
   @override
-  String get tourRuleCombatOpponentLifeLostDesc =>
-      'Watch what happens when your opponent misses a tap.';
+  String get tourRuleCombatOpponentLifeLostDesc => '看看当你的对手点错时会发生什么。';
 
   @override
   String get tourRuleCombatOpponentLifeLostResult =>
-      'Your opponent lost a life — you\'ll see their life count drop, just like yours would.';
+      '你的对手失去了一条命 — 你会看到他们的命数减少，就像你的一样。';
 
   @override
-  String get tourRuleCombatTimerTitle => 'Everyone Has a Timer';
+  String get tourRuleCombatTimerTitle => '每人都有倒计时';
 
   @override
-  String get tourRuleCombatTimerDesc =>
-      'Your timer works the same way here — miss it and you lose a life too.';
+  String get tourRuleCombatTimerDesc => '你的倒计时在这里以同样的方式运作 — 错过了你也会失去一条命。';
 
   @override
-  String get tourRuleCombatTimerResult =>
-      'Time\'s up! Losing a life in Combat works just like Solo mode.';
+  String get tourRuleCombatTimerResult => '时间到！在对战中失去一条命和单人模式一样。';
 
   @override
-  String get tourRuleCombatWinTitle => 'Victory!';
+  String get tourRuleCombatWinTitle => '胜利！';
 
   @override
-  String get tourRuleCombatWinDesc =>
-      'Watch what happens when your opponent runs out of lives.';
+  String get tourRuleCombatWinDesc => '看看当你的对手失去所有命时会发生什么。';
 
   @override
-  String get tourRuleCombatWinResult =>
-      'You win! Running your opponent out of lives ends the match in your favor.';
+  String get tourRuleCombatWinResult => '你赢了！让你的对手耗尽所有的命，你就能赢得比赛。';
 
   @override
-  String get tourRuleCombatWrapUpTitle => 'Tutorial Complete!';
+  String get tourRuleCombatWrapUpTitle => '教程完成！';
 
   @override
-  String get tourRuleCombatWrapUpDesc =>
-      'That\'s everything — Solo, Pick Right, and Combat. Good luck out there!';
+  String get tourRuleCombatWrapUpDesc => '这就是全部内容 — 单人模式、选出正确答案和对战。祝你好运！';
 
   @override
   String get menuGreeting => 'Test your memory and math skills today!';
@@ -774,5 +747,5 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tourChapterRegular => '经典';
 
   @override
-  String get tourRuleRegularTypeBackResult => 'Correct — that\'s a **point**!';
+  String get tourRuleRegularTypeBackResult => '正确 — 你得了一**分**！';
 }

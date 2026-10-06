@@ -498,211 +498,212 @@ class AppLocalizationsHi extends AppLocalizations {
       'टूर को रीसेट कर दिया गया है। शुरू करने के लिए मुख्य मेनू पर लौटें।';
 
   @override
-  String get tourRuleRegularWelcomeTitle => 'Regular Mode';
+  String get tourRuleRegularWelcomeTitle => 'क्लासिक मोड';
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out.\nYou have **3 lives** — lose them all and the game ends.';
+      'नंबर याद रखें, फिर समय खत्म होने से पहले उसे टाइप करें।\nआपके पास **3 लाइफ** हैं — अगर सभी खत्म हो जाएं तो खेल खत्म हो जाएगा।';
 
   @override
-  String get tourRuleRegularLivesTitle => 'Your Lives';
+  String get tourRuleRegularLivesTitle => 'आपकी लाइफ';
 
   @override
   String get tourRuleRegularLivesDesc =>
-      'You start with **3 lives**. Losing all of them ends the game — so play carefully!';
+      'आप **3 लाइफ** के साथ शुरू करते हैं। सभी खोने से खेल खत्म हो जाता है — इसलिए सावधानी से खेलें!';
 
   @override
-  String get tourRuleRegularMemorizeTitle => 'Memorize It';
+  String get tourRuleRegularMemorizeTitle => 'इसे याद रखें';
 
   @override
   String get tourRuleRegularMemorizeDesc =>
-      'Watch closely — the number flashes on screen for just a moment before it hides.';
+      'ध्यान से देखें — नंबर स्क्रीन पर छिपने से पहले बस कुछ पल के लिए चमकता है।';
 
   @override
-  String get tourRuleRegularTypeBackTitle => 'Type It Back';
+  String get tourRuleRegularTypeBackTitle => 'इसे टाइप करें';
 
   @override
   String get tourRuleRegularTypeBackDesc =>
-      'Now tap the digit you just saw on the keypad.';
+      'अब कीपैड पर वह अंक टैप करें जो आपने अभी देखा है।';
 
   @override
-  String get tourRuleRegularScoringTitle => 'Nice!';
+  String get tourRuleRegularScoringTitle => 'शानदार!';
 
   @override
   String get tourRuleRegularScoringDesc =>
-      'Keep answering correctly to earn points.';
+      'पॉइंट कमाने के लिए सही उत्तर देते रहें।';
 
   @override
   String get tourRuleRegularScoringResult =>
-      'You just earned a point! Every correct answer adds to your score.';
+      'आपने अभी एक पॉइंट कमाया! हर सही उत्तर आपके स्कोर में जुड़ता है।';
 
   @override
-  String get tourRuleRegularTimerTitle => 'Beat the Clock';
+  String get tourRuleRegularTimerTitle => 'समय को हराएं';
 
   @override
   String get tourRuleRegularTimerDesc =>
-      'Watch the timer bar — if it runs out before you finish typing, you\'ll lose a life.';
+      'टाइमर बार पर नज़र रखें — यदि आपके टाइप करने से पहले यह खत्म हो गया, तो आप एक लाइफ खो देंगे।';
 
   @override
   String get tourRuleRegularTimerResult =>
-      'Time\'s up! Running out of time costs you a life, just like a wrong tap.';
+      'समय समाप्त! समय खत्म होने से आपको एक लाइफ गंवानी पड़ती है, बिल्कुल गलत टैप की तरह।';
 
   @override
-  String get tourRuleRegularResetTitle => 'Need a New One?';
+  String get tourRuleRegularResetTitle => 'नया चाहिए?';
 
   @override
   String get tourRuleRegularResetDesc =>
-      'Tap **Reset** to skip a tricky challenge for a fresh one — but it always costs a life.';
+      'एक मुश्किल चुनौती छोड़कर नई पाने के लिए **रीसेट** टैप करें — लेकिन इसमें हमेशा एक लाइफ जाती है।';
 
   @override
-  String get tourRuleRegularLevelUpTitle => 'Leveling Up';
+  String get tourRuleRegularLevelUpTitle => 'लेवल पार करना';
 
   @override
   String get tourRuleRegularLevelUpDesc =>
-      'Answer enough turns correctly and you\'ll level up.';
+      'पर्याप्त बारी का सही उत्तर दें और आप लेवल ऊपर कर लेंगे।';
 
   @override
   String get tourRuleRegularLevelUpResult =>
-      'Level up! Numbers get a little harder from here.\nFinish a level without losing a life to earn a **bonus life**.';
+      'लेवल अप! नंबर यहाँ से थोड़े कठिन हो जाते हैं।\nएक भी लाइफ खोए बिना एक लेवल पूरा करें और एक **बोनस लाइफ** अर्जित करें।';
 
   @override
-  String get tourRuleRegularGameOverTitle => 'Game Over';
+  String get tourRuleRegularGameOverTitle => 'खेल खत्म';
 
   @override
   String get tourRuleRegularGameOverDesc =>
-      'With only 1 life left, one more miss ends the game for real. Watch what happens.';
+      'केवल 1 लाइफ बची होने पर, एक और चूक खेल को सच में खत्म कर देती है। देखें क्या होता है।';
 
   @override
-  String get tourRuleRegularWrapUpTitle => 'That\'s Regular Mode!';
+  String get tourRuleRegularWrapUpTitle => 'यह क्लासिक है!';
 
   @override
   String get tourRuleRegularWrapUpDesc =>
-      'Now let\'s try Pick Right mode — a different way to play.';
+      'अब आइए सही चुनें मोड आज़माएं — खेलने का एक अलग तरीका।';
 
   @override
-  String get tourRulePickRightWelcomeTitle => 'Pick Right Mode';
+  String get tourRulePickRightWelcomeTitle => 'सही चुनें मोड';
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Here you don\'t type — tap the **right answer**.\nThe other choices are decoys.';
+      'यहाँ आपको टाइप नहीं करना है — **सही उत्तर** पर टैप करें।\nअन्य विकल्प चकमा देने के लिए हैं।';
 
   @override
-  String get tourRulePickRightOptionsTitle => 'Choose Wisely';
+  String get tourRulePickRightOptionsTitle => 'सोच-समझकर चुनें';
 
   @override
   String get tourRulePickRightOptionsDesc =>
-      'One of these is correct — the others are decoys.';
+      'इनमें से एक सही है — बाकी चकमा देने के लिए हैं।';
 
   @override
-  String get tourRulePickRightCorrectTitle => 'Tap the Right One';
+  String get tourRulePickRightCorrectTitle => 'सही पर टैप करें';
 
   @override
   String get tourRulePickRightCorrectDesc =>
-      'Tap the button you think is correct.';
+      'उस बटन पर टैप करें जो आपको सही लगता है।';
 
   @override
-  String get tourRulePickRightCorrectResult => 'Correct! You earned a point.';
+  String get tourRulePickRightCorrectResult =>
+      'सही! आपने एक पॉइंट अर्जित किया।';
 
   @override
-  String get tourRulePickRightWrongTitle => 'Oops!';
+  String get tourRulePickRightWrongTitle => 'उफ़!';
 
   @override
   String get tourRulePickRightWrongDesc =>
-      'This time, try tapping a different button.';
+      'इस बार, किसी अलग बटन पर टैप करने का प्रयास करें।';
 
   @override
   String get tourRulePickRightWrongResult =>
-      'Wrong pick — the correct answer is highlighted, and you lose a life.';
+      'गलत चुनाव — सही उत्तर हाईलाइट हो जाता है, और आप एक लाइफ खो देते हैं।';
 
   @override
-  String get tourRulePickRightTimerTitle => 'This Timer\'s Faster';
+  String get tourRulePickRightTimerTitle => 'यह टाइमर तेज़ है';
 
   @override
   String get tourRulePickRightTimerDesc =>
-      'Pick Right mode\'s timer runs out quickly. Watch what happens if you\'re too slow.';
+      'सही चुनें मोड का टाइमर जल्दी खत्म हो जाता है। देखें अगर आप धीमे हैं तो क्या होता है।';
 
   @override
   String get tourRulePickRightTimerResult =>
-      'Time\'s up again — with no lives left, that\'s Game Over.';
+      'फिर से समय समाप्त — बिना किसी लाइफ के, यह खेल खत्म है।';
 
   @override
-  String get tourRulePickRightWrapUpTitle => 'That\'s Pick Right!';
+  String get tourRulePickRightWrapUpTitle => 'यह सही चुनें है!';
 
   @override
   String get tourRulePickRightWrapUpDesc =>
-      'Now let\'s try Combat Mode — where you play against a real opponent.';
+      'अब आइए कॉम्बैट मोड आज़माएं — जहाँ आप एक असली प्रतिद्वंद्वी के खिलाफ खेलते हैं।';
 
   @override
-  String get tourRuleCombatWelcomeTitle => 'Welcome to Combat';
+  String get tourRuleCombatWelcomeTitle => 'कॉम्बैट में स्वागत है';
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'You and an opponent take turns.\nThis badge shows **whose turn** it is — as host, you go first.';
+      'आप और प्रतिद्वंद्वी बारी-बारी से खेलते हैं।\nयह बैज दिखाता है कि **किसकी बारी** है — होस्ट के रूप में, आप पहले जाएंगे।';
 
   @override
-  String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';
+  String get tourRuleCombatTurnOrderTitle => 'किसकी बारी है?';
 
   @override
   String get tourRuleCombatTurnOrderDesc =>
-      'This badge shows whose turn it is. As host, you go first.';
+      'यह बैज दिखाता है कि किसकी बारी है। होस्ट के रूप में, आप पहले जाएंगे।';
 
   @override
-  String get tourRuleCombatYourTurnTitle => 'Your Turn';
+  String get tourRuleCombatYourTurnTitle => 'आपकी बारी';
 
   @override
   String get tourRuleCombatYourTurnDesc =>
-      'Tap the digit shown to complete your turn.';
+      'अपनी बारी पूरी करने के लिए दिखाए गए अंक पर टैप करें।';
 
   @override
-  String get tourRuleCombatOpponentTurnTitle => 'Opponent\'s Turn';
+  String get tourRuleCombatOpponentTurnTitle => 'प्रतिद्वंद्वी की बारी';
 
   @override
   String get tourRuleCombatOpponentTurnDesc =>
-      'Now watch — your opponent takes their turn.';
+      'अब देखें — आपका प्रतिद्वंद्वी अपनी बारी चलता है।';
 
   @override
   String get tourRuleCombatOpponentTurnResult =>
-      'Your opponent answered correctly! The turn comes right back to you.';
+      'आपके प्रतिद्वंद्वी ने सही उत्तर दिया! बारी वापस आपके पास आ जाती है।';
 
   @override
-  String get tourRuleCombatOpponentLifeLostTitle => 'A Life Lost';
+  String get tourRuleCombatOpponentLifeLostTitle => 'एक लाइफ गई';
 
   @override
   String get tourRuleCombatOpponentLifeLostDesc =>
-      'Watch what happens when your opponent misses a tap.';
+      'देखें क्या होता है जब आपका प्रतिद्वंद्वी एक टैप चूक जाता है।';
 
   @override
   String get tourRuleCombatOpponentLifeLostResult =>
-      'Your opponent lost a life — you\'ll see their life count drop, just like yours would.';
+      'आपके प्रतिद्वंद्वी ने एक लाइफ खो दी — आप देखेंगे कि उनकी लाइफ कम हो जाती है, बिल्कुल वैसे जैसे आपकी होती।';
 
   @override
-  String get tourRuleCombatTimerTitle => 'Everyone Has a Timer';
+  String get tourRuleCombatTimerTitle => 'सबके पास टाइमर है';
 
   @override
   String get tourRuleCombatTimerDesc =>
-      'Your timer works the same way here — miss it and you lose a life too.';
+      'आपका टाइमर यहाँ भी उसी तरह काम करता है — चूकने पर आप भी एक लाइफ खो देंगे।';
 
   @override
   String get tourRuleCombatTimerResult =>
-      'Time\'s up! Losing a life in Combat works just like Solo mode.';
+      'समय समाप्त! कॉम्बैट में लाइफ खोना सोलो मोड की तरह ही काम करता है।';
 
   @override
-  String get tourRuleCombatWinTitle => 'Victory!';
+  String get tourRuleCombatWinTitle => 'जीत!';
 
   @override
   String get tourRuleCombatWinDesc =>
-      'Watch what happens when your opponent runs out of lives.';
+      'देखें क्या होता है जब आपके प्रतिद्वंद्वी की लाइफ खत्म हो जाती है।';
 
   @override
   String get tourRuleCombatWinResult =>
-      'You win! Running your opponent out of lives ends the match in your favor.';
+      'आप जीत गए! प्रतिद्वंद्वी की लाइफ खत्म करने से मैच आपके पक्ष में खत्म हो जाता है।';
 
   @override
-  String get tourRuleCombatWrapUpTitle => 'Tutorial Complete!';
+  String get tourRuleCombatWrapUpTitle => 'ट्यूटोरियल पूर्ण!';
 
   @override
   String get tourRuleCombatWrapUpDesc =>
-      'That\'s everything — Solo, Pick Right, and Combat. Good luck out there!';
+      'यह सब कुछ है — सोलो मोड, सही चुनें, और कॉम्बैट। आपको शुभकामनाएं!';
 
   @override
   String get menuGreeting => 'Test your memory and math skills today!';
@@ -813,5 +814,5 @@ class AppLocalizationsHi extends AppLocalizations {
   String get tourChapterRegular => 'क्लासिक';
 
   @override
-  String get tourRuleRegularTypeBackResult => 'Correct — that\'s a **point**!';
+  String get tourRuleRegularTypeBackResult => 'सही — यह एक **पॉइंट** है!';
 }

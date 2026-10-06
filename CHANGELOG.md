@@ -2026,3 +2026,43 @@ _ Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùn
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.9 --build-number=91 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
 
 ---
+## Released on: 06/10/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 93           | 2.8.10  |
+| iOS      | 92           | 2.8.10  |
+
+### Release note:
+- Localize the tour for all languages.
+
+### Git note release:
+
+#### Command for copilot
+
+`[Builded] Version 2.8.10 - 93 / 2.8.10 - 92 _ Localize the tour for all languages.`
+
+#### Brief for Store's new update:
+
+_ The hands-on tutorial is now fully translated into every supported language.
+_ Keypad keys now always have clear spacing between them on tablets and foldable phones.
+_ Phần hướng dẫn chơi thử nay đã được dịch đầy đủ sang tất cả các ngôn ngữ được hỗ trợ.
+_ Các phím trên bàn phím số nay luôn có khoảng cách rõ ràng trên máy tính bảng và điện thoại gập.
+
+#### Flutter build for Android for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build appbundle --build-name=2.8.10.0 --build-number=93 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for iOS for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build ios --build-name=2.8.10 --build-number=92.0 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for Android
+
+`npm run flutterfire_setup && flutter build appbundle --build-name=2.8.10 --build-number=93 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Flutter build for iOS
+
+`npm run flutterfire_setup && flutter build ios --build-name=2.8.10 --build-number=92 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+---

@@ -496,211 +496,212 @@ class AppLocalizationsVi extends AppLocalizations {
       'Đã tạo lại hướng dẫn. Xin quay về Màn hình Chính để xem.';
 
   @override
-  String get tourRuleRegularWelcomeTitle => 'Regular Mode';
+  String get tourRuleRegularWelcomeTitle => 'Chế độ Cổ điển';
 
   @override
   String get tourRuleRegularWelcomeDesc =>
-      'Memorize the number, then type it back before time runs out.\nYou have **3 lives** — lose them all and the game ends.';
+      'Ghi nhớ số, sau đó nhập lại trước khi hết giờ.\nBạn có **3 mạng** — mất hết là trò chơi kết thúc.';
 
   @override
-  String get tourRuleRegularLivesTitle => 'Your Lives';
+  String get tourRuleRegularLivesTitle => 'Mạng của bạn';
 
   @override
   String get tourRuleRegularLivesDesc =>
-      'You start with **3 lives**. Losing all of them ends the game — so play carefully!';
+      'Bạn bắt đầu với **3 mạng**. Mất hết thì trò chơi kết thúc — hãy chơi cẩn thận!';
 
   @override
-  String get tourRuleRegularMemorizeTitle => 'Memorize It';
+  String get tourRuleRegularMemorizeTitle => 'Hãy ghi nhớ';
 
   @override
   String get tourRuleRegularMemorizeDesc =>
-      'Watch closely — the number flashes on screen for just a moment before it hides.';
+      'Nhìn kỹ nhé — con số nhấp nháy trên màn hình một lúc rồi ẩn đi.';
 
   @override
-  String get tourRuleRegularTypeBackTitle => 'Type It Back';
+  String get tourRuleRegularTypeBackTitle => 'Nhập lại số';
 
   @override
   String get tourRuleRegularTypeBackDesc =>
-      'Now tap the digit you just saw on the keypad.';
+      'Bây giờ hãy chạm vào chữ số bạn vừa thấy trên bàn phím.';
 
   @override
-  String get tourRuleRegularScoringTitle => 'Nice!';
+  String get tourRuleRegularScoringTitle => 'Tuyệt!';
 
   @override
   String get tourRuleRegularScoringDesc =>
-      'Keep answering correctly to earn points.';
+      'Tiếp tục trả lời đúng để kiếm điểm.';
 
   @override
   String get tourRuleRegularScoringResult =>
-      'You just earned a point! Every correct answer adds to your score.';
+      'Bạn vừa được một điểm! Mỗi câu trả lời đúng cộng vào điểm số của bạn.';
 
   @override
-  String get tourRuleRegularTimerTitle => 'Beat the Clock';
+  String get tourRuleRegularTimerTitle => 'Nhanh tay lên';
 
   @override
   String get tourRuleRegularTimerDesc =>
-      'Watch the timer bar — if it runs out before you finish typing, you\'ll lose a life.';
+      'Chú ý thanh thời gian — nếu hết giờ trước khi bạn nhập xong, bạn sẽ mất một mạng.';
 
   @override
   String get tourRuleRegularTimerResult =>
-      'Time\'s up! Running out of time costs you a life, just like a wrong tap.';
+      'Hết giờ! Hết thời gian sẽ làm bạn mất mạng, giống như khi nhập sai.';
 
   @override
-  String get tourRuleRegularResetTitle => 'Need a New One?';
+  String get tourRuleRegularResetTitle => 'Muốn thử lại?';
 
   @override
   String get tourRuleRegularResetDesc =>
-      'Tap **Reset** to skip a tricky challenge for a fresh one — but it always costs a life.';
+      'Chạm **Làm mới** để bỏ qua thử thách khó và nhận số mới — nhưng luôn tốn một mạng.';
 
   @override
-  String get tourRuleRegularLevelUpTitle => 'Leveling Up';
+  String get tourRuleRegularLevelUpTitle => 'Tăng cấp độ';
 
   @override
   String get tourRuleRegularLevelUpDesc =>
-      'Answer enough turns correctly and you\'ll level up.';
+      'Trả lời đúng đủ số lượt và bạn sẽ thăng cấp.';
 
   @override
   String get tourRuleRegularLevelUpResult =>
-      'Level up! Numbers get a little harder from here.\nFinish a level without losing a life to earn a **bonus life**.';
+      'Tăng cấp! Các con số sẽ khó hơn một chút từ đây.\nHoàn thành cấp độ mà không mất mạng nào để nhận **mạng thưởng**.';
 
   @override
-  String get tourRuleRegularGameOverTitle => 'Game Over';
+  String get tourRuleRegularGameOverTitle => 'Kết thúc trò chơi';
 
   @override
   String get tourRuleRegularGameOverDesc =>
-      'With only 1 life left, one more miss ends the game for real. Watch what happens.';
+      'Khi chỉ còn 1 mạng, sai một lần nữa trò chơi sẽ thực sự kết thúc. Hãy xem chuyện gì xảy ra.';
 
   @override
-  String get tourRuleRegularWrapUpTitle => 'That\'s Regular Mode!';
+  String get tourRuleRegularWrapUpTitle => 'Đó là Cổ điển!';
 
   @override
   String get tourRuleRegularWrapUpDesc =>
-      'Now let\'s try Pick Right mode — a different way to play.';
+      'Bây giờ hãy thử chế độ Chọn Đúng — một cách chơi khác.';
 
   @override
-  String get tourRulePickRightWelcomeTitle => 'Pick Right Mode';
+  String get tourRulePickRightWelcomeTitle => 'Chế độ Chọn Đúng';
 
   @override
   String get tourRulePickRightWelcomeDesc =>
-      'Here you don\'t type — tap the **right answer**.\nThe other choices are decoys.';
+      'Ở đây bạn không cần nhập — hãy chạm vào **đáp án đúng**.\nCác lựa chọn khác là mồi nhử.';
 
   @override
-  String get tourRulePickRightOptionsTitle => 'Choose Wisely';
+  String get tourRulePickRightOptionsTitle => 'Chọn thận trọng';
 
   @override
   String get tourRulePickRightOptionsDesc =>
-      'One of these is correct — the others are decoys.';
+      'Một trong số này là đúng — những cái còn lại là mồi nhử.';
 
   @override
-  String get tourRulePickRightCorrectTitle => 'Tap the Right One';
+  String get tourRulePickRightCorrectTitle => 'Chạm đáp án đúng';
 
   @override
   String get tourRulePickRightCorrectDesc =>
-      'Tap the button you think is correct.';
+      'Chạm vào nút mà bạn nghĩ là đúng.';
 
   @override
-  String get tourRulePickRightCorrectResult => 'Correct! You earned a point.';
+  String get tourRulePickRightCorrectResult =>
+      'Chính xác! Bạn đã ghi được một điểm.';
 
   @override
-  String get tourRulePickRightWrongTitle => 'Oops!';
+  String get tourRulePickRightWrongTitle => 'Ôi không!';
 
   @override
   String get tourRulePickRightWrongDesc =>
-      'This time, try tapping a different button.';
+      'Lần này, hãy thử chạm vào một nút khác.';
 
   @override
   String get tourRulePickRightWrongResult =>
-      'Wrong pick — the correct answer is highlighted, and you lose a life.';
+      'Chọn sai — đáp án đúng được tô sáng, và bạn mất một mạng.';
 
   @override
-  String get tourRulePickRightTimerTitle => 'This Timer\'s Faster';
+  String get tourRulePickRightTimerTitle => 'Thời gian trôi nhanh';
 
   @override
   String get tourRulePickRightTimerDesc =>
-      'Pick Right mode\'s timer runs out quickly. Watch what happens if you\'re too slow.';
+      'Thời gian của chế độ Chọn Đúng hết rất nhanh. Hãy xem điều gì xảy ra nếu bạn quá chậm.';
 
   @override
   String get tourRulePickRightTimerResult =>
-      'Time\'s up again — with no lives left, that\'s Game Over.';
+      'Lại hết giờ — khi không còn mạng nào, đó là Kết thúc trò chơi.';
 
   @override
-  String get tourRulePickRightWrapUpTitle => 'That\'s Pick Right!';
+  String get tourRulePickRightWrapUpTitle => 'Đó là Chọn Đúng!';
 
   @override
   String get tourRulePickRightWrapUpDesc =>
-      'Now let\'s try Combat Mode — where you play against a real opponent.';
+      'Bây giờ hãy thử Chế độ đối kháng — nơi bạn chơi với Đối thủ thật.';
 
   @override
-  String get tourRuleCombatWelcomeTitle => 'Welcome to Combat';
+  String get tourRuleCombatWelcomeTitle => 'Chào mừng Đối kháng';
 
   @override
   String get tourRuleCombatWelcomeDesc =>
-      'You and an opponent take turns.\nThis badge shows **whose turn** it is — as host, you go first.';
+      'Bạn và đối thủ sẽ thay phiên nhau.\nHuy hiệu này cho biết **đến lượt ai** — với tư cách là chủ phòng, bạn đi trước.';
 
   @override
-  String get tourRuleCombatTurnOrderTitle => 'Whose Turn Is It?';
+  String get tourRuleCombatTurnOrderTitle => 'Đến lượt ai?';
 
   @override
   String get tourRuleCombatTurnOrderDesc =>
-      'This badge shows whose turn it is. As host, you go first.';
+      'Huy hiệu này cho biết đến lượt ai. Là chủ phòng, bạn đi trước.';
 
   @override
-  String get tourRuleCombatYourTurnTitle => 'Your Turn';
+  String get tourRuleCombatYourTurnTitle => 'Lượt của bạn';
 
   @override
   String get tourRuleCombatYourTurnDesc =>
-      'Tap the digit shown to complete your turn.';
+      'Chạm vào chữ số hiển thị để hoàn thành lượt của bạn.';
 
   @override
-  String get tourRuleCombatOpponentTurnTitle => 'Opponent\'s Turn';
+  String get tourRuleCombatOpponentTurnTitle => 'Lượt đối thủ';
 
   @override
   String get tourRuleCombatOpponentTurnDesc =>
-      'Now watch — your opponent takes their turn.';
+      'Bây giờ hãy xem — đối thủ của bạn thực hiện lượt của họ.';
 
   @override
   String get tourRuleCombatOpponentTurnResult =>
-      'Your opponent answered correctly! The turn comes right back to you.';
+      'Đối thủ của bạn trả lời đúng! Lượt được chuyển lại cho bạn.';
 
   @override
-  String get tourRuleCombatOpponentLifeLostTitle => 'A Life Lost';
+  String get tourRuleCombatOpponentLifeLostTitle => 'Mất một mạng';
 
   @override
   String get tourRuleCombatOpponentLifeLostDesc =>
-      'Watch what happens when your opponent misses a tap.';
+      'Xem điều gì xảy ra khi đối thủ bỏ lỡ một lần chạm.';
 
   @override
   String get tourRuleCombatOpponentLifeLostResult =>
-      'Your opponent lost a life — you\'ll see their life count drop, just like yours would.';
+      'Đối thủ của bạn đã mất một mạng — bạn sẽ thấy số mạng của họ giảm, giống như của bạn vậy.';
 
   @override
-  String get tourRuleCombatTimerTitle => 'Everyone Has a Timer';
+  String get tourRuleCombatTimerTitle => 'Ai cũng có bộ đếm giờ';
 
   @override
   String get tourRuleCombatTimerDesc =>
-      'Your timer works the same way here — miss it and you lose a life too.';
+      'Bộ đếm giờ của bạn hoạt động tương tự ở đây — hết giờ là mất mạng.';
 
   @override
   String get tourRuleCombatTimerResult =>
-      'Time\'s up! Losing a life in Combat works just like Solo mode.';
+      'Hết giờ! Mất mạng trong Đối kháng giống như trong Chơi đơn.';
 
   @override
-  String get tourRuleCombatWinTitle => 'Victory!';
+  String get tourRuleCombatWinTitle => 'Chiến thắng!';
 
   @override
   String get tourRuleCombatWinDesc =>
-      'Watch what happens when your opponent runs out of lives.';
+      'Hãy xem điều gì xảy ra khi đối thủ của bạn hết mạng.';
 
   @override
   String get tourRuleCombatWinResult =>
-      'You win! Running your opponent out of lives ends the match in your favor.';
+      'Bạn thắng! Làm đối thủ hết mạng sẽ kết thúc trận đấu với phần thắng thuộc về bạn.';
 
   @override
-  String get tourRuleCombatWrapUpTitle => 'Tutorial Complete!';
+  String get tourRuleCombatWrapUpTitle => 'Hoàn thành Hướng dẫn!';
 
   @override
   String get tourRuleCombatWrapUpDesc =>
-      'That\'s everything — Solo, Pick Right, and Combat. Good luck out there!';
+      'Đó là tất cả — Chơi đơn, Chọn Đúng, và Chế độ đối kháng. Chúc bạn may mắn!';
 
   @override
   String get menuGreeting =>
@@ -813,5 +814,5 @@ class AppLocalizationsVi extends AppLocalizations {
   String get tourChapterRegular => 'Cổ điển';
 
   @override
-  String get tourRuleRegularTypeBackResult => 'Correct — that\'s a **point**!';
+  String get tourRuleRegularTypeBackResult => 'Chính xác — bạn được **điểm**!';
 }
