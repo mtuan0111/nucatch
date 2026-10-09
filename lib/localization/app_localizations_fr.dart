@@ -707,7 +707,8 @@ class AppLocalizationsFr extends AppLocalizations {
       'C\'est tout — Mode Solo, Choisissez Bien et Mode Combat. Bonne chance à vous !';
 
   @override
-  String get menuGreeting => 'Test your memory and math skills today!';
+  String get menuGreeting =>
+      'Testez votre mémoire et vos talents en calcul dès aujourd\'hui !';
 
   @override
   String get accountSectionTitle => 'Compte';

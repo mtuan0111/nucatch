@@ -2066,3 +2066,43 @@ _ Các phím trên bàn phím số nay luôn có khoảng cách rõ ràng trên 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.10 --build-number=92 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
 
 ---
+## Released on: 09/10/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 94           | 2.8.11  |
+| iOS      | 93           | 2.8.11  |
+
+### Release note:
+- Improve readability and localization on every screen and device.
+
+### Git note release:
+
+#### Command for copilot
+
+`[Builded] Version 2.8.11 - 94 / 2.8.11 - 93 _ Improve readability and localization on every screen and device.`
+
+#### Brief for Store's new update:
+
+_ Larger, easier-to-read text and bigger keypad buttons on tablets.
+_ Every screen is now fully translated, and long translations no longer get cut off.
+_ Chữ lớn hơn, dễ đọc hơn và các nút bàn phím số to hơn trên máy tính bảng.
+_ Mọi màn hình nay đã được dịch đầy đủ, và các bản dịch dài không còn bị cắt mất chữ.
+
+#### Flutter build for Android for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build appbundle --build-name=2.8.11.0 --build-number=94 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for iOS for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build ios --build-name=2.8.11 --build-number=93.0 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for Android
+
+`npm run flutterfire_setup && flutter build appbundle --build-name=2.8.11 --build-number=94 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Flutter build for iOS
+
+`npm run flutterfire_setup && flutter build ios --build-name=2.8.11 --build-number=93 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+---

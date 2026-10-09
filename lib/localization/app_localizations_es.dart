@@ -122,7 +122,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get difficultyExtremeTitle => 'Modo Extremo';
 
   @override
-  String get pickRightTitle => 'Pick Right';
+  String get pickRightTitle => 'Elige Bien';
 
   @override
   String get confirmChangeDifficulty =>
@@ -579,10 +579,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tourRuleRegularWrapUpDesc =>
-      'Ahora probemos el modo Pick Right — una forma diferente de jugar.';
+      'Ahora probemos el modo Elige Bien — una forma diferente de jugar.';
 
   @override
-  String get tourRulePickRightWelcomeTitle => 'Modo Pick Right';
+  String get tourRulePickRightWelcomeTitle => 'Modo Elige Bien';
 
   @override
   String get tourRulePickRightWelcomeDesc =>
@@ -621,14 +621,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tourRulePickRightTimerDesc =>
-      'El tiempo del modo Pick Right se acaba rápido. Mira qué pasa si eres muy lento.';
+      'El tiempo del modo Elige Bien se acaba rápido. Mira qué pasa si eres muy lento.';
 
   @override
   String get tourRulePickRightTimerResult =>
       'Se acabó el tiempo de nuevo — sin vidas restantes, es Juego terminado.';
 
   @override
-  String get tourRulePickRightWrapUpTitle => '¡Eso es Pick Right!';
+  String get tourRulePickRightWrapUpTitle => '¡Eso es Elige Bien!';
 
   @override
   String get tourRulePickRightWrapUpDesc =>
@@ -704,10 +704,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tourRuleCombatWrapUpDesc =>
-      'Eso es todo — Modo Solo, Pick Right y Modo Combate. ¡Buena suerte ahí fuera!';
+      'Eso es todo — Modo Solo, Elige Bien y Modo Combate. ¡Buena suerte ahí fuera!';
 
   @override
-  String get menuGreeting => 'Test your memory and math skills today!';
+  String get menuGreeting =>
+      '¡Pon a prueba hoy tu memoria y tus habilidades matemáticas!';
 
   @override
   String get accountSectionTitle => 'Cuenta';

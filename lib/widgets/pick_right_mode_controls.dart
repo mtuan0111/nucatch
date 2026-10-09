@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeleton_core/skeleton_core.dart'
     show ResponsiveContext, kMaxEquationButtonWidth, kSpaceM;
+import 'package:nucatch/helpers/display_scale.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
@@ -94,8 +95,10 @@ class PickRightModeControls extends StatelessWidget {
         if (context.isTablet) {
           equationButtons = Center(
             child: ConstrainedBox(
-              constraints:
-                  const BoxConstraints(maxWidth: kMaxEquationButtonWidth),
+              // Wider on a tablet-sized window, in step with its larger
+              // text (display_scale.dart).
+              constraints: BoxConstraints(
+                  maxWidth: kMaxEquationButtonWidth * controlScaleOf(context)),
               child: equationButtons,
             ),
           );

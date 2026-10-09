@@ -663,7 +663,7 @@ class AppLocalizationsJa extends AppLocalizations {
       'これで全てです — ソロモード、正しい方を選べ、そして対戦。頑張ってください！';
 
   @override
-  String get menuGreeting => 'Test your memory and math skills today!';
+  String get menuGreeting => '今日も記憶力と計算力を試してみましょう！';
 
   @override
   String get accountSectionTitle => 'アカウント';

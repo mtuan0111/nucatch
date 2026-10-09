@@ -1,12 +1,22 @@
 import 'dart:developer' as dev;
+import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart' show OffsetLayer;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeleton_core/skeleton_core.dart'
-    show BlocProvider, PreferencesKey, TourBloc, TourState, TourStep;
+    show
+        BlocProvider,
+        CoreLocalizations,
+        PreferencesKey,
+        TourBloc,
+        TourState,
+        TourStep;
 
+import 'package:nucatch/localization/app_localizations.dart';
 import 'package:nucatch/main.dart' as app;
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
@@ -57,6 +67,35 @@ void main() {
       (tester) async {
     void step(String name) => dev.log('TEST_STEP: $name');
 
+    // Language via --dart-define=NUCATCH_LOCALE=<code> (default English):
+    // pinned onto the app below (PreferencesKey.LOCALE) and used for every
+    // label this test taps, so each language drives the identical flow.
+    const localeCode =
+        String.fromEnvironment('NUCATCH_LOCALE', defaultValue: 'en');
+    final appL10n = await AppLocalizations.delegate.load(Locale(localeCode));
+    final coreL10n = await CoreLocalizations.delegate.load(Locale(localeCode));
+    final nextText = appL10n.tourNext;
+    final previousText = appL10n.tourPrevious;
+    final finishText = appL10n.tourFinish;
+
+    // --dart-define=SHOT_DIR=<absolute host path>: save a PNG of every card
+    // this test checks (iOS simulators can write host paths directly).
+    const shotDir = String.fromEnvironment('SHOT_DIR', defaultValue: '');
+    var shotCount = 0;
+    Future<void> saveShot(String label) async {
+      if (shotDir.isEmpty) return;
+      final renderView = tester.binding.renderViews.first;
+      final image = await (renderView.debugLayer! as OffsetLayer)
+          .toImage(renderView.paintBounds, pixelRatio: 1);
+      final png = await image.toByteData(format: ui.ImageByteFormat.png);
+      shotCount++;
+      final name =
+          '${shotCount.toString().padLeft(3, '0')}_${label.replaceAll(RegExp(r'[^A-Za-z0-9]+'), '_')}';
+      File('$shotDir/$name.png')
+        ..createSync(recursive: true)
+        ..writeAsBytesSync(png!.buffer.asUint8List());
+    }
+
     Future<void> doWait(double seconds) async {
       final ticks = (seconds * 10).ceil();
       for (int i = 0; i < ticks; i++) {
@@ -101,7 +140,7 @@ void main() {
     /// a modal dialog on top of the app; dismiss it whenever it's actually
     /// on top.
     Future<void> dismissUpdateDialog() async {
-      final later = find.text('Later').hitTestable();
+      final later = find.text(coreL10n.later).hitTestable();
       if (later.evaluate().isNotEmpty) {
         step('dismissing update-available dialog');
         await tester.tap(later.first, warnIfMissed: false);
@@ -169,11 +208,11 @@ void main() {
 
       final cardWidget = tester.widget<TourCard>(currentCard());
       if (cardWidget.onPrevious != null) {
-        expect(inCard('Previous'), findsOneWidget,
+        expect(inCard(previousText), findsOneWidget,
             reason: '$label: Previous button not tappable');
       }
       if (cardWidget.onNext != null) {
-        expect(inCard(cardWidget.nextLabel ?? 'Next'), findsOneWidget,
+        expect(inCard(cardWidget.nextLabel ?? nextText), findsOneWidget,
             reason: '$label: Next button not tappable');
       }
 
@@ -220,6 +259,7 @@ void main() {
       expect(card.title, isNotEmpty, reason: '$label: title');
       if (expected != TourStep.welcome) await settleTarget();
       checkLayout(label, expectTarget: expected != TourStep.welcome);
+      await saveShot(label);
       step('checked $label');
     }
 
@@ -312,6 +352,7 @@ void main() {
         return;
       }
       checkLayout(label, expectTarget: expectTarget);
+      await saveShot(label);
       step('checked $label');
     }
 
@@ -326,7 +367,7 @@ void main() {
       if (before.phase == TutorialPhase.result ||
           (before.phase == TutorialPhase.explain &&
               lesson.interaction == TutorialInteraction.next)) {
-        await tapInCard(before.isLastLesson ? 'Finish' : 'Next', label);
+        await tapInCard(before.isLastLesson ? finishText : nextText, label);
       } else if (before.phase == TutorialPhase.explain &&
           lesson.interaction == TutorialInteraction.tapKey) {
         final key =
@@ -430,6 +471,7 @@ void main() {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     await prefs.setBool(PreferencesKey.IS_MUTED, true);
+    await prefs.setString(PreferencesKey.LOCALE, localeCode);
     if (injectedFontSize >= 0) {
       await prefs.setInt(PreferencesKey.FONT_SIZE, injectedFontSize);
     }
@@ -444,13 +486,13 @@ void main() {
       await checkMenuStep(menuSteps[k]);
       if (k > 0) {
         step('menu ${menuSteps[k].name}: Previous');
-        await tapInCard('Previous', menuSteps[k].name);
+        await tapInCard(previousText, menuSteps[k].name);
         await checkMenuStep(TourProgress.previousBefore(menuSteps[k])!);
-        await tapInCard('Next', menuSteps[k - 1].name);
+        await tapInCard(nextText, menuSteps[k - 1].name);
         await checkMenuStep(menuSteps[k]);
       }
       step('menu ${menuSteps[k].name}: Next');
-      await tapInCard('Next', menuSteps[k].name);
+      await tapInCard(nextText, menuSteps[k].name);
     }
 
     // ── Parts 2-4: practice, every lesson forwards and back ─
@@ -471,11 +513,11 @@ void main() {
 
       if (resting != null) {
         step('lesson ${lesson.key}: Previous');
-        await tapInCard('Previous', lesson.key);
+        await tapInCard(previousText, lesson.key);
         if (i == 0) {
           // Back out of the practice into the last menu step, then in again.
           await checkMenuStep(TourProgress.menuSteps.last);
-          await tapInCard('Next', 'menu ${TourProgress.menuSteps.last.name}');
+          await tapInCard(nextText, 'menu ${TourProgress.menuSteps.last.name}');
         } else {
           final back = TutorialCubit.previousSeededIndex(i);
           // Lands on [back] — a short timer lesson may already be past its
@@ -499,7 +541,7 @@ void main() {
       // Finish this lesson the normal way.
       if (i == TutorialScript.length - 1) {
         await playTo(i, TutorialPhase.explain);
-        await tapInCard('Finish', lesson.key);
+        await tapInCard(finishText, lesson.key);
       } else {
         await playTo(i + 1, TutorialPhase.explain);
       }
@@ -514,7 +556,7 @@ void main() {
         reason: 'Finish should return to the play-mode picker');
     expect(await waitUntil(() => !tour().isTourActive), isTrue,
         reason: 'Finish should complete the tour');
-    expect(find.text('Skip Tour'), findsNothing,
+    expect(find.text(appL10n.tourSkip), findsNothing,
         reason: 'no tour card should be left behind');
     step('done');
   });

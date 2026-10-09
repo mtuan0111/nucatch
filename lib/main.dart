@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nucatch/helpers/display_scale.dart';
 import 'package:nucatch/helpers/admob_config.dart';
 import 'package:skeleton_core/skeleton_core.dart'
     hide UpdateCheckerWrapper, MenuNav, TopScoreNav;
@@ -68,7 +69,6 @@ Future<void> main() async {
         debugPrint('⚠️ Failed to load .env file: $e');
       }
 
-
       // Firebase Cloud Messaging
       try {
         await FcmService().init();
@@ -85,31 +85,38 @@ Future<void> main() async {
     supportedLocales: AppLocalizations.supportedLocales,
 
     // ----- Theme -----
-    themeBuilder: (context, state) => ThemeData(
-      // One cohesive family (see SkeletonConfig above). Fallback is limited to
-      // Roboto Mono for the few numeric/monospace readouts; the old six-font
-      // fallback chain was the "excessive font variation" we're removing.
-      fontFamily: 'Baloo Bhai',
-      fontFamilyFallback: const [
-        "Roboto Mono",
-      ],
-      textTheme: Theme.of(context).textTheme.apply(
-            fontSizeFactor: 0.5 + (state.fontSize / 20),
-            fontSizeDelta: 1 + (state.fontSize / 10),
-            bodyColor: Colors.white,
-            displayColor: Colors.white,
-          ),
-      colorScheme: SeasonalTheme.config.getColorScheme(),
-      useMaterial3: true,
-      primaryColor: SeasonalTheme.config.primaryColor,
-      secondaryHeaderColor: SeasonalTheme.config.secondaryColor,
-      cardColor:
-          SeasonalTheme.config.cardColor ?? SeasonalTheme.config.tertiaryColor,
-      // Subtle separator instead of the old harsh pure-gold rule (#FFD700):
-      // dividers should whisper structure, not slice the layout into blocks.
-      dividerColor: Colors.white.withValues(alpha: 0.16),
-      scaffoldBackgroundColor: Colors.white,
-    ),
+    themeBuilder: (context, state) {
+      // On a tablet-sized window all text is a step larger (see
+      // display_scale.dart); the in-app font-size setting still applies on
+      // top. Reading the window size here rebuilds the theme on resize.
+      final tabletScale =
+          textScaleForWindow(MediaQuery.maybeSizeOf(context) ?? Size.zero);
+      return ThemeData(
+        // One cohesive family (see SkeletonConfig above). Fallback is limited to
+        // Roboto Mono for the few numeric/monospace readouts; the old six-font
+        // fallback chain was the "excessive font variation" we're removing.
+        fontFamily: 'Baloo Bhai',
+        fontFamilyFallback: const [
+          "Roboto Mono",
+        ],
+        textTheme: Theme.of(context).textTheme.apply(
+              fontSizeFactor: (0.5 + (state.fontSize / 20)) * tabletScale,
+              fontSizeDelta: (1 + (state.fontSize / 10)) * tabletScale,
+              bodyColor: Colors.white,
+              displayColor: Colors.white,
+            ),
+        colorScheme: SeasonalTheme.config.getColorScheme(),
+        useMaterial3: true,
+        primaryColor: SeasonalTheme.config.primaryColor,
+        secondaryHeaderColor: SeasonalTheme.config.secondaryColor,
+        cardColor: SeasonalTheme.config.cardColor ??
+            SeasonalTheme.config.tertiaryColor,
+        // Subtle separator instead of the old harsh pure-gold rule (#FFD700):
+        // dividers should whisper structure, not slice the layout into blocks.
+        dividerColor: Colors.white.withValues(alpha: 0.16),
+        scaffoldBackgroundColor: Colors.white,
+      );
+    },
 
     // ----- App-specific blocs -----
     appBlocProviders: [

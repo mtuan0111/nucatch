@@ -691,7 +691,7 @@ class AppLocalizationsTh extends AppLocalizations {
       'นั่นคือทั้งหมด — โหมดเล่นคนเดียว, เลือกคำตอบที่ถูก, และ โหมดต่อสู้ ขอให้โชคดี!';
 
   @override
-  String get menuGreeting => 'Test your memory and math skills today!';
+  String get menuGreeting => 'ทดสอบความจำและทักษะคณิตศาสตร์ของคุณวันนี้!';
 
   @override
   String get accountSectionTitle => 'บัญชี';

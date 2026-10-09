@@ -57,6 +57,18 @@ device's own hinge):
 | `IPAD=true` | iPad, 1640×2360 @ 2 |
 | `FOLD_COVER=true` | Galaxy Z Fold7 cover screen, 1080×2520 @ 2.8125 |
 | `FONT_SIZE=<n>` | the app's font-size setting |
+| `NUCATCH_LOCALE=<code>` | run the whole tour in that language (`de`, `ja`, …); buttons are tapped by their translated labels |
+| `SHOT_DIR=<absolute path>` | save a PNG of every card the test checks |
+
+All 10 languages, with a screenshot of every card (iPhone portrait passed
+2026-10-09):
+
+```bash
+for loc in en de es fr hi id ja th vi zh; do
+  flutter test integration_test/tour_guide_test.dart -d $IPHONE \
+    --dart-define=NUCATCH_LOCALE=$loc --dart-define=SHOT_DIR=/abs/path/tour/$loc
+done
+```
 
 The matrix that should pass before a release:
 
@@ -108,6 +120,37 @@ final png = await image.toByteData(format: ui.ImageByteFormat.png);
 // Android: write to (await getExternalStorageDirectory())!.path, then
 //   adb pull /sdcard/Android/data/bomnguyen.nucatch/files/<dir>
 ```
+
+## Every screen in every language (readability audit)
+
+`integration_test/screenshot_test.dart` walks all 13 reachable screens. Two
+opt-in flags turn it into a localization / readability check:
+
+```bash
+for loc in en de es fr hi id ja th vi zh; do
+  flutter test integration_test/screenshot_test.dart -d <iPhone simulator id> \
+    --dart-define=NUCATCH_LOCALE=$loc --dart-define=SKIP_SHOTS=true \
+    --dart-define=COLLECT_OVERFLOWS=true --dart-define=AUDIT_TEXT=true \
+    --dart-define=SHOT_DIR=/absolute/path/shots/$loc
+done
+```
+
+- `SHOT_DIR` saves a PNG of every screen straight from the test (no
+  `flutter drive`, whose screenshot channel can hang on the iOS simulator).
+- `AUDIT_TEXT` logs every visible text as
+  `TEXTAUDIT|<screen>|<rendered size>|<text>|font=… textScale=… transform=…`.
+  Flag sizes under 12 pt, and English text in a non-English run.
+- `COLLECT_OVERFLOWS` records every overflow (`OVERFLOW_FOUND`) instead of
+  stopping at the first.
+- Known blind spot: the header's shrink-to-fit title (`CustomSliverAppBar`)
+  isn't reflected in the logged size — check titles in the screenshots.
+
+Fixes from the 2026-10-09 pass (all 10 languages, 13 screens, no overflow,
+no text under 12 pt): leaderboard period tabs wrap to two lines and the
+"only show mine" label wraps; Game Over buttons use `ButtonSize.small` in a
+`Wrap`; the combat turn badge stays on one line (scaling down only if
+needed); `CustomElevatedButton` labels never wrap (Hindi / CJK fall back to
+system fonts whose measured width runs short); `menuGreeting` translated.
 
 ## Troubleshooting
 

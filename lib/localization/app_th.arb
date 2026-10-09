@@ -622,7 +622,7 @@
   "tourRuleCombatWrapUpDesc": "นั่นคือทั้งหมด — โหมดเล่นคนเดียว, เลือกคำตอบที่ถูก, และ โหมดต่อสู้ ขอให้โชคดี!",
   "pickRightTitle": "เลือกคำตอบที่ถูก",
   "pickRightDescription": "เลือกสมการที่ถูกต้อง เกมเดาสุ่มภายในเวลา 5 วินาที",
-  "menuGreeting": "Test your memory and math skills today!",
+  "menuGreeting": "ทดสอบความจำและทักษะคณิตศาสตร์ของคุณวันนี้!",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
   },

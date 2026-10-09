@@ -622,7 +622,7 @@
   "tourRuleCombatWrapUpDesc": "Das ist alles — Solo-Modus, Richtig Wählen und Kampf-Modus. Viel Glück da draußen!",
   "pickRightTitle": "Richtig Wählen",
   "pickRightDescription": "Wähle die richtige Gleichung! Schnelles Auswahlspiel mit 5-Sekunden-Timer.",
-  "menuGreeting": "Test your memory and math skills today!",
+  "menuGreeting": "Teste heute dein Gedächtnis und deine Rechenkünste!",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
   },

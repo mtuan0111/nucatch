@@ -108,9 +108,14 @@ class _GameOverScreenState extends State<GameOverScreen> {
                               },
                             ),
                             const SizedBox(height: kSpaceL),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
+                            // Wrap, not Row: when a translation makes the
+                            // two buttons wider than the screen, the second
+                            // drops to its own line instead of squeezing the
+                            // labels.
+                            Wrap(
+                              alignment: WrapAlignment.center,
+                              spacing: kSpaceM,
+                              runSpacing: kSpaceM,
                               children: [
                                 // Change Difficulty button
                                 AnimatedButton(
@@ -126,7 +131,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                                   ),
                                   text: coreLang(context).difficultySetting,
                                   shapeAt: RoundedWithShapeAt.topLeft,
-                                  buttonSize: ButtonSize.smallest,
+                                  buttonSize: ButtonSize.small,
                                   onPressed: () {
                                     playerNavCubit.selectPlayMode(
                                       PlayMode.solo,
@@ -146,14 +151,13 @@ class _GameOverScreenState extends State<GameOverScreen> {
                                     );
                                   },
                                 ),
-                                const SizedBox(width: kSpaceM),
                                 // Main Menu button
                                 AnimatedButton(
                                   context,
                                   iconData: FontAwesomeIcons.bars,
                                   text: coreLang(context).mainMenu,
                                   shapeAt: RoundedWithShapeAt.topRight,
-                                  buttonSize: ButtonSize.smallest,
+                                  buttonSize: ButtonSize.small,
                                   onPressed: () {
                                     context.read<MenuBloc>().add(ShowMenu());
                                   },

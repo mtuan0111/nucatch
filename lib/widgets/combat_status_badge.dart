@@ -51,13 +51,21 @@ class CombatStatusBadge extends StatelessWidget {
             const SizedBox(width: kSpaceS),
           ],
           Flexible(
-            child: Text(
-              text,
-              style: filled
-                  ? AppTextStyles.bodySmall(context)
-                  : AppTextStyles.bodyMediumBold(context),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            // One line, shrunk slightly only if it truly doesn't fit: a
+            // longer translation of "Your Turn" (e.g. Japanese, which breaks
+            // between any two characters) must not be cut off or split
+            // mid-word.
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: AlignmentDirectional.centerStart,
+              child: Text(
+                text,
+                style: filled
+                    ? AppTextStyles.bodySmall(context)
+                    : AppTextStyles.bodyMediumBold(context),
+                maxLines: 1,
+                softWrap: false,
+              ),
             ),
           ),
         ],

@@ -622,7 +622,7 @@
   "tourRuleCombatWrapUpDesc": "这就是全部内容 — 单人模式、选出正确答案和对战。祝你好运！",
   "pickRightTitle": "选出正确答案",
   "pickRightDescription": "选择正确的等式！ 极速反应的5秒限时游戏。",
-  "menuGreeting": "Test your memory and math skills today!",
+  "menuGreeting": "今天就来测试你的记忆力和数学能力吧！",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
   },

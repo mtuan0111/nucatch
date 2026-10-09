@@ -705,7 +705,7 @@ class AppLocalizationsId extends AppLocalizations {
       'Itu saja semuanya — Mode Solo, Pilih Benar, dan Pertarungan. Semoga berhasil!';
 
   @override
-  String get menuGreeting => 'Test your memory and math skills today!';
+  String get menuGreeting => 'Uji ingatan dan kemampuan matematikamu hari ini!';
 
   @override
   String get accountSectionTitle => 'Akun';

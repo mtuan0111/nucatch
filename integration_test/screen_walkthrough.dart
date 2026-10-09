@@ -1,5 +1,9 @@
+import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart' show OffsetLayer, RenderParagraph;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -171,7 +175,74 @@ Future<void> runScreenWalkthrough(
   // capture (see below) rather than guessing a fixed warm-up delay.
   final seenScreenshots = <List<int>>[];
 
+  // Readability / localization audit (--dart-define=AUDIT_TEXT=true): logs
+  // every visible text on each captured screen as
+  // `TEXTAUDIT|<screen>|<rendered size>|<text>`, where the size is what the
+  // player actually sees — the style's font size × text scale × any
+  // shrink-to-fit transform above it (FittedBox, Transform.scale). Walks the
+  // tree the way semantics does, so covered routes, offstage and fully
+  // transparent subtrees are skipped.
+  const auditText = bool.fromEnvironment('AUDIT_TEXT', defaultValue: false);
+  void auditTexts(String name) {
+    if (!auditText) return;
+    final view = tester.view;
+    final screen = Offset.zero & (view.physicalSize / view.devicePixelRatio);
+    void visit(RenderObject node) {
+      if (node is RenderParagraph && node.attached && node.hasSize) {
+        final text = node.text.toPlainText().replaceAll('\n', ' ').trim();
+        if (text.isNotEmpty) {
+          // In logical points already (the root's pixel-ratio transform
+          // isn't part of it), so any scale here is a real shrink/grow.
+          final transform = node.getTransformTo(null);
+          final rect =
+              MatrixUtils.transformRect(transform, Offset.zero & node.size);
+          if (rect.width > 0.5 && rect.height > 0.5 && rect.overlaps(screen)) {
+            double fontSize = node.text.style?.fontSize ?? 14;
+            node.text.visitChildren((span) {
+              final size = span.style?.fontSize;
+              if (size != null && size < fontSize) fontSize = size;
+              return true;
+            });
+            final scale = transform.getMaxScaleOnAxis();
+            final rendered = node.textScaler.scale(fontSize) * scale;
+            debugPrint('TEXTAUDIT|$name|${rendered.toStringAsFixed(1)}|$text'
+                '|font=${fontSize.toStringAsFixed(1)}'
+                ' textScale=${node.textScaler.scale(1).toStringAsFixed(2)}'
+                ' transform=${scale.toStringAsFixed(2)}');
+          }
+        }
+      }
+      node.visitChildrenForSemantics(visit);
+    }
+
+    for (final renderView in tester.binding.renderViews) {
+      visit(renderView);
+    }
+  }
+
+  // Direct capture (--dart-define=SHOT_DIR=<absolute host path>): renders
+  // the screen's layer tree to a PNG inside the test and writes it there —
+  // no `flutter drive` screenshot channel (which intermittently hangs on the
+  // iOS simulator), so it works under plain `flutter test`. iOS simulators
+  // can write host paths directly.
+  const shotDir = String.fromEnvironment('SHOT_DIR', defaultValue: '');
+  Future<void> layerShot(String name) async {
+    await doWait(2); // let transitions and fades finish
+    final renderView = tester.binding.renderViews.first;
+    final image = await (renderView.debugLayer! as OffsetLayer)
+        .toImage(renderView.paintBounds, pixelRatio: 1);
+    final png = await image.toByteData(format: ui.ImageByteFormat.png);
+    final file = File('$shotDir/$name.png')..createSync(recursive: true);
+    file.writeAsBytesSync(png!.buffer.asUint8List());
+    debugPrint('📸 Captured screenshot: ${file.path}');
+  }
+
   Future<void> shot(String name) async {
+    auditTexts(name);
+    if (shotDir.isNotEmpty) {
+      await layerShot(name);
+      return;
+    }
     // Layout-only run: no images at all, just the assertions around each shot.
     if (skipShots) return;
     // Store runs limit output to a curated subset — skip the capture (but not

@@ -622,7 +622,7 @@
   "tourRuleCombatWrapUpDesc": "C'est tout — Mode Solo, Choisissez Bien et Mode Combat. Bonne chance à vous !",
   "pickRightTitle": "Choisissez Bien",
   "pickRightDescription": "Choisissez la bonne équation ! Jeu de sélection rapide avec minuteur de 5 secondes.",
-  "menuGreeting": "Test your memory and math skills today!",
+  "menuGreeting": "Testez votre mémoire et vos talents en calcul dès aujourd'hui !",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
   },

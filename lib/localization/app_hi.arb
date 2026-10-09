@@ -622,7 +622,7 @@
   "tourRuleCombatWrapUpDesc": "यह सब कुछ है — सोलो मोड, सही चुनें, और कॉम्बैट। आपको शुभकामनाएं!",
   "pickRightTitle": "सही चुनें",
   "pickRightDescription": "सही समीकरण चुनें! 5-सेकंड टाइमर के साथ त्वरित चयन गेम।",
-  "menuGreeting": "Test your memory and math skills today!",
+  "menuGreeting": "आज ही अपनी याददाश्त और गणित कौशल को परखें!",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
   },

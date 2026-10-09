@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/helpers/display_scale.dart';
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
@@ -132,9 +133,8 @@ class RegularModeControls extends StatelessWidget {
         final spacing = clampCells
             ? clampedKeypadSpacing(rawExtent)
             : keypadSpacing(rawExtent);
-        final double cellSize = math
-            .min(rawWidth, rawHeight)
-            .clamp(0.0, kMaxKeypadButtonSize + spacing);
+        final double cellSize = math.min(rawWidth, rawHeight).clamp(
+            0.0, kMaxKeypadButtonSize * controlScaleOf(context) + spacing);
         // Clamped cells may still widen up to kKeypadMaxCellAspect — a wide,
         // short region (a Fold's bottom pane in tabletop posture) would
         // otherwise leave small square keys floating in empty width.
@@ -211,7 +211,7 @@ class RegularModeControls extends StatelessWidget {
       final spacing = keypadSpacing(math.min(rawWidth, rawHeight));
       final cellSize = math
           .min(rawWidth, rawHeight)
-          .clamp(0.0, kMaxKeypadButtonSize + spacing);
+          .clamp(0.0, kMaxKeypadButtonSize * controlScaleOf(context) + spacing);
 
       return Center(
         child: Column(

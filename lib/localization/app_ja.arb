@@ -626,7 +626,7 @@
   "tourRuleCombatWrapUpDesc": "これで全てです — ソロモード、正しい方を選べ、そして対戦。頑張ってください！",
   "pickRightTitle": "正しい方を選べ",
   "pickRightDescription": "正しい数式を選択してください！5秒タイマーのクイック選択ゲーム。",
-  "menuGreeting": "Test your memory and math skills today!",
+  "menuGreeting": "今日も記憶力と計算力を試してみましょう！",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
   },

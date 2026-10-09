@@ -199,10 +199,26 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                                     AppTextStyles.bodyMediumBold(context),
                                 unselectedLabelStyle:
                                     AppTextStyles.bodyMedium(context),
+                                // Each tab gets a third of the bar; long
+                                // translations ("In einer Woche") wrap onto
+                                // a second line instead of being clipped.
+                                labelPadding: const EdgeInsets.symmetric(
+                                    horizontal: kSpaceS),
                                 tabs: [
-                                  Tab(text: lang(context).daily),
-                                  Tab(text: lang(context).weekly),
-                                  Tab(text: lang(context).allTime),
+                                  for (final label in [
+                                    lang(context).daily,
+                                    lang(context).weekly,
+                                    lang(context).allTime,
+                                  ])
+                                    Tab(
+                                      height: 52,
+                                      child: Text(
+                                        label,
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
                                 ],
                               ),
                             ),
@@ -244,9 +260,13 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                                   },
                                 ),
                                 const SizedBox(width: kSpaceS),
-                                Text(
-                                  lang(context).onlyShowMyRecorded,
-                                  style: AppTextStyles.bodyLarge(context),
+                                // Flexible: long translations (German, Hindi…)
+                                // wrap instead of overflowing the row.
+                                Flexible(
+                                  child: Text(
+                                    lang(context).onlyShowMyRecorded,
+                                    style: AppTextStyles.bodyLarge(context),
+                                  ),
                                 ),
                               ],
                             );

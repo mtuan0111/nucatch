@@ -21,6 +21,12 @@ Plan and shipped status: `docs/FOLDABLE_SUPPORT_PLAN.md`.
   resumes through a 3-2-1; put `resumeCountdownOverlay()` last in the
   screen's `Stack` (before `TutorialOverlay`).
 
+## Tablet scale
+- `helpers/display_scale.dart`: shortest side ≥ 720 pt → text theme ×1.2
+  (applied once in `main.dart`), capped controls ×1.3 via
+  `controlScaleOf(context)`. Phones, the Fold and split-screen keep 1.0.
+  Scale new size caps with it rather than hard-coding tablet sizes.
+
 ## Keypad (both `RegularModeControls` and `CombatPlayScreen._buildKeyboard`)
 - Phones stretch cells to fill (`keypadSpacing`); tablets, Fold panes and
   badly proportioned regions clamp them (`keypadClampsCells`): short side

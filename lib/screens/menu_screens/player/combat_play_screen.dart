@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:nucatch/helpers/display_scale.dart';
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/blocs/navs/player/player_nav_state.dart';
@@ -1066,8 +1067,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
         final rawWidth = constraints.maxWidth / columns.length;
         final rawHeight = constraints.maxHeight / _keypadRows;
         final spacing = keypadSpacing(min(rawWidth, rawHeight));
-        final cellSize =
-            min(rawWidth, rawHeight).clamp(0.0, kMaxKeypadButtonSize + spacing);
+        final cellSize = min(rawWidth, rawHeight).clamp(
+            0.0, kMaxKeypadButtonSize * controlScaleOf(context) + spacing);
         return Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -1127,8 +1128,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
         final spacing = clampCells
             ? clampedKeypadSpacing(rawExtent)
             : keypadSpacing(rawExtent);
-        final double cellSize =
-            min(rawWidth, rawHeight).clamp(0.0, kMaxKeypadButtonSize + spacing);
+        final double cellSize = min(rawWidth, rawHeight).clamp(
+            0.0, kMaxKeypadButtonSize * controlScaleOf(context) + spacing);
         // Clamped cells may still widen up to kKeypadMaxCellAspect — see
         // RegularModeControls.
         final buttonWidth = clampCells

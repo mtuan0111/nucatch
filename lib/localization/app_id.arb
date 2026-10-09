@@ -622,7 +622,7 @@
   "tourRuleCombatWrapUpDesc": "Itu saja semuanya — Mode Solo, Pilih Benar, dan Pertarungan. Semoga berhasil!",
   "pickRightTitle": "Pilih Benar",
   "pickRightDescription": "Pilih persamaan yang benar! Permainan ketangkasan waktu 5 detik.",
-  "menuGreeting": "Test your memory and math skills today!",
+  "menuGreeting": "Uji ingatan dan kemampuan matematikamu hari ini!",
   "@menuGreeting": {
     "description": "Greeting message on the main menu"
   },

@@ -649,7 +649,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tourRuleCombatWrapUpDesc => '这就是全部内容 — 单人模式、选出正确答案和对战。祝你好运！';
 
   @override
-  String get menuGreeting => 'Test your memory and math skills today!';
+  String get menuGreeting => '今天就来测试你的记忆力和数学能力吧！';
 
   @override
   String get accountSectionTitle => '账户';

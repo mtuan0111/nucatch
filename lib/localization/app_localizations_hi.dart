@@ -706,7 +706,7 @@ class AppLocalizationsHi extends AppLocalizations {
       'यह सब कुछ है — सोलो मोड, सही चुनें, और कॉम्बैट। आपको शुभकामनाएं!';
 
   @override
-  String get menuGreeting => 'Test your memory and math skills today!';
+  String get menuGreeting => 'आज ही अपनी याददाश्त और गणित कौशल को परखें!';
 
   @override
   String get accountSectionTitle => 'खाता';
