@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/helpers/const.dart'
-    show GamepadKeypadSide, keyboardArray;
+    show GamepadKeypadSide, gamepadClusterRows, keyboardArray;
 import 'package:nucatch/widgets/regular_mode_controls.dart';
 import 'package:skeleton_core/skeleton_core.dart' show AnimatedButton;
 
@@ -12,6 +12,15 @@ import 'package:skeleton_core/skeleton_core.dart' show AnimatedButton;
 /// pane or a gamepad cluster shrinks the grid to fit, which once stacked
 /// the rows flush against each other.
 void main() {
+  test('gamepad clusters hold every key exactly once', () {
+    final keys = [
+      for (final side in GamepadKeypadSide.values)
+        for (final row in gamepadClusterRows(side)) ...row,
+    ];
+    expect(keys, hasLength(keyboardArray.length));
+    expect(keys.toSet(), keyboardArray.keys.toSet());
+  });
+
   const regions = <String, Size>{
     'phone': Size(390, 430),
     'tablet': Size(720, 640),
@@ -20,7 +29,10 @@ void main() {
   };
 
   for (final MapEntry(key: name, value: size) in regions.entries) {
-    for (final side in <GamepadKeypadSide?>[null, ...GamepadKeypadSide.values]) {
+    for (final side in <GamepadKeypadSide?>[
+      null,
+      ...GamepadKeypadSide.values
+    ]) {
       final label = '$name, ${side?.name ?? 'full grid'}';
       testWidgets('keys never touch: $label', (tester) async {
         // The window decides phone vs tablet sizing; give it a size that
@@ -53,7 +65,7 @@ void main() {
           for (final e in find.byType(AnimatedButton).evaluate())
             tester.getRect(find.byWidget(e.widget)),
         ];
-        expect(keys, hasLength(side == null ? 12 : 8));
+        expect(keys, hasLength(side == null ? 12 : 6));
 
         for (final key in keys) {
           expect(region.inflate(0.5).contains(key.topLeft), isTrue,

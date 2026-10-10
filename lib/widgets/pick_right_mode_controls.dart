@@ -119,7 +119,7 @@ class PickRightModeControls extends StatelessWidget {
                   AnimatedButton(
                     context,
                     key: TourKeys.keypadKeys[KeyboardOption.reset],
-                    iconData: FontAwesomeIcons.arrowsRotate,
+                    iconData: FontAwesomeIcons.shuffle, // deal a new number
                     isEnable: turnState.isAbleToReset && turnState.isAbleToTap,
                     onPressed: () {
                       context.read<TurnBloc>().add(
@@ -138,7 +138,7 @@ class PickRightModeControls extends StatelessWidget {
                   AnimatedButton(
                     context,
                     key: TourKeys.keypadKeys[KeyboardOption.mainMenu],
-                    iconData: FontAwesomeIcons.bars,
+                    iconData: FontAwesomeIcons.pause, // pauses, opens the menu
                     onPressed: onMenuPressed,
                     backgroundBuilder: (context, borderRadius) {
                       return LightningWidget(
@@ -186,7 +186,7 @@ class PickRightModeControls extends StatelessWidget {
         ? AnimatedButton(
             context,
             key: TourKeys.keypadKeys[KeyboardOption.reset],
-            iconData: FontAwesomeIcons.arrowsRotate,
+            iconData: FontAwesomeIcons.shuffle, // deal a new number
             isEnable: turnState.isAbleToReset && turnState.isAbleToTap,
             onPressed: () {
               context.read<TurnBloc>().add(
@@ -203,7 +203,7 @@ class PickRightModeControls extends StatelessWidget {
         : AnimatedButton(
             context,
             key: TourKeys.keypadKeys[KeyboardOption.mainMenu],
-            iconData: FontAwesomeIcons.bars,
+            iconData: FontAwesomeIcons.pause, // pauses, opens the menu
             onPressed: onMenuPressed,
             backgroundBuilder: (context, borderRadius) {
               return LightningWidget(

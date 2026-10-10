@@ -134,7 +134,9 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                     BlocBuilder<TurnRecordedListBloc, TurnRecordedListState>(
                         builder: (context, state) {
                       return CustomSliverAppBar(
-                        title: "$screenTitle ${state.numberOfTopBoard}",
+                        // Just the screen's name: "Top score 20" read as a
+                        // score of 20, not as a top-20 board.
+                        title: screenTitle,
                         onBackPressed: () {
                           mainMenuBloc.add(ShowMenu());
                         },
@@ -322,22 +324,39 @@ class _TopScoreScreenState extends State<TopScoreScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Period title
+                  // Period note: an explanation, so it stays quieter than
+                  // the rankings it describes.
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 30),
+                    padding: const EdgeInsets.only(bottom: kSpace2XL),
                     child: Text(
                       _getPeriodTitle(),
-                      style: AppTextStyles.titleLarge(context),
+                      style: AppTextStyles.bodyMedium(context).copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onPrimary
+                            .withValues(alpha: 0.75),
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
 
                   BlocBuilder<SettingBloc, SettingState>(
                     builder: (context, settingState) {
+                      // Two columns on wide windows (tablet, landscape): one
+                      // full-width item per row left a wide gap between the
+                      // badge and its details and showed only ~2.5 entries.
+                      final listWidth = DeviceWrapper.getWrapperWidth(context,
+                          maxWidth: (context.isTablet ||
+                                  context.isLandscapeOrientation)
+                              ? 1200
+                              : null);
+                      final itemWidth = listWidth >= _kTwoColumnMinWidth
+                          ? (listWidth - _kRankingColumnGap) / 2
+                          : listWidth;
                       return Wrap(
                         alignment: WrapAlignment.center,
-                        runSpacing: 50,
-                        spacing: 50,
+                        runSpacing: kSpace3XL,
+                        spacing: _kRankingColumnGap,
                         children: [
                           if (turnRecordedListState.listModel != null &&
                               turnRecordedListState.listModel!.isNotEmpty)
@@ -362,13 +381,16 @@ class _TopScoreScreenState extends State<TopScoreScreen>
                                           settingState.onlyShowMyRecorded,
                                         );
                                   },
-                                  child: NucatchRankingItem(
-                                    turnRecordedModel: e,
-                                    ranking: index + 1,
-                                    heroTag:
-                                        "ranking-${e.turnId}${settingState.onlyShowMyRecorded ? '-filtered' : ''}",
-                                    isCurrentUser: _currentUserId != null &&
-                                        e.firebaseUserId == _currentUserId,
+                                  child: SizedBox(
+                                    width: itemWidth,
+                                    child: NucatchRankingItem(
+                                      turnRecordedModel: e,
+                                      ranking: index + 1,
+                                      heroTag:
+                                          "ranking-${e.turnId}${settingState.onlyShowMyRecorded ? '-filtered' : ''}",
+                                      isCurrentUser: _currentUserId != null &&
+                                          e.firebaseUserId == _currentUserId,
+                                    ),
                                   ),
                                 );
                               },
@@ -393,3 +415,9 @@ class _TopScoreScreenState extends State<TopScoreScreen>
     );
   }
 }
+
+/// Width from which the ranking list splits into two columns.
+const double _kTwoColumnMinWidth = 720;
+
+/// Gap between the two ranking columns.
+const double _kRankingColumnGap = 50;

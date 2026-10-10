@@ -28,7 +28,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yourScoreIs => 'Your score currently is';
 
   @override
-  String get theCorrectIs => 'The correct is';
+  String get theCorrectIs => 'The answer was';
 
   @override
   String get whichOneIsCorrect => 'Which one is correct?';
@@ -37,7 +37,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get numberOfTopScores => 'Number of top scores';
 
   @override
-  String get onlyShowMyRecorded => 'Only show my recorded';
+  String get onlyShowMyRecorded => 'Show only my scores';
 
   @override
   String get introductionContent =>

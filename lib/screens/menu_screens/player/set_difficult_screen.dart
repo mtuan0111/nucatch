@@ -21,6 +21,7 @@ import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:nucatch/helpers/preferences_key.dart';
+import 'package:nucatch/widgets/mode_card.dart';
 
 class SetDifficultScreen extends StatefulWidget {
   const SetDifficultScreen({super.key});
@@ -158,91 +159,97 @@ class _SetDifficultScreenState extends State<SetDifficultScreen> {
                         // Any landscape (not just tablet) gives the
                         // ResponsiveGrid below room for a 2-3 column layout.
                         maxWidth: context.isLandscapeOrientation ? 1200 : null,
-                        child: ResponsiveGrid(
-                          spacing: buttonSpace,
-                          runSpacing: buttonSpace,
-                          children: Difficulty.values.map((difficulty) {
-                            FaIconData difficultyIcon =
-                                Helper.getIconFromDifficulty(
-                                    context, difficulty);
+                        // Same centred, capped card grid as the play-mode
+                        // screens, so the choice screens read as one set.
+                        child: Center(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(
+                                maxWidth: kModeCardsMaxWidth),
+                            child: ResponsiveGrid(
+                              spacing: buttonSpace,
+                              runSpacing: buttonSpace,
+                              minItemWidth: 340,
+                              children: Difficulty.values.map((difficulty) {
+                                FaIconData difficultyIcon =
+                                    Helper.getIconFromDifficulty(
+                                        context, difficulty);
 
-                            Color difficultyColor =
-                                Helper.getColorIconFromDifficulty(
-                                    context, difficulty);
+                                Color difficultyColor =
+                                    Helper.getColorIconFromDifficulty(
+                                        context, difficulty);
 
-                            void onTap() {
-                              final playerNavCubit =
-                                  context.read<PlayerNavCubit>();
-                              final playMode = playerNavCubit.currentPlayMode;
+                                void onTap() {
+                                  final playerNavCubit =
+                                      context.read<PlayerNavCubit>();
+                                  final playMode =
+                                      playerNavCubit.currentPlayMode;
 
-                              if (playMode == PlayMode.combat) {
-                                // Combat mode: Initialize and send difficulty selection
-                                final combatBloc = context.read<CombatBloc>();
+                                  if (playMode == PlayMode.combat) {
+                                    // Combat mode: Initialize and send difficulty selection
+                                    final combatBloc =
+                                        context.read<CombatBloc>();
 
-                                // Initialize combat game with host/guest status and difficulty
-                                combatBloc.add(CombatGameStarted(
-                                  difficulty: difficulty,
-                                  isHost: combatBloc.isHost,
-                                ));
+                                    // Initialize combat game with host/guest status and difficulty
+                                    combatBloc.add(CombatGameStarted(
+                                      difficulty: difficulty,
+                                      isHost: combatBloc.isHost,
+                                    ));
 
-                                // Send difficulty selected event (will notify opponent via Firestore)
-                                combatBloc.add(
-                                    DifficultySelected(difficulty: difficulty));
+                                    // Send difficulty selected event (will notify opponent via Firestore)
+                                    combatBloc.add(DifficultySelected(
+                                        difficulty: difficulty));
 
-                                // Navigate to play screen with combat mode
-                                context.read<CombatNavCubit>().showPlaying();
-                              } else {
-                                // Solo mode: Use existing logic
-                                turnBloc.add(
-                                  SetDifficulty(
-                                    difficulty: difficulty,
-                                    onChanged: () {
-                                      turnBloc.add(Start());
-                                      playerNavCubit.showPlay(
-                                          playMode: playMode);
-                                    },
-                                  ),
+                                    // Navigate to play screen with combat mode
+                                    context
+                                        .read<CombatNavCubit>()
+                                        .showPlaying();
+                                  } else {
+                                    // Solo mode: Use existing logic
+                                    turnBloc.add(
+                                      SetDifficulty(
+                                        difficulty: difficulty,
+                                        onChanged: () {
+                                          turnBloc.add(Start());
+                                          playerNavCubit.showPlay(
+                                              playMode: playMode);
+                                        },
+                                      ),
+                                    );
+                                  }
+                                }
+
+                                final card = ModeCard(
+                                  title: Helper.getTitleFromDifficulty(
+                                      context, difficulty),
+                                  description:
+                                      Helper.getDescriptionFromDifficulty(
+                                          context, difficulty),
+                                  icon: difficultyIcon,
+                                  color: difficultyColor,
+                                  onTap: onTap,
                                 );
-                              }
-                            }
 
-                            final card = OptionCard(
-                              context: context,
-                              title: Helper.getTitleFromDifficulty(
-                                  context, difficulty),
-                              description: Helper.getDescriptionFromDifficulty(
-                                  context, difficulty),
-                              icon: difficultyIcon,
-                              color: difficultyColor,
-                              onTap: onTap,
-                              backgroundBuilder: (context, borderRadius) {
-                                return LightningWidget(
-                                  baseColor: difficultyColor,
-                                  seed: difficulty.hashCode,
-                                  borderRadius: borderRadius,
+                                // Smart Default (§4): only the most-recently-played
+                                // difficulty gets the "Last played" badge, so the
+                                // likely choice is recognised at a glance. The badge
+                                // floats over the card's top-right corner, clear
+                                // of its icon, and rides its own filled container
+                                // for legibility over any card colour.
+                                if (_savedDifficulty != difficulty) return card;
+                                return Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    card,
+                                    const Positioned(
+                                      top: -12,
+                                      right: kSpaceL,
+                                      child: _LastPlayedBadge(),
+                                    ),
+                                  ],
                                 );
-                              },
-                            );
-
-                            // Smart Default (§4): only the most-recently-played
-                            // difficulty gets the "Last played" badge, so the
-                            // likely choice is recognised at a glance. The badge
-                            // floats over the card's empty top-left, mirroring
-                            // OptionCard's own pills, and rides its own filled
-                            // container for legibility over any card colour.
-                            if (_savedDifficulty != difficulty) return card;
-                            return Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                card,
-                                const Positioned(
-                                  top: -10,
-                                  left: 4,
-                                  child: _LastPlayedBadge(),
-                                ),
-                              ],
-                            );
-                          }).toList(),
+                              }).toList(),
+                            ),
+                          ),
                         ),
                       ),
                     ),

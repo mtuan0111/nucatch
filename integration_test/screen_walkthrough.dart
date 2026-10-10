@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeleton_core/skeleton_core.dart'
     show
@@ -26,19 +27,23 @@ import 'package:skeleton_core/skeleton_core.dart'
 import 'package:nucatch/localization/app_localizations.dart';
 import 'package:nucatch/main.dart' as app;
 import 'package:nucatch/blocs/navs/combat/combat_nav_cubit.dart';
-import 'package:nucatch/blocs/navs/player/player_nav_state.dart' show Difficulty;
+import 'package:nucatch/blocs/navs/player/player_nav_state.dart'
+    show Difficulty;
 import 'package:nucatch/blocs/objects/combat/combat_bloc.dart';
 import 'package:nucatch/blocs/objects/combat/combat_event.dart';
-import 'package:nucatch/blocs/objects/combat/combat_state.dart' show GameEndReason;
+import 'package:nucatch/blocs/objects/combat/combat_state.dart'
+    show GameEndReason;
 import 'package:nucatch/blocs/objects/turn/turn_bloc.dart';
 import 'package:nucatch/blocs/objects/turn/turn_event.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_event.dart'
     show SeedDemoLeaderboard;
 import 'package:nucatch/helpers/const.dart' show KeyboardOption;
-import 'package:nucatch/helpers/preferences_key.dart' show NucatchPreferencesKey;
+import 'package:nucatch/helpers/preferences_key.dart'
+    show NucatchPreferencesKey;
 import 'package:nucatch/helpers/tour_keys.dart';
 import 'package:nucatch/services/ai_greeting_service.dart';
+import 'package:nucatch/widgets/mode_card.dart';
 import 'package:nucatch/services/combat_ble_service.dart';
 import 'package:nucatch/services/fcm_service.dart';
 import 'package:nucatch/screens/menu_screen.dart';
@@ -137,7 +142,8 @@ Future<void> runScreenWalkthrough(
   // the navigation taps by are then loaded from that *same* locale, so an
   // English pass and a Vietnamese pass drive the identical flow without any
   // English string leaking into a non-English frame.
-  const localeCode = String.fromEnvironment('NUCATCH_LOCALE', defaultValue: 'en');
+  const localeCode =
+      String.fromEnvironment('NUCATCH_LOCALE', defaultValue: 'en');
   final locale = Locale(localeCode);
   final coreL10n = await CoreLocalizations.delegate.load(locale);
   final appL10n = await AppLocalizations.delegate.load(locale);
@@ -237,6 +243,37 @@ Future<void> runScreenWalkthrough(
     debugPrint('📸 Captured screenshot: ${file.path}');
   }
 
+  // Android: render frames in Dart instead of `binding.takeScreenshot`. The
+  // plugin's native capture (PixelCopy) can hit "Window doesn't have a
+  // backing surface!" — a fatal native crash Dart can't catch — while the
+  // play screen is grabbed over and over (its animated background never
+  // settles). Rendering the layer tree at the device's pixel ratio gives the
+  // same full-resolution frame of the app.
+  final renderInDart = Platform.isAndroid;
+  Future<List<int>> grab(String name) async {
+    if (!renderInDart) return binding.takeScreenshot(name);
+    await tester.pump();
+    final renderView = tester.binding.renderViews.first;
+    // paintBounds is already in physical pixels (the root layer carries the
+    // device-pixel-ratio transform), so pixelRatio stays 1. Scaling by the
+    // DPR again made 2835x5040 phone / 5120x3200 tablet frames, which Play
+    // rejects (no side may exceed 3840 px).
+    final image = await (renderView.debugLayer! as OffsetLayer)
+        .toImage(renderView.paintBounds, pixelRatio: 1);
+    final png = await image.toByteData(format: ui.ImageByteFormat.png);
+    return png!.buffer.asUint8List();
+  }
+
+  /// Hands a Dart-rendered frame to the `flutter drive` driver the same way
+  /// `takeScreenshot` does (`reportData['screenshots']`), once per shot.
+  void reportShot(String name, List<int> bytes) {
+    if (!renderInDart) return; // takeScreenshot already reported it
+    binding.reportData ??= <String, dynamic>{};
+    (binding.reportData!['screenshots'] ??= <dynamic>[]) as List<dynamic>;
+    (binding.reportData!['screenshots'] as List<dynamic>)
+        .add(<String, dynamic>{'screenshotName': name, 'bytes': bytes});
+  }
+
   Future<void> shot(String name) async {
     auditTexts(name);
     if (shotDir.isNotEmpty) {
@@ -248,11 +285,12 @@ Future<void> runScreenWalkthrough(
     // Store runs limit output to a curated subset — skip the capture (but not
     // the navigation/assertions that precede it) for anything not in the set.
     if (captureOnly != null) {
-      final base = name.startsWith(prefix) ? name.substring(prefix.length) : name;
+      final base =
+          name.startsWith(prefix) ? name.substring(prefix.length) : name;
       if (!captureOnly.contains(base)) return;
     }
     try {
-      List<int> bytes = await binding.takeScreenshot(name);
+      List<int> bytes = await grab(name);
       // Re-grab until the frame is BOTH settled and distinct, or the budget
       // runs out:
       //
@@ -277,15 +315,16 @@ Future<void> runScreenWalkthrough(
       for (int attempt = 0; attempt < 15; attempt++) {
         if (seenScreenshots.any((seen) => listEquals(bytes, seen))) {
           await doWait(1);
-          bytes = await binding.takeScreenshot(name);
+          bytes = await grab(name);
           continue;
         }
         await doWait(1);
-        final again = await binding.takeScreenshot(name);
+        final again = await grab(name);
         if (listEquals(again, bytes)) break; // settled AND distinct
         bytes = again; // still painting — keep waiting
       }
       seenScreenshots.add(bytes);
+      reportShot(name, bytes);
       debugPrint('📸 Captured screenshot: $name');
     } catch (e) {
       // Screenshot capture is a nice-to-have here, not the point of this
@@ -359,19 +398,28 @@ Future<void> runScreenWalkthrough(
             '(${size.width}x${size.height})');
   }
 
-  /// iPad-only: confirms two `OptionCard`s (found by their leading icon)
+  /// iPad-only: confirms two option cards (found by their icon)
   /// share the same vertical position, i.e. `ResponsiveGrid` genuinely laid
   /// them out side-by-side in a row rather than stacked.
-  void assertGridSideBySide(
-      String label, FaIconData iconA, FaIconData iconB) {
+  void assertGridSideBySide(String label, FaIconData iconA, FaIconData iconB) {
     if (!isIpadRun) return;
     final findA =
         find.byWidgetPredicate((w) => w is FaIcon && w.icon == iconA.data);
     final findB =
         find.byWidgetPredicate((w) => w is FaIcon && w.icon == iconB.data);
     if (findA.evaluate().isEmpty || findB.evaluate().isEmpty) return;
-    final dyA = tester.getTopLeft(findA.first).dy;
-    final dyB = tester.getTopLeft(findB.first).dy;
+    // Compare the cards' tops, not the icons': a ModeCard centres its icon
+    // vertically, so a longer description in one card would shift it.
+    double topOf(Finder icon) {
+      final card =
+          find.ancestor(of: icon.first, matching: find.byType(ModeCard));
+      return tester
+          .getTopLeft(card.evaluate().isNotEmpty ? card.first : icon.first)
+          .dy;
+    }
+
+    final dyA = topOf(findA);
+    final dyB = topOf(findB);
     expect(dyA, closeTo(dyB, 1.0),
         reason: '$label: expected ResponsiveGrid to lay cards out '
             'side-by-side (dyA=$dyA, dyB=$dyB)');
@@ -434,7 +482,8 @@ Future<void> runScreenWalkthrough(
           return;
         } catch (e) {
           lastError = e;
-          debugPrint('TEST_DEBUG tap("$debugLabel") attempt $attempt failed: $e');
+          debugPrint(
+              'TEST_DEBUG tap("$debugLabel") attempt $attempt failed: $e');
         }
       }
       await tester.pump(const Duration(milliseconds: 500));
@@ -457,8 +506,8 @@ Future<void> runScreenWalkthrough(
       await doWait(1);
       return;
     }
-    final elevatedButtonFinder = find.byWidgetPredicate(
-        (w) => w is CustomElevatedButton && w.text == text);
+    final elevatedButtonFinder = find
+        .byWidgetPredicate((w) => w is CustomElevatedButton && w.text == text);
     if (elevatedButtonFinder.evaluate().isNotEmpty) {
       final button =
           tester.widget<CustomElevatedButton>(elevatedButtonFinder.first);
@@ -534,6 +583,14 @@ Future<void> runScreenWalkthrough(
       await doWait(1);
       return;
     }
+    // The play-mode screens use the app's own ModeCard (same reasoning).
+    final modeCardFinder =
+        find.ancestor(of: iconFinder.first, matching: find.byType(ModeCard));
+    if (modeCardFinder.evaluate().isNotEmpty) {
+      tester.widget<ModeCard>(modeCardFinder.first).onTap();
+      await doWait(1);
+      return;
+    }
     // Fallback for the unlikely case an OptionCard ancestor isn't found.
     await tapFinder(iconFinder, debugLabel);
   }
@@ -605,8 +662,7 @@ Future<void> runScreenWalkthrough(
     // square, so layout code that branches on aspect ratio behaves the same
     // way it would on an actual rotated device.
     step('forcing landscape physical size');
-    tester.view.physicalSize =
-        Size(physicalSize.height, physicalSize.width);
+    tester.view.physicalSize = Size(physicalSize.height, physicalSize.width);
     tester.view.devicePixelRatio = devicePixelRatio;
   } else {
     step('forcing portrait physical size');
@@ -649,6 +705,24 @@ Future<void> runScreenWalkthrough(
         NucatchPreferencesKey.LAST_USED_DIFFICULTY, Difficulty.medium.name);
   }
 
+  // The menu prints the platform's version, which a `flutter drive` debug
+  // build takes from pubspec (it lags the released one). Store runs pass the
+  // released version (tool/screenshots/capture.sh reads it from the latest
+  // CHANGELOG build command) so frames don't advertise a stale number.
+  const releasedVersion = String.fromEnvironment('NUCATCH_VERSION');
+  if (releasedVersion.isNotEmpty) {
+    final real = await PackageInfo.fromPlatform();
+    PackageInfo.setMockInitialValues(
+      appName: real.appName,
+      packageName: real.packageName,
+      version: releasedVersion,
+      buildNumber: const String.fromEnvironment('NUCATCH_BUILD_NUMBER',
+          defaultValue: '0'),
+      buildSignature: real.buildSignature,
+      installerStore: real.installerStore,
+    );
+  }
+
   step('calling app.main()');
   app.main();
 
@@ -663,7 +737,9 @@ Future<void> runScreenWalkthrough(
   // throws "Bad state: Call convertFlutterSurfaceToImage()..." for every
   // single call until this runs once, switching to a screenshot-able
   // texture-backed view. A no-op on iOS/other platforms.
-  if (!skipShots) {
+  // Not needed when frames are rendered in Dart (Android, see `grab`), and
+  // the surface swap is one more moving part around the native capture.
+  if (!skipShots && !Platform.isAndroid) {
     step('switching to a screenshot-able Flutter surface');
     await binding.convertFlutterSurfaceToImage();
     await doWait(1);
@@ -764,12 +840,12 @@ Future<void> runScreenWalkthrough(
       reason: 'Start should reach the play-mode picker');
   await shot('${prefix}05_select_play_mode');
   assertNoOverflow('05_select_play_mode');
-  assertGridSideBySide(
-      '05_select_play_mode', FontAwesomeIcons.user, FontAwesomeIcons.userGroup);
+  assertGridSideBySide('05_select_play_mode', FontAwesomeIcons.solidUser,
+      FontAwesomeIcons.userGroup);
 
   // ── Solo: difficulty picker ───────────────────────────────
   step('tapping Solo Mode');
-  await tapOptionCard(FontAwesomeIcons.user, 'Solo Mode');
+  await tapOptionCard(FontAwesomeIcons.solidUser, 'Solo Mode');
   step('asserting SetDifficultScreen');
   await waitFor(find.byType(SetDifficultScreen), maxSeconds: 10);
   expect(find.byType(SetDifficultScreen), findsOneWidget,
@@ -817,6 +893,18 @@ Future<void> runScreenWalkthrough(
             startTimer: false,
           ),
         );
+    await doWait(1);
+    // Type the first two digits through the real keypad path, so the frame
+    // shows a round in progress ("3 4 _") — empty slots alone don't show a
+    // store visitor what the game is.
+    final playTurnBloc =
+        tester.element(find.byType(PlayScreen)).read<TurnBloc>();
+    playTurnBloc.add(Tap(keyValue: KeyboardOption.three));
+    await doWait(1);
+    playTurnBloc.add(Tap(keyValue: KeyboardOption.four));
+    // A tap restarts the turn timer; hold it again so the frame settles
+    // (the game-over seed below clears the hold).
+    playTurnBloc.add(TapTimerPause());
     await doWait(1);
   }
   await shot('${prefix}07_play_screen');
@@ -921,6 +1009,15 @@ Future<void> runScreenWalkthrough(
   await waitFor(find.byType(CombatPlayScreen), maxSeconds: 10);
   expect(find.byType(CombatPlayScreen), findsOneWidget,
       reason: 'seeding a combat match should reach the combat play screen');
+  if (seedDemoData) {
+    // Same as the solo shot: one digit typed for real, then the timer held,
+    // so the frame shows a match in progress and settles.
+    step('typing the first digit for the store shot');
+    combatBloc.add(CombatTap(keyValue: KeyboardOption.five));
+    await doWait(1);
+    combatBloc.add(CombatTapTimerPause());
+    await doWait(1);
+  }
   await shot('${prefix}12_combat_play');
   assertNoOverflow('12_combat_play');
   assertDeviceWrapperWidth('12_combat_play', landscape ? 1200 : 800);

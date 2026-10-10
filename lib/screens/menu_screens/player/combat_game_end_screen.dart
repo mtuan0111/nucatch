@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nucatch/helpers/lightning_painter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nucatch/helpers/tour_keys.dart';
@@ -20,69 +21,74 @@ class CombatGameEndScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-        decoration: LayoutConfig(context).gradientDecoration,
-        child: SafeArea(
-          child: BlocListener<CombatBloc, CombatState>(
-            listenWhen: (previous, current) =>
-                (previous.combatStatus != current.combatStatus &&
-                    current.combatStatus == CombatStatus.intro) ||
-                (previous.combatStatus != current.combatStatus &&
-                    current.combatStatus == CombatStatus.choosingDifficulty),
-            listener: (context, state) {
-              if (state.combatStatus == CombatStatus.intro) {
-                // Navigate to playing screen when restart countdown begins
-                context.read<CombatNavCubit>().showPlaying();
-              } else if (state.combatStatus ==
-                  CombatStatus.choosingDifficulty) {
-                if (context.read<CombatBloc>().isHost) {
-                  // Host: navigate to difficulty selection screen
-                  context.read<CombatNavCubit>().showSetDifficulty();
-                } else {
-                  // Guest: navigate to JoinRoom (shows "Waiting for host" with
-                  // existing BlocListener that auto-navigates when difficulty arrives)
-                  context.read<CombatNavCubit>().showJoinRoom();
-                }
-              }
-            },
-            child: BlocBuilder<CombatBloc, CombatState>(
-              builder: (context, combatState) {
-                final isWinner = combatState.isWinner ?? false;
+            decoration: LayoutConfig(context).gradientDecoration,
+            child: SafeArea(
+              child: BlocListener<CombatBloc, CombatState>(
+                listenWhen: (previous, current) =>
+                    (previous.combatStatus != current.combatStatus &&
+                        current.combatStatus == CombatStatus.intro) ||
+                    (previous.combatStatus != current.combatStatus &&
+                        current.combatStatus ==
+                            CombatStatus.choosingDifficulty),
+                listener: (context, state) {
+                  if (state.combatStatus == CombatStatus.intro) {
+                    // Navigate to playing screen when restart countdown begins
+                    context.read<CombatNavCubit>().showPlaying();
+                  } else if (state.combatStatus ==
+                      CombatStatus.choosingDifficulty) {
+                    if (context.read<CombatBloc>().isHost) {
+                      // Host: navigate to difficulty selection screen
+                      context.read<CombatNavCubit>().showSetDifficulty();
+                    } else {
+                      // Guest: navigate to JoinRoom (shows "Waiting for host" with
+                      // existing BlocListener that auto-navigates when difficulty arrives)
+                      context.read<CombatNavCubit>().showJoinRoom();
+                    }
+                  }
+                },
+                child: BlocBuilder<CombatBloc, CombatState>(
+                  builder: (context, combatState) {
+                    final isWinner = combatState.isWinner ?? false;
 
-                return CustomScrollView(
-                  slivers: [
-                    CustomSliverAppBar(
-                      titleWidget: Text(
-                        isWinner ? lang(context).youWin : lang(context).youLose,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.displaySmallTitleScreen(context),
-                      ),
-                      onBackPressed: () {
-                        // Reset CombatBloc to fresh initial state
-                        context.read<CombatBloc>().add(CombatBlocReset());
+                    return CustomScrollView(
+                      slivers: [
+                        CustomSliverAppBar(
+                          titleWidget: Text(
+                            isWinner
+                                ? lang(context).youWin
+                                : lang(context).youLose,
+                            textAlign: TextAlign.center,
+                            style:
+                                AppTextStyles.displaySmallTitleScreen(context),
+                          ),
+                          onBackPressed: () {
+                            // Reset CombatBloc to fresh initial state
+                            context.read<CombatBloc>().add(CombatBlocReset());
 
-                        // Reset CombatNavCubit to initial state
-                        context.read<CombatNavCubit>().reset();
+                            // Reset CombatNavCubit to initial state
+                            context.read<CombatNavCubit>().reset();
 
-                        // Navigate back to select play mode
-                        context.read<PlayerNavCubit>().showSelectPlayMode();
-                      },
-                      expandedHeight: 100,
-                    ),
-                    SliverToBoxAdapter(
-                      child: DeviceWrapper(
-                        // Any landscape (not just tablet) switches to the
-                        // 2-pane layout, which needs the full screen width.
-                        maxWidth: context.isLandscapeOrientation ? 1200 : null,
-                        child: _buildGameEndScreen(context, combatState),
-                      ),
-                    ),
-                  ],
-                );
-              },
+                            // Navigate back to select play mode
+                            context.read<PlayerNavCubit>().showSelectPlayMode();
+                          },
+                          expandedHeight: 100,
+                        ),
+                        SliverToBoxAdapter(
+                          child: DeviceWrapper(
+                            // Any landscape (not just tablet) switches to the
+                            // 2-pane layout, which needs the full screen width.
+                            maxWidth:
+                                context.isLandscapeOrientation ? 1200 : null,
+                            child: _buildGameEndScreen(context, combatState),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
             ),
           ),
-        ),
-      ),
           const TutorialOverlay(),
         ],
       ),
@@ -110,13 +116,17 @@ class CombatGameEndScreen extends StatelessWidget {
         ),
         const SizedBox(height: kSpaceXL),
 
-        // Expected String Display
+        // Final score — the payoff of the match, so it leads.
+        _buildScoreboard(context, combatState),
+        const SizedBox(height: kSpaceXL),
+
+        // Expected String Display (secondary to the score)
         if (combatState.expect != null && combatState.expect!.isNotEmpty) ...[
           Text(
             lang(context).theCorrectIs,
             style: AppTextStyles.bodyMediumBold(context),
           ),
-          const SizedBox(height: kSpaceS),
+          const SizedBox(height: kSpaceXS),
           Builder(builder: (context) {
             // Use synced correctEquationDisplay for pick-right mode
             // This value is the same on both user and opponent screens
@@ -124,9 +134,8 @@ class CombatGameEndScreen extends StatelessWidget {
                 combatState.correctEquationDisplay ?? combatState.expect!;
             return Text(
               displayText,
-              style: AppTextStyles.forChallenge(
-                displayText.length,
-                context,
+              style: AppTextStyles.titleLarge(context).copyWith(
+                fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             );
@@ -193,7 +202,15 @@ class CombatGameEndScreen extends StatelessWidget {
                         '${coreLang(context).ready} - ${coreLang(context).playAgain}',
                     buttonSize: ButtonSize.small,
                     shapeAt: RoundedWithShapeAt.topRight,
-                    backgroundColor: Theme.of(context).colorScheme.tertiary,
+                    // The main action: the app's primary colour, not the
+                    // muted tertiary that made it look disabled.
+                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundBuilder: (context, borderRadius) =>
+                        LightningWidget(
+                      baseColor: Theme.of(context).primaryColor,
+                      seed: 'PlayAgain'.hashCode,
+                      borderRadius: borderRadius,
+                    ),
                     onPressed: () {
                       context.read<CombatBloc>().add(
                             CombatRestartReady(isReady: true),
@@ -228,6 +245,11 @@ class CombatGameEndScreen extends StatelessWidget {
             text: coreLang(context).playAgain,
             buttonSize: ButtonSize.small,
             shapeAt: RoundedWithShapeAt.topRight,
+            backgroundBuilder: (context, borderRadius) => LightningWidget(
+              baseColor: Theme.of(context).primaryColor,
+              seed: 'PlayAgain'.hashCode,
+              borderRadius: borderRadius,
+            ),
             onPressed: () {
               context.read<CombatBloc>().add(CombatRestartRequested());
             },
@@ -240,7 +262,11 @@ class CombatGameEndScreen extends StatelessWidget {
           text: coreLang(context).returnToMenu,
           buttonSize: ButtonSize.small,
           shapeAt: RoundedWithShapeAt.bottomLeft,
-          backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
+          // Secondary: a darker shade of the primary colour, so it reads
+          // as a real button (the flat grey looked disabled) but stays
+          // quieter than Play Again.
+          backgroundColor:
+              Theme.of(context).primaryColor.getDarker(percentage: 25),
           onPressed: () {
             // Reset CombatBloc to fresh initial state
             context.read<CombatBloc>().add(CombatBlocReset());
@@ -283,6 +309,43 @@ class CombatGameEndScreen extends StatelessWidget {
           readyAndActions,
         ],
       ),
+    );
+  }
+
+  /// "You 6 – 4 Opponent": both final scores, the winner's in full white.
+  Widget _buildScoreboard(BuildContext context, CombatState combatState) {
+    final isWinner = combatState.isWinner ?? false;
+    final onPrimary = Theme.of(context).colorScheme.onPrimary;
+    final scoreStyle = AppTextStyles.displaySmallBold(context);
+
+    Widget side(String label, int score, bool won) {
+      final color = won ? onPrimary : onPrimary.withValues(alpha: 0.6);
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label,
+            style: AppTextStyles.bodyMedium(context).copyWith(color: color),
+          ),
+          Text('$score', style: scoreStyle.copyWith(color: color)),
+        ],
+      );
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        side(lang(context).you, combatState.point, isWinner),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: kSpaceXL),
+          child: Text(
+            '–',
+            style: scoreStyle.copyWith(color: onPrimary.withValues(alpha: 0.6)),
+          ),
+        ),
+        side(lang(context).opponent, combatState.opponentScore, !isWinner),
+      ],
     );
   }
 

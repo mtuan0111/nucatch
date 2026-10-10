@@ -6,7 +6,7 @@ import 'package:nucatch/blocs/navs/player/player_nav_cubit.dart';
 
 import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
-import 'package:nucatch/helpers/lightning_painter.dart';
+import 'package:nucatch/widgets/mode_card.dart';
 
 /// Combat Mode Setup Screen - Choose to host or join a room
 class CombatModeSetupScreen extends StatefulWidget {
@@ -55,163 +55,56 @@ class _CombatModeSetupScreenState extends State<CombatModeSetupScreen> {
                         // Create/Join ResponsiveGrid room for a 2-column
                         // layout.
                         maxWidth: context.isLandscapeOrientation ? 1200 : null,
-                        child: Column(
-                          spacing: 20,
-                          children: [
-                            // Show parent selection context (disabled options)
-                            Opacity(
-                              opacity: 0.5,
-                              child: OptionCard(
-                                context: context,
-                                title: lang(context).soloMode,
-                                description: lang(context).soloModeDescription,
-                                icon: FontAwesomeIcons.user,
-                                color: Theme.of(context).colorScheme.primary,
-                                onTap: () {
-                                  // Disabled - navigate back to select mode
-                                  context
-                                      .read<PlayerNavCubit>()
-                                      .showSelectPlayMode();
-                                },
-                                backgroundBuilder: (context, borderRadius) {
-                                  return LightningWidget(
-                                    baseColor:
-                                        Theme.of(context).colorScheme.primary,
-                                    seed: lang(context).soloMode.hashCode,
-                                    borderRadius: borderRadius,
-                                  );
-                                },
-                              ),
-                            ),
-                            // Combat Mode - Selected/Marked
-                            Stack(
+                        // The mode was already chosen on the previous
+                        // screen (the title says so), so Create / Join lead
+                        // instead of sitting below a repeat of that choice.
+                        child: Center(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(
+                                maxWidth: kModeCardsMaxWidth),
+                            child: Column(
                               children: [
-                                OptionCard(
-                                  context: context,
-                                  title: lang(context).combatMode,
-                                  description:
-                                      lang(context).combatModeDescription,
-                                  icon: FontAwesomeIcons.userGroup,
-                                  color: Theme.of(context).colorScheme.error,
-                                  onTap: () {
-                                    // Already selected - navigate back
-                                    context
-                                        .read<PlayerNavCubit>()
-                                        .showSelectPlayMode();
-                                  },
-                                  backgroundBuilder: (context, borderRadius) {
-                                    return LightningWidget(
-                                      baseColor:
-                                          Theme.of(context).colorScheme.error,
-                                      seed: lang(context).combatMode.hashCode,
-                                      borderRadius: borderRadius,
-                                    );
-                                  },
-                                ),
-                                Positioned(
-                                  top: 8,
-                                  right: 8,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(6),
-                                    decoration: BoxDecoration(
-                                      color:
-                                          Theme.of(context).colorScheme.error,
-                                      shape: BoxShape.circle,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .error
-                                              .withValues(alpha: 0.5),
-                                          blurRadius: 8,
-                                          spreadRadius: 2,
-                                        ),
-                                      ],
-                                    ),
-                                    child: const Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                      size: kIconSizeM,
-                                    ),
+                                Text(
+                                  lang(context).combatModeDescription,
+                                  style:
+                                      AppTextStyles.bodyLarge(context).copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary
+                                        .withValues(alpha: 0.85),
                                   ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: kSpace2XL),
+                                ResponsiveGrid(
+                                  spacing: kSpaceXL,
+                                  runSpacing: kSpaceXL,
+                                  minItemWidth: 340,
+                                  children: [
+                                    ModeCard(
+                                      title: lang(context).createRoom,
+                                      description:
+                                          lang(context).createRoomDescription,
+                                      icon: FontAwesomeIcons.userPlus,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      onTap: () => _navigateToHostRoom(context),
+                                    ),
+                                    ModeCard(
+                                      title: lang(context).joinRoom,
+                                      description:
+                                          lang(context).joinRoomDescription,
+                                      icon: FontAwesomeIcons.rightToBracket,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      onTap: () => _navigateToJoinRoom(context),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-
-                            // Divider to show hierarchy
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: kPaddingM),
-                              child: Row(
-                                children: [
-                                  const Expanded(child: Divider(thickness: 2)),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: kPaddingL),
-                                    child: Text(
-                                      lang(context).combatMode,
-                                      style: AppTextStyles.withColor(
-                                          AppTextStyles.titleLarge(context),
-                                          Theme.of(context).colorScheme.error),
-                                    ),
-                                  ),
-                                  const Expanded(child: Divider(thickness: 2)),
-                                ],
-                              ),
-                            ),
-
-                            // Sub-options for Combat Mode
-                            Padding(
-                              padding: const EdgeInsets.only(left: kPaddingXL),
-                              child: ResponsiveGrid(
-                                spacing: kSpaceXL,
-                                runSpacing: kSpaceXL,
-                                minItemWidth: 280,
-                                children: [
-                                  // Create Room Option
-                                  OptionCard(
-                                    context: context,
-                                    title: lang(context).createRoom,
-                                    description:
-                                        lang(context).createRoomDescription,
-                                    icon: FontAwesomeIcons.userPlus,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    onTap: () => _navigateToHostRoom(context),
-                                    backgroundBuilder: (context, borderRadius) {
-                                      return LightningWidget(
-                                        baseColor: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        seed: lang(context).createRoom.hashCode,
-                                        borderRadius: borderRadius,
-                                      );
-                                    },
-                                  ),
-                                  // Join Room Option
-                                  OptionCard(
-                                    context: context,
-                                    title: lang(context).joinRoom,
-                                    description:
-                                        lang(context).joinRoomDescription,
-                                    icon: FontAwesomeIcons.rightToBracket,
-                                    color:
-                                        Theme.of(context).colorScheme.tertiary,
-                                    onTap: () => _navigateToJoinRoom(context),
-                                    backgroundBuilder: (context, borderRadius) {
-                                      return LightningWidget(
-                                        baseColor: Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                        seed: lang(context).joinRoom.hashCode,
-                                        borderRadius: borderRadius,
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),

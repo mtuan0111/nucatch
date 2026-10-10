@@ -24,7 +24,7 @@
   "@yourScoreIs": {
     "description": "Thông báo điểm số của người chơi"
   },
-  "theCorrectIs": "The correct is",
+  "theCorrectIs": "The answer was",
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"
   },
@@ -36,7 +36,7 @@
   "@numberOfTopScores": {
     "description": "Label for number of top scores setting"
   },
-  "onlyShowMyRecorded": "Only show my recorded",
+  "onlyShowMyRecorded": "Show only my scores",
   "@onlyShowMyRecorded": {
     "description": "Label for filter to show only user's own recorded scores"
   },

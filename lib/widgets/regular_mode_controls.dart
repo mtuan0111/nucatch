@@ -43,11 +43,9 @@ class RegularModeControls extends StatelessWidget {
   static const int _totalColumns = 3;
   static const int _rows = 4;
 
-  /// Builds the button for one keypad entry. [applyTourKey] is false for a
-  /// gamepad-cluster's duplicate copy of a middle-column button — a
-  /// `GlobalKey` (`TourKeys.keypadKeys[...]`) can only back one mounted
-  /// widget at a time, so only one on-screen copy of each button may carry
-  /// it.
+  /// Builds the button for one keypad entry. [applyTourKey] attaches its
+  /// `TourKeys.keypadKeys` `GlobalKey`, which can back only one mounted
+  /// widget at a time.
   Widget _buildButton(
     BuildContext context,
     MapEntry<KeyboardOption, int> e, {
@@ -63,7 +61,7 @@ class RegularModeControls extends StatelessWidget {
         context,
         key: key,
         padding: padding,
-        iconData: FontAwesomeIcons.arrowsRotate,
+        iconData: FontAwesomeIcons.shuffle, // deal a new number
         isEnable: turnState.isAbleToReset && turnState.isAbleToTap,
         onPressed: () {
           context.read<TurnBloc>().add(ResetNewNumber(duration: duration));
@@ -81,7 +79,7 @@ class RegularModeControls extends StatelessWidget {
         context,
         key: key,
         padding: padding,
-        iconData: FontAwesomeIcons.bars,
+        iconData: FontAwesomeIcons.pause, // pauses, opens the menu
         onPressed: onMenuPressed,
         backgroundBuilder: (context, borderRadius) {
           return LightningWidget(
@@ -115,7 +113,7 @@ class RegularModeControls extends StatelessWidget {
     final keys = keyboardArray.entries.toList();
 
     if (gamepadSide != null) {
-      return _buildGamepadCluster(context, keys, gamepadSide!);
+      return _buildGamepadCluster(context, gamepadSide!);
     }
 
     return LayoutBuilder(
@@ -196,18 +194,14 @@ class RegularModeControls extends StatelessWidget {
 
   Widget _buildGamepadCluster(
     BuildContext context,
-    List<MapEntry<KeyboardOption, int>> keys,
     GamepadKeypadSide side,
   ) {
-    final columns = side == GamepadKeypadSide.left ? [0, 1] : [1, 2];
-    // The middle column (digits 2/5/8/0) is duplicated across both
-    // clusters — the right cluster is the canonical owner of its
-    // TourKeys.keypadKeys GlobalKey; the left cluster's copies go keyless.
-    final ownsMiddleColumnKey = side == GamepadKeypadSide.right;
+    final rows = gamepadClusterRows(side);
+    final columns = rows.first.length;
 
     return LayoutBuilder(builder: (context, constraints) {
-      final rawWidth = constraints.maxWidth / columns.length;
-      final rawHeight = constraints.maxHeight / _rows;
+      final rawWidth = constraints.maxWidth / columns;
+      final rawHeight = constraints.maxHeight / rows.length;
       final spacing = keypadSpacing(math.min(rawWidth, rawHeight));
       final cellSize = math
           .min(rawWidth, rawHeight)
@@ -218,7 +212,7 @@ class RegularModeControls extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            for (int r = 0; r < _rows; r++)
+            for (final row in rows)
               Padding(
                 // Explicit vertical gap: when the grid shrinks to fit its
                 // rows (tablets, a Fold pane, gamepad clusters) there is no
@@ -234,18 +228,19 @@ class RegularModeControls extends StatelessWidget {
                   // past what the cluster's tight parent width allows.
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    for (final c in columns)
-                      if (r * _totalColumns + c < keys.length)
-                        SizedBox(
-                          width: cellSize - spacing,
-                          height: cellSize - spacing,
-                          child: _buildButton(
-                            context,
-                            keys[r * _totalColumns + c],
-                            applyTourKey: c != 1 || ownsMiddleColumnKey,
-                            keyExtent: cellSize - spacing,
-                          ),
+                    for (final option in row)
+                      SizedBox(
+                        width: cellSize - spacing,
+                        height: cellSize - spacing,
+                        child: _buildButton(
+                          context,
+                          MapEntry(option, keyboardArray[option]!),
+                          // Each key is on one side only, so every one
+                          // carries its tour key.
+                          applyTourKey: true,
+                          keyExtent: cellSize - spacing,
                         ),
+                      ),
                   ],
                 ),
               ),

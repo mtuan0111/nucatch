@@ -11,7 +11,8 @@ Plan and shipped status: `docs/FOLDABLE_SUPPORT_PLAN.md`.
 ## Layout modes
 - `GameLayout.resolve(size, displayFeatures)` → `stacked` (phones, Fold
   inner screen), `compactSquare` (small near-square, e.g. Flip cover),
-  `gamepad` (width/height ≥ 1.3: keypad split to both edges), `tabletop`
+  `gamepad` (width/height ≥ 1.3: keypad split to both edges — 1–5 left,
+  6–0 right, each key once; see `gamepadClusterRows`), `tabletop`
   (horizontal fold half-open), `twoPane` (vertical hinge / book).
   Read it in `build` via `GameLayout.of(context)`.
 - Both game screens use `GameLayoutBody` (header + `controlsBuilder(side)`);

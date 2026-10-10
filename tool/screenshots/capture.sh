@@ -53,7 +53,7 @@ AND_META_ROOT="$REPO_ROOT/android/fastlane/metadata/android" # <locale>/images/.
 #   iPhone 13 Pro Max -> 6.7" iPhone slot, 1284 x 2778
 #   iPad Pro 13-inch  -> 13"  iPad slot,   2064 x 2752
 IOS_DEVICES=(
-  "iphone_6_7|iPhone 13 Pro Max"
+  "iphone_6_3|iPhone 16"
   "ipad_13|iPad Pro 13-inch (M4)"
 )
 
@@ -74,6 +74,17 @@ ANDROID_DEVICES=(
   "tenInch|Pixel_Tablet"
 )
 
+# The released version, so the menu's "Version: …" line in the frames matches
+# the store listing (a `flutter drive` debug build would show pubspec's older
+# one). Taken from the latest production Android build command in
+# CHANGELOG.md, e.g. `--build-name=2.8.11 --build-number=94 … PRODUCTION`.
+read_released_version() {
+  local line
+  line="$(grep -E 'flutter build appbundle .*APP_ENVIRONMENT=PRODUCTION' "$1" | tail -n1)"
+  RELEASED_VERSION="$(sed -nE 's/.*--build-name=([^ ]+).*/\1/p' <<<"$line")"
+  RELEASED_BUILD="$(sed -nE 's/.*--build-number=([^ ]+).*/\1/p' <<<"$line")"
+}
+
 MODE="${1:-all}"
 KEEP_DEVICES="${KEEP_DEVICES:-0}"
 
@@ -87,6 +98,28 @@ die()  { printf '\033[1;31m✖ %s\033[0m\n' "$*" >&2; exit 1; }
 strip_prefix() { local b; b="$(basename "$1")"; echo "${b#portrait_}"; }
 
 cd "$REPO_ROOT"
+
+RELEASED_VERSION=""; RELEASED_BUILD=""
+read_released_version "$REPO_ROOT/CHANGELOG.md"
+if [[ -n "$RELEASED_VERSION" ]]; then
+  log "Frames will show version $RELEASED_VERSION ($RELEASED_BUILD) from CHANGELOG.md"
+else
+  warn "No production build command found in CHANGELOG.md — frames show pubspec's version."
+fi
+VERSION_DEFINES=(
+  --dart-define=NUCATCH_VERSION="$RELEASED_VERSION"
+  --dart-define=NUCATCH_BUILD_NUMBER="${RELEASED_BUILD:-0}"
+)
+
+# adb / emulator are often not on PATH (e.g. non-login shells, CI, IDE
+# terminals). Add the Android SDK's tool folders from ANDROID_HOME /
+# ANDROID_SDK_ROOT, or the default Android Studio location on macOS.
+for sdk in "${ANDROID_HOME:-}" "${ANDROID_SDK_ROOT:-}" "$HOME/Library/Android/sdk"; do
+  if [[ -n "$sdk" && -d "$sdk/platform-tools" ]]; then
+    export PATH="$sdk/platform-tools:$sdk/emulator:$PATH"
+    break
+  fi
+done
 
 # --------------------------------------------------------------------------
 # iOS
@@ -146,7 +179,7 @@ capture_ios() {
       log "iOS: driving '$name' screenshots for '$fdir' (NUCATCH_LOCALE=$dloc)"
       NUCATCH_SHOT_DIR="$out" flutter drive \
         --driver="$DRIVER" --target="$TARGET" -d "$udid" \
-        --dart-define=NUCATCH_LOCALE="$dloc"
+        --dart-define=NUCATCH_LOCALE="$dloc" "${VERSION_DEFINES[@]}"
 
       log "iOS: copying '$tag'/'$fdir' frames into $ios_out (device-tagged for uniqueness)"
       for png in "$out"/*.png; do
@@ -186,6 +219,18 @@ android_demo_statusbar() {
   adb -s "$s" shell $demo -e command network -e wifi show -e level 4 >/dev/null || true
   adb -s "$s" shell $demo -e command network -e mobile show -e datatype none -e level 4 >/dev/null || true
   adb -s "$s" shell $demo -e command notifications -e visible false >/dev/null || true
+  # Gesture navigation: the 3-button bar reserves a 48dp strip at the bottom
+  # that the Dart-rendered frames can't draw, so every phone shot ended in an
+  # empty band that looked like cut-off content. The gesture handle's inset
+  # is a sliver. Undone in android_restore_navbar.
+  adb -s "$s" shell cmd overlay enable-exclusive --category \
+    com.android.internal.systemui.navbar.gestural >/dev/null 2>&1 || true
+}
+
+# Back to 3-button navigation (the AVD's default) on serial $1.
+android_restore_navbar() {
+  adb -s "$1" shell cmd overlay enable-exclusive --category \
+    com.android.internal.systemui.navbar.threebutton >/dev/null 2>&1 || true
 }
 
 capture_android() {
@@ -243,7 +288,7 @@ capture_android() {
       log "Android: driving '$avd' ($serial) screenshots for '$fdir' (NUCATCH_LOCALE=$dloc)"
       NUCATCH_SHOT_DIR="$out" flutter drive \
         --driver="$DRIVER" --target="$TARGET" -d "$serial" \
-        --dart-define=NUCATCH_LOCALE="$dloc"
+        --dart-define=NUCATCH_LOCALE="$dloc" "${VERSION_DEFINES[@]}"
 
       log "Android: copying '$bucket'/'$fdir' frames into $dest"
       rm -rf "$dest"; mkdir -p "$dest"
@@ -254,6 +299,7 @@ capture_android() {
     done
 
     adb -s "$serial" shell am broadcast -a com.android.systemui.demo -e command exit >/dev/null || true
+    android_restore_navbar "$serial"
     # Only shut down emulators this script started, and only when not asked to keep them.
     if [[ "$started_here" == "1" && "$KEEP_DEVICES" != "1" ]]; then
       adb -s "$serial" emu kill >/dev/null 2>&1 || true

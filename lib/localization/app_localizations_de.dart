@@ -28,7 +28,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get yourScoreIs => 'Deine aktuelle Punktzahl ist';
 
   @override
-  String get theCorrectIs => 'Das Richtige ist';
+  String get theCorrectIs => 'Die richtige Antwort war';
 
   @override
   String get whichOneIsCorrect => 'Welche ist richtig?';

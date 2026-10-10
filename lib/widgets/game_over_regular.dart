@@ -4,9 +4,9 @@ import 'package:nucatch/blocs/objects/turn/turn_state.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_bloc.dart';
 import 'package:nucatch/blocs/objects/turnRecordedList/turn_recorded_list_state.dart';
 import 'package:nucatch/helpers/tour_keys.dart';
-import 'package:nucatch/helpers/const.dart';
 import 'package:skeleton_core/skeleton_core.dart';
 import 'package:nucatch/helpers/extension.dart';
+import 'package:nucatch/widgets/game_over_score.dart';
 import 'package:nucatch/widgets/nucatch_ranking_item.dart';
 
 /// Game over content widget for Regular (normal) difficulty modes
@@ -29,47 +29,27 @@ class GameOverRegular extends StatelessWidget {
           key: TourKeys.gameOverSummaryKey,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Game Over title
-            Text(
-              coreLang(context).gameOver,
-              style: AppTextStyles.displaySmallBold(context).copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: kSpace3XL),
+            GameOverScore(point: turnState.point),
+            const SizedBox(height: kSpace2XL),
 
-            // Show requirement string if different from expected
+            // The expression, when it differs from its answer
             if (turnState.expect != turnState.requirementString)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: kSpace2XL),
+                padding: const EdgeInsets.only(
+                  left: kSpace2XL,
+                  right: kSpace2XL,
+                  bottom: kSpaceS,
+                ),
                 child: Text(
                   turnState.requirementString ?? '',
-                  style: AppTextStyles.displaySmall(context).copyWith(
+                  style: AppTextStyles.titleLarge(context).copyWith(
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
-            const SizedBox(height: kSpaceL),
 
-            // "The correct is" label
-            Text(
-              lang(context).theCorrectIs,
-              style: AppTextStyles.withColor(
-                AppTextStyles.bodyLargeMedium(context),
-                Theme.of(context).colorScheme.onPrimary,
-              ),
-            ),
-            const SizedBox(width: kSpaceS),
-
-            // Expected answer
-            Text(
-              turnState.expect ?? '',
-              style: AppTextStyles.displaySmallBold(context).copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-            ),
+            GameOverAnswer(answer: turnState.expect ?? ''),
           ],
         ),
         const SizedBox(height: kSpaceXL),

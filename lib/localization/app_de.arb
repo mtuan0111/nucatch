@@ -20,7 +20,7 @@
   "@yourScoreIs": {
     "description": "Thông báo điểm số của người chơi"
   },
-  "theCorrectIs": "Das Richtige ist",
+  "theCorrectIs": "Die richtige Antwort war",
   "whichOneIsCorrect": "Welche ist richtig?",
   "@theCorrectIs": {
     "description": "Message indicating the correct answer"

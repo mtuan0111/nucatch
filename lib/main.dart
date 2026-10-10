@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nucatch/helpers/app_text_theme.dart';
 import 'package:nucatch/helpers/display_scale.dart';
 import 'package:nucatch/helpers/admob_config.dart';
 import 'package:skeleton_core/skeleton_core.dart'
@@ -95,16 +96,13 @@ Future<void> main() async {
         // One cohesive family (see SkeletonConfig above). Fallback is limited to
         // Roboto Mono for the few numeric/monospace readouts; the old six-font
         // fallback chain was the "excessive font variation" we're removing.
-        fontFamily: 'Baloo Bhai',
-        fontFamilyFallback: const [
-          "Roboto Mono",
-        ],
-        textTheme: Theme.of(context).textTheme.apply(
-              fontSizeFactor: (0.5 + (state.fontSize / 20)) * tabletScale,
-              fontSizeDelta: (1 + (state.fontSize / 10)) * tabletScale,
-              bodyColor: Colors.white,
-              displayColor: Colors.white,
-            ),
+        fontFamily: kAppFontFamily,
+        fontFamilyFallback: kAppFontFamilyFallback,
+        textTheme: appTextTheme(
+          Theme.of(context).textTheme,
+          fontSizeFactor: (0.5 + (state.fontSize / 20)) * tabletScale,
+          fontSizeDelta: (1 + (state.fontSize / 10)) * tabletScale,
+        ),
         colorScheme: SeasonalTheme.config.getColorScheme(),
         useMaterial3: true,
         primaryColor: SeasonalTheme.config.primaryColor,
@@ -135,6 +133,36 @@ Future<void> main() async {
     tourWrapperBuilder: (context, child) => GlobalTourWrapper(child: child),
     updateCheckerBuilder: (context, child) =>
         UpdateCheckerWrapper(child: child),
+
+    // ----- Screen headers -----
+    // skeleton_core's default filled the expanded header with a flat
+    // primary-colour rectangle that read as a placeholder. The title now
+    // sits straight on the gradient; once the list scrolls under the
+    // pinned bar, a rounded translucent panel fades in behind it so the
+    // title stays readable. (`isCollapsed` is true while the bar is
+    // *expanded* — skeleton_core's naming is inverted; o_an_quan relies
+    // on the same reading.)
+    buttonTheme: CustomButtonThemeData(
+      sliverAppBarBackgroundBuilder: (context, isCollapsed) => AnimatedOpacity(
+        duration: const Duration(milliseconds: kAnimationDurationMedium),
+        opacity: isCollapsed ? 0.0 : 1.0,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor.withValues(alpha: 0.92),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(LayoutConfig.layoutBorderRadius),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.18),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
 
     // ----- Navigation -----
     menuNavBuilder: (context) => const MenuNav(),

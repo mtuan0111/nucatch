@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
+import 'package:nucatch/helpers/display_scale.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skeleton_core/skeleton_core.dart';
@@ -79,7 +80,7 @@ class _PlayScreenState extends State<PlayScreen> with GamePauseGuard {
       context.read<TurnRecordedListBloc>();
   TurnRecordedListState get turnRecordedListState => turnRecordedListBloc.state;
 
-  // Removed: boldedStyleFont - now using AppTextStyles.forChallenge()
+  // Removed: boldedStyleFont - now using challengeTextStyle()
 
   /// Cached for [GamePauseGuard], which releases its holds from [dispose].
   late final TurnBloc _guardedTurnBloc = context.read<TurnBloc>();
@@ -515,7 +516,7 @@ class _PlayScreenState extends State<PlayScreen> with GamePauseGuard {
                                           String inputted = turnState
                                               .requirementString![index];
                                           return SizedBox(
-                                            width: (AppTextStyles.forChallenge(
+                                            width: (challengeTextStyle(
                                                         turnState
                                                             .requirementString!
                                                             .length,
@@ -527,8 +528,7 @@ class _PlayScreenState extends State<PlayScreen> with GamePauseGuard {
                                                 Text(
                                                   inputted,
                                                   textAlign: TextAlign.center,
-                                                  style: AppTextStyles
-                                                      .forChallenge(
+                                                  style: challengeTextStyle(
                                                     turnState.requirementString!
                                                         .length,
                                                     context,
@@ -573,7 +573,7 @@ class _PlayScreenState extends State<PlayScreen> with GamePauseGuard {
                                               turnState.expect![index];
 
                                           return SizedBox(
-                                            width: (AppTextStyles.forChallenge(
+                                            width: (challengeTextStyle(
                                                         turnState
                                                             .requirementString!
                                                             .length,
@@ -666,17 +666,17 @@ class _PlayScreenState extends State<PlayScreen> with GamePauseGuard {
                                                             inputted,
                                                             textAlign: TextAlign
                                                                 .center,
-                                                            style: AppTextStyles
-                                                                .forChallenge(
+                                                            style:
+                                                                challengeTextStyle(
                                                               turnState
                                                                   .requirementString!
                                                                   .length,
                                                               context,
                                                             ).copyWith(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .onPrimary),
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .colorScheme
+                                                                        .onPrimary),
                                                           ),
                                                         ),
                                                       ),
@@ -688,6 +688,13 @@ class _PlayScreenState extends State<PlayScreen> with GamePauseGuard {
                                                           milliseconds: 200),
                                                       child: FaIcon(
                                                         FontAwesomeIcons.minus,
+                                                        size:
+                                                            answerSlotDashSize(
+                                                          turnState
+                                                              .requirementString!
+                                                              .length,
+                                                          context,
+                                                        ),
                                                         color: Theme.of(context)
                                                             .colorScheme
                                                             .onPrimary,

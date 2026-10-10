@@ -153,7 +153,7 @@ abstract class AppLocalizations {
   /// Message indicating the correct answer
   ///
   /// In en, this message translates to:
-  /// **'The correct is'**
+  /// **'The answer was'**
   String get theCorrectIs;
 
   /// Prompt in Pick Right mode asking user to choose correct equation
@@ -171,7 +171,7 @@ abstract class AppLocalizations {
   /// Label for filter to show only user's own recorded scores
   ///
   /// In en, this message translates to:
-  /// **'Only show my recorded'**
+  /// **'Show only my scores'**
   String get onlyShowMyRecorded;
 
   /// Introduction content for the application

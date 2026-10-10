@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:skeleton_core/skeleton_core.dart' show AppTextStyles;
 
 /// Tablets are held further away than phones and have far more room, so
 /// phone-sized text and controls look tiny on them. On a tablet-sized window
@@ -24,3 +25,18 @@ double textScaleForWindow(Size size) =>
 /// [MediaQuery.sizeOf], so callers rebuild when the window changes.
 double controlScaleOf(BuildContext context) =>
     isTabletWindow(MediaQuery.sizeOf(context)) ? kTabletControlScale : 1.0;
+
+/// The challenge digits / answer slots on the play screens:
+/// [AppTextStyles.forChallenge] grown by [controlScaleOf], so on a tablet
+/// the number being memorized stays the screen's focal point instead of a
+/// small cluster in a wide empty middle.
+TextStyle challengeTextStyle(int characterCount, BuildContext context) {
+  final base = AppTextStyles.forChallenge(characterCount, context);
+  return base.copyWith(fontSize: base.fontSize! * controlScaleOf(context));
+}
+
+/// Size of the dash that marks an answer slot not yet typed, matched to
+/// the digit it stands for (a default-size icon looked like a stray mark
+/// under 50-pt digits, and nearly vanished on tablets).
+double answerSlotDashSize(int characterCount, BuildContext context) =>
+    challengeTextStyle(characterCount, context).fontSize! * 0.6;

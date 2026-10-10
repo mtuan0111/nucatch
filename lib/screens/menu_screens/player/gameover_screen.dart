@@ -97,6 +97,11 @@ class _GameOverScreenState extends State<GameOverScreen> {
                                     );
                                   },
                                   iconData: FontAwesomeIcons.arrowRotateLeft,
+                                  // The main action: labelled, and larger
+                                  // than the two secondary buttons below.
+                                  text: coreLang(context).playAgain,
+                                  style: AppTextStyles.titleMediumBold(context),
+                                  buttonSize: ButtonSize.medium,
                                   backgroundBuilder: (context, borderRadius) {
                                     return LightningWidget(
                                         baseColor:
@@ -124,11 +129,10 @@ class _GameOverScreenState extends State<GameOverScreen> {
                                     context,
                                     turnState.difficultyModel?.difficulty,
                                   ),
-                                  backgroundColor:
-                                      Helper.getColorIconFromDifficulty(
-                                    context,
-                                    turnState.difficultyModel?.difficulty,
-                                  ),
+                                  // Secondary, so it takes the standard
+                                  // colour: the bright difficulty colour
+                                  // drew the eye away from Play Again. The
+                                  // icon still names the difficulty.
                                   text: coreLang(context).difficultySetting,
                                   shapeAt: RoundedWithShapeAt.topLeft,
                                   buttonSize: ButtonSize.small,
@@ -139,11 +143,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
                                   },
                                   backgroundBuilder: (context, borderRadius) {
                                     return LightningWidget(
-                                      baseColor:
-                                          Helper.getColorIconFromDifficulty(
-                                        context,
-                                        turnState.difficultyModel?.difficulty,
-                                      ),
+                                      baseColor: Theme.of(context).primaryColor,
                                       seed: coreLang(context)
                                           .difficultySetting
                                           .hashCode,

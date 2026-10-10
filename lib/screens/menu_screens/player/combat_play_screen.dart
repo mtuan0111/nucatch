@@ -82,7 +82,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
   // Track which character indices have triggered fireworks
   final Set<int> _triggeredFireworkIndices = {};
 
-  // Removed: boldedStyleFont - now using AppTextStyles.forChallenge()
+  // Removed: boldedStyleFont - now using challengeTextStyle()
 
   @override
   void initState() {
@@ -291,11 +291,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
                                 // Tap timer countdown bar
                                 _buildCountDownBar(combatState),
 
-                                // Combat header with scores and turn indicator
+                                // Combat header: both players' panels, with
+                                // this player's lives inside their own panel
                                 _buildCombatHeader(combatState),
-
-                                // Life display with animation
-                                _buildLifeDisplay(combatState),
 
                                 // Game area - shows challenge or typing
                                 Expanded(
@@ -442,143 +440,174 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
       key: TourKeys.combatHeaderKey,
       padding: const EdgeInsets.symmetric(
           horizontal: kPaddingL, vertical: kPaddingSM),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // My info
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
+      // Two matching player panels; the one whose turn it is lights up.
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // My info
+            Expanded(
+              child: _PlayerPanel(
+                isActive: combatState.isMyTurn &&
+                    combatState.combatStatus != CombatStatus.intro,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FaIcon(
-                      Helper.getIconFromDifficulty(
-                          context, combatState.difficultyModel?.difficulty),
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      size: Theme.of(context).textTheme.bodyLarge!.fontSize,
-                    ),
-                    const SizedBox(width: kSpaceS),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "${coreLang(context).level}: ",
-                            style: AppTextStyles.bodyLargeBold(context),
-                          ),
-                          TextSpan(
-                            text:
-                                "${combatState.levelAndTimeCorrect} / ${combatState.difficultyModel?.numberTurnEachLevel}",
-                            style: AppTextStyles.bodyLarge(context),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Wrap(
-                  key: TourKeys.scoreKey,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    FaIcon(
-                      FontAwesomeIcons.chartLine,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      size: Theme.of(context).textTheme.bodyLarge!.fontSize,
-                    ),
-                    const SizedBox(width: kSpaceS),
                     Text(
-                      "${coreLang(context).score}: ",
+                      lang(context).you,
                       style: AppTextStyles.bodyLargeBold(context),
                     ),
-                    Text(
-                      "${combatState.point}",
-                      style: AppTextStyles.bodyLarge(context),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: kSpaceS),
-                Opacity(
-                  opacity:
-                      combatState.combatStatus != CombatStatus.intro ? 1 : 0,
-                  child: CombatStatusBadge(
-                    key: TourKeys.combatStatusBadgeKey,
-                    text: combatState.isMyTurn
-                        ? lang(context).yourTurn
-                        : lang(context).opponentTurn,
-                    isPositive: combatState.isMyTurn,
-                    icon: combatState.isMyTurn
-                        ? FontAwesomeIcons.trophy
-                        : FontAwesomeIcons.hourglass,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Opponent info
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  lang(context).opponent,
-                  style: AppTextStyles.bodyLargeBold(context),
-                ),
-                const SizedBox(height: kSpaceS),
-                Wrap(
-                  key: TourKeys.opponentScoreKey,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Text(
-                      "${coreLang(context).score}: ",
-                      style: AppTextStyles.bodyLargeBold(context),
-                    ),
-                    Text(
-                      "${combatState.opponentScore}",
-                      style: AppTextStyles.bodyLarge(context),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: kSpaceS),
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  decoration: BoxDecoration(
-                    color: combatState.opponentJustLostLife
-                        ? Colors.red.withValues(alpha: 0.5)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(kBorderRadiusL),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal:
-                        combatState.opponentJustLostLife ? kPaddingS : 0,
-                    vertical: combatState.opponentJustLostLife ? kPaddingSM : 0,
-                  ),
-                  child: Wrap(
-                    key: TourKeys.opponentHeartKey, // Add key for animation
-                    spacing: kLifeStarSpacing,
-                    children: List.generate(
-                      combatState.opponentLives,
-                      (index) => SizedBox(
-                        width:
-                            (Theme.of(context).textTheme.titleLarge!.fontSize ??
-                                20.0),
-                        height:
-                            (Theme.of(context).textTheme.titleLarge!.fontSize ??
-                                20.0),
-                        child: FaIcon(
-                          FontAwesomeIcons.solidStar,
+                    const SizedBox(height: kSpaceXS),
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        FaIcon(
+                          Helper.getIconFromDifficulty(
+                              context, combatState.difficultyModel?.difficulty),
                           color: Theme.of(context).colorScheme.onPrimary,
                           size: Theme.of(context).textTheme.bodyLarge!.fontSize,
                         ),
+                        const SizedBox(width: kSpaceS),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "${coreLang(context).level}: ",
+                                style: AppTextStyles.bodyLargeBold(context),
+                              ),
+                              TextSpan(
+                                text:
+                                    "${combatState.levelAndTimeCorrect} / ${combatState.difficultyModel?.numberTurnEachLevel}",
+                                style: AppTextStyles.bodyLarge(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Wrap(
+                      key: TourKeys.scoreKey,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.chartLine,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          size: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                        ),
+                        const SizedBox(width: kSpaceS),
+                        Text(
+                          "${coreLang(context).score}: ",
+                          style: AppTextStyles.bodyLargeBold(context),
+                        ),
+                        Text(
+                          "${combatState.point}",
+                          style: AppTextStyles.bodyLarge(context),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: kSpaceS),
+                    _buildLifeDisplay(combatState),
+                    const SizedBox(height: kSpaceS),
+                    Opacity(
+                      opacity: combatState.combatStatus != CombatStatus.intro
+                          ? 1
+                          : 0,
+                      child: CombatStatusBadge(
+                        key: TourKeys.combatStatusBadgeKey,
+                        text: combatState.isMyTurn
+                            ? lang(context).yourTurn
+                            : lang(context).opponentTurn,
+                        isPositive: combatState.isMyTurn,
+                        // Solid when it's this player's move, so it can't be
+                        // missed; outlined while waiting.
+                        filled: combatState.isMyTurn,
+                        icon: combatState.isMyTurn
+                            ? FontAwesomeIcons.bolt
+                            : FontAwesomeIcons.hourglass,
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(width: kSpaceM),
+
+            // Opponent info
+            Expanded(
+              child: _PlayerPanel(
+                isActive: !combatState.isMyTurn &&
+                    combatState.combatStatus != CombatStatus.intro,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      lang(context).opponent,
+                      style: AppTextStyles.bodyLargeBold(context),
+                    ),
+                    const SizedBox(height: kSpaceS),
+                    Wrap(
+                      key: TourKeys.opponentScoreKey,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          "${coreLang(context).score}: ",
+                          style: AppTextStyles.bodyLargeBold(context),
+                        ),
+                        Text(
+                          "${combatState.opponentScore}",
+                          style: AppTextStyles.bodyLarge(context),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: kSpaceS),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 500),
+                      decoration: BoxDecoration(
+                        color: combatState.opponentJustLostLife
+                            ? Colors.red.withValues(alpha: 0.5)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(kBorderRadiusL),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal:
+                            combatState.opponentJustLostLife ? kPaddingS : 0,
+                        vertical:
+                            combatState.opponentJustLostLife ? kPaddingSM : 0,
+                      ),
+                      child: Wrap(
+                        key: TourKeys.opponentHeartKey, // Add key for animation
+                        spacing: kLifeStarSpacing,
+                        children: List.generate(
+                          combatState.opponentLives,
+                          (index) => SizedBox(
+                            width: (Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .fontSize ??
+                                20.0),
+                            height: (Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .fontSize ??
+                                20.0),
+                            child: FaIcon(
+                              FontAwesomeIcons.solidStar,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              size: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .fontSize,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -620,7 +649,8 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: Center(
+            child: Align(
+              alignment: AlignmentDirectional.centerStart,
               child: Wrap(
                 key: TourKeys.heartKey,
                 spacing: kLifeStarSpacing,
@@ -711,7 +741,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
               (index) {
                 String char = combatState.requirementString![index];
                 return SizedBox(
-                  width: (AppTextStyles.forChallenge(
+                  width: (challengeTextStyle(
                               combatState.requirementString!.length, context)
                           .fontSize! *
                       0.65),
@@ -720,7 +750,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
                       Text(
                         char,
                         textAlign: TextAlign.center,
-                        style: AppTextStyles.forChallenge(
+                        style: challengeTextStyle(
                           combatState.requirementString!.length,
                           context,
                         ),
@@ -757,7 +787,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
                 dev.log("combatState.typing: ${combatState.typing}");
 
                 return SizedBox(
-                  width: (AppTextStyles.forChallenge(
+                  width: (challengeTextStyle(
                               combatState.requirementString!.length, context)
                           .fontSize! *
                       0.65),
@@ -816,7 +846,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
                                 child: Text(
                                   inputted,
                                   textAlign: TextAlign.center,
-                                  style: AppTextStyles.forChallenge(
+                                  style: challengeTextStyle(
                                     combatState.requirementString!.length,
                                     context,
                                   ),
@@ -829,6 +859,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
                             duration: const Duration(milliseconds: 200),
                             child: FaIcon(
                               FontAwesomeIcons.minus,
+                              size: answerSlotDashSize(
+                                combatState.requirementString!.length,
+                                context,
+                              ),
                               color: Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
@@ -861,7 +895,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
                   String inputted = combatState.expect![index];
 
                   return SizedBox(
-                    width: (AppTextStyles.forChallenge(
+                    width: (challengeTextStyle(
                                 combatState.requirementString!.length, context)
                             .fontSize! *
                         0.65),
@@ -873,7 +907,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
                           child: Text(
                             inputted,
                             textAlign: TextAlign.center,
-                            style: AppTextStyles.forChallenge(
+                            style: challengeTextStyle(
                               combatState.requirementString!.length,
                               context,
                             ),
@@ -884,6 +918,10 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
                           duration: const Duration(milliseconds: 200),
                           child: FaIcon(
                             FontAwesomeIcons.minus,
+                            size: answerSlotDashSize(
+                              combatState.requirementString!.length,
+                              context,
+                            ),
                             color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
@@ -979,11 +1017,9 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
   static const int _keypadColumns = 3;
   static const int _keypadRows = 4;
 
-  /// Builds the button for one keypad entry. [applyTourKey] is false for a
-  /// gamepad-cluster's duplicate copy of a middle-column button — a
-  /// `GlobalKey` (`TourKeys.keypadKeys[...]`) can only back one mounted
-  /// widget at a time, so only one on-screen copy of each button may carry
-  /// it.
+  /// Builds the button for one keypad entry. [applyTourKey] attaches its
+  /// `TourKeys.keypadKeys` `GlobalKey`, which can back only one mounted
+  /// widget at a time.
   Widget _buildKeypadButton(
     BuildContext context,
     CombatState combatState,
@@ -1000,7 +1036,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
         context,
         key: key,
         padding: padding,
-        iconData: FontAwesomeIcons.arrowsRotate,
+        iconData: FontAwesomeIcons.shuffle, // deal a new number
         isEnable: combatState.isAbleToReset && combatState.isAbleToTap,
         onPressed: () {
           context.read<CombatBloc>().add(
@@ -1020,7 +1056,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
         context,
         key: key,
         padding: padding,
-        iconData: FontAwesomeIcons.bars,
+        iconData: FontAwesomeIcons.pause, // pauses, opens the menu
         onPressed: () => _handleMenuButton(context),
         backgroundBuilder: (context, borderRadius) {
           return LightningWidget(
@@ -1055,17 +1091,15 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
   /// half of a gamepad-style split layout used on tablet landscape (see
   /// `_buildCombatBody`'s `isTabletLandscape` branch), where two clusters
   /// sit at the screen's outer edges with the game area centered between
-  /// them. The middle logical column (digits 2/5/8/0) is duplicated across
-  /// both halves so either thumb can reach any digit.
+  /// them. [gamepadClusterRows] says which keys each half holds.
   Widget _buildKeyboard(CombatState combatState, {GamepadKeypadSide? side}) {
     final keys = keyboardArray.entries.toList();
 
     if (side != null) {
-      final columns = side == GamepadKeypadSide.left ? [0, 1] : [1, 2];
-      final ownsMiddleColumnKey = side == GamepadKeypadSide.right;
+      final rows = gamepadClusterRows(side);
       return LayoutBuilder(builder: (context, constraints) {
-        final rawWidth = constraints.maxWidth / columns.length;
-        final rawHeight = constraints.maxHeight / _keypadRows;
+        final rawWidth = constraints.maxWidth / rows.first.length;
+        final rawHeight = constraints.maxHeight / rows.length;
         final spacing = keypadSpacing(min(rawWidth, rawHeight));
         final cellSize = min(rawWidth, rawHeight).clamp(
             0.0, kMaxKeypadButtonSize * controlScaleOf(context) + spacing);
@@ -1074,7 +1108,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              for (int r = 0; r < _keypadRows; r++)
+              for (final row in rows)
                 Padding(
                   // Explicit vertical gap: when the grid shrinks to fit its
                   // rows (tablets, a Fold pane, gamepad clusters) there is no
@@ -1091,19 +1125,18 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
                     // parent width allows.
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      for (final c in columns)
-                        if (r * _keypadColumns + c < keys.length)
-                          SizedBox(
-                            width: cellSize - spacing,
-                            height: cellSize - spacing,
-                            child: _buildKeypadButton(
-                              context,
-                              combatState,
-                              keys[r * _keypadColumns + c],
-                              applyTourKey: c != 1 || ownsMiddleColumnKey,
-                              keyExtent: cellSize - spacing,
-                            ),
+                      for (final option in row)
+                        SizedBox(
+                          width: cellSize - spacing,
+                          height: cellSize - spacing,
+                          child: _buildKeypadButton(
+                            context,
+                            combatState,
+                            MapEntry(option, keyboardArray[option]!),
+                            applyTourKey: true,
+                            keyExtent: cellSize - spacing,
                           ),
+                        ),
                     ],
                   ),
                 ),
@@ -1237,7 +1270,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
               children: [
                 AnimatedButton(
                   context,
-                  iconData: FontAwesomeIcons.bars,
+                  iconData: FontAwesomeIcons.pause, // pauses, opens the menu
                   onPressed: () => _handleMenuButton(context),
                   backgroundBuilder: (context, borderRadius) {
                     return LightningWidget(
@@ -1293,7 +1326,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
             const SizedBox(height: kSpaceM),
             AnimatedButton(
               context,
-              iconData: FontAwesomeIcons.bars,
+              iconData: FontAwesomeIcons.pause, // pauses, opens the menu
               onPressed: () => _handleMenuButton(context),
               backgroundBuilder: (context, borderRadius) {
                 return LightningWidget(
@@ -1416,6 +1449,33 @@ class LifeStar extends StatelessWidget {
         color: Theme.of(context).colorScheme.onPrimary,
         size: Theme.of(context).textTheme.titleLarge!.fontSize,
       ),
+    );
+  }
+}
+
+/// One player's side of the combat header. The player whose turn it is gets
+/// a brighter fill and a light border, so whose move it is reads at a glance.
+class _PlayerPanel extends StatelessWidget {
+  final bool isActive;
+  final Widget child;
+
+  const _PlayerPanel({required this.isActive, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final onPrimary = Theme.of(context).colorScheme.onPrimary;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: kAnimationDurationMedium),
+      padding: const EdgeInsets.all(kPaddingSM),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: isActive ? 0.18 : 0.06),
+        borderRadius: BorderRadius.circular(kBorderRadiusL),
+        border: Border.all(
+          color: onPrimary.withValues(alpha: isActive ? 0.8 : 0.0),
+          width: 2,
+        ),
+      ),
+      child: child,
     );
   }
 }

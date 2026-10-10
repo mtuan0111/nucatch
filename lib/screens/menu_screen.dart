@@ -83,9 +83,9 @@ class _MenuScreenState extends State<MenuScreen> {
       child: skeleton.MenuScreen(
         title: '', // Custom logo is provided in headerIcon
         headerIcon: const MainLogo(),
-        // Any landscape (not just tablet) flows menu buttons into a
-        // 2-column grid instead of one long vertical list.
-        enableLandscapeSplit: true,
+        // Wide windows (tablet, landscape) build their own grid below the
+        // hero button in [_buildMenuItems], so the shell's grid stays off.
+        enableLandscapeSplit: false,
         greetingMessage: BlocBuilder<skeleton.UserBloc, skeleton.UserState>(
           builder: (context, userState) {
             return Padding(
@@ -109,61 +109,124 @@ class _MenuScreenState extends State<MenuScreen> {
             );
           },
         ),
-        floatingActionButton: const Padding(
-          padding: EdgeInsets.only(left: 30),
-          child: TourButton(),
+        menuItems: _buildMenuItems(context),
+      ),
+    );
+  }
+
+  /// Instant Start is the main action, so it leads as a larger hero button.
+  /// The rest share one width and sit centred under it: a single column on
+  /// phones, a grid on wide windows (tablet, landscape).
+  List<Widget> _buildMenuItems(BuildContext context) {
+    final bool isWide = context.isTablet || context.isLandscapeOrientation;
+    final entries = menuArray(context).entries.toList();
+
+    final hero = _buildMenuButton(
+      context,
+      entries.first,
+      isHero: true,
+    );
+    final others = [
+      for (final entry in entries.skip(1)) _buildMenuButton(context, entry),
+    ];
+    // In the menu, after the last option, rather than floating over it: on
+    // shorter phones (e.g. 1080x1920) a floating button covered "Exit".
+    const tourButton = Center(child: TourButton());
+
+    if (isWide) {
+      return [
+        hero,
+        ResponsiveGrid(
+          minItemWidth: 260,
+          spacing: kSpaceM,
+          runSpacing: kSpaceM,
+          children: others,
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-        menuItems: menuArray(context).entries.map((entry) {
-          Color backgroundColor = Theme.of(context).primaryColor;
-          FaIconData iconData = entry.value['icon'] as FaIconData;
+        tourButton,
+      ];
+    }
+    return [
+      hero,
+      ...others.map(
+        (button) => Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: _kPhoneMenuMaxWidth),
+            child: button,
+          ),
+        ),
+      ),
+      tourButton,
+    ];
+  }
 
-          if (entry.key == MenuOption.instantStart) {
-            backgroundColor = Helper.getColorIconFromDifficulty(
-              context,
-              savedDifficulty,
-            );
-            iconData = Helper.getIconFromDifficulty(
-              context,
-              savedDifficulty,
-            );
-          }
+  Widget _buildMenuButton(
+    BuildContext context,
+    MapEntry<MenuOption, Map<String, dynamic>> entry, {
+    bool isHero = false,
+  }) {
+    Color backgroundColor = Theme.of(context).primaryColor;
+    FaIconData iconData = entry.value['icon'] as FaIconData;
 
-          return Align(
-            alignment: Alignment.centerLeft,
-            child: AnimatedButton(
-              context,
-              key: TourKeys.menuOptionKeys[entry.key],
-              text: (entry.value['text'] as String).toUpperCase(),
-              style: AppTextStyles.titleSmallBold(context),
-              iconData: iconData,
-              backgroundColor: backgroundColor,
-              onPressed: () => menuBloc.add(
-                SelectOption(option: entry.key),
-              ),
-              buttonSize: skeleton.ButtonSize.small,
-              // On tablet, or any landscape orientation, stretch buttons to
-              // fill their available width (the full DeviceWrapper content
-              // width normally, or a single ResponsiveGrid column in
-              // landscape) instead of hugging left with a dead gutter.
-              // `double.infinity` here relies on the surrounding bounded
-              // parent (Align inside a tight-width cell) clamping it down
-              // to whatever the real available width is at each call site.
-              minWidth:
-                  (context.isTablet || context.isLandscapeOrientation) ? double.infinity : null,
-              backgroundBuilder: (context, borderRadius) {
-                return LightningWidget(
-                  baseColor:
-                      backgroundColor, // Use the button's background color
-                  seed: (entry.value['text'] as String)
-                      .hashCode, // Distinct seed based on button text
-                  borderRadius: borderRadius,
-                );
-              },
-            ),
-          );
-        }).toList(),
+    if (entry.key == MenuOption.instantStart) {
+      backgroundColor = Helper.getColorIconFromDifficulty(
+        context,
+        savedDifficulty,
+      );
+      iconData = Helper.getIconFromDifficulty(
+        context,
+        savedDifficulty,
+      );
+    }
+
+    final button = AnimatedButton(
+      context,
+      key: TourKeys.menuOptionKeys[entry.key],
+      text: (entry.value['text'] as String).toUpperCase(),
+      style: isHero
+          ? AppTextStyles.titleMediumBold(context)
+          : AppTextStyles.titleSmallBold(context),
+      iconData: iconData,
+      backgroundColor: backgroundColor,
+      onPressed: () => menuBloc.add(
+        SelectOption(option: entry.key),
+      ),
+      buttonSize:
+          isHero ? skeleton.ButtonSize.medium : skeleton.ButtonSize.small,
+      // Every button fills its slot (the centred column on phones, a grid
+      // cell on wide windows), so the labels' lengths no longer give the
+      // menu a ragged edge. `double.infinity` relies on the bounded parent
+      // clamping it to the real available width.
+      minWidth: double.infinity,
+      backgroundBuilder: (context, borderRadius) {
+        return LightningWidget(
+          baseColor: backgroundColor, // Use the button's background color
+          seed: (entry.value['text'] as String)
+              .hashCode, // Distinct seed based on button text
+          borderRadius: borderRadius,
+        );
+      },
+    );
+
+    if (!isHero) return button;
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: (context.isTablet || context.isLandscapeOrientation)
+              ? _kWideHeroMaxWidth
+              : _kPhoneMenuMaxWidth,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: kSpaceS),
+          child: button,
+        ),
       ),
     );
   }
 }
+
+/// Widest a menu button gets on a phone, so they don't stretch edge to edge
+/// on large phones.
+const double _kPhoneMenuMaxWidth = 440;
+
+/// Widest the Instant Start hero gets above the wide-window grid.
+const double _kWideHeroMaxWidth = 560;

@@ -28,16 +28,19 @@ class NucatchRankingItem extends StatelessWidget {
       heroTag: heroTag,
       currentUserLabel: lang(context).you,
       isCurrentUser: isCurrentUser,
+      // The score is what a ranking is about, so it leads, larger and bold;
+      // who, mode and when follow as secondary detail.
       infoRows: [
+        RankingInfoRow(
+          icon: FontAwesomeIcons.solidStar,
+          text: turnRecordedModel.point.toString(),
+          style: AppTextStyles.titleLarge(context).copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         RankingInfoRow(
           icon: FontAwesomeIcons.solidUser,
           text: turnRecordedModel.playedUsername ?? coreLang(context).anonymous,
-        ),
-        RankingInfoRow(
-          icon: FontAwesomeIcons.solidCalendar,
-          text: turnRecordedModel.recordedTime
-              .formatClient()
-              .replaceFirst(' ', '\n'),
         ),
         RankingInfoRow(
           icon: Helper.getIconFromDifficulty(
@@ -46,8 +49,10 @@ class NucatchRankingItem extends StatelessWidget {
               context, turnRecordedModel.difficulty),
         ),
         RankingInfoRow(
-          icon: FontAwesomeIcons.solidStar,
-          text: turnRecordedModel.point.toString(),
+          icon: FontAwesomeIcons.solidCalendar,
+          text: turnRecordedModel.recordedTime
+              .formatClient()
+              .replaceFirst(' ', '\n'),
         ),
       ],
     );

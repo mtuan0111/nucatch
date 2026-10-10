@@ -98,12 +98,29 @@ enum KeyboardOption {
 }
 
 /// Which half of a gamepad-split numeric keypad a widget instance renders
-/// on tablet landscape — see `RegularModeControls.gamepadSide` and
+/// in landscape — see `RegularModeControls.gamepadSide` and
 /// `CombatPlayScreen._buildKeyboard`'s `side` parameter. Two clusters sit
 /// at the screen's outer edges with the game content centered between
-/// them; the middle logical column is duplicated across both so either
-/// thumb can reach any digit.
+/// them; [gamepadClusterRows] says which keys each one holds.
 enum GamepadKeypadSide { left, right }
+
+/// The keys of one gamepad cluster, row by row: 1–5 on the left, 6–0 on the
+/// right, in reading order, 2 wide × 3 tall, with Reset and Pause closing
+/// each side. Every key appears once — the earlier split duplicated the
+/// middle column (2/5/8/0) on both sides, which read as a bug.
+List<List<KeyboardOption>> gamepadClusterRows(GamepadKeypadSide side) =>
+    switch (side) {
+      GamepadKeypadSide.left => const [
+          [KeyboardOption.one, KeyboardOption.two],
+          [KeyboardOption.three, KeyboardOption.four],
+          [KeyboardOption.five, KeyboardOption.reset],
+        ],
+      GamepadKeypadSide.right => const [
+          [KeyboardOption.six, KeyboardOption.eleven],
+          [KeyboardOption.eight, KeyboardOption.nine],
+          [KeyboardOption.zero, KeyboardOption.mainMenu],
+        ],
+    };
 
 const Map<KeyboardOption, int> keyboardArray = {
   KeyboardOption.one: 1,
