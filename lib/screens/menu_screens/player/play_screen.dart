@@ -267,6 +267,7 @@ class _PlayScreenState extends State<PlayScreen> with GamePauseGuard {
                                     turnState.tapTimerRemaining.toInt(),
                                 isPlaying:
                                     turnState.status == TurnStatus.playing,
+                                isPaused: turnState.isTimerPaused,
                               ),
 
                               Row(

@@ -97,6 +97,11 @@ class CombatGameEndScreen extends StatelessWidget {
 
   Widget _buildGameEndScreen(BuildContext context, CombatState combatState) {
     final isWinner = combatState.isWinner ?? false;
+    // Short windows (a 16:9 phone like 1080x1920) can't fit the full-size
+    // badge, scoreboard, answer, ready box and both buttons: shrink the
+    // decoration and the gaps so Return to Menu stays on screen.
+    final compact = MediaQuery.sizeOf(context).height < _kCompactMaxHeight;
+    final gap = compact ? kSpaceM : kSpaceXL;
 
     // Result/ranking display — ranking badge, expected-answer, end reason.
     // Spotlighted by the tutorial's Victory result beat.
@@ -107,18 +112,21 @@ class CombatGameEndScreen extends StatelessWidget {
         // Ranking Widget - Winner (position 1) or Loser (position 4)
         RankingSortingWidget(
           position: isWinner ? 1 : 4,
-          size: kContainerSizeS,
+          // Smaller than the old 100: with the scoreboard added, the
+          // page has to fit a phone without pushing Return to Menu
+          // below the fold.
+          size: compact ? _kCompactResultBadgeSize : _kResultBadgeSize,
           childElement: FaIcon(
             isWinner ? FontAwesomeIcons.trophy : FontAwesomeIcons.faceFrown,
             color: Theme.of(context).scaffoldBackgroundColor,
             size: kIconSizeL,
           ),
         ),
-        const SizedBox(height: kSpaceXL),
+        SizedBox(height: gap),
 
         // Final score — the payoff of the match, so it leads.
         _buildScoreboard(context, combatState),
-        const SizedBox(height: kSpaceXL),
+        SizedBox(height: gap),
 
         // Expected String Display (secondary to the score)
         if (combatState.expect != null && combatState.expect!.isNotEmpty) ...[
@@ -186,16 +194,18 @@ class CombatGameEndScreen extends StatelessWidget {
                       context,
                       label: lang(context).you,
                       isReady: combatState.isPlayerReady,
+                      compact: compact,
                     ),
                     const SizedBox(width: kSpace4XL),
                     _buildReadyIndicator(
                       context,
                       label: lang(context).opponent,
                       isReady: combatState.isOpponentReady,
+                      compact: compact,
                     ),
                   ],
                 ),
-                const SizedBox(height: kSpaceXL),
+                SizedBox(height: gap),
                 if (!combatState.isPlayerReady)
                   CustomElevatedButton(
                     text:
@@ -255,7 +265,7 @@ class CombatGameEndScreen extends StatelessWidget {
             },
           ),
         ],
-        const SizedBox(height: kSpace3XL),
+        SizedBox(height: gap),
 
         // Return to menu button at bottom
         CustomElevatedButton(
@@ -305,7 +315,7 @@ class CombatGameEndScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           resultDisplay,
-          const SizedBox(height: kSpace4XL),
+          SizedBox(height: compact ? kSpaceL : kSpace2XL),
           readyAndActions,
         ],
       ),
@@ -353,12 +363,14 @@ class CombatGameEndScreen extends StatelessWidget {
     BuildContext context, {
     required String label,
     required bool isReady,
+    bool compact = false,
   }) {
+    final size = compact ? _kCompactReadyIndicatorSize : _kReadyIndicatorSize;
     return Column(
       children: [
         Container(
-          width: 70.0, // Smaller size for ready indicators
-          height: 70.0,
+          width: size,
+          height: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isReady
@@ -421,3 +433,18 @@ class CombatGameEndScreen extends StatelessWidget {
     }
   }
 }
+
+/// The win/lose badge at the top of the result.
+const double _kResultBadgeSize = 80;
+
+/// The You / Opponent ready circles.
+const double _kReadyIndicatorSize = 56;
+
+/// Below this window height the result uses its compact sizes.
+const double _kCompactMaxHeight = 800;
+
+/// The win/lose badge on short windows.
+const double _kCompactResultBadgeSize = 56;
+
+/// The ready circles on short windows.
+const double _kCompactReadyIndicatorSize = 44;

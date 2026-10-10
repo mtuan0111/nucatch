@@ -110,6 +110,23 @@ Raw per-device/-locale PNGs land in `build/screenshots/<device>_<locale>/`
 (stripping the `portrait_` prefix), prints each frame's dimensions, and flags any
 Android frame that exceeds Play's 2:1 aspect limit.
 
+### Captioned store frames
+
+Each copied shot is composed into a captioned marketing frame by
+`frame.swift` (compiled with `swiftc` into `build/screenshots/frame` on first
+use): NuCatch's green → teal gradient, a headline in Baloo Bhai ExtraBold, and
+the screenshot below it with rounded corners and a shadow, at the raw shot's
+exact pixel size (so the stores still map it to the right device slot). It's
+the same treatment as the Hanoi Tower listings.
+
+The headlines live in `caption_for` in `capture.sh`, one set per language
+(`en`, `vi`), keyed by shot name. A shot with no caption is copied unframed.
+To change a headline, edit it there and re-run. To skip framing entirely:
+
+```bash
+FRAME=0 tool/screenshots/capture.sh android
+```
+
 ### Review before uploading
 
 One folder per language (`en-US`, `vi`):

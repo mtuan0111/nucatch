@@ -432,6 +432,7 @@ class _CombatPlayScreenState extends State<CombatPlayScreen>
       timerDuration: effectiveDuration,
       tapTimerRemaining: combatState.tapTimerRemaining.toInt(),
       isPlaying: combatState.combatStatus == CombatStatus.playing,
+      isPaused: combatState.isTimerPaused,
     );
   }
 

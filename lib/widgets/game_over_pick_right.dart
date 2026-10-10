@@ -53,6 +53,7 @@ class GameOverPickRight extends StatelessWidget {
               turnRecordedModel: turnState.recordedItem!,
               ranking: indexOfItem,
               heroTag: "ranking-${turnState.recordedItem!.turnId}",
+              showScore: false,
             );
           },
         ),

@@ -12,12 +12,17 @@ class NucatchRankingItem extends StatelessWidget {
   final String heroTag;
   final bool isCurrentUser;
 
+  /// False where the score is already shown larger right above the item
+  /// (the game-over screen), so it isn't repeated.
+  final bool showScore;
+
   const NucatchRankingItem({
     super.key,
     required this.turnRecordedModel,
     this.ranking,
     required this.heroTag,
     this.isCurrentUser = false,
+    this.showScore = true,
   });
 
   @override
@@ -31,13 +36,14 @@ class NucatchRankingItem extends StatelessWidget {
       // The score is what a ranking is about, so it leads, larger and bold;
       // who, mode and when follow as secondary detail.
       infoRows: [
-        RankingInfoRow(
-          icon: FontAwesomeIcons.solidStar,
-          text: turnRecordedModel.point.toString(),
-          style: AppTextStyles.titleLarge(context).copyWith(
-            fontWeight: FontWeight.bold,
+        if (showScore)
+          RankingInfoRow(
+            icon: FontAwesomeIcons.solidStar,
+            text: turnRecordedModel.point.toString(),
+            style: AppTextStyles.titleLarge(context).copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
         RankingInfoRow(
           icon: FontAwesomeIcons.solidUser,
           text: turnRecordedModel.playedUsername ?? coreLang(context).anonymous,

@@ -20,6 +20,7 @@
 #   tool/screenshots/capture.sh ios        # iOS simulators only
 #   tool/screenshots/capture.sh android    # Android emulators only
 #   KEEP_DEVICES=1 tool/screenshots/capture.sh ios   # leave sims/emus running
+#   ANDROID_ONLY=tenInch tool/screenshots/capture.sh android   # tablet set only
 #
 # Prereqs: Flutter, Xcode + simulators (iOS), Android SDK + AVDs (Android).
 # See tool/screenshots/README.md for the full runbook + how to upload.
@@ -45,6 +46,7 @@ TARGET="integration_test/store_screenshots_test.dart"
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 RAW_DIR="$REPO_ROOT/build/screenshots"        # per-device/-locale raw PNGs land here
+FRAME_BIN="$RAW_DIR/frame"                    # compiled frame.swift
 IOS_SHOTS="$REPO_ROOT/ios/fastlane/screenshots"             # <locale>/ appended per run
 AND_META_ROOT="$REPO_ROOT/android/fastlane/metadata/android" # <locale>/images/... appended
 
@@ -85,8 +87,66 @@ read_released_version() {
   RELEASED_BUILD="$(sed -nE 's/.*--build-number=([^ ]+).*/\1/p' <<<"$line")"
 }
 
+# --------------------------------------------------------------------------
+# Store frames: each raw capture is composed into a captioned marketing frame
+# (same pixel size) by tool/screenshots/frame.swift — the same treatment as
+# the Hanoi Tower listings. FRAME=0 copies the raw captures instead.
+# --------------------------------------------------------------------------
+FRAME="${FRAME:-1}"
+FRAME_FONT="assets/fonts/Baloo_Bhai_2/BalooBhai2-ExtraBold.ttf"
+
+# caption_for <shot name> <dart locale> — the headline above that screen.
+# Shots without a caption (or a locale without copy) are copied unframed.
+caption_for() {
+  case "$2" in
+    vi)
+      case "$1" in
+        *01_home*)             echo "Rèn trí nhớ cùng những con số" ;;
+        *04_leaderboard*)      echo "Leo lên bảng xếp hạng" ;;
+        *05_select_play_mode*) echo "Chơi một mình hoặc thách đấu bạn bè" ;;
+        *07_play_screen*)      echo "Ghi nhớ con số, rồi bắt lấy nó" ;;
+        *08_game_over*)        echo "Phá kỷ lục của chính bạn" ;;
+        *09_combat_setup*)     echo "Tạo phòng hoặc vào trận đấu 1-1" ;;
+        *12_combat_play*)      echo "Đối đầu trực tiếp, từng lượt một" ;;
+        *13_combat_game_end*)  echo "Thắng trận, rồi chơi tiếp" ;;
+        *)                     echo "" ;;
+      esac ;;
+    *)
+      case "$1" in
+        *01_home*)             echo "Sharpen your memory with numbers" ;;
+        *04_leaderboard*)      echo "Climb the leaderboard" ;;
+        *05_select_play_mode*) echo "Play solo or challenge a friend" ;;
+        *07_play_screen*)      echo "Memorize the number, then catch it" ;;
+        *08_game_over*)        echo "Beat your best score" ;;
+        *09_combat_setup*)     echo "Host or join a 1-v-1 match" ;;
+        *12_combat_play*)      echo "Battle head-to-head, turn by turn" ;;
+        *13_combat_game_end*)  echo "Win the duel, then go again" ;;
+        *)                     echo "" ;;
+      esac ;;
+  esac
+}
+
+# store_copy <raw.png> <dest.png> <dart locale> — framed with its caption, or
+# a plain copy. The frame tool is compiled once per run (into build/).
+store_copy() {
+  local caption; caption="$(caption_for "$(basename "$1")" "$3")"
+  if [[ "$FRAME" == "1" && -n "$caption" ]]; then
+    if [[ ! -x "$FRAME_BIN" ]]; then
+      mkdir -p "$RAW_DIR"
+      swiftc -O "$REPO_ROOT/tool/screenshots/frame.swift" -o "$FRAME_BIN" \
+        || die "couldn't compile frame.swift (Xcode command line tools needed), or run with FRAME=0."
+    fi
+    "$FRAME_BIN" "$1" "$2" "$caption" "$REPO_ROOT/$FRAME_FONT"
+  else
+    cp "$1" "$2"
+  fi
+}
+
 MODE="${1:-all}"
 KEEP_DEVICES="${KEEP_DEVICES:-0}"
+# Capture one Android bucket only, e.g. ANDROID_ONLY=tenInch to redo just the
+# tablet set. Empty (default) captures every entry in ANDROID_DEVICES.
+ANDROID_ONLY="${ANDROID_ONLY:-}"
 
 log()  { printf '\033[1;36m▶ %s\033[0m\n' "$*"; }
 warn() { printf '\033[1;33m⚠ %s\033[0m\n' "$*" >&2; }
@@ -98,6 +158,7 @@ die()  { printf '\033[1;31m✖ %s\033[0m\n' "$*" >&2; exit 1; }
 strip_prefix() { local b; b="$(basename "$1")"; echo "${b#portrait_}"; }
 
 cd "$REPO_ROOT"
+rm -f "$FRAME_BIN" # rebuilt on first use, so frame.swift edits always apply
 
 RELEASED_VERSION=""; RELEASED_BUILD=""
 read_released_version "$REPO_ROOT/CHANGELOG.md"
@@ -184,7 +245,7 @@ capture_ios() {
       log "iOS: copying '$tag'/'$fdir' frames into $ios_out (device-tagged for uniqueness)"
       for png in "$out"/*.png; do
         [[ -e "$png" ]] || { warn "no PNGs produced for '$name' ($fdir)"; break; }
-        cp "$png" "$ios_out/${tag}_$(strip_prefix "$png")"
+        store_copy "$png" "$ios_out/${tag}_$(strip_prefix "$png")" "$dloc"
       done
     done
 
@@ -201,7 +262,10 @@ capture_ios() {
 # ("more than one device/emulator") — we always target a specific serial.
 android_serial_for_avd() {
   local want="$1" serial name
-  for serial in $(adb devices | awk '/^emulator-/{print $1}'); do
+  # Only devices adb reports as ready ("device"): a killed emulator can linger
+  # as "offline" and still answer `emu avd name`, and a drive run aimed at it
+  # fails to connect.
+  for serial in $(adb devices | awk '/^emulator-/ && $2 == "device" {print $1}'); do
     name="$(adb -s "$serial" emu avd name 2>/dev/null | head -n1 | tr -d '\r')"
     [[ "$name" == "$want" ]] && { echo "$serial"; return 0; }
   done
@@ -245,6 +309,10 @@ capture_android() {
 
   for entry in "${ANDROID_DEVICES[@]}"; do
     local bucket="${entry%%|*}"; local avd="${entry#*|}"
+    if [[ -n "$ANDROID_ONLY" && "$bucket" != "$ANDROID_ONLY" ]]; then
+      log "Android: skipping '$bucket' (ANDROID_ONLY=$ANDROID_ONLY)"
+      continue
+    fi
 
     # Reuse the AVD if it's already running; otherwise boot it ourselves.
     local serial started_here=0
@@ -294,7 +362,7 @@ capture_android() {
       rm -rf "$dest"; mkdir -p "$dest"
       for png in "$out"/*.png; do
         [[ -e "$png" ]] || { warn "no PNGs produced for '$avd' ($fdir)"; break; }
-        cp "$png" "$dest/$(strip_prefix "$png")"
+        store_copy "$png" "$dest/$(strip_prefix "$png")" "$dloc"
       done
     done
 
