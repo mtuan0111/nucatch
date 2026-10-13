@@ -1,10 +1,104 @@
+require_relative "../../tool/release/fastlane_common"
+
 default_platform(:ios)
 
+# Secrets come from .env.fastlane at the repo root (never .env — that one is
+# bundled into the app). See .env.fastlane.example and docs/DEPLOYMENT.md.
+NucatchRelease.load_env!
+
 platform :ios do
+  BUNDLE_ID = "bomnguyen.game.nucatch".freeze
+  IPA_PATH = File.join(NucatchRelease::ROOT, "build/ios/ipa/nucatch.ipa").freeze
+  EXPORT_OPTIONS = File.join(NucatchRelease::ROOT, "build/ios/ExportOptions.plist").freeze
+
+  # App Store Connect API key from ASC_KEY_ID + ASC_ISSUER_ID and either
+  # ASC_KEY_FILEPATH (the .p8) or ASC_KEY_CONTENT (its text, or base64 — handy
+  # for CI secrets).
+  private_lane :asc_api_key do
+    NucatchRelease.require_keys!("ASC_KEY_ID", "ASC_ISSUER_ID")
+    params = { key_id: ENV["ASC_KEY_ID"], issuer_id: ENV["ASC_ISSUER_ID"], in_house: false }
+    content = NucatchRelease.value("ASC_KEY_CONTENT")
+    if content
+      params[:key_content] = content
+      params[:is_key_content_base64] = !content.include?("BEGIN PRIVATE KEY")
+    else
+      params[:key_filepath] = NucatchRelease.require_file!("ASC_KEY_FILEPATH")
+    end
+    app_store_connect_api_key(**params)
+  end
+
+  # Manual App Store signing, as the Xcode project's Release config and the
+  # CI workflow use: APPLE_TEAM_ID + the App Store profile IOS_PROVISIONING_PROFILE
+  # (both have this app's values as defaults in .env.fastlane.example).
+  private_lane :write_export_options do
+    NucatchRelease.require_keys!("APPLE_TEAM_ID", "IOS_PROVISIONING_PROFILE")
+    FileUtils.mkdir_p(File.dirname(EXPORT_OPTIONS))
+    File.write(EXPORT_OPTIONS, <<~PLIST)
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+      <dict>
+        <key>method</key>
+        <string>app-store-connect</string>
+        <key>teamID</key>
+        <string>#{ENV['APPLE_TEAM_ID']}</string>
+        <key>signingStyle</key>
+        <string>manual</string>
+        <key>signingCertificate</key>
+        <string>Apple Distribution</string>
+        <key>provisioningProfiles</key>
+        <dict>
+          <key>#{BUNDLE_ID}</key>
+          <string>#{ENV['IOS_PROVISIONING_PROFILE']}</string>
+        </dict>
+        <key>uploadSymbols</key>
+        <true/>
+      </dict>
+      </plist>
+    PLIST
+    EXPORT_OPTIONS
+  end
+
+  # Whether a provisioning profile named IOS_PROVISIONING_PROFILE is installed
+  # on this Mac (Xcode keeps them in one of two folders).
+  private_lane :check_profile_installed do
+    name = ENV["IOS_PROVISIONING_PROFILE"]
+    dirs = [
+      File.expand_path("~/Library/MobileDevice/Provisioning Profiles"),
+      File.expand_path("~/Library/Developer/Xcode/UserData/Provisioning Profiles"),
+    ]
+    found = dirs.flat_map { |d| Dir.glob(File.join(d, "*.mobileprovision")) }.any? do |file|
+      File.binread(file).include?("<string>#{name}</string>")
+    end
+    if found
+      UI.success("Provisioning profile '#{name}' is installed.")
+    else
+      UI.important("Provisioning profile '#{name}' isn't installed on this Mac — download it in " \
+                   "Xcode (Settings → Accounts → Download Manual Profiles) before deploying.")
+    end
+  end
+
+  desc "Check that everything an App Store upload needs is in place:"
+  desc ".env.fastlane keys, the API key (checked against App Store Connect),"
+  desc "and the signing profile. Uploads nothing. Usage: fastlane ios check_env"
+  lane :check_env do
+    asc_api_key
+    app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
+    UI.user_error!("App #{BUNDLE_ID} not found in App Store Connect for this API key.") unless app
+    UI.success("App Store Connect: #{app.name} (#{BUNDLE_ID})")
+    NucatchRelease.require_keys!("APPLE_TEAM_ID", "IOS_PROVISIONING_PROFILE")
+    check_profile_installed
+    version = NucatchRelease.release_version(:ios, "PRODUCTION")
+    UI.success("CHANGELOG release: #{version[:build_name]} (#{version[:build_number]})")
+    notes = NucatchRelease.store_release_notes
+    UI.success("Release notes for: #{notes.keys.join(', ')}") unless notes.empty?
+  end
+
   desc "Deploy a new build to Firebase App Distribution"
   lane :distribute do
+    NucatchRelease.require_keys!("FIREBASE_CLI_TOKEN")
     ipa_path = "../build/ios/ipa/nucatch.ipa"
-    
+
     if File.exist?(ipa_path)
       firebase_app_distribution(
         app: "1:749675143292:ios:32a273d67af1d1f8e5e9f9",
@@ -21,11 +115,10 @@ platform :ios do
   desc "Upload store screenshots ONLY to App Store Connect."
   desc "Media only — no binary, no metadata, no submit for review. Frames come"
   desc "from ios/fastlane/screenshots/<locale>/ (run tool/screenshots/capture.sh"
-  desc "first). Auth via an App Store Connect API key in env: ASC_KEY_ID,"
-  desc "ASC_ISSUER_ID, ASC_KEY_FILEPATH (path to the .p8). See"
-  desc "tool/screenshots/README.md."
+  desc "first). See tool/screenshots/README.md."
   lane :upload_screenshots do
-    options = {
+    deliver(
+      api_key: asc_api_key,
       skip_binary_upload: true,
       skip_metadata: true,
       skip_app_version_update: true,
@@ -33,90 +126,79 @@ platform :ios do
       submit_for_review: false,
       run_precheck_before_submit: false,
       force: true, # skip the interactive HTML preview / confirmation prompt
-    }
-
-    if ENV["ASC_KEY_ID"] && ENV["ASC_ISSUER_ID"] && ENV["ASC_KEY_FILEPATH"]
-      options[:api_key] = app_store_connect_api_key(
-        key_id: ENV["ASC_KEY_ID"],
-        issuer_id: ENV["ASC_ISSUER_ID"],
-        key_filepath: ENV["ASC_KEY_FILEPATH"],
-        in_house: false,
-      )
-    else
-      UI.important("No ASC_* API key env vars set — deliver will fall back to interactive Apple ID login (Appfile). See tool/screenshots/README.md.")
-    end
-
-    deliver(options)
-  end
-
-  # ───────────────────────────────────────────────────────────────────────────
-  # Release deployment: build a signed IPA and upload it to TestFlight (staging)
-  # or the App Store (production).
-  #
-  # NOTHING sensitive is hard-coded. The App Store Connect API key comes from the
-  # environment (loaded from .env — see .env.example and docs/DEPLOYMENT.md):
-  #   • ASC_KEY_ID / ASC_ISSUER_ID / ASC_KEY_FILEPATH (path to the .p8).
-  # `flutter build ipa` uses the machine's / CI's code-signing (certificate +
-  # provisioning profile) — see docs/DEPLOYMENT.md for how to provide those.
-  # ───────────────────────────────────────────────────────────────────────────
-
-  IPA_PATH = "../build/ios/ipa/nucatch.ipa".freeze
-
-  # Resolve the App Store Connect API key from env, or fail with guidance.
-  private_lane :asc_api_key do
-    unless ENV["ASC_KEY_ID"] && ENV["ASC_ISSUER_ID"] && ENV["ASC_KEY_FILEPATH"]
-      UI.user_error!("Set ASC_KEY_ID / ASC_ISSUER_ID / ASC_KEY_FILEPATH (see docs/DEPLOYMENT.md).")
-    end
-    app_store_connect_api_key(
-      key_id: ENV["ASC_KEY_ID"],
-      issuer_id: ENV["ASC_ISSUER_ID"],
-      key_filepath: ENV["ASC_KEY_FILEPATH"],
-      in_house: false,
     )
   end
 
-  # Build the release IPA. Optional params: build_name:, build_number:,
-  # environment: (dart-define APP_ENVIRONMENT, default PRODUCTION).
+  # ───────────────────────────────────────────────────────────────────────────
+  # Release deployment: build a signed IPA and upload it to TestFlight
+  # (staging) or the App Store (production). Version: build_name:/build_number:
+  # if given, else the latest CHANGELOG.md block (Development command for
+  # staging, Production for production).
+  # ───────────────────────────────────────────────────────────────────────────
+
+  # Firebase config switch + `flutter build ipa` with manual App Store
+  # signing. Returns the version built.
   private_lane :build_release_ipa do |options|
-    flutter_args = ["build", "ipa", "--release", "--export-method", "app-store"]
-    flutter_args << "--build-name=#{options[:build_name]}" if options[:build_name]
-    flutter_args << "--build-number=#{options[:build_number]}" if options[:build_number]
-    flutter_args << "--dart-define=APP_ENVIRONMENT=#{options[:environment] || 'PRODUCTION'}"
-    # fastlane runs in ios/, so the Flutter project root is one level up.
-    Dir.chdir("..") do
-      sh("flutter", "pub", "get")
-      sh("flutter", *flutter_args)
-    end
+    environment = options[:environment]
+    version = NucatchRelease.resolve_version(:ios, environment, options)
+    export_options = write_export_options
+    check_profile_installed
+    NucatchRelease.flutterfire_setup(environment) unless options[:skip_flutterfire]
+    NucatchRelease.flutter("pub", "get")
+    NucatchRelease.flutter(
+      "build", "ipa", "--release",
+      "--export-options-plist=#{export_options}",
+      "--build-name=#{version[:build_name]}",
+      "--build-number=#{version[:build_number]}",
+      "--dart-define=APP_ENVIRONMENT=#{environment}"
+    )
     UI.user_error!("Expected IPA not found at #{IPA_PATH}") unless File.exist?(IPA_PATH)
+    version
   end
 
-  desc "Staging: build a release IPA and upload to TestFlight (internal testers)"
-  desc "Usage: fastlane ios deploy_staging [build_name:1.2.3 build_number:45]"
+  desc "Staging: build a release IPA (Firebase dev config) and upload to"
+  desc "TestFlight for internal testers, with the CHANGELOG notes as 'What to Test'."
+  desc "Usage: fastlane ios deploy_staging [build_name:2.8.12 build_number:94.0]"
   lane :deploy_staging do |options|
-    build_release_ipa(options.merge(environment: options[:environment] || "DEVELOPMENT"))
+    api_key = asc_api_key # fail fast, before a long build
+    version = build_release_ipa(options.merge(environment: "DEVELOPMENT"))
     upload_to_testflight(
-      api_key: asc_api_key,
+      api_key: api_key,
       ipa: IPA_PATH,
+      changelog: NucatchRelease.store_release_notes["en-US"],
       skip_waiting_for_build_processing: true,
       distribute_external: false,
     )
-    UI.success("✅ Uploaded to TestFlight (staging).")
+    UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) uploaded to TestFlight.")
   end
 
-  desc "Production: build a release IPA and upload to App Store Connect (no auto-submit)"
-  desc "Usage: fastlane ios deploy_production [build_name:1.2.3 build_number:45]"
+  desc "Production: build a release IPA (Firebase production config), upload it"
+  desc "to App Store Connect and set the version's 'What's New' (en-US, vi) from"
+  desc "the CHANGELOG. Doesn't submit for review unless submit:true."
+  desc "Usage: fastlane ios deploy_production [build_name:2.8.12 build_number:94] [submit:true]"
   lane :deploy_production do |options|
-    build_release_ipa(options.merge(environment: "PRODUCTION"))
+    api_key = asc_api_key # fail fast, before a long build
+    version = build_release_ipa(options.merge(environment: "PRODUCTION"))
+    submit = options[:submit].to_s == "true"
+    notes = NucatchRelease.store_release_notes
     deliver(
-      api_key: asc_api_key,
+      api_key: api_key,
       ipa: IPA_PATH,
+      app_version: version[:build_name],
       skip_screenshots: true,
-      skip_metadata: true,
-      submit_for_review: false, # promote to review manually, or wire a flag
+      # Only the release notes are sent; every other listing field is left as is.
+      skip_metadata: notes.empty?,
+      release_notes: notes,
+      submit_for_review: submit,
+      automatic_release: false,
       run_precheck_before_submit: false,
       force: true,
     )
-    UI.success("✅ Uploaded to App Store Connect (production). Submit for review when ready.")
+    if submit
+      UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) uploaded and submitted for review.")
+    else
+      UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) uploaded to App Store Connect. Submit for review when ready.")
+    end
   end
 
   desc "Alias for deploy_production (fastlane ios deploy)"

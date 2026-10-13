@@ -1,8 +1,52 @@
+require_relative "../../tool/release/fastlane_common"
+
 default_platform(:android)
 
+# Secrets come from .env.fastlane at the repo root (never .env — that one is
+# bundled into the app). See .env.fastlane.example and docs/DEPLOYMENT.md.
+NucatchRelease.load_env!
+
 platform :android do
+  PACKAGE_NAME = "bomnguyen.nucatch".freeze
+  AAB_PATH = File.join(NucatchRelease::ROOT, "build/app/outputs/bundle/release/app-release.aab").freeze
+  METADATA_PATH = File.join(__dir__, "metadata/android").freeze
+
+  # android/key.properties → the keystore it names (resolved like Gradle does,
+  # relative to android/app). Fails with guidance if either is missing.
+  private_lane :check_signing do
+    props_file = File.join(NucatchRelease::ROOT, "android/key.properties")
+    UI.user_error!("android/key.properties is missing (docs/DEPLOYMENT.md §Android keystore).") unless File.exist?(props_file)
+    props = File.readlines(props_file).map(&:strip).reject { |l| l.empty? || l.start_with?("#") }
+                .to_h { |l| l.split("=", 2) }
+    missing = %w[storeFile storePassword keyAlias keyPassword].reject { |k| props[k].to_s.strip != "" }
+    UI.user_error!("android/key.properties lacks: #{missing.join(', ')}") unless missing.empty?
+    store = File.expand_path(props["storeFile"], File.join(NucatchRelease::ROOT, "android/app"))
+    UI.user_error!("Keystore #{store} (storeFile in android/key.properties) doesn't exist.") unless File.exist?(store)
+    UI.success("Signing: #{File.basename(store)} (alias #{props['keyAlias']})")
+  end
+
+  # The Play service-account JSON, validated against the Play API.
+  private_lane :play_json_key do
+    json_key = NucatchRelease.require_file!("SUPPLY_JSON_KEY")
+    validate_play_store_json_key(json_key: json_key)
+    json_key
+  end
+
+  desc "Check that everything a Play upload needs is in place: .env.fastlane"
+  desc "keys, the service-account JSON (validated against Google), and release"
+  desc "signing. Uploads nothing. Usage: fastlane android check_env"
+  lane :check_env do
+    play_json_key
+    check_signing
+    version = NucatchRelease.release_version(:android, "PRODUCTION")
+    UI.success("CHANGELOG release: #{version[:build_name]} (#{version[:build_number]})")
+    notes = NucatchRelease.store_release_notes
+    UI.success("Release notes for: #{notes.keys.join(', ')}") unless notes.empty?
+  end
+
   desc "Deploy a new build to Firebase App Distribution"
   lane :distribute do
+    NucatchRelease.require_keys!("FIREBASE_CLI_TOKEN")
     firebase_app_distribution(
       app: "1:749675143292:android:7a99cf000c787cf7e5e9f9",
       groups: "testers",
@@ -15,17 +59,12 @@ platform :android do
   desc "Upload store screenshots ONLY to Google Play."
   desc "Media only — no APK/AAB, no metadata, no changelogs. Frames come from"
   desc "android/fastlane/metadata/android/<locale>/images/{phone,tenInch}Screenshots/"
-  desc "(run tool/screenshots/capture.sh first). Auth via a Play service-account"
-  desc "JSON in env: SUPPLY_JSON_KEY (path to the .json). The app must already"
-  desc "exist on Play with an initial release. See tool/screenshots/README.md."
+  desc "(run tool/screenshots/capture.sh first). The app must already exist on"
+  desc "Play with an initial release. See tool/screenshots/README.md."
   lane :upload_screenshots do
-    json_key = ENV["SUPPLY_JSON_KEY"]
-    if json_key.nil? || json_key.empty?
-      UI.user_error!("Set SUPPLY_JSON_KEY to your Google Play service-account JSON path. See tool/screenshots/README.md.")
-    end
-
     supply(
-      json_key: json_key,
+      json_key: play_json_key,
+      package_name: PACKAGE_NAME,
       track: "production",
       skip_upload_apk: true,
       skip_upload_aab: true,
@@ -38,61 +77,78 @@ platform :android do
 
   # ───────────────────────────────────────────────────────────────────────────
   # Release deployment: build a signed AAB and upload it to a Google Play track.
-  #
-  # NOTHING sensitive is hard-coded here. Secrets come from the environment
-  # (loaded from .env — see .env.example and docs/DEPLOYMENT.md):
-  #   • SUPPLY_JSON_KEY — path to the Google Play service-account JSON.
-  # Signing is the app's own release config (android/key.properties → key.jks),
-  # so those files must exist locally / be materialised from CI secrets first.
+  # Version: build_name:/build_number: if given, else the latest CHANGELOG.md
+  # block (Development command for staging, Production for production).
   # ───────────────────────────────────────────────────────────────────────────
 
-  # Build the release App Bundle. Optional params: build_name:, build_number:,
-  # environment: (dart-define APP_ENVIRONMENT, default PRODUCTION).
+  # Firebase config switch + `flutter build appbundle`, as the CHANGELOG's
+  # build command does. Returns the version built.
   private_lane :build_release_aab do |options|
-    flutter_args = ["build", "appbundle", "--release"]
-    flutter_args << "--build-name=#{options[:build_name]}" if options[:build_name]
-    flutter_args << "--build-number=#{options[:build_number]}" if options[:build_number]
-    flutter_args << "--dart-define=APP_ENVIRONMENT=#{options[:environment] || 'PRODUCTION'}"
-    # fastlane runs in android/, so the Flutter project root is one level up.
-    Dir.chdir("..") do
-      sh("flutter", "pub", "get")
-      sh("flutter", *flutter_args)
+    environment = options[:environment]
+    version = NucatchRelease.resolve_version(:android, environment, options)
+    check_signing
+    NucatchRelease.flutterfire_setup(environment) unless options[:skip_flutterfire]
+    NucatchRelease.flutter("pub", "get")
+    NucatchRelease.flutter(
+      "build", "appbundle", "--release",
+      "--build-name=#{version[:build_name]}",
+      "--build-number=#{version[:build_number]}",
+      "--dart-define=APP_ENVIRONMENT=#{environment}"
+    )
+    UI.user_error!("Expected AAB not found at #{AAB_PATH}") unless File.exist?(AAB_PATH)
+    version
+  end
+
+  # Writes Play's "What's new" for this version code from the CHANGELOG brief
+  # (metadata/android/<locale>/changelogs/<code>.txt, Play's 500-char limit).
+  private_lane :write_play_changelogs do |options|
+    NucatchRelease.store_release_notes.each do |locale, text|
+      dir = File.join(METADATA_PATH, locale, "changelogs")
+      FileUtils.mkdir_p(dir)
+      File.write(File.join(dir, "#{options[:version_code]}.txt"), text[0, 500])
+      UI.message("What's new (#{locale}): #{text.lines.count} line(s)")
     end
   end
 
-  # Upload the freshly built AAB to the given Play track.
+  # Uploads the freshly built AAB (and its "What's new") to the given track.
   private_lane :upload_aab_to_play do |options|
-    json_key = ENV["SUPPLY_JSON_KEY"]
-    if json_key.nil? || json_key.empty?
-      UI.user_error!("Set SUPPLY_JSON_KEY to your Google Play service-account JSON path (see docs/DEPLOYMENT.md).")
-    end
+    json_key = play_json_key
+    version_code = options[:version][:build_number].to_s.split(".").first
+    write_play_changelogs(version_code: version_code)
     supply(
       json_key: json_key,
+      package_name: PACKAGE_NAME,
       track: options[:track],
-      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      aab: AAB_PATH,
+      metadata_path: METADATA_PATH,
       release_status: options[:release_status] || "completed",
       skip_upload_apk: true,
       skip_upload_metadata: true,
-      skip_upload_changelogs: true,
+      skip_upload_changelogs: false,
       skip_upload_images: true,
       skip_upload_screenshots: true,
     )
   end
 
-  desc "Staging: build a release AAB and upload to the Google Play INTERNAL track"
-  desc "Usage: fastlane android deploy_staging [build_name:1.2.3 build_number:45]"
+  desc "Staging: build a release AAB (Firebase dev config) and upload to the"
+  desc "Google Play INTERNAL track."
+  desc "Usage: fastlane android deploy_staging [build_name:2.8.12.0 build_number:95]"
   lane :deploy_staging do |options|
-    build_release_aab(options.merge(environment: options[:environment] || "DEVELOPMENT"))
-    upload_aab_to_play(track: "internal")
-    UI.success("✅ Uploaded to Google Play — internal (staging) track.")
+    play_json_key # fail fast, before a long build
+    version = build_release_aab(options.merge(environment: "DEVELOPMENT"))
+    upload_aab_to_play(track: "internal", version: version)
+    UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) uploaded to Google Play — internal track.")
   end
 
-  desc "Production: build a release AAB and upload to the Google Play PRODUCTION track"
-  desc "Usage: fastlane android deploy_production [build_name:1.2.3 build_number:45]"
+  desc "Production: build a release AAB (Firebase production config) and upload"
+  desc "to the Google Play PRODUCTION track."
+  desc "Usage: fastlane android deploy_production [build_name:2.8.12 build_number:95]"
+  desc "Add release_status:draft to upload without rolling out."
   lane :deploy_production do |options|
-    build_release_aab(options.merge(environment: "PRODUCTION"))
-    upload_aab_to_play(track: "production")
-    UI.success("✅ Uploaded to Google Play — production track.")
+    play_json_key # fail fast, before a long build
+    version = build_release_aab(options.merge(environment: "PRODUCTION"))
+    upload_aab_to_play(track: "production", version: version, release_status: options[:release_status])
+    UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) uploaded to Google Play — production track.")
   end
 
   desc "Alias for deploy_production (fastlane android deploy)"

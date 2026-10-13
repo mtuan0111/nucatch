@@ -15,7 +15,7 @@ CI pins **Flutter 3.24.5** (`.gitlab-ci.yml`); the Dart SDK constraint is `>=3.2
 - `.agents/rules/version-release-workflow.mdc` — how a release is cut from the latest `CHANGELOG.md` block (git note, `.github/config/version-config.json`, commit).
 - `docs/onboarding-tour/` — how the menu tour + in-game practice work, how to add a step or lesson, and how to test them.
 - `docs/FOLDABLE_SUPPORT_PLAN.md` — foldable / dual-screen layout plan and what has shipped (status in §5a/§5b).
-- `docs/DEPLOYMENT.md` — Fastlane lanes, signing, `.env_release`. `docs/SNS_LOGIN_SETUP.md` — Google/Apple sign-in setup.
+- `docs/DEPLOYMENT.md` — Fastlane lanes (`check_env`, `deploy_staging`, `deploy_production`, `upload_screenshots`), signing, and the store keys in `.env.fastlane` (template `.env.fastlane.example`). `docs/SNS_LOGIN_SETUP.md` — Google/Apple sign-in setup.
 
 ## The skeleton_core dependency (read this first)
 
@@ -112,7 +112,7 @@ Full write-up: `docs/onboarding-tour/README.md`.
 - Tour card descriptions support `**bold**` markers and `\n` paragraph breaks (one paragraph per point).
 
 ### Firebase
-Firestore holds leaderboard records (`turn_services.dart`) and an `app_versions` collection powering the in-app force/optional update prompt (`UpdateCheckerWrapper`; see `APP_VERSION_UPDATE_GUIDE.md`). Auth is anonymous sign-in on launch (see `README.md` top + `FIREBASE_AUTH_SETUP.md`). FCM push is set up in `fcm_service.dart`. `.env` (loaded by dotenv, bundled as an asset) holds keys such as the Generative AI key — see `.env.example`.
+Firestore holds leaderboard records (`turn_services.dart`) and an `app_versions` collection powering the in-app force/optional update prompt (`UpdateCheckerWrapper`; see `APP_VERSION_UPDATE_GUIDE.md`). Auth is anonymous sign-in on launch (see `README.md` top + `FIREBASE_AUTH_SETUP.md`). FCM push is set up in `fcm_service.dart`. `.env` (loaded by dotenv, bundled as an asset) holds keys such as the Generative AI key — see `.env.example`. Because it ships inside the app, store/deployment secrets never go there: they live in the git-ignored `.env.fastlane`, read only by the Fastfiles via `tool/release/fastlane_common.rb`.
 
 ## Notes & gotchas
 

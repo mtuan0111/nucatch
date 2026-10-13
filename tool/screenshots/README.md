@@ -145,20 +145,18 @@ email).
 
 ## 2. Credentials (only needed to upload)
 
-**iOS — App Store Connect API key** (App Store Connect ▸ Users and Access ▸ Integrations ▸ App Store Connect API):
+The upload lanes read the same keys as the release lanes, from the git-ignored
+`.env.fastlane` at the repo root (`SUPPLY_JSON_KEY` for Play; `ASC_KEY_ID`,
+`ASC_ISSUER_ID`, `ASC_KEY_FILEPATH` for App Store Connect):
 
 ```bash
-export ASC_KEY_ID="XXXXXXXXXX"
-export ASC_ISSUER_ID="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-export ASC_KEY_FILEPATH="/absolute/path/to/AuthKey_XXXXXXXXXX.p8"
+cp .env.fastlane.example .env.fastlane   # then fill it in
+(cd android && bundle exec fastlane check_env)
+(cd ios     && bundle exec fastlane check_env)
 ```
 
-**Android — Google Play service account** (Play Console ▸ Setup ▸ API access ▸ create a
-service account with the *Release* permission, download its JSON):
-
-```bash
-export SUPPLY_JSON_KEY="/absolute/path/to/play-service-account.json"
-```
+How to create each key: `docs/DEPLOYMENT.md` §4. Exported environment variables
+still work and take precedence over the file.
 
 > The Play app must already exist with at least one release — `supply` can update
 > an existing listing's screenshots but can't bootstrap a brand-new app.

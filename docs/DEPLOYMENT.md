@@ -7,8 +7,11 @@ TestFlight, driven by [Fastlane](https://fastlane.tools).
 - iOS bundle id: `bomnguyen.game.nucatch`
 
 > **Golden rule:** no credential, token, keystore, or private key is ever
-> hard-coded or committed. Everything sensitive is read from the environment
-> (a local, git-ignored `.env`) or from CI secrets. See [Secrets & Git hygiene](#secrets--git-hygiene).
+> hard-coded or committed. Everything sensitive is read from `.env.fastlane`
+> (local, git-ignored) or from CI secrets. See [Secrets & Git hygiene](#secrets--git-hygiene).
+>
+> **Never put store keys in `.env`.** `pubspec.yaml` bundles `.env` into the app
+> as an asset, so anything in it ships inside the APK/IPA.
 
 ---
 
@@ -18,28 +21,43 @@ Fastlane is split per platform: run Android lanes from `android/`, iOS lanes fro
 
 | Lane | Platform | What it does | Target |
 | --- | --- | --- | --- |
+| `check_env` | android | Validate keys, Play JSON (against Google) and signing — uploads nothing | — |
 | `deploy_staging` | android | Build release AAB → upload | Google Play **internal** track |
 | `deploy_production` | android | Build release AAB → upload | Google Play **production** track |
 | `deploy` | android | Alias for `deploy_production` | Google Play production |
 | `distribute` | android | Upload a pre-built APK | Firebase App Distribution (`testers`) |
 | `upload_screenshots` | android | Store screenshots only | Google Play (media only) |
+| `check_env` | ios | Validate keys, ASC API key (against App Store Connect) and profile — uploads nothing | — |
 | `deploy_staging` | ios | Build release IPA → upload | **TestFlight** (internal) |
 | `deploy_production` | ios | Build release IPA → upload | **App Store Connect** (no auto-submit) |
 | `deploy` | ios | Alias for `deploy_production` | App Store Connect |
 | `distribute` | ios | Upload a pre-built IPA | Firebase App Distribution (`testers`) |
 | `upload_screenshots` | ios | Store screenshots only | App Store Connect (media only) |
 
-The `deploy_*` lanes **build** the artifact themselves (`flutter build appbundle` /
-`flutter build ipa`, release mode) and then upload with Fastlane's native
-uploaders (`supply`, `upload_to_testflight`, `deliver`). Optional parameters:
+The `deploy_*` lanes do what the CHANGELOG build commands do, then upload:
+
+1. **Version** — taken from the latest `CHANGELOG.md` block: the
+   `APP_ENVIRONMENT=DEVELOPMENT` build command for staging, the `PRODUCTION`
+   one for production (pubspec's version lags and would be rejected as too
+   low). Override with `build_name:` / `build_number:`.
+2. **Firebase config** — `npm run flutterfire_setup_dev` (staging) /
+   `npm run flutterfire_setup` (production). Skip with `skip_flutterfire:true`.
+3. **Build** — `flutter build appbundle` / `flutter build ipa` (release,
+   `--dart-define=APP_ENVIRONMENT=…`). iOS uses manual App Store signing via a
+   generated `build/ios/ExportOptions.plist` (`APPLE_TEAM_ID` +
+   `IOS_PROVISIONING_PROFILE`), like the CI workflow.
+4. **Upload** — `supply` (Play), `upload_to_testflight` / `deliver` (Apple).
+5. **Release notes** — the "Brief for Store's new update" bullets of the
+   latest block: lines with Vietnamese letters → `vi`, the rest → `en-US`.
+   Play "What's new" (written to `metadata/android/<locale>/changelogs/<code>.txt`),
+   TestFlight "What to Test" (en-US), App Store "What's New" (en-US, vi).
 
 ```bash
-fastlane android deploy_production build_name:2.8.9 build_number:92
-fastlane ios     deploy_staging    build_name:2.8.9 build_number:92
+fastlane android deploy_production                       # CHANGELOG version
+fastlane android deploy_production build_name:2.8.12 build_number:95
+fastlane android deploy_production release_status:draft  # upload, don't roll out
+fastlane ios     deploy_production submit:true           # also submit for review
 ```
-
-If omitted, the version comes from `pubspec.yaml`. `deploy_*` also passes
-`--dart-define=APP_ENVIRONMENT=DEVELOPMENT` (staging) / `PRODUCTION`.
 
 ---
 
@@ -64,29 +82,39 @@ Local release **signing must already be set up**:
   "Automatically manage signing" or a manual profile). See
   [iOS signing](#ios-signing-certificate--provisioning-profile).
 
-Then copy the env template and fill it in:
+Then copy the deployment env template and fill it in:
 
 ```bash
-cp .env.example .env
-# edit .env — it is git-ignored
+cp .env.fastlane.example .env.fastlane   # git-ignored
+# edit .env.fastlane, then check it (uploads nothing):
+(cd android && bundle exec fastlane check_env)
+(cd ios     && bundle exec fastlane check_env)
 ```
 
-Fastlane auto-loads `.env` (via `dotenv`). If yours isn't picked up, prefix the
-command: `env $(grep -v '^#' .env | xargs) fastlane android deploy`.
+Both Fastfiles load `.env.fastlane` themselves (`tool/release/fastlane_common.rb`);
+variables already set in the environment (CI secrets) take precedence.
 
 ---
 
 ## 3. Required environment variables
 
-All live in `.env` (git-ignored). Template: `.env.example`.
+All live in `.env.fastlane` (git-ignored). Template: `.env.fastlane.example`.
+Relative paths resolve from the repo root.
 
 | Variable | Used by | Meaning |
 | --- | --- | --- |
+| `SUPPLY_JSON_KEY` | android `check_env`, `deploy_*`, `upload_screenshots` | Path to the Google Play service-account JSON |
+| `ASC_KEY_ID` | ios `check_env`, `deploy_*`, `upload_screenshots` | App Store Connect API **Key ID** |
+| `ASC_ISSUER_ID` | ios `check_env`, `deploy_*`, `upload_screenshots` | App Store Connect API **Issuer ID** |
+| `ASC_KEY_FILEPATH` | ios (same) | Path to the ASC API `.p8` private key… |
+| `ASC_KEY_CONTENT` | ios (same) | …or its contents, raw or base64 (for CI) |
+| `APPLE_TEAM_ID` | ios `deploy_*` | Signing team (default `R23LP5MFKD`) |
+| `IOS_PROVISIONING_PROFILE` | ios `deploy_*` | App Store profile name (default `NuCatch_AppStore`) |
 | `FIREBASE_CLI_TOKEN` | `distribute` (both) | Firebase CI token for App Distribution |
-| `SUPPLY_JSON_KEY` | android `deploy_*`, `upload_screenshots` | Path to Google Play service-account JSON |
-| `ASC_KEY_ID` | ios `deploy_*`, `upload_screenshots` | App Store Connect API **Key ID** |
-| `ASC_ISSUER_ID` | ios `deploy_*`, `upload_screenshots` | App Store Connect API **Issuer ID** |
-| `ASC_KEY_FILEPATH` | ios `deploy_*`, `upload_screenshots` | Path to the ASC API `.p8` private key |
+
+Android release signing is **not** in this file: Gradle reads
+`android/key.properties` (git-ignored) and the keystore it names;
+`check_env` / `deploy_*` verify both exist.
 
 ---
 
@@ -104,9 +132,9 @@ App Distribution `distribute` lanes.)
    (or Google Cloud IAM) → **Create service account**.
 2. Grant it the **Release / Release manager** role for this app.
 3. Create a **JSON key** for the service account and download it.
-4. Save it to `android/play-store-service-account.json` (already git-ignored) and
-   point `SUPPLY_JSON_KEY` at that path.
-5. Sanity check: `cd android && fastlane run validate_play_store_json_key json_key:$SUPPLY_JSON_KEY`
+4. Save it to `android/play-store-service-account.json` (already git-ignored) —
+   the default `SUPPLY_JSON_KEY` in `.env.fastlane.example`.
+5. Sanity check: `cd android && bundle exec fastlane check_env`
 
 > The app must already exist on Play with at least one manual release before
 > `supply` can upload to a track.
@@ -120,6 +148,8 @@ App Distribution `distribute` lanes.)
 4. Download the `.p8` **once** (Apple only lets you download it once). Save it to
    `ios/private_keys/AuthKey_<KEY_ID>.p8` (git-ignored) and point
    `ASC_KEY_FILEPATH` at it.
+5. Sanity check: `cd ios && bundle exec fastlane check_env` (also confirms the
+   key can see `bomnguyen.game.nucatch` and that the profile is installed).
 
 ### Android keystore  (local release signing)
 Only needed once, if you don't already have `key.jks`:

@@ -60,6 +60,8 @@ android/play-store-service-account.json
 # Any local env variants (the committed template .env.example is kept).
 .env.*
 !.env.example
+# Template for the store-deployment secrets (the real .env.fastlane stays ignored).
+!.env.fastlane.example
 .env_release
 
 # Android app signing (keystore + its passwords)
