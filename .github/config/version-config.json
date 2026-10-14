@@ -1,42 +1,42 @@
 {
     "android": {
         "dev": {
-            "versionName": "2.8.11.0",
-            "versionCode": 94,
+            "versionName": "2.8.12.0",
+            "versionCode": 95,
             "releaseNotes": {
-                "en-US": "Larger, easier-to-read text and bigger keypad buttons on tablets. Every screen is now fully translated, and long translations no longer get cut off.",
-                "vi-VN": "Chữ lớn hơn, dễ đọc hơn và các nút bàn phím số to hơn trên máy tính bảng. Mọi màn hình nay đã được dịch đầy đủ, và các bản dịch dài không còn bị cắt mất chữ."
+                "en-US": "Clearer game screens: your score takes center stage, and Combat shows both players side by side. Better on tablets: a split keypad with every number once, bigger digits, and a timer that truly pauses.",
+                "vi-VN": "Màn hình chơi rõ ràng hơn: điểm số của bạn nổi bật hơn, và chế độ Đối kháng hiển thị hai người chơi cạnh nhau. Tốt hơn trên máy tính bảng: bàn phím chia đôi không trùng số, chữ số lớn hơn và đồng hồ dừng hẳn khi tạm dừng."
             }
         },
         "prod": {
-            "versionName": "2.8.11",
-            "versionCode": 94,
+            "versionName": "2.8.12",
+            "versionCode": 95,
             "releaseNotes": {
-                "en-US": "Larger, easier-to-read text and bigger keypad buttons on tablets. Every screen is now fully translated, and long translations no longer get cut off.",
-                "vi-VN": "Chữ lớn hơn, dễ đọc hơn và các nút bàn phím số to hơn trên máy tính bảng. Mọi màn hình nay đã được dịch đầy đủ, và các bản dịch dài không còn bị cắt mất chữ."
+                "en-US": "Clearer game screens: your score takes center stage, and Combat shows both players side by side. Better on tablets: a split keypad with every number once, bigger digits, and a timer that truly pauses.",
+                "vi-VN": "Màn hình chơi rõ ràng hơn: điểm số của bạn nổi bật hơn, và chế độ Đối kháng hiển thị hai người chơi cạnh nhau. Tốt hơn trên máy tính bảng: bàn phím chia đôi không trùng số, chữ số lớn hơn và đồng hồ dừng hẳn khi tạm dừng."
             }
         }
     },
     "ios": {
         "dev": {
-            "versionName": "2.8.11",
-            "buildNumber": "93.0",
+            "versionName": "2.8.12",
+            "buildNumber": "94.0",
             "releaseNotes": {
-                "en-US": "Larger, easier-to-read text and bigger keypad buttons on tablets. Every screen is now fully translated, and long translations no longer get cut off.",
-                "vi-VN": "Chữ lớn hơn, dễ đọc hơn và các nút bàn phím số to hơn trên máy tính bảng. Mọi màn hình nay đã được dịch đầy đủ, và các bản dịch dài không còn bị cắt mất chữ."
+                "en-US": "Clearer game screens: your score takes center stage, and Combat shows both players side by side. Better on tablets: a split keypad with every number once, bigger digits, and a timer that truly pauses.",
+                "vi-VN": "Màn hình chơi rõ ràng hơn: điểm số của bạn nổi bật hơn, và chế độ Đối kháng hiển thị hai người chơi cạnh nhau. Tốt hơn trên máy tính bảng: bàn phím chia đôi không trùng số, chữ số lớn hơn và đồng hồ dừng hẳn khi tạm dừng."
             }
         },
         "prod": {
-            "versionName": "2.8.11",
-            "buildNumber": "93",
+            "versionName": "2.8.12",
+            "buildNumber": "94",
             "releaseNotes": {
-                "en-US": "Larger, easier-to-read text and bigger keypad buttons on tablets. Every screen is now fully translated, and long translations no longer get cut off.",
-                "vi-VN": "Chữ lớn hơn, dễ đọc hơn và các nút bàn phím số to hơn trên máy tính bảng. Mọi màn hình nay đã được dịch đầy đủ, và các bản dịch dài không còn bị cắt mất chữ."
+                "en-US": "Clearer game screens: your score takes center stage, and Combat shows both players side by side. Better on tablets: a split keypad with every number once, bigger digits, and a timer that truly pauses.",
+                "vi-VN": "Màn hình chơi rõ ràng hơn: điểm số của bạn nổi bật hơn, và chế độ Đối kháng hiển thị hai người chơi cạnh nhau. Tốt hơn trên máy tính bảng: bàn phím chia đôi không trùng số, chữ số lớn hơn và đồng hồ dừng hẳn khi tạm dừng."
             }
         }
     },
     "metadata": {
-        "lastUpdated": "2026-10-09T00:00:00+07:00",
+        "lastUpdated": "2026-10-13T00:00:00+07:00",
         "updatedBy": "CI/CD Pipeline"
     }
 }

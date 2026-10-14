@@ -47,6 +47,35 @@ _ {VI line 2 — Vietnamese translation of EN line 2}
 
 `npm run flutterfire_setup && flutter build ios --build-name={I_VER} --build-number={I_BN} --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
 
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:{A_VER}.{T} build_number:{A_BN})`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:{I_VER} build_number:{I_BN}.{T})`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:{A_VER} build_number:{A_BN} update_screenshots:false)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:{I_VER} build_number:{I_BN} submit:true update_screenshots:false)`
+
+Rules for these blocks:
+- Keep the `flutter build …` lines exactly in this shape — the Fastlane lanes
+  parse the latest block's `flutter build appbundle|ios … APP_ENVIRONMENT=…`
+  lines for the default version, and its **Brief for Store's new update**
+  bullets for the store "What's new" (lines with Vietnamese letters → `vi`,
+  the rest → `en-US`). Brief lines must start with `_ `.
+- The Fastlane lines use the same numbers as the matching `flutter build` line
+  (Development ↔ `deploy_staging`, Production ↔ `deploy_production`).
+- The iOS production line always has `submit:true`: an iOS production
+  deploy always submits the version for App Review.
+- Both production lines carry `update_screenshots:` — `false` by default
+  (store screenshots untouched). Write `true` only when the user asks to
+  update the screenshots with this release; then the lanes upload the sets
+  from `android/fastlane/metadata/android/<locale>/images/` and
+  `ios/fastlane/screenshots/<locale>/` (made by `tool/screenshots/capture.sh`
+  — re-capture first if the UI changed).
+
 ## Step 2 — Update `.github/config/version-config.json`
 
 Overwrite the file with values derived from the same table. `releaseNotes` must match the Brief above.
@@ -72,3 +101,53 @@ Stage all changed files and commit using the Command for copilot message:
 ```bash
 git add -A && git commit -m "[Builded] Version {A_VER} - {A_BN} / {I_VER} - {I_BN} _ {release_note}"
 ```
+
+## Step 4 — Deploy with Fastlane (only when asked to deploy / publish)
+
+The lanes, options and checks are one contract shared by all four BOM apps —
+see `.agents/rules/fastlane-deployment.mdc`. A change to it is made in all four
+repos together.
+
+Never upload as part of creating a release item: deploying publishes to the
+stores. Do it only when the user explicitly asks to deploy or publish. Details:
+`docs/DEPLOYMENT.md`; keys: `.env.fastlane` (`docs/STORE_KEYS_SETUP.md`).
+
+1. **Check keys and signing** (uploads nothing):
+   ```bash
+   (cd android && bundle exec fastlane check_env)
+   (cd ios && bundle exec fastlane check_env)
+   ```
+2. **Store preflight** (builds nothing): can each store take this version?
+   ```bash
+   (cd android && bundle exec fastlane check_release build_name:{A_VER} build_number:{A_BN})
+   (cd ios && bundle exec fastlane check_release build_name:{I_VER} build_number:{I_BN})
+   ```
+   If it fails, stop and report its reason (e.g. the version code is already
+   used, or another iOS version is still in review) — don't change the numbers
+   on your own. The deploy lanes run the same check before building.
+3. **Dry run on Play** (builds, then Play validates the whole upload and
+   discards it):
+   ```bash
+   (cd android && bundle exec fastlane deploy_production build_name:{A_VER} build_number:{A_BN} validate_only:true)
+   ```
+4. **Deploy** — the commands from the release block's **Fastlane deploy for
+   Production** (or **…for Testing** for the internal track / TestFlight).
+   Each lane does what the matching `flutter build` line does and uploads:
+   - bundles the real app config (`env` for production, `env_dev` for
+     staging) as `.env` for the build, then restores `.env`;
+   - runs `npm run flutterfire_setup` / `flutterfire_setup_dev` itself — don't
+     run it separately;
+   - uploads the store "What's new" from the block's Brief (Play `en-US`/`vi`,
+     TestFlight `en-US`, App Store `en-US`/`vi`).
+   - iOS production is **always** run with `submit:true`: it submits the
+     version for App Review after the upload (waiting for Apple to process
+     the build). Never drop it or pass `submit:false`. If a submission fails
+     after the upload succeeded, retry just the submission with
+     `(cd ios && bundle exec fastlane submit_review build_name:{I_VER} build_number:{I_BN})`.
+     After approval the release is manual unless `auto_release:true`.
+   Options: `update_screenshots:true` (also replace the store screenshots —
+   only when asked; the lane checks every locale has a set before building),
+   `release_status:draft` (Play: upload without rolling out),
+   `skip_flutterfire:true` (reuse the current Firebase config).
+5. **Report** what was uploaded (platform, track, version, build number) and
+   anything left to do by hand (e.g. releasing the iOS version after approval).

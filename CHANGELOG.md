@@ -1833,6 +1833,18 @@ _ Cải thiện giao diện và trải nghiệm người dùng với thiết k�
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.4 --build-number=85 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
 
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:2.8.5.0 build_number:86)`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:2.8.4 build_number:85.0)`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:2.8.5 build_number:86 update_screenshots:false)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:2.8.4 build_number:85 submit:true update_screenshots:false)`
+
 ---
 ## Released on: 10/05/2026
 ### Version:
@@ -1870,6 +1882,18 @@ _ Tối ưu hoá giao diện và trải nghiệm người dùng để có sự t
 #### Flutter build for iOS
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.5 --build-number=86 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:2.8.6.0 build_number:87)`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:2.8.5 build_number:86.0)`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:2.8.6 build_number:87 update_screenshots:false)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:2.8.5 build_number:86 submit:true update_screenshots:false)`
 
 ---
 ## Released on: 10/05/2026
@@ -1909,6 +1933,18 @@ _ Thử nghiệm triển khai tự động để tối ưu hóa quy trình phát
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.6 --build-number=87 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
 
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:2.8.6.0 build_number:88)`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:2.8.6 build_number:87.0)`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:2.8.6 build_number:88 update_screenshots:false)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:2.8.6 build_number:87 submit:true update_screenshots:false)`
+
 ---
 ## Released on: 04/08/2026
 ### Version:
@@ -1947,6 +1983,18 @@ _ Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.7 --build-number=89 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
 
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:2.8.7.0 build_number:90)`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:2.8.7 build_number:89.0)`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:2.8.7 build_number:90 update_screenshots:false)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:2.8.7 build_number:89 submit:true update_screenshots:false)`
+
 ---
 ## Released on: 23/08/2026
 ### Version:
@@ -1984,6 +2032,18 @@ _ Cải thiện hướng dẫn màn hình để mang lại trải nghiệm bắt
 #### Flutter build for iOS
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.8 --build-number=90 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:2.8.8.0 build_number:91)`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:2.8.8 build_number:90.0)`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:2.8.8 build_number:91 update_screenshots:false)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:2.8.8 build_number:90 submit:true update_screenshots:false)`
 
 ---
 ## Released on: 05/10/2026
@@ -2025,6 +2085,18 @@ _ Cải thiện bố cục cho điện thoại gập và máy tính bảng, cùn
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.9 --build-number=91 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
 
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:2.8.9.0 build_number:92)`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:2.8.9 build_number:91.0)`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:2.8.9 build_number:92 update_screenshots:false)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:2.8.9 build_number:91 submit:true update_screenshots:false)`
+
 ---
 ## Released on: 06/10/2026
 ### Version:
@@ -2065,6 +2137,18 @@ _ Các phím trên bàn phím số nay luôn có khoảng cách rõ ràng trên 
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.10 --build-number=92 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
 
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:2.8.10.0 build_number:93)`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:2.8.10 build_number:92.0)`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:2.8.10 build_number:93 update_screenshots:false)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:2.8.10 build_number:92 submit:true update_screenshots:false)`
+
 ---
 ## Released on: 09/10/2026
 ### Version:
@@ -2104,5 +2188,69 @@ _ Mọi màn hình nay đã được dịch đầy đủ, và các bản dịch 
 #### Flutter build for iOS
 
 `npm run flutterfire_setup && flutter build ios --build-name=2.8.11 --build-number=93 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:2.8.11.0 build_number:94)`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:2.8.11 build_number:93.0)`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:2.8.11 build_number:94 update_screenshots:false)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:2.8.11 build_number:93 submit:true update_screenshots:false)`
+
+---
+## Released on: 13/10/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 95           | 2.8.12  |
+| iOS      | 94           | 2.8.12  |
+
+### Release note:
+- Clearer game screens and a better tablet layout.
+
+### Git note release:
+
+#### Command for copilot
+
+`[Builded] Version 2.8.12 - 95 / 2.8.12 - 94 _ Clearer game screens and a better tablet layout.`
+
+#### Brief for Store's new update:
+
+_ Clearer game screens: your score takes center stage, and Combat shows both players side by side.
+_ Better on tablets: a split keypad with every number once, bigger digits, and a timer that truly pauses.
+_ Màn hình chơi rõ ràng hơn: điểm số của bạn nổi bật hơn, và chế độ Đối kháng hiển thị hai người chơi cạnh nhau.
+_ Tốt hơn trên máy tính bảng: bàn phím chia đôi không trùng số, chữ số lớn hơn và đồng hồ dừng hẳn khi tạm dừng.
+
+#### Flutter build for Android for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build appbundle --build-name=2.8.12.0 --build-number=95 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for iOS for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build ios --build-name=2.8.12 --build-number=94.0 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for Android
+
+`npm run flutterfire_setup && flutter build appbundle --build-name=2.8.12 --build-number=95 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Flutter build for iOS
+
+`npm run flutterfire_setup && flutter build ios --build-name=2.8.12 --build-number=94 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:2.8.12.0 build_number:95)`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:2.8.12 build_number:94.0)`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:2.8.12 build_number:95 update_screenshots:false)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:2.8.12 build_number:94 submit:true update_screenshots:false)`
 
 ---

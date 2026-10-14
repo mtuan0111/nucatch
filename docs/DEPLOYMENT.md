@@ -22,19 +22,32 @@ Fastlane is split per platform: run Android lanes from `android/`, iOS lanes fro
 | Lane | Platform | What it does | Target |
 | --- | --- | --- | --- |
 | `check_env` | android | Validate keys, Play JSON (against Google) and signing — uploads nothing | — |
+| `check_release` | android | Can Play take this version? (code above every track, name not below production) — builds nothing | — |
 | `deploy_staging` | android | Build release AAB → upload | Google Play **internal** track |
 | `deploy_production` | android | Build release AAB → upload | Google Play **production** track |
 | `deploy` | android | Alias for `deploy_production` | Google Play production |
 | `distribute` | android | Upload a pre-built APK | Firebase App Distribution (`testers`) |
 | `upload_screenshots` | android | Store screenshots only | Google Play (media only) |
 | `check_env` | ios | Validate keys, ASC API key (against App Store Connect) and profile — uploads nothing | — |
+| `check_release` | ios | Can App Store Connect take this version? (above live, new build number, nothing else in review) — builds nothing | — |
 | `deploy_staging` | ios | Build release IPA → upload | **TestFlight** (internal) |
-| `deploy_production` | ios | Build release IPA → upload | **App Store Connect** (no auto-submit) |
+| `deploy_production` | ios | Build release IPA → upload → **submit for App Review** | **App Store Connect** |
+| `submit_review` | ios | Submit an already-uploaded build for review (no rebuild) | App Review |
 | `deploy` | ios | Alias for `deploy_production` | App Store Connect |
 | `distribute` | ios | Upload a pre-built IPA | Firebase App Distribution (`testers`) |
 | `upload_screenshots` | ios | Store screenshots only | App Store Connect (media only) |
 
 The `deploy_*` lanes do what the CHANGELOG build commands do, then upload:
+
+0. **Store preflight (before any build)** — the same checks as `check_release`.
+   The lane stops, naming the fix, when the store can't take the version:
+   - **Google Play:** the version code must be higher than every code on every
+     track (production, beta, alpha, internal); the version name must not be
+     lower than production's.
+   - **App Store:** the version must be higher than the live one; the build
+     number must be new for that version; and for production (which submits
+     for review) no other version may already be in review or awaiting
+     release — Apple allows only one.
 
 1. **Version** — taken from the latest `CHANGELOG.md` block: the
    `APP_ENVIRONMENT=DEVELOPMENT` build command for staging, the `PRODUCTION`
@@ -56,7 +69,11 @@ The `deploy_*` lanes do what the CHANGELOG build commands do, then upload:
 fastlane android deploy_production                       # CHANGELOG version
 fastlane android deploy_production build_name:2.8.12 build_number:95
 fastlane android deploy_production release_status:draft  # upload, don't roll out
-fastlane ios     deploy_production submit:true           # also submit for review
+fastlane android deploy_production update_screenshots:true  # also replace store screenshots
+fastlane ios     deploy_production update_screenshots:true  # (same, for the App Store version)
+fastlane ios     deploy_production                       # upload, then submit for review
+fastlane ios     deploy_production submit:false          # upload only
+fastlane ios     submit_review build_name:2.8.12 build_number:94   # submit an uploaded build
 ```
 
 ---
@@ -119,6 +136,9 @@ Android release signing is **not** in this file: Gradle reads
 ---
 
 ## 4. How to generate each key
+
+> Click-by-click walkthroughs for each key — with ready-to-paste prompts for
+> Claude in Chrome — are in [STORE_KEYS_SETUP.md](STORE_KEYS_SETUP.md).
 
 ### Firebase CLI token
 ```bash
@@ -192,7 +212,7 @@ bundle exec fastlane deploy                # alias for deploy_production
 # ----- iOS -----
 cd ios
 bundle exec fastlane deploy_staging        # → TestFlight
-bundle exec fastlane deploy_production      # → App Store Connect (submit manually)
+bundle exec fastlane deploy_production      # → App Store Connect + submit for App Review
 ```
 
 (Drop `bundle exec` if you installed Fastlane globally.)

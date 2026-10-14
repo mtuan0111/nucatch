@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "../../mind_compass"
+		},
+		{
+			"path": "../../hanoi_tower"
 		}
 	],
 	"settings": {

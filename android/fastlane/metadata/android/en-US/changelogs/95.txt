@@ -1,0 +1,2 @@
+• Clearer game screens: your score takes center stage, and Combat shows both players side by side.
+• Better on tablets: a split keypad with every number once, bigger digits, and a timer that truly pauses.

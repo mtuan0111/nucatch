@@ -1,0 +1,168 @@
+---
+description: Shared Fastlane store-deployment contract for all BOM Flutter apps (NuCatch, Ô Ăn Quan, Hanoi Tower, MindCompass). Read before changing any Fastfile, deploy helper, deploy doc, or the Fastlane lines in CHANGELOG.md.
+alwaysApply: true
+---
+
+# Fastlane deployment — one concept, four apps
+
+These four apps deploy to Google Play and the App Store the same way. Each
+keeps its own code, but the **lanes, options, checks and commands are one
+contract**. A developer (or agent) who knows one app's deploy knows all four.
+
+| App | Repo | Android package | iOS bundle ID |
+| --- | --- | --- | --- |
+| NuCatch | `flutter_projects/nucatch-with-bloc` | `bomnguyen.nucatch` | `bomnguyen.game.nucatch` |
+| Ô Ăn Quan | `flutter_projects/o_an_quan` | `o.an.quan` | `quan.an.o` |
+| Hanoi Tower (Hasto) | `flutter_projects/hanoi_tower` | `com.bomdata.hasto` | `calm.hasto.balance` |
+| MindCompass | `flutter_projects/mind_compass` | `mind.com.pass` | `com.pass.mind` |
+
+All four sign under Apple team `R23LP5MFKD`.
+
+## The sync rule
+
+- **A change to the contract is made in all four repos, in the same session**:
+  a lane, an option, a check, a default, the CHANGELOG line format, or a fix to
+  a bug the others share (e.g. a parsing or build-environment fix). Then run
+  [Verify](#verify) in each repo.
+- If one app genuinely can't follow the contract, record the difference in
+  [Per-app differences](#per-app-differences) **in all four copies of this
+  file** — never let an app drift silently.
+- This file is **identical in every repo** (`.agents/rules/fastlane-deployment.mdc`).
+  Edit it once, copy it to the other three.
+
+## Lanes (every app, both platforms unless noted)
+
+| Lane | Does | Builds | Uploads |
+| --- | --- | --- | --- |
+| `check_env` | Credentials (checked online), signing, release notes | no | no |
+| `check_release` | Can the store take this version? (the preflight below) | no | no |
+| `deploy_staging` | Preflight → build → Play **internal** track / **TestFlight** | yes | yes |
+| `deploy_production` | Preflight → build → Play **production** / **App Store Connect** (+ submit for review on iOS). Already on the store → promotes / finishes it instead, or does nothing if it's already submitted / live (behaviour 7) | only if not uploaded yet | yes |
+| `deploy` | Alias of `deploy_production` | yes | yes |
+| `submit_review` (iOS) | Submit an already-uploaded build — no rebuild; waits for Apple's processing, submits an "Add for Review" draft | no | submission only |
+| `upload_screenshots` | Store screenshots only | no | media only |
+| `distribute` | Pre-built binary → Firebase App Distribution | no | yes |
+
+Run from `android/` or `ios/`: `(cd android && bundle exec fastlane <lane> …)`.
+
+## Options (same names everywhere)
+
+| Option | Lanes | Meaning |
+| --- | --- | --- |
+| `build_name:` / `build_number:` | all version-aware lanes | Version to check / build. Default: the app's release source (see differences) |
+| `environment:DEVELOPMENT\|PRODUCTION` | `check_release` | Which release to check (default PRODUCTION) |
+| `update_screenshots:true\|false` | `deploy_production` | Also replace the store screenshots with the committed sets. Default `false` |
+| `submit:true\|false` | iOS `deploy_production` | Submit for App Review after the upload |
+| `auto_release:true` | iOS `deploy_production`, `submit_review` | Go live as soon as Apple approves (default: manual release) |
+| `release_status:draft\|completed\|…` | Android `deploy_*` | Play release status |
+| `validate_only:true` | Android `deploy_*` | Play checks the whole upload, then discards it — nothing is published |
+
+## Behaviour every app guarantees
+
+1. **Store preflight before any build** (`check_release` runs the same code),
+   stopping with the fix when the store can't take the version:
+   - **Google Play:** the version code must be higher than every code on every
+     track (production, beta, alpha, internal); the version name must not be
+     lower than production's.
+   - **App Store:** the version must be higher than the live one; the build
+     number must be new for that version; when submitting, no other version may
+     be in review or awaiting release (Apple allows one).
+2. **Build numbers are parsed base 10** (`"09"` → 9 — never `Integer("09")`,
+   which is octal) and Play changelog files are named by the plain version code
+   (`9.txt`).
+3. **Builds run without Bundler's environment** (`Bundler.with_unbundled_env`),
+   or CocoaPods fails under `bundle exec`.
+4. **Release notes** ("What's new") go only to the locales the store listing
+   has; Play ≤ 500 characters. On iOS the locales are read from App Store
+   Connect at deploy time (the live version's, plus any the new version really
+   fills in) — never from a hard-coded list, which would add an empty language
+   and make App Review submission fail ("missing a required attribute"). The
+   CHANGELOG brief's English lines go to every `en*` locale, the Vietnamese
+   ones to `vi*`.
+5. **Export compliance** is answered on iOS submission (from `Info.plist`'s
+   `ITSAppUsesNonExemptEncryption`, or the app's `…_USES_NON_EXEMPT_ENCRYPTION`
+   setting).
+6. **No secret in a tracked or bundled file.** Store credentials live only in
+   git-ignored env files; `.env` files bundled into the app (pubspec assets)
+   never hold store keys.
+7. **An already-uploaded version is promoted, not rebuilt.**
+   `deploy_production` (and `check_release`, which reports it) looks the exact
+   version up first:
+
+   | On the store | iOS | Android |
+   | --- | --- | --- |
+   | Not uploaded | build → upload → submit | build → upload |
+   | Uploaded, not submitted (TestFlight / test track) | set What's New → attach the build → submit (`submit:true`) | promote that release to production with What's new |
+   | Added for review / draft, not sent | submit the "Add for Review" draft | roll the draft / halted production release out |
+   | Already submitted / live | "nothing to deploy" — success, changes nothing | "nothing to deploy" — success |
+   | Another version in review | stop (Apple allows one) | — |
+
+   Only the **exact** production version is promoted: on iOS the same build
+   number (`asc_build_number`: `08` = `8`); on Play the same version code
+   **and** release name. A staging build (`1.1.12.1`, or build `15.1`) carries
+   the development Firebase config and is never promoted — the lane stops and
+   asks for a higher build number.
+8. **iOS waits for Apple's processing** before attaching a build to a version
+   (`wait_for_processed_build`, up to 60 minutes), and removes from the new
+   version any language with no description that the live listing doesn't
+   have, before submitting.
+
+## CHANGELOG lines (every release block)
+
+After the four `flutter build …` commands, each block lists:
+
+```
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:{A_VER}.{T} build_number:{A_BN})`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:{I_VER} build_number:{I_BN}.{T})`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:{A_VER} build_number:{A_BN} update_screenshots:false)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:{I_VER} build_number:{I_BN} submit:true update_screenshots:false)`
+```
+
+- The iOS production line **always** has `submit:true`.
+- `update_screenshots:` is `false` unless the user asks to update screenshots
+  with that release.
+- The Android staging and production lines share one version code (`{A_BN}`),
+  and Play accepts a code once: after `deploy_staging`, that version's
+  `deploy_production` stops (behaviour 7 never promotes a staging build) —
+  release production with a higher build number.
+- Deploy only when the user explicitly asks — deploying publishes to the
+  stores. Run `check_env`, then `check_release`, then (Android) a
+  `validate_only:true` dry run, then the deploy; report a failed check instead
+  of changing version numbers on your own.
+
+## Per-app differences
+
+These are deliberate; everything not listed here follows the contract —
+including the credentials file (`.env.fastlane` at the repo root), the default
+version and notes (the latest `CHANGELOG.md` block), Play production releasing
+as `completed`, and iOS `submit` defaulting to `true`, in all four apps.
+
+| | NuCatch | Ô Ăn Quan / Hanoi Tower | MindCompass |
+| --- | --- | --- | --- |
+| Deploy helper | `tool/release/fastlane_common.rb` (`NucatchRelease`) | `tool/release/fastlane_common.rb` (`StoreRelease`, identical in both repos) | `tool/release/fastlane_common.rb` (`MindCompassRelease`) |
+| App config in the build | bundles `env` / `env_dev` as `.env`, then restores it | bundles `.env` / `.env_dev` as `.env`, then restores it | `--dart-define-from-file=.env_release` (production only) |
+| Firebase step | `npm run flutterfire_setup[_dev]` | `npm run flutterfire_setup[_dev]` | none — builds against its one `lib/firebase_options.dart` (`package.json` has no flutterfire scripts) |
+| iOS signing | manual, profile `NuCatch_AppStore` | automatic | automatic |
+| Store locales (iOS reads the real ones at deploy time; this is the fallback) | en-US, vi | Ô Ăn Quan: en-US · Hanoi Tower: en-GB, vi | en-US, vi |
+
+## Verify
+
+After any change, in **each** repo:
+
+```bash
+ruby -c android/fastlane/Fastfile ios/fastlane/Fastfile <the deploy helper>
+(cd android && bundle exec fastlane lanes)   # every contract lane listed
+(cd ios     && bundle exec fastlane lanes)
+# with credentials in place (builds and uploads nothing):
+(cd android && bundle exec fastlane check_env)
+(cd android && bundle exec fastlane check_release)
+(cd ios     && bundle exec fastlane check_env)
+(cd ios     && bundle exec fastlane check_release)
+```

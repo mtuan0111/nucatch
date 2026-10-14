@@ -8,8 +8,12 @@ NucatchRelease.load_env!
 
 platform :ios do
   BUNDLE_ID = "bomnguyen.game.nucatch".freeze
+  # Fallback store languages, used only when App Store Connect can't be asked
+  # (see store_locales, which reads the listing's real languages).
+  LANGUAGES = %w[en-US vi].freeze
   IPA_PATH = File.join(NucatchRelease::ROOT, "build/ios/ipa/nucatch.ipa").freeze
   EXPORT_OPTIONS = File.join(NucatchRelease::ROOT, "build/ios/ExportOptions.plist").freeze
+  SCREENSHOTS_PATH = File.join(NucatchRelease::ROOT, "ios/fastlane/screenshots").freeze
 
   # App Store Connect API key from ASC_KEY_ID + ASC_ISSUER_ID and either
   # ASC_KEY_FILEPATH (the .p8) or ASC_KEY_CONTENT (its text, or base64 — handy
@@ -78,6 +82,78 @@ platform :ios do
     end
   end
 
+  # A version in one of these states is in review or waiting to go live.
+  # Apple allows one version in flight, so another can't be submitted until
+  # it's approved and released, rejected, or withdrawn. (Both the current and
+  # the older state names.)
+  IN_FLIGHT_STATES = %w[
+    WAITING_FOR_REVIEW IN_REVIEW PENDING_APPLE_RELEASE PENDING_DEVELOPER_RELEASE
+    PROCESSING_FOR_APP_STORE WAITING_FOR_EXPORT_COMPLIANCE ACCEPTED
+  ].freeze
+
+  # Before any build: can App Store Connect take this version?
+  #   • the version must be higher than the one live on the App Store (Apple
+  #     rejects uploads of an approved or older version);
+  #   • for_review: no other version may be in review / awaiting release;
+  #   • the build number must be new for that version.
+  private_lane :release_preflight do |options|
+    version = options[:version]
+    name = version[:build_name]
+    number = version[:build_number].to_s
+    api_key = asc_api_key
+    app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
+    UI.user_error!("App #{BUNDLE_ID} not found in App Store Connect for this API key.") unless app
+    platform = Spaceship::ConnectAPI::Platform::IOS
+    live = app.get_live_app_store_version(platform: platform)
+    edit = app.get_edit_app_store_version(platform: platform)
+    edit_state = edit && (edit.app_version_state || edit.app_store_state)
+    latest_build = latest_testflight_build_number(
+      api_key: api_key, app_identifier: BUNDLE_ID, version: name, initial_build_number: 0
+    )
+
+    UI.message("App Store live     : #{live ? live.version_string : '—'}")
+    UI.message("App Store next     : #{edit ? "#{edit.version_string} (#{edit_state})" : '—'}")
+    UI.message("Builds of #{name.ljust(8)}: #{latest_build.to_s == '0' ? '—' : "latest #{latest_build}"}")
+
+    problems = []
+    if live && !NucatchRelease.newer?(name, live.version_string)
+      problems << "Version #{name} isn't higher than #{live.version_string}, live on the App Store. " \
+                  "Use a higher build_name."
+    end
+    if options[:for_review] && edit && IN_FLIGHT_STATES.include?(edit_state) && edit.version_string == name
+      UI.success("#{name} is already #{edit_state.downcase.tr('_', ' ')}: already submitted, nothing to deploy.")
+    elsif options[:for_review] && edit && IN_FLIGHT_STATES.include?(edit_state)
+      problems << "#{edit.version_string} is already #{edit_state.downcase.tr('_', ' ')}. Apple allows one " \
+                  "version in review at a time: wait for it to be released or rejected, or remove it " \
+                  "from review in App Store Connect first."
+    end
+    if !options[:promote] && latest_build.to_s != "0" && Gem::Version.correct?(number) &&
+       !NucatchRelease.newer?(number, latest_build.to_s)
+      problems << "Build #{number} isn't higher than #{latest_build}, already uploaded for #{name}. " \
+                  "Use a higher build_number."
+    end
+    UI.user_error!("App Store Connect can't take #{name} (#{number}):\n- #{problems.join("\n- ")}") unless problems.empty?
+    submitted = options[:for_review] && edit && IN_FLIGHT_STATES.include?(edit_state) && edit.version_string == name
+    UI.success("App Store Connect can take #{name} (#{number})#{options[:for_review] ? ' and submit it for review' : ''}.") unless submitted
+  end
+
+  desc "Check, before building, that App Store Connect can accept a version:"
+  desc "higher than the live one, a new build number, and (for production) no"
+  desc "other version in review. Builds and uploads nothing."
+  desc "Usage: fastlane ios check_release [build_name:2.8.13 build_number:95] [environment:DEVELOPMENT]"
+  lane :check_release do |options|
+    environment = options[:environment] || "PRODUCTION"
+    version = NucatchRelease.resolve_version(:ios, environment, options)
+    asc_api_key
+    # deploy_production promotes a production build that's already uploaded.
+    existing = environment == "PRODUCTION" && uploaded_build(version)
+    if existing
+      UI.important("#{version[:build_name]} (#{version[:build_number]}) is already uploaded (#{existing.processing_state}): " \
+                   "deploy_production will promote it, not rebuild it.")
+    end
+    release_preflight(version: version, for_review: environment == "PRODUCTION", promote: !!existing)
+  end
+
   desc "Check that everything an App Store upload needs is in place:"
   desc ".env.fastlane keys, the API key (checked against App Store Connect),"
   desc "and the signing profile. Uploads nothing. Usage: fastlane ios check_env"
@@ -141,17 +217,20 @@ platform :ios do
   private_lane :build_release_ipa do |options|
     environment = options[:environment]
     version = NucatchRelease.resolve_version(:ios, environment, options)
-    export_options = write_export_options
     check_profile_installed
-    NucatchRelease.flutterfire_setup(environment) unless options[:skip_flutterfire]
-    NucatchRelease.flutter("pub", "get")
-    NucatchRelease.flutter(
-      "build", "ipa", "--release",
-      "--export-options-plist=#{export_options}",
-      "--build-name=#{version[:build_name]}",
-      "--build-number=#{version[:build_number]}",
-      "--dart-define=APP_ENVIRONMENT=#{environment}"
-    )
+    NucatchRelease.with_app_env(environment) do
+      NucatchRelease.flutterfire_setup(environment) unless options[:skip_flutterfire]
+      NucatchRelease.flutter("pub", "get")
+      # Written after the Firebase step: its `flutter clean` wipes build/.
+      export_options = write_export_options
+      NucatchRelease.flutter(
+        "build", "ipa", "--release",
+        "--export-options-plist=#{export_options}",
+        "--build-name=#{version[:build_name]}",
+        "--build-number=#{version[:build_number]}",
+        "--dart-define=APP_ENVIRONMENT=#{environment}"
+      )
+    end
     UI.user_error!("Expected IPA not found at #{IPA_PATH}") unless File.exist?(IPA_PATH)
     version
   end
@@ -160,8 +239,11 @@ platform :ios do
   desc "TestFlight for internal testers, with the CHANGELOG notes as 'What to Test'."
   desc "Usage: fastlane ios deploy_staging [build_name:2.8.12 build_number:94.0]"
   lane :deploy_staging do |options|
-    api_key = asc_api_key # fail fast, before a long build
-    version = build_release_ipa(options.merge(environment: "DEVELOPMENT"))
+    api_key = asc_api_key
+    # Fail fast, before a long build: App Store Connect must be able to take it.
+    version = NucatchRelease.resolve_version(:ios, "DEVELOPMENT", options)
+    release_preflight(version: version)
+    version = build_release_ipa(options.merge(version).merge(environment: "DEVELOPMENT"))
     upload_to_testflight(
       api_key: api_key,
       ipa: IPA_PATH,
@@ -173,32 +255,222 @@ platform :ios do
   end
 
   desc "Production: build a release IPA (Firebase production config), upload it"
-  desc "to App Store Connect and set the version's 'What's New' (en-US, vi) from"
-  desc "the CHANGELOG. Doesn't submit for review unless submit:true."
-  desc "Usage: fastlane ios deploy_production [build_name:2.8.12 build_number:94] [submit:true]"
+  desc "to App Store Connect, set the version's 'What's New' (en-US, vi) from the"
+  desc "CHANGELOG, then submit it for App Review (waits for Apple to finish"
+  desc "processing the build). submit:false uploads without submitting."
+  desc "update_screenshots:true also replaces the App Store screenshots from"
+  desc "ios/fastlane/screenshots/<locale> (tool/screenshots/capture.sh); default false."
+  desc "Already uploaded (that exact build, e.g. from TestFlight)? It isn't rebuilt:"
+  desc "it's promoted — What's New set, build attached, submitted (submit:true)."
+  desc "Already waiting for / in review: nothing to deploy (success)."
+  desc "Usage: fastlane ios deploy_production [build_name:2.8.12 build_number:94] [submit:false] [update_screenshots:true] [auto_release:true]"
   lane :deploy_production do |options|
-    api_key = asc_api_key # fail fast, before a long build
-    version = build_release_ipa(options.merge(environment: "PRODUCTION"))
-    submit = options[:submit].to_s == "true"
-    notes = NucatchRelease.store_release_notes
+    api_key = asc_api_key
+    # Fail fast, before a long build: App Store Connect must be able to take it
+    # (and, unless submit:false, submit it for review).
+    version = NucatchRelease.resolve_version(:ios, "PRODUCTION", options)
+    # Already uploaded (an earlier deploy, or straight to TestFlight)? Then
+    # promote that build instead of building and uploading it again. Only the
+    # exact build number counts: staging builds (e.g. 15.1) carry the
+    # development Firebase config and must never reach the App Store.
+    app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
+    if app && (state = submitted_state(app, version[:build_name]))
+      UI.success("#{version[:build_name]} is already #{state.downcase.tr('_', ' ')} on App Store Connect — nothing to deploy.")
+      next
+    end
+    app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
+    if app && (state = submitted_state(app, version[:build_name]))
+      UI.success("#{version[:build_name]} is already #{state.downcase.tr('_', ' ')} on App Store Connect — nothing to deploy.")
+      next
+    end
+    existing = uploaded_build(version)
+    if existing
+      UI.important("#{version[:build_name]} (#{version[:build_number]}) is already on App Store Connect " \
+                   "(#{existing.processing_state}) — promoting it, no rebuild.")
+    end
+    release_preflight(version: version, for_review: options[:submit].to_s != "false", promote: !existing.nil?)
+    update_screenshots = NucatchRelease.flag?(options, :update_screenshots, :update_screenshot)
+    if update_screenshots
+      NucatchRelease.require_screenshots!(%w[en-US vi].map { |l| File.join(SCREENSHOTS_PATH, l) })
+    end
+    version = build_release_ipa(options.merge(version).merge(environment: "PRODUCTION")) unless existing
+    notes = NucatchRelease.store_release_notes(locales: store_locales)
     deliver(
       api_key: api_key,
-      ipa: IPA_PATH,
+      # Promoting: no binary — just the version's notes (and screenshots).
+      ipa: existing ? nil : IPA_PATH,
+      skip_binary_upload: !existing.nil?,
       app_version: version[:build_name],
-      skip_screenshots: true,
+      # update_screenshots:true replaces this version's screenshots (every
+      # locale folder under ios/fastlane/screenshots) before it's submitted.
+      skip_screenshots: !update_screenshots,
+      overwrite_screenshots: update_screenshots,
+      screenshots_path: SCREENSHOTS_PATH,
       # Only the release notes are sent; every other listing field is left as is.
       skip_metadata: notes.empty?,
       release_notes: notes,
-      submit_for_review: submit,
-      automatic_release: false,
+      submit_for_review: false, # submitted below, once the build has processed
       run_precheck_before_submit: false,
       force: true,
     )
-    if submit
-      UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) uploaded and submitted for review.")
+    UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) " \
+               "#{existing ? 'promoted to the App Store version' : 'uploaded to App Store Connect'}.")
+
+    if options[:submit].to_s == "false"
+      UI.important("Not submitted (submit:false). Later: fastlane ios submit_review " \
+                   "build_name:#{version[:build_name]} build_number:#{version[:build_number]}")
     else
-      UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) uploaded to App Store Connect. Submit for review when ready.")
+      submit_review(options.merge(version))
     end
+  end
+
+  # ── App Store version helpers ──────────────────────────────────────────────
+
+  # The state of `name` when that version is already submitted (waiting for /
+  # in review, or approved and waiting to be released), else nil.
+  def submitted_state(app, name)
+    edit = app.get_edit_app_store_version(platform: Spaceship::ConnectAPI::Platform::IOS)
+    state = edit && (edit.app_version_state || edit.app_store_state)
+    edit && edit.version_string == name && IN_FLIGHT_STATES.include?(state) ? state : nil
+  end
+
+  # "Add for Review" in App Store Connect leaves a draft review submission
+  # (READY_FOR_REVIEW) that deliver refuses to touch ("items not managed by
+  # fastlane"). Submits that draft when it holds this version; returns whether
+  # it did.
+  def submit_review_draft(app, name)
+    platform = Spaceship::ConnectAPI::Platform::IOS
+    draft = app.get_ready_review_submission(platform: platform, includes: "items,appStoreVersionForReview")
+    return false unless draft
+    edit = app.get_edit_app_store_version(platform: platform)
+    ours = edit && (draft.app_store_version_for_review&.id == edit.id ||
+                    (draft.items || []).any? { |i| i.app_store_version&.id == edit.id })
+    if ours
+      draft.submit_for_review
+      UI.success("#{name} was added for review but not submitted — submitted the review draft.")
+      return true
+    end
+    return false if (draft.items || []).empty? # deliver reuses an empty draft
+    UI.user_error!("App Store Connect has a review draft with other items (not #{name}). " \
+                   "Submit or remove it under App Review in App Store Connect, then retry.")
+  end
+
+
+  # App Store Connect stores build numbers without leading zeros
+  # (CFBundleVersion "08" shows up as "8").
+  def asc_build_number(number)
+    number.to_s.split(".").map { |p| p.sub(/\A0+(?=\d)/, "") }.join(".")
+  end
+
+  # The build with this exact version and build number on App Store Connect
+  # (processing or processed), or nil.
+  def uploaded_build(version)
+    app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
+    return nil unless app
+    Spaceship::ConnectAPI::Build.all(
+      app_id: app.id,
+      version: version[:build_name],
+      build_number: asc_build_number(version[:build_number]),
+      platform: Spaceship::ConnectAPI::Platform::IOS,
+    ).find { |b| !%w[FAILED INVALID].include?(b.processing_state) }
+  end
+
+  # The languages the App Store listing has: the live version's, plus any the
+  # version being prepared really fills in (has a description). Release notes
+  # go only to these — deliver would otherwise add a language, empty, and App
+  # Review submission would then fail ("missing a required attribute").
+  def store_locales
+    app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
+    platform = Spaceship::ConnectAPI::Platform::IOS
+    live = app&.get_live_app_store_version(platform: platform)&.get_app_store_version_localizations || []
+    edit = app&.get_edit_app_store_version(platform: platform)&.get_app_store_version_localizations || []
+    locales = (live.map(&:locale) + edit.reject { |l| l.description.to_s.strip.empty? }.map(&:locale)).uniq
+    locales.empty? ? LANGUAGES : locales
+  end
+
+  # A language with no description can't pass review. One the live listing
+  # doesn't have either was only added by an upload's release notes — remove
+  # it from the version being prepared.
+  def remove_empty_localizations(app)
+    platform = Spaceship::ConnectAPI::Platform::IOS
+    edit = app.get_edit_app_store_version(platform: platform)
+    return unless edit
+    live = app.get_live_app_store_version(platform: platform)
+    live_locales = live ? live.get_app_store_version_localizations.map(&:locale) : []
+    edit.get_app_store_version_localizations.each do |loc|
+      next if live_locales.include?(loc.locale) || !loc.description.to_s.strip.empty?
+      loc.delete!
+      UI.important("Removed the empty #{loc.locale} language from #{edit.version_string} (not in the live listing).")
+    end
+  end
+
+  # A fresh upload takes a few minutes to process before it can be attached to
+  # a version (deliver otherwise fails with "Build number: N does not exist").
+  # Waits until the build is VALID and returns its number as Apple stores it.
+  private_lane :wait_for_processed_build do |options|
+    app = options[:app]
+    name = options[:version][:build_name]
+    wanted = asc_build_number(options[:version][:build_number])
+    deadline = Time.now + 60 * 60
+    loop do
+      build = Spaceship::ConnectAPI::Build.all(app_id: app.id, version: name, build_number: wanted, limit: 1).first
+      state = build&.processing_state
+      case state
+      when "VALID"
+        UI.success("Build #{name} (#{wanted}) is processed.")
+        break wanted
+      when "FAILED", "INVALID"
+        UI.user_error!("Apple marked build #{name} (#{wanted}) #{state} — check App Store Connect / email.")
+      end
+      if Time.now > deadline
+        UI.user_error!("Build #{name} (#{wanted}) still not processed after 60 minutes (last state: " \
+                       "#{state || 'not visible yet'}). Retry later: fastlane ios submit_review " \
+                       "build_name:#{name} build_number:#{options[:version][:build_number]}")
+      end
+      UI.message("Waiting for Apple to process #{name} (#{wanted}) — #{state || 'not visible yet'}…")
+      sleep(30)
+    end
+  end
+
+  desc "Submit an already-uploaded build for App Review — no rebuild. Waits for"
+  desc "Apple to finish processing the build, attaches it to the version and"
+  desc "submits. Export compliance is answered by Info.plist"
+  desc "(ITSAppUsesNonExemptEncryption = false). After approval the release is"
+  desc "manual unless auto_release:true. Version defaults to the CHANGELOG."
+  desc "An \"Add for Review\" draft holding this version is submitted as is; a"
+  desc "version already waiting for / in review is reported, not resubmitted."
+  desc "Usage: fastlane ios submit_review [build_name:2.8.12 build_number:94] [auto_release:true]"
+  lane :submit_review do |options|
+    api_key = asc_api_key
+    version = NucatchRelease.resolve_version(:ios, "PRODUCTION", options)
+    # Only one version can be in review: stop before touching App Store Connect.
+    app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
+    edit = app&.get_edit_app_store_version(platform: Spaceship::ConnectAPI::Platform::IOS)
+    edit_state = edit && (edit.app_version_state || edit.app_store_state)
+    if (state = submitted_state(app, version[:build_name]))
+      UI.success("#{version[:build_name]} is already #{state.downcase.tr('_', ' ')} — nothing to submit.")
+      next
+    end
+    if edit && IN_FLIGHT_STATES.include?(edit_state)
+      UI.user_error!("#{edit.version_string} is already #{edit_state.downcase.tr('_', ' ')} — nothing to submit until it's released, rejected or removed from review.")
+    end
+    build_number = wait_for_processed_build(app: app, version: version)
+    next if submit_review_draft(app, version[:build_name])
+    remove_empty_localizations(app)
+    deliver(
+      api_key: api_key,
+      app_version: version[:build_name],
+      build_number: build_number,
+      skip_binary_upload: true,
+      skip_metadata: true,     # What's New was set when the build was uploaded
+      skip_screenshots: true,
+      skip_app_version_update: true,
+      submit_for_review: true,
+      automatic_release: options[:auto_release].to_s == "true",
+      run_precheck_before_submit: false,
+      force: true,
+    )
+    UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) submitted for App Review.")
   end
 
   desc "Alias for deploy_production (fastlane ios deploy)"

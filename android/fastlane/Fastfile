@@ -9,7 +9,8 @@ NucatchRelease.load_env!
 platform :android do
   PACKAGE_NAME = "bomnguyen.nucatch".freeze
   AAB_PATH = File.join(NucatchRelease::ROOT, "build/app/outputs/bundle/release/app-release.aab").freeze
-  METADATA_PATH = File.join(__dir__, "metadata/android").freeze
+  # From the repo root: `__dir__` isn't the fastlane folder inside a Fastfile.
+  METADATA_PATH = File.join(NucatchRelease::ROOT, "android/fastlane/metadata/android").freeze
 
   # android/key.properties → the keystore it names (resolved like Gradle does,
   # relative to android/app). Fails with guidance if either is missing.
@@ -30,6 +31,73 @@ platform :android do
     json_key = NucatchRelease.require_file!("SUPPLY_JSON_KEY")
     validate_play_store_json_key(json_key: json_key)
     json_key
+  end
+
+  PLAY_TRACKS = %w[production beta alpha internal].freeze
+
+  # Version codes already on each Play track (empty tracks → []).
+  private_lane :play_track_codes do |options|
+    PLAY_TRACKS.to_h do |track|
+      codes = begin
+        google_play_track_version_codes(json_key: options[:json_key], package_name: PACKAGE_NAME, track: track)
+      rescue StandardError
+        [] # track never used
+      end
+      [track, codes.map(&:to_i)]
+    end
+  end
+
+  # Before any build: can Google Play accept this version? Play only takes a
+  # version code higher than every code on every track, and a version name
+  # below what's live on production would ship an older-looking version.
+  private_lane :release_preflight do |options|
+    version = options[:version]
+    json_key = play_json_key
+    # Base 10: Integer("09") would read a leading-zero number as octal.
+    code = Integer(version[:build_number].to_s.split(".").first, 10)
+    codes = play_track_codes(json_key: json_key)
+    highest_track, highest = codes.flat_map { |t, cs| cs.map { |c| [t, c] } }.max_by(&:last)
+    live_names = begin
+      google_play_track_release_names(json_key: json_key, package_name: PACKAGE_NAME, track: "production")
+    rescue StandardError
+      []
+    end
+    live_name = live_names.select { |n| Gem::Version.correct?(n) }.max_by { |n| Gem::Version.new(n) }
+
+    codes.each { |track, cs| UI.message("Play #{track.ljust(10)}: #{cs.empty? ? '—' : cs.max}") }
+    UI.message("Play production name: #{live_name || '—'}")
+
+    problems = []
+    if !options[:promote] && highest && code <= highest
+      problems << "Version code #{code} isn't higher than #{highest} (#{highest_track} track) — " \
+                  "Play only accepts a higher code. Use build_number:#{highest + 1} or above."
+    end
+    if live_name && Gem::Version.correct?(version[:build_name]) &&
+       Gem::Version.new(version[:build_name]) < Gem::Version.new(live_name)
+      problems << "Version #{version[:build_name]} is lower than #{live_name}, live on production."
+    end
+    UI.user_error!("Google Play can't take #{version[:build_name]} (#{code}):\n- #{problems.join("\n- ")}") unless problems.empty?
+    UI.success("Google Play can take #{version[:build_name]} (#{code}).")
+  end
+
+  desc "Check, before building, that Google Play can accept a version: the code"
+  desc "must beat every track's highest, the name mustn't be below production's."
+  desc "Builds and uploads nothing. Version defaults to the CHANGELOG."
+  desc "Usage: fastlane android check_release [build_name:2.8.13 build_number:96] [environment:DEVELOPMENT]"
+  lane :check_release do |options|
+    environment = options[:environment] || "PRODUCTION"
+    version = NucatchRelease.resolve_version(:android, environment, options)
+    existing = environment == "PRODUCTION" && play_existing_release(play_json_key, version)
+    case existing && existing[:action]
+    when :done
+      UI.success("#{version[:build_name]} is already #{existing[:status]} on Google Play production: nothing to deploy.")
+      next
+    when :finish
+      UI.important("#{version[:build_name]} is a #{existing[:status]} release on production: deploy_production will roll it out.")
+    when :promote
+      UI.important("#{version[:build_name]} is on the #{existing[:track]} track: deploy_production will promote it, not rebuild it.")
+    end
+    release_preflight(version: version, promote: !!existing)
   end
 
   desc "Check that everything a Play upload needs is in place: .env.fastlane"
@@ -81,20 +149,99 @@ platform :android do
   # block (Development command for staging, Production for production).
   # ───────────────────────────────────────────────────────────────────────────
 
+  # ── Play release helpers ──────────────────────────────────────────────────
+
+  # Every release on the Play tracks: { track:, name:, status:, codes: }.
+  # Status is Play's: completed, inProgress, halted or draft.
+  def play_releases(json_key)
+    require "supply"
+    Supply.config = FastlaneCore::Configuration.create(
+      Supply::Options.available_options, { json_key: json_key, package_name: PACKAGE_NAME }
+    )
+    client = Supply::Client.make_from_config
+    client.begin_edit(package_name: PACKAGE_NAME)
+    PLAY_TRACKS.flat_map do |track|
+      client.track_releases(track).map do |r|
+        { track: track, name: r.name.to_s, status: r.status.to_s, codes: (r.version_codes || []).map(&:to_i) }
+      end
+    end
+  ensure
+    begin
+      client&.abort_current_edit
+    rescue StandardError
+      nil # nothing to clean up
+    end
+  end
+
+  # What deploy_production should do with a version code that's already on
+  # Play — the counterpart of the iOS "already uploaded → promote" path:
+  #   :done     — live (or rolling out) on production: nothing to deploy;
+  #   :finish   — on production as a draft / halted release: roll it out;
+  #   :promote  — on a test track with this exact version name: promote it;
+  #   nil       — not on Play yet: build and upload.
+  # A release with the same code but another name (a staging build, e.g.
+  # 1.1.12.1 with the development Firebase config) is never promoted.
+  def play_existing_release(json_key, version)
+    code = NucatchRelease.version_code(version[:build_number])
+    mine = play_releases(json_key).select { |r| r[:codes].include?(code) }
+    return nil if mine.empty?
+    prod = mine.find { |r| r[:track] == "production" }
+    if prod
+      return prod.merge(action: %w[completed inProgress].include?(prod[:status]) ? :done : :finish)
+    end
+    test = mine.find { |r| r[:name] == version[:build_name] }
+    return test.merge(action: :promote) if test
+    other = mine.first
+    UI.user_error!("Version code #{code} is already on the #{other[:track]} track as \"#{other[:name]}\", not " \
+                   "#{version[:build_name]} — a staging build can't be promoted to production. " \
+                   "Use a higher build_number.")
+  end
+
+  # Promotes / finishes an existing release on production with this
+  # version's "What's new" (no build, no upload).
+  private_lane :promote_play_release do |options|
+    version = options[:version]
+    existing = options[:existing]
+    code = NucatchRelease.version_code(version[:build_number])
+    write_play_changelogs(version_code: code)
+    params = {
+      json_key: options[:json_key],
+      package_name: PACKAGE_NAME,
+      version_code: code,
+      metadata_path: METADATA_PATH,
+      validate_only: options[:validate_only].to_s == "true",
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: !options[:update_screenshots],
+    }
+    if existing[:action] == :promote
+      params.merge!(track: existing[:track], track_promote_to: "production",
+                    track_promote_release_status: options[:release_status] || "completed")
+    else # :finish — the draft / halted production release goes out
+      params.merge!(track: "production", rollout: "1")
+    end
+    supply(**params)
+  end
+
   # Firebase config switch + `flutter build appbundle`, as the CHANGELOG's
   # build command does. Returns the version built.
   private_lane :build_release_aab do |options|
     environment = options[:environment]
     version = NucatchRelease.resolve_version(:android, environment, options)
     check_signing
-    NucatchRelease.flutterfire_setup(environment) unless options[:skip_flutterfire]
-    NucatchRelease.flutter("pub", "get")
-    NucatchRelease.flutter(
-      "build", "appbundle", "--release",
-      "--build-name=#{version[:build_name]}",
-      "--build-number=#{version[:build_number]}",
-      "--dart-define=APP_ENVIRONMENT=#{environment}"
-    )
+    NucatchRelease.with_app_env(environment) do
+      NucatchRelease.flutterfire_setup(environment) unless options[:skip_flutterfire]
+      NucatchRelease.flutter("pub", "get")
+      NucatchRelease.flutter(
+        "build", "appbundle", "--release",
+        "--build-name=#{version[:build_name]}",
+        "--build-number=#{version[:build_number]}",
+        "--dart-define=APP_ENVIRONMENT=#{environment}"
+      )
+    end
     UI.user_error!("Expected AAB not found at #{AAB_PATH}") unless File.exist?(AAB_PATH)
     version
   end
@@ -113,7 +260,8 @@ platform :android do
   # Uploads the freshly built AAB (and its "What's new") to the given track.
   private_lane :upload_aab_to_play do |options|
     json_key = play_json_key
-    version_code = options[:version][:build_number].to_s.split(".").first
+    # Play matches the changelog by plain version code ("07" → 7.txt).
+    version_code = Integer(options[:version][:build_number].to_s.split(".").first, 10)
     write_play_changelogs(version_code: version_code)
     supply(
       json_key: json_key,
@@ -122,11 +270,15 @@ platform :android do
       aab: AAB_PATH,
       metadata_path: METADATA_PATH,
       release_status: options[:release_status] || "completed",
+      # validate_only:true — Play checks the whole edit, then discards it.
+      validate_only: options[:validate_only].to_s == "true",
       skip_upload_apk: true,
       skip_upload_metadata: true,
       skip_upload_changelogs: false,
       skip_upload_images: true,
-      skip_upload_screenshots: true,
+      # update_screenshots:true also replaces the store screenshots (phone +
+      # 10" tablet, every locale under metadata/android) in this release.
+      skip_upload_screenshots: !options[:update_screenshots],
     )
   end
 
@@ -134,21 +286,79 @@ platform :android do
   desc "Google Play INTERNAL track."
   desc "Usage: fastlane android deploy_staging [build_name:2.8.12.0 build_number:95]"
   lane :deploy_staging do |options|
-    play_json_key # fail fast, before a long build
-    version = build_release_aab(options.merge(environment: "DEVELOPMENT"))
-    upload_aab_to_play(track: "internal", version: version)
-    UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) uploaded to Google Play — internal track.")
+    # Fail fast, before a long build: the store must be able to take it.
+    version = NucatchRelease.resolve_version(:android, "DEVELOPMENT", options)
+    release_preflight(version: version)
+    version = build_release_aab(options.merge(version).merge(environment: "DEVELOPMENT"))
+    upload_aab_to_play(track: "internal", version: version, validate_only: options[:validate_only])
+    if options[:validate_only].to_s == "true"
+      UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) passed Google Play validation for the internal track — nothing was published.")
+    else
+      UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) uploaded to Google Play — internal track.")
+    end
   end
 
   desc "Production: build a release AAB (Firebase production config) and upload"
   desc "to the Google Play PRODUCTION track."
+  desc "Already on Play with this version code and name? It isn't rebuilt: a"
+  desc "test-track release is promoted to production, a draft / halted production"
+  desc "release is rolled out, a live one is reported (nothing to deploy). A"
+  desc "staging build with the same code is never promoted."
   desc "Usage: fastlane android deploy_production [build_name:2.8.12 build_number:95]"
-  desc "Add release_status:draft to upload without rolling out."
+  desc "update_screenshots:true also replaces the store screenshots from"
+  desc "metadata/android/<locale>/images (tool/screenshots/capture.sh); default false."
+  desc "Add release_status:draft to upload without rolling out, or"
+  desc "validate_only:true to have Play check everything without publishing."
   lane :deploy_production do |options|
-    play_json_key # fail fast, before a long build
-    version = build_release_aab(options.merge(environment: "PRODUCTION"))
-    upload_aab_to_play(track: "production", version: version, release_status: options[:release_status])
-    UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) uploaded to Google Play — production track.")
+    # Fail fast, before a long build: the store must be able to take it.
+    version = NucatchRelease.resolve_version(:android, "PRODUCTION", options)
+    json_key = play_json_key
+    # Already on Play (this exact version)? Finish or promote that release
+    # instead of building and uploading it again.
+    existing = play_existing_release(json_key, version)
+    update_screenshots = NucatchRelease.flag?(options, :update_screenshots, :update_screenshot)
+    if existing && existing[:action] == :done
+      UI.success("#{version[:build_name]} is already #{existing[:status]} on Google Play production: nothing to deploy.")
+      # The release is done, but update_screenshots:true still means "refresh
+      # the store screenshots" — before, that was silently skipped here.
+      if update_screenshots
+        NucatchRelease.require_screenshots!(Dir.glob(File.join(METADATA_PATH, "*/images/{phone,tenInch}Screenshots")))
+        if options[:validate_only].to_s == "true"
+          UI.important("validate_only: screenshots not uploaded.")
+        else
+          upload_screenshots
+          UI.success("✅ Store screenshots updated for #{version[:build_name]}.")
+        end
+      end
+      next
+    end
+    release_preflight(version: version, promote: !existing.nil?)
+    if existing
+      promote_play_release(version: version, existing: existing, json_key: json_key,
+                           release_status: options[:release_status], validate_only: options[:validate_only],
+                           update_screenshots: update_screenshots)
+      verb = existing[:action] == :promote ? "promoted from #{existing[:track]} to production" : "rolled out on production"
+      UI.success(options[:validate_only].to_s == "true" ?
+                 "✅ #{version[:build_name]} (#{version[:build_number]}) passed Google Play validation — nothing was published." :
+                 "✅ #{version[:build_name]} (#{version[:build_number]}) #{verb}.")
+      next
+    end
+    if update_screenshots
+      NucatchRelease.require_screenshots!(Dir.glob(File.join(METADATA_PATH, "*/images/{phone,tenInch}Screenshots")))
+    end
+    if update_screenshots
+      NucatchRelease.require_screenshots!(
+        Dir.glob(File.join(METADATA_PATH, "*/images/{phone,tenInch}Screenshots"))
+      )
+    end
+    version = build_release_aab(options.merge(version).merge(environment: "PRODUCTION"))
+    upload_aab_to_play(track: "production", version: version, release_status: options[:release_status],
+                       validate_only: options[:validate_only], update_screenshots: update_screenshots)
+    if options[:validate_only].to_s == "true"
+      UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) passed Google Play validation for the production track — nothing was published.")
+    else
+      UI.success("✅ #{version[:build_name]} (#{version[:build_number]}) uploaded to Google Play — production track.")
+    end
   end
 
   desc "Alias for deploy_production (fastlane android deploy)"

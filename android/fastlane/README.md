@@ -15,6 +15,20 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
+### android check_release
+
+```sh
+[bundle exec] fastlane android check_release
+```
+
+Check, before building, that Google Play can accept a version: the code
+
+must beat every track's highest, the name mustn't be below production's.
+
+Builds and uploads nothing. Version defaults to the CHANGELOG.
+
+Usage: fastlane android check_release [build_name:2.8.13 build_number:96] [environment:DEVELOPMENT]
+
 ### android check_env
 
 ```sh
@@ -73,9 +87,23 @@ Production: build a release AAB (Firebase production config) and upload
 
 to the Google Play PRODUCTION track.
 
+Already on Play with this version code and name? It isn't rebuilt: a
+
+test-track release is promoted to production, a draft / halted production
+
+release is rolled out, a live one is reported (nothing to deploy). A
+
+staging build with the same code is never promoted.
+
 Usage: fastlane android deploy_production [build_name:2.8.12 build_number:95]
 
-Add release_status:draft to upload without rolling out.
+update_screenshots:true also replaces the store screenshots from
+
+metadata/android/<locale>/images (tool/screenshots/capture.sh); default false.
+
+Add release_status:draft to upload without rolling out, or
+
+validate_only:true to have Play check everything without publishing.
 
 ### android deploy
 
