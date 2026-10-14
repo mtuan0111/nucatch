@@ -91,6 +91,10 @@ platform :ios do
     PROCESSING_FOR_APP_STORE WAITING_FOR_EXPORT_COMPLIANCE ACCEPTED
   ].freeze
 
+  # The in-flight states a submission can still be withdrawn from (an approved
+  # version waiting to be released can't — release or reject it instead).
+  WITHDRAWABLE_STATES = %w[WAITING_FOR_REVIEW IN_REVIEW WAITING_FOR_EXPORT_COMPLIANCE].freeze
+
   # Before any build: can App Store Connect take this version?
   #   • the version must be higher than the one live on the App Store (Apple
   #     rejects uploads of an approved or older version);
@@ -123,9 +127,16 @@ platform :ios do
     if options[:for_review] && edit && IN_FLIGHT_STATES.include?(edit_state) && edit.version_string == name
       UI.success("#{name} is already #{edit_state.downcase.tr('_', ' ')}: already submitted, nothing to deploy.")
     elsif options[:for_review] && edit && IN_FLIGHT_STATES.include?(edit_state)
-      problems << "#{edit.version_string} is already #{edit_state.downcase.tr('_', ' ')}. Apple allows one " \
-                  "version in review at a time: wait for it to be released or rejected, or remove it " \
-                  "from review in App Store Connect first."
+      if options[:replace_in_review] && WITHDRAWABLE_STATES.include?(edit_state)
+        UI.important("#{edit.version_string} is #{edit_state.downcase.tr('_', ' ')} — replace_in_review: it will be " \
+                     "withdrawn from review and replaced by #{name} once the build succeeds.")
+      else
+        problems << "#{edit.version_string} is already #{edit_state.downcase.tr('_', ' ')}. Apple allows one " \
+                    "version in review at a time: wait for it to be released or rejected, or remove it " \
+                    "from review in App Store Connect first" +
+                    (WITHDRAWABLE_STATES.include?(edit_state) ? " (or pass replace_in_review:true to withdraw it " \
+                                                                 "and ship #{name} instead)." : ".")
+      end
     end
     if !options[:promote] && latest_build.to_s != "0" && Gem::Version.correct?(number) &&
        !NucatchRelease.newer?(number, latest_build.to_s)
@@ -262,8 +273,10 @@ platform :ios do
   desc "ios/fastlane/screenshots/<locale> (tool/screenshots/capture.sh); default false."
   desc "Already uploaded (that exact build, e.g. from TestFlight)? It isn't rebuilt:"
   desc "it's promoted — What's New set, build attached, submitted (submit:true)."
-  desc "Already waiting for / in review: nothing to deploy (success)."
-  desc "Usage: fastlane ios deploy_production [build_name:2.8.12 build_number:94] [submit:false] [update_screenshots:true] [auto_release:true]"
+  desc "Already waiting for / in review: nothing to deploy (success). Another"
+  desc "version in review blocks it, unless replace_in_review:true — that version is"
+  desc "withdrawn (after the build succeeds) and replaced by this one."
+  desc "Usage: fastlane ios deploy_production [build_name:2.8.12 build_number:94] [submit:false] [update_screenshots:true] [auto_release:true] [replace_in_review:true]"
   lane :deploy_production do |options|
     api_key = asc_api_key
     # Fail fast, before a long build: App Store Connect must be able to take it
@@ -278,22 +291,21 @@ platform :ios do
       UI.success("#{version[:build_name]} is already #{state.downcase.tr('_', ' ')} on App Store Connect — nothing to deploy.")
       next
     end
-    app = Spaceship::ConnectAPI::App.find(BUNDLE_ID)
-    if app && (state = submitted_state(app, version[:build_name]))
-      UI.success("#{version[:build_name]} is already #{state.downcase.tr('_', ' ')} on App Store Connect — nothing to deploy.")
-      next
-    end
     existing = uploaded_build(version)
     if existing
       UI.important("#{version[:build_name]} (#{version[:build_number]}) is already on App Store Connect " \
                    "(#{existing.processing_state}) — promoting it, no rebuild.")
     end
-    release_preflight(version: version, for_review: options[:submit].to_s != "false", promote: !existing.nil?)
+    replace_in_review = NucatchRelease.flag?(options, :replace_in_review)
+    release_preflight(version: version, for_review: options[:submit].to_s != "false", promote: !existing.nil?,
+                      replace_in_review: replace_in_review)
     update_screenshots = NucatchRelease.flag?(options, :update_screenshots, :update_screenshot)
     if update_screenshots
       NucatchRelease.require_screenshots!(%w[en-US vi].map { |l| File.join(SCREENSHOTS_PATH, l) })
     end
     version = build_release_ipa(options.merge(version).merge(environment: "PRODUCTION")) unless existing
+    # Only now — the build succeeded — withdraw the version that's in review.
+    withdraw_review_for(app, version[:build_name]) if replace_in_review && app
     notes = NucatchRelease.store_release_notes(locales: store_locales)
     deliver(
       api_key: api_key,
@@ -355,6 +367,32 @@ platform :ios do
                    "Submit or remove it under App Review in App Store Connect, then retry.")
   end
 
+
+  # replace_in_review:true — withdraws the version waiting for / in review (a
+  # different one than `name`) so it becomes editable, then waits until App
+  # Store Connect shows it as developer-rejected. deliver then renames that
+  # version to `name` and attaches the new build.
+  def withdraw_review_for(app, name)
+    platform = Spaceship::ConnectAPI::Platform::IOS
+    edit = app.get_edit_app_store_version(platform: platform)
+    state = edit && (edit.app_version_state || edit.app_store_state)
+    return unless edit && edit.version_string != name && WITHDRAWABLE_STATES.include?(state)
+
+    submission = app.get_in_progress_review_submission(platform: platform)
+    UI.user_error!("#{edit.version_string} is #{state.downcase.tr('_', ' ')} but no review submission was found to withdraw.") unless submission
+    submission.cancel_submission
+    UI.important("Withdrew #{edit.version_string} from App Review — it will be replaced by #{name}.")
+    deadline = Time.now + 10 * 60
+    loop do
+      edit = app.get_edit_app_store_version(platform: platform)
+      state = edit && (edit.app_version_state || edit.app_store_state)
+      break unless IN_FLIGHT_STATES.include?(state)
+      UI.user_error!("#{edit.version_string} is still #{state} 10 minutes after withdrawing — check App Store Connect.") if Time.now > deadline
+      UI.message("Waiting for App Store Connect to release #{edit.version_string} from review (#{state})…")
+      sleep(15)
+    end
+    UI.success("#{edit.version_string} is now #{state.to_s.downcase.tr('_', ' ')} — editable again.")
+  end
 
   # App Store Connect stores build numbers without leading zeros
   # (CFBundleVersion "08" shows up as "8").

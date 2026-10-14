@@ -133,6 +133,9 @@ platform :android do
     supply(
       json_key: play_json_key,
       package_name: PACKAGE_NAME,
+      # Absolute: supply's default ./metadata is relative to wherever fastlane
+      # runs, which isn't android/fastlane.
+      metadata_path: METADATA_PATH,
       track: "production",
       skip_upload_apk: true,
       skip_upload_aab: true,

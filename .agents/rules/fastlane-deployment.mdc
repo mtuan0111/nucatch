@@ -54,6 +54,7 @@ Run from `android/` or `ios/`: `(cd android && bundle exec fastlane <lane> …)`
 | `update_screenshots:true\|false` | `deploy_production` | Also replace the store screenshots with the committed sets. Default `false` |
 | `submit:true\|false` | iOS `deploy_production` | Submit for App Review after the upload |
 | `auto_release:true` | iOS `deploy_production`, `submit_review` | Go live as soon as Apple approves (default: manual release) |
+| `replace_in_review:true` | iOS `deploy_production` | Another version is waiting for / in review: withdraw it (only after the new build succeeds) and ship this one instead. Without it, the lane stops. |
 | `release_status:draft\|completed\|…` | Android `deploy_*` | Play release status |
 | `validate_only:true` | Android `deploy_*` | Play checks the whole upload, then discards it — nothing is published |
 
@@ -66,7 +67,9 @@ Run from `android/` or `ios/`: `(cd android && bundle exec fastlane <lane> …)`
      lower than production's.
    - **App Store:** the version must be higher than the live one; the build
      number must be new for that version; when submitting, no other version may
-     be in review or awaiting release (Apple allows one).
+     be in review or awaiting release (Apple allows one) — unless
+     `replace_in_review:true`, which withdraws the one waiting for / in review
+     once the new build succeeds (an approved, unreleased one is never withdrawn).
 2. **Build numbers are parsed base 10** (`"09"` → 9 — never `Integer("09")`,
    which is octal) and Play changelog files are named by the plain version code
    (`9.txt`).

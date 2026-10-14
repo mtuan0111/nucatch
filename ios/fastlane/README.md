@@ -97,9 +97,13 @@ Already uploaded (that exact build, e.g. from TestFlight)? It isn't rebuilt:
 
 it's promoted — What's New set, build attached, submitted (submit:true).
 
-Already waiting for / in review: nothing to deploy (success).
+Already waiting for / in review: nothing to deploy (success). Another
 
-Usage: fastlane ios deploy_production [build_name:2.8.12 build_number:94] [submit:false] [update_screenshots:true] [auto_release:true]
+version in review blocks it, unless replace_in_review:true — that version is
+
+withdrawn (after the build succeeds) and replaced by this one.
+
+Usage: fastlane ios deploy_production [build_name:2.8.12 build_number:94] [submit:false] [update_screenshots:true] [auto_release:true] [replace_in_review:true]
 
 ### ios submit_review
 

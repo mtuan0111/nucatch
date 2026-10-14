@@ -107,6 +107,12 @@ module NucatchRelease
     end
   end
 
+  # A Play version code from a build number ("07" → 7). Base 10: Integer("09")
+  # would read it as octal and fail.
+  def self.version_code(build_number)
+    Integer(build_number.to_s.split(".").first, 10)
+  end
+
   # Explicit lane options win; otherwise the CHANGELOG version.
   def self.resolve_version(platform, environment, options)
     from_log = release_version(platform, environment)
