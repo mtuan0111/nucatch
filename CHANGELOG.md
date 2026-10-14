@@ -2254,3 +2254,53 @@ _ Tốt hơn trên máy tính bảng: bàn phím chia đôi không trùng số, 
 `(cd ios && bundle exec fastlane deploy_production build_name:2.8.12 build_number:94 submit:true update_screenshots:false)`
 
 ---
+## Released on: 14/10/2026
+### Version:
+| Platform | Build Number | Version |
+|----------|--------------|---------|
+| Android  | 96           | 2.8.13  |
+| iOS      | 95           | 2.8.13  |
+
+### Release note:
+- Refreshed store screenshots and listing
+
+### Git note release:
+
+#### Command for copilot
+
+`[Builded] Version 2.8.13 - 96 / 2.8.13 - 95 _ Refreshed store screenshots and listing`
+
+#### Brief for Store's new update:
+
+_ Fresh store screenshots that show the new look: clearer game screens, side-by-side Combat panels and the improved tablet layout.
+_ Ảnh chụp màn hình mới trên cửa hàng, thể hiện giao diện mới: màn hình chơi rõ ràng hơn, bảng Đối kháng hiển thị cạnh nhau và bố cục máy tính bảng được cải thiện.
+
+#### Flutter build for Android for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build appbundle --build-name=2.8.13.0 --build-number=96 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for iOS for Testing (Development)
+
+`npm run flutterfire_setup_dev && flutter build ios --build-name=2.8.13 --build-number=95.0 --release --dart-define=APP_ENVIRONMENT=DEVELOPMENT`
+
+#### Flutter build for Android
+
+`npm run flutterfire_setup && flutter build appbundle --build-name=2.8.13 --build-number=96 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Flutter build for iOS
+
+`npm run flutterfire_setup && flutter build ios --build-name=2.8.13 --build-number=95 --release --dart-define=APP_ENVIRONMENT=PRODUCTION`
+
+#### Fastlane deploy for Testing (Development)
+
+`(cd android && bundle exec fastlane deploy_staging build_name:2.8.13.0 build_number:96)`
+
+`(cd ios && bundle exec fastlane deploy_staging build_name:2.8.13 build_number:95.0)`
+
+#### Fastlane deploy for Production
+
+`(cd android && bundle exec fastlane deploy_production build_name:2.8.13 build_number:96 update_screenshots:true)`
+
+`(cd ios && bundle exec fastlane deploy_production build_name:2.8.13 build_number:95 submit:true update_screenshots:true)`
+
+---

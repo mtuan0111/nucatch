@@ -5,7 +5,7 @@
 # tool/screenshots/capture.sh. `deliver` maps each PNG to an App Store display
 # type by its pixel dimensions, so the App Store store-minimum set is:
 #
-#   6.7" iPhone : 1284 x 2778   (iPhone 13 Pro Max)
+#   6.9" iPhone : 1320 x 2868   (iPhone 16 Pro Max — the required iPhone size)
 #   13"  iPad   : 2064 x 2752   (iPad Pro 13-inch, M4)
 #
 # Authentication (App Store Connect API key) is supplied at runtime via env

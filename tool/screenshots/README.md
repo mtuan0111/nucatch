@@ -44,7 +44,7 @@ prefer construction-time (seed/sign-out) over post-capture blur.
 
 | Store | Device | Simulator / AVD (default) | Native px | Aspect |
 |---|---|---|---|---|
-| iOS | 6.7" iPhone | `iPhone 13 Pro Max` | 1284 × 2778 | — |
+| iOS | 6.9" iPhone | `iPhone 16 Pro Max` | 1320 × 2868 | — |
 | iOS | 13" iPad | `iPad Pro 13-inch (M4)` | 2064 × 2752 | — |
 | Android | phone | `flutter_emulator` AVD (device "pixel") | 1080 × 1920 | 1.78:1 ✓ |
 | Android | 10" tablet | `Pixel_Tablet` AVD | 2560 × 1600 | 1.6:1 ✓ |
@@ -63,11 +63,10 @@ change devices, edit `IOS_DEVICES` / `ANDROID_DEVICES` at the top of
 > (2.0:1) AVD. `capture.sh`'s dimension report flags any frame that slips over
 > 2:1. The `Pixel_Tablet` (1.6:1) is already fine.
 
-> **iPhone size.** This repo captures the **6.7"** iPhone (iPhone 13 Pro Max,
-> 1284×2778). Apple now treats **6.9"** (iPhone 16 Pro Max, 1320×2868) as the
-> canonical iPhone size and 6.7" as a fallback tier — if App Store Connect
-> insists on 6.9", swap the `iphone_6_7` entry for `iPhone 16 Pro Max` in
-> `capture.sh` and re-run. The 13" iPad covers the iPad slot.
+> **iPhone size.** This repo captures the **6.9"** iPhone (iPhone 16 Pro Max,
+> 1320×2868) — the size App Store Connect requires; it scales that set down for
+> smaller iPhones. A 6.3" set (iPhone 16) alone doesn't meet the requirement.
+> The 13" iPad covers the iPad slot. Each run replaces a locale's whole set.
 
 ## Localizations
 

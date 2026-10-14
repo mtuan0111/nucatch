@@ -52,10 +52,13 @@ AND_META_ROOT="$REPO_ROOT/android/fastlane/metadata/android" # <locale>/images/.
 
 # iOS device matrix. `deliver` maps each PNG to a display type by its
 # resolution, so filenames only need to be unique; we tag them by device on copy.
-#   iPhone 13 Pro Max -> 6.7" iPhone slot, 1284 x 2778
+#   iPhone 16 Pro Max -> 6.9" iPhone slot, 1320 x 2868 — the size App Store
+#                        Connect requires; it scales this set down for every
+#                        smaller iPhone. (A 6.3" iPhone 16 set alone doesn't
+#                        satisfy that requirement.)
 #   iPad Pro 13-inch  -> 13"  iPad slot,   2064 x 2752
 IOS_DEVICES=(
-  "iphone_6_3|iPhone 16"
+  "iphone_6_9|iPhone 16 Pro Max"
   "ipad_13|iPad Pro 13-inch (M4)"
 )
 
@@ -154,7 +157,7 @@ die()  { printf '\033[1;31m✖ %s\033[0m\n' "$*" >&2; exit 1; }
 
 # The store test's screenshot names carry the walkthrough's 'portrait_' prefix
 # (portrait_01_home.png). Strip it so the uploaded files read cleanly, e.g.
-# iphone_6_7_01_home.png / 01_home.png.
+# iphone_6_9_01_home.png / 01_home.png.
 strip_prefix() { local b; b="$(basename "$1")"; echo "${b#portrait_}"; }
 
 cd "$REPO_ROOT"
@@ -206,6 +209,13 @@ capture_ios() {
   # fresh build — same target, correct.
   log "iOS: clearing build/ios so '$TARGET' is rebuilt (not a stale target)"
   rm -rf "$REPO_ROOT/build/ios"
+
+  # Start every locale's set fresh, as the Android buckets do: frames from a
+  # device that has since left IOS_DEVICES would otherwise linger and be
+  # uploaded next to the new ones (deliver uploads every PNG in the folder).
+  for loc in "${LOCALES[@]}"; do
+    rm -f "$IOS_SHOTS/${loc%%|*}"/*.png
+  done
 
   for entry in "${IOS_DEVICES[@]}"; do
     local tag="${entry%%|*}"; local name="${entry#*|}"

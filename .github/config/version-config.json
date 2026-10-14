@@ -1,42 +1,42 @@
 {
     "android": {
         "dev": {
-            "versionName": "2.8.12.0",
-            "versionCode": 95,
+            "versionName": "2.8.13.0",
+            "versionCode": 96,
             "releaseNotes": {
-                "en-US": "Clearer game screens: your score takes center stage, and Combat shows both players side by side. Better on tablets: a split keypad with every number once, bigger digits, and a timer that truly pauses.",
-                "vi-VN": "Màn hình chơi rõ ràng hơn: điểm số của bạn nổi bật hơn, và chế độ Đối kháng hiển thị hai người chơi cạnh nhau. Tốt hơn trên máy tính bảng: bàn phím chia đôi không trùng số, chữ số lớn hơn và đồng hồ dừng hẳn khi tạm dừng."
+                "en-US": "Fresh store screenshots that show the new look: clearer game screens, side-by-side Combat panels and the improved tablet layout.",
+                "vi-VN": "Ảnh chụp màn hình mới trên cửa hàng, thể hiện giao diện mới: màn hình chơi rõ ràng hơn, bảng Đối kháng hiển thị cạnh nhau và bố cục máy tính bảng được cải thiện."
             }
         },
         "prod": {
-            "versionName": "2.8.12",
-            "versionCode": 95,
+            "versionName": "2.8.13",
+            "versionCode": 96,
             "releaseNotes": {
-                "en-US": "Clearer game screens: your score takes center stage, and Combat shows both players side by side. Better on tablets: a split keypad with every number once, bigger digits, and a timer that truly pauses.",
-                "vi-VN": "Màn hình chơi rõ ràng hơn: điểm số của bạn nổi bật hơn, và chế độ Đối kháng hiển thị hai người chơi cạnh nhau. Tốt hơn trên máy tính bảng: bàn phím chia đôi không trùng số, chữ số lớn hơn và đồng hồ dừng hẳn khi tạm dừng."
+                "en-US": "Fresh store screenshots that show the new look: clearer game screens, side-by-side Combat panels and the improved tablet layout.",
+                "vi-VN": "Ảnh chụp màn hình mới trên cửa hàng, thể hiện giao diện mới: màn hình chơi rõ ràng hơn, bảng Đối kháng hiển thị cạnh nhau và bố cục máy tính bảng được cải thiện."
             }
         }
     },
     "ios": {
         "dev": {
-            "versionName": "2.8.12",
-            "buildNumber": "94.0",
+            "versionName": "2.8.13",
+            "buildNumber": "95.0",
             "releaseNotes": {
-                "en-US": "Clearer game screens: your score takes center stage, and Combat shows both players side by side. Better on tablets: a split keypad with every number once, bigger digits, and a timer that truly pauses.",
-                "vi-VN": "Màn hình chơi rõ ràng hơn: điểm số của bạn nổi bật hơn, và chế độ Đối kháng hiển thị hai người chơi cạnh nhau. Tốt hơn trên máy tính bảng: bàn phím chia đôi không trùng số, chữ số lớn hơn và đồng hồ dừng hẳn khi tạm dừng."
+                "en-US": "Fresh store screenshots that show the new look: clearer game screens, side-by-side Combat panels and the improved tablet layout.",
+                "vi-VN": "Ảnh chụp màn hình mới trên cửa hàng, thể hiện giao diện mới: màn hình chơi rõ ràng hơn, bảng Đối kháng hiển thị cạnh nhau và bố cục máy tính bảng được cải thiện."
             }
         },
         "prod": {
-            "versionName": "2.8.12",
-            "buildNumber": "94",
+            "versionName": "2.8.13",
+            "buildNumber": "95",
             "releaseNotes": {
-                "en-US": "Clearer game screens: your score takes center stage, and Combat shows both players side by side. Better on tablets: a split keypad with every number once, bigger digits, and a timer that truly pauses.",
-                "vi-VN": "Màn hình chơi rõ ràng hơn: điểm số của bạn nổi bật hơn, và chế độ Đối kháng hiển thị hai người chơi cạnh nhau. Tốt hơn trên máy tính bảng: bàn phím chia đôi không trùng số, chữ số lớn hơn và đồng hồ dừng hẳn khi tạm dừng."
+                "en-US": "Fresh store screenshots that show the new look: clearer game screens, side-by-side Combat panels and the improved tablet layout.",
+                "vi-VN": "Ảnh chụp màn hình mới trên cửa hàng, thể hiện giao diện mới: màn hình chơi rõ ràng hơn, bảng Đối kháng hiển thị cạnh nhau và bố cục máy tính bảng được cải thiện."
             }
         }
     },
     "metadata": {
-        "lastUpdated": "2026-10-13T00:00:00+07:00",
+        "lastUpdated": "2026-10-14T00:00:00+07:00",
         "updatedBy": "CI/CD Pipeline"
     }
 }
